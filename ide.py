@@ -24,7 +24,7 @@ class IDE(QMainWindow):
         acerca = menu.addMenu(self.tr("Acer&ca de"))
 
         self._menu_archivo = menu_archivo.MenuArchivo(archivo, self)
-        self._menu_acerca_de = menu_acerca_de.MenuAcercade(acerca)
+        self._menu_acerca_de = menu_acerca_de.MenuAcercade(acerca, self)
 
     def posicionar_ventana(self, pantalla):
         """ Posiciona la ventana en el centro de la pantalla. """
