@@ -8,6 +8,9 @@ class MenuArchivo(QObject):
     def __init__(self, menu_archivo, ide):
         super(MenuArchivo, self).__init__()
 
+        # Contenedor del Widget Principal
+        self.ide = ide
+
         # Acciones
         accionNuevo = menu_archivo.addAction(self.tr("Nuevo"))
         accionAbrir = menu_archivo.addAction(self.tr("Abrir"))

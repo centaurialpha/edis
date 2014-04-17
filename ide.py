@@ -32,7 +32,7 @@ class IDE(QMainWindow):
         tam_ventana = self.geometry()
 
         self.move((pantalla.width() - tam_ventana.width()) / 2,
-            (pantalla.height() - tam_ventana.height()) / 2)
+                  (pantalla.height() - tam_ventana.height()) / 2)
 
 
 def main():

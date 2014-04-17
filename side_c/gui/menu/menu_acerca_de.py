@@ -8,18 +8,14 @@ menu acerca de
 from PyQt4.QtGui import QMessageBox
 from PyQt4.QtCore import QObject
 
-"""
-import sys
-sys.path.append("../")
-import ide
-"""
-
 
 class MenuAcercade(QObject):
 
     def __init__(self, menu_acerca_de, ide):
         super(MenuAcercade, self).__init__()
 
+        # Contenedor del Widget Principal
+        self.ide = ide
         acerca_ide = menu_acerca_de.addAction(self.tr("Acerca de IDE"))
         acerca_qt = menu_acerca_de.addAction(self.tr("Acerca de Qt"))
 
@@ -31,4 +27,4 @@ class MenuAcercade(QObject):
         pass
 
     def acerca_de_qt(self):
-        QMessageBox.aboutQt(ide.IDE(), 'Acerca de Qt')
+        QMessageBox.aboutQt(self.ide, 'Acerca de Qt')
