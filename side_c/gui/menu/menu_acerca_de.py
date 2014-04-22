@@ -4,9 +4,12 @@
 menu acerca de
 
 """
-
 from PyQt4.QtGui import QMessageBox
 from PyQt4.QtCore import QObject
+
+import sys
+sys.path.append('../')
+from side_c.gui.dialogos import dialogo_acerca_de_ide
 
 
 class MenuAcercade(QObject):
@@ -24,7 +27,8 @@ class MenuAcercade(QObject):
         acerca_qt.triggered.connect(self.acerca_de_qt)
 
     def acerca_de_ide(self):
-        pass
+        self.acerca_de = dialogo_acerca_de_ide.AcercaDeIDE()
+        self.acerca_de.show()
 
     def acerca_de_qt(self):
         QMessageBox.aboutQt(self.ide, 'Acerca de Qt')
