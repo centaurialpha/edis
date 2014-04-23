@@ -1,6 +1,9 @@
 #-*- coding: utf-8 -*-
 
+from PyQt4.QtGui import QIcon
 from PyQt4.QtCore import QObject
+
+from side_c import recursos
 
 
 class MenuArchivo(QObject):
@@ -12,12 +15,17 @@ class MenuArchivo(QObject):
         self.ide = ide
 
         # Acciones
-        accionNuevo = menu_archivo.addAction(self.tr("Nuevo"))
-        accionAbrir = menu_archivo.addAction(self.tr("Abrir"))
-        accionGuardar = menu_archivo.addAction(self.tr('Guardar'))
-        accionGuardar_como = menu_archivo.addAction(self.tr('Guardar como...'))
+        accionNuevo = menu_archivo.addAction(QIcon(
+            recursos.ICONOS['nuevo']), self.tr("Nuevo"))
+        accionAbrir = menu_archivo.addAction(QIcon(
+            recursos.ICONOS['abrir']), self.tr("Abrir"))
+        accionGuardar = menu_archivo.addAction(QIcon(
+            recursos.ICONOS['guardar']), self.tr('Guardar'))
+        accionGuardar_como = menu_archivo.addAction(
+            QIcon(recursos.ICONOS['guardar-como']), self.tr('Guardar como...'))
         menu_archivo.addSeparator()
-        accionSalir = menu_archivo.addAction(self.tr("Salir"))
+        accionSalir = menu_archivo.addAction(QIcon(recursos.ICONOS['salir']),
+            self.tr("Salir"))
 
         # Conexiones
         accionNuevo.triggered.connect(self.archivo_nuevo)

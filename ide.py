@@ -3,9 +3,11 @@
 from PyQt4.QtGui import QMainWindow
 from PyQt4.QtGui import QApplication
 from PyQt4.QtGui import QDesktopWidget
+from PyQt4.QtGui import QIcon
 
 from side_c.gui.menu import menu_acerca_de
 from side_c.gui.menu import menu_archivo
+from side_c import recursos
 
 
 class IDE(QMainWindow):
@@ -16,11 +18,12 @@ class IDE(QMainWindow):
         self.setWindowTitle('SIDE-C')
         get_pantalla = QDesktopWidget().screenGeometry()
         self.posicionar_ventana(get_pantalla)
+        self.setWindowIcon(QIcon(recursos.ICONOS['icono']))
 
         # Menu
         menu = self.menuBar()
         archivo = menu.addMenu(self.tr("&Archivo"))
-        editar = menu.addMenu(self.tr("&Editar"))
+        #editar = menu.addMenu(self.tr("&Editar"))
         acerca = menu.addMenu(self.tr("Acer&ca de"))
 
         self._menu_archivo = menu_archivo.MenuArchivo(archivo, self)

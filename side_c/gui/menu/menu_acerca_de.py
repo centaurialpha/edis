@@ -7,8 +7,6 @@ menu acerca de
 from PyQt4.QtGui import QMessageBox
 from PyQt4.QtCore import QObject
 
-import sys
-sys.path.append('../')
 from side_c.gui.dialogos import dialogo_acerca_de_ide
 
 
