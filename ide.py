@@ -7,6 +7,7 @@ from PyQt4.QtGui import QIcon
 
 from side_c.gui.menu import menu_acerca_de
 from side_c.gui.menu import menu_archivo
+from side_c.gui.menu import menu_editar
 from side_c import recursos
 
 
@@ -23,10 +24,11 @@ class IDE(QMainWindow):
         # Menu
         menu = self.menuBar()
         archivo = menu.addMenu(self.tr("&Archivo"))
-        #editar = menu.addMenu(self.tr("&Editar"))
+        editar = menu.addMenu(self.tr("&Editar"))
         acerca = menu.addMenu(self.tr("Acer&ca de"))
 
         self._menu_archivo = menu_archivo.MenuArchivo(archivo, self)
+        self._menu_editar = menu_editar.MenuEditar(editar, self)
         self._menu_acerca_de = menu_acerca_de.MenuAcercade(acerca, self)
 
     def posicionar_ventana(self, pantalla):

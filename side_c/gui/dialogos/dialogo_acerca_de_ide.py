@@ -8,14 +8,18 @@ from PyQt4.QtGui import QLabel
 from PyQt4.QtGui import QPixmap
 from PyQt4.QtCore import QSize
 from PyQt4.QtCore import Qt
+from PyQt4.QtCore import SIGNAL
 
+import webbrowser
+
+import side_c
 from side_c import recursos
 
 
 class AcercaDeIDE(QDialog):
 
-    def __init__(self):
-        super(AcercaDeIDE, self).__init__()
+    def __init__(self, parent=None):
+        QDialog.__init__(self, parent, Qt.Dialog)
         self.setWindowTitle(self.tr("Acerca de SIDE-C"))
         self.setMaximumSize(QSize(0, 0))
 
@@ -35,10 +39,21 @@ class AcercaDeIDE(QDialog):
         lay_horizontal.addWidget(titulo_label)
         lay_vertical.addLayout(lay_horizontal)
 
-        # Descripci?n
+        # Descripcion
         descripcion_label = QLabel(
-            self.tr("""SIDE-C es un IDE para el lenguaje de programación C,
+            self.tr("""SIDE-C es un IDE para el lenguaje de programaci?n C,
 simple y ligero."""))
         descripcion_label.setAlignment(Qt.AlignLeft)
 
         lay_vertical.addWidget(descripcion_label)
+
+        link_codigo_fuente = QLabel(
+            ('Codigo fuente: <a href="%s">%s</a>') %
+            (side_c.__codigo_fuente__, side_c.__codigo_fuente__))
+        lay_vertical.addWidget(link_codigo_fuente)
+
+        self.connect(link_codigo_fuente, SIGNAL("linkActivated(QString)"),
+            self.activar_link)
+
+    def activar_link(self, link):
+        webbrowser.open(str(link))

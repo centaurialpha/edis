@@ -24,6 +24,9 @@ class MenuArchivo(QObject):
         accionGuardar_como = menu_archivo.addAction(
             QIcon(recursos.ICONOS['guardar-como']), self.tr('Guardar como...'))
         menu_archivo.addSeparator()
+        accionImprimir = menu_archivo.addAction(
+            QIcon(recursos.ICONOS['print']), self.tr('Imprimir archivo'))
+        menu_archivo.addSeparator()
         accionSalir = menu_archivo.addAction(QIcon(recursos.ICONOS['salir']),
             self.tr("Salir"))
 

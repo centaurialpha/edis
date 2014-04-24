@@ -15,4 +15,5 @@ ICONOS = {
     "guardar-como": os.path.join(PATH, "imagenes", "guardar.png"),
     "salir": os.path.join(PATH, "imagenes", "salir.png"),
     "logo": os.path.join(PATH, "imagenes", "logo.png"),
-    "icono": os.path.join(PATH, "imagenes", "icono.png")}
+    "icono": os.path.join(PATH, "imagenes", "icono.png"),
+    "print": os.path.join(PATH, "imagenes", "print.png")}
