@@ -39,7 +39,7 @@ class AcercaDeIDE(QDialog):
         lay_horizontal.addWidget(titulo_label)
         lay_vertical.addLayout(lay_horizontal)
 
-        # Descripcion
+        # Descripción
         descripcion_label = QLabel(
             self.tr("""SIDE-C es un IDE para el lenguaje de programaci?n C,
 simple y ligero."""))

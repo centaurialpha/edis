@@ -17,3 +17,8 @@ ICONOS = {
     "logo": os.path.join(PATH, "imagenes", "logo.png"),
     "icono": os.path.join(PATH, "imagenes", "icono.png"),
     "print": os.path.join(PATH, "imagenes", "print.png")}
+
+# Estilos de color
+COLOR_TEMA = {
+    "editor": "#1d1f21"
+    }
