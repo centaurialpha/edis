@@ -38,7 +38,7 @@ class IDE(QMainWindow):
         editar = menu.addMenu(self.tr("&Editar"))
         ver = menu.addMenu(self.trUtf8("&Ver"))
         codigo = menu.addMenu(self.trUtf8("&Codigo fuente"))
-        acerca = menu.addMenu(self.tr("Acer&ca de"))
+        acerca = menu.addMenu(self.tr("Ace&rca de"))
 
         self._menu_archivo = menu_archivo.MenuArchivo(archivo, self)
         self._menu_editar = menu_editar.MenuEditar(editar, self)
