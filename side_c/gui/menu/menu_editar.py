@@ -1,22 +1,46 @@
 #-*- coding: utf-8 -*-
 
+from PyQt4.QtGui import QIcon
+
 from PyQt4.QtCore import QObject
+from PyQt4.QtCore import Qt
+
+from side_c import recursos
+
+from side_c.gui.dialogos import preferencias
 
 
 class MenuEditar(QObject):
-    """ Items del menu Editar """
+    """ Items del menú Editar """
 
     def __init__(self, menu_editar, ide):
         super(MenuEditar, self).__init__()
 
+        self.ide = ide
+
         # Agrega acciones
-        accionDeshacer = menu_editar.addAction(self.trUtf8("Deshacer"))
-        accionRehacer = menu_editar.addAction(self.trUtf8("Rehacer"))
-        accionCortar = menu_editar.addAction(self.trUtf8("Cortar"))
-        accionCopiar = menu_editar.addAction(self.trUtf8("Copiar"))
-        accionPegar = menu_editar.addAction(self.trUtf8("Pegar"))
+        accionDeshacer = menu_editar.addAction(
+            QIcon(recursos.ICONOS['deshacer']), self.trUtf8("Deshacer"))
+        accionDeshacer.setShortcut(Qt.CTRL + Qt.Key_Z)
+        accionRehacer = menu_editar.addAction(
+            QIcon(recursos.ICONOS['rehacer']), self.trUtf8("Rehacer"))
+        accionRehacer.setShortcut(Qt.CTRL + Qt.Key_Y)
+        accionCortar = menu_editar.addAction(
+            QIcon(recursos.ICONOS['cortar']), self.trUtf8("Cortar"))
+        accionCortar.setShortcut(Qt.CTRL + Qt.Key_X)
+        accionCopiar = menu_editar.addAction(
+            QIcon(recursos.ICONOS['copiar']), self.trUtf8("Copiar"))
+        accionCopiar.setShortcut(Qt.CTRL + Qt.Key_C)
+        accionPegar = menu_editar.addAction(
+            QIcon(recursos.ICONOS['pegar']), self.trUtf8("Pegar"))
+        accionPegar.setShortcut(Qt.CTRL + Qt.Key_V)
         menu_editar.addSeparator()
-        accionBuscar = menu_editar.addAction(self.trUtf8("Buscar"))
+        accionBuscar = menu_editar.addAction(
+            QIcon(recursos.ICONOS['buscar']), self.trUtf8("Buscar"))
+        accionBuscar.setShortcut(Qt.CTRL + Qt.Key_F)
+        menu_editar.addSeparator()
+        accionConfiguracion = menu_editar.addAction(
+            self.trUtf8("Configuración"))
 
         # Conexiones
         accionDeshacer.triggered.connect(self._funcion_deshacer)
@@ -25,6 +49,7 @@ class MenuEditar(QObject):
         accionCopiar.triggered.connect(self._funcion_copiar)
         accionPegar.triggered.connect(self._funcion_pegar)
         accionBuscar.triggered.connect(self._funcion_pegar)
+        accionConfiguracion.triggered.connect(self._configuraciones)
 
     # Métodos
     def _funcion_deshacer(self):
@@ -44,3 +69,7 @@ class MenuEditar(QObject):
 
     def _funcion_buscar(self):
         pass
+
+    def _configuraciones(self):
+        self.preferencias = preferencias.Configuraciones()
+        self.preferencias.show()

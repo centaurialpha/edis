@@ -1,0 +1,40 @@
+QMainWindow 
+{
+	background: #232323
+}
+
+QMenuBar::item 
+{
+    spacing: 3px;
+    padding: 1px 2px;
+    background: #232323;
+    border-radius: 2px;
+    color: white
+}
+
+QMenuBar 
+{
+    background-color: rgb(49,49,49);
+    color: rgb(255,255,255);
+    border: 1px solid #4dbee8;
+}
+
+QMenu 
+{
+    background-color: rgb(70,70,70);
+    color: rgb(255,255,255);
+    border: 1px solid #4dbee8;
+}
+
+QMenu::item 
+{
+    padding: 2px 25px 2px 20px;
+    border: 1px solid transparent;
+}
+
+QMenu::item:selected 
+{
+    border-color: darkblue;
+    background: rgba(100, 200, 200, 150);
+}
+
