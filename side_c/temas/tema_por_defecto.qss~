@@ -21,10 +21,10 @@ QTabWidget::pane {
     border-color: #888;
     border-style: solid;
     border-width: 1px;
-    background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
+    /*background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
         stop: 0 transparent, stop: 1.0 #4a4b45);
     position: absolute;
-    top: -1px;
+    top: -1px;*/
 }
 
 QTabBar {
@@ -85,7 +85,7 @@ QTabBar::tab:top:hover {
     border-bottom-color: #bbb;
 }
 QTabBar::tab:top:selected {
-    border-bottom: 2px solid #555;
+    border-bottom: 3px solid #222;
 }
 QTabBar::tab:bottom:selected,
 QTabBar::tab:bottom:hover {

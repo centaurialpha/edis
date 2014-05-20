@@ -6,6 +6,8 @@ from PyQt4.QtGui import QLabel
 from PyQt4.QtGui import QPixmap
 from PyQt4.QtGui import QTabWidget
 from PyQt4.QtGui import QWidget
+from PyQt4.QtGui import QTextBrowser
+
 from PyQt4.QtCore import QSize
 from PyQt4.QtCore import Qt
 from PyQt4.QtCore import SIGNAL
@@ -41,9 +43,11 @@ class Tabs(QTabWidget):
 
         self.acerca_de_side = AcercaDeSide()
         self.acerca_de_creadores = AcercaDeCreadores()
+        self.licencia = Licencia()
 
         self.addTab(self.acerca_de_side, self.trUtf8("Acerca de SIDE-C"))
         self.addTab(self.acerca_de_creadores, self.trUtf8("Creadores"))
+        self.addTab(self.licencia, self.trUtf8("Licencia"))
 
 
 class AcercaDeSide(QWidget):
@@ -108,3 +112,26 @@ class AcercaDeCreadores(QWidget):
         vbox.addWidget(label_m)
 
         self.setLayout(vbox)
+
+
+class Licencia(QWidget):
+
+    def __init__(self):
+        super(Licencia, self).__init__()
+
+        self.setWindowTitle("Licencia")
+        vbox = QVBoxLayout(self)
+
+        self.contenedor = QTextBrowser()
+        vbox.addWidget(self.contenedor)
+
+        self.leer_licencia()
+
+    def leer_licencia(self):
+        try:
+            archivo = open("licencia.txt", 'r')
+            data = archivo.read()
+            self.contenedor.setText(data)
+            archivo.close()
+        except:
+            self.contenedor.setText("Archivo no encontrado")

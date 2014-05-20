@@ -13,7 +13,7 @@ from side_c.gui.dialogos import preferencias
 class MenuEditar(QObject):
     """ Items del menú Editar """
 
-    def __init__(self, menu_editar, ide):
+    def __init__(self, menu_editar, toolbar, ide):
         super(MenuEditar, self).__init__()
 
         self.ide = ide
@@ -25,6 +25,7 @@ class MenuEditar(QObject):
         accionRehacer = menu_editar.addAction(
             QIcon(recursos.ICONOS['rehacer']), self.trUtf8("Rehacer"))
         accionRehacer.setShortcut(Qt.CTRL + Qt.Key_Y)
+        menu_editar.addSeparator()
         accionCortar = menu_editar.addAction(
             QIcon(recursos.ICONOS['cortar']), self.trUtf8("Cortar"))
         accionCortar.setShortcut(Qt.CTRL + Qt.Key_X)
@@ -41,6 +42,16 @@ class MenuEditar(QObject):
         menu_editar.addSeparator()
         accionConfiguracion = menu_editar.addAction(
             self.trUtf8("Configuración"))
+
+        # Toolbar - Items
+        self.items_toolbar = {
+            "deshacer": accionDeshacer,
+            "rehacer": accionRehacer,
+            "cortar": accionCortar,
+            "copiar": accionCopiar,
+            "pegar": accionPegar,
+            "buscar": accionBuscar
+            }
 
         # Conexiones
         accionDeshacer.triggered.connect(self._funcion_deshacer)

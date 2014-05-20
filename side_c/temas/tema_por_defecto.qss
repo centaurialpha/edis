@@ -37,7 +37,7 @@ QTabBar::tab {
     padding: 4px 8px;
     border: 1px solid #222;
     background: #333;
-    border-radius: 7px;
+    border-radius: 10px;
 }
 QTabBar::tab:top,
 QTabBar::tab:bottom {
@@ -85,7 +85,7 @@ QTabBar::tab:top:hover {
     border-bottom-color: #bbb;
 }
 QTabBar::tab:top:selected {
-    border-bottom: 2px solid #555;
+    border-bottom: 3px solid #222;
 }
 QTabBar::tab:bottom:selected,
 QTabBar::tab:bottom:hover {
