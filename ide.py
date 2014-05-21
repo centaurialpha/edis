@@ -97,8 +97,13 @@ class IDE(QMainWindow):
         self._menu_acerca_de = menu_acerca_de.MenuAcercade(acerca, self)
 
         # Métodos para cargar items en las toolbar
-        self.cargar_toolbar1()
-        self.cargar_toolbar2()
+        self.cargar_toolbar([self._menu_archivo, self._menu_codigo],
+                            self.toolbar,
+                            ITEMS_TOOLBAR1)
+
+        self.cargar_toolbar(self._menu_editar,
+                            self.toolbar_,
+                            ITEMS_TOOLBAR2)
 
     def posicionar_ventana(self, pantalla):
         """ Posiciona la ventana en el centro de la pantalla. """
@@ -113,38 +118,29 @@ class IDE(QMainWindow):
 
         widget_central.agregar_contenedor_central(self.contenedor_principal)
 
-    def cargar_toolbar1(self):
-        """ Carga los items en la toolbar1 """
-
-        self.toolbar.clear()
+    def cargar_toolbar(self, menus, toolbar, items):
+        """ Carga los items en el toolbar
+            menus: lista de menus o menu.
+            toolbar: QToolBar
+            items: lista de items
+        """
+        toolbar.clear()
         items_toolbar = {}
-        items_toolbar.update(self._menu_archivo.items_toolbar)
-        items_toolbar.update(self._menu_codigo.items_toolbar)
 
-        for i in ITEMS_TOOLBAR1:
-            if i == "separador":
-                self.toolbar.addSeparator()
+        if isinstance(menus, list):
+            for menu in menus:
+                items_toolbar.update(menu.items_toolbar)
+        else:
+            items_toolbar.update(menus.items_toolbar)
+
+        for item in items:
+            if item == 'separador':
+                toolbar.addSeparator()
             else:
-                item_tool = items_toolbar.get(i, None)
+                item_tool = items_toolbar.get(item, None)
 
                 if item_tool is not None:
-                    self.toolbar.addAction(item_tool)
-
-    def cargar_toolbar2(self):
-        """ Carga los items en la toolbar2"""
-
-        self.toolbar_.clear()
-        items_toolbar2 = {}
-        items_toolbar2.update(self._menu_editar.items_toolbar)
-
-        for item in ITEMS_TOOLBAR2:
-            if item == "separador":
-                self.toolbar_.addSeparator()
-            else:
-                item_tool = items_toolbar2.get(item, None)
-
-                if item_tool is not None:
-                    self.toolbar_.addAction(item_tool)
+                    toolbar.addAction(item_tool)
 
     def _cargar_tema(self):
         """ Carga el tema por defecto """
