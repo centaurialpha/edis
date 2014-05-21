@@ -1,7 +1,7 @@
 #-*- coding: utf-8 -*-
 
 from PyQt4.QtGui import QIcon
-from PyQt4.QtGui import QKeySequence
+from PyQt4.QtCore import SIGNAL
 from PyQt4.QtCore import Qt
 from PyQt4.QtCore import QObject
 
@@ -54,7 +54,8 @@ class MenuArchivo(QObject):
             }
 
         # Conexiones
-        accionNuevo.triggered.connect(self.archivo_nuevo)
+        self.connect(accionNuevo, SIGNAL("triggered()"),
+            self.ide.contenedor_principal.agregar_editor)
         accionSalir.triggered.connect(ide.close)
 
     def archivo_nuevo(self):

@@ -2,21 +2,26 @@
 
 from PyQt4.QtGui import QWidget
 from PyQt4.QtGui import QSplitter
-from PyQt4.QtGui import QVBoxLayout
+from PyQt4.QtGui import QHBoxLayout
 
 from PyQt4.QtCore import Qt
-from side_c.gui import tab_widget
-from side_c.gui import editor
 
 
 class WidgetCentral(QWidget):
 
-    def __init__(self):
-        super(WidgetCentral, self).__init__()
+    def __init__(self, parent=None):
+        QWidget.__init__(self, parent)
+        self.parent = parent
 
-        layout_vertical = QVBoxLayout(self)
+        layout_horizontal = QHBoxLayout(self)
+        layout_horizontal.setContentsMargins(0, 0, 0, 0)
+        layout_horizontal.setSpacing(0)
 
-        self.tabs = tab_widget.TabCentral()
-        self.split_horizontal = QSplitter(Qt.Horizontal)
-        self.split_horizontal.addWidget(self.tabs)
-        layout_vertical.addWidget(self.split_horizontal)
+        self.split_principal = QSplitter(Qt.Vertical)
+
+        layout_horizontal.addWidget(self.split_principal)
+
+    def agregar_contenedor_central(self, contenedor):
+        self.contenedor_principal = contenedor
+        self.contenedor_principal.show()
+        self.split_principal.insertWidget(0, contenedor)

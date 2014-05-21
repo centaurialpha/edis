@@ -15,6 +15,7 @@ from PyQt4.QtCore import SIGNAL
 import webbrowser
 
 import side_c
+
 from side_c import recursos
 
 
@@ -84,7 +85,8 @@ programacion C, simple y ligero.\n"""))
         layout_vertical.addWidget(version_side)
 
         link_codigo_fuente = QLabel(
-            ('Codigo fuente: <a href="%s">%s</a>') %
+            ('Codigo fuente: <a href="%s"><span style=" '
+            'color: #4dbee8;">%s</span></a>') %
             (side_c.__codigo_fuente__, side_c.__codigo_fuente__))
         layout_vertical.addWidget(link_codigo_fuente)
 
@@ -129,7 +131,7 @@ class Licencia(QWidget):
 
     def leer_licencia(self):
         try:
-            archivo = open("licencia.txt", 'r')
+            archivo = open(recursos.LICENCIA, 'r')
             data = archivo.read()
             self.contenedor.setText(data)
             archivo.close()

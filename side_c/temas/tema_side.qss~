@@ -1,8 +1,32 @@
-QMainWindow 
+QWidget{
+    background: #232323;
+    color: white;
+}
+
+/*QMainWindow 
 {
 	background: #232323
 }
+*/
+QToolBar::separator
+{
+	border-radius: 2px;
+	background: black;
+	width: 1px;
+	height: 1px;
+	
+}
 
+QToolBar {
+    background: qlineargradient(x1: 0, y1: 0, x2: 1, y2: 0,
+        stop: 0 #505050, stop: 1.0 #202020);
+    border: 1px solid transparent;
+}
+
+QToolBar#custom {
+    border-radius: 1px;
+    border: 1px solid #222;
+}
 QMenuBar::item 
 {
     spacing: 3px;
@@ -38,3 +62,120 @@ QMenu::item:selected
     background: rgba(100, 200, 200, 150);
 }
 
+QMenuBar::item:pressed {
+    background: #4DBEE8;
+}
+
+QTabWidget::pane {
+    border-color: #4dbee8;
+    border-style: solid;
+    border-width: 1px;
+    position: absolute;
+    top: -2px;
+}
+
+QTabBar {
+    background-color: #333333;
+    border: none;
+}
+
+QTabBar::tab {
+    color: white;
+    padding: 5px 10px;
+    border: 1px solid #111;
+    background: #333333;
+    border-radius: 10px;
+}
+QTabBar::tab:top,
+QTabBar::tab:bottom {
+    padding: 6px 8px;
+    border-right: 2px solid #111;
+}
+QTabBar::tab:left,
+QTabBar::tab:right {
+    padding: 8px 6px;
+    border-top: 1px solid red;
+}
+QTabBar::tab:top {
+    border-bottom-right-radius: 0;
+    border-bottom-left-radius: 0;
+    border-bottom: 5px solid transparent;
+    margin: 3px 3px 0 0;
+}
+
+QTabBar::tab:bottom {
+    border-top-right-radius: 0px;
+    border-top-left-radius: 0px;
+    border-top: 1px solid transparent;
+    margin: 0 2px 3px 0;
+}
+
+QTabBar::tab:right {
+    border-top-right-radius: 0px;
+    border-bottom-right-radius: 0px;
+    border-right: 1px solid transparent;
+    margin: 0 0 2px 3px;
+}
+
+QTabBar::tab:left {
+    border-top-left-radius: 0px;
+    border-bottom-left-radius: 0px;
+    border-left: 1px solid transparent;
+    margin: 0 3px 2px 0;
+}
+
+QTabBar::tab:selected {
+    color: #4dbee8;
+}
+QTabBar::tab:top:hover {
+    border-bottom-color: #4dbee8;
+}
+QTabBar::tab:top:selected {
+    border-bottom: 2px solid #4dbee8;
+}
+QTabBar::tab:bottom:selected,
+QTabBar::tab:bottom:hover {
+    border-top-color: #3dbee8;
+}
+QTabBar::tab:right:selected,
+QTabBar::tab:right:hover {
+    border-right-color: #3dbee8;
+}
+QTabBar::tab:left:selected,
+QTabBar::tab:left:hover {
+    border-left-color: #3dbee8;
+}
+
+
+QTabBar::tab:hover,
+QTabBar::tab:focus {
+    color: #1dbee8;
+}
+
+QTabBar::tab:right:first:selected {
+    margin-top: 4;
+}
+
+QTabBar::tab:left:first:selected {
+    margin-top: 4;
+}
+
+QTabBar::tab:top:last:selected {
+    margin-right: 0; /* the last selected tab has nothing to overlap with on the right */
+}
+
+QTabBar::tab:bottom:last:selected {
+    margin-right: 0;
+}
+
+QTabBar::tab:right:last:selected {
+    margin-bottom: 0;
+}
+
+QTabBar::tab:left:last:selected {
+    margin-bottom: 0;
+}
+
+QTabBar::tab:only-one {
+    margin: 0; /* if there is only one tab, we don't want overlapping margins */
+}

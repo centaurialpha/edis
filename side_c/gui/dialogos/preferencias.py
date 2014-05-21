@@ -4,6 +4,7 @@ from PyQt4.QtGui import QDialog
 from PyQt4.QtGui import QTabWidget
 from PyQt4.QtGui import QWidget
 from PyQt4.QtGui import QVBoxLayout
+from PyQt4.QtGui import QCheckBox
 from PyQt4.QtGui import QHBoxLayout
 from PyQt4.QtGui import QLabel
 from PyQt4.QtGui import QListWidget
@@ -11,6 +12,7 @@ from PyQt4.QtGui import QPushButton
 from PyQt4.QtGui import QSpacerItem
 from PyQt4.QtGui import QSizePolicy
 from PyQt4.QtGui import QApplication
+
 from PyQt4.QtCore import QSize
 
 from side_c import recursos
@@ -18,9 +20,9 @@ from side_c import recursos
 
 class Configuraciones(QDialog):
 
-    def __init__(self, parent=None):
+    def __init__(self, ide):
         super(Configuraciones, self).__init__()
-
+        self.ide = ide
         self.setWindowTitle(self.trUtf8("Configuración"))
         self.setMaximumSize(QSize(0, 0))
 
@@ -51,7 +53,9 @@ class General(QWidget):
     def __init__(self):
         super(General, self).__init__()
 
-        #vbox = QVBoxLayout(self)
+        vbox = QVBoxLayout(self)
+        self.check_toolbars = QCheckBox("Ocultar")
+        vbox.addWidget(self.check_toolbars)
 
 
 class CambiarTema(QWidget):

@@ -36,10 +36,6 @@ class MenuEditar(QObject):
             QIcon(recursos.ICONOS['pegar']), self.trUtf8("Pegar"))
         accionPegar.setShortcut(Qt.CTRL + Qt.Key_V)
         menu_editar.addSeparator()
-        accionBuscar = menu_editar.addAction(
-            QIcon(recursos.ICONOS['buscar']), self.trUtf8("Buscar"))
-        accionBuscar.setShortcut(Qt.CTRL + Qt.Key_F)
-        menu_editar.addSeparator()
         accionConfiguracion = menu_editar.addAction(
             self.trUtf8("Configuración"))
 
@@ -50,7 +46,6 @@ class MenuEditar(QObject):
             "cortar": accionCortar,
             "copiar": accionCopiar,
             "pegar": accionPegar,
-            "buscar": accionBuscar
             }
 
         # Conexiones
@@ -59,7 +54,6 @@ class MenuEditar(QObject):
         accionCortar.triggered.connect(self._funcion_cortar)
         accionCopiar.triggered.connect(self._funcion_copiar)
         accionPegar.triggered.connect(self._funcion_pegar)
-        accionBuscar.triggered.connect(self._funcion_pegar)
         accionConfiguracion.triggered.connect(self._configuraciones)
 
     # Métodos
@@ -78,9 +72,6 @@ class MenuEditar(QObject):
     def _funcion_pegar(self):
         pass
 
-    def _funcion_buscar(self):
-        pass
-
     def _configuraciones(self):
-        self.preferencias = preferencias.Configuraciones()
+        self.preferencias = preferencias.Configuraciones(self.ide)
         self.preferencias.show()

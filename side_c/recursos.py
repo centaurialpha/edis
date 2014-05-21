@@ -9,6 +9,8 @@ PATH = os.path.abspath(os.path.dirname(__file__))
 TEMA_SIDE = os.path.join(PATH, "temas", "tema_side.qss")
 TEMA_POR_DEFECTO = os.path.join(PATH, "temas", "tema_por_defecto.qss")
 
+LICENCIA = os.path.join(PATH, "../", "COPYING")
+
 # Iconos
 ICONOS = {
     "nuevo": os.path.join(PATH, "imagenes", "nuevo.png"),

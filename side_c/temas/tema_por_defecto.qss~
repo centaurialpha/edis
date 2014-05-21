@@ -1,4 +1,11 @@
 /* ToolBar*/
+QToolBar
+{
+	background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 0,
+		stop: 0 #bbb, stop: 1.0 #999);
+    border: 1px solid transparent;
+}
+
 QToolBar::separator
 {
 	background: gray;
@@ -37,7 +44,7 @@ QTabBar::tab {
     padding: 4px 8px;
     border: 1px solid #222;
     background: #333;
-    border-radius: 7px;
+    border-radius: 10px;
 }
 QTabBar::tab:top,
 QTabBar::tab:bottom {

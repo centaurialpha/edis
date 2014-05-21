@@ -5,10 +5,11 @@ from PyQt4.QtGui import QPlainTextEdit
 
 class Editor(QPlainTextEdit):
 
-    def __init__(self):
-        super(Editor, self).__init__()
+    def __init__(self, nombre_archivo):
+        QPlainTextEdit.__init__(self)
 
-    def crear_editor(self):
-        editor = Editor()
 
-        return editor
+def crear_editor(nombre_archivo=''):
+    editor = Editor(nombre_archivo)
+
+    return editor
