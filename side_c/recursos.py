@@ -31,9 +31,11 @@ ICONOS = {
     "buscar": os.path.join(PATH, "imagenes", "buscar.png")
     }
 
-# Estilos de color
-COLOR_WIDGETS = {
-    "editor": "#1d1f21"
+# Estilos de color - Editor
+COLOR_EDITOR = {
+    "texto": "#dfe1dd",
+    "fondo": "#333333",
+    "linea-actual": "#919191"
     }
 
 # Atajos de teclas

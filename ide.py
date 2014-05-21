@@ -46,7 +46,7 @@ ITEMS_TOOLBAR2 = [
 
 
 class IDE(QMainWindow):
-    """ Contenedor principal """
+    """ Aplicacion principal """
 
     def __init__(self):
         QMainWindow.__init__(self)

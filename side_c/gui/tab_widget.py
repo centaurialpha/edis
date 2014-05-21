@@ -2,6 +2,8 @@
 
 from PyQt4.QtGui import QTabWidget
 
+from PyQt4.QtCore import SIGNAL
+
 
 class TabCentral(QTabWidget):
 
@@ -12,6 +14,9 @@ class TabCentral(QTabWidget):
         self.setMovable(True)
         self.setAcceptDrops(True)
         self.parent = parent
+
+        self.connect(self, SIGNAL("tabCloseRequested(int)"),
+            self.removeTab)
 
     def agregar_tab(self, widget, titulo, index=None):
 
@@ -24,3 +29,6 @@ class TabCentral(QTabWidget):
         widget.setFocus()
 
         return insertar
+
+    def cerrar_tab(self):
+        pass
