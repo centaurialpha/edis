@@ -23,6 +23,7 @@ from side_c.gui import contenedor_principal
 from side_c import recursos
 
 ITEMS_TOOLBAR1 = [
+    "separador",
     "nuevo-archivo",
     "abrir-archivo",
     "guardar-archivo",
@@ -35,6 +36,7 @@ ITEMS_TOOLBAR1 = [
     ]
 
 ITEMS_TOOLBAR2 = [
+    "separador",
     "deshacer",
     "rehacer",
     "separador",

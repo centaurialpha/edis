@@ -35,7 +35,8 @@ ICONOS = {
 COLOR_EDITOR = {
     "texto": "#dfe1dd",
     "fondo": "#333333",
-    "linea-actual": "#919191"
+    "linea-actual": "#919191",
+    "widget-num-linea": "#c9c9c9"
     }
 
 # Atajos de teclas
