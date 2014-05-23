@@ -57,6 +57,5 @@ class MenuArchivo(QObject):
         self.connect(accionNuevo, SIGNAL("triggered()"),
             self.ide.contenedor_principal.agregar_editor)
         accionSalir.triggered.connect(ide.close)
-
-    def archivo_nuevo(self):
-        pass
+        self.connect(accionCerrar, SIGNAL("triggered()"),
+            self.ide.contenedor_principal.cerrar_tab)

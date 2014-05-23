@@ -36,7 +36,11 @@ COLOR_EDITOR = {
     "texto": "#dfe1dd",
     "fondo": "#333333",
     "linea-actual": "#919191",
-    "widget-num-linea": "#c9c9c9"
+    "widget-num-linea": "#a3a3a3",
+    "fondo-margen": "#cacad4",
+    "numero-linea": "#353535",
+    "num-seleccionado": "#3c64c8",
+    "margen-linea": "#777777"
     }
 
 # Atajos de teclas

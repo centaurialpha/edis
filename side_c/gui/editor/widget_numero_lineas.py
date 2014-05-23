@@ -28,7 +28,7 @@ class NumeroDeLineaBar(QWidget):
         linea_max = math.ceil(math.log10(self.editor.blockCount()))
         ancho = QFontMetrics(
             self.editor.document().defaultFont()).width('0' * int(linea_max)) \
-            + 8 + self.foldArea
+            + 13 + self.foldArea
         if self.width() != ancho:
             self.setFixedWidth(ancho)
             self.editor.setViewportMargins(ancho, 0, 0, 0)
@@ -46,9 +46,9 @@ class NumeroDeLineaBar(QWidget):
         pintar = QPainter(self)
         fondo = recursos.COLOR_EDITOR['widget-num-linea']
         pintar.fillRect(self.rect(), QColor(fondo))
-        #xofs = self.width() - self.foldArea
-        #painter.fillRect(xofs, 0, self.foldArea, self.height(),
-            #QColor(fondo))
+        #widget_2 = self.width() - self.foldArea
+        #pintar.fillRect(xofs, 0, self.foldArea, self.height(),
+            #QColor(20, 20, 20))
 
         bloque = self.editor.firstVisibleBlock()
         viewport_offset = self.editor.contentOffset()
@@ -63,14 +63,14 @@ class NumeroDeLineaBar(QWidget):
             if posicion.y() > fin_pagina:
                 break
 
-            pintar.setPen(QColor(23, 20, 0))
+            #pintar.setPen(QColor(recursos.COLOR_EDITOR['numero-linea']))
 
             if bloque == bloque_actual:
                 pintar.fillRect(
                     0, round(posicion.y()) + font_metrics.descent(),
                     self.width(),
                     font_metrics.ascent() + font_metrics.descent(),
-                    QColor(100, 100, 200))
+                    QColor(recursos.COLOR_EDITOR['num-seleccionado']))
 
                 self.negrita = True
                 fuente = pintar.font()

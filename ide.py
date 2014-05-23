@@ -19,6 +19,7 @@ from side_c.gui.menu import menu_acerca_de
 
 from side_c.gui import widget_central
 from side_c.gui import contenedor_principal
+from side_c.gui.contenedor_bottom import contenedor_bottom
 
 from side_c import recursos
 
@@ -117,8 +118,10 @@ class IDE(QMainWindow):
 
     def cargar_ui(self, widget_central):
         self.contenedor_principal = contenedor_principal.ContenedorMain(self)
+        self.contenedor_secundario = contenedor_bottom.ContenedorBottom(self)
 
         widget_central.agregar_contenedor_central(self.contenedor_principal)
+        widget_central.agregar_contenedor_bottom(self.contenedor_secundario)
 
     def cargar_toolbar(self, menus, toolbar, items):
         """ Carga los items en el toolbar

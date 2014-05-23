@@ -22,8 +22,11 @@ class MenuVer(QObject):
         accionFullScreen.setShortcut(Qt.Key_F11)
         menu_ver.addSeparator()
         self.accionMostrarOcultar_toolbars = menu_ver.addAction(
-            self.trUtf8("Mostrar/Ocultara Toolbars"))
+            self.trUtf8("Mostrar/Ocultar Toolbars"))
         self.accionMostrarOcultar_toolbars.setCheckable(True)
+        self.accionMostrarOcultar_input = menu_ver.addAction(
+            self.trUtf8("Mostrar/Ocultar Terminal"))
+        self.accionMostrarOcultar_input.setCheckable(True)
         menu_ver.addSeparator()
         accionZoomIn = menu_ver.addAction(
             self.trUtf8("Zoom +"))
@@ -34,8 +37,11 @@ class MenuVer(QObject):
         accionFullScreen.triggered.connect(self.pantalla_completa)
         self.connect(self.accionMostrarOcultar_toolbars, SIGNAL("triggered()"),
             self.ocultar_mostrar_toolbars)
+        self.connect(self.accionMostrarOcultar_input, SIGNAL("triggered()"),
+            self.visibilidad_contenedor_secundario)
 
         self.accionMostrarOcultar_toolbars.setChecked(True)
+        self.accionMostrarOcultar_input.setChecked(True)
 
     def pantalla_completa(self):
         """ Muestra en pantalla completa. """
@@ -54,3 +60,8 @@ class MenuVer(QObject):
         else:
             self.ide.toolbar.show()
             self.ide.toolbar_.show()
+
+    def visibilidad_contenedor_secundario(self):
+        self.ide.widget_Central.mostrar_ocultar_widget_bottom()
+        self.ide._menu_ver.accionMostrarOcultar_input.setChecked(
+            self.ide.contenedor_secundario.isVisible())
