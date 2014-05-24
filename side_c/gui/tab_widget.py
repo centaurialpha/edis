@@ -37,6 +37,10 @@ class TabCentral(QTabWidget):
     def cerrar_tab(self):
         self.removeTab(self.currentIndex())
 
+    def cerrar_todo(self):
+        for tab in range(self.count()):
+            self.removeTab(0)
+
     def tab_es_modificado(self, v):
         """ Agrega ícono al tab si se hace una edición en el editor. """
 

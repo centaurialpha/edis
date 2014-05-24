@@ -42,6 +42,9 @@ class ContenedorMain(QSplitter):
 
         self.tab_actual.cerrar_tab()
 
+    def cerrar_todo(self):
+        self.tab_actual.cerrar_todo()
+
     def actual_widget(self):
         return self.tab_actual.currentWidget()
 
