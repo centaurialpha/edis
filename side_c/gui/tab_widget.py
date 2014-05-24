@@ -35,11 +35,24 @@ class TabCentral(QTabWidget):
         return insertar
 
     def cerrar_tab(self):
+        """ Cierra la pestaña actual. """
+
         self.removeTab(self.currentIndex())
 
     def cerrar_todo(self):
+        """ Cierra todas las pestañas. """
+
         for tab in range(self.count()):
             self.removeTab(0)
+
+    def cerrar_excepto_actual(self):
+        """ Cierrar todas las pestañas excepto la pestaña actual.
+        """
+
+        self.tabBar().moveTab(self.currentIndex(), 0)
+        for tab in range(self.count()):
+            if self.count() > 1:
+                self.removeTab(1)
 
     def tab_es_modificado(self, v):
         """ Agrega ícono al tab si se hace una edición en el editor. """

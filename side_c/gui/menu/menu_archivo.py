@@ -61,3 +61,5 @@ class MenuArchivo(QObject):
             self.ide.contenedor_principal.cerrar_tab)
         self.connect(accionCerrar_todos, SIGNAL("triggered()"),
             self.ide.contenedor_principal.cerrar_todo)
+        self.connect(accionCerrar_excepto, SIGNAL("triggered()"),
+            self.ide.contenedor_principal.cerrar_excepto_actual)
