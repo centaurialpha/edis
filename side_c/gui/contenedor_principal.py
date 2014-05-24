@@ -34,6 +34,41 @@ class ContenedorMain(QSplitter):
 
         return editorWidget
 
+    def deshacer(self):
+        editorW = self.devolver_editor_actual()
+        if editorW:
+            editorW.undo()
+
+    def rehacer(self):
+        editorW = self.devolver_editor_actual()
+        if editorW:
+            editorW.redo()
+
+    def cortar(self):
+        editorW = self.devolver_editor_actual()
+        if editorW:
+            editorW.cut()
+
+    def copiar(self):
+        editorW = self.devolver_editor_actual()
+        if editorW:
+            editorW.copy()
+
+    def pegar(self):
+        editorW = self.devolver_editor_actual()
+        if editorW:
+            editorW.paste()
+
+    def devolver_widget_actual(self):
+        return self.tab_actual.currentWidget()
+
+    def devolver_editor_actual(self):
+        e = self.tab_actual.currentWidget()
+        if isinstance(e, editor.Editor):
+            return e
+        else:
+            return None
+
     def agregar_tab(self, widget, nombre_tab, tabIndex=None):
         return self.tab_actual.agregar_tab(widget, nombre_tab, index=tabIndex)
 

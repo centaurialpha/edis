@@ -4,10 +4,12 @@ from PyQt4.QtGui import QIcon
 
 from PyQt4.QtCore import QObject
 from PyQt4.QtCore import Qt
+from PyQt4.QtCore import SIGNAL
 
 from side_c import recursos
 
 from side_c.gui.dialogos import preferencias
+#from side_c.gui import contenedor_principal
 
 
 class MenuEditar(QObject):
@@ -49,12 +51,16 @@ class MenuEditar(QObject):
             }
 
         # Conexiones
-        accionDeshacer.triggered.connect(self._funcion_deshacer)
-        accionRehacer.triggered.connect(self._funcion_rehacer)
-        accionCortar.triggered.connect(self._funcion_cortar)
-        accionCopiar.triggered.connect(self._funcion_copiar)
-        accionPegar.triggered.connect(self._funcion_pegar)
-        accionConfiguracion.triggered.connect(self._configuraciones)
+        self.connect(accionDeshacer, SIGNAL("triggered()"),
+            self.ide.contenedor_principal.deshacer)
+        self.connect(accionRehacer, SIGNAL("triggered()"),
+            self.ide.contenedor_principal.rehacer)
+        self.connect(accionCortar, SIGNAL("triggered()"),
+            self.ide.contenedor_principal.cortar)
+        self.connect(accionCopiar, SIGNAL("triggered()"),
+            self.ide.contenedor_principal.copiar)
+        self.connect(accionPegar, SIGNAL("triggered()"),
+            self.ide.contenedor_principal.pegar)
 
     # Métodos
     def _funcion_deshacer(self):
