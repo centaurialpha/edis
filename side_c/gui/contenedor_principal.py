@@ -38,6 +38,8 @@ class ContenedorMain(QSplitter):
         return self.tab_actual.agregar_tab(widget, nombre_tab, index=tabIndex)
 
     def cerrar_tab(self):
+        """ Se llama al método removeTab de QTabWidget. """
+
         self.tab_actual.cerrar_tab()
 
     def actual_widget(self):

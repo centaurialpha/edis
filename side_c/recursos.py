@@ -28,17 +28,19 @@ ICONOS = {
     "cortar": os.path.join(PATH, "imagenes", "cortar.png"),
     "copiar": os.path.join(PATH, "imagenes", "copiar.png"),
     "pegar": os.path.join(PATH, "imagenes", "pegar.png"),
-    "buscar": os.path.join(PATH, "imagenes", "buscar.png")
+    "buscar": os.path.join(PATH, "imagenes", "buscar.png"),
+    "icono-tab": os.path.join(PATH, "imagenes", "cambio-tab.svg")
     }
 
 # Estilos de color - Editor
 COLOR_EDITOR = {
     "texto": "#dfe1dd",
-    "fondo": "#333333",
+    "fondo": "#1d1d20",
     "linea-actual": "#919191",
-    "widget-num-linea": "#a3a3a3",
+    "widget-num-linea": "#7a7a7a",
     "fondo-margen": "#cacad4",
-    "numero-linea": "#353535",
+    "opacidad": 15,
+    "numero-linea": "#1d1d1d",
     "num-seleccionado": "#3c64c8",
     "margen-linea": "#777777"
     }

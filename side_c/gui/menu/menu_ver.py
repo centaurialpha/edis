@@ -19,7 +19,7 @@ class MenuVer(QObject):
         # Acciones
         accionFullScreen = menu_ver.addAction(
             self.trUtf8("Pantalla completa"))
-        accionFullScreen.setShortcut(Qt.Key_F11)
+        accionFullScreen.setShortcut(Qt.CTRL + Qt.Key_F11)
         menu_ver.addSeparator()
         self.accionMostrarOcultar_toolbars = menu_ver.addAction(
             self.trUtf8("Mostrar/Ocultar Toolbars"))
@@ -41,7 +41,7 @@ class MenuVer(QObject):
             self.visibilidad_contenedor_secundario)
 
         self.accionMostrarOcultar_toolbars.setChecked(True)
-        self.accionMostrarOcultar_input.setChecked(True)
+        self.accionMostrarOcultar_input.setChecked(False)
 
     def pantalla_completa(self):
         """ Muestra en pantalla completa. """

@@ -17,6 +17,7 @@ from PyQt4.Qt import QTextFormat
 
 from side_c import recursos
 from side_c.gui.editor import widget_numero_lineas
+from highlighter import Sintaxis
 
 # Fuente por defecto
 FUENTE = QFont('Monospace', 12)
@@ -35,6 +36,7 @@ class Editor(QPlainTextEdit):
         self.posicion_margen = font_metrics.width('#') * 80
         self.widget_num_lineas = widget_numero_lineas.NumeroDeLineaBar(self)
 
+        Sintaxis(self, FUENTE)
         self.texto_modificado = False
         # Carga tema de editor
         self.setFont(FUENTE)
@@ -61,7 +63,7 @@ class Editor(QPlainTextEdit):
 
         QPlainTextEdit.mouseReleaseEvent(self, event)
         if event.button() == Qt.LeftButton:
-            self.highlight()
+            self.resaltar_linea_actual()
 
     def resizeEvent(self, event):
         """ Redimensiona la altura del widget. """
@@ -81,7 +83,7 @@ class Editor(QPlainTextEdit):
         rect = QRect(self.posicion_margen + offset.x(), 1,
             ancho + 1, self.viewport().height() + 3)
         fondo = QColor(recursos.COLOR_EDITOR['fondo-margen'])
-        fondo.setAlpha(30)
+        fondo.setAlpha(recursos.COLOR_EDITOR['opacidad'])
         pintar.fillRect(rect, fondo)
         pintar.drawRect(rect)
         pintar.drawLine(self.posicion_margen + offset.x(), 0,

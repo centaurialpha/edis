@@ -1,5 +1,7 @@
 #-*- coding: utf-8 -*-
 
+import sys
+
 from PyQt4.QtGui import QMainWindow
 from PyQt4.QtGui import QDesktopWidget
 from PyQt4.QtGui import QIcon
@@ -22,6 +24,8 @@ from side_c.gui import contenedor_principal
 from side_c.gui.contenedor_bottom import contenedor_bottom
 
 from side_c import recursos
+
+SO = sys.platform
 
 ITEMS_TOOLBAR1 = [
     "separador",
@@ -49,11 +53,11 @@ ITEMS_TOOLBAR2 = [
 
 
 class IDE(QMainWindow):
-    """ Aplicacion principal """
+    """ Aplicación principal """
 
     def __init__(self):
         QMainWindow.__init__(self)
-        self.setMinimumSize(800, 600)
+        self.setMinimumSize(850, 700)
         self.setWindowTitle('SIDE-C - Version: 0.x DEV')
         self._cargar_tema()
         get_pantalla = QDesktopWidget().screenGeometry()
@@ -71,9 +75,13 @@ class IDE(QMainWindow):
 
         # ToolBar
         self.toolbar = QToolBar(self)
-        self.toolbar.setIconSize(QSize(20, 20))
         self.toolbar_ = QToolBar(self)
-        self.toolbar_.setIconSize(QSize(20, 20))
+        if not SO:
+            self.toolbar_.setIconSize(QSize(30, 30))
+            self.toolbar.setIconSize(QSize(30, 30))
+        else:
+            self.toolbar_.setIconSize(QSize(20, 20))
+            self.toolbar.setIconSize(QSize(20, 20))
         self.toolbar.setToolButtonStyle(Qt.ToolButtonIconOnly)
         self.addToolBar(Qt.LeftToolBarArea, self.toolbar_)
         self.addToolBar(Qt.RightToolBarArea, self.toolbar)

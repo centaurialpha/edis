@@ -1,10 +1,12 @@
 #-*- coding: utf-8 -*-
 
 from PyQt4.QtGui import QTabWidget
+from PyQt4.QtGui import QIcon
 
 from PyQt4.QtCore import SIGNAL
 
 from side_c.gui.editor import editor
+from side_c import recursos
 
 
 class TabCentral(QTabWidget):
@@ -32,13 +34,18 @@ class TabCentral(QTabWidget):
 
         return insertar
 
+    def cerrar_tab(self):
+        self.removeTab(self.currentIndex())
+
     def tab_es_modificado(self, v):
-        """ Agrega ** al tab si se hace una edición en el editor. """
+        """ Agrega ícono al tab si se hace una edición en el editor. """
 
         edit = self.currentWidget()
-        texto = self.tabBar().tabText(self.currentIndex())
-
+        #texto = self.tabBar().tabText(self.currentIndex())
         if isinstance(edit, editor.Editor) and v:
             edit.texto_modificado = True
-            texto = self.tabBar().tabText(self.currentIndex()) + ' **'
-            self.tabBar().setTabText(self.currentIndex(), texto)
+            #texto = self.tabBar().tabText(self.currentIndex()) + ' **'
+            #self.tabBar().setTabText(self.currentIndex(), texto)
+            icon = QIcon(recursos.ICONOS['icono-tab'])
+
+            self.tabBar().setTabIcon(self.currentIndex(), icon)

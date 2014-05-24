@@ -28,6 +28,7 @@ class WidgetCentral(QWidget):
 
     def agregar_contenedor_bottom(self, contenedor):
         self.contenedor_bottom = contenedor
+        self.contenedor_bottom.hide()
         self.split_principal.insertWidget(1, contenedor)
 
     def mostrar_ocultar_widget_bottom(self):
