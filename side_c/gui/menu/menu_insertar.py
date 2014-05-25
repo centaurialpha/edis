@@ -14,7 +14,7 @@ class MenuInsertar(QObject):
 
         self.ide = ide
 
-        accionComentario = menu_insertar.addAction(self.trUtf8("Comentario"))
+        accionComentario = menu_insertar.addAction(self.trUtf8("Título"))
         accionComentario.setShortcut(Qt.CTRL + Qt.SHIFT + Qt.Key_C)
         accionSeparador = menu_insertar.addAction(self.trUtf8("Separador"))
         accionSeparador.setShortcut(Qt.CTRL + Qt.SHIFT + Qt.Key_S)

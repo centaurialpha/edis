@@ -56,7 +56,6 @@ QScrollBar::add-page:horizontal,
 QScrollBar::sub-page:horizontal{
     background: none;
     border: none;
-    //border-radius: 3px;
 }
 
 /* Tab */
@@ -156,7 +155,9 @@ QTabBar::tab:right:hover
 QTabBar::tab:left:selected,
 QTabBar::tab:left:hover 
 {
-    border-left-color: red;
+    border-left-color: #3c64c8;
+    border-left: 2px solid #444;
+    border-radius: 3px;
 }
 
 

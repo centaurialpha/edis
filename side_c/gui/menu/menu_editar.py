@@ -37,6 +37,11 @@ class MenuEditar(QObject):
             QIcon(recursos.ICONOS['pegar']), self.trUtf8("Pegar"))
         accionPegar.setShortcut(Qt.CTRL + Qt.Key_V)
         menu_editar.addSeparator()
+        accionBorrar = menu_editar.addAction(
+            self.trUtf8("Borrar"))
+        accionSeleccionar = menu_editar.addAction(
+            self.trUtf8("Seleccionar todo"))
+        menu_editar.addSeparator()
         accionConfiguracion = menu_editar.addAction(
             self.trUtf8("Configuración"))
 
@@ -60,6 +65,10 @@ class MenuEditar(QObject):
             self.ide.contenedor_principal.copiar)
         self.connect(accionPegar, SIGNAL("triggered()"),
             self.ide.contenedor_principal.pegar)
+        self.connect(accionBorrar, SIGNAL("triggered()"),
+            self.ide.contenedor_principal.borrar)
+        self.connect(accionSeleccionar, SIGNAL("triggered()"),
+            self.ide.contenedor_principal.seleccionar_todo)
 
     def _configuraciones(self):
         self.preferencias = preferencias.Configuraciones(self.ide)

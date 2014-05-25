@@ -17,7 +17,7 @@ from PyQt4.Qt import QTextFormat
 
 from side_c import recursos
 from side_c.gui.editor import widget_numero_lineas
-from highlighter import Sintaxis
+from side_c.gui.editor.highlighter import Highlighter
 
 # Fuente por defecto
 FUENTE = QFont('Monospace', 12)
@@ -36,10 +36,10 @@ class Editor(QPlainTextEdit):
         self.posicion_margen = font_metrics.width('#') * 80
         self.widget_num_lineas = widget_numero_lineas.NumeroDeLineaBar(self)
 
-        Sintaxis(self, FUENTE)
         self.texto_modificado = False
         # Carga tema de editor
         self.setFont(FUENTE)
+        Highlighter(self.document())
         self.estilo_editor()
 
         # Highlighting

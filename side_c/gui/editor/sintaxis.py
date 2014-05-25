@@ -24,7 +24,7 @@ palabras_reservadas = (
     "long",
     "register",
     "return",
-    "shor",
+    "short",
     "signed",
     "sizeof",
     "static",

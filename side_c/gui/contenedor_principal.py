@@ -18,7 +18,7 @@ class ContenedorMain(QSplitter):
         self.setAcceptDrops(True)
         self.addWidget(self.tab_principal)
         self.setSizes([1, 1])
-        self.setFixedSize(0, 450)
+        self.setFixedSize(0, 530)
         self.tab_actual = self.tab_principal
 
     def agregar_editor(self, nombre_archivo="", tabIndex=None):
@@ -58,6 +58,16 @@ class ContenedorMain(QSplitter):
         editorW = self.devolver_editor_actual()
         if editorW:
             editorW.paste()
+
+    def seleccionar_todo(self):
+        editorW = self.devolver_editor_actual()
+        if editorW:
+            editorW.selectAll()
+
+    def borrar(self):
+        editorW = self.devolver_editor_actual()
+        if editorW:
+            editorW.clear()
 
     def devolver_widget_actual(self):
         return self.tab_actual.currentWidget()
