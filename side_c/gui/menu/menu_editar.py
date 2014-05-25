@@ -9,7 +9,6 @@ from PyQt4.QtCore import SIGNAL
 from side_c import recursos
 
 from side_c.gui.dialogos import preferencias
-#from side_c.gui import contenedor_principal
 
 
 class MenuEditar(QObject):
@@ -61,22 +60,6 @@ class MenuEditar(QObject):
             self.ide.contenedor_principal.copiar)
         self.connect(accionPegar, SIGNAL("triggered()"),
             self.ide.contenedor_principal.pegar)
-
-    # Métodos
-    def _funcion_deshacer(self):
-        pass
-
-    def _funcion_rehacer(self):
-        pass
-
-    def _funcion_cortar(self):
-        pass
-
-    def _funcion_copiar(self):
-        pass
-
-    def _funcion_pegar(self):
-        pass
 
     def _configuraciones(self):
         self.preferencias = preferencias.Configuraciones(self.ide)

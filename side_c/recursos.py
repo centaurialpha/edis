@@ -5,6 +5,9 @@ Recursos
 
 import os
 
+from PyQt4.QtGui import QKeySequence
+from PyQt4.QtCore import Qt
+
 PATH = os.path.abspath(os.path.dirname(__file__))
 TEMA_SIDE = os.path.join(PATH, "temas", "tema_side.qss")
 TEMA_POR_DEFECTO = os.path.join(PATH, "temas", "tema_por_defecto.qss")
@@ -47,6 +50,10 @@ COLOR_EDITOR = {
 
 # Atajos de teclas
 ATAJOS = {
-    "nuevo-archivo": "Ctrl+N",
-    "abrir-archivo": "Ctrl+O"
+    "ocultar-menu": QKeySequence(Qt.CTRL + Qt.Key_F10),
+    "fullscreen": QKeySequence(Qt.CTRL + Qt.Key_F11),
+    "modo-dev": QKeySequence(Qt.CTRL + Qt.Key_F9),
+    "ocultar-toolbar": QKeySequence(Qt.CTRL + Qt.Key_F12),
+    "ocultar-menu": QKeySequence(Qt.CTRL + Qt.Key_F8),
+    "ocultar-input": QKeySequence(Qt.CTRL + Qt.Key_F7)
     }
