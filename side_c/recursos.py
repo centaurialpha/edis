@@ -6,6 +6,8 @@ Recursos
 import os
 
 from PyQt4.QtGui import QKeySequence
+from PyQt4.QtGui import QColor
+
 from PyQt4.QtCore import Qt
 
 PATH = os.path.abspath(os.path.dirname(__file__))
@@ -37,8 +39,8 @@ ICONOS = {
 
 # Estilos de color - Editor
 COLOR_EDITOR = {
-    "texto": "#dfe1dd",
-    "fondo": "#1d1d20",
+    "texto": "#c5c8c6",
+    "fondo": "#1d1f21",
     "linea-actual": "#919191",
     "widget-num-linea": "#7a7a7a",
     "fondo-margen": "#cacad4",
@@ -46,6 +48,19 @@ COLOR_EDITOR = {
     "numero-linea": "#1d1d1d",
     "num-seleccionado": "#3c64c8",
     "margen-linea": "#777777"
+    }
+
+# Color del resaltado de sintaxis
+HIGHLIGHTER = {
+    "numero": QColor(248, 160, 8),
+    "include": QColor(126, 123, 121),
+    "palabra": QColor(131, 193, 251),
+    "funcion": QColor(22, 60, 250),
+    "comentario-simple": QColor(215, 214, 213),
+    "comentario-multiple": QColor(134, 217, 134),
+    "cadena": QColor(215, 214, 243),
+    "parentesis": "#",
+    "corchetes": "#"
     }
 
 # Atajos de teclas

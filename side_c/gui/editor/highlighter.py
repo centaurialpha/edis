@@ -2,6 +2,7 @@
 
 from PyQt4.QtGui import QSyntaxHighlighter
 from PyQt4.QtGui import QFont
+from PyQt4.QtGui import QColor
 
 from PyQt4.Qt import QTextCharFormat
 
@@ -9,13 +10,24 @@ from PyQt4.QtCore import Qt
 from PyQt4.QtCore import QRegExp
 
 from side_c.gui.editor.sintaxis import palabras_reservadas
+from side_c import recursos
 
 
 class Highlighter(QSyntaxHighlighter):
+    """ Highlighter.
+
+    -Comentario simple.
+    -Comentario múltiple.
+    -Include. ----------> Arreglar
+    -Números.
+    -Operadores. -------> Arreglar
+    -Formateo.
+    -Funciones.
+    """
     def __init__(self, parent=None):
         super(Highlighter, self).__init__(parent)
         formato_palabra = QTextCharFormat()
-        formato_palabra.setForeground(Qt.darkCyan)
+        formato_palabra.setForeground(recursos.HIGHLIGHTER['palabra'])
         formato_palabra.setFontWeight(QFont.Bold)
         patron_palabras = palabras_reservadas
         self.highlightingRules = [(QRegExp(indice), formato_palabra)
@@ -28,26 +40,49 @@ class Highlighter(QSyntaxHighlighter):
             formato_clase))
 
         comentario_una_linea = QTextCharFormat()
-        comentario_una_linea.setForeground(Qt.darkYellow)
+        comentario_una_linea.setForeground(
+            recursos.HIGHLIGHTER['comentario-simple'])
         self.highlightingRules.append((QRegExp("//[^\n]*"),
             comentario_una_linea))
 
         include = QTextCharFormat()
-        include.setForeground(Qt.gray)
+        include.setForeground(recursos.HIGHLIGHTER['include'])
         self.highlightingRules.append((QRegExp("#[^\n]*"),
             include))
 
+        struct = QTextCharFormat()
+        struct.setForeground(Qt.red)
+        self.highlightingRules.append((QRegExp("struct[^\n]*"),
+            struct))
+
+        numeros = QTextCharFormat()
+        numeros.setForeground(recursos.HIGHLIGHTER['numero'])
+        self.highlightingRules.append((QRegExp("\\b[0-9]+\\b"),
+            numeros))
+
         self.comentario_multiple_lineas = QTextCharFormat()
-        self.comentario_multiple_lineas.setForeground(Qt.darkRed)
+        self.comentario_multiple_lineas.setForeground(
+            recursos.HIGHLIGHTER['comentario-multiple'])
+
+        operadores = QTextCharFormat()
+        color = QColor(200, 200, 200)
+        operadores.setForeground(color)
+        self.highlightingRules.append((QRegExp("\\b=\\b"),
+        operadores))
 
         quotationFormat = QTextCharFormat()
-        quotationFormat.setForeground(Qt.darkGreen)
+        quotationFormat.setForeground(recursos.HIGHLIGHTER['cadena'])
         self.highlightingRules.append((QRegExp("\".*\""),
             quotationFormat))
 
+        formateo = QTextCharFormat()
+        formateo.setForeground(Qt.red)
+        self.highlightingRules.append((QRegExp("%[^' ']"),
+            formateo))
+
         funciones = QTextCharFormat()
         funciones.setFontItalic(True)
-        funciones.setForeground(Qt.blue)
+        funciones.setForeground(recursos.HIGHLIGHTER['funcion'])
         self.highlightingRules.append((QRegExp(
             "\\b[A-Za-z0-9_]+(?=\\()"), funciones))
 
