@@ -82,7 +82,7 @@ class SalidaWidget(QPlainTextEdit):
 
     def cargar_estilo(self):
         tema = 'QPlainTextEdit {color: %s; background-color: %s;}' \
-        % (recursos.COLOR_EDITOR['texto'], recursos.COLOR_EDITOR['fondo'])
+        % (recursos.COLOR_EDITOR['texto'], recursos.COLOR_EDITOR['fondo-input'])
 
         self.setStyleSheet(tema)
 

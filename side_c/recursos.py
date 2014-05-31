@@ -4,15 +4,27 @@ Recursos
 """
 
 import os
+import sys
 
 from PyQt4.QtGui import QKeySequence
 from PyQt4.QtGui import QColor
 
+from PyQt4.QtCore import QDir
 from PyQt4.QtCore import Qt
 
-PATH = os.path.abspath(os.path.dirname(__file__))
-TEMA_SIDE = os.path.join(PATH, "temas", "tema_side.qss")
-TEMA_POR_DEFECTO = os.path.join(PATH, "temas", "tema_por_defecto.qss")
+HOME_PATH = QDir.toNativeSeparators(QDir.homePath())
+
+SIDE_EJEC = os.path.realpath(sys.argv[0])
+
+PATH = os.path.abspath(os.path.dirname(__file__)).decode('utf-8')
+
+HOME_SIDE = os.path.join(PATH, ".side_c")
+
+CONFIGURACIONES_PATH = os.path.join(HOME_SIDE, 'side_settings.ini')
+
+TEMA_BLACK_SIDE = os.path.join(PATH, "temas", "tema_side.qss")
+TEMA_POR_DEFECTO = os.path.join(PATH, "temas", "default.qss")
+TEMA_SIDE = os.path.join(PATH, "temas", "tema_por_defecto.qss")
 
 LICENCIA = os.path.join(PATH, "../", "COPYING")
 
@@ -34,13 +46,16 @@ ICONOS = {
     "copiar": os.path.join(PATH, "imagenes", "copiar.png"),
     "pegar": os.path.join(PATH, "imagenes", "pegar.png"),
     "buscar": os.path.join(PATH, "imagenes", "buscar.png"),
-    "icono-tab": os.path.join(PATH, "imagenes", "cambio-tab.svg")
+    "icono-tab": os.path.join(PATH, "imagenes", "cambio-tab.svg"),
+    "titulo": os.path.join(PATH, "imagenes", "titulo.svg"),
+    "linea": os.path.join(PATH, "imagenes", "separador.png")
     }
 
 # Estilos de color - Editor
 COLOR_EDITOR = {
     "texto": "#c5c8c6",
     "fondo": "#1d1f21",
+    "fondo-input": "#2d2d2d",
     "linea-actual": "#919191",
     "widget-num-linea": "#7a7a7a",
     "fondo-margen": "#cacad4",
@@ -58,17 +73,38 @@ HIGHLIGHTER = {
     "funcion": QColor(22, 60, 250),
     "comentario-simple": QColor(215, 214, 213),
     "comentario-multiple": QColor(134, 217, 134),
-    "cadena": QColor(215, 214, 243),
-    "parentesis": "#",
-    "corchetes": "#"
+    "cadena": QColor(217, 200, 134),
+    "braces": QColor(255, 255, 255)
     }
 
 # Atajos de teclas
 ATAJOS = {
+    # Archivo
+    "nuevo": QKeySequence(Qt.CTRL + Qt.Key_N),
+    "abrir": QKeySequence(Qt.CTRL + Qt.Key_O),
+    "guardar": QKeySequence(Qt.CTRL + Qt.Key_S),
+    "cerrar-tab": QKeySequence(Qt.CTRL + Qt.Key_W),
+    "imprimir": QKeySequence(Qt.CTRL + Qt.Key_P),
+    # Editar
+    "deshacer": QKeySequence(Qt.CTRL + Qt.Key_Z),
+    "rehacer": QKeySequence(Qt.CTRL + Qt.Key_Y),
+    "cortar": QKeySequence(Qt.CTRL + Qt.Key_X),
+    "copiar": QKeySequence(Qt.CTRL + Qt.Key_C),
+    "pegar": QKeySequence(Qt.CTRL + Qt.Key_V),
+    # Ver
     "ocultar-menu": QKeySequence(Qt.CTRL + Qt.Key_F10),
     "fullscreen": QKeySequence(Qt.CTRL + Qt.Key_F11),
     "modo-dev": QKeySequence(Qt.CTRL + Qt.Key_F9),
     "ocultar-toolbar": QKeySequence(Qt.CTRL + Qt.Key_F12),
     "ocultar-menu": QKeySequence(Qt.CTRL + Qt.Key_F8),
     "ocultar-input": QKeySequence(Qt.CTRL + Qt.Key_F7)
+
     }
+
+
+# Extensiones soportadas
+EXTENSIONES = [
+    '.c',
+    '.h',
+    '.cpp'
+    ]

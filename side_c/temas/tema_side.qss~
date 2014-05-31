@@ -151,31 +151,3 @@ QTabBar::tab:hover,
 QTabBar::tab:focus {
     color: #1dbee8;
 }
-
-QTabBar::tab:right:first:selected {
-    margin-top: 4;
-}
-
-QTabBar::tab:left:first:selected {
-    margin-top: 4;
-}
-
-QTabBar::tab:top:last:selected {
-    margin-right: 0; /* the last selected tab has nothing to overlap with on the right */
-}
-
-QTabBar::tab:bottom:last:selected {
-    margin-right: 0;
-}
-
-QTabBar::tab:right:last:selected {
-    margin-bottom: 0;
-}
-
-QTabBar::tab:left:last:selected {
-    margin-bottom: 0;
-}
-
-QTabBar::tab:only-one {
-    margin: 0; /* if there is only one tab, we don't want overlapping margins */
-}

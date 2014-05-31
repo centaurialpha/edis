@@ -2,6 +2,9 @@
 
 from PyQt4.QtGui import QTextCursor
 from PyQt4.QtGui import QInputDialog
+from PyQt4.QtGui import QPrinter
+from PyQt4.QtGui import QPrintPreviewDialog
+from PyQt4.QtGui import QApplication
 
 comentario = '//'
 
@@ -31,3 +34,18 @@ def insertar_titulo(ew):
         ew.textCursor().insertText(comentario + r)
         ew.textCursor().insertText(com)
         ew.textCursor().endEditBlock()
+
+
+def imprimir_archivo(nombre, f):
+    impres = QPrinter(QPrinter.HighResolution)
+    impres.setPageSize(QPrinter.A4)
+    impres.setOutputFileName(nombre)
+    impres.setDocName(nombre)
+
+    vista = QPrintPreviewDialog(impres)
+    vista.paintRequested[QPrinter].connect(f)
+    tam = QApplication.instance().desktop().screenGeometry()
+    ancho = tam.width() - 100
+    alto = tam.height() - 100
+    vista.setMinimumSize(ancho, alto)
+    vista.exec_()

@@ -12,8 +12,8 @@ QToolBar::separator
 {
 	border-radius: 2px;
 	background: black;
-	width: 1px;
-	height: 1px;
+	width: 5px;
+	height: 5px;
 	
 }
 

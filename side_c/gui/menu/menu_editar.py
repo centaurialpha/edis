@@ -1,13 +1,12 @@
 #-*- coding: utf-8 -*-
 
 from PyQt4.QtGui import QIcon
+from PyQt4.QtGui import QShortcut
 
 from PyQt4.QtCore import QObject
-from PyQt4.QtCore import Qt
 from PyQt4.QtCore import SIGNAL
 
 from side_c import recursos
-
 from side_c.gui.dialogos import preferencias
 
 
@@ -19,56 +18,73 @@ class MenuEditar(QObject):
 
         self.ide = ide
 
-        # Agrega acciones
-        accionDeshacer = menu_editar.addAction(
-            QIcon(recursos.ICONOS['deshacer']), self.trUtf8("Deshacer"))
-        accionDeshacer.setShortcut(Qt.CTRL + Qt.Key_Z)
-        accionRehacer = menu_editar.addAction(
+        # Se cargan los shortcut
+        self.atajoDeshacer = QShortcut(recursos.ATAJOS['deshacer'], self.ide)
+        self.atajoRehacer = QShortcut(recursos.ATAJOS['rehacer'], self.ide)
+        self.atajoCortar = QShortcut(recursos.ATAJOS['cortar'], self.ide)
+        self.atajoCopiar = QShortcut(recursos.ATAJOS['copiar'], self.ide)
+        self.atajoPegar = QShortcut(recursos.ATAJOS['pegar'], self.ide)
+
+        # Conexiones
+        self.connect(self.atajoDeshacer, SIGNAL("activated()"),
+            self.ide.contenedor_principal.deshacer)
+        self.connect(self.atajoRehacer, SIGNAL("activated()"),
+            self.ide.contenedor_principal.rehacer)
+        self.connect(self.atajoCortar, SIGNAL("activated()"),
+            self.ide.contenedor_principal.cortar)
+        self.connect(self.atajoCopiar, SIGNAL("activated()"),
+            self.ide.contenedor_principal.copiar)
+        self.connect(self.atajoPegar, SIGNAL("activated()"),
+            self.ide.contenedor_principal.pegar)
+
+        # Acciones
+        self.accionDeshacer = menu_editar.addAction(QIcon(
+            recursos.ICONOS['deshacer']), self.trUtf8("Deshacer"))
+        self.accionDeshacer.setShortcut(recursos.ATAJOS['deshacer'])
+        self.accionRehacer = menu_editar.addAction(
             QIcon(recursos.ICONOS['rehacer']), self.trUtf8("Rehacer"))
-        accionRehacer.setShortcut(Qt.CTRL + Qt.Key_Y)
+        self.accionRehacer.setShortcut(recursos.ATAJOS['rehacer'])
         menu_editar.addSeparator()
-        accionCortar = menu_editar.addAction(
+        self.accionCortar = menu_editar.addAction(
             QIcon(recursos.ICONOS['cortar']), self.trUtf8("Cortar"))
-        accionCortar.setShortcut(Qt.CTRL + Qt.Key_X)
-        accionCopiar = menu_editar.addAction(
+        self.accionCortar.setShortcut(recursos.ATAJOS['cortar'])
+        self.accionCopiar = menu_editar.addAction(
             QIcon(recursos.ICONOS['copiar']), self.trUtf8("Copiar"))
-        accionCopiar.setShortcut(Qt.CTRL + Qt.Key_C)
-        accionPegar = menu_editar.addAction(
+        self.accionCopiar.setShortcut(recursos.ATAJOS['copiar'])
+        self.accionPegar = menu_editar.addAction(
             QIcon(recursos.ICONOS['pegar']), self.trUtf8("Pegar"))
-        accionPegar.setShortcut(Qt.CTRL + Qt.Key_V)
+        self.accionPegar.setShortcut(recursos.ATAJOS['pegar'])
         menu_editar.addSeparator()
-        accionBorrar = menu_editar.addAction(
-            self.trUtf8("Borrar"))
-        accionSeleccionar = menu_editar.addAction(
+        self.accionBorrar = menu_editar.addAction(self.trUtf8("Borrar"))
+        menu_editar.addSeparator()
+        self.accionSeleccionarTodo = menu_editar.addAction(
             self.trUtf8("Seleccionar todo"))
         menu_editar.addSeparator()
-        accionConfiguracion = menu_editar.addAction(
+        self.accionConfiguracion = menu_editar.addAction(
             self.trUtf8("Configuración"))
+
+        # Conexiones a métodos
+        self.accionDeshacer.triggered.connect(
+            self.ide.contenedor_principal.deshacer)
+        self.accionRehacer.triggered.connect(
+            self.ide.contenedor_principal.rehacer)
+        self.accionCortar.triggered.connect(
+            self.ide.contenedor_principal.cortar)
+        self.accionCopiar.triggered.connect(
+            self.ide.contenedor_principal.copiar)
+        self.accionPegar.triggered.connect(
+            self.ide.contenedor_principal.pegar)
+        self.accionConfiguracion.triggered.connect(
+            self._configuraciones)
 
         # Toolbar - Items
         self.items_toolbar = {
-            "deshacer": accionDeshacer,
-            "rehacer": accionRehacer,
-            "cortar": accionCortar,
-            "copiar": accionCopiar,
-            "pegar": accionPegar,
+            "deshacer": self.accionDeshacer,
+            "rehacer": self.accionRehacer,
+            "cortar": self.accionCortar,
+            "copiar": self.accionCopiar,
+            "pegar": self.accionPegar,
             }
-
-        # Conexiones
-        self.connect(accionDeshacer, SIGNAL("triggered()"),
-            self.ide.contenedor_principal.deshacer)
-        self.connect(accionRehacer, SIGNAL("triggered()"),
-            self.ide.contenedor_principal.rehacer)
-        self.connect(accionCortar, SIGNAL("triggered()"),
-            self.ide.contenedor_principal.cortar)
-        self.connect(accionCopiar, SIGNAL("triggered()"),
-            self.ide.contenedor_principal.copiar)
-        self.connect(accionPegar, SIGNAL("triggered()"),
-            self.ide.contenedor_principal.pegar)
-        self.connect(accionBorrar, SIGNAL("triggered()"),
-            self.ide.contenedor_principal.borrar)
-        self.connect(accionSeleccionar, SIGNAL("triggered()"),
-            self.ide.contenedor_principal.seleccionar_todo)
 
     def _configuraciones(self):
         self.preferencias = preferencias.Configuraciones(self.ide)

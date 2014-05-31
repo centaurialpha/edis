@@ -38,6 +38,7 @@ class MenuVer(QObject):
         self.connect(self.atajoOcultarMenu, SIGNAL("activated()"),
             self.ocultar_mostrar_menu)
 
+        # Acciones
         self.accionFullScreen = menu_ver.addAction(
             self.trUtf8("Pantalla Completa"))
         self.accionFullScreen.setCheckable(True)
@@ -90,6 +91,8 @@ class MenuVer(QObject):
             self.ide.toolbar_.show()
 
     def ocultar_mostrar_menu(self):
+        """ Muestra/Oculta menuBar """
+
         if self.ide.menuBar().isVisible():
             self.ide.menuBar().hide()
         else:

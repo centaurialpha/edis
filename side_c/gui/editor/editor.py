@@ -16,11 +16,12 @@ from PyQt4.Qt import QVariant
 from PyQt4.Qt import QTextFormat
 
 from side_c import recursos
+from side_c import configuraciones
 from side_c.gui.editor import widget_numero_lineas
 from side_c.gui.editor.highlighter import Highlighter
 
 # Fuente por defecto
-FUENTE = QFont('Monospace', 12)
+FUENTE = QFont('Monospace', 11)
 
 # Si estamos en Windows
 if sys.platform == "win32":
@@ -36,11 +37,16 @@ class Editor(QPlainTextEdit):
         self.posicion_margen = font_metrics.width('#') * 80
         self.widget_num_lineas = widget_numero_lineas.NumeroDeLineaBar(self)
 
+        #self._encoding = None
+        #self.indentacion_ = 4
+        self.useTabs = True
         self.texto_modificado = False
+        self.nuevo_archivo = True
         # Carga tema de editor
-        self.setFont(FUENTE)
-        Highlighter(self.document())
         self.estilo_editor()
+        self.setFont(FUENTE)
+
+        Highlighter(self.document())
 
         # Highlighting
         self.resaltar_linea_actual()
@@ -90,6 +96,12 @@ class Editor(QPlainTextEdit):
             self.posicion_margen + offset.x(), self.viewport().height())
         pintar.end()
 
+    def posicion_cursor(self, posicion):
+        if self.document().characterCount() >= posicion:
+            c = self.textCursor()
+            c.setPosition(posicion)
+            self.setTextCursor(c)
+
     def resaltar_linea_actual(self):
         """ Pinta la linea actual en donde está posicionado el cursor. """
 
@@ -103,6 +115,27 @@ class Editor(QPlainTextEdit):
         seleccion.cursor.clearSelection()
 
         self.setExtraSelections([seleccion])
+
+    def devolver_texto(self):
+        """ Retorna todo el contenido del editor """
+
+        return self.toPlainText()
+
+    def actualizar_margen_linea(self, fuente=None):
+        if not fuente:
+            fuente = self.document().defaultFont()
+        if "ForceIntegerMetrics" in dir(QFont):
+            self.document().defaultFont().setStyleStrategy(
+                QFont.ForceIntegerMetrics)
+
+        f_metrics = QFontMetricsF(self.document().defaultFont())
+        if (f_metrics.width("#") * configuraciones.MARGEN) == \
+        (f_metrics.width(" ") * configuraciones.MARGEN):
+            self.posicion_margen = f_metrics.width('#') * \
+               configuraciones.MARGEN
+        else:
+            c_width = f_metrics.averageCharWidth()
+            self.posicion_margen = c_width * configuraciones.MARGEN
 
 
 def crear_editor(nombre_archivo=''):

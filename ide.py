@@ -48,11 +48,24 @@ ITEMS_TOOLBAR2 = [
     "cortar",
     "copiar",
     "pegar",
+    "separador",
+    "titulo",
+    "linea",
     "separador"
     ]
 
+__instanciaIde = None
 
-class IDE(QMainWindow):
+
+# Singleton
+def IDE(*args, **kw):
+    global __instanciaIde
+    if __instanciaIde is None:
+        __instanciaIde = __IDE(*args, **kw)
+    return __instanciaIde
+
+
+class __IDE(QMainWindow):
     """ Aplicación principal """
 
     def __init__(self):
@@ -66,8 +79,7 @@ class IDE(QMainWindow):
 
          # Barra de estado
         self.barra_de_estado = self.statusBar()
-        self.barra_de_estado.hide()
-        self.barra_de_estado.showMessage("SIDE")
+        #self.barra_de_estado.hide()
 
         self.widget_Central = widget_central.WidgetCentral(self)
         self.cargar_ui(self.widget_Central)
@@ -101,7 +113,8 @@ class IDE(QMainWindow):
         self._menu_editar = menu_editar.MenuEditar(
             editar, self.toolbar_, self)
         self._menu_ver = menu_ver.MenuVer(ver, self)
-        self._menu_insertar = menu_insertar.MenuInsertar(insertar, self)
+        self._menu_insertar = menu_insertar.MenuInsertar(
+            insertar, self.toolbar_, self)
         self._menu_buscar = menu_buscar.MenuBuscar(buscar, self)
         self._menu_codigo = menu_codigo.MenuCodigoFuente(
             codigo, self.toolbar, self)
@@ -112,7 +125,7 @@ class IDE(QMainWindow):
                             self.toolbar,
                             ITEMS_TOOLBAR1)
 
-        self.cargar_toolbar(self._menu_editar,
+        self.cargar_toolbar([self._menu_editar, self._menu_insertar],
                             self.toolbar_,
                             ITEMS_TOOLBAR2)
 
