@@ -1,13 +1,13 @@
 #-*- coding: utf-8 -*-
 from PyQt4.QtGui import QApplication
 
+from side_c.interfaz.ide import Ide
 import sys
-import ide
 
 
 def main():
     app = QApplication(sys.argv)
-    side = ide.IDE()
+    side = Ide.IDE()
     side.show()
 
     sys.exit(app.exec_())
