@@ -15,6 +15,8 @@ from PyQt4.QtGui import QSpacerItem
 from PyQt4.QtGui import QSizePolicy
 from PyQt4.QtGui import QApplication
 from PyQt4.QtGui import QGroupBox
+from PyQt4.QtGui import QFontDialog
+from PyQt4.QtGui import QFont
 
 from PyQt4.QtCore import QSize
 from PyQt4.QtCore import Qt
@@ -28,15 +30,15 @@ from side_c.gui import contenedor_principal
 
 class Configuraciones(QDialog):
 
-    def __init__(self, ide):
-        super(Configuraciones, self).__init__()
-        self.ide = ide
+    def __init__(self, parent=None):
+        QDialog.__init__(self, parent)
+        #self.ide = ide
         self.setWindowTitle(self.trUtf8("SIDE - Configuración"))
         self.setMaximumSize(QSize(0, 0))
 
         vbox = QVBoxLayout(self)
         self.tabs = QTabWidget()
-        self.configEditor = ConfiguracionEditor()
+        self.configEditor = ConfiguracionEditor(self)
         #self.configGeneral = General(self)
         self.configTema = CambiarTema()
 
@@ -76,12 +78,13 @@ class Configuraciones(QDialog):
 
 class ConfiguracionEditor(QWidget):
 
-    def __init__(self):
-        QWidget.__init__(self)
+    def __init__(self, parent):
+        QWidget.__init__(self, parent)
 
         v_layout = QVBoxLayout(self)
 
         grupoCaracteristicas = QGroupBox(self.trUtf8("Características"))
+        grupoEstiloFuente = QGroupBox(self.trUtf8("Tipo de letra"))
         grillaCaracteristicas = QGridLayout(grupoCaracteristicas)
         grillaCaracteristicas.addWidget(QLabel(
             self.trUtf8("Márgen de línea: ")), 1, 0, Qt.AlignRight)
@@ -100,14 +103,74 @@ class ConfiguracionEditor(QWidget):
         grillaCaracteristicas.addWidget(self.checkMargen, 1, 2,
             alignment=Qt.AlignRight)
 
+        # Fuente
+        grillaFuente = QGridLayout(grupoEstiloFuente)
+        self.botonFuente = QPushButton(', '.join([configuraciones.FUENTE,
+            str(configuraciones.TAM_FUENTE)]))
+        grillaFuente.addWidget(QLabel(self.trUtf8(
+            "Fuente:")), 0, 0, Qt.AlignLeft)
+        grillaFuente.addWidget(self.botonFuente, 0, 1)
+
         v_layout.addWidget(grupoCaracteristicas)
+        v_layout.addWidget(grupoEstiloFuente)
         v_layout.addItem(QSpacerItem(0, 10, QSizePolicy.Expanding,
             QSizePolicy.Expanding))
 
+        # Conexión
+        self.botonFuente.clicked.connect(self.cargar_fuente)
+
+    def cargar_fuente(self):
+        """ Se coloca el nombre y tamaño de la fuente, como texto del boton """
+
+        fuente = self._cargar_fuente(self.obtener_texto_fuente(
+            self.botonFuente.text()), self)
+
+        self.botonFuente.setText(fuente)
+
+    def obtener_texto_fuente(self, fuente):
+        """
+        Recibe el texto del botón,
+        se crea una lista.
+        1er elemento = Fuente
+        2do elemento = Tamaño
+        Se retorna QFont(Fuente, Tamaño)
+
+        """
+
+        if fuente:
+            lista = fuente.split(',')
+
+            f = str(lista[0]).strip()
+            t = str(lista[1]).strip()
+
+            fuente = QFont(f, int(t))
+        else:
+            fuente = QFont(configuraciones.FUENTE, configuraciones.TAM_FUENTE)
+
+        return fuente
+
+    def _cargar_fuente(self, f, parent=0):
+        """ Se elige la fuente """
+
+        fuente, ok = QFontDialog.getFont(f, parent)
+
+        if not ok:
+            n_fuente = f.toString().split(',')
+        else:
+            n_fuente = fuente.toString().split(',')
+
+        nuevaFuente = n_fuente[0] + ', ' + n_fuente[1]
+        return nuevaFuente
+
     def guardar(self):
+        """ Guardar configuraciones """
+
+        e = contenedor_principal.ContenedorMain().devolver_editor_actual()
         qsettings = QSettings()
         qsettings.beginGroup('configuraciones')
         qsettings.beginGroup('editor')
+
+        # Márgen
         margen_linea = self.spinMargen.value()
         qsettings.setValue('margenLinea', margen_linea)
         configuraciones.MARGEN = margen_linea
@@ -115,6 +178,14 @@ class ConfiguracionEditor(QWidget):
         qsettings.setValue('mostrarMargen', self.checkMargen.isChecked())
         configuraciones.MOSTRAR_MARGEN = self.checkMargen.isChecked()
 
+        # Tipo de letra
+        textoFuente = self.botonFuente.text().replace(' ', '')
+        configuraciones.FUENTE = textoFuente.split(',')[0]
+        configuraciones.TAM_FUENTE = int(textoFuente.split(',')[1])
+        qsettings.setValue('fuente', configuraciones.FUENTE)
+        qsettings.setValue('fuenteTam', configuraciones.TAM_FUENTE)
+        if e:
+            e._cargar_fuente(configuraciones.FUENTE, configuraciones.TAM_FUENTE)
         qsettings.endGroup()
         qsettings.endGroup()
 

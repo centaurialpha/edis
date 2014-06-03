@@ -40,6 +40,7 @@ ICONOS = {
     "print": os.path.join(PATH, "imagenes", "print.png"),
     "compilar": os.path.join(PATH, "imagenes", "compilar.png"),
     "ejecutar": os.path.join(PATH, "imagenes", "play.png"),
+    "terminal": os.path.join(PATH, "imagenes", "terminal.png"),
     "deshacer": os.path.join(PATH, "imagenes", "deshacer.png"),
     "rehacer": os.path.join(PATH, "imagenes", "rehacer.png"),
     "cortar": os.path.join(PATH, "imagenes", "cortar.png"),

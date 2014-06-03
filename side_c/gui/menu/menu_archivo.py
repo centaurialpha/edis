@@ -2,7 +2,7 @@
 
 from PyQt4.QtGui import QIcon
 from PyQt4.QtGui import QShortcut
-
+from PyQt4.QtGui import QKeySequence
 from PyQt4.QtCore import SIGNAL
 from PyQt4.QtCore import QObject
 
@@ -23,6 +23,7 @@ class MenuArchivo(QObject):
         self.atajoNuevo = QShortcut(recursos.ATAJOS['nuevo'], self.ide)
         self.atajoAbrir = QShortcut(recursos.ATAJOS['abrir'], self.ide)
         self.atajoGuardar = QShortcut(recursos.ATAJOS['guardar'], self.ide)
+        self.atajoImprimir = QShortcut(recursos.ATAJOS['imprimir'], self.ide)
         self.atajoCerrarTab = QShortcut(recursos.ATAJOS['cerrar-tab'], self.ide)
 
         # Conexiones
@@ -34,27 +35,24 @@ class MenuArchivo(QObject):
             self.ide.contenedor_principal.guardar_archivo)
         self.connect(self.atajoCerrarTab, SIGNAL("activated()"),
             self.ide.contenedor_principal.cerrar_tab)
+        self.connect(self.atajoImprimir, SIGNAL("activated()"),
+            self.imprimir_)
 
         # Acciones
         self.accionNuevo = menu_archivo.addAction(
-            QIcon(recursos.ICONOS['nuevo']), self.trUtf8("Nuevo archivo"))
-        self.accionNuevo.setShortcut(recursos.ATAJOS['nuevo'])
+            QIcon(recursos.ICONOS['nuevo']), self.trUtf8("Nuevo archivo %s"))
         self.accionAbrir = menu_archivo.addAction(
             QIcon(recursos.ICONOS['abrir']), self.trUtf8("Abrir archivo"))
-        self.accionAbrir.setShortcut(recursos.ATAJOS['abrir'])
         self.accionGuardar = menu_archivo.addAction(
             QIcon(recursos.ICONOS['guardar']), self.trUtf8("Guardar"))
-        self.accionGuardar.setShortcut(recursos.ATAJOS['guardar'])
         self.accionGuardarComo = menu_archivo.addAction(
             QIcon(recursos.ICONOS['guardar-como']), self.trUtf8("Guardar como"))
         menu_archivo.addSeparator()
         self.accionImprimir = menu_archivo.addAction(
             QIcon(recursos.ICONOS['print']), self.trUtf8("Imprimir archivo"))
-        self.accionImprimir.setShortcut(recursos.ATAJOS['imprimir'])
         menu_archivo.addSeparator()
         self.accionCerrarTab = menu_archivo.addAction(
             self.trUtf8("Cerrar"))
-        self.accionCerrarTab.setShortcut(recursos.ATAJOS['cerrar-tab'])
         self.accionCerrarTodo = menu_archivo.addAction(
             self.trUtf8("Cerrar todo"))
         self.accionCerrarExceptoActual = menu_archivo.addAction(

@@ -31,7 +31,7 @@ class __ContenedorMain(QSplitter):
         self.setAcceptDrops(True)
         self.addWidget(self.tab_principal)
         self.setSizes([1, 1])
-        self.setFixedSize(0, 530)
+        self.setFixedSize(0, 500)
         self.tab_actual = self.tab_principal
 
     def agregar_editor(self, nombre_archivo="", tabIndex=None):

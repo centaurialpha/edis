@@ -1,5 +1,4 @@
 #-*- coding: utf-8 -*-
-import sys
 
 from PyQt4.QtGui import QPlainTextEdit
 from PyQt4.QtGui import QTextEdit
@@ -20,15 +19,9 @@ from side_c import configuraciones
 from side_c.gui.editor import widget_numero_lineas
 from side_c.gui.editor.highlighter import Highlighter
 
-# Fuente por defecto
-FUENTE = QFont('Monospace', 11)
-
-# Si estamos en Windows
-if sys.platform == "win32":
-    FUENTE = QFont('Courier', 12)
-
 
 class Editor(QPlainTextEdit):
+    """ Editor """
 
     def __init__(self, nombre_archivo):
         QPlainTextEdit.__init__(self)
@@ -37,18 +30,21 @@ class Editor(QPlainTextEdit):
         self.posicion_margen = font_metrics.width('#') * 80
         self.widget_num_lineas = widget_numero_lineas.NumeroDeLineaBar(self)
 
-        #self._encoding = None
         #self.indentacion_ = 4
         self.useTabs = True
         self.texto_modificado = False
         self.nuevo_archivo = True
-        # Carga tema de editor
-        self.estilo_editor()
-        self.setFont(FUENTE)
 
+        # Carga el tema de editor
+        self.estilo_editor()
+
+        # Carga el tipo de letra
+        self._cargar_fuente(configuraciones.FUENTE, configuraciones.TAM_FUENTE)
+
+        # Resaltado de sintáxis
         Highlighter(self.document())
 
-        # Highlighting
+        # Resaltado en posición del cursor
         self.resaltar_linea_actual()
 
         self.connect(self, SIGNAL("cursorPositionChanged()"),
@@ -81,20 +77,22 @@ class Editor(QPlainTextEdit):
         """ Evento que dibuja el margen de línea."""
 
         QPlainTextEdit.paintEvent(self, event)
-        pintar = QPainter()
-        pintar.begin(self.viewport())
-        pintar.setPen(QColor(recursos.COLOR_EDITOR['margen-linea']))
-        offset = self.contentOffset()
-        ancho = self.viewport().width() - (self.posicion_margen + offset.x())
-        rect = QRect(self.posicion_margen + offset.x(), 1,
-            ancho + 1, self.viewport().height() + 3)
-        fondo = QColor(recursos.COLOR_EDITOR['fondo-margen'])
-        fondo.setAlpha(recursos.COLOR_EDITOR['opacidad'])
-        pintar.fillRect(rect, fondo)
-        pintar.drawRect(rect)
-        pintar.drawLine(self.posicion_margen + offset.x(), 0,
-            self.posicion_margen + offset.x(), self.viewport().height())
-        pintar.end()
+        if configuraciones.MOSTRAR_MARGEN:
+            pintar = QPainter()
+            pintar.begin(self.viewport())
+            pintar.setPen(QColor(recursos.COLOR_EDITOR['margen-linea']))
+            offset = self.contentOffset()
+            ancho = self.viewport().width() - (self.posicion_margen +
+                offset.x())
+            rect = QRect(self.posicion_margen + offset.x(), 1,
+                ancho + 1, self.viewport().height() + 3)
+            fondo = QColor(recursos.COLOR_EDITOR['fondo-margen'])
+            fondo.setAlpha(recursos.COLOR_EDITOR['opacidad'])
+            pintar.fillRect(rect, fondo)
+            pintar.drawRect(rect)
+            pintar.drawLine(self.posicion_margen + offset.x(), 0,
+                self.posicion_margen + offset.x(), self.viewport().height())
+            pintar.end()
 
     def posicion_cursor(self, posicion):
         if self.document().characterCount() >= posicion:
@@ -120,6 +118,13 @@ class Editor(QPlainTextEdit):
         """ Retorna todo el contenido del editor """
 
         return self.toPlainText()
+
+    def _cargar_fuente(self, fuente_=configuraciones.FUENTE,
+        tam=configuraciones.TAM_FUENTE):
+
+            fuente = QFont(fuente_, tam)
+            self.document().setDefaultFont(fuente)
+            self.actualizar_margen_linea(fuente)
 
     def actualizar_margen_linea(self, fuente=None):
         if not fuente:

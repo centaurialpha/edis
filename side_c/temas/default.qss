@@ -1,0 +1,5 @@
+QTabWidget::tab-bar:top 
+{
+     alignment: center;
+}
+

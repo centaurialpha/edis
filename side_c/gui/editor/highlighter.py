@@ -26,7 +26,8 @@ class Highlighter(QSyntaxHighlighter):
     -Comentario múltiple.
     -Braces.
     -Caracter.
-    -Operadores. -------> Arreglar
+    -Cadena
+    -Caracter especial
     -Formateo.
     -Funciones.
     """
@@ -42,6 +43,7 @@ class Highlighter(QSyntaxHighlighter):
         self.comentario_multiple_lineas = QTextCharFormat()
         caracter = QTextCharFormat()
         braces = QTextCharFormat()
+        caracter_especial = QTextCharFormat()
         cadena = QTextCharFormat()
         formateo = QTextCharFormat()
         funciones = QTextCharFormat()
@@ -62,7 +64,6 @@ class Highlighter(QSyntaxHighlighter):
             comentario_una_linea))
 
         # Include
-        include.setFontWeight(QFont.Bold)
         include.setFontItalic(True)
         include.setForeground(recursos.HIGHLIGHTER['include'])
         self.highlightingRules.append((QRegExp("#[^\n]*"),
@@ -91,7 +92,7 @@ class Highlighter(QSyntaxHighlighter):
         self.highlightingRules.append((QRegExp("[\[\]\(\)\{\}]"),
         braces))
 
-        # Carácter ''
+        # Caracter ''
         caracter.setForeground(Qt.gray)
         self.highlightingRules.append((QRegExp("\'.*\'"), caracter))
 
@@ -99,6 +100,10 @@ class Highlighter(QSyntaxHighlighter):
         cadena.setForeground(recursos.HIGHLIGHTER['cadena'])
         self.highlightingRules.append((QRegExp("\".*\""),
             cadena))
+
+        # Caracter especial
+        caracter_especial.setForeground(Qt.gray)
+        self.highlightingRules.append((QRegExp("\\\[a-z]"), caracter_especial))
 
         # Formateo
         formateo.setForeground(Qt.darkYellow)
