@@ -7,9 +7,9 @@ from PyQt4.QtGui import QFileDialog
 #from PyQt4.QtCore import QString
 from PyQt4.QtCore import SIGNAL
 
-from side_c.interfaz.editor import editor
 from side_c import recursos
 from side_c.interfaz import tab_widget
+from side_c.interfaz.editor import editor
 
 __instanciaContenedorMain = None
 
