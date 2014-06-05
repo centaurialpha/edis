@@ -6,8 +6,8 @@ from PyQt4.QtGui import QFileDialog
 
 #from PyQt4.QtCore import QString
 from PyQt4.QtCore import SIGNAL
-from PyQt4.QtCore import QFile
-from PyQt4.QtCore import QTextStream
+#from PyQt4.QtCore import QFile
+#from PyQt4.QtCore import QTextStream
 
 from side_c import recursos
 from side_c.interfaz import tab_widget

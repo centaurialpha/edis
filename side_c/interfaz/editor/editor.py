@@ -134,21 +134,23 @@ class Editor(QPlainTextEdit):
 
     def _indentar(self, evento):
         """ Inserta 4 espacios si se preciosa la tecla Tab """
-
-        self.textCursor().insertText(' ' * configuraciones.INDENTACION)
-        return True
+        if configuraciones.CHECK_INDENTACION:
+            self.textCursor().insertText(' ' * configuraciones.INDENTACION)
+            return True
+        return False
 
     def _auto_indentar(self, evento):
         """ Inserta automáticamente 4 espacios después de presionar Enter,
         previamente escrito '{' """
 
-        texto = self.textCursor().block().previous().text()
-        espacios = self.__indentacion(texto, configuraciones.INDENTACION)
-        self.textCursor().insertText(espacios)
+        if configuraciones.CHECK_INDENTACION:
+            texto = self.textCursor().block().previous().text()
+            espacios = self.__indentacion(texto, configuraciones.INDENTACION)
+            self.textCursor().insertText(espacios)
 
-        cursor = self.textCursor()
-        cursor.setPosition(cursor.position())
-        self.setTextCursor(cursor)
+            cursor = self.textCursor()
+            cursor.setPosition(cursor.position())
+            self.setTextCursor(cursor)
 
     def devolver_texto(self):
         """ Retorna todo el contenido del editor """

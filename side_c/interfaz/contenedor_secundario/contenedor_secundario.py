@@ -71,17 +71,18 @@ class ContenedorBottom(QWidget):
 
         if configuraciones.LINUX is not False:
             self.term = Terminal(self)
-            #icono = QIcon(recursos.ICONOS['terminal'])
-            self.tabs.addTab(self.term, "")
+            self.agregar_tab(self.term, "")
 
-        self.tabs.addTab(self.salida_, "")
-        self.tabs.addTab(self.notas, "")
-
+        self.agregar_tab(self.salida_, "Salida")
+        self.agregar_tab(self.notas, "Notas")
         self.tabs.setTabPosition(QTabWidget.East)
 
         hlayout = QHBoxLayout()
         vlayout.addWidget(self.tabs)
         vlayout.addLayout(hlayout)
+
+    def agregar_tab(self, widget, titulo):
+        self.tabs.addTab(widget, titulo)
 
 
 class SalidaWidget(QPlainTextEdit):

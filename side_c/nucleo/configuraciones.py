@@ -38,6 +38,8 @@ FUENTE_MAX_TAM = 80
 FUENTE_MIN_TAM = 6
 
 INDENTACION = 4
+CHECK_INDENTACION = True
+
 ###############################################################################
 #                   CONFIGURACIONES                                           #
 ###############################################################################
@@ -53,3 +55,5 @@ fuente_tam = qsettings.value('configuraciones/editor/fuenteTam', 0, type=int)
 if fuente_tam != 0:
     TAM_FUENTE = fuente_tam
 INDENTACION = qsettings.value('configuraciones/editor/indentacion', 4, type=int)
+CHECK_INDENTACION = qsettings.value('configuraciones/editor/checkInd', True,
+    type=bool)

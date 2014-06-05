@@ -113,6 +113,12 @@ class ConfiguracionEditor(QWidget):
         grillaCaracteristicas.addWidget(self.spinInd, 2, 1,
             alignment=Qt.AlignLeft)
 
+        # Check indentación
+        self.checkInd = QCheckBox(self.trUtf8("Activar"))
+        self.checkInd.setChecked(configuraciones.CHECK_INDENTACION)
+        grillaCaracteristicas.addWidget(self.checkInd, 2, 2,
+            alignment=Qt.AlignRight)
+
         # Fuente
         grillaFuente = QGridLayout(grupoEstiloFuente)
         self.botonFuente = QPushButton(', '.join([configuraciones.FUENTE,
@@ -191,6 +197,9 @@ class ConfiguracionEditor(QWidget):
         # Indentación
         qsettings.setValue('indentacion', self.spinInd.value())
         configuraciones.INDENTACION = self.spinInd.value()
+
+        qsettings.setValue('checkInd', self.checkInd.isChecked())
+        configuraciones.CHECK_INDENTACION = self.checkInd.isChecked()
 
         # Tipo de letra
         textoFuente = self.botonFuente.text().replace(' ', '')
