@@ -42,10 +42,12 @@ class MenuArchivo(QObject):
             QIcon(recursos.ICONOS['nuevo']), self.trUtf8("Nuevo archivo "))
         self.accionNuevoDesdePlantilla = menu_archivo.addMenu(
             self.trUtf8("Nuevo desde plantilla"))
+        menu_archivo.addSeparator()
         self.accionNuevoMain = self.accionNuevoDesdePlantilla.addAction(
             QIcon(recursos.ICONOS['main']), self.trUtf8("Archivo main.c"))
         self.accionAbrir = menu_archivo.addAction(
             QIcon(recursos.ICONOS['abrir']), self.trUtf8("Abrir archivo"))
+        menu_archivo.addSeparator()
         self.accionGuardar = menu_archivo.addAction(
             QIcon(recursos.ICONOS['guardar']), self.trUtf8("Guardar"))
         self.accionGuardarComo = menu_archivo.addAction(
@@ -96,3 +98,4 @@ class MenuArchivo(QObject):
             nombre = "Documento_nuevo.pdf"
 
             acciones_.imprimir_archivo(nombre, editorW.print_)
+        return False

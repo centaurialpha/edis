@@ -174,8 +174,8 @@ class __IDE(QMainWindow):
     def _cargar_tema(self):
         """ Carga el tema por defecto """
 
-        #qss = recursos.TEMA_POR_DEFECTO
-        qss = recursos.TEMA_BLACK_SIDE
+        qss = recursos.TEMA_POR_DEFECTO
+        #qss = recursos.TEMA_BLACK_SIDE
         with open(qss) as q:
             tema = q.read()
         QApplication.instance().setStyleSheet(tema)

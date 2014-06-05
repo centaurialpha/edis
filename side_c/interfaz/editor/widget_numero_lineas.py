@@ -22,6 +22,7 @@ class NumeroDeLineaBar(QWidget):
         self.editor = editor
         self.linea_superior = 0
         self.foldArea = 10
+        self.negrita = False
 
     def actualizar_area(self):
         linea_max = math.ceil(math.log10(self.editor.blockCount()))
@@ -62,6 +63,10 @@ class NumeroDeLineaBar(QWidget):
             pintar.setPen(QColor(recursos.COLOR_EDITOR['numero-linea']))
 
             if bloque == bloque_actual:
+                self.negrita = True
+                fuente = pintar.font()
+                fuente.setBold(True)
+                pintar.setFont(fuente)
                 pintar.fillRect(
                     0, round(posicion.y()) + font_metrics.descent(),
                     self.width(),
@@ -74,6 +79,11 @@ class NumeroDeLineaBar(QWidget):
                 round(posicion.y()) + font_metrics.ascent() +
                 font_metrics.descent() - 1,
                 str(contar_linea))
+
+            if self.negrita:
+                fuente = pintar.font()
+                fuente.setBold(False)
+                pintar.setFont(fuente)
 
             bloque = bloque.next()
 
