@@ -99,8 +99,9 @@ ATAJOS = {
     "modo-dev": QKeySequence(Qt.CTRL + Qt.Key_F9),
     "ocultar-toolbar": QKeySequence(Qt.CTRL + Qt.Key_F12),
     "ocultar-menu": QKeySequence(Qt.CTRL + Qt.Key_F8),
-    "ocultar-input": QKeySequence(Qt.CTRL + Qt.Key_F7)
-
+    "ocultar-input": QKeySequence(Qt.CTRL + Qt.Key_F7),
+    "zoom-mas": QKeySequence(Qt.CTRL + Qt.Key_Plus),
+    "zoom-menos": QKeySequence(Qt.CTRL + Qt.Key_Minus)
     }
 
 

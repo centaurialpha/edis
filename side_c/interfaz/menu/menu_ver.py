@@ -25,6 +25,10 @@ class MenuVer(QObject):
             recursos.ATAJOS['ocultar-input'], self.ide)
         self.atajoOcultarMenu = QShortcut(
             recursos.ATAJOS['ocultar-menu'], self.ide)
+        self.atajoZoomMas = QShortcut(
+            recursos.ATAJOS['zoom-mas'], self.ide)
+        self.atajoZoomMenos = QShortcut(
+            recursos.ATAJOS['zoom-menos'], self.ide)
 
         # Conexiones
         self.connect(self.atajoFullScreen, SIGNAL("activated()"),
@@ -37,40 +41,44 @@ class MenuVer(QObject):
             self.visibilidad_contenedor_secundario)
         self.connect(self.atajoOcultarMenu, SIGNAL("activated()"),
             self.ocultar_mostrar_menu)
+        self.connect(self.atajoZoomMas, SIGNAL("activated()"),
+            self._zoom_mas)
+        self.connect(self.atajoZoomMenos, SIGNAL("activated()"),
+            self._zoom_menos)
 
         # Acciones
         self.accionFullScreen = menu_ver.addAction(
             self.trUtf8("Pantalla Completa"))
         self.accionFullScreen.setCheckable(True)
-        self.connect(self.accionFullScreen, SIGNAL("triggered()"),
-            self.pantalla_completa)
         self.accionModoDev = menu_ver.addAction(
             self.trUtf8("Modo Dev"))
         self.accionModoDev.setCheckable(True)
-        self.connect(self.accionModoDev, SIGNAL("triggered()"),
-            self.modo_dev)
         menu_ver.addSeparator()
         self.accionMostrarOcultarToolbar = menu_ver.addAction(
             self.trUtf8("Mostrar/Ocultar Toolbars"))
         self.accionMostrarOcultarToolbar.setCheckable(True)
-        self.connect(self.accionMostrarOcultarToolbar, SIGNAL("triggered()"),
-            self.ocultar_mostrar_toolbars)
         self.accionMostrarOcultar_input = menu_ver.addAction(
             self.trUtf8("Mostrar/Ocultar Input"))
         self.accionMostrarOcultar_input.setCheckable(True)
-        self.connect(self.accionMostrarOcultar_input, SIGNAL("triggered()"),
-            self.visibilidad_contenedor_secundario)
         self.accionMostrarOcultar_menu = menu_ver.addAction(
             self.trUtf8("Mostrar/Ocultar Menu"))
         self.accionMostrarOcultar_menu.setCheckable(True)
-        self.connect(self.accionMostrarOcultar_menu, SIGNAL("triggered()"),
-            self.ocultar_mostrar_menu)
         menu_ver.addSeparator()
         self.accionZoomMas = menu_ver.addAction(
             self.trUtf8("Zoom +"))
-        self.accionZoomMas.triggered.connect(self._zoom_mas)
         self.accionZoomMenos = menu_ver.addAction(
             self.trUtf8("Zoom -"))
+
+        # Conexiones a slot
+        self.accionFullScreen.triggered.connect(self.pantalla_completa)
+        self.accionModoDev.triggered.connect(self.modo_dev)
+        self.accionMostrarOcultarToolbar.triggered.connect(
+            self.ocultar_mostrar_toolbars)
+        self.accionMostrarOcultar_input.triggered.connect(
+            self.visibilidad_contenedor_secundario)
+        self.accionMostrarOcultar_menu.triggered.connect(
+            self.ocultar_mostrar_menu)
+        self.accionZoomMas.triggered.connect(self._zoom_mas)
         self.accionZoomMenos.triggered.connect(self._zoom_menos)
 
         self.accionFullScreen.setChecked(False)
