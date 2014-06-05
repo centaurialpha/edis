@@ -31,7 +31,6 @@ class Editor(QPlainTextEdit):
         self.posicion_margen = font_metrics.width('#') * 80
         self.widget_num_lineas = widget_numero_lineas.NumeroDeLineaBar(self)
 
-        self.indentacion = 4
         self.texto_modificado = False
         self.nuevo_archivo = True
         self.guardado_actualmente = False
@@ -136,7 +135,7 @@ class Editor(QPlainTextEdit):
     def _indentar(self, evento):
         """ Inserta 4 espacios si se preciosa la tecla Tab """
 
-        self.textCursor().insertText(' ' * self.indentacion)
+        self.textCursor().insertText(' ' * configuraciones.INDENTACION)
         return True
 
     def _auto_indentar(self, evento):
@@ -144,7 +143,7 @@ class Editor(QPlainTextEdit):
         previamente escrito '{' """
 
         texto = self.textCursor().block().previous().text()
-        espacios = self.__indentacion(texto, self.indentacion)
+        espacios = self.__indentacion(texto, configuraciones.INDENTACION)
         self.textCursor().insertText(espacios)
 
         cursor = self.textCursor()
@@ -206,7 +205,7 @@ class Editor(QPlainTextEdit):
         self.texto_modificado = False
         self.document().setModified(self.texto_modificado)
 
-    def __indentacion(self, linea, ind):
+    def __indentacion(self, linea, ind=configuraciones.INDENTACION):
         import re
         patronInd = re.compile('^\s+')
         indentacion = ''

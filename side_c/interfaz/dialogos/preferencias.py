@@ -103,6 +103,16 @@ class ConfiguracionEditor(QWidget):
         grillaCaracteristicas.addWidget(self.checkMargen, 1, 2,
             alignment=Qt.AlignRight)
 
+        # Indentación
+        self.spinInd = QSpinBox()
+        self.spinInd.setAlignment(Qt.AlignRight)
+        self.spinInd.setMaximum(20)
+        self.spinInd.setValue(configuraciones.INDENTACION)
+        grillaCaracteristicas.addWidget(QLabel(
+            self.trUtf8("Indentación: ")), 2, 0, Qt.AlignRight)
+        grillaCaracteristicas.addWidget(self.spinInd, 2, 1,
+            alignment=Qt.AlignLeft)
+
         # Fuente
         grillaFuente = QGridLayout(grupoEstiloFuente)
         self.botonFuente = QPushButton(', '.join([configuraciones.FUENTE,
@@ -177,6 +187,10 @@ class ConfiguracionEditor(QWidget):
 
         qsettings.setValue('mostrarMargen', self.checkMargen.isChecked())
         configuraciones.MOSTRAR_MARGEN = self.checkMargen.isChecked()
+
+        # Indentación
+        qsettings.setValue('indentacion', self.spinInd.value())
+        configuraciones.INDENTACION = self.spinInd.value()
 
         # Tipo de letra
         textoFuente = self.botonFuente.text().replace(' ', '')
