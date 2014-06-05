@@ -18,6 +18,7 @@ from side_c import recursos
 from side_c.nucleo import configuraciones
 from side_c.interfaz.editor import widget_numero_lineas
 from side_c.interfaz.editor.highlighter import Highlighter
+#from side_c.interfaz.editor import acciones_
 
 
 class Editor(QPlainTextEdit):
@@ -45,6 +46,10 @@ class Editor(QPlainTextEdit):
 
         # Resaltado en posición del cursor
         self.resaltar_linea_actual()
+
+        self.presionadoAntes = {Qt.Key_Tab: self._indentar}
+        self.presionadoDespues = {Qt.Key_Enter: self._auto_indentar,
+        Qt.Key_Return: self._auto_indentar}
 
         self.connect(self, SIGNAL("cursorPositionChanged()"),
             self.resaltar_linea_actual)
@@ -114,14 +119,37 @@ class Editor(QPlainTextEdit):
         self.setExtraSelections([seleccion])
 
     def keyPressEvent(self, evento):
-        if evento.key() == Qt.Key_Tab:
-            self._indentar(evento)
-        else:
-            QPlainTextEdit.keyPressEvent(self, evento)
+        #if evento.key() == Qt.Key_Tab:
+            #self._indentar(evento)
+        #elif evento.key() == Qt.Key_Return:
+            #self._auto_indentar(evento)
+        #else:
+            #QPlainTextEdit.keyPressEvent(self, evento)
+        if self.presionadoAntes.get(evento.key(), lambda a: False)(evento):
+            self.emit(SIGNAL("keyPressEvent(QEvent)"), evento)
+            return
+        QPlainTextEdit.keyPressEvent(self, evento)
 
-    def _indentar(self, event):
+        self.presionadoDespues.get(evento.key(), lambda a: False)(evento)
+        self.emit(SIGNAL("keyPressEvent(QEvent)"), evento)
+
+    def _indentar(self, evento):
+        """ Inserta 4 espacios si se preciosa la tecla Tab """
+
         self.textCursor().insertText(' ' * self.indentacion)
         return True
+
+    def _auto_indentar(self, evento):
+        """ Inserta automáticamente 4 espacios después de presionar Enter,
+        previamente escrito '{' """
+
+        texto = self.textCursor().block().previous().text()
+        espacios = self.__indentacion(texto, self.indentacion)
+        self.textCursor().insertText(espacios)
+
+        cursor = self.textCursor()
+        cursor.setPosition(cursor.position())
+        self.setTextCursor(cursor)
 
     def devolver_texto(self):
         """ Retorna todo el contenido del editor """
@@ -177,6 +205,19 @@ class Editor(QPlainTextEdit):
         self.nuevo_archivo = False
         self.texto_modificado = False
         self.document().setModified(self.texto_modificado)
+
+    def __indentacion(self, linea, ind):
+        import re
+        patronInd = re.compile('^\s+')
+        indentacion = ''
+
+        if len(linea) > 0 and linea[-1] == '{':
+            indentacion = ' ' * ind
+        espacio = patronInd.match(linea)
+        if espacio is not None:
+            return espacio.group() + indentacion
+
+        return indentacion
 
 
 def crear_editor(nombre_archivo=''):
