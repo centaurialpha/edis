@@ -135,9 +135,9 @@ class __ContenedorMain(QSplitter):
             directorio = os.path.expanduser("~")
             editorW = self.devolver_editor_actual()
 
-            nombres = QFileDialog.getOpenFileName(
+            nombres = unicode(QFileDialog.getOpenFileName(
                 self, self.tr("Abrir archivo"),
-                directorio, extension)
+                directorio, extension))
 
             contenido = self.leer_contenido_archivo(nombres)
             editorW = self.agregar_editor(nombre, tabIndex)
@@ -157,8 +157,9 @@ class __ContenedorMain(QSplitter):
 
     def leer_contenido_archivo(self, archivo):
         """ Recibe (archivo), lee y lo retorna. """
+        import codecs
 
-        with open(archivo, 'r') as f:
+        with codecs.open(archivo, 'r', 'utf-8') as f:
             contenido = f.read()
 
         return contenido

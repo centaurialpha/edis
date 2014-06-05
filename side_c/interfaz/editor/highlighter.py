@@ -54,7 +54,8 @@ class Highlighter(QSyntaxHighlighter):
         palabra_clave.setForeground(brush)
         palabra_clave.setFontWeight(QFont.Bold)
         palabras_claves = palabras_reservadas
-        self.highlightingRules = [(QRegExp(indice), palabra_clave)
+        self.highlightingRules = [(QRegExp(
+            indice + '[\s]+'), palabra_clave)
         for indice in palabras_claves]
 
         # Comentario simple
