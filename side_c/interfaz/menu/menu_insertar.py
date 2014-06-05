@@ -4,7 +4,6 @@ from PyQt4.QtGui import QIcon
 
 from PyQt4.QtCore import QObject
 from PyQt4.QtCore import Qt
-from PyQt4.QtCore import SIGNAL
 
 from side_c.interfaz.editor import acciones_
 from side_c import recursos
@@ -38,18 +37,33 @@ class MenuInsertar(QObject):
             self.trUtf8("mm-dd-aaaa hh:mm"))
         accionAMDH = menuFechaHora.addAction(
             self.trUtf8("aaaa-mm-dd hh:mm"))
+        menu_insertar.addSeparator()
+        menuInclude = menu_insertar.addMenu(
+            self.trUtf8("Insertar '#include <>'"))
+        menuLibEst = menuInclude.addMenu(
+            self.trUtf8("Libreria estandar"))
+        accionStdIo = menuLibEst.addAction(
+            self.trUtf8("stdio.h"))
+        accionStdLib = menuLibEst.addAction(
+            self.trUtf8("stdlib.h"))
+        accionString = menuLibEst.addAction(
+            self.trUtf8("string.h"))
+        accionInclude = menuInclude.addAction(
+            self.trUtf8("#include <...>"))
 
         # Conexión
-        self.connect(accionSeparador, SIGNAL("triggered()"),
-            self.insertar_separador)
-        self.connect(accionTitulo, SIGNAL("triggered()"),
-            self.insertar_titulo)
+        accionSeparador.triggered.connect(self.insertar_separador)
+        accionTitulo.triggered.connect(self.insertar_titulo)
         accionDMA.triggered.connect(lambda x: self._insertar_fecha(1))
         accionMDA.triggered.connect(lambda x: self._insertar_fecha(2))
         accionAMD.triggered.connect(lambda x: self._insertar_fecha(3))
         accionDMAH.triggered.connect(lambda h: self._insertar_fecha_hora(1))
         accionMDAH.triggered.connect(lambda h: self._insertar_fecha_hora(2))
         accionAMDH.triggered.connect(lambda h: self._insertar_fecha_hora(3))
+        accionStdIo.triggered.connect(lambda v: self._insertar_include(1))
+        accionStdLib.triggered.connect(lambda v: self._insertar_include(2))
+        accionString.triggered.connect(lambda v: self._insertar_include(3))
+        accionInclude.triggered.connect(lambda v: self._insertar_include(4))
 
         # Toolbar
         self.items_toolbar = {
@@ -76,3 +90,8 @@ class MenuInsertar(QObject):
         editorW = self.ide.contenedor_principal.devolver_editor_actual()
         if editorW and editorW.hasFocus():
             acciones_.insertar_fecha_hora(editorW, formato)
+
+    def _insertar_include(self, valor):
+        editorW = self.ide.contenedor_principal.devolver_editor_actual()
+        if editorW and editorW.hasFocus():
+            acciones_.insertar_include(editorW, valor)

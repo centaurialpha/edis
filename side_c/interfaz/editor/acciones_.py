@@ -42,6 +42,8 @@ def insertar_titulo(ew):
 
 def insertar_fecha(ew, formato):
     fecha = datetime.date.today()
+    ew.textCursor().beginEditBlock()
+    ew.moveCursor(QTextCursor.StartOfLine, QTextCursor.MoveAnchor)
 
     if formato == 1:
         hoy = fecha.strftime("%d-%m-%Y")
@@ -51,6 +53,7 @@ def insertar_fecha(ew, formato):
         hoy = fecha.strftime("%Y-%m-%d")
 
     ew.textCursor().insertText(hoy)
+    ew.textCursor().endEditBlock()
 
 
 def insertar_fecha_hora(ew, formato):
@@ -110,3 +113,21 @@ int main(int argc, char **argv)
     return 0;
 }
 """)
+
+
+def insertar_include(ew, libreria):
+    includes = {
+        1: '#include <stdio.h>',
+        2: '#include <stdlib.h>',
+        3: '#include <string.h>',
+        4: '#include '
+        }
+
+    if libreria != 4:
+        for lib in includes:
+            texto = includes.get(libreria)
+        ew.textCursor().insertText(texto)
+
+    else:
+        texto = includes.get(4)
+        ew.textCursor().insertText(texto + '<>')
