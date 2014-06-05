@@ -69,6 +69,8 @@ class MenuArchivo(QObject):
         # Conexión a métodos
         self.accionNuevo.triggered.connect(
             self.ide.contenedor_principal.agregar_editor)
+        self.accionNuevoMain.triggered.connect(
+            self.archivo_main_c)
         self.accionAbrir.triggered.connect(
             self.ide.contenedor_principal.abrir_archivo)
         self.accionGuardar.triggered.connect(
@@ -99,3 +101,8 @@ class MenuArchivo(QObject):
 
             acciones_.imprimir_archivo(nombre, editorW.print_)
         return False
+
+    def archivo_main_c(self):
+        editorW = self.ide.contenedor_principal.devolver_editor_actual()
+        if editorW is not None:
+            acciones_.nuevo_main_c(editorW)

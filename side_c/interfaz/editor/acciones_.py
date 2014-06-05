@@ -1,8 +1,8 @@
-#-*- coding: utf-8 -*-
+#-*- coding: utf-8 -*-8
 #import re
 
-from datetime import date
-from datetime import datetime
+#from datetime import date
+import datetime
 
 from PyQt4.QtGui import QTextCursor
 from PyQt4.QtGui import QInputDialog
@@ -40,18 +40,30 @@ def insertar_titulo(ew):
         ew.textCursor().endEditBlock()
 
 
-def insertar_fecha(ew):
-    fecha = str(date.today())
-    ew.moveCursor(QTextCursor.StartOfLine, QTextCursor.KeepAnchor)
-    ew.textCursor().insertText(fecha)
-    ew.moveCursor(QTextCursor.EndOfLine, QTextCursor.MoveAnchor)
+def insertar_fecha(ew, formato):
+    fecha = datetime.date.today()
+
+    if formato == 1:
+        hoy = fecha.strftime("%d-%m-%Y")
+    elif formato == 2:
+        hoy = fecha.strftime("%m-%d-%Y")
+    elif formato == 3:
+        hoy = fecha.strftime("%Y-%m-%d")
+
+    ew.textCursor().insertText(hoy)
 
 
-def insertar_fecha_hora(ew):
-    fecha_hora = str(datetime.now())
-    ew.moveCursor(QTextCursor.StartOfLine, QTextCursor.KeepAnchor)
-    ew.textCursor().insertText(fecha_hora)
-    ew.moveCursor(QTextCursor.EndOfLine, QTextCursor.MoveAnchor)
+def insertar_fecha_hora(ew, formato):
+    fecha = datetime.datetime.now()
+
+    if formato == 1:
+        hoy = fecha.strftime("%d-%m-%Y--%H:%M ")
+    elif formato == 2:
+        hoy = fecha.strftime("%m-%d-%Y--%H:%M")
+    elif formato == 3:
+        hoy = fecha.strftime("%Y-%m-%d--%H:%M")
+
+    ew.textCursor().insertText(hoy)
 
 
 def imprimir_archivo(nombre, f):
@@ -67,3 +79,34 @@ def imprimir_archivo(nombre, f):
     alto = tam.height() - 100
     vista.setMinimumSize(ancho, alto)
     vista.exec_()
+
+
+def nuevo_main_c(ew):
+    ew.textCursor().insertText(
+"""/*
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
+ * MA 02110-1301, USA.
+ *
+ *
+ */
+
+
+#include <stdio.h>
+
+int main(int argc, char **argv)
+{
+    return 0;
+}
+""")
