@@ -30,8 +30,7 @@ class Editor(QPlainTextEdit):
         self.posicion_margen = font_metrics.width('#') * 80
         self.widget_num_lineas = widget_numero_lineas.NumeroDeLineaBar(self)
 
-        #self.indentacion_ = 4
-        self.useTabs = True
+        self.indentacion = 4
         self.texto_modificado = False
         self.nuevo_archivo = True
         self.guardado_actualmente = False
@@ -113,6 +112,16 @@ class Editor(QPlainTextEdit):
         seleccion.cursor.clearSelection()
 
         self.setExtraSelections([seleccion])
+
+    def keyPressEvent(self, evento):
+        if evento.key() == Qt.Key_Tab:
+            self._indentar(evento)
+        else:
+            QPlainTextEdit.keyPressEvent(self, evento)
+
+    def _indentar(self, event):
+        self.textCursor().insertText(' ' * self.indentacion)
+        return True
 
     def devolver_texto(self):
         """ Retorna todo el contenido del editor """
