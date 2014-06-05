@@ -65,6 +65,13 @@ class MenuVer(QObject):
         self.accionMostrarOcultar_menu.setCheckable(True)
         self.connect(self.accionMostrarOcultar_menu, SIGNAL("triggered()"),
             self.ocultar_mostrar_menu)
+        menu_ver.addSeparator()
+        self.accionZoomMas = menu_ver.addAction(
+            self.trUtf8("Zoom +"))
+        self.accionZoomMas.triggered.connect(self._zoom_mas)
+        self.accionZoomMenos = menu_ver.addAction(
+            self.trUtf8("Zoom -"))
+        self.accionZoomMenos.triggered.connect(self._zoom_menos)
 
         self.accionFullScreen.setChecked(False)
         self.accionModoDev.setChecked(False)
@@ -126,3 +133,17 @@ class MenuVer(QObject):
             self.ide.toolbar.isVisible())
         self.ide._menu_ver.accionMostrarOcultarToolbar.setChecked(
             self.ide.toolbar_.isVisible())
+
+    def _zoom_mas(self):
+        editor = self.ide.contenedor_principal.devolver_editor_actual()
+
+        if not editor:
+            return None
+        editor.zoom_mas()
+
+    def _zoom_menos(self):
+        editor = self.ide.contenedor_principal.devolver_editor_actual()
+
+        if not editor:
+            return None
+        editor.zoom_menos()

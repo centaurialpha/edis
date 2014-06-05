@@ -1,4 +1,6 @@
 #-*- coding: utf-8 -*-
+from datetime import date
+from datetime import datetime
 
 from PyQt4.QtGui import QTextCursor
 from PyQt4.QtGui import QInputDialog
@@ -34,6 +36,20 @@ def insertar_titulo(ew):
         ew.textCursor().insertText(comentario + r)
         ew.textCursor().insertText(com)
         ew.textCursor().endEditBlock()
+
+
+def insertar_fecha(ew):
+    fecha = str(date.today())
+    ew.moveCursor(QTextCursor.StartOfLine, QTextCursor.KeepAnchor)
+    ew.textCursor().insertText(fecha)
+    ew.moveCursor(QTextCursor.EndOfLine, QTextCursor.MoveAnchor)
+
+
+def insertar_fecha_hora(ew):
+    fecha_hora = str(datetime.now())
+    ew.moveCursor(QTextCursor.StartOfLine, QTextCursor.KeepAnchor)
+    ew.textCursor().insertText(fecha_hora)
+    ew.moveCursor(QTextCursor.EndOfLine, QTextCursor.MoveAnchor)
 
 
 def imprimir_archivo(nombre, f):

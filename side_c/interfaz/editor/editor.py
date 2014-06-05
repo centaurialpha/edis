@@ -34,7 +34,7 @@ class Editor(QPlainTextEdit):
         self.useTabs = True
         self.texto_modificado = False
         self.nuevo_archivo = True
-
+        self.guardado_actualmente = False
         # Carga el tema de editor
         self.estilo_editor()
 
@@ -126,6 +126,28 @@ class Editor(QPlainTextEdit):
             self.document().setDefaultFont(fuente)
             self.actualizar_margen_linea(fuente)
 
+    def zoom_mas(self):
+        fuente = self.document().defaultFont()
+        tam = fuente.pointSize()
+
+        if tam < configuraciones.FUENTE_MAX_TAM:
+            tam += 1
+            fuente.setPointSize(tam)
+
+        self.setFont(fuente)
+        self.actualizar_margen_linea(fuente)
+
+    def zoom_menos(self):
+        fuente = self.document().defaultFont()
+        tam = fuente.pointSize()
+
+        if tam > configuraciones.FUENTE_MIN_TAM:
+            tam -= 1
+            fuente.setPointSize(tam)
+
+        self.setFont(fuente)
+        self.actualizar_margen_linea(fuente)
+
     def actualizar_margen_linea(self, fuente=None):
         if not fuente:
             fuente = self.document().defaultFont()
@@ -141,6 +163,11 @@ class Editor(QPlainTextEdit):
         else:
             c_width = f_metrics.averageCharWidth()
             self.posicion_margen = c_width * configuraciones.MARGEN
+
+    def _guardado(self):
+        self.nuevo_archivo = False
+        self.texto_modificado = False
+        self.document().setModified(self.texto_modificado)
 
 
 def crear_editor(nombre_archivo=''):

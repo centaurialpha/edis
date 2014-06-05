@@ -25,7 +25,7 @@ from PyQt4.QtCore import QSettings
 
 from side_c import recursos
 from side_c.nucleo import configuraciones
-from side_c.interfaz import contenedor_principal
+from side_c.interfaz.contenedor_principal import contenedor_principal
 
 
 class Configuraciones(QDialog):

@@ -6,6 +6,8 @@ from PyQt4.QtGui import QFileDialog
 
 #from PyQt4.QtCore import QString
 from PyQt4.QtCore import SIGNAL
+from PyQt4.QtCore import QFile
+from PyQt4.QtCore import QTextStream
 
 from side_c import recursos
 from side_c.interfaz import tab_widget
@@ -141,38 +143,25 @@ class __ContenedorMain(QSplitter):
             editorW = self.agregar_editor(nombre, tabIndex)
 
             editorW.setPlainText(contenido)
+            editorW.ID = nombre
             editorW.posicion_cursor(cursor)
+
             index = self.tab_actual.currentIndex()
             self.tab_actual.setTabText(index, nombres)
+
+    def guardar_archivo(self, editorW=None):
+        pass
 
     def guardar_archivo_como(self):
         pass
 
-    def guardar_archivo(self, editorW=None):
-        if not editorW:
-            editorW = self.devolver_editor_actual()
-        if not editorW:
-            return False
-
-        try:
-        #contenido = editorW.devolver_texto()
-            #directorio = os.path.expanduser("~")
-            nombre = "" + QFileDialog.getSaveFileName(self.parent,
-                self.tr("Guardar"), "sin_titulo.c")
-
-            with open(nombre, 'w') as f:
-                f.write(editorW.toPlainText())
-        except:
-            pass
-
     def leer_contenido_archivo(self, archivo):
         """ Recibe (archivo), lee y lo retorna. """
 
-        with open(archivo, 'rU') as f:
+        with open(archivo, 'r') as f:
             contenido = f.read()
 
         return contenido
 
-
-#def get_carpeta(nombre):
- #   return os.path.dirname(nombre)
+    def permiso_de_escritura(self, archivo):
+        return os.access(archivo, os.W_OK)

@@ -2,7 +2,6 @@
 
 from PyQt4.QtGui import QIcon
 from PyQt4.QtGui import QShortcut
-from PyQt4.QtGui import QKeySequence
 from PyQt4.QtCore import SIGNAL
 from PyQt4.QtCore import QObject
 
@@ -40,7 +39,11 @@ class MenuArchivo(QObject):
 
         # Acciones
         self.accionNuevo = menu_archivo.addAction(
-            QIcon(recursos.ICONOS['nuevo']), self.trUtf8("Nuevo archivo %s"))
+            QIcon(recursos.ICONOS['nuevo']), self.trUtf8("Nuevo archivo "))
+        self.accionNuevoDesdePlantilla = menu_archivo.addMenu(
+            self.trUtf8("Nuevo desde plantilla"))
+        self.accionNuevoMain = self.accionNuevoDesdePlantilla.addAction(
+            QIcon(recursos.ICONOS['main']), self.trUtf8("Archivo main.c"))
         self.accionAbrir = menu_archivo.addAction(
             QIcon(recursos.ICONOS['abrir']), self.trUtf8("Abrir archivo"))
         self.accionGuardar = menu_archivo.addAction(

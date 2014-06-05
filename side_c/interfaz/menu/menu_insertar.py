@@ -23,11 +23,19 @@ class MenuInsertar(QObject):
         accionSeparador = menu_insertar.addAction(
             QIcon(recursos.ICONOS['linea']), self.trUtf8("Separador"))
         accionSeparador.setShortcut(Qt.CTRL + Qt.SHIFT + Qt.Key_S)
+        accionFecha = menu_insertar.addAction(
+            self.trUtf8("Insertar fecha"))
+        accionFechaHora = menu_insertar.addAction(
+            self.trUtf8("Insertar fecha y hora"))
 
         self.connect(accionSeparador, SIGNAL("triggered()"),
             self.insertar_separador)
         self.connect(accionTitulo, SIGNAL("triggered()"),
             self.insertar_titulo)
+        self.connect(accionFecha, SIGNAL("triggered()"),
+            self._insertar_fecha)
+        self.connect(accionFechaHora, SIGNAL("triggered()"),
+            self._insertar_fecha_hora)
 
         self.items_toolbar = {
             "linea": accionSeparador,
@@ -43,3 +51,13 @@ class MenuInsertar(QObject):
         editorW = self.ide.contenedor_principal.devolver_editor_actual()
         if editorW and editorW.hasFocus():
             acciones_.insertar_titulo(editorW)
+
+    def _insertar_fecha(self):
+        editorW = self.ide.contenedor_principal.devolver_editor_actual()
+        if editorW and editorW.hasFocus():
+            acciones_.insertar_fecha(editorW)
+
+    def _insertar_fecha_hora(self):
+        editorW = self.ide.contenedor_principal.devolver_editor_actual()
+        if editorW and editorW.hasFocus():
+            acciones_.insertar_fecha_hora(editorW)

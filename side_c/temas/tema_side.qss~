@@ -1,32 +1,92 @@
-QWidget{
+QWidget
+{
     background: #232323;
     color: white;
 }
 
-/*QMainWindow 
-{
-	background: #232323
-}
-*/
 QToolBar::separator
 {
 	border-radius: 2px;
 	background: black;
-	width: 1px;
-	height: 1px;
+	width: 2px;
+	height: 2px;
 	
 }
 
-QToolBar {
+QToolBar 
+{
     background: qlineargradient(x1: 0, y1: 0, x2: 1, y2: 0,
         stop: 0 #505050, stop: 1.0 #202020);
     border: 1px solid transparent;
 }
 
-QToolBar#custom {
+QToolBar::handle, QToolBar::handle:vertical, QToolBar::handle:horizontal 
+{
+    border: 1px solid gray;
     border-radius: 1px;
-    border: 1px solid #222;
+    width: 5px;
+    height: 5px;
 }
+
+/* Statusbar */
+QStatusBar 
+{
+     
+}
+
+QStatusBar::item
+{
+     border: 5px solid red;
+     border-radius: 3px;
+}
+
+/* Scrollbar */
+QScrollBar:vertical
+{
+    background: qlineargradient(x1: 0, y1: 0, x2: 1, y2: 0,
+        stop: 0 #212121,stop: 1.0 #323232);
+    width: 13px;
+}
+
+QScrollBar:horizontal
+{
+    background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
+        stop: 0 #212121,stop: 1.0 #323232);
+    height: 13px;
+}
+
+QScrollBar::handle:vertical
+{
+    padding: 5px;
+    min-height: 50px;
+    background: qlineargradient(x1: 0, y1: 0, x2: 1, y2: 0,
+        stop: 0 #232323,stop: 1.0 #606060);
+    border-radius: 5px;
+    border: 1px solid #111;
+}
+
+QScrollBar::handle:horizontal
+{
+    padding: 2px;
+    min-width: 50px;
+    background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
+        stop: 0 #232323,stop: 1.0 #606060);
+    border-radius: 5px;
+    border: 1px solid #111;
+}
+
+QScrollBar::add-line:vertical,
+QScrollBar::sub-line:vertical,
+QScrollBar::add-page:vertical,
+QScrollBar::sub-page:vertical,
+QScrollBar::add-line:horizontal,
+QScrollBar::sub-line:horizontal,
+QScrollBar::add-page:horizontal,
+QScrollBar::sub-page:horizontal{
+    background: none;
+    border: none;
+}
+/* Menu */
 QMenuBar::item 
 {
     spacing: 3px;
@@ -40,14 +100,14 @@ QMenuBar
 {
     background-color: rgb(49,49,49);
     color: rgb(255,255,255);
-    border: 1px solid #4dbee8;
+    border: 1px solid gray;
 }
 
 QMenu 
 {
     background-color: rgb(70,70,70);
     color: rgb(255,255,255);
-    border: 1px solid #4dbee8;
+    border: 1px solid gray;
 }
 
 QMenu::item 
@@ -58,16 +118,23 @@ QMenu::item
 
 QMenu::item:selected 
 {
-    border-color: darkblue;
-    background: rgba(100, 200, 200, 150);
+    border-color: gray;
+    background: rgba(100, 173, 215, 150);
 }
 
 QMenuBar::item:pressed {
-    background: #4DBEE8;
+    background: gray;
+}
+
+/* Splitter */
+QSplitter::handle:vertical 
+{
+     height: 3px;
+     background: gray;
 }
 
 QTabWidget::pane {
-    border-color: #4dbee8;
+    border-color: gray;
     border-style: solid;
     border-width: 1px;
     position: absolute;
@@ -75,32 +142,32 @@ QTabWidget::pane {
 }
 
 QTabBar {
-    background-color: #333333;
+    background-color: #222;
     border: none;
 }
 
 QTabBar::tab {
     color: white;
-    padding: 5px 10px;
-    border: 1px solid #111;
-    background: #333333;
-    border-radius: 10px;
+    padding: 2px 5px;
+    border: 2px solid #111;
+    background: #222;
+    border-radius: 8px;
 }
 QTabBar::tab:top,
 QTabBar::tab:bottom {
-    padding: 6px 8px;
+    padding: 5px 5px;
     border-right: 2px solid #111;
 }
 QTabBar::tab:left,
 QTabBar::tab:right {
-    padding: 8px 6px;
-    border-top: 1px solid red;
+    padding: 5px 5px;
+    border-top: 1px solid #111;
 }
 QTabBar::tab:top {
     border-bottom-right-radius: 0;
     border-bottom-left-radius: 0;
     border-bottom: 5px solid transparent;
-    margin: 3px 3px 0 0;
+    margin: 1px 1px 0 0;
 }
 
 QTabBar::tab:bottom {
@@ -125,29 +192,30 @@ QTabBar::tab:left {
 }
 
 QTabBar::tab:selected {
-    color: #4dbee8;
+    color: gray;
 }
 QTabBar::tab:top:hover {
-    border-bottom-color: #4dbee8;
+	color: rgba(100, 173, 215, 150);
+    border-bottom-color: 1px rgba(100, 173, 215, 150);
 }
 QTabBar::tab:top:selected {
-    border-bottom: 2px solid #4dbee8;
+    border-bottom: rgba(100, 173, 215, 150);
 }
 QTabBar::tab:bottom:selected,
 QTabBar::tab:bottom:hover {
-    border-top-color: #3dbee8;
+    border-top-color: 1px rgba(100, 173, 215, 150);
 }
 QTabBar::tab:right:selected,
 QTabBar::tab:right:hover {
-    border-right-color: #3dbee8;
+    border-right-color: rgba(100, 173, 215, 150);
 }
 QTabBar::tab:left:selected,
 QTabBar::tab:left:hover {
-    border-left-color: #3dbee8;
+    border-left-color: rgba(100, 173, 215, 150);
 }
 
 
 QTabBar::tab:hover,
 QTabBar::tab:focus {
-    color: #1dbee8;
+    color: rgba(100, 173, 215, 150);
 }

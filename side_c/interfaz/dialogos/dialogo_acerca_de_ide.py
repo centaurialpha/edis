@@ -1,5 +1,7 @@
 #-*- coding: utf-8 -*-
 
+import webbrowser
+
 from PyQt4.QtGui import QDialog
 from PyQt4.QtGui import QVBoxLayout
 from PyQt4.QtGui import QLabel
@@ -10,9 +12,8 @@ from PyQt4.QtGui import QTextBrowser
 
 from PyQt4.QtCore import QSize
 from PyQt4.QtCore import Qt
-from PyQt4.QtCore import SIGNAL
+from PyQt4.QtCore import QString
 
-import webbrowser
 
 import side_c
 
@@ -59,7 +60,7 @@ class AcercaDeSide(QWidget):
         layout_vertical = QVBoxLayout(self)
 
         titulo_label = QLabel(
-            '<h1>SIDE-C</h1>')
+            self.trUtf8('<h1>SIDE-C</h1><i>Seiryü</i>'))
         titulo_label.setAlignment(Qt.AlignCenter)
         layout_vertical.addWidget(titulo_label)
         logo = QPixmap(recursos.ICONOS['icono'])
@@ -74,24 +75,35 @@ class AcercaDeSide(QWidget):
         self.setLayout(layout_vertical)
 
         descripcion_label = QLabel(
-            self.trUtf8("""<b>SIDE-C</b> es un IDE para el lenguaje de
-programacion C, simple y ligero.\n"""))
+            self.trUtf8('<b>SIDE-C</b> es un IDE para el lenguaje de '
+'programación C, simple y ligero,<br>desarrollado completamente en '
+'Python y Qt (PyQt)<br>'))
+        links_label = QLabel(
+            ('<b>Python:</b><a href="%s"><span style="color: #4dbee8;">%s'
+            '</span></a><br><b>Qt:</b> <a href="%s"><span style="color: '
+            '#4dbee8;">%s</span></a><br><b>PyQt:</b> <a href="%s"><span style='
+            '"color: #4dbee8;">%s</span></a>') %
+        (side_c.__python__, side_c.__python__, side_c.__qt__, side_c.__qt__,
+            side_c.__pyqt__, side_c.__pyqt__))
+
         descripcion_label.setAlignment(Qt.AlignLeft)
 
         layout_vertical.addWidget(descripcion_label)
+        layout_vertical.addWidget(links_label)
 
         version_side = QLabel(
-            ('Version: %s') % (side_c.__version__))
+            ('<b>Version:</b> %s') % (side_c.__version__))
         layout_vertical.addWidget(version_side)
 
         link_codigo_fuente = QLabel(
-            ('Codigo fuente: <a href="%s"><span style=" '
+            ('<b>Codigo fuente:</b> <a href="%s"><span style=" '
             'color: #4dbee8;">%s</span></a>') %
             (side_c.__codigo_fuente__, side_c.__codigo_fuente__))
         layout_vertical.addWidget(link_codigo_fuente)
 
-        self.connect(link_codigo_fuente, SIGNAL("linkActivated(QString)"),
-            self.activar_link)
+        # Conexiones
+        link_codigo_fuente.linkActivated[QString].connect(self.activar_link)
+        links_label.linkActivated[QString].connect(self.activar_link)
 
     def activar_link(self, link):
         webbrowser.open(str(link))
@@ -103,15 +115,12 @@ class AcercaDeCreadores(QWidget):
         super(AcercaDeCreadores, self).__init__()
 
         vbox = QVBoxLayout(self)
-        label_g = QLabel(
-            """Gabriel Acosta <acostadariogabriel@gmail.com> """)
-        label_m = QLabel(
-            "Martin Miranda <debianitram@gmail.com>")
+        label = QLabel(self.trUtf8(
+'<b>Gabriel Acosta</b><br><i>acostadariogabriel@gmail.com</i><br>'
+'<b>Martín Miranda</b><br><i>debianitram@gmail.com</i>'))
 
-        label_g.setAlignment(Qt.AlignCenter)
-        label_m.setAlignment(Qt.AlignCenter)
-        vbox.addWidget(label_g)
-        vbox.addWidget(label_m)
+        label.setAlignment(Qt.AlignCenter)
+        vbox.addWidget(label)
 
         self.setLayout(vbox)
 
@@ -131,9 +140,8 @@ class Licencia(QWidget):
 
     def leer_licencia(self):
         try:
-            archivo = open(recursos.LICENCIA, 'r')
-            data = archivo.read()
-            self.contenedor.setText(data)
-            archivo.close()
+            with open(recursos.LICENCIA, 'r') as l:
+                data = l.read()
+                self.contenedor.setText(data)
         except:
             self.contenedor.setText("Archivo no encontrado")

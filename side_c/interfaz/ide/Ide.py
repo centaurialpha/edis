@@ -1,12 +1,11 @@
 #-*- coding: utf-8 -*-
 
-import sys
-
 from PyQt4.QtGui import QMainWindow
 from PyQt4.QtGui import QDesktopWidget
 from PyQt4.QtGui import QIcon
 from PyQt4.QtGui import QToolBar
 from PyQt4.QtGui import QApplication
+from PyQt4.QtGui import QLabel
 
 from PyQt4.QtCore import Qt
 from PyQt4.QtCore import QSize
@@ -24,8 +23,8 @@ from side_c.interfaz.contenedor_principal import contenedor_principal
 from side_c.interfaz.contenedor_secundario import contenedor_secundario
 
 from side_c import recursos
+from side_c.nucleo import configuraciones
 
-SO = sys.platform
 
 ITEMS_TOOLBAR1 = [
     "separador",
@@ -76,10 +75,13 @@ class __IDE(QMainWindow):
         get_pantalla = QDesktopWidget().screenGeometry()
         self.posicionar_ventana(get_pantalla)
         self.setWindowIcon(QIcon(recursos.ICONOS['icono']))
-
+        self.showMaximized()
          # Barra de estado
         self.barra_de_estado = self.statusBar()
+        label = QLabel(self.tr("SIDE-C | version DEV"))
+        self.barra_de_estado.addWidget(label)
         #self.barra_de_estado.hide()
+        self.barra_de_estado.show()
 
         self.widget_Central = widget_central.WidgetCentral(self)
         self.cargar_ui(self.widget_Central)
@@ -88,7 +90,7 @@ class __IDE(QMainWindow):
         # ToolBar
         self.toolbar = QToolBar(self)
         self.toolbar_ = QToolBar(self)
-        if not SO:
+        if not configuraciones.LINUX:
             self.toolbar_.setIconSize(QSize(30, 30))
             self.toolbar.setIconSize(QSize(30, 30))
         else:
@@ -172,8 +174,8 @@ class __IDE(QMainWindow):
     def _cargar_tema(self):
         """ Carga el tema por defecto """
 
-        qss = recursos.TEMA_POR_DEFECTO
-
+        #qss = recursos.TEMA_POR_DEFECTO
+        qss = recursos.TEMA_BLACK_SIDE
         with open(qss) as q:
             tema = q.read()
         QApplication.instance().setStyleSheet(tema)

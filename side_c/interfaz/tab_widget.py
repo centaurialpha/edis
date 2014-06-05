@@ -58,11 +58,9 @@ class TabCentral(QTabWidget):
         """ Agrega ícono al tab si se hace una edición en el editor. """
 
         edit = self.currentWidget()
-        #texto = self.tabBar().tabText(self.currentIndex())
+
         if isinstance(edit, editor.Editor) and v:
             edit.texto_modificado = True
-            #texto = self.tabBar().tabText(self.currentIndex()) + ' **'
-            #self.tabBar().setTabText(self.currentIndex(), texto)
             icon = QIcon(recursos.ICONOS['icono-tab'])
 
             self.tabBar().setTabIcon(self.currentIndex(), icon)

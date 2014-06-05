@@ -72,10 +72,10 @@ class ContenedorBottom(QWidget):
         if configuraciones.LINUX is not False:
             self.term = Terminal(self)
             #icono = QIcon(recursos.ICONOS['terminal'])
-            self.tabs.addTab(self.term, "Terminal")
+            self.tabs.addTab(self.term, "")
 
-        self.tabs.addTab(self.salida_, "Salida")
-        self.tabs.addTab(self.notas, "Notas")
+        self.tabs.addTab(self.salida_, "")
+        self.tabs.addTab(self.notas, "")
 
         self.tabs.setTabPosition(QTabWidget.East)
 
@@ -119,7 +119,7 @@ class Terminal(QWidget):
 
         layout = QVBoxLayout(self)
         layout.setContentsMargins(0, 0, 0, 0)
-        #layout.setSpacing(0)
+        layout.setSpacing(0)
         #layout.setStretch(300, 300)
         layout.addWidget(self.terminal)
 
