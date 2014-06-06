@@ -106,6 +106,9 @@ class __ContenedorMain(QSplitter):
         if w:
             w.setFocus()
 
+    def esta_abierto(self, nombre):
+        return self.tab_principal._esta_abierto(nombre) != -1
+
     def agregar_tab(self, widget, nombre_tab, tabIndex=None):
         return self.tab_actual.agregar_tab(widget, nombre_tab, index=tabIndex)
 
@@ -130,6 +133,7 @@ class __ContenedorMain(QSplitter):
         extension = ';;'.join(
             ['(*%s)' % ex for ex in
             recursos.EXTENSIONES + ['.*', '']])
+        nombre = unicode(nombre)
 
         if not nombre:
             directorio = os.path.expanduser("~")
@@ -138,16 +142,35 @@ class __ContenedorMain(QSplitter):
             nombres = unicode(QFileDialog.getOpenFileName(
                 self, self.tr("Abrir archivo"),
                 directorio, extension))
+            try:
+                contenido = self.leer_contenido_archivo(nombres)
+                editorW = self.agregar_editor(nombre, tabIndex)
 
-            contenido = self.leer_contenido_archivo(nombres)
-            editorW = self.agregar_editor(nombre, tabIndex)
+                editorW.setPlainText(contenido)
+                editorW.ID = nombre
+                #editorW.posicion_cursor(cursor)
 
-            editorW.setPlainText(contenido)
-            editorW.ID = nombre
-            editorW.posicion_cursor(cursor)
+                index = self.tab_actual.currentIndex()
+                self.tab_actual.setTabText(index, nombres)
+                #self.emit(SIGNAL("currentTabChanged(QString)"), nombre)
+            except:
+                pass
 
-            index = self.tab_actual.currentIndex()
-            self.tab_actual.setTabText(index, nombres)
+        else:
+            self.mover_tab(nombre)
+            eW = self.devolver_editor_actual()
+
+            if eW:
+                eW.posicion_cursor(cursor)
+            self.emit(SIGNAL("currentTabChanged(QString)"), nombre)
+
+    def mover_tab(self, nombre):
+        if self.tab_principal._esta_abierto(nombre) != -1:
+            self.tab_principal._mover_tab(nombre)
+            self.tab_actual = self.tab_principal
+
+        self.tab_actual.currentWidget().setFocus()
+        self.emit(SIGNAL("currentTabChangd(QString)"), nombre)
 
     def guardar_archivo(self, editorW=None):
         pass

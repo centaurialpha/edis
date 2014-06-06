@@ -54,6 +54,18 @@ class TabCentral(QTabWidget):
             if self.count() > 1:
                 self.removeTab(1)
 
+    def _esta_abierto(self, nombre):
+        for i in range(self.count()):
+            if self.widget(i) == nombre:
+                return i
+        return -1
+
+    def _mover_tab(self, nombre):
+        for i in range(self.count()):
+            if self.widget(i) == nombre:
+                self.setCurrentIndex(i)
+                return
+
     def tab_es_modificado(self, v):
         """ Agrega ícono al tab si se hace una edición en el editor. """
 

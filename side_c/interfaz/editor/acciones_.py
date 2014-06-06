@@ -42,30 +42,29 @@ def insertar_titulo(ew):
 
 def insertar_fecha(ew, formato):
     fecha = datetime.date.today()
-    ew.textCursor().beginEditBlock()
-    ew.moveCursor(QTextCursor.StartOfLine, QTextCursor.MoveAnchor)
 
-    if formato == 1:
-        hoy = fecha.strftime("%d-%m-%Y")
-    elif formato == 2:
-        hoy = fecha.strftime("%m-%d-%Y")
-    elif formato == 3:
-        hoy = fecha.strftime("%Y-%m-%d")
+    dicF = {
+        1: "%d-%m-%Y",
+        2: "%m-%d-%Y",
+        3: "%Y-%m-%d"
+        }
+
+    for f in dicF:
+        hoy = fecha.strftime(dicF.get(formato))
 
     ew.textCursor().insertText(hoy)
-    ew.textCursor().endEditBlock()
 
 
 def insertar_fecha_hora(ew, formato):
     fecha = datetime.datetime.now()
+    dicF = {
+        1: "%d-%m-%Y--%H:%M",
+        2: "%m-%d-%Y--%H:%M",
+        3: "%Y-%m-%d--%H:%M"
+        }
 
-    if formato == 1:
-        hoy = fecha.strftime("%d-%m-%Y--%H:%M ")
-    elif formato == 2:
-        hoy = fecha.strftime("%m-%d-%Y--%H:%M")
-    elif formato == 3:
-        hoy = fecha.strftime("%Y-%m-%d--%H:%M")
-
+    for f in dicF:
+        hoy = fecha.strftime(dicF.get(formato))
     ew.textCursor().insertText(hoy)
 
 

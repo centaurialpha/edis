@@ -134,6 +134,7 @@ class Editor(QPlainTextEdit):
 
     def _indentar(self, evento):
         """ Inserta 4 espacios si se preciosa la tecla Tab """
+
         if configuraciones.CHECK_INDENTACION:
             self.textCursor().insertText(' ' * configuraciones.INDENTACION)
             return True
