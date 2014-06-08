@@ -29,10 +29,16 @@ if SISTEMA_OPERATIVO == WIN:
     WINDOWS = True
     LINUX = False
 else:
-    FUENTE = 'Monospace'
-    TAM_FUENTE = 11
-    LINUX = True
-    WINDOWS = False
+    try:
+        FUENTE = 'Ubuntu Mono'
+        TAM_FUENTE = 12
+        LINUX = True
+        WINDOWS = False
+    except:
+        FUENTE = 'Monospace'
+        TAM_FUENTE = 11
+        LINUX = True
+        WINDOWS = False
 
 FUENTE_MAX_TAM = 80
 FUENTE_MIN_TAM = 6

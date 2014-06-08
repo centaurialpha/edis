@@ -4,10 +4,7 @@ import os
 from PyQt4.QtGui import QSplitter
 from PyQt4.QtGui import QFileDialog
 
-#from PyQt4.QtCore import QString
 from PyQt4.QtCore import SIGNAL
-#from PyQt4.QtCore import QFile
-#from PyQt4.QtCore import QTextStream
 
 from side_c import recursos
 from side_c.interfaz import tab_widget
@@ -41,13 +38,23 @@ class __ContenedorMain(QSplitter):
 
         if not nombre_archivo:
             nombre_tab = "Nuevo archivo"
+        else:
+            nombre_tab = self._nombreBase(nombre_archivo)
 
         self.agregar_tab(editorWidget, nombre_tab, tabIndex=tabIndex)
 
         self.connect(editorWidget, SIGNAL("modificationChanged(bool)"),
             self.editor_es_modificado)
+        self.connect(editorWidget, SIGNAL("openDropFile(QString)"),
+            self.abrir_archivo)
+        self.emit(SIGNAL("fileOpened(QString)"), nombre_archivo)
 
         return editorWidget
+
+    def _nombreBase(self, nombre):
+        if nombre.endswith(os.path.sep):
+            nombre = nombre[:-1]
+        return os.path.basename(nombre)
 
     def deshacer(self):
         editorW = self.devolver_editor_actual()
@@ -106,10 +113,7 @@ class __ContenedorMain(QSplitter):
         if w:
             w.setFocus()
 
-    def esta_abierto(self, nombre):
-        return self.tab_principal._esta_abierto(nombre) != -1
-
-    def agregar_tab(self, widget, nombre_tab, tabIndex=None):
+    def agregar_tab(self, widget, nombre_tab, tabIndex=None, nAbierta=True):
         return self.tab_actual.agregar_tab(widget, nombre_tab, index=tabIndex)
 
     def cerrar_tab(self):
@@ -129,40 +133,36 @@ class __ContenedorMain(QSplitter):
     def editor_es_modificado(self, v=True):
         self.tab_actual.tab_es_modificado(v)
 
-    def abrir_archivo(self, nombre='', tabIndex=None, cursor=0):
-        extension = ';;'.join(
-            ['(*%s)' % ex for ex in
-            recursos.EXTENSIONES + ['.*', '']])
-        nombre = unicode(nombre)
+    def abrir_archivo(self, nombre='', cursor=0, tabIndex=None):
+        extension = recursos.EXTENSIONES  # Filtro
 
         if not nombre:
-            directorio = os.path.expanduser("~")
-            editorW = self.devolver_editor_actual()
+            direc = os.path.expanduser("~")
 
-            nombres = unicode(QFileDialog.getOpenFileName(
-                self, self.tr("Abrir archivo"),
-                directorio, extension))
-            try:
-                contenido = self.leer_contenido_archivo(nombres)
-                editorW = self.agregar_editor(nombre, tabIndex)
-
-                editorW.setPlainText(contenido)
-                editorW.ID = nombre
-                #editorW.posicion_cursor(cursor)
-
-                index = self.tab_actual.currentIndex()
-                self.tab_actual.setTabText(index, nombres)
-                #self.emit(SIGNAL("currentTabChanged(QString)"), nombre)
-            except:
-                pass
-
+            nombres = list(QFileDialog.getOpenFileNames(self,
+            self.tr("Abrir archivo"), direc, extension))
         else:
-            self.mover_tab(nombre)
-            eW = self.devolver_editor_actual()
+            nombres = [nombre]
+        if not nombres:
+            return
 
-            if eW:
-                eW.posicion_cursor(cursor)
-            self.emit(SIGNAL("currentTabChanged(QString)"), nombre)
+        for nombre in nombres:
+            nombre = str(nombre)
+            self._abrir_archivo(nombre, cursor, tabIndex)
+
+    def _abrir_archivo(self, nombre='', cursor=0, tabIndex=None):
+        try:
+            contenido = self.leer_contenido_archivo(nombre)
+            eW = self.agregar_editor(nombre, tabIndex=tabIndex)
+
+            eW.setPlainText(contenido)
+            eW.ID = nombre
+        except:
+            #print "Prueba"
+            pass
+
+    def esta_abierto(self, nombre):
+        return self.tab_principal._esta_abierto(nombre) != -1
 
     def mover_tab(self, nombre):
         if self.tab_principal._esta_abierto(nombre) != -1:

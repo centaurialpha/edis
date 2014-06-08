@@ -106,8 +106,4 @@ ATAJOS = {
 
 
 # Extensiones soportadas
-EXTENSIONES = [
-    '.c',
-    '.h',
-    '.cpp'
-    ]
+EXTENSIONES = " Archivos C (*.c *.cpp *.h)"

@@ -5,10 +5,11 @@ from PyQt4.QtGui import QDesktopWidget
 from PyQt4.QtGui import QIcon
 from PyQt4.QtGui import QToolBar
 from PyQt4.QtGui import QApplication
-from PyQt4.QtGui import QLabel
+#from PyQt4.QtGui import QLabel
 
 from PyQt4.QtCore import Qt
 from PyQt4.QtCore import QSize
+#from PyQt4.QtCore import SIGNAL
 
 from side_c.interfaz.menu import menu_archivo
 from side_c.interfaz.menu import menu_editar
@@ -77,11 +78,8 @@ class __IDE(QMainWindow):
         self.setWindowIcon(QIcon(recursos.ICONOS['icono']))
         self.showMaximized()
          # Barra de estado
-        self.barra_de_estado = self.statusBar()
-        label = QLabel(self.tr("SIDE-C | version DEV"))
-        self.barra_de_estado.addWidget(label)
-        #self.barra_de_estado.hide()
-        self.barra_de_estado.show()
+        #self.barra_de_estado = self.statusBar()
+        #self.barra_de_estado.show()
 
         self.widget_Central = widget_central.WidgetCentral(self)
         self.cargar_ui(self.widget_Central)
