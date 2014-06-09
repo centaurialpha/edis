@@ -1,11 +1,11 @@
 #-*- coding: utf-8 -*-
 
 from PyQt4.QtGui import QTabWidget
-from PyQt4.QtGui import QColor
+#from PyQt4.QtGui import QColor
 from PyQt4.QtGui import QMessageBox
 
 from PyQt4.QtCore import SIGNAL
-from PyQt4.QtCore import Qt
+#from PyQt4.QtCore import Qt
 
 from side_c.interfaz.editor import editor
 #from side_c import recursos
@@ -23,7 +23,7 @@ class TabCentral(QTabWidget):
         self.no_esta_abierto = True
 
         self.connect(self, SIGNAL("tabCloseRequested(int)"),
-            self.sacar_tab)
+            self.removeTab)
 
     def agregar_tab(self, widget, titulo, index=None):
 
@@ -40,13 +40,13 @@ class TabCentral(QTabWidget):
     def cerrar_tab(self):
         """ Cierra la pestaña actual. """
 
-        self.sacar_tab(self.currentIndex())
+        self.removeTab(self.currentIndex())
 
     def cerrar_todo(self):
         """ Cierra todas las pestañas. """
 
         for tab in range(self.count()):
-            self.sacar_tab(0)
+            self.removeTab(0)
 
     def cerrar_excepto_actual(self):
         """ Cierrar todas las pestañas excepto la pestaña actual.
@@ -55,13 +55,13 @@ class TabCentral(QTabWidget):
         self.tabBar().moveTab(self.currentIndex(), 0)
         for tab in range(self.count()):
             if self.count() > 1:
-                self.sacar_tab(1)
+                self.removeTab(1)
 
     def _esta_abierto(self, nombre):
         for i in range(self.count()):
             if self.widget(i) == nombre:
-                return i
-        return -1
+                return True
+        return False
 
     def _mover_tab(self, nombre):
         for i in range(self.count()):
@@ -70,27 +70,40 @@ class TabCentral(QTabWidget):
                 return
 
     def tab_es_modificado(self, v):
-        editorW = self.currentWidget()
+        e = self.currentWidget()
+        texto = unicode(self.tabBar().tabText(self.currentIndex()))
 
-        if isinstance(editorW, editor.Editor) and v and self.no_esta_abierto:
+        if isinstance(e, editor.Editor) and self.no_esta_abierto and v \
+        and not texto.startswith('* '):
             editor.texto_modificado = True
-            self.tabBar().setTabTextColor(self.currentIndex(),
-                QColor(Qt.red))
+            t = '* %s' % self.tabBar().tabText(self.currentIndex())
+            self.tabBar().setTabText(self.currentIndex(), t)
 
     def tab_guardado(self, e):
         indice = self.indexOf(e)
-        texto = self.tabBar().tabText(indice)
+        texto = unicode(self.tabBar().tabText(indice))
+
         if texto.startswith('* '):
-            texto = texto[4:]
-        self.tabBar().setTabTex(indice, texto)
+            texto = texto[2:]
+        self.tabBar().setTabText(indice, texto)
+
+    def focusInEvent(self, e):
+        QTabWidget.focusInEvent(self, e)
+        self.emit(SIGNAL("changeActualTab(QTabWidget)"), self)
+
+        eW = self.currentWidget()
+        if not eW:
+            return
+        if eW.nuevo_archivo:
+            return
 
     def actualizar_widget_actual(self):
-        if self.currentWidget() is None:
-            self.emit(SIGNAL("allTabsClosed()"))
-        else:
+        if self.currentWidget() is not None:
             self.currentWidget().setFocus()
+        else:
+            self.emit(SIGNAL("allTabsClosed()"))
 
-    def sacar_tab(self, indice):
+    def removeTab(self, indice):
         if indice != -1:
             self.setCurrentIndex(indice)
             w = self.currentWidget()
@@ -99,8 +112,8 @@ class TabCentral(QTabWidget):
                 if w.texto_modificado:
                     nombre = self.tabBar().tabText(self.currentIndex())
                     v = QMessageBox.question(self,
-                        self.trUtf8('El archivo %s no esta guardado') +
-                        (nombre), self.trUtf8("¿Guardar antes de cerrar?"),
+                        (self.tr('El archivo %s no esta guardado') %
+                        nombre), self.tr("¿Guardar antes de cerrar?"),
                             QMessageBox.Yes | QMessageBox.No |
                             QMessageBox.Cancel)
 
@@ -111,9 +124,10 @@ class TabCentral(QTabWidget):
                 if v == QMessageBox.Cancel:
                     return
 
-                super(TabCentral, self).removeTab(indice)
-                if self.currentWidget() is not None:
-                    self.currentWidget().setFocus()
-                else:
-                    self.emit(SIGNAL("allTabsClosed()"))
-                self.actualizar_widget_actual()
+            super(TabCentral, self).removeTab(indice)
+            if self.currentWidget() is not None:
+                self.currentWidget().setFocus()
+            else:
+                self.emit(SIGNAL("allTabsClosed()"))
+            del w
+            self.actualizar_widget_actual()

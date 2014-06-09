@@ -7,7 +7,7 @@ from PyQt4.QtGui import QMessageBox
 #from PyQt4.QtGui import QApplication
 
 from PyQt4.QtCore import SIGNAL
-from PyQt4.QtCore import QDir
+#from PyQt4.QtCore import QDir
 from PyQt4.QtCore import QFile
 from PyQt4.QtCore import QTextStream
 #from PyQt4.QtCore import Qt
@@ -40,6 +40,11 @@ class __ContenedorMain(QSplitter):
         self.setSizes([1, 1])
         self.setFixedSize(0, 500)
         self.tab_actual = self.tab_principal
+
+        self.connect(self.tab_principal, SIGNAL("currentChanged(int)"),
+            self.tab_actual_cambiado)
+        self.connect(self.tab_principal, SIGNAL("saveActualEditor()"),
+            self.guardar_archivo)
 
     def agregar_editor(self, nombre_archivo="", tabIndex=None):
         editorWidget = editor.crear_editor(nombre_archivo=nombre_archivo)
@@ -142,45 +147,46 @@ class __ContenedorMain(QSplitter):
 
     def editor_es_modificado(self, v=True):
         self.tab_actual.tab_es_modificado(v)
+        self.tab_actual.tab_es_modificado(v)
 
     def editor_es_guardado(self, e=None):
-        self.tab_actual.tab_es_guardado(e)
+        self.tab_actual.tab_guardado(e)
         self.emit(SIGNAL("updateLocator(QString)"), e.ID)
 
-    def abrir_archivo(self, nombre='', cursor=0, tabIndex=None):
+    def tab_actual_cambiado(self, indice):
+        if self.tab_actual.widget(indice):
+            self.emit(SIGNAL("currentTabChanged(QString)"),
+                self.tab_actual.widget(indice))
+
+    def abrir_archivo(self, nombre='', tabIndex=None):
         extension = recursos.EXTENSIONES  # Filtro
+
+        nombre = unicode(nombre)
 
         if not nombre:
             direc = os.path.expanduser("~")
 
-            nombres = list(QFileDialog.getOpenFileNames(self,
+            nombre = unicode(QFileDialog.getOpenFileName(self,
             self.tr("Abrir archivo"), direc, extension))
-        else:
-            nombres = [nombre]
-        if not nombres:
+        if not nombre:
             return
 
-        for nombre in nombres:
-            nombre = str(nombre)
-            self._abrir_archivo(nombre, cursor, tabIndex)
-
-    def _abrir_archivo(self, nombre='', cursor=0, tabIndex=None):
         try:
             if not self.esta_abierto(nombre):
                 self.tab_actual.no_esta_abierto = False
                 contenido = self.leer_contenido_archivo(nombre)
-                eW = self.agregar_editor(nombre, tabIndex=tabIndex)
+                editorW = self.agregar_editor(nombre, tabIndex=tabIndex)
+                editorW.setPlainText(contenido)
+                editorW.ID = nombre
 
-                eW.setPlainText(contenido)
-                eW.ID = nombre
+            self.emit(SIGNAL("currentTabChanged(QString)"), nombre)
 
-                self.emit(SIGNAL("currentTabChanged(QString)"), nombre)
         except:
             pass
         self.tab_actual.no_esta_abierto = True
 
     def esta_abierto(self, nombre):
-        return self.tab_principal._esta_abierto(nombre) != -1
+        return self.tab_principal._esta_abierto(nombre) is not False
 
     def mover_tab(self, nombre):
         if self.tab_principal._esta_abierto(nombre) != -1:
@@ -197,82 +203,82 @@ class __ContenedorMain(QSplitter):
             return False
 
         try:
+            editorW.guardado_actualmente = True
             if editorW.nuevo_archivo:
-                print "NUEVO"
                 return self.guardar_archivo_como()
 
             nombre = editorW.ID
 
             contenido = editorW.devolver_texto()
-            salidaF = QFile(nombre)
-
-            stream = QTextStream(salidaF)
-            stream.setCodec('utf-8')
-            enc_s = stream.codec().fromUnicode(contenido)
-            salidaF.write(enc_s)
-            salidaF.flush()
-            salidaF.close()
+            self.escribir_archivo(nombre, contenido)
             editorW.ID = nombre
-            self.emit(SIGNAL("fileSaved(QString)"), self.tr("Guardado"))
 
-            print "Guardado!"
+            self.emit(SIGNAL("fileSaved(QString)"), self.tr(
+                "Guardado: %1").arg(nombre))
 
             editorW._guardado()
             return True
         except:
             pass
+            editorW.guardado_actualmente = False
         return False
 
     def guardar_archivo_como(self):
-        CODEC = 'utf-8'
-
+        #CODEC = 'utf-8'
+        direc = os.path.expanduser("~")
         editorW = self.devolver_editor_actual()
         if not editorW:
             return False
 
         try:
-            nombre = QFileDialog.getSaveFileName(
-                self.parent, self.tr("Guardar"), QDir.currentPath(), '(*.*)')
+            editorW.guardado_actualmente = True
+            nombre = unicode(QFileDialog.getSaveFileName(
+                self.parent, self.tr("Guardar"), direc, '(*.c);;(*.*)'))
             if not nombre:
                 return False
 
-            salidaF = QFile(nombre)
-            if not salidaF.open(QFile.WriteOnly | QFile.Text):
-                QMessageBox.warning(self,
-                    "Guardar", "No se escribio en %s: %s" % (
-                        nombre, salidaF.errorString()))
-                return False
-
-            contenido = editorW.devolver_texto()
-
-            stream = QTextStream(salidaF)
-            stream.setCodec(CODEC)
-            enc_s = stream.codec().fromUnicode(contenido)
-            salidaF.write(enc_s)
-            salidaF.flush()
-            salidaF.close()
+            nombre = self.escribir_archivo(nombre, editorW.devolver_texto())
 
             self.tab_actual.setTabText(self.tab_actual.currentIndex(),
                 self._nombreBase(nombre))
             editorW.ID = nombre
             self.emit(SIGNAL("fileSaved(QString)"),
-                self.tr("Guardado"))
+                self.tr("Guardado: %1").arg(nombre))
             editorW._guardado()
-            print "Guardado como!"
+
             return True
 
         except:
             pass
+            editorW.guardado_actualmente = False
         return False
 
     def leer_contenido_archivo(self, archivo):
         """ Recibe (archivo), lee y lo retorna. """
-        import codecs
-
-        with codecs.open(archivo, 'r', 'utf-8') as f:
-            contenido = f.read()
-
+        try:
+            with open(archivo, 'rU') as f:
+                contenido = f.read()
+        except:
+            pass
         return contenido
+
+    def escribir_archivo(self, nombre, contenido):
+        try:
+            f = QFile(nombre)
+            if not f.open(QFile.WriteOnly | QFile.Text):
+                    QMessageBox.warning(self,
+                        "Guardar", "No se escribio en %s: %s" % (
+                            nombre, f.errorString()))
+                    return False
+
+            stream = QTextStream(f)
+            enc_s = stream.codec().fromUnicode(contenido)
+            f.write(enc_s)
+            f.flush()
+            f.close()
+        except:
+            pass
+        return os.path.abspath(nombre)
 
     def permiso_de_escritura(self, archivo):
         return os.access(archivo, os.W_OK)

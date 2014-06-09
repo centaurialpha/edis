@@ -18,7 +18,6 @@ from side_c import recursos
 from side_c.nucleo import configuraciones
 from side_c.interfaz.editor import widget_numero_lineas
 from side_c.interfaz.editor.highlighter import Highlighter
-#from side_c.interfaz.editor import acciones_
 
 
 class Editor(QPlainTextEdit):
@@ -50,6 +49,7 @@ class Editor(QPlainTextEdit):
         self.presionadoDespues = {Qt.Key_Enter: self._auto_indentar,
         Qt.Key_Return: self._auto_indentar}
 
+        self.connect(self, SIGNAL("undoAvailable(bool)"), self._guardado)
         self.connect(self, SIGNAL("cursorPositionChanged()"),
             self.resaltar_linea_actual)
         self.connect(self, SIGNAL("updateRequest(const QRect&, int)"),
@@ -96,12 +96,6 @@ class Editor(QPlainTextEdit):
             pintar.drawLine(self.posicion_margen + offset.x(), 0,
                 self.posicion_margen + offset.x(), self.viewport().height())
             pintar.end()
-
-    def posicion_cursor(self, posicion):
-        if self.document().characterCount() >= posicion:
-            c = self.textCursor()
-            c.setPosition(posicion)
-            self.setTextCursor(c)
 
     def resaltar_linea_actual(self):
         """ Pinta la linea actual en donde está posicionado el cursor. """
@@ -203,10 +197,12 @@ class Editor(QPlainTextEdit):
             c_width = f_metrics.averageCharWidth()
             self.posicion_margen = c_width * configuraciones.MARGEN
 
-    def _guardado(self):
-        self.nuevo_archivo = False
-        self.texto_modificado = False
-        self.document().setModified(self.texto_modificado)
+    def _guardado(self, uA=False):
+        if not uA:
+            self.emit(SIGNAL("fileSaved(QPlainTextEdit)"), self)
+            self.nuevo_archivo = False
+            self.texto_modificado = False
+            self.document().setModified(self.texto_modificado)
 
     def __indentacion(self, linea, ind=configuraciones.INDENTACION):
         import re

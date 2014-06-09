@@ -9,7 +9,7 @@ from PyQt4.QtGui import QApplication
 
 from PyQt4.QtCore import Qt
 from PyQt4.QtCore import QSize
-from PyQt4.QtCore import SIGNAL
+#from PyQt4.QtCore import SIGNAL
 
 from side_c.interfaz.menu import menu_archivo
 from side_c.interfaz.menu import menu_editar
@@ -20,7 +20,6 @@ from side_c.interfaz.menu import menu_codigo
 from side_c.interfaz.menu import menu_acerca_de
 
 from side_c.interfaz import widget_central
-from side_c.interfaz import barra_de_estado
 from side_c.interfaz.contenedor_principal import contenedor_principal
 from side_c.interfaz.contenedor_secundario import contenedor_secundario
 
@@ -84,11 +83,6 @@ class __IDE(QMainWindow):
         self.cargar_ui(self.widget_Central)
         self.setCentralWidget(self.widget_Central)
 
-        # Barra de estado
-        self.barra_estado = barra_de_estado.BarraDeEstado(self)
-        self.barra_estado.hide()
-        self.setStatusBar(self.barra_estado)
-
         # ToolBar
         self.toolbar = QToolBar(self)
         self.toolbar_ = QToolBar(self)
@@ -123,9 +117,6 @@ class __IDE(QMainWindow):
         self._menu_codigo = menu_codigo.MenuCodigoFuente(
             codigo, self.toolbar, self)
         self._menu_acerca_de = menu_acerca_de.MenuAcercade(acerca, self)
-
-        self.connect(self.contenedor_principal, SIGNAL("fileSaved(QString)"),
-            self.barra_de_estado)
 
         # Métodos para cargar items en las toolbar
         self.cargar_toolbar([self._menu_archivo, self._menu_codigo],
@@ -175,9 +166,6 @@ class __IDE(QMainWindow):
 
                 if item_tool is not None:
                     toolbar.addAction(item_tool)
-
-    def barra_de_estado(self, mensaje, tiempo):
-        self.statusBar().showMessage(mensaje, tiempo)
 
     def _cargar_tema(self):
         """ Carga el tema por defecto """
