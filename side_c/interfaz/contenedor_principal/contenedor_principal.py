@@ -3,11 +3,18 @@ import os
 
 from PyQt4.QtGui import QSplitter
 from PyQt4.QtGui import QFileDialog
+from PyQt4.QtGui import QMessageBox
+#from PyQt4.QtGui import QApplication
 
 from PyQt4.QtCore import SIGNAL
+from PyQt4.QtCore import QDir
+from PyQt4.QtCore import QFile
+from PyQt4.QtCore import QTextStream
+#from PyQt4.QtCore import Qt
 
 from side_c import recursos
 from side_c.interfaz import tab_widget
+#from side_c.interfaz import barra_de_estado
 from side_c.interfaz.editor import editor
 
 __instanciaContenedorMain = None
@@ -25,6 +32,7 @@ class __ContenedorMain(QSplitter):
 
     def __init__(self, parent=None):
         QSplitter.__init__(self, parent)
+
         self.parent = parent
         self.tab_principal = tab_widget.TabCentral(self)
         self.setAcceptDrops(True)
@@ -45,6 +53,8 @@ class __ContenedorMain(QSplitter):
 
         self.connect(editorWidget, SIGNAL("modificationChanged(bool)"),
             self.editor_es_modificado)
+        self.connect(editorWidget, SIGNAL("fileSaved(QPlainTextEdit)"),
+            self.editor_es_guardado)
         self.connect(editorWidget, SIGNAL("openDropFile(QString)"),
             self.abrir_archivo)
         self.emit(SIGNAL("fileOpened(QString)"), nombre_archivo)
@@ -133,6 +143,10 @@ class __ContenedorMain(QSplitter):
     def editor_es_modificado(self, v=True):
         self.tab_actual.tab_es_modificado(v)
 
+    def editor_es_guardado(self, e=None):
+        self.tab_actual.tab_es_guardado(e)
+        self.emit(SIGNAL("updateLocator(QString)"), e.ID)
+
     def abrir_archivo(self, nombre='', cursor=0, tabIndex=None):
         extension = recursos.EXTENSIONES  # Filtro
 
@@ -152,14 +166,18 @@ class __ContenedorMain(QSplitter):
 
     def _abrir_archivo(self, nombre='', cursor=0, tabIndex=None):
         try:
-            contenido = self.leer_contenido_archivo(nombre)
-            eW = self.agregar_editor(nombre, tabIndex=tabIndex)
+            if not self.esta_abierto(nombre):
+                self.tab_actual.no_esta_abierto = False
+                contenido = self.leer_contenido_archivo(nombre)
+                eW = self.agregar_editor(nombre, tabIndex=tabIndex)
 
-            eW.setPlainText(contenido)
-            eW.ID = nombre
+                eW.setPlainText(contenido)
+                eW.ID = nombre
+
+                self.emit(SIGNAL("currentTabChanged(QString)"), nombre)
         except:
-            #print "Prueba"
             pass
+        self.tab_actual.no_esta_abierto = True
 
     def esta_abierto(self, nombre):
         return self.tab_principal._esta_abierto(nombre) != -1
@@ -173,10 +191,79 @@ class __ContenedorMain(QSplitter):
         self.emit(SIGNAL("currentTabChangd(QString)"), nombre)
 
     def guardar_archivo(self, editorW=None):
-        pass
+        if not editorW:
+            editorW = self.devolver_editor_actual()
+        if not editorW:
+            return False
+
+        try:
+            if editorW.nuevo_archivo:
+                print "NUEVO"
+                return self.guardar_archivo_como()
+
+            nombre = editorW.ID
+
+            contenido = editorW.devolver_texto()
+            salidaF = QFile(nombre)
+
+            stream = QTextStream(salidaF)
+            stream.setCodec('utf-8')
+            enc_s = stream.codec().fromUnicode(contenido)
+            salidaF.write(enc_s)
+            salidaF.flush()
+            salidaF.close()
+            editorW.ID = nombre
+            self.emit(SIGNAL("fileSaved(QString)"), self.tr("Guardado"))
+
+            print "Guardado!"
+
+            editorW._guardado()
+            return True
+        except:
+            pass
+        return False
 
     def guardar_archivo_como(self):
-        pass
+        CODEC = 'utf-8'
+
+        editorW = self.devolver_editor_actual()
+        if not editorW:
+            return False
+
+        try:
+            nombre = QFileDialog.getSaveFileName(
+                self.parent, self.tr("Guardar"), QDir.currentPath(), '(*.*)')
+            if not nombre:
+                return False
+
+            salidaF = QFile(nombre)
+            if not salidaF.open(QFile.WriteOnly | QFile.Text):
+                QMessageBox.warning(self,
+                    "Guardar", "No se escribio en %s: %s" % (
+                        nombre, salidaF.errorString()))
+                return False
+
+            contenido = editorW.devolver_texto()
+
+            stream = QTextStream(salidaF)
+            stream.setCodec(CODEC)
+            enc_s = stream.codec().fromUnicode(contenido)
+            salidaF.write(enc_s)
+            salidaF.flush()
+            salidaF.close()
+
+            self.tab_actual.setTabText(self.tab_actual.currentIndex(),
+                self._nombreBase(nombre))
+            editorW.ID = nombre
+            self.emit(SIGNAL("fileSaved(QString)"),
+                self.tr("Guardado"))
+            editorW._guardado()
+            print "Guardado como!"
+            return True
+
+        except:
+            pass
+        return False
 
     def leer_contenido_archivo(self, archivo):
         """ Recibe (archivo), lee y lo retorna. """
