@@ -45,6 +45,7 @@ FUENTE_MIN_TAM = 6
 
 INDENTACION = 4
 CHECK_INDENTACION = True
+CHECK_AUTO_INDENTACION = True
 
 ###############################################################################
 #                   CONFIGURACIONES                                           #
@@ -63,3 +64,5 @@ if fuente_tam != 0:
 INDENTACION = qsettings.value('configuraciones/editor/indentacion', 4, type=int)
 CHECK_INDENTACION = qsettings.value('configuraciones/editor/checkInd', True,
     type=bool)
+CHECK_AUTO_INDENTACION = qsettings.value('configuraciones/editor/autoInd',
+    True, type=bool)

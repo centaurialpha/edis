@@ -37,6 +37,7 @@ class PruebaConfiguracionEditor(unittest.TestCase):
 
         self.poner_en_cero()
 
+        # Test
         self.wid.spinMargen.setValue(80)
         self.assertEqual(self.wid.spinMargen.value(), 80)
 

@@ -137,8 +137,7 @@ class Editor(QPlainTextEdit):
     def _auto_indentar(self, evento):
         """ Inserta automáticamente 4 espacios después de presionar Enter,
         previamente escrito '{' """
-
-        if configuraciones.CHECK_INDENTACION:
+        if configuraciones.CHECK_AUTO_INDENTACION:
             texto = self.textCursor().block().previous().text()
             espacios = self.__indentacion(texto, configuraciones.INDENTACION)
             self.textCursor().insertText(espacios)
