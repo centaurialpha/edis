@@ -6,6 +6,7 @@ from PyQt4.QtGui import QColor
 from PyQt4.QtGui import QFontMetricsF
 from PyQt4.QtGui import QPainter
 from PyQt4.QtGui import QFont
+from PyQt4.QtGui import QTextCursor
 
 from PyQt4.QtCore import Qt
 from PyQt4.QtCore import SIGNAL
@@ -18,6 +19,15 @@ from side_c import recursos
 from side_c.nucleo import configuraciones
 from side_c.interfaz.editor import widget_numero_lineas
 from side_c.interfaz.editor.highlighter import Highlighter
+
+# Diccionario teclas
+TECLA = {
+    'TABULACION': Qt.Key_Tab,
+    'ENTER': Qt.Key_Return,
+    'LLAVE': Qt.Key_BraceLeft,
+    'PARENTESIS': Qt.Key_ParenLeft,
+    'CORCHETE': Qt.Key_BracketLeft
+    }
 
 
 class Editor(QPlainTextEdit):
@@ -45,9 +55,16 @@ class Editor(QPlainTextEdit):
         # Resaltado en posición del cursor
         self.resaltar_linea_actual()
 
-        self.presionadoAntes = {Qt.Key_Tab: self._indentar}
-        self.presionadoDespues = {Qt.Key_Enter: self._auto_indentar,
-        Qt.Key_Return: self._auto_indentar}
+        self.presionadoAntes = {
+            TECLA.get('TABULACION'): self._indentar
+            }
+
+        self.presionadoDespues = {
+            TECLA.get('ENTER'): self._auto_indentar,
+            TECLA.get('LLAVE'): self._completar_braces,
+            TECLA.get('CORCHETE'): self._completar_braces,
+            TECLA.get('PARENTESIS'): self._completar_braces
+            }
 
         self.connect(self, SIGNAL("undoAvailable(bool)"), self._guardado)
         self.connect(self, SIGNAL("cursorPositionChanged()"),
@@ -145,6 +162,15 @@ class Editor(QPlainTextEdit):
             cursor = self.textCursor()
             cursor.setPosition(cursor.position())
             self.setTextCursor(cursor)
+
+    def _completar_braces(self, evento):
+        braces = {'(': ')', '{': '}', '[': ']'}
+
+        brace = unicode(evento.text())
+        llave_ = braces.get(brace)
+
+        self.textCursor().insertText(llave_)
+        self.moveCursor(QTextCursor.Left)
 
     def devolver_texto(self):
         """ Retorna todo el contenido del editor """
