@@ -70,7 +70,7 @@ class Highlighter(QSyntaxHighlighter):
         self.highlightingRules.append((QRegExp("#[^\n]*"),
             include))
 
-        _include.setForeground(Qt.darkGreen)
+        _include.setForeground(Qt.yellow)
         self.highlightingRules.append((QRegExp("\<.*\>"), _include))
 
         # Struct
@@ -79,7 +79,6 @@ class Highlighter(QSyntaxHighlighter):
             struct))
 
         # Numero
-        numeros.setFontWeight(QFont.Bold)
         numeros.setForeground(recursos.HIGHLIGHTER['numero'])
         self.highlightingRules.append((QRegExp("\\b[0-9]+\\b"),
             numeros))

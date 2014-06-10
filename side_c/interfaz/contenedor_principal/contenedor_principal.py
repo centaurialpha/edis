@@ -66,6 +66,29 @@ class __ContenedorMain(QSplitter):
 
         return editorWidget
 
+    def _editor_keyPressEvent(self, evento):
+        self.emit(SIGNAL("editorKeyPressEvent(QEvent)"), evento)
+
+    def editor_es_modificado(self, v=True):
+        self.tab_actual.tab_es_modificado(v)
+
+    def editor_es_guardado(self, e=None):
+        self.tab_actual.tab_guardado(e)
+        self.emit(SIGNAL("updateLocator(QString)"), e.ID)
+
+    def agregar_tab(self, widget, nombre_tab, tabIndex=None, nAbierta=True):
+        return self.tab_actual.agregar_tab(widget, nombre_tab, index=tabIndex)
+
+    def devolver_widget_actual(self):
+        return self.tab_actual.currentWidget()
+
+    def devolver_editor_actual(self):
+        e = self.tab_actual.currentWidget()
+        if isinstance(e, editor.Editor):
+            return e
+        else:
+            return None
+
     def _nombreBase(self, nombre):
         if nombre.endswith(os.path.sep):
             nombre = nombre[:-1]
@@ -106,16 +129,6 @@ class __ContenedorMain(QSplitter):
         if editorW:
             editorW.clear()
 
-    def devolver_widget_actual(self):
-        return self.tab_actual.currentWidget()
-
-    def devolver_editor_actual(self):
-        e = self.tab_actual.currentWidget()
-        if isinstance(e, editor.Editor):
-            return e
-        else:
-            return None
-
     def actualizar_margen_editor(self):
         for i in range(self.tab_principal.count()):
             widget = self.tab_principal.widget(i)
@@ -127,9 +140,6 @@ class __ContenedorMain(QSplitter):
         w = self.devolver_widget_actual()
         if w:
             w.setFocus()
-
-    def agregar_tab(self, widget, nombre_tab, tabIndex=None, nAbierta=True):
-        return self.tab_actual.agregar_tab(widget, nombre_tab, index=tabIndex)
 
     def cerrar_tab(self):
         """ Se llama al método removeTab de QTabWidget. """
@@ -144,14 +154,6 @@ class __ContenedorMain(QSplitter):
 
     def actual_widget(self):
         return self.tab_actual.currentWidget()
-
-    def editor_es_modificado(self, v=True):
-        self.tab_actual.tab_es_modificado(v)
-        self.tab_actual.tab_es_modificado(v)
-
-    def editor_es_guardado(self, e=None):
-        self.tab_actual.tab_guardado(e)
-        self.emit(SIGNAL("updateLocator(QString)"), e.ID)
 
     def tab_actual_cambiado(self, indice):
         if self.tab_actual.widget(indice):

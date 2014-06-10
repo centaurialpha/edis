@@ -75,6 +75,8 @@ class MenuArchivo(QObject):
             self.ide.contenedor_principal.abrir_archivo)
         self.accionGuardar.triggered.connect(
             self.ide.contenedor_principal.guardar_archivo)
+        self.accionGuardarComo.triggered.connect(
+            self.ide.contenedor_principal.guardar_archivo_como)
         self.accionImprimir.triggered.connect(
             self.imprimir_)
         self.accionCerrarTab.triggered.connect(
@@ -83,6 +85,8 @@ class MenuArchivo(QObject):
             self.ide.contenedor_principal.cerrar_excepto_actual)
         self.accionCerrarTodo.triggered.connect(
             self.ide.contenedor_principal.cerrar_todo)
+        self.accionSalir.triggered.connect(
+            self.ide.close)
 
         # Toolbar
         self.items_toolbar = {

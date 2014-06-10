@@ -70,11 +70,11 @@ COLOR_EDITOR = {
 # Color del resaltado de sintaxis
 HIGHLIGHTER = {
     "numero": QColor(248, 160, 8),
-    "include": QColor(126, 123, 121),
+    "include": QColor(50, 130, 200),
     "palabra": QColor(131, 193, 251),
-    "funcion": QColor(22, 60, 250),
-    "comentario-simple": QColor(215, 214, 213),
-    "comentario-multiple": QColor(134, 217, 134),
+    "funcion": QColor(66, 118, 154),
+    "comentario-simple": QColor(94, 205, 55),
+    "comentario-multiple": QColor(105, 105, 105),
     "cadena": QColor(217, 200, 134),
     "braces": QColor(255, 255, 255)
     }
