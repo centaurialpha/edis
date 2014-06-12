@@ -85,6 +85,7 @@ class ConfiguracionEditor(QWidget):
 
         grupoCaracteristicas = QGroupBox(self.trUtf8("Características"))
         grupoEstiloFuente = QGroupBox(self.trUtf8("Tipo de letra"))
+        grupoAutoCompletado = QGroupBox(self.trUtf8("Autocompletado"))
         grillaCaracteristicas = QGridLayout(grupoCaracteristicas)
         grillaCaracteristicas.addWidget(QLabel(
             self.trUtf8("Márgen de línea: ")), 1, 0, Qt.AlignRight)
@@ -101,7 +102,7 @@ class ConfiguracionEditor(QWidget):
         self.checkMargen = QCheckBox(self.trUtf8("Mostrar márgen"))
         self.checkMargen.setChecked(configuraciones.MOSTRAR_MARGEN)
         grillaCaracteristicas.addWidget(self.checkMargen, 1, 2,
-            alignment=Qt.AlignRight)
+            alignment=Qt.AlignLeft)
 
         # Spin indentación
         self.spinInd = QSpinBox()
@@ -117,13 +118,13 @@ class ConfiguracionEditor(QWidget):
         self.checkInd = QCheckBox(self.trUtf8("Activar indentación"))
         self.checkInd.setChecked(configuraciones.CHECK_INDENTACION)
         grillaCaracteristicas.addWidget(self.checkInd, 2, 2,
-            alignment=Qt.AlignRight)
+            alignment=Qt.AlignLeft)
 
         # Check autoindentación
         self.checkAutoInd = QCheckBox(self.trUtf8("Activar autoindentación"))
         self.checkAutoInd.setChecked(
             configuraciones.CHECK_AUTO_INDENTACION)
-        grillaCaracteristicas.addWidget(self.checkAutoInd, 2, 3,
+        grillaCaracteristicas.addWidget(self.checkAutoInd, 3, 2,
             alignment=Qt.AlignLeft)
 
         # Fuente
@@ -134,8 +135,24 @@ class ConfiguracionEditor(QWidget):
             "Fuente:")), 0, 0, Qt.AlignLeft)
         grillaFuente.addWidget(self.botonFuente, 0, 1)
 
+        # Autocompletado
+        grillaAutocompletado = QGridLayout(grupoAutoCompletado)
+        self.checkLlave = QCheckBox(
+            self.trUtf8("Activar autocompletado '{'"))
+        grillaAutocompletado.addWidget(self.checkLlave)
+        self.checkLlave.setChecked(True)
+        self.checkParentesis = QCheckBox(
+            self.trUtf8("Activar autocompletado '('"))
+        grillaAutocompletado.addWidget(self.checkParentesis)
+        self.checkParentesis.setChecked(True)
+        self.checkCorchete = QCheckBox(
+            self.trUtf8("Activar autocompletado '['"))
+        grillaAutocompletado.addWidget(self.checkCorchete)
+        self.checkCorchete.setChecked(True)
+
         v_layout.addWidget(grupoCaracteristicas)
         v_layout.addWidget(grupoEstiloFuente)
+        v_layout.addWidget(grupoAutoCompletado)
         v_layout.addItem(QSpacerItem(0, 10, QSizePolicy.Expanding,
             QSizePolicy.Expanding))
 
@@ -220,6 +237,7 @@ class ConfiguracionEditor(QWidget):
         qsettings.setValue('fuenteTam', configuraciones.TAM_FUENTE)
         if e:
             e._cargar_fuente(configuraciones.FUENTE, configuraciones.TAM_FUENTE)
+
         qsettings.endGroup()
         qsettings.endGroup()
 

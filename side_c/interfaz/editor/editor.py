@@ -164,12 +164,11 @@ class Editor(QPlainTextEdit):
             self.setTextCursor(cursor)
 
     def _completar_braces(self, evento):
-        braces = {'(': ')', '{': '}', '[': ']'}
+        dic_braces = {'(': ')', '{': '}', '[': ']'}
 
         brace = unicode(evento.text())
-        llave_ = braces.get(brace)
-
-        self.textCursor().insertText(llave_)
+        brac = dic_braces.get(brace)
+        self.textCursor().insertText(brac)
         self.moveCursor(QTextCursor.Left)
 
     def devolver_texto(self):

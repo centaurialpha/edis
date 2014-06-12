@@ -4,7 +4,7 @@ from PyQt4.QtGui import QWidget
 from PyQt4.QtGui import QTabWidget
 from PyQt4.QtGui import QVBoxLayout
 from PyQt4.QtGui import QHBoxLayout
-from PyQt4.QtGui import QPlainTextEdit
+#from PyQt4.QtGui import QPlainTextEdit
 from PyQt4.QtGui import QTextEdit
 from PyQt4.QtGui import QTabBar
 from PyQt4.QtGui import QStylePainter
@@ -19,7 +19,8 @@ from PyQt4.QtCore import QSize
 from PyQt4.QtCore import Qt
 from PyQt4.QtCore import QProcess
 
-from side_c import recursos
+#from side_c import recursos
+from salida_widget import SalidaWidget
 from side_c.nucleo import configuraciones
 
 if configuraciones.LINUX is not False:
@@ -85,22 +86,22 @@ class ContenedorBottom(QWidget):
         self.tabs.addTab(widget, titulo)
 
 
-class SalidaWidget(QPlainTextEdit):
-    """ Widget que muestra stdin/stderr. """
+#class SalidaWidget(QPlainTextEdit):
+    #""" Widget que muestra stdin/stderr. """
 
-    def __init__(self, parent):
-        QPlainTextEdit.__init__(self, parent)
+    #def __init__(self, parent):
+        #QPlainTextEdit.__init__(self, parent)
 
-        self.parent = parent
-        # Solo lectura
-        self.setReadOnly(True)
-        self.cargar_estilo()
+        #self.parent = parent
+        ## Solo lectura
+        #self.setReadOnly(True)
+        #self.cargar_estilo()
 
-    def cargar_estilo(self):
-        tema = 'QPlainTextEdit {color: %s; background-color: %s;}' \
-        % (recursos.COLOR_EDITOR['texto'], recursos.COLOR_EDITOR['fondo-input'])
+    #def cargar_estilo(self):
+        #tema = 'QPlainTextEdit {color: %s; background-color: %s;}' \
+        #%(recursos.COLOR_EDITOR['texto'], recursos.COLOR_EDITOR['fondo-input'])
 
-        self.setStyleSheet(tema)
+        #self.setStyleSheet(tema)
 
 
 class Notas(QTextEdit):
