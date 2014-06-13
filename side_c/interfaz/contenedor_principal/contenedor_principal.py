@@ -72,9 +72,9 @@ class __ContenedorMain(QSplitter):
     def editor_es_modificado(self, v=True):
         self.tab_actual.tab_es_modificado(v)
 
-    def editor_es_guardado(self, e=None):
-        self.tab_actual.tab_guardado(e)
-        self.emit(SIGNAL("updateLocator(QString)"), e.ID)
+    def editor_es_guardado(self, editorW=None):
+        self.tab_actual.tab_guardado(editorW)
+        self.emit(SIGNAL("updateLocator(QString)"), editorW.ID)
 
     def agregar_tab(self, widget, nombre_tab, tabIndex=None, nAbierta=True):
         return self.tab_actual.agregar_tab(widget, nombre_tab, index=tabIndex)
@@ -205,20 +205,20 @@ class __ContenedorMain(QSplitter):
         if not editorW:
             editorW = self.devolver_editor_actual()
         if not editorW:
-            print "no1"
             return False
 
         #try:
-            #editorW.guardado_actualmente = True
+        editorW.guardado_actualmente = True
         if editorW.nuevo_archivo:
             return self.guardar_archivo_como()
 
         nombre = editorW.ID
-
+        print "nombre" + nombre
+        self.emit(SIGNAL("beforeFileSaved(QString)"), nombre)
         contenido = editorW.devolver_texto()
         self.escribir_archivo(nombre, contenido)
         editorW.ID = nombre
-
+        print "ID" + editorW.ID
         self.emit(SIGNAL("fileSaved(QString)"), self.tr(
             "Guardado: %1").arg(nombre))
 
@@ -227,8 +227,8 @@ class __ContenedorMain(QSplitter):
         #except:
             #print "EXECP!"
             #pass
-           # editorW.guardado_actualmente = False
-        return False
+        #editorW.guardado_actualmente = False
+        #return False
 
     def guardar_archivo_como(self):
         #CODEC = 'utf-8'
