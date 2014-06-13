@@ -15,7 +15,7 @@ from side_c.nucleo import configuraciones
 
 
 class PruebaConfiguracionEditor(unittest.TestCase):
-    """" Pruebas
+    """ Pruebas
         -SpinBoxs -> Ok!
     """
     def setUp(self):

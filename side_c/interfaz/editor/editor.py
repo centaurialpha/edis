@@ -166,15 +166,15 @@ class Editor(QPlainTextEdit):
     def _completar_braces(self, evento):
         dic_braces = {'(': ')', '{': '}', '[': ']'}
 
-        brace = unicode(evento.text())
+        brace = str(evento.text())
         brac = dic_braces.get(brace)
         self.textCursor().insertText(brac)
         self.moveCursor(QTextCursor.Left)
 
     def devolver_texto(self):
         """ Retorna todo el contenido del editor """
-
-        return self.toPlainText()
+        #print self.ID
+        return str(self.toPlainText())
 
     def _cargar_fuente(self, fuente_=configuraciones.FUENTE,
         tam=configuraciones.TAM_FUENTE):
@@ -184,6 +184,7 @@ class Editor(QPlainTextEdit):
             self.actualizar_margen_linea(fuente)
 
     def zoom_mas(self):
+        #print self.ID
         fuente = self.document().defaultFont()
         tam = fuente.pointSize()
 

@@ -71,7 +71,7 @@ class TabCentral(QTabWidget):
 
     def tab_es_modificado(self, v):
         e = self.currentWidget()
-        texto = unicode(self.tabBar().tabText(self.currentIndex()))
+        texto = str(self.tabBar().tabText(self.currentIndex()))
 
         if isinstance(e, editor.Editor) and self.no_esta_abierto and v \
         and not texto.startswith('* '):
@@ -81,7 +81,7 @@ class TabCentral(QTabWidget):
 
     def tab_guardado(self, e):
         indice = self.indexOf(e)
-        texto = unicode(self.tabBar().tabText(indice))
+        texto = str(self.tabBar().tabText(indice))
 
         if texto.startswith('* '):
             texto = texto[2:]
