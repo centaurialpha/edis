@@ -161,32 +161,24 @@ class __ContenedorMain(QSplitter):
                 self.tab_actual.widget(indice))
 
     def abrir_archivo(self, nombre='', tabIndex=None):
-        print 'test6 - metodo abrir_archivo'
         extension = recursos.EXTENSIONES  # Filtro
 
-        nombre = unicode(nombre)
+        nombre = str(nombre)
 
         if not nombre:
             direc = os.path.expanduser("~")
 
-            nombre = unicode(QFileDialog.getOpenFileName(self,
+            nombre = str(QFileDialog.getOpenFileName(self,
             self.tr("Abrir archivo"), direc, extension))
-        if not nombre:
-            return
 
-        
-        
         if not self.esta_abierto(nombre):
-            print 'El archivo no estuvo abierto'
             self.tab_actual.no_esta_abierto = False
             contenido = self.leer_contenido_archivo(nombre)
             editorW = self.agregar_editor(nombre, tabIndex=tabIndex)
-            editorW.setPlainText(contenido)                
+            editorW.setPlainText(contenido)
             editorW.ID = nombre
             # Test not empty
             editorW.nuevo_archivo = False
-            print 'test5'
-            print editorW
             self.emit(SIGNAL("currentTabChanged(QString)"), nombre)
         else:
             # Acá código para cuando se abra el mismo archivo
@@ -271,9 +263,9 @@ class __ContenedorMain(QSplitter):
         try:
             with open(archivo, 'rU') as f:
                 contenido = f.read()
+            return contenido
         except:
-            pass
-        return contenido
+            return ""
 
     def escribir_archivo(self, nombre, contenido):
         try:
