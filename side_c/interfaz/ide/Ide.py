@@ -167,18 +167,6 @@ class __IDE(QMainWindow):
                 if item_tool is not None:
                     toolbar.addAction(item_tool)
 
-    def closeEvent(self, evento):
-        NO = QMessageBox.No
-        SI = QMessageBox.Yes
-
-        r = QMessageBox.question(self,
-            self.trUtf8("Confirmar salida"), self.trUtf8("Salir de SIDE?"),
-            NO | SI)
-
-        if r == NO:
-            evento.ignore()
-        if r == SI:
-            evento.accept()
 
     def _cargar_tema(self):
         """ Carga el tema por defecto """
