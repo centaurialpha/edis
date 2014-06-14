@@ -161,6 +161,7 @@ class __ContenedorMain(QSplitter):
                 self.tab_actual.widget(indice))
 
     def abrir_archivo(self, nombre='', tabIndex=None):
+        print 'test6 - metodo abrir_archivo'
         extension = recursos.EXTENSIONES  # Filtro
 
         nombre = unicode(nombre)
@@ -173,21 +174,25 @@ class __ContenedorMain(QSplitter):
         if not nombre:
             return
 
-        try:
-            if not self.esta_abierto(nombre):
-                self.tab_actual.no_esta_abierto = False
-                contenido = self.leer_contenido_archivo(nombre)
-                editorW = self.agregar_editor(nombre, tabIndex=tabIndex)
-                editorW.setPlainText(contenido)
-                editorW.ID = nombre
-
-                self.emit(SIGNAL("currentTabChanged(QString)"), nombre)
-            else:
-                # Acá código para cuando se abra el mismo archivo
-                # Se tendría que mover al tab de ese archivo
+        
+        
+        if not self.esta_abierto(nombre):
+            print 'El archivo no estuvo abierto'
+            self.tab_actual.no_esta_abierto = False
+            contenido = self.leer_contenido_archivo(nombre)
+            editorW = self.agregar_editor(nombre, tabIndex=tabIndex)
+            editorW.setPlainText(contenido)                
+            editorW.ID = nombre
+            # Test not empty
+            editorW.nuevo_archivo = False
+            print 'test5'
+            print editorW
+            self.emit(SIGNAL("currentTabChanged(QString)"), nombre)
+        else:
+            # Acá código para cuando se abra el mismo archivo
+            # Se tendría que mover al tab de ese archivo
                 pass
-        except:
-            pass
+
         self.tab_actual.no_esta_abierto = True
 
     def esta_abierto(self, nombre):
