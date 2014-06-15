@@ -175,7 +175,7 @@ class __ContenedorMain(QSplitter):
             self.tab_actual.no_esta_abierto = False
             contenido = self.leer_contenido_archivo(nombre)
             editorW = self.agregar_editor(nombre, tabIndex=tabIndex)
-            editorW.setPlainText(contenido)
+            editorW.setPlainText(contenido.decode('utf-8'))
             editorW.ID = nombre
             # Test not empty
             editorW.nuevo_archivo = False
@@ -201,45 +201,46 @@ class __ContenedorMain(QSplitter):
     def guardar_archivo(self, editorW=None):
         if not editorW:
             editorW = self.devolver_editor_actual()
-        if not editorW:
-            return False
+            if not editorW:
+                return False
 
-        #try:
-        editorW.guardado_actualmente = True
-        if editorW.nuevo_archivo:
-            return self.guardar_archivo_como()
+        try:
+            editorW.guardado_actualmente = True
+            if editorW.nuevo_archivo:
+                return self.guardar_archivo_como()
 
-        nombre = editorW.ID
-        print "nombre" + nombre
-        self.emit(SIGNAL("beforeFileSaved(QString)"), nombre)
-        contenido = editorW.devolver_texto()
-        self.escribir_archivo(nombre, contenido)
-        editorW.ID = nombre
-        print "ID" + editorW.ID
-        self.emit(SIGNAL("fileSaved(QString)"), self.tr(
-            "Guardado: %1").arg(nombre))
+            nombre = editorW.ID
+            print "nombre" + nombre
+            self.emit(SIGNAL("beforeFileSaved(QString)"), nombre)
+            contenido = editorW.devolver_texto()
+            self.escribir_archivo(nombre, contenido)
+            editorW.ID = nombre
+            print "ID" + editorW.ID
+            self.emit(SIGNAL("fileSaved(QString)"), self.tr(
+                "Guardado: %1").arg(nombre))
 
-        editorW._guardado()
-        return True
-        #except:
+            editorW._guardado()
+
+            return editorW.ID
+        except:
             #print "EXECP!"
             #pass
-        #editorW.guardado_actualmente = False
-        #return False
+            #editorW.guardado_actualmente = False
+            return False
 
     def guardar_archivo_como(self):
         #CODEC = 'utf-8'
         direc = os.path.expanduser("~")
         editorW = self.devolver_editor_actual()
         if not editorW:
-            print "no"
             return False
 
         try:
             #editorW.guardado_actualmente = True
-            nombre = unicode(QFileDialog.getSaveFileName(
+            nombre = str(QFileDialog.getSaveFileName(
                 self.parent, self.tr("Guardar"), direc, '(*.c);;(*.*)'))
             if not nombre:
+
                 return False
 
             nombre = self.escribir_archivo(nombre, editorW.devolver_texto())
@@ -251,17 +252,18 @@ class __ContenedorMain(QSplitter):
                 self.tr("Guardado: %1").arg(nombre))
             editorW._guardado()
 
-            return True
+            return editorW.ID
 
         except:
-            pass
+            print "Falso"
+            #pass
             #editorW.guardado_actualmente = False
         return False
 
     def leer_contenido_archivo(self, archivo):
         """ Recibe (archivo), lee y lo retorna. """
         try:
-            with open(archivo, 'rU') as f:
+            with open(archivo, 'r') as f:
                 contenido = f.read()
             return contenido
         except:

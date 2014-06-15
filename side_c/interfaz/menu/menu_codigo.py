@@ -1,8 +1,10 @@
 #-*- coding: utf-8 -*-
 
 from PyQt4.QtGui import QIcon
+
 from PyQt4.QtCore import QObject
 from PyQt4.QtCore import Qt
+from PyQt4.QtCore import SIGNAL
 
 from side_c import recursos
 
@@ -12,6 +14,12 @@ class MenuCodigoFuente(QObject):
     def __init__(self, menu_codigo, toolbar, ide):
         super(MenuCodigoFuente, self).__init__()
 
+        self.ide = ide
+        # Cargar shortcut
+
+        # Conexiones
+
+        # Acciones
         accionCompilar = menu_codigo.addAction(
             QIcon(recursos.ICONOS['compilar']), self.trUtf8("Compilar"))
         accionCompilar.setShortcut(Qt.CTRL + Qt.Key_F5)
@@ -26,3 +34,20 @@ class MenuCodigoFuente(QObject):
             "ejecutar-archivo": accionEjecutar,
             "ejecutar_compilar-archivo": accionCompilar_Ejecutar
             }
+
+        # Conexión a slots
+        self.connect(accionCompilar, SIGNAL("triggered()"),
+            self.metodo_compilar)
+
+    def metodo_compilar(self):
+        editorW = self.ide.contenedor_principal.devolver_editor_actual()
+        path_name = self.ide.contenedor_principal.guardar_archivo(editorW)
+        import os
+        os.popen('gcc -Wall -o %s %s' % (os.path.basename(path_name).split('.')[0],
+                                         path_name))
+        print "Compilado"
+
+
+
+
+

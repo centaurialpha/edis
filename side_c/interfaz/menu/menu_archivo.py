@@ -19,6 +19,7 @@ class MenuArchivo(QObject):
         self.ide = ide
 
         # Se cargan los shortcut
+
         self.atajoNuevo = QShortcut(recursos.ATAJOS['nuevo'], self.ide)
         self.atajoAbrir = QShortcut(recursos.ATAJOS['abrir'], self.ide)
         self.atajoGuardar = QShortcut(recursos.ATAJOS['guardar'], self.ide)

@@ -174,7 +174,7 @@ class Editor(QPlainTextEdit):
     def devolver_texto(self):
         """ Retorna todo el contenido del editor """
         #print self.ID
-        return self.toPlainText()
+        return unicode(self.toPlainText())
 
     def _cargar_fuente(self, fuente_=configuraciones.FUENTE,
         tam=configuraciones.TAM_FUENTE):
