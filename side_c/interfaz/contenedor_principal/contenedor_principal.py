@@ -204,29 +204,29 @@ class __ContenedorMain(QSplitter):
             if not editorW:
                 return False
 
-        try:
-            editorW.guardado_actualmente = True
-            if editorW.nuevo_archivo:
-                return self.guardar_archivo_como()
+        #try:
+        #editorW.guardado_actualmente = True
+        if editorW.nuevo_archivo:
+            return self.guardar_archivo_como()
 
-            nombre = editorW.ID
-            print "nombre" + nombre
-            self.emit(SIGNAL("beforeFileSaved(QString)"), nombre)
-            contenido = editorW.devolver_texto()
-            self.escribir_archivo(nombre, contenido)
-            editorW.ID = nombre
-            print "ID" + editorW.ID
-            self.emit(SIGNAL("fileSaved(QString)"), self.tr(
-                "Guardado: %1").arg(nombre))
+        nombre = editorW.ID
+        print "nombre" + nombre
+        self.emit(SIGNAL("beforeFileSaved(QString)"), nombre)
+        contenido = editorW.devolver_texto()
+        self.escribir_archivo(nombre, contenido)
+        editorW.ID = nombre
+        print "ID" + editorW.ID
+        self.emit(SIGNAL("fileSaved(QString)"), self.tr(
+            "Guardado: %1").arg(nombre))
 
-            editorW._guardado()
+        editorW._guardado()
 
-            return editorW.ID
-        except:
+        return editorW.ID
+        #except:
             #print "EXECP!"
             #pass
             #editorW.guardado_actualmente = False
-            return False
+         #   return False
 
     def guardar_archivo_como(self):
         #CODEC = 'utf-8'
