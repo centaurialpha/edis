@@ -4,7 +4,7 @@ from PyQt4.QtGui import QIcon
 from PyQt4.QtGui import QShortcut
 
 from PyQt4.QtCore import QObject
-from PyQt4.QtCore import Qt
+#from PyQt4.QtCore import Qt
 from PyQt4.QtCore import SIGNAL
 
 from side_c import recursos
@@ -38,6 +38,11 @@ class MenuCodigoFuente(QObject):
             QIcon(recursos.ICONOS['ejecutar']), self.trUtf8("Ejecutar"))
         self.accionCompilarEjecutar = menu_codigo.addAction(
             self.trUtf8("Compilar y ejecutar"))
+
+        # Acciones desactivadas
+        #self.accionCompilar.setEnabled(False)
+        #self.accionEjecutar.setEnabled(False)
+        #self.accionCompilarEjecutar.setEnabled(False)
 
         self.items_toolbar = {
             "compilar-archivo": self.accionCompilar,

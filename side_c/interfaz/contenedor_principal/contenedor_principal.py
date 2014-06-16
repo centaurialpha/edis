@@ -3,19 +3,16 @@ import os
 
 from PyQt4.QtGui import QSplitter
 from PyQt4.QtGui import QFileDialog
-from PyQt4.QtGui import QMessageBox
+#from PyQt4.QtGui import QMessageBox
 #from PyQt4.QtGui import QApplication
 
 from PyQt4.QtCore import SIGNAL
-#from PyQt4.QtCore import QDir
-from PyQt4.QtCore import QFile
-from PyQt4.QtCore import QTextStream
-#from PyQt4.QtCore import Qt
 
 from side_c import recursos
 from side_c.interfaz import tab_widget
 #from side_c.interfaz import barra_de_estado
 from side_c.interfaz.editor import editor
+from side_c.nucleo import manejador_de_archivo
 
 __instanciaContenedorMain = None
 
@@ -52,7 +49,7 @@ class __ContenedorMain(QSplitter):
         if not nombre_archivo:
             nombre_tab = "Nuevo archivo"
         else:
-            nombre_tab = self._nombreBase(nombre_archivo)
+            nombre_tab = manejador_de_archivo._nombreBase(nombre_archivo)
 
         self.agregar_tab(editorWidget, nombre_tab, tabIndex=tabIndex)
 
@@ -88,11 +85,6 @@ class __ContenedorMain(QSplitter):
             return e
         else:
             return None
-
-    def _nombreBase(self, nombre):
-        if nombre.endswith(os.path.sep):
-            nombre = nombre[:-1]
-        return os.path.basename(nombre)
 
     def deshacer(self):
         editorW = self.devolver_editor_actual()
@@ -173,7 +165,8 @@ class __ContenedorMain(QSplitter):
 
         if not self.esta_abierto(nombre):
             self.tab_actual.no_esta_abierto = False
-            contenido = self.leer_contenido_archivo(nombre)
+            #contenido = self.leer_contenido_archivo(nombre)
+            contenido = manejador_de_archivo.leer_contenido_de_archivo(nombre)
             editorW = self.agregar_editor(nombre, tabIndex=tabIndex)
             editorW.setPlainText(contenido.decode('utf-8'))
             editorW.ID = nombre
@@ -213,7 +206,8 @@ class __ContenedorMain(QSplitter):
         print "nombre" + nombre
         self.emit(SIGNAL("beforeFileSaved(QString)"), nombre)
         contenido = editorW.devolver_texto()
-        self.escribir_archivo(nombre, contenido)
+        #self.escribir_archivo(nombre, contenido)
+        manejador_de_archivo.escribir_archivo(nombre, contenido)
         editorW.ID = nombre
         print "ID" + editorW.ID
         self.emit(SIGNAL("fileSaved(QString)"), self.tr(
@@ -243,10 +237,11 @@ class __ContenedorMain(QSplitter):
 
                 return False
 
-            nombre = self.escribir_archivo(nombre, editorW.devolver_texto())
+            nombre = manejador_de_archivo.escribir_archivo(
+                nombre, editorW.devolver_texto())
 
             self.tab_actual.setTabText(self.tab_actual.currentIndex(),
-                self._nombreBase(nombre))
+                manejador_de_archivo._nombreBase(nombre))
             editorW.ID = nombre
             self.emit(SIGNAL("fileSaved(QString)"),
                 self.tr("Guardado: %1").arg(nombre))
@@ -259,37 +254,3 @@ class __ContenedorMain(QSplitter):
             #pass
             #editorW.guardado_actualmente = False
         return False
-
-    def leer_contenido_archivo(self, archivo):
-        """ Recibe (archivo), lee y lo retorna. """
-        try:
-            with open(archivo, 'r') as f:
-                contenido = f.read()
-            return contenido
-        except:
-            return ""
-
-    def escribir_archivo(self, nombre, contenido):
-        extension = (os.path.splitext(nombre)[-1])[1:]
-        if not extension:
-            nombre += '.c'
-
-        try:
-            f = QFile(nombre)
-            if not f.open(QFile.WriteOnly | QFile.Text):
-                    QMessageBox.warning(self,
-                        "Guardar", "No se escribio en %s: %s" % (
-                            nombre, f.errorString()))
-                    return False
-
-            stream = QTextStream(f)
-            enc_s = stream.codec().fromUnicode(contenido)
-            f.write(enc_s)
-            f.flush()
-            f.close()
-        except:
-            pass
-        return os.path.abspath(nombre)
-
-    def permiso_de_escritura(self, archivo):
-        return os.access(archivo, os.W_OK)

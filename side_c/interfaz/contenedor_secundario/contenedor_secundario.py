@@ -102,23 +102,6 @@ class _ContenedorBottom(QWidget):
         self.path = path
         self.salida_.correr_compilacion(self.s, self.path)
 
-#class SalidaWidget(QPlainTextEdit):
-    #""" Widget que muestra stdin/stderr. """
-
-    #def __init__(self, parent):
-        #QPlainTextEdit.__init__(self, parent)
-
-        #self.parent = parent
-        ## Solo lectura
-        #self.setReadOnly(True)
-        #self.cargar_estilo()
-
-    #def cargar_estilo(self):
-        #tema = 'QPlainTextEdit {color: %s; background-color: %s;}' \
-        #%(recursos.COLOR_EDITOR['texto'], recursos.COLOR_EDITOR['fondo-input'])
-
-        #self.setStyleSheet(tema)
-
 
 class Notas(QTextEdit):
 
