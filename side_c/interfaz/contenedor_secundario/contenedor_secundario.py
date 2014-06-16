@@ -20,11 +20,22 @@ from PyQt4.QtCore import Qt
 from PyQt4.QtCore import QProcess
 
 #from side_c import recursos
-from salida_widget import SalidaWidget
+from side_c.interfaz.contenedor_secundario import salida_widget
 from side_c.nucleo import configuraciones
 
 if configuraciones.LINUX is not False:
     from PyQt4.QtGui import QX11EmbedContainer
+
+
+_instanciaContenedorSecundario = None
+
+
+def ContenedorBottom(*args, **kw):
+    global _instanciaContenedorSecundario
+    if _instanciaContenedorSecundario is None:
+        _instanciaContenedorSecundario = _ContenedorBottom(*args, **kw)
+
+    return _instanciaContenedorSecundario
 
 
 class Tab(QTabBar):
@@ -54,7 +65,7 @@ class Tab(QTabBar):
         return self.tam_tabs
 
 
-class ContenedorBottom(QWidget):
+class _ContenedorBottom(QWidget):
 
     def __init__(self, parent=None):
         QWidget.__init__(self, parent)
@@ -64,15 +75,15 @@ class ContenedorBottom(QWidget):
         vlayout.setSpacing(10)
         vlayout.addSpacerItem(QSpacerItem(1, 0, QSizePolicy.Expanding))
 
-        self.salida_ = SalidaWidget(self)
+        self.salida_ = salida_widget.EjecutarWidget()
         self.notas = Notas(self)
 
         self.tabs = QTabWidget(self)
         self.tabs.setTabBar(Tab(ancho=55, alto=35))
 
-        if configuraciones.LINUX is not False:
-            self.term = Terminal(self)
-            self.agregar_tab(self.term, "")
+        #if configuraciones.LINUX is not False:
+         #   self.term = Terminal(self)
+          #  self.agregar_tab(self.term, "")
 
         self.agregar_tab(self.salida_, "Salida")
         self.agregar_tab(self.notas, "Notas")
@@ -85,6 +96,11 @@ class ContenedorBottom(QWidget):
     def agregar_tab(self, widget, titulo):
         self.tabs.addTab(widget, titulo)
 
+    def compilar_archivo(self, salida, path):
+        self.show()
+        self.s = salida
+        self.path = path
+        self.salida_.correr_compilacion(self.s, self.path)
 
 #class SalidaWidget(QPlainTextEdit):
     #""" Widget que muestra stdin/stderr. """

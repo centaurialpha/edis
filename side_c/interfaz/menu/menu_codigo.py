@@ -43,10 +43,12 @@ class MenuCodigoFuente(QObject):
         editorW = self.ide.contenedor_principal.devolver_editor_actual()
         path_name = self.ide.contenedor_principal.guardar_archivo(editorW)
         import os
-        os.popen('gcc -Wall -o %s %s' % (os.path.basename(path_name).split('.')[0],
-                                         path_name))
-        print "Compilado"
+        nombre_salida = os.path.basename(path_name).split('.')[0]
+        #os.popen('gcc -Wall -o %s %s' % (nombre_salida, path_name))
+        #print "Compilado"
 
+        self.ide.contenedor_secundario.compilar_archivo(
+            nombre_salida, path_name)
 
 
 
