@@ -1,3 +1,4 @@
+#-*- coding: utf-8 -*-
 """
 Recursos
 
@@ -101,7 +102,11 @@ ATAJOS = {
     "ocultar-menu": QKeySequence(Qt.CTRL + Qt.Key_F8),
     "ocultar-input": QKeySequence(Qt.CTRL + Qt.Key_F7),
     "zoom-mas": QKeySequence(Qt.CTRL + Qt.Key_Plus),
-    "zoom-menos": QKeySequence(Qt.CTRL + Qt.Key_Minus)
+    "zoom-menos": QKeySequence(Qt.CTRL + Qt.Key_Minus),
+    # Código
+    "compilar": QKeySequence(Qt.CTRL + Qt.Key_F5),
+    "ejecutar": QKeySequence(Qt.CTRL + Qt.Key_F6),
+    "comp-ejec": QKeySequence(Qt.CTRL + Qt.Key_F10)
     }
 
 

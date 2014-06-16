@@ -9,7 +9,7 @@ from PyQt4.QtGui import QMessageBox
 
 from PyQt4.QtCore import Qt
 from PyQt4.QtCore import QSize
-#from PyQt4.QtCore import SIGNAL
+from PyQt4.QtCore import SIGNAL
 
 from side_c.interfaz.menu import menu_archivo
 from side_c.interfaz.menu import menu_editar
@@ -140,6 +140,9 @@ class __IDE(QMainWindow):
         self.contenedor_secundario = \
             contenedor_secundario.ContenedorBottom(self)
 
+        self.connect(self.contenedor_principal, SIGNAL(
+            "currentTabChanged(QString)"), self.cambiar_titulo_de_ventana)
+
         widget_central.agregar_contenedor_central(self.contenedor_principal)
         widget_central.agregar_contenedor_bottom(self.contenedor_secundario)
 
@@ -167,6 +170,11 @@ class __IDE(QMainWindow):
                 if item_tool is not None:
                     toolbar.addAction(item_tool)
 
+    def cambiar_titulo_de_ventana(self, titulo):
+        """ Cambia el título de la ventana cuando la pestaña cambia de nombre,
+        esta emite la  señal de cambio """
+
+        self.setWindowTitle('SIDE-C - %s' % titulo)
 
     def _cargar_tema(self):
         """ Carga el tema por defecto """
