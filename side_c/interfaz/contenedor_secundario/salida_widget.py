@@ -1,4 +1,5 @@
 #-*- coding: utf-8 -*-
+import time
 
 from PyQt4.QtGui import QPlainTextEdit
 from PyQt4.QtGui import QVBoxLayout
@@ -24,8 +25,10 @@ class EjecutarWidget(QWidget):
         layoutV.addWidget(self.output)
         self.setLayout(layoutV)
 
+        # Proceso
         self.proceso = QProcess(self)
 
+        # Conexión
         self.connect(self.proceso, SIGNAL("readyReadStandardOutput()"),
             self.output.salida_estandar)
         self.connect(self.proceso, SIGNAL("readyReadStandardError()"),
@@ -36,8 +39,13 @@ class EjecutarWidget(QWidget):
             self.ejecucion_error)
 
     def correr_compilacion(self, nombre_ejecutable, path):
+        """ Se corre el comando gcc para la compilación """
+
+        self.output.setCurrentCharFormat(self.output.formato_ok)
+
         comando = 'gcc -Wall -o %s %s' % (nombre_ejecutable, path)
         self.proceso.start(comando)
+        self.output.setPlainText('Compilando: %s (%s)\n' % (path, time.ctime()))
         self.output.moveCursor(QTextCursor.Down)
         self.output.moveCursor(QTextCursor.Down)
 
@@ -53,13 +61,14 @@ class EjecutarWidget(QWidget):
         if exitStatus == QProcess.NormalExit and codigoError == 0:
             formato.setForeground(Qt.green)
             self.output.textCursor().insertText(
-                self.tr("Compilacion Terminada!"), formato)
+                self.trUtf8("Compilacion Terminada!"), formato)
 
         else:
             formato.setForeground(Qt.red)
             self.output.textCursor().insertText(
-                self.tr("No hubo compilación!"), formato)
+                self.trUtf8("No hubo compilación!"), formato)
         self.output.textCursor().insertText('\n')
+        self.output.moveCursor(QTextCursor.Down)
 
     def ejecucion_error(self, error):
         pass
@@ -72,11 +81,20 @@ class SalidaWidget(QPlainTextEdit):
         self._parent = parent
         self.setReadOnly(True)
 
+        # Formato para la salida estándar
+        self.formato_ok = QTextCharFormat()
+        self.formato_ok.setForeground(Qt.blue)
+
+        # Formato para la salida de error
         self.error_f = QTextCharFormat()
         self.error_f.setForeground(Qt.red)
+
+        # Se carga el estilo
         self.cargar_estilo()
 
     def cargar_estilo(self):
+        """ Carga estilo de color de QPlainTextEdit """
+
         tema = 'QPlainTextEdit {color: %s; background-color: %s;}' \
         % (recursos.COLOR_EDITOR['texto'],
         recursos.COLOR_EDITOR['fondo-input'])
@@ -84,6 +102,7 @@ class SalidaWidget(QPlainTextEdit):
         self.setStyleSheet(tema)
 
     def salida_estandar(self):
+
         cp = self._parent.proceso
         text = cp.readAllStandardOutput().data()
         self.textCursor().insertText(text, self.error_f)

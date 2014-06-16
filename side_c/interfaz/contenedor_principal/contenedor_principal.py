@@ -270,6 +270,10 @@ class __ContenedorMain(QSplitter):
             return ""
 
     def escribir_archivo(self, nombre, contenido):
+        extension = (os.path.splitext(nombre)[-1])[1:]
+        if not extension:
+            nombre += '.c'
+
         try:
             f = QFile(nombre)
             if not f.open(QFile.WriteOnly | QFile.Text):
