@@ -43,6 +43,7 @@ class Editor(QPlainTextEdit):
         self.texto_modificado = False
         self.nuevo_archivo = True
         self.guardado_actualmente = False
+        self.highlighter = None
         # Carga el tema de editor
         self.estilo_editor()
 
@@ -50,7 +51,8 @@ class Editor(QPlainTextEdit):
         self._cargar_fuente(configuraciones.FUENTE, configuraciones.TAM_FUENTE)
 
         # Resaltado de sintáxis
-        Highlighter(self.document())
+        if self.highlighter is None:
+            self.highlighter = Highlighter(self.document())
 
         # Resaltado en posición del cursor
         self.resaltar_linea_actual()
