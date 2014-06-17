@@ -106,7 +106,9 @@ ATAJOS = {
     # Código
     "compilar": QKeySequence(Qt.CTRL + Qt.Key_F5),
     "ejecutar": QKeySequence(Qt.CTRL + Qt.Key_F6),
-    "comp-ejec": QKeySequence(Qt.CTRL + Qt.Key_F10)
+    "comp-ejec": QKeySequence(Qt.CTRL + Qt.Key_F10),
+    # Buscar
+    "buscar": QKeySequence(Qt.CTRL + Qt.Key_F)
     }
 
 
