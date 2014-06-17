@@ -75,7 +75,7 @@ class TabCentral(QTabWidget):
 
         if isinstance(e, editor.Editor) and self.no_esta_abierto and v \
         and not texto.startswith('* '):
-            editor.texto_modificado = True
+            e.texto_modificado = True
             t = '* %s' % self.tabBar().tabText(self.currentIndex())
             self.tabBar().setTabText(self.currentIndex(), t)
 
@@ -107,21 +107,24 @@ class TabCentral(QTabWidget):
         if indice != -1:
             self.setCurrentIndex(indice)
             w = self.currentWidget()
+
+            SI = QMessageBox.Yes
+            NO = QMessageBox.No
+            CANCELAR = QMessageBox.Cancel
+
             if isinstance(w, editor.Editor):
-                v = QMessageBox.No
                 if w.texto_modificado:
                     nombre = self.tabBar().tabText(self.currentIndex())
-                    v = QMessageBox.question(self,
-                        (self.tr('El archivo %s no esta guardado') %
-                        nombre), self.tr("¿Guardar antes de cerrar?"),
-                            QMessageBox.Yes | QMessageBox.No |
-                            QMessageBox.Cancel)
+                    respuesta = QMessageBox.question(self,
+                        (str(self.trUtf8('El archivo **%s no esta guardado')) %
+                        str(nombre)), self.trUtf8("¿Guardar antes de cerrar?"),
+                            SI | NO | CANCELAR)
 
-                if v == QMessageBox.Yes:
+                if respuesta == SI:
                     self.emit(SIGNAL("saveActualEditor()"))
                     if w.texto_modificado:
                         return
-                if v == QMessageBox.Cancel:
+                elif respuesta == CANCELAR:
                     return
 
             super(TabCentral, self).removeTab(indice)

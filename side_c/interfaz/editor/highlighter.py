@@ -82,7 +82,7 @@ class Highlighter(QSyntaxHighlighter):
         self.highlightingRules.append((QRegExp("#[^\n]*"),
             include))
 
-        _include.setForeground(Qt.yellow)
+        _include.setForeground(QColor(128, 255, 128))
         self.highlightingRules.append((QRegExp("\<.*\>"), _include))
 
         # Formateo
@@ -98,13 +98,13 @@ class Highlighter(QSyntaxHighlighter):
 
         # Comentario simple
         comentario_una_linea.setForeground(
-            recursos.HIGHLIGHTER['comentario-simple'])
+            recursos.HIGHLIGHTER['comentario'])
         self.highlightingRules.append((QRegExp("//[^\b]*"),
             comentario_una_linea))
 
         # Comentario múltiple
         self.comentario_multiple_lineas.setForeground(
-            recursos.HIGHLIGHTER['comentario-multiple'])
+            recursos.HIGHLIGHTER['comentario'])
 
         # Caracter especial
         caracter_especial.setForeground(Qt.gray)
