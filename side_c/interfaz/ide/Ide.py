@@ -5,7 +5,7 @@ from PyQt4.QtGui import QDesktopWidget
 from PyQt4.QtGui import QIcon
 from PyQt4.QtGui import QToolBar
 from PyQt4.QtGui import QApplication
-from PyQt4.QtGui import QMessageBox
+#from PyQt4.QtGui import QMessageBox
 
 from PyQt4.QtCore import Qt
 from PyQt4.QtCore import QSize
@@ -22,6 +22,7 @@ from side_c.interfaz.menu import menu_acerca_de
 from side_c.interfaz import widget_central
 from side_c.interfaz.contenedor_principal import contenedor_principal
 from side_c.interfaz.contenedor_secundario import contenedor_secundario
+from side_c.interfaz import barra_de_estado
 
 from side_c import recursos
 from side_c.nucleo import configuraciones
@@ -71,7 +72,7 @@ class __IDE(QMainWindow):
     def __init__(self):
         QMainWindow.__init__(self)
         self.setMinimumSize(850, 700)
-        self.setWindowTitle('SIDE-C - Version: 0.x DEV')
+        self.setWindowTitle('SIDE-C')
         self._cargar_tema()
         get_pantalla = QDesktopWidget().screenGeometry()
         self.posicionar_ventana(get_pantalla)
@@ -96,6 +97,11 @@ class __IDE(QMainWindow):
         self.addToolBar(Qt.LeftToolBarArea, self.toolbar_)
         self.addToolBar(Qt.RightToolBarArea, self.toolbar)
 
+        # Barra de estado
+        self.barra_de_estado = barra_de_estado.BarraDeEstado(self)
+        self.barra_de_estado.hide()
+        self.setStatusBar(self.barra_de_estado)
+
         # Menu
         menu = self.menuBar()
         archivo = menu.addMenu(self.tr("&Archivo"))
@@ -117,6 +123,9 @@ class __IDE(QMainWindow):
         self._menu_codigo = menu_codigo.MenuCodigoFuente(
             codigo, self.toolbar, self)
         self._menu_acerca_de = menu_acerca_de.MenuAcercade(acerca, self)
+
+        self.connect(self.contenedor_principal, SIGNAL("fileSaved(QString)"),
+            self.mostrar_barra_de_estado)
 
         # Métodos para cargar items en las toolbar
         self.cargar_toolbar([self._menu_archivo, self._menu_codigo],
@@ -175,6 +184,10 @@ class __IDE(QMainWindow):
         esta emite la  señal de cambio """
 
         self.setWindowTitle('SIDE-C - %s' % titulo)
+
+    def mostrar_barra_de_estado(self, mensaje):
+        self.barra_de_estado.show()
+        self.barra_de_estado.showMessage(mensaje, 3000)
 
     def _cargar_tema(self):
         """ Carga el tema por defecto """

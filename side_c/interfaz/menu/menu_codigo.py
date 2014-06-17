@@ -1,9 +1,11 @@
-#-*- coding: utf-8 -*-
+#*- coding: utf-8 -*-
+
+import os
 
 from PyQt4.QtGui import QIcon
 from PyQt4.QtGui import QShortcut
-
 from PyQt4.QtCore import QObject
+
 #from PyQt4.QtCore import Qt
 from PyQt4.QtCore import SIGNAL
 
@@ -53,11 +55,12 @@ class MenuCodigoFuente(QObject):
         # Conexión a slots
         self.connect(self.accionCompilar, SIGNAL("triggered()"),
             self.metodo_compilar)
+        self.connect(self.accionEjecutar, SIGNAL("triggered()"),
+            self.metodo_ejecutar)
 
     def metodo_compilar(self):
         editorW = self.ide.contenedor_principal.devolver_editor_actual()
         path_name = self.ide.contenedor_principal.guardar_archivo(editorW)
-        import os
         nombre_salida = os.path.basename(path_name).split('.')[0]
         #os.popen('gcc -Wall -o %s %s' % (nombre_salida, path_name))
         #print "Compilado"
@@ -66,7 +69,7 @@ class MenuCodigoFuente(QObject):
             nombre_salida, path_name)
 
     def metodo_ejecutar(self):
-        pass
+        self.ide.contenedor_secundario.ejecutar_archivo()
 
     def metodo_compilar_ejecutar(self):
         pass

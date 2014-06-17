@@ -37,7 +37,7 @@ ICONOS = {
     "guardar": os.path.join(PATH, "imagenes", "guardar.png"),
     "guardar-como": os.path.join(PATH, "imagenes", "guardar.png"),
     "salir": os.path.join(PATH, "imagenes", "salir.png"),
-    "logo": os.path.join(PATH, "imagenes", "logo.png"),
+    "splash": os.path.join(PATH, "imagenes", "splash.png"),
     "icono": os.path.join(PATH, "imagenes", "side-c.png"),
     "print": os.path.join(PATH, "imagenes", "print.png"),
     "compilar": os.path.join(PATH, "imagenes", "compilar.png"),
@@ -58,7 +58,7 @@ ICONOS = {
 COLOR_EDITOR = {
     "texto": "#c5c8c6",
     "fondo": "#1d1f21",
-    "fondo-input": "#2d2d2d",
+    "fondo-input": "#1e1e1e",
     "linea-actual": "#919191",
     "widget-num-linea": "#7a7a7a",
     "fondo-margen": "#cacad4",

@@ -16,14 +16,18 @@ def main():
     app = QApplication(sys.argv)
 
     # Imágen SPLASH
-    splash_imagen = QPixmap(recursos.ICONOS['icono'])
+    splash_imagen = QPixmap(recursos.ICONOS['splash'])
     splash = QSplashScreen(splash_imagen, Qt.WindowStaysOnTopHint)
     splash.setMask(splash_imagen.mask())
     splash.show()
     app.processEvents()
 
-    time.sleep(2)
+    if sys.platform != 'win32':
+        app.setCursorFlashTime(0)
 
+    splash.showMessage("Cargando interfaz",
+        Qt.AlignRight | Qt.AlignTop, Qt.white)
+    time.sleep(2)
     side = Ide.IDE()
     side.show()
 

@@ -38,8 +38,8 @@ class __ContenedorMain(QSplitter):
         self.setFixedSize(0, 500)
         self.tab_actual = self.tab_principal
 
-        self.connect(self.tab_principal, SIGNAL("currentChanged(int)"),
-            self.tab_actual_cambiado)
+    #    self.connect(self.tab_principal, SIGNAL("currentChanged(int)"),
+     #       self.tab_actual_cambiado)
         self.connect(self.tab_principal, SIGNAL("saveActualEditor()"),
             self.guardar_archivo)
 
@@ -147,10 +147,10 @@ class __ContenedorMain(QSplitter):
     def actual_widget(self):
         return self.tab_actual.currentWidget()
 
-    def tab_actual_cambiado(self, indice):
-        if self.tab_actual.widget(indice):
-            self.emit(SIGNAL("currentTabChanged(QString)"),
-                self.tab_actual.widget(indice))
+    #def tab_actual_cambiado(self, indice):
+        #if self.tab_actual.widget(indice):
+            #self.emit(SIGNAL("currentTabChanged(QString)"),
+                #self.tab_actual.widget(indice))
 
     def abrir_archivo(self, nombre='', tabIndex=None):
         extension = recursos.EXTENSIONES  # Filtro
@@ -243,6 +243,8 @@ class __ContenedorMain(QSplitter):
             self.tab_actual.setTabText(self.tab_actual.currentIndex(),
                 manejador_de_archivo._nombreBase(nombre))
             editorW.ID = nombre
+
+            # Señal de guardado para la barra de estado
             self.emit(SIGNAL("fileSaved(QString)"),
                 self.tr("Guardado: %1").arg(nombre))
             editorW._guardado()

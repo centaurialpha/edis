@@ -102,6 +102,9 @@ class _ContenedorBottom(QWidget):
         self.path = path
         self.salida_.correr_compilacion(self.s, self.path)
 
+    def ejecutar_archivo(self):
+        self.salida_.correr_programa()
+
 
 class Notas(QTextEdit):
 
