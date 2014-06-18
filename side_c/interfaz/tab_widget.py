@@ -113,6 +113,7 @@ class TabCentral(QTabWidget):
             CANCELAR = QMessageBox.Cancel
 
             if isinstance(w, editor.Editor):
+                respuesta = NO
                 if w.texto_modificado:
                     nombre = self.tabBar().tabText(self.currentIndex())
                     respuesta = QMessageBox.question(self,

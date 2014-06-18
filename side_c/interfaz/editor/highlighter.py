@@ -71,6 +71,12 @@ class Highlighter(QSyntaxHighlighter):
         caracter.setForeground(Qt.gray)
         self.highlightingRules.append((QRegExp("\'.*\'"), caracter))
 
+        # Numero
+        numeros.setForeground(recursos.HIGHLIGHTER['numero'])
+        self.highlightingRules.append((QRegExp(
+            "\\b[-+]?[0-9]*\.?[0-9]+([eE][-+]?[0-9]+)?"),
+            numeros))
+
         # Cadena
         cadena.setForeground(recursos.HIGHLIGHTER['cadena'])
         self.highlightingRules.append((QRegExp("\".*\""),
@@ -89,12 +95,6 @@ class Highlighter(QSyntaxHighlighter):
         formateo.setForeground(Qt.darkYellow)
         self.highlightingRules.append((QRegExp("%[^' ']"),
             formateo))
-
-        # Numero
-        numeros.setForeground(recursos.HIGHLIGHTER['numero'])
-        self.highlightingRules.append((QRegExp(
-            "\\b[-+]?[0-9]*\.?[0-9]+([eE][-+]?[0-9]+)?"),
-            numeros))
 
         # Comentario simple
         comentario_una_linea.setForeground(
