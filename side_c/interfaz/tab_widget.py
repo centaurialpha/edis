@@ -1,11 +1,11 @@
 #-*- coding: utf-8 -*-
 
 from PyQt4.QtGui import QTabWidget
-#from PyQt4.QtGui import QColor
+from PyQt4.QtGui import QColor
 from PyQt4.QtGui import QMessageBox
 
 from PyQt4.QtCore import SIGNAL
-#from PyQt4.QtCore import Qt
+from PyQt4.QtCore import Qt
 
 from side_c.interfaz.editor import editor
 #from side_c import recursos
@@ -71,21 +71,25 @@ class TabCentral(QTabWidget):
 
     def tab_es_modificado(self, v):
         e = self.currentWidget()
-        texto = str(self.tabBar().tabText(self.currentIndex()))
+        #texto = str(self.tabBar().tabText(self.currentIndex()))
 
-        if isinstance(e, editor.Editor) and self.no_esta_abierto and v \
-        and not texto.startswith('* '):
+        #if isinstance(e, editor.Editor) and self.no_esta_abierto and v \
+        #and not texto.startswith('* '):
+            #t = '* %s' % self.tabBar().tabText(self.currentIndex())
+            #self.tabBar().setTabText(self.currentIndex(), t)
+
+        if isinstance(e, editor.Editor) and self.no_esta_abierto and v:
             e.texto_modificado = True
-            t = '* %s' % self.tabBar().tabText(self.currentIndex())
-            self.tabBar().setTabText(self.currentIndex(), t)
+            self.tabBar().setTabTextColor(self.currentIndex(),
+                QColor(Qt.red))
 
     def tab_guardado(self, e):
         indice = self.indexOf(e)
-        texto = str(self.tabBar().tabText(indice))
+        #texto = str(self.tabBar().tabText(indice))
 
-        if texto.startswith('* '):
-            texto = texto[2:]
-        self.tabBar().setTabText(indice, texto)
+        #if texto.startswith('* '):
+            #texto = texto[2:]
+        self.tabBar().setTabTextColor(indice, QColor(70, 70, 70))
 
     def focusInEvent(self, e):
         QTabWidget.focusInEvent(self, e)
