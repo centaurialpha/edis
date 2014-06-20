@@ -1,6 +1,7 @@
 #-*- coding: utf-8 -*-
 import time
 import sys
+import os
 
 from PyQt4.QtGui import QPlainTextEdit
 from PyQt4.QtGui import QVBoxLayout
@@ -60,7 +61,7 @@ class EjecutarWidget(QWidget):
         archivo = path.split('/')[-1]
         self.output.setPlainText(
             'Compilando archivo:  %s\nDirectorio: %s ( %s )\n' %
-            (archivo, path, time.ctime()))
+            (archivo, os.path.dirname(path), time.ctime()))
         self.output.moveCursor(QTextCursor.Down)
         self.output.moveCursor(QTextCursor.Down)
 
