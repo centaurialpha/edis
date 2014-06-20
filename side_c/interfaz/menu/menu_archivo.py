@@ -78,6 +78,7 @@ class MenuArchivo(QObject):
             self.ide.contenedor_principal.abrir_archivo)
         self.accionGuardar.triggered.connect(
             self.ide.contenedor_principal.guardar_archivo)
+        #self.accionGuardar.setEnabled(False)
         self.accionGuardarComo.triggered.connect(
             self.ide.contenedor_principal.guardar_archivo_como)
         self.accionImprimir.triggered.connect(

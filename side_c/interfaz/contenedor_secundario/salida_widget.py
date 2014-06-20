@@ -1,17 +1,21 @@
 #-*- coding: utf-8 -*-
 import time
+import sys
 
 from PyQt4.QtGui import QPlainTextEdit
 from PyQt4.QtGui import QVBoxLayout
 from PyQt4.QtGui import QWidget
 from PyQt4.QtGui import QTextCharFormat
 from PyQt4.QtGui import QTextCursor
+from PyQt4.QtGui import QColor
+from PyQt4.QtGui import QBrush
 
 from PyQt4.QtCore import QProcess
 from PyQt4.QtCore import SIGNAL
 from PyQt4.QtCore import Qt
 
 from side_c import recursos
+from side_c.nucleo import configuraciones
 
 
 class EjecutarWidget(QWidget):
@@ -46,8 +50,13 @@ class EjecutarWidget(QWidget):
 
         self.output.setCurrentCharFormat(self.output.formato_ok)
         self.ejecutable = nombre_ejecutable
+
+        if sys.platform is not configuraciones.LINUX:
+            path = "\"%s\"" % path
+
         comando = 'gcc -Wall -o %s %s' % (self.ejecutable, path)
         self.proceso.start(comando)
+
         archivo = path.split('/')[-1]
         self.output.setPlainText(
             'Compilando archivo:  %s\nDirectorio: %s ( %s )\n' %
@@ -62,15 +71,18 @@ class EjecutarWidget(QWidget):
         """
 
         formato = QTextCharFormat()
+        formato.setAnchor(True)
 
-        self.output.textCursor().insertText('\n')
+        self.output.textCursor().insertText('\n\n')
         if exitStatus == QProcess.NormalExit and codigoError == 0:
-            formato.setForeground(Qt.cyan)
+            formato.setForeground(
+                QBrush(QColor(recursos.COLOR_EDITOR['salida-exitosa'])))
             self.output.textCursor().insertText(
                 self.trUtf8("Compilación exitosa!"), formato)
 
         else:
-            formato.setForeground(Qt.red)
+            formato.setForeground(
+                QBrush(QColor(recursos.COLOR_EDITOR['salida-error'])))
             self.output.textCursor().insertText(
                 self.trUtf8("No hubo compilación!"), formato)
         self.output.textCursor().insertText('\n')
@@ -81,8 +93,13 @@ class EjecutarWidget(QWidget):
 
     def correr_programa(self):
         self.proceso_actual = self.proceso_ejecucion
-        comando = 'x-terminal-emulator -e bash -c ./%s'
-        self.proceso_ejecucion.start(comando % self.ejecutable)
+
+        if sys.platform is not configuraciones.LINUX:
+            #comando = 'cmd %s'
+            self.ejecutable = self.ejecutable + '.exe'
+        else:
+            comando = 'x-terminal-emulator -e bash -c ./%s'
+            self.proceso_ejecucion.start(comando % self.ejecutable)
 
 
 class SalidaWidget(QPlainTextEdit):
@@ -94,7 +111,7 @@ class SalidaWidget(QPlainTextEdit):
 
         # Formato para la salida estándar
         self.formato_ok = QTextCharFormat()
-        self.formato_ok.setForeground(Qt.white)
+        #self.formato_ok.setForeground(recursos.COLOR_EDITOR['texto'])
 
         # Formato para la salida de error
         self.error_f = QTextCharFormat()
@@ -106,10 +123,8 @@ class SalidaWidget(QPlainTextEdit):
     def cargar_estilo(self):
         """ Carga estilo de color de QPlainTextEdit """
 
-        tema = 'QPlainTextEdit {color: %s; background-color: %s;}' \
-        'selection-color: #FFFFFF; selection-background-color: #009B00;' \
-        % (recursos.COLOR_EDITOR['texto'],
-        recursos.COLOR_EDITOR['fondo-input'], )
+        tema = 'QPlainTextEdit {color: #afb4af; background-color: #1d1f21;}' \
+        'selection-color: #FFFFFF; selection-background-color: #009B00;'
 
         self.setStyleSheet(tema)
 

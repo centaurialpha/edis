@@ -214,13 +214,13 @@ class __ContenedorMain(QSplitter):
             return self.guardar_archivo_como()
 
         nombre = editorW.ID
-        print "nombre" + nombre
+
         self.emit(SIGNAL("beforeFileSaved(QString)"), nombre)
         contenido = editorW.devolver_texto()
         #self.escribir_archivo(nombre, contenido)
         manejador_de_archivo.escribir_archivo(nombre, contenido)
         editorW.ID = nombre
-        print "ID" + editorW.ID
+
         self.emit(SIGNAL("fileSaved(QString)"), self.tr(
             "Guardado: %1").arg(nombre))
 
@@ -263,10 +263,9 @@ class __ContenedorMain(QSplitter):
             return editorW.ID
 
         except:
-            print "Falso"
             #pass
             #editorW.guardado_actualmente = False
-        return False
+            return False
 
     def guardar_todo(self):
 

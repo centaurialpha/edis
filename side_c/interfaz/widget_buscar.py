@@ -12,9 +12,9 @@ from side_c import recursos
 
 class WidgetBuscar(QWidget):
 
-    def __init__(self, parent):
-        QWidget.__init__(self, parent)
-        self.parent = parent
+    def __init__(self):
+        QWidget.__init__(self)
+        #self.parent = parent
 
         layoutH = QHBoxLayout(self)
         layoutH.setContentsMargins(0, 0, 0, 0)

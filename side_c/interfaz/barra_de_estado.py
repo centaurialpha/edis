@@ -9,6 +9,7 @@ from PyQt4.QtGui import QLabel
 from PyQt4.QtGui import QPushButton
 
 from PyQt4.QtCore import SIGNAL
+from PyQt4.QtCore import Qt
 
 from side_c import recursos
 
@@ -32,11 +33,10 @@ class _BarraDeEstado(QStatusBar):
 
         v_layout = QVBoxLayout(self.widget)
         v_layout.setContentsMargins(0, 0, 0, 0)
-        v_layout.setSpacing(0)
+        #v_layout.setSpacing(20)
 
-        #self.buscador = WidgetBuscar(self)
-        #self.addWidget(self.buscador)
         self.linea_columna = EstadoLineaColumna(self)
+        v_layout.addWidget(self.linea_columna)
         self.connect(self, SIGNAL("messageChanged(QString)"),
             self.mensaje_terminado)
 
@@ -62,9 +62,10 @@ class EstadoLineaColumna(QWidget):
         layoutV.setContentsMargins(0, 0, 0, 0)
         layoutH = QHBoxLayout()
         layoutH.setContentsMargins(0, 0, 0, 0)
-        self.texto = "Lin: %s | Col: %s"
+        self.texto = "Linea: %s | Columna: %s"
         self.posicion_cursor = QLabel(self.trUtf8(
             self.texto % (0, 0)))
+
         layoutH.addWidget(self.posicion_cursor)
 
         layoutV.addLayout(layoutH)
