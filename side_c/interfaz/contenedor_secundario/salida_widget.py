@@ -107,8 +107,9 @@ class SalidaWidget(QPlainTextEdit):
         """ Carga estilo de color de QPlainTextEdit """
 
         tema = 'QPlainTextEdit {color: %s; background-color: %s;}' \
+        'selection-color: #FFFFFF; selection-background-color: #009B00;' \
         % (recursos.COLOR_EDITOR['texto'],
-        recursos.COLOR_EDITOR['fondo-input'])
+        recursos.COLOR_EDITOR['fondo-input'], )
 
         self.setStyleSheet(tema)
 

@@ -119,6 +119,10 @@ class Editor(QPlainTextEdit):
     def resaltar_linea_actual(self):
         """ Pinta la linea actual en donde está posicionado el cursor. """
 
+        self.emit(SIGNAL("cursorPositionChange(int, int)"),
+            self.textCursor().blockNumber() + 1,
+            self.textCursor().columnNumber())
+
         seleccion = QTextEdit.ExtraSelection()
         color = QColor(recursos.COLOR_EDITOR['linea-actual'])
         color.setAlpha(40)

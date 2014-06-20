@@ -91,6 +91,30 @@ class TabCentral(QTabWidget):
             #texto = texto[2:]
         self.tabBar().setTabTextColor(indice, QColor(70, 70, 70))
 
+    def check_tabs_sin_guardar(self):
+        """ Devuelve Verdadero si hay algún editor que fué modificado
+        y no se han guardado los cambios """
+
+        valor = False
+        for i in range(self.count()):
+            if isinstance(self.widget(i), editor.Editor):
+                valor = valor or self.widget(i).texto_modificado
+
+        return valor
+
+    def devolver_archivos_no_guardados(self):
+        """ Devuelve una lista de todos los archivos que han sido modificados
+        y no se han guardado los cambios """
+
+        archivos = []
+
+        for i in range(self.count()):
+            w = self.widget(i)
+            if isinstance(w, editor.Editor) and w.texto_modificado:
+                archivos.append(self.tabText(i))
+
+        return archivos
+
     def focusInEvent(self, e):
         QTabWidget.focusInEvent(self, e)
         self.emit(SIGNAL("changeActualTab(QTabWidget)"), self)

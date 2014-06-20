@@ -60,6 +60,8 @@ class __ContenedorMain(QSplitter):
         self.connect(editorWidget, SIGNAL("openDropFile(QString)"),
             self.abrir_archivo)
         self.emit(SIGNAL("fileOpened(QString)"), nombre_archivo)
+        self.connect(editorWidget, SIGNAL("cursorPositionChange(int, int)"),
+            self._posicion_del_cursor)
 
         return editorWidget
 
@@ -72,6 +74,12 @@ class __ContenedorMain(QSplitter):
     def editor_es_guardado(self, editorW=None):
         self.tab_actual.tab_guardado(editorW)
         self.emit(SIGNAL("updateLocator(QString)"), editorW.ID)
+
+    def check_tabs_sin_guardar(self):
+        return self.tab_principal.check_tabs_sin_guardar()
+
+    def devolver_archivos_no_guardados(self):
+        return self.tab_principal.devolver_archivos_no_guardados()
 
     def agregar_tab(self, widget, nombre_tab, tabIndex=None, nAbierta=True):
         return self.tab_actual.agregar_tab(widget, nombre_tab, index=tabIndex)
@@ -132,6 +140,9 @@ class __ContenedorMain(QSplitter):
         w = self.devolver_widget_actual()
         if w:
             w.setFocus()
+
+    def _posicion_del_cursor(self, linea, columna):
+        self.emit(SIGNAL("cursorPositionChange(int, int)"), linea, columna)
 
     def cerrar_tab(self):
         """ Se llama al método removeTab de QTabWidget. """
@@ -256,3 +267,11 @@ class __ContenedorMain(QSplitter):
             #pass
             #editorW.guardado_actualmente = False
         return False
+
+    def guardar_todo(self):
+
+        for i in range(self.tab_principal.count()):
+            editorW = self.tab_principal.widget(i)
+
+            if isinstance(editorW, editor.Editor):
+                self.guardar_archivo(editorW)

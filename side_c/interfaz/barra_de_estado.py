@@ -5,7 +5,7 @@ from PyQt4.QtGui import QWidget
 from PyQt4.QtGui import QVBoxLayout
 from PyQt4.QtGui import QLineEdit
 from PyQt4.QtGui import QHBoxLayout
-from PyQt4.QtGui import QIcon
+from PyQt4.QtGui import QLabel
 from PyQt4.QtGui import QPushButton
 
 from PyQt4.QtCore import SIGNAL
@@ -27,50 +27,48 @@ class _BarraDeEstado(QStatusBar):
 
     def __init__(self, parent=None):
         QStatusBar.__init__(self, parent)
-
+        self.parent = parent
         self.widget = QWidget()
 
         v_layout = QVBoxLayout(self.widget)
         v_layout.setContentsMargins(0, 0, 0, 0)
         v_layout.setSpacing(0)
 
-        self.buscador = WidgetBuscar(self)
-        self.addWidget(self.buscador)
-
+        #self.buscador = WidgetBuscar(self)
+        #self.addWidget(self.buscador)
+        self.linea_columna = EstadoLineaColumna(self)
         self.connect(self, SIGNAL("messageChanged(QString)"),
             self.mensaje_terminado)
 
         self.addWidget(self.widget)
 
     def showMessage(self, mensaje, tiempo):
-        self.widget.hide()
+        self.linea_columna.hide()
         QStatusBar.showMessage(self, mensaje, tiempo)
 
     def mensaje_terminado(self, mensaje):
         if not mensaje:
-            self.hide()
+            self.linea_columna.show()
 
 
-class WidgetBuscar(QWidget):
+class EstadoLineaColumna(QWidget):
 
     def __init__(self, parent):
         QWidget.__init__(self, parent)
+
         self.parent = parent
 
-        layoutH = QHBoxLayout(self)
+        layoutV = QVBoxLayout(self)
+        layoutV.setContentsMargins(0, 0, 0, 0)
+        layoutH = QHBoxLayout()
         layoutH.setContentsMargins(0, 0, 0, 0)
+        self.texto = "Lin: %s | Col: %s"
+        self.posicion_cursor = QLabel(self.trUtf8(
+            self.texto % (0, 0)))
+        layoutH.addWidget(self.posicion_cursor)
 
-        self.lineText = QLineEdit()
-        self.lineText.setMaximumWidth(200)
+        layoutV.addLayout(layoutH)
 
-        self.boton_buscar = QPushButton(QIcon(
-            recursos.ICONOS['buscar']), '')
-
-        layoutH.addWidget(self.lineText)
-        layoutH.addWidget(self.boton_buscar)
-
-        self.connect(self.boton_buscar, SIGNAL("clicked()"),
-            self.buscar_texto)
-
-    def buscar_texto(self):
-        pass
+    def actualizar_linea_columna(self, linea, columna):
+        self.posicion_cursor.setText(
+            self.trUtf8(self.texto % (linea, columna)))
