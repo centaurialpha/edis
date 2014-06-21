@@ -76,9 +76,10 @@ COLOR_EDITOR = {
 HIGHLIGHTER = {
     "numero": QColor(248, 160, 50),
     "include": QColor(50, 130, 200),
-    "include_": QColor(255, 255, 230),
-    "palabra": QColor(138, 226, 52),
-    "funcion": QColor(246, 238, 142),
+    "include_": QColor(155, 207, 217),
+    #"palabra": QColor(138, 226, 52),
+    "palabra": QColor(184, 222, 50),
+    "funcion": QColor(80, 164, 183),
     "comentario": QColor(105, 105, 105),
     "cadena": QColor(179, 105, 191),
     "braces": QColor(255, 255, 255)

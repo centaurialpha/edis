@@ -2,7 +2,6 @@
 
 from PyQt4.QtGui import QMainWindow
 from PyQt4.QtGui import QDesktopWidget
-from PyQt4.QtGui import QIcon
 from PyQt4.QtGui import QToolBar
 from PyQt4.QtGui import QApplication
 from PyQt4.QtGui import QMessageBox
@@ -74,7 +73,6 @@ class __IDE(QMainWindow):
         self._cargar_tema()
         get_pantalla = QDesktopWidget().screenGeometry()
         self.posicionar_ventana(get_pantalla)
-        self.setWindowIcon(QIcon(recursos.ICONOS['icono']))
         self.showMaximized()
 
         # Widget Central
@@ -85,6 +83,7 @@ class __IDE(QMainWindow):
         # ToolBar
         self.toolbar = QToolBar(self)
         self.toolbar_ = QToolBar(self)
+        self.toolbar.setToolTip(self.trUtf8("Mantén presionado y mueve"))
         if not configuraciones.LINUX:
             self.toolbar_.setIconSize(QSize(25, 25))
             self.toolbar.setIconSize(QSize(25, 25))

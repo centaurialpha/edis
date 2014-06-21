@@ -63,6 +63,7 @@ class Highlighter(QSyntaxHighlighter):
             "\\b[A-Za-z0-9_]+(?=\\()"), funciones))
 
         # Corchete - paréntesis - llave
+        braces.setFontWeight(QFont.Bold)
         braces.setForeground(recursos.HIGHLIGHTER['braces'])
         self.highlightingRules.append((QRegExp("[\[\]\(\)\{\}]"),
         braces))
@@ -88,7 +89,7 @@ class Highlighter(QSyntaxHighlighter):
         self.highlightingRules.append((QRegExp("#[^\n]*"),
             include))
 
-        _include.setForeground(QColor(128, 255, 128))
+        _include.setForeground(recursos.HIGHLIGHTER['include_'])
         self.highlightingRules.append((QRegExp("\<.*\>"), _include))
 
         # Formateo
