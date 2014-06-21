@@ -39,6 +39,7 @@ class MenuCodigoFuente(QObject):
         self.accionEjecutar = menu_codigo.addAction(
             QIcon(recursos.ICONOS['ejecutar']), self.trUtf8("Ejecutar"))
         self.accionCompilarEjecutar = menu_codigo.addAction(
+            QIcon(recursos.ICONOS['comp-ejec']),
             self.trUtf8("Compilar y ejecutar"))
 
         # Acciones desactivadas
@@ -49,7 +50,7 @@ class MenuCodigoFuente(QObject):
         self.items_toolbar = {
             "compilar-archivo": self.accionCompilar,
             "ejecutar-archivo": self.accionEjecutar,
-            "ejecutar_compilar-archivo": self.accionCompilarEjecutar
+            "compilar_ejecutar-archivo": self.accionCompilarEjecutar
             }
 
         # Conexión a slots

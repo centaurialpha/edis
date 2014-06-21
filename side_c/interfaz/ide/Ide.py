@@ -34,9 +34,6 @@ ITEMS_TOOLBAR1 = [
     "abrir-archivo",
     "guardar-archivo",
     "guardar-como-archivo",
-    #"compilar-archivo",
-    #"ejecutar-archivo",
-    #"compilar_ejecutar-archivo",
     "separador",
     "deshacer",
     "rehacer",
@@ -51,17 +48,6 @@ ITEMS_TOOLBAR1 = [
     ]
 
 ITEMS_TOOLBAR2 = [
-    #"separador",
-    #"deshacer",
-    #"rehacer",
-    #"separador",
-    #"cortar",
-    #"copiar",
-    #"pegar",
-    #"separador",
-    #"titulo",
-    #"linea",
-    #"separador"
     "compilar-archivo",
     "ejecutar-archivo",
     "compilar_ejecutar-archivo"
@@ -100,8 +86,8 @@ class __IDE(QMainWindow):
         self.toolbar = QToolBar(self)
         self.toolbar_ = QToolBar(self)
         if not configuraciones.LINUX:
-            self.toolbar_.setIconSize(QSize(30, 30))
-            self.toolbar.setIconSize(QSize(30, 30))
+            self.toolbar_.setIconSize(QSize(25, 25))
+            self.toolbar.setIconSize(QSize(25, 25))
         else:
             self.toolbar_.setIconSize(QSize(20, 20))
             self.toolbar.setIconSize(QSize(20, 20))
@@ -212,7 +198,7 @@ class __IDE(QMainWindow):
             v = QMessageBox.question(self,
                 self.trUtf8("Algunos cambios no se han guardado"),
                 (self.trUtf8("\n\n¿ Guardar los archivos ?")),
-                QMessageBox.Yes, QMessageBox.No, QMessageBox.Cancel)
+                SI, QMessageBox.No, CANCELAR)
 
             if v == SI:
                 self.contenedor_principal.guardar_todo()

@@ -42,6 +42,7 @@ ICONOS = {
     "print": os.path.join(PATH, "imagenes", "print.png"),
     "compilar": os.path.join(PATH, "imagenes", "compilar.png"),
     "ejecutar": os.path.join(PATH, "imagenes", "play.png"),
+    "comp-ejec": os.path.join(PATH, "imagenes", "compilar-ejecutar.png"),
     "terminal": os.path.join(PATH, "imagenes", "terminal.png"),
     "notas": os.path.join(PATH, "imagenes", "notas.png"),
     "deshacer": os.path.join(PATH, "imagenes", "deshacer.png"),
@@ -59,7 +60,7 @@ ICONOS = {
 COLOR_EDITOR = {
     "texto": "#afb4af",
     "fondo": "#1d1f21",
-    "salida-exitosa": "#1eff28",
+    "salida-exitosa": "#86c2ff",
     "salida-error": "red",
     "fondo-input": "#1e1e1e",
     "linea-actual": "#919191",
@@ -75,7 +76,8 @@ COLOR_EDITOR = {
 HIGHLIGHTER = {
     "numero": QColor(248, 160, 50),
     "include": QColor(50, 130, 200),
-    "palabra": QColor(131, 193, 251),
+    "include_": QColor(255, 255, 230),
+    "palabra": QColor(138, 226, 52),
     "funcion": QColor(246, 238, 142),
     "comentario": QColor(105, 105, 105),
     "cadena": QColor(179, 105, 191),

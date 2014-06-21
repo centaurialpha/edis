@@ -10,16 +10,21 @@ from PyQt4.QtGui import QPrinter
 from PyQt4.QtGui import QPrintPreviewDialog
 from PyQt4.QtGui import QApplication
 
-comentario = '//'
+from side_c.nucleo import configuraciones
+
+comentario_inicio = '/*'
+comentario_fin = '*/'
 
 
 def insertar_linea(ew):
     """ Inserta un una línea horizontal como separador. """
 
-    ew.moveCursor(QTextCursor.StartOfLine, QTextCursor.KeepAnchor)
-    texto = ew.textCursor().selection().toPlainText()
-    ew.moveCursor(QTextCursor.EndOfLine, QTextCursor.MoveAnchor)
-    com = comentario * ((66 - len(texto)) / len(comentario))
+    #ew.moveCursor(QTextCursor.StartOfLine, QTextCursor.KeepAnchor)
+   # texto = ew.textCursor().selection().toPlainText()
+    #ew.moveCursor(QTextCursor.EndOfLine, QTextCursor.MoveAnchor)
+    #com = comentario * ((66 - len(texto)) / len(comentario))
+    com = comentario_inicio + ((configuraciones.MARGEN - 5) * '*') + \
+        comentario_fin
     ew.textCursor().insertText(com)
 
 
@@ -33,10 +38,11 @@ def insertar_titulo(ew):
     else:
         ew.textCursor().beginEditBlock()
         ew.moveCursor(QTextCursor.StartOfLine, QTextCursor.MoveAnchor)
-        com = comentario * (30 / len(comentario))
+        com = comentario_inicio + (('*' * ((configuraciones.MARGEN - 10) / 2)))
         ew.textCursor().insertText(com)
-        ew.textCursor().insertText(comentario + r)
-        ew.textCursor().insertText(com)
+        ew.textCursor().insertText(' ' + r + ' ')
+        ew.textCursor().insertText(('*' * ((configuraciones.MARGEN - 10) / 2)))
+        ew.textCursor().insertText(comentario_fin)
         ew.textCursor().endEditBlock()
 
 

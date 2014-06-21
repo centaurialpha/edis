@@ -79,7 +79,7 @@ class EjecutarWidget(QWidget):
             formato.setForeground(
                 QBrush(QColor(recursos.COLOR_EDITOR['salida-exitosa'])))
             self.output.textCursor().insertText(
-                self.trUtf8("Compilación exitosa!"), formato)
+                self.trUtf8("¡Compilación exitosa!"), formato)
 
         else:
             formato.setForeground(
@@ -93,14 +93,16 @@ class EjecutarWidget(QWidget):
         pass
 
     def correr_programa(self):
+        print "asd"
+        print sys.platform
         self.proceso_actual = self.proceso_ejecucion
 
-        if sys.platform is not configuraciones.LINUX:
-            #comando = 'cmd %s'
-            self.ejecutable = self.ejecutable + '.exe'
-        else:
-            comando = 'x-terminal-emulator -e bash -c ./%s'
-            self.proceso_ejecucion.start(comando % self.ejecutable)
+        #if sys.platform is not configuraciones.TUX:
+            ##comando = 'cmd %s'
+            #self.ejecutable = self.ejecutable + '.exe'
+        #else:
+        comando = 'x-terminal-emulator -e bash -c ./%s'
+        self.proceso_ejecucion.start(comando % self.ejecutable)
 
 
 class SalidaWidget(QPlainTextEdit):
