@@ -1,30 +1,20 @@
 #-*- coding: utf-8 -*-
 
 from PyQt4.QtGui import QWidget
-from PyQt4.QtGui import QTabWidget
+from PyQt4.QtGui import QPushButton
+from PyQt4.QtGui import QStackedWidget
 from PyQt4.QtGui import QVBoxLayout
 from PyQt4.QtGui import QHBoxLayout
-#from PyQt4.QtGui import QPlainTextEdit
 from PyQt4.QtGui import QTextEdit
-from PyQt4.QtGui import QTabBar
-from PyQt4.QtGui import QStylePainter
-from PyQt4.QtGui import QStyleOptionTab
+#from PyQt4.QtGui import QSpacerItem
+from PyQt4.QtGui import QIcon
 from PyQt4.QtGui import QStyle
-#from PyQt4.QtGui import QIcon
-from PyQt4.QtGui import QSizePolicy
-from PyQt4.QtGui import QSpacerItem
+#from PyQt4.QtGui import QSizePolicy
 
+from PyQt4.QtCore import SIGNAL
 
-from PyQt4.QtCore import QSize
-from PyQt4.QtCore import Qt
-from PyQt4.QtCore import QProcess
-
-#from side_c import recursos
 from side_c.interfaz.contenedor_secundario import salida_widget
-from side_c.nucleo import configuraciones
-
-if configuraciones.LINUX is not False:
-    from PyQt4.QtGui import QX11EmbedContainer
+from side_c import recursos
 
 
 _instanciaContenedorSecundario = None
@@ -38,65 +28,51 @@ def ContenedorBottom(*args, **kw):
     return _instanciaContenedorSecundario
 
 
-class Tab(QTabBar):
-    """ Se colocan los tabs a la derecha y el texto en horizontal.
-        https://gist.github.com/LegoStormtroopr/5075267
-
-    """
-    def __init__(self, *args, **kwargs):
-        self.tam_tabs = QSize(kwargs.pop('ancho'), kwargs.pop('alto'))
-        super(Tab, self).__init__(*args, **kwargs)
-
-    def paintEvent(self, event):
-        painter = QStylePainter()
-        option = QStyleOptionTab()
-
-        painter.begin(self)
-        for index in range(self.count()):
-            self.initStyleOption(option, index)
-            tabRect = self.tabRect(index)
-            tabRect.moveLeft(10)
-            painter.drawControl(QStyle.CE_TabBarTabShape, option)
-            painter.drawText(tabRect, Qt.AlignVCenter | Qt.TextDontClip,
-                             self.tabText(index))
-        painter.end()
-
-    def tabSizeHint(self, index):
-        return self.tam_tabs
-
-
 class _ContenedorBottom(QWidget):
 
     def __init__(self, parent=None):
         QWidget.__init__(self, parent)
+        layoutV = QVBoxLayout()
 
-        vlayout = QVBoxLayout(self)
-        vlayout.setContentsMargins(0, 0, 0, 0)
-        vlayout.setSpacing(10)
-        vlayout.addSpacerItem(QSpacerItem(1, 0, QSizePolicy.Expanding))
+        hbox = QHBoxLayout(self)
+        hbox.setContentsMargins(0, 0, 0, 0)
+        hbox.setSpacing(0)
+
+        self.stack = Stacked()
+        hbox.addWidget(self.stack)
 
         self.salida_ = salida_widget.EjecutarWidget()
+        self.stack.addWidget(self.salida_)
+
         self.notas = Notas(self)
+        self.stack.addWidget(self.notas)
 
-        self.tabs = QTabWidget(self)
-        self.tabs.setTabBar(Tab(ancho=55, alto=35))
+        self.botonSalida = QPushButton(QIcon(recursos.ICONOS['terminal']), '')
+        self.botonNotas = QPushButton(QIcon(recursos.ICONOS['notas']), '')
+        boton_cerrar = QPushButton(
+            self.style().standardIcon(QStyle.SP_DialogCloseButton), '')
 
-        #if configuraciones.LINUX is not False:
-         #   self.term = Terminal(self)
-          #  self.agregar_tab(self.term, "")
+        layoutV.addWidget(self.botonSalida)
+        layoutV.addWidget(self.botonNotas)
+        #layoutV.addSpacerItem(QSpacerItem(0, 0, 0))
+        layoutV.addWidget(boton_cerrar)
+        hbox.addLayout(layoutV)
 
-        self.agregar_tab(self.salida_, "Salida")
-        self.agregar_tab(self.notas, "Notas")
-        self.tabs.setTabPosition(QTabWidget.East)
+        self.connect(self.botonSalida, SIGNAL("clicked()"),
+            lambda: self.item_cambiado(0))
+        self.connect(self.botonNotas, SIGNAL("clicked()"),
+            lambda: self.item_cambiado(1))
+        self.connect(boton_cerrar, SIGNAL("clicked()"),
+            self.hide)
 
-        hlayout = QHBoxLayout()
-        vlayout.addWidget(self.tabs)
-        vlayout.addLayout(hlayout)
+    def item_cambiado(self, v):
+        if not self.isVisible():
+            self.show()
 
-    def agregar_tab(self, widget, titulo):
-        self.tabs.addTab(widget, titulo)
+        self.stack.show_display(v)
 
     def compilar_archivo(self, salida, path):
+        self.item_cambiado(0)
         self.show()
         self.s = salida
         self.path = path
@@ -113,27 +89,13 @@ class Notas(QTextEdit):
         self.setText(self.trUtf8("Acá puedes escribir notas..."))
 
 
-class Terminal(QWidget):
-    """ Terminal embebida (xterm) """
+class Stacked(QStackedWidget):
 
-    def __init__(self, parent):
-        QWidget.__init__(self, parent)
-        self.proceso = QProcess(self)
-        self.terminal = QX11EmbedContainer(self)
+    def __init__(self):
+        QStackedWidget.__init__(self)
 
-        layout = QVBoxLayout(self)
-        layout.setContentsMargins(0, 0, 0, 0)
-        layout.setSpacing(0)
-        #layout.setStretch(300, 300)
-        layout.addWidget(self.terminal)
+    def setCurrentIndex(self, index):
+        QStackedWidget.setCurrentIndex(self, index)
 
-        import sys
-
-        try:
-
-            if sys.platform == configuraciones.TUX:
-                self.proceso.start('xterm',
-                    ['-into', str(self.terminal.winId())])
-
-        except:
-            pass
+    def show_display(self, index):
+        self.setCurrentIndex(index)

@@ -24,8 +24,8 @@ class EjecutarWidget(QWidget):
     def __init__(self):
         super(EjecutarWidget, self).__init__()
         layoutV = QVBoxLayout(self)
-        layoutV.setSpacing(0)
         layoutV.setContentsMargins(0, 0, 0, 0)
+        layoutV.setSpacing(0)
         self.output = SalidaWidget(self)
         layoutV.addWidget(self.output)
         self.setLayout(layoutV)
