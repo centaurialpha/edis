@@ -55,6 +55,11 @@ class MenuEditar(QObject):
             QIcon(recursos.ICONOS['pegar']), self.trUtf8("Pegar"))
         self.accionPegar.setShortcut(recursos.ATAJOS['pegar'])
         menu_editar.addSeparator()
+        self.accionIndentarMas = menu_editar.addAction(
+            self.trUtf8("Indentar más"))
+        self.accionIndentarMenos = menu_editar.addAction(
+            self.trUtf8("Indentar menos"))
+        menu_editar.addSeparator()
         self.accionBorrar = menu_editar.addAction(self.trUtf8("Borrar"))
         menu_editar.addSeparator()
         self.accionSeleccionarTodo = menu_editar.addAction(
@@ -76,6 +81,10 @@ class MenuEditar(QObject):
             self.ide.contenedor_principal.pegar)
         self.accionConfiguracion.triggered.connect(
             self._configuraciones)
+        self.accionIndentarMas.triggered.connect(
+            self.ide.contenedor_principal.indentar_mas)
+        self.accionIndentarMenos.triggered.connect(
+            self.ide.contenedor_principal.indentar_menos)
 
         # Toolbar - Items
         self.items_toolbar = {

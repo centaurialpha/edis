@@ -73,7 +73,7 @@ class __ContenedorMain(QSplitter):
 
     def editor_es_guardado(self, editorW=None):
         self.tab_actual.tab_guardado(editorW)
-        self.emit(SIGNAL("updateLocator(QString)"), editorW.ID)
+        #self.emit(SIGNAL("updateLocator(QString)"), editorW.ID)
 
     def check_tabs_sin_guardar(self):
         return self.tab_principal.check_tabs_sin_guardar()
@@ -129,6 +129,16 @@ class __ContenedorMain(QSplitter):
         if editorW:
             editorW.clear()
 
+    def indentar_mas(self):
+        editorW = self.devolver_editor_actual()
+        if editorW:
+            editorW.indentar_mas()
+
+    def indentar_menos(self):
+        editorW = self.devolver_editor_actual()
+        if editorW:
+            editorW.indentar_menos()
+
     def actualizar_margen_editor(self):
         for i in range(self.tab_principal.count()):
             widget = self.tab_principal.widget(i)
@@ -171,36 +181,27 @@ class __ContenedorMain(QSplitter):
         if not nombre:
             direc = os.path.expanduser("~")
 
-            nombre = str(QFileDialog.getOpenFileName(self,
-            self.tr("Abrir archivo"), direc, extension))
+            nombres = list(QFileDialog.getOpenFileNames(self,
+            self.trUtf8("Abrir archivo"), direc, extension))
 
-        if not self.esta_abierto(nombre):
+        else:
+            nombres = [nombre]
+
+        for nombre in nombres:
+            nombre = str(nombre)
+
             self.tab_actual.no_esta_abierto = False
             #contenido = self.leer_contenido_archivo(nombre)
-            contenido = manejador_de_archivo.leer_contenido_de_archivo(nombre)
+            contenido = manejador_de_archivo.leer_contenido_de_archivo(
+                nombre)
             editorW = self.agregar_editor(nombre, tabIndex=tabIndex)
             editorW.setPlainText(contenido.decode('utf-8'))
             editorW.ID = nombre
             # Test not empty
             editorW.nuevo_archivo = False
             self.emit(SIGNAL("currentTabChanged(QString)"), nombre)
-        else:
-            # Acá código para cuando se abra el mismo archivo
-            # Se tendría que mover al tab de ese archivo
-                pass
 
         self.tab_actual.no_esta_abierto = True
-
-    def esta_abierto(self, nombre):
-        return self.tab_principal._esta_abierto(nombre) is not False
-
-    def mover_tab(self, nombre):
-        if self.tab_principal._esta_abierto(nombre) != -1:
-            self.tab_principal._mover_tab(nombre)
-            self.tab_actual = self.tab_principal
-
-        self.tab_actual.currentWidget().setFocus()
-        self.emit(SIGNAL("currentTabChangd(QString)"), nombre)
 
     def guardar_archivo(self, editorW=None):
         if not editorW:
@@ -208,30 +209,30 @@ class __ContenedorMain(QSplitter):
             if not editorW:
                 return False
 
-        #try:
-        #editorW.guardado_actualmente = True
-        if editorW.nuevo_archivo:
-            return self.guardar_archivo_como()
+        try:
+            editorW.guardado_actualmente = True
+            if editorW.nuevo_archivo:
+                return self.guardar_archivo_como()
 
-        nombre = editorW.ID
+            nombre = editorW.ID
 
-        self.emit(SIGNAL("beforeFileSaved(QString)"), nombre)
-        contenido = editorW.devolver_texto()
-        #self.escribir_archivo(nombre, contenido)
-        manejador_de_archivo.escribir_archivo(nombre, contenido)
-        editorW.ID = nombre
+            self.emit(SIGNAL("beforeFileSaved(QString)"), nombre)
+            contenido = editorW.devolver_texto()
+            #self.escribir_archivo(nombre, contenido)
+            manejador_de_archivo.escribir_archivo(nombre, contenido)
+            editorW.ID = nombre
 
-        self.emit(SIGNAL("fileSaved(QString)"), self.tr(
-            "Guardado: %1").arg(nombre))
+            self.emit(SIGNAL("fileSaved(QString)"), self.tr(
+                "Guardado: %1").arg(nombre))
 
-        editorW._guardado()
+            editorW._guardado()
 
-        return editorW.ID
-        #except:
+            return editorW.ID
+        except:
             #print "EXECP!"
             #pass
-            #editorW.guardado_actualmente = False
-         #   return False
+            editorW.guardado_actualmente = False
+        return False
 
     def guardar_archivo_como(self):
         #CODEC = 'utf-8'

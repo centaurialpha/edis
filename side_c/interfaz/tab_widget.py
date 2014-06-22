@@ -57,18 +57,6 @@ class TabCentral(QTabWidget):
             if self.count() > 1:
                 self.removeTab(1)
 
-    def _esta_abierto(self, nombre):
-        for i in range(self.count()):
-            if self.widget(i) == nombre:
-                return True
-        return False
-
-    def _mover_tab(self, nombre):
-        for i in range(self.count()):
-            if self.widget(i) == nombre:
-                self.setCurrentIndex(i)
-                return
-
     def tab_es_modificado(self, v):
         e = self.currentWidget()
         #texto = str(self.tabBar().tabText(self.currentIndex()))

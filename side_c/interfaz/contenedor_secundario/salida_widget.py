@@ -93,14 +93,14 @@ class EjecutarWidget(QWidget):
         pass
 
     def correr_programa(self):
-        print "asd"
-        print sys.platform
         self.proceso_actual = self.proceso_ejecucion
 
         #if sys.platform is not configuraciones.TUX:
-            ##comando = 'cmd %s'
-            #self.ejecutable = self.ejecutable + '.exe'
-        #else:
+            #comando = '%s'
+            #print "Ejecutando..."
+            #self.ejecutable = 'C:\\Documents'
+            #print self.ejecutable
+            #self.proceso_ejecucion.start(self.ejecutable)
         comando = 'x-terminal-emulator -e bash -c ./%s'
         self.proceso_ejecucion.start(comando % self.ejecutable)
 

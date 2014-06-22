@@ -106,7 +106,7 @@ class Editor(QPlainTextEdit):
             offset = self.contentOffset()
             ancho = self.viewport().width() - (self.posicion_margen +
                 offset.x())
-            rect = QRect(self.posicion_margen + offset.x(), 1,
+            rect = QRect(self.posicion_margen + offset.x(), -1,
                 ancho + 1, self.viewport().height() + 3)
             fondo = QColor(recursos.COLOR_EDITOR['fondo-margen'])
             fondo.setAlpha(recursos.COLOR_EDITOR['opacidad'])
@@ -227,6 +227,45 @@ class Editor(QPlainTextEdit):
         else:
             c_width = f_metrics.averageCharWidth()
             self.posicion_margen = c_width * configuraciones.MARGEN
+
+    def indentar_mas(self):
+        cursor = self.textCursor()
+        bloque = self.document().findBlock(cursor.selectionStart())
+        fin = self.document().findBlock(cursor.selectionEnd()).next()
+
+        cursor.beginEditBlock()
+
+        cursor.setPosition(bloque.position())
+
+        while bloque != fin:
+            cursor.setPosition(bloque.position())
+            cursor.insertText(' ' * configuraciones.INDENTACION)
+            bloque = bloque.next()
+
+        cursor.endEditBlock()
+
+    def indentar_menos(self):
+        cursor = self.textCursor()
+        if not cursor.hasSelection():
+            cursor.movePosition(QTextCursor.EndOfLine)
+
+        bloque = self.document().findBlock(cursor.selectionStart())
+        fin = self.document().findBlock(cursor.selectionEnd()).next()
+
+        cursor.beginEditBlock()
+
+        cursor.setPosition(bloque.position())
+
+        while bloque != fin:
+            cursor.setPosition(bloque.position())
+            cursor.movePosition(QTextCursor.Right, QTextCursor.KeepAnchor,
+                configuraciones.INDENTACION)
+            texto = cursor.selectedText()
+            if texto == ' ' * configuraciones.INDENTACION:
+                cursor.removeSelectedText()
+            bloque = bloque.next()
+
+        cursor.endEditBlock()
 
     def _guardado(self, uA=False):
         if not uA:

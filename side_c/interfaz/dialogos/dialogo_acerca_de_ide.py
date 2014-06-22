@@ -18,6 +18,7 @@ from PyQt4.QtCore import QString
 import side_c
 
 from side_c import recursos
+from side_c.nucleo import configuraciones
 
 
 class AcercaDeIDE(QDialog):
@@ -62,12 +63,20 @@ class AcercaDeSide(QWidget):
         titulo_label = QLabel(
             self.trUtf8('<h1>SIDE-C</h1><i>Seiryü</i>'))
         titulo_label.setAlignment(Qt.AlignCenter)
+        if configuraciones.LINUX:
+            so_label = QLabel(
+                self.trUtf8("<h5><i>(En GNU/Linux)</i></h5>"))
+        else:
+            so_label = QLabel(
+                self.trUtf8("<h5><i>(En Windows</i>)</h5>"))
         layout_vertical.addWidget(titulo_label)
         logo = QPixmap(recursos.ICONOS['icono'])
         self.logo_label = QLabel()
         self.logo_label.setPixmap(logo)
         self.logo_label.setAlignment(Qt.AlignCenter)
         layout_vertical.addWidget(self.logo_label)
+        layout_vertical.addWidget(so_label)
+        so_label.setAlignment(Qt.AlignCenter)
         comentario_label = QLabel(
             '<i>Entorno de Desarrollo Integrado Simple</i>\n')
         comentario_label.setAlignment(Qt.AlignCenter)
