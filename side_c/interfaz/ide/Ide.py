@@ -19,6 +19,7 @@ from side_c.interfaz.menu import menu_codigo
 from side_c.interfaz.menu import menu_acerca_de
 
 from side_c.interfaz import widget_central
+from side_c.interfaz.contenedor_secundario import simbolos_widget
 from side_c.interfaz.contenedor_principal import contenedor_principal
 from side_c.interfaz.contenedor_secundario import contenedor_secundario
 from side_c.interfaz import barra_de_estado
@@ -145,8 +146,9 @@ class __IDE(QMainWindow):
 
         self.connect(self.contenedor_principal, SIGNAL(
             "currentTabChanged(QString)"), self.cambiar_titulo_de_ventana)
-
+        self.widget_simbolos = simbolos_widget.SimbolosWidget()
         widget_central.agregar_contenedor_central(self.contenedor_principal)
+        widget_central.agregar_contenedor_lateral(self.widget_simbolos)
         widget_central.agregar_contenedor_bottom(self.contenedor_secundario)
 
         self.connect(self.contenedor_principal, SIGNAL(
