@@ -21,6 +21,8 @@ class MenuVer(QObject):
             recursos.ATAJOS['modo-dev'], self.ide)
         self.atajoOcultarToolbar = QShortcut(
             recursos.ATAJOS['ocultar-toolbar'], self.ide)
+        self.atajoOcultarWidgetLateral = QShortcut(
+            recursos.ATAJOS['ocultar-lateral'], self.ide)
         self.atajoOcultarInput = QShortcut(
             recursos.ATAJOS['ocultar-input'], self.ide)
         self.atajoOcultarMenu = QShortcut(
@@ -37,6 +39,8 @@ class MenuVer(QObject):
             self.modo_dev)
         self.connect(self.atajoOcultarToolbar, SIGNAL("activated()"),
             self.ocultar_mostrar_toolbars)
+        self.connect(self.atajoOcultarWidgetLateral, SIGNAL("activated()"),
+            self.ocultar_mostrar_widget_lateral)
         self.connect(self.atajoOcultarInput, SIGNAL("activated()"),
             self.visibilidad_contenedor_secundario)
         self.connect(self.atajoOcultarMenu, SIGNAL("activated()"),
@@ -57,6 +61,9 @@ class MenuVer(QObject):
         self.accionMostrarOcultarToolbar = menu_ver.addAction(
             self.trUtf8("Mostrar/Ocultar Toolbars"))
         self.accionMostrarOcultarToolbar.setCheckable(True)
+        self.accionMostrarOcultarLateral = menu_ver.addAction(
+            self.trUtf8("Mostrar/Ocultar Lateral"))
+        self.accionMostrarOcultarLateral.setCheckable(True)
         self.accionMostrarOcultar_input = menu_ver.addAction(
             self.trUtf8("Mostrar/Ocultar Input"))
         self.accionMostrarOcultar_input.setCheckable(True)
@@ -74,6 +81,8 @@ class MenuVer(QObject):
         self.accionModoDev.triggered.connect(self.modo_dev)
         self.accionMostrarOcultarToolbar.triggered.connect(
             self.ocultar_mostrar_toolbars)
+        self.accionMostrarOcultarLateral.triggered.connect(
+            self.ocultar_mostrar_widget_lateral)
         self.accionMostrarOcultar_input.triggered.connect(
             self.visibilidad_contenedor_secundario)
         self.accionMostrarOcultar_menu.triggered.connect(
@@ -84,6 +93,7 @@ class MenuVer(QObject):
         self.accionFullScreen.setChecked(False)
         self.accionModoDev.setChecked(False)
         self.accionMostrarOcultarToolbar.setChecked(True)
+        self.accionMostrarOcultarLateral.setChecked(False)
         self.accionMostrarOcultar_input.setChecked(False)
         self.accionMostrarOcultar_menu.setChecked(True)
 
@@ -104,6 +114,11 @@ class MenuVer(QObject):
         else:
             self.ide.toolbar.show()
             self.ide.toolbar_.show()
+
+    def ocultar_mostrar_widget_lateral(self):
+        self.ide.widget_Central.mostrar_ocultar_widget_simbolos()
+        self.ide._menu_ver.accionMostrarOcultarLateral.setChecked(
+            self.ide.widget_Central.split_lateral.isVisible())
 
     def ocultar_mostrar_menu(self):
         """ Muestra/Oculta menuBar """

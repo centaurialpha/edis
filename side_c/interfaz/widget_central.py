@@ -33,6 +33,7 @@ class WidgetCentral(QWidget):
 
     def agregar_contenedor_lateral(self, contenedor):
         self.contenedor_lateral = Lateral(contenedor)
+        self.split_lateral.hide()
         self.split_lateral.insertWidget(1, contenedor)
 
     def agregar_contenedor_bottom(self, contenedor):
@@ -55,6 +56,12 @@ class WidgetCentral(QWidget):
                 w.setFocus()
         else:
             self.contenedor_bottom.show()
+
+    def mostrar_ocultar_widget_simbolos(self):
+        if self.split_lateral.isVisible():
+            self.split_lateral.hide()
+        else:
+            self.split_lateral.show()
 
 
 class Lateral(QWidget):
