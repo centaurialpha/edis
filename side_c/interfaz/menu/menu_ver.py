@@ -1,6 +1,8 @@
 #-*- coding: utf-8 -*-
 
 from PyQt4.QtGui import QShortcut
+#from PyQt4.QtGui import QKeySequence
+
 from PyQt4.QtCore import QObject
 from PyQt4.QtCore import SIGNAL
 
@@ -21,8 +23,6 @@ class MenuVer(QObject):
             recursos.ATAJOS['modo-dev'], self.ide)
         self.atajoOcultarToolbar = QShortcut(
             recursos.ATAJOS['ocultar-toolbar'], self.ide)
-        self.atajoOcultarWidgetLateral = QShortcut(
-            recursos.ATAJOS['ocultar-lateral'], self.ide)
         self.atajoOcultarInput = QShortcut(
             recursos.ATAJOS['ocultar-input'], self.ide)
         self.atajoOcultarMenu = QShortcut(
@@ -39,8 +39,6 @@ class MenuVer(QObject):
             self.modo_dev)
         self.connect(self.atajoOcultarToolbar, SIGNAL("activated()"),
             self.ocultar_mostrar_toolbars)
-        self.connect(self.atajoOcultarWidgetLateral, SIGNAL("activated()"),
-            self.ocultar_mostrar_widget_lateral)
         self.connect(self.atajoOcultarInput, SIGNAL("activated()"),
             self.visibilidad_contenedor_secundario)
         self.connect(self.atajoOcultarMenu, SIGNAL("activated()"),
@@ -54,16 +52,17 @@ class MenuVer(QObject):
         self.accionFullScreen = menu_ver.addAction(
             self.trUtf8("Pantalla Completa"))
         self.accionFullScreen.setCheckable(True)
-        self.accionModoDev = menu_ver.addAction(
-            self.trUtf8("Modo Dev"))
-        self.accionModoDev.setCheckable(True)
+        self.accionMostrarOcultarTodo = menu_ver.addAction(
+            self.trUtf8("Mostrar/Ocultar Todo"))
+        menu_ver.addAction(self.accionMostrarOcultarTodo)
+        self.accionMostrarOcultarTodo.setCheckable(True)
         menu_ver.addSeparator()
         self.accionMostrarOcultarToolbar = menu_ver.addAction(
             self.trUtf8("Mostrar/Ocultar Toolbars"))
         self.accionMostrarOcultarToolbar.setCheckable(True)
-        self.accionMostrarOcultarLateral = menu_ver.addAction(
-            self.trUtf8("Mostrar/Ocultar Lateral"))
-        self.accionMostrarOcultarLateral.setCheckable(True)
+        self.accionMostrarOcultarEditor = menu_ver.addAction(
+            self.trUtf8("Mostrar/Ocultar Editor"))
+        self.accionMostrarOcultarEditor.setCheckable(True)
         self.accionMostrarOcultar_input = menu_ver.addAction(
             self.trUtf8("Mostrar/Ocultar Input"))
         self.accionMostrarOcultar_input.setCheckable(True)
@@ -78,11 +77,11 @@ class MenuVer(QObject):
 
         # Conexiones a slot
         self.accionFullScreen.triggered.connect(self.pantalla_completa)
-        self.accionModoDev.triggered.connect(self.modo_dev)
+        self.accionMostrarOcultarTodo.triggered.connect(self.modo_dev)
         self.accionMostrarOcultarToolbar.triggered.connect(
             self.ocultar_mostrar_toolbars)
-        self.accionMostrarOcultarLateral.triggered.connect(
-            self.ocultar_mostrar_widget_lateral)
+        self.accionMostrarOcultarEditor.triggered.connect(
+            self.visibilidad_contenedor_principal)
         self.accionMostrarOcultar_input.triggered.connect(
             self.visibilidad_contenedor_secundario)
         self.accionMostrarOcultar_menu.triggered.connect(
@@ -91,9 +90,9 @@ class MenuVer(QObject):
         self.accionZoomMenos.triggered.connect(self._zoom_menos)
 
         self.accionFullScreen.setChecked(False)
-        self.accionModoDev.setChecked(False)
+        self.accionMostrarOcultarTodo.setChecked(False)
         self.accionMostrarOcultarToolbar.setChecked(True)
-        self.accionMostrarOcultarLateral.setChecked(False)
+        self.accionMostrarOcultarEditor.setChecked(True)
         self.accionMostrarOcultar_input.setChecked(False)
         self.accionMostrarOcultar_menu.setChecked(True)
 
@@ -115,11 +114,6 @@ class MenuVer(QObject):
             self.ide.toolbar.show()
             self.ide.toolbar_.show()
 
-    def ocultar_mostrar_widget_lateral(self):
-        self.ide.widget_Central.mostrar_ocultar_widget_simbolos()
-        self.ide._menu_ver.accionMostrarOcultarLateral.setChecked(
-            self.ide.widget_Central.split_lateral.isVisible())
-
     def ocultar_mostrar_menu(self):
         """ Muestra/Oculta menuBar """
 
@@ -128,16 +122,20 @@ class MenuVer(QObject):
         else:
             self.ide.menuBar().show()
 
+    def visibilidad_contenedor_principal(self):
+        self.ide.widget_Central.visibilidad_contenedor_principal()
+        self.ide._menu_ver.accionMostrarOcultarEditor.setChecked(
+            self.ide.widget_Central.contenedor_principal.isVisible())
+
     def visibilidad_contenedor_secundario(self):
         self.ide.widget_Central.mostrar_ocultar_widget_bottom()
         self.ide._menu_ver.accionMostrarOcultar_input.setChecked(
-            self.ide.contenedor_secundario.isVisible())
+            self.ide.widget_Central.contenedor_bottom.isVisible())
 
     def modo_dev(self):
-        """ Oculta/Muestra todo en modo FullScreen excepto el editor. """
+        """ Oculta/Muestra todo excepto el editor. """
 
-        if self.ide.menuBar().isVisible() and not self.ide.isFullScreen():
-            self.ide.showFullScreen()
+        if self.ide.menuBar().isVisible():
             self.ide.toolbar.hide()
             self.ide.toolbar_.hide()
             self.ide.menuBar().hide()
@@ -146,12 +144,12 @@ class MenuVer(QObject):
             self.ide.toolbar.show()
             self.ide.toolbar_.show()
             self.ide.menuBar().show()
-            self.ide.contenedor_secundario.show()
-            self.ide.showMaximized()
-        self.ide._menu_ver.accionMostrarOcultar_input.setChecked(
-            self.ide.contenedor_secundario.isVisible())
-        self.ide._menu_ver.accionMostrarOcultar_menu.setChecked(
+        self.ide._menu_ver.accionMostrarOcultarTodo.setChecked(
             self.ide.menuBar().isVisible())
+        self.ide._menu_ver.accionMostrarOcultar_input.setChecked(
+            self.ide.widget_Central.contenedor_bottom.isVisible())
+        self.ide._menu_ver.accionMostrarOcultarEditor.setChecked(
+            self.ide.widget_Central.contenedor_principal.isVisible())
         self.ide._menu_ver.accionMostrarOcultarToolbar.setChecked(
             self.ide.toolbar.isVisible())
         self.ide._menu_ver.accionMostrarOcultarToolbar.setChecked(
@@ -159,14 +157,10 @@ class MenuVer(QObject):
 
     def _zoom_mas(self):
         editor = self.ide.contenedor_principal.devolver_editor_actual()
-
-        if not editor:
-            return None
-        editor.zoom_mas()
+        if editor:
+            editor.zoom_mas()
 
     def _zoom_menos(self):
         editor = self.ide.contenedor_principal.devolver_editor_actual()
-
-        if not editor:
-            return None
-        editor.zoom_menos()
+        if editor:
+            editor.zoom_menos()
