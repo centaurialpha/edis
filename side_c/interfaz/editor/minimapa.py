@@ -28,23 +28,24 @@ class MiniMapa(QPlainTextEdit):
         self.setMouseTracking(True)
         self.viewport().setCursor(Qt.PointingHandCursor)
         self.setTextInteractionFlags(Qt.NoTextInteraction)
+        self.setStyleSheet("background: transparent;")
 
         self.parent = parent
         self.lineas = 0
         self.highlighter = None
 
-        self.goe = QGraphicsOpacityEffect()
-        self.setGraphicsEffect(self.goe)
-        self.goe.setOpacity(0.1)
-        self.animacion = QPropertyAnimation(self.goe, "opacity")
+        self.efecto = QGraphicsOpacityEffect()
+        self.setGraphicsEffect(self.efecto)
+        self.efecto.setOpacity(0.1)
+        self.animacion = QPropertyAnimation(self.efecto, "opacity")
 
         self.slider = Slider(self)
         self.slider.show()
 
     def calcular_max(self):
-        linea_height = self.parent.cursorRect().height()
-        if linea_height > 0:
-            self.lineas = self.parent.viewport().height() / linea_height
+        altura_de_linea = self.parent.cursorRect().height()
+        if altura_de_linea > 0:
+            self.lineas = self.parent.viewport().height() / altura_de_linea
         self.slider.actualizar_posicion()
         self.actualizar_area_visible()
 
@@ -77,7 +78,7 @@ class MiniMapa(QPlainTextEdit):
     def mousePressEvent(self, event):
         super(MiniMapa, self).mousePressEvent(event)
         cursor = self.cursorForPosition(event.pos())
-        self.parent.jump_to_line(cursor.blockNumber())
+        self.parent.saltar_a_linea(cursor.blockNumber())
 
     def resizeEvent(self, event):
         super(MiniMapa, self).resizeEvent(event)
@@ -94,7 +95,7 @@ class MiniMapa(QPlainTextEdit):
 
     def ajustar_(self):
         self.setFixedHeight(self.parent.height())
-        self.setFixedWidth(self.parent.width() * 0.17)
+        self.setFixedWidth(self.parent.width() * 0.10)
         x = self.parent.width() - self.width()
         self.move(x, 0)
         tam_fuente = int(self.width() / configuraciones.MARGEN)
@@ -114,32 +115,20 @@ class Slider(QFrame):
         self.setMouseTracking(True)
         self.setCursor(Qt.OpenHandCursor)
 
-        color = recursos.COLOR_EDITOR['linea-actual']
+        color = recursos.COLOR_EDITOR['num-seleccionado']
         self.setStyleSheet("background: %s;" % color)
-        self.goe = QGraphicsOpacityEffect()
-        self.setGraphicsEffect(self.goe)
-        self.goe.setOpacity(0.4)
+        self.efecto = QGraphicsOpacityEffect()
+        self.setGraphicsEffect(self.efecto)
+        self.efecto.setOpacity(0.2)
         self.pressed = False
         self.scroll_margen = None
 
-    #def paintEvent(self, event):
-        #pintar = QPainter()
-        #pintar.begin(self)
-        #pintar.setRenderHint(QPainter.TextAntialiasing, True)
-        #pintar.setRenderHint(QPainter.Antialiasing, True)
-        #pintar.fillRect(event.rect(), QBrush(
-            #QColor(255, 255, 255, 80)))
-        #pintar.setPen(QPen(Qt.NoPen))
-        #pintar.end()
-
-        #super(Slider, self).paintEvent(event)
-
     def actualizar_posicion(self):
         tam_fuente = QFontMetrics(self.parent.font()).height()
-        height = self.parent.lineas * tam_fuente
-        self.setFixedHeight(height)
+        altura = self.parent.lineas * tam_fuente
+        self.setFixedHeight(altura)
         self.setFixedWidth(self.parent.width())
-        self.scroll_margen = (height, self.parent.height() - height)
+        self.scroll_margen = (altura, self.parent.height() - altura)
 
     def mover_slider(self, y):
         self.move(0, y)

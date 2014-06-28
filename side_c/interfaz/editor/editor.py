@@ -84,6 +84,7 @@ class Editor(QPlainTextEdit, tabitem.TabItem):
             self.minimapa.actualizar_area_visible)
 
     def set_id(self, id_):
+        super(Editor, self).set_id(id_)
         self.minimapa.set_code(self.toPlainText())
 
     def estilo_editor(self):
@@ -242,7 +243,7 @@ class Editor(QPlainTextEdit, tabitem.TabItem):
             c_width = f_metrics.averageCharWidth()
             self.posicion_margen = c_width * configuraciones.MARGEN
 
-    def jump_to_line(self, linea=None):
+    def saltar_a_linea(self, linea=None):
         if linea is not None:
             self.emit(SIGNAL("addBackItemNavigation()"))
             self.ir_a_linea(linea)

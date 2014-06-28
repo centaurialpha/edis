@@ -211,14 +211,14 @@ class __ContenedorMain(QSplitter):
 
         try:
             editorW.guardado_actualmente = True
-            if editorW.nuevo_archivo:
+
+            if editorW.nuevo_archivo or \
+            not manejador_de_archivo.permiso_de_escritura(editorW.ID):
                 return self.guardar_archivo_como()
 
             nombre = editorW.ID
-
             self.emit(SIGNAL("beforeFileSaved(QString)"), nombre)
             contenido = editorW.devolver_texto()
-            #self.escribir_archivo(nombre, contenido)
             manejador_de_archivo.escribir_archivo(nombre, contenido)
             editorW.ID = nombre
 
@@ -229,24 +229,21 @@ class __ContenedorMain(QSplitter):
 
             return editorW.ID
         except:
-            #print "EXECP!"
-            #pass
             editorW.guardado_actualmente = False
         return False
 
     def guardar_archivo_como(self):
-        #CODEC = 'utf-8'
-        direc = os.path.expanduser("~")
         editorW = self.devolver_editor_actual()
         if not editorW:
             return False
 
+        direc = os.path.expanduser("~")
+
         try:
-            #editorW.guardado_actualmente = True
+            editorW.guardado_actualmente = True
             nombre = str(QFileDialog.getSaveFileName(
                 self.parent, self.tr("Guardar"), direc, '(*.c);;(*.*)'))
             if not nombre:
-
                 return False
 
             nombre = manejador_de_archivo.escribir_archivo(
@@ -265,8 +262,10 @@ class __ContenedorMain(QSplitter):
 
         except:
             #pass
-            #editorW.guardado_actualmente = False
-            return False
+            editorW.guardado_actualmente = False
+            self.tab_actual.setTabText(self.tab_actual.currentIndex(),
+                self.trUtf8("Nuevo archivo"))
+        return False
 
     def guardar_todo(self):
 
