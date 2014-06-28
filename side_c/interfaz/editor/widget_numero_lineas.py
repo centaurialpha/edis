@@ -23,6 +23,7 @@ class NumeroDeLineaBar(QWidget):
         self.linea_superior = 0
         self.foldArea = 10
         self.negrita = False
+        self._foldedBlocks = []
 
     def actualizar_area(self):
         linea_max = math.ceil(math.log10(self.editor.blockCount()))
@@ -33,6 +34,22 @@ class NumeroDeLineaBar(QWidget):
             self.setFixedWidth(ancho)
             self.editor.setViewportMargins(ancho, 0, 0, 0)
         self.actualizar()
+
+    def code_folding_event(self, numerolinea):
+        if self.is_folded(numerolinea):
+            self.fold(numerolinea)
+
+        else:
+            self.unfold(numerolinea)
+
+        self.editor.update()
+        self.actualizar()
+
+    def is_folded(self, linea):
+        bloque = self.editor.document().findBlockByNumber(linea)
+        if not bloque.isValid():
+            return False
+        return bloque.isVisible()
 
     def actualizar(self, *args):
         QWidget.update(self, *args)

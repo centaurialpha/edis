@@ -8,7 +8,6 @@ from PyQt4.QtCore import SIGNAL
 from PyQt4.QtCore import Qt
 
 from side_c.interfaz.editor import editor
-#from side_c import recursos
 
 
 class TabCentral(QTabWidget):

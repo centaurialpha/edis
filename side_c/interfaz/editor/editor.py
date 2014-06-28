@@ -19,6 +19,8 @@ from side_c import recursos
 from side_c.nucleo import configuraciones
 from side_c.interfaz.editor import widget_numero_lineas
 from side_c.interfaz.editor.highlighter import Highlighter
+from side_c.interfaz import tabitem
+from side_c.interfaz.editor import minimapa
 
 # Diccionario teclas
 TECLA = {
@@ -30,11 +32,12 @@ TECLA = {
     }
 
 
-class Editor(QPlainTextEdit):
+class Editor(QPlainTextEdit, tabitem.TabItem):
     """ Editor """
 
     def __init__(self, nombre_archivo):
         QPlainTextEdit.__init__(self)
+        tabitem.TabItem.__init__(self)
 
         font_metrics = QFontMetricsF(self.document().defaultFont())
         self.posicion_margen = font_metrics.width('#') * 80
@@ -74,6 +77,15 @@ class Editor(QPlainTextEdit):
         self.connect(self, SIGNAL("updateRequest(const QRect&, int)"),
             self.widget_num_lineas.actualizar_area)
 
+        #self.minimapa = None
+        self.minimapa = minimapa.MiniMapa(self)
+        self.minimapa.show()
+        self.connect(self, SIGNAL("updateRequest(const QRect&, int)"),
+            self.minimapa.actualizar_area_visible)
+
+    def set_id(self, id_):
+        self.minimapa.set_code(self.toPlainText())
+
     def estilo_editor(self):
         """ Aplica estilos de colores al editor """
 
@@ -94,6 +106,8 @@ class Editor(QPlainTextEdit):
 
         QPlainTextEdit.resizeEvent(self, event)
         self.widget_num_lineas.setFixedHeight(self.height())
+        if self.minimapa:
+            self.minimapa.ajustar_()
 
     def paintEvent(self, event):
         """ Evento que dibuja el margen de línea."""
@@ -227,6 +241,27 @@ class Editor(QPlainTextEdit):
         else:
             c_width = f_metrics.averageCharWidth()
             self.posicion_margen = c_width * configuraciones.MARGEN
+
+    def jump_to_line(self, linea=None):
+        if linea is not None:
+            self.emit(SIGNAL("addBackItemNavigation()"))
+            self.ir_a_linea(linea)
+            return
+
+    def ir_a_linea(self, linea):
+        self.unfold_blocks_for_jump(linea)
+        if self.blockCount() >= linea:
+            cursor = self.textCursor()
+            cursor.setPosition(self.document().findBlockByLineNumber(
+                linea).position())
+            self.setTextCursor(cursor)
+
+    def unfold_blocks_for_jump(self, linea):
+        for l in self.widget_num_lineas._foldedBlocks:
+            if linea >= l:
+                self.widget_num_lineas.code_folding_event(l + 1)
+            else:
+                break
 
     def indentar_mas(self):
         cursor = self.textCursor()

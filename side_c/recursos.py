@@ -59,7 +59,7 @@ ICONOS = {
 # Estilos de color - Editor
 COLOR_EDITOR = {
     "texto": "#afb4af",
-    "fondo": "#1d1f21",
+    "fondo": "#000000",
     "salida-exitosa": "#86c2ff",
     "salida-error": "red",
     "fondo-input": "#1e1e1e",
@@ -72,7 +72,7 @@ COLOR_EDITOR = {
     "margen-linea": "#777777"
     }
 
-# Color del resaltado de sintaxis
+# Resaltado de sintaxis
 HIGHLIGHTER = {
     "numero": QColor(248, 160, 50),
     "include": QColor(50, 130, 200),
