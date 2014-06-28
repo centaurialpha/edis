@@ -7,6 +7,7 @@ from PyQt4.QtGui import QFontMetricsF
 from PyQt4.QtGui import QPainter
 from PyQt4.QtGui import QFont
 from PyQt4.QtGui import QTextCursor
+from PyQt4.QtGui import QTextOption
 
 from PyQt4.QtCore import Qt
 from PyQt4.QtCore import SIGNAL
@@ -39,6 +40,7 @@ class Editor(QPlainTextEdit, tabitem.TabItem):
         QPlainTextEdit.__init__(self)
         tabitem.TabItem.__init__(self)
 
+        self.set_flags()
         font_metrics = QFontMetricsF(self.document().defaultFont())
         self.posicion_margen = font_metrics.width('#') * 80
         self.widget_num_lineas = widget_numero_lineas.NumeroDeLineaBar(self)
@@ -77,11 +79,13 @@ class Editor(QPlainTextEdit, tabitem.TabItem):
         self.connect(self, SIGNAL("updateRequest(const QRect&, int)"),
             self.widget_num_lineas.actualizar_area)
 
-        #self.minimapa = None
-        self.minimapa = minimapa.MiniMapa(self)
-        self.minimapa.show()
-        self.connect(self, SIGNAL("updateRequest(const QRect&, int)"),
-            self.minimapa.actualizar_area_visible)
+        # Minimapa
+        self.minimapa = None
+        if configuraciones.MINIMAPA:
+            self.minimapa = minimapa.MiniMapa(self)
+            self.minimapa.show()
+            self.connect(self, SIGNAL("updateRequest(const QRect&, int)"),
+                self.minimapa.actualizar_area_visible)
 
     def set_id(self, id_):
         super(Editor, self).set_id(id_)
@@ -94,6 +98,14 @@ class Editor(QPlainTextEdit, tabitem.TabItem):
         % (recursos.COLOR_EDITOR['texto'], recursos.COLOR_EDITOR['fondo'])
 
         self.setStyleSheet(tema_editor)
+
+    def set_flags(self):
+        self.setMouseTracking(True)
+        doc = self.document()
+        op = QTextOption()
+        op.setFlags(QTextOption.ShowTabsAndSpaces)
+        doc.setDefaultTextOption(op)
+        self.setDocument(doc)
 
     def mouseReleaseEvent(self, event):
         """ Actualiza highlight según un evento del mouse. """

@@ -7,7 +7,8 @@ from PyQt4.QtCore import QObject
 from PyQt4.QtCore import SIGNAL
 
 from side_c import recursos
-from side_c.interfaz.dialogos import preferencias
+#from side_c.interfaz.dialogos import preferencias
+from side_c.interfaz.dialogos import pref
 
 
 class MenuEditar(QObject):
@@ -96,5 +97,5 @@ class MenuEditar(QObject):
             }
 
     def _configuraciones(self):
-        self.preferencias = preferencias.Configuraciones(self.ide)
+        self.preferencias = pref.DialogoConfiguracion(self.ide)
         self.preferencias.show()

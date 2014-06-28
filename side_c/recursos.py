@@ -53,7 +53,8 @@ ICONOS = {
     "buscar": os.path.join(PATH, "imagenes", "buscar.png"),
     "icono-tab": os.path.join(PATH, "imagenes", "cambio-tab.svg"),
     "titulo": os.path.join(PATH, "imagenes", "titulo.svg"),
-    "linea": os.path.join(PATH, "imagenes", "separador.png")
+    "linea": os.path.join(PATH, "imagenes", "separador.png"),
+    "editor": os.path.join(PATH, "imagenes", "editor.svg")
     }
 
 # Estilos de color - Editor

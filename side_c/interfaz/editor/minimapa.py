@@ -65,14 +65,14 @@ class MiniMapa(QPlainTextEdit):
 
     def enterEvent(self, event):
         self.animacion.setDuration(300)
-        self.animacion.setStartValue(0.1)
-        self.animacion.setEndValue(0.8)
+        self.animacion.setStartValue(configuraciones.OPAC_MIN)
+        self.animacion.setEndValue(configuraciones.OPAC_MAX)
         self.animacion.start()
 
     def leaveEvent(self, event):
         self.animacion.setDuration(300)
-        self.animacion.setStartValue(0.8)
-        self.animacion.setEndValue(0.1)
+        self.animacion.setStartValue(configuraciones.OPAC_MAX)
+        self.animacion.setEndValue(configuraciones.OPAC_MIN)
         self.animacion.start()
 
     def mousePressEvent(self, event):
