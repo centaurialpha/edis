@@ -29,7 +29,8 @@ TECLA = {
     'ENTER': Qt.Key_Return,
     'LLAVE': Qt.Key_BraceLeft,
     'PARENTESIS': Qt.Key_ParenLeft,
-    'CORCHETE': Qt.Key_BracketLeft
+    'CORCHETE': Qt.Key_BracketLeft,
+    'BACKSPACE': Qt.Key_Backspace
     }
 
 
@@ -49,6 +50,7 @@ class Editor(QPlainTextEdit, tabitem.TabItem):
         self.nuevo_archivo = True
         self.guardado_actualmente = False
         self.highlighter = None
+        self.minimapa = None
         # Carga el tema de editor
         self.estilo_editor()
 
@@ -63,7 +65,8 @@ class Editor(QPlainTextEdit, tabitem.TabItem):
         self.resaltar_linea_actual()
 
         self.presionadoAntes = {
-            TECLA.get('TABULACION'): self._indentar
+            TECLA.get('TABULACION'): self._indentar,
+            TECLA.get('BACKSPACE'): self.__tecla_backspace
             }
 
         self.presionadoDespues = {
@@ -80,7 +83,6 @@ class Editor(QPlainTextEdit, tabitem.TabItem):
             self.widget_num_lineas.actualizar_area)
 
         # Minimapa
-        self.minimapa = None
         if configuraciones.MINIMAPA:
             self.minimapa = minimapa.MiniMapa(self)
             self.minimapa.show()
@@ -103,7 +105,8 @@ class Editor(QPlainTextEdit, tabitem.TabItem):
         self.setMouseTracking(True)
         doc = self.document()
         op = QTextOption()
-        op.setFlags(QTextOption.ShowTabsAndSpaces)
+        if configuraciones.MOSTRAR_TABS:
+            op.setFlags(QTextOption.ShowTabsAndSpaces)
         doc.setDefaultTextOption(op)
         self.setDocument(doc)
 
@@ -209,6 +212,22 @@ class Editor(QPlainTextEdit, tabitem.TabItem):
         #print self.ID
         return unicode(self.toPlainText())
 
+    def __tecla_backspace(self, event):
+        if self.textCursor().hasSelection():
+            return False
+
+        cursor = self.textCursor()
+        cursor.movePosition(QTextCursor.StartOfLine, QTextCursor.KeepAnchor)
+        texto = str(cursor.selection().toPlainText())
+
+        if(len(texto) % configuraciones.INDENTACION == 0) and texto.isspace():
+            cursor.movePosition(QTextCursor.StartOfLine)
+            cursor.movePosition(QTextCursor.Right, QTextCursor.KeepAnchor,
+                configuraciones.INDENTACION)
+            cursor.removeSelectedText()
+
+            return True
+
     def _cargar_fuente(self, fuente_=configuraciones.FUENTE,
         tam=configuraciones.TAM_FUENTE):
 
@@ -217,7 +236,6 @@ class Editor(QPlainTextEdit, tabitem.TabItem):
             self.actualizar_margen_linea(fuente)
 
     def zoom_mas(self):
-        #print self.ID
         fuente = self.document().defaultFont()
         tam = fuente.pointSize()
 

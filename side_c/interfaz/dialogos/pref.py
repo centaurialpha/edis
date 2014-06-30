@@ -23,11 +23,11 @@ from PyQt4.QtGui import QFontDialog
 
 from PyQt4.QtCore import QSize
 from PyQt4.QtCore import Qt
-#from PyQt4.QtCore import QSettings
+from PyQt4.QtCore import QSettings
 
 from side_c import recursos
 from side_c.nucleo import configuraciones
-#from side_c.interfaz.contenedor_principal import contenedor_principal
+from side_c.interfaz.contenedor_principal import contenedor_principal
 
 
 class ConfiguracionEditor(QWidget):
@@ -44,11 +44,11 @@ class ConfiguracionEditor(QWidget):
 
         grillaCaracteristicas = QGridLayout(grupoCaracteristicas)
         grillaCaracteristicas.addWidget(QLabel(
-            self.trUtf8("Márgen de línea: ")), 1, 0, Qt.AlignRight)
+            self.trUtf8("Márgen de línea: ")), 1, 0, Qt.AlignLeft)
 
         # Spin márgen
         self.spinMargen = QSpinBox()
-        self.spinMargen.setAlignment(Qt.AlignRight)
+        self.spinMargen.setAlignment(Qt.AlignLeft)
         self.spinMargen.setMaximum(200)
         self.spinMargen.setValue(configuraciones.MARGEN)
         grillaCaracteristicas.addWidget(self.spinMargen, 1, 1,
@@ -58,15 +58,15 @@ class ConfiguracionEditor(QWidget):
         self.checkMargen = QCheckBox(self.trUtf8("Mostrar márgen"))
         self.checkMargen.setChecked(configuraciones.MOSTRAR_MARGEN)
         grillaCaracteristicas.addWidget(self.checkMargen, 1, 2,
-            alignment=Qt.AlignLeft)
+            alignment=Qt.AlignTop)
 
         # Spin indentación
         self.spinInd = QSpinBox()
-        self.spinInd.setAlignment(Qt.AlignRight)
+        self.spinInd.setAlignment(Qt.AlignLeft)
         self.spinInd.setMaximum(20)
         self.spinInd.setValue(configuraciones.INDENTACION)
         grillaCaracteristicas.addWidget(QLabel(
-            self.trUtf8("Indentación: ")), 2, 0, Qt.AlignRight)
+            self.trUtf8("Indentación: ")), 2, 0, Qt.AlignLeft)
         grillaCaracteristicas.addWidget(self.spinInd, 2, 1,
             alignment=Qt.AlignLeft)
 
@@ -74,12 +74,19 @@ class ConfiguracionEditor(QWidget):
         self.checkInd = QCheckBox(self.trUtf8("Activar indentación"))
         self.checkInd.setChecked(configuraciones.CHECK_INDENTACION)
         grillaCaracteristicas.addWidget(self.checkInd, 2, 2,
-            alignment=Qt.AlignLeft)
+            alignment=Qt.AlignTop)
 
+        # Check autoindentación
         self.checkAutoInd = QCheckBox(self.trUtf8("Activar autoindentación"))
         self.checkAutoInd.setChecked(
             configuraciones.CHECK_AUTO_INDENTACION)
         grillaCaracteristicas.addWidget(self.checkAutoInd, 3, 2,
+            alignment=Qt.AlignLeft)
+
+        # Tabs y espacios
+        self.checkTabs = QCheckBox(self.trUtf8("Mostrar tabs y espacios"))
+        self.checkTabs.setChecked(configuraciones.MOSTRAR_TABS)
+        grillaCaracteristicas.addWidget(self.checkTabs, 4, 2,
             alignment=Qt.AlignLeft)
 
         # Minimapa
@@ -87,18 +94,22 @@ class ConfiguracionEditor(QWidget):
         self.checkMini = QCheckBox(self.trUtf8("Activar minimapa"))
         self.checkMini.setChecked(configuraciones.MINIMAPA)
         self.spinMiniMin = QSpinBox()
+        self.spinMiniMin.setMaximum(100)
+        self.spinMiniMin.setMinimum(0)
         self.spinMiniMin.setAlignment(Qt.AlignLeft)
         self.spinMiniMin.setValue(configuraciones.OPAC_MIN * 100)
         self.spinMiniMax = QSpinBox()
+        self.spinMiniMax.setMaximum(100)
+        self.spinMiniMax.setMinimum(0)
         self.spinMiniMax.setAlignment(Qt.AlignLeft)
         self.spinMiniMax.setValue(configuraciones.OPAC_MAX * 100)
         grillaMini.addWidget(self.checkMini, 1, 0,
             alignment=Qt.AlignLeft)
-        grillaMini.addWidget(QLabel(self.trUtf8("Opacidad máxima:")),
+        grillaMini.addWidget(QLabel(self.trUtf8("Opacidad mínima:")),
             2, 0, alignment=Qt.AlignLeft)
         grillaMini.addWidget(self.spinMiniMin, 2, 1,
             alignment=Qt.AlignLeft)
-        grillaMini.addWidget(QLabel(self.trUtf8("Opacidad mínima:")),
+        grillaMini.addWidget(QLabel(self.trUtf8("Opacidad máxima:")),
             3, 0, alignment=Qt.AlignLeft)
         grillaMini.addWidget(self.spinMiniMax, 3, 1,
             alignment=Qt.AlignLeft)
@@ -165,22 +176,43 @@ class ConfiguracionEditor(QWidget):
         return nuevaFuente
 
 
+class ConfiguracionTema(QWidget):
+
+    def __init__(self, parent):
+        super(ConfiguracionTema, self).__init__(parent)
+
+        layoutV = QVBoxLayout(self)
+
+        self.lista_temas = QListWidget()
+        self.lista_temas.addItem("Por defecto")
+        self.lista_temas.addItem("Black SIDE")
+
+        label = QLabel(self.trUtf8("Elige un tema:"))
+
+        layoutV.addWidget(label)
+        layoutV.addWidget(self.lista_temas)
+
+
 class DialogoConfiguracion(QDialog):
 
     def __init__(self, parent=None):
         super(DialogoConfiguracion, self).__init__(parent)
-
+        self.setWindowTitle(self.trUtf8("SIDE-C Preferencias"))
         layoutH = QHBoxLayout()
+
+        self.editorConf = ConfiguracionEditor(self)
+        self.temaConf = ConfiguracionTema(self)
 
         self.contenidos = QListWidget()
         self.contenidos.setViewMode(QListView.IconMode)
         self.contenidos.setIconSize(QSize(96, 84))
         self.contenidos.setMovement(QListView.Static)
-        self.contenidos.setMaximumWidth(115)
+        self.contenidos.setMaximumWidth(102)
         self.contenidos.setSpacing(5)
 
         self.stack = QStackedWidget()
-        self.stack.addWidget(ConfiguracionEditor(self))
+        self.stack.addWidget(self.editorConf)
+        self.stack.addWidget(self.temaConf)
 
         boton_guardar = QPushButton(self.trUtf8("Guardar"))
         boton_cerrar = QPushButton(self.trUtf8("Cerrar"))
@@ -214,13 +246,63 @@ class DialogoConfiguracion(QDialog):
         self.stack.setCurrentIndex(self.contenidos.row(actual))
 
     def guardar(self):
-        pass
+        qsettings = QSettings()
+        qsettings.beginGroup('editor')
+        e = contenedor_principal.ContenedorMain().devolver_editor_actual()
+
+        # Márgen
+        margen_linea = self.editorConf.spinMargen.value()
+        qsettings.setValue('margenLinea', margen_linea)
+        configuraciones.MARGEN = margen_linea
+
+        qsettings.setValue('mostrarMargen',
+            self.editorConf.checkMargen.isChecked())
+        configuraciones.MOSTRAR_MARGEN = self.editorConf.checkMargen.isChecked()
+
+         # Indentación
+        qsettings.setValue('indentacion', self.editorConf.spinInd.value())
+        configuraciones.INDENTACION = self.editorConf.spinInd.value()
+
+        qsettings.setValue('checkInd', self.editorConf.checkInd.isChecked())
+        configuraciones.CHECK_INDENTACION = self.editorConf.checkInd.isChecked()
+
+        # Tipo de letra
+        textoFuente = self.editorConf.botonFuente.text().replace(' ', '')
+        configuraciones.FUENTE = textoFuente.split(',')[0]
+        configuraciones.TAM_FUENTE = int(textoFuente.split(',')[1])
+        qsettings.setValue('fuente', configuraciones.FUENTE)
+        qsettings.setValue('fuenteTam', configuraciones.TAM_FUENTE)
+        if e:
+            e._cargar_fuente(configuraciones.FUENTE, configuraciones.TAM_FUENTE)
+
+        # Tabs y espacios
+        qsettings.setValue('tabs', self.editorConf.checkTabs.isChecked())
+        configuraciones.MOSTRAR_TABS = self.editorConf.checkTabs.isChecked()
+
+        # Minimapa
+        qsettings.setValue('mini', self.editorConf.checkMini.isChecked())
+        configuraciones.MINIMAPA = self.editorConf.checkMini.isChecked()
+        configuraciones.OPAC_MIN = self.editorConf.spinMiniMin.value() / 100.0
+        qsettings.setValue('opac_min', configuraciones.OPAC_MIN)
+        configuraciones.OPAC_MAX = self.editorConf.spinMiniMax.value() / 100.0
+        qsettings.setValue('opac_max', configuraciones.OPAC_MAX)
+
+        qsettings.endGroup()
+        contenedor_principal.ContenedorMain().actualizar_margen_editor()
+
+        self.close()
 
     def iconos(self):
-        configU = QListWidgetItem(self.contenidos)
-        configU.setIcon(QIcon(recursos.ICONOS['editor']))
-        configU.setText(self.trUtf8("Editor"))
-        configU.setTextAlignment(Qt.AlignHCenter)
-        configU.setFlags(Qt.ItemIsSelectable | Qt.ItemIsEnabled)
+        configEditor = QListWidgetItem(self.contenidos)
+        configEditor.setIcon(QIcon(recursos.ICONOS['editor']))
+        configEditor.setText(self.trUtf8("Editor"))
+        configEditor.setTextAlignment(Qt.AlignHCenter)
+        configEditor.setFlags(Qt.ItemIsSelectable | Qt.ItemIsEnabled)
+
+        configTema = QListWidgetItem(self.contenidos)
+        configTema.setIcon(QIcon(recursos.ICONOS['tema']))
+        configTema.setText(self.trUtf8("Tema"))
+        configTema.setTextAlignment(Qt.AlignHCenter)
+        configTema.setFlags(Qt.ItemIsSelectable | Qt.ItemIsEnabled)
 
         self.contenidos.currentItemChanged.connect(self.cambiar)

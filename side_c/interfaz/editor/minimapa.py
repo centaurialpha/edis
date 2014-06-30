@@ -3,10 +3,6 @@ from PyQt4.QtGui import QTextOption
 from PyQt4.QtGui import QFrame
 from PyQt4.QtGui import QFontMetrics
 from PyQt4.QtGui import QGraphicsOpacityEffect
-#from PyQt4.QtGui import QPainter
-#from PyQt4.QtGui import QColor
-#from PyQt4.QtGui import QPen
-#from PyQt4.QtGui import QBrush
 
 from PyQt4.QtCore import Qt
 from PyQt4.QtCore import QPropertyAnimation
@@ -64,13 +60,13 @@ class MiniMapa(QPlainTextEdit):
             self.slider.mover_slider(rect.y())
 
     def enterEvent(self, event):
-        self.animacion.setDuration(300)
+        self.animacion.setDuration(400)
         self.animacion.setStartValue(configuraciones.OPAC_MIN)
         self.animacion.setEndValue(configuraciones.OPAC_MAX)
         self.animacion.start()
 
     def leaveEvent(self, event):
-        self.animacion.setDuration(300)
+        self.animacion.setDuration(400)
         self.animacion.setStartValue(configuraciones.OPAC_MAX)
         self.animacion.setEndValue(configuraciones.OPAC_MIN)
         self.animacion.start()

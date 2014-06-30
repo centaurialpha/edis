@@ -40,19 +40,31 @@ else:
         LINUX = True
         WINDOWS = False
 
+###############################################################################
+# FUENTE
+###############################################################################
 FUENTE_MAX_TAM = 80
 FUENTE_MIN_TAM = 6
 
+###############################################################################
+# INDENTACION
+###############################################################################
 INDENTACION = 4
 CHECK_INDENTACION = True
 CHECK_AUTO_INDENTACION = True
 
+###############################################################################
+# TABS Y ESPACIOS
+###############################################################################
+MOSTRAR_TABS = True
+
+###############################################################################
+# MINIMAPA
+###############################################################################
 MINIMAPA = True
 OPAC_MIN = 0.1
 OPAC_MAX = 0.8
 
-###############################################################################
-#                   CONFIGURACIONES                                           #
 ###############################################################################
 qsettings = QSettings(recursos.CONFIGURACIONES_PATH, QSettings.IniFormat)
 
@@ -65,8 +77,15 @@ if fuente_f:
 fuente_tam = qsettings.value('configuraciones/editor/fuenteTam', 0, type=int)
 if fuente_tam != 0:
     TAM_FUENTE = fuente_tam
-INDENTACION = qsettings.value('configuraciones/editor/indentacion', 4, type=int)
+INDENTACION = int(qsettings.value('configuraciones/editor/indentacion',
+    4, type=int))
 CHECK_INDENTACION = qsettings.value('configuraciones/editor/checkInd', True,
     type=bool)
 CHECK_AUTO_INDENTACION = qsettings.value('configuraciones/editor/autoInd',
     True, type=bool)
+MOSTRAR_TABS = qsettings.value('configuraciones/editor/tabs', True, type=bool)
+MINIMAPA = qsettings.value('configuraciones/editor/mini', True, type=bool)
+OPAC_MIN = float(qsettings.value('configuraciones/editor/opac_min',
+    0.1, type=float))
+OPAC_MAX = float(qsettings.value('configuraciones/editor/opac_max',
+    0.8, type=float))
