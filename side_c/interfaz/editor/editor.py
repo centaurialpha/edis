@@ -44,11 +44,12 @@ class Editor(QPlainTextEdit, tabitem.TabItem):
         self.set_flags()
         font_metrics = QFontMetricsF(self.document().defaultFont())
         self.posicion_margen = font_metrics.width('#') * 80
-        self.widget_num_lineas = widget_numero_lineas.NumeroDeLineaBar(self)
+        #self.widget_num_lineas = widget_numero_lineas.NumeroDeLineaBar(self)
 
         self.texto_modificado = False
         self.nuevo_archivo = True
         self.guardado_actualmente = False
+        self.widget_num_lineas = None
         self.highlighter = None
         self.minimapa = None
         # Carga el tema de editor
@@ -56,6 +57,10 @@ class Editor(QPlainTextEdit, tabitem.TabItem):
 
         # Carga el tipo de letra
         self._cargar_fuente(configuraciones.FUENTE, configuraciones.TAM_FUENTE)
+
+        # Sidebar
+        if configuraciones.SIDEBAR:
+            self.widget_num_lineas = widget_numero_lineas.NumeroDeLineaBar(self)
 
         # Resaltado de sintáxis
         if self.highlighter is None:
@@ -79,8 +84,9 @@ class Editor(QPlainTextEdit, tabitem.TabItem):
         self.connect(self, SIGNAL("undoAvailable(bool)"), self._guardado)
         self.connect(self, SIGNAL("cursorPositionChanged()"),
             self.resaltar_linea_actual)
-        self.connect(self, SIGNAL("updateRequest(const QRect&, int)"),
-            self.widget_num_lineas.actualizar_area)
+        if configuraciones.SIDEBAR:
+            self.connect(self, SIGNAL("updateRequest(const QRect&, int)"),
+                self.widget_num_lineas.actualizar_area)
 
         # Minimapa
         if configuraciones.MINIMAPA:
@@ -121,7 +127,8 @@ class Editor(QPlainTextEdit, tabitem.TabItem):
         """ Redimensiona la altura del widget. """
 
         QPlainTextEdit.resizeEvent(self, event)
-        self.widget_num_lineas.setFixedHeight(self.height())
+        if configuraciones.SIDEBAR:
+            self.widget_num_lineas.setFixedHeight(self.height())
         if self.minimapa:
             self.minimapa.ajustar_()
 

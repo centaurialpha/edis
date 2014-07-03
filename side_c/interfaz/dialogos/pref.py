@@ -83,10 +83,17 @@ class ConfiguracionEditor(QWidget):
         grillaCaracteristicas.addWidget(self.checkAutoInd, 3, 2,
             alignment=Qt.AlignLeft)
 
+        # Sidebar
+        self.checkSideBar = QCheckBox(self.trUtf8("Mostrar números de línea"))
+        self.checkSideBar.setChecked(
+            configuraciones.SIDEBAR)
+        grillaCaracteristicas.addWidget(self.checkSideBar, 4, 2,
+            alignment=Qt.AlignLeft)
+
         # Tabs y espacios
         self.checkTabs = QCheckBox(self.trUtf8("Mostrar tabs y espacios"))
         self.checkTabs.setChecked(configuraciones.MOSTRAR_TABS)
-        grillaCaracteristicas.addWidget(self.checkTabs, 4, 2,
+        grillaCaracteristicas.addWidget(self.checkTabs, 5, 2,
             alignment=Qt.AlignLeft)
 
         # Minimapa
@@ -274,6 +281,10 @@ class DialogoConfiguracion(QDialog):
         qsettings.setValue('fuenteTam', configuraciones.TAM_FUENTE)
         if e:
             e._cargar_fuente(configuraciones.FUENTE, configuraciones.TAM_FUENTE)
+
+        # Sidebar
+        qsettings.setValue('sidebar', self.editorConf.checkSideBar.isChecked())
+        configuraciones.SIDEBAR = self.editorConf.checkSideBar.isChecked()
 
         # Tabs y espacios
         qsettings.setValue('tabs', self.editorConf.checkTabs.isChecked())
