@@ -27,7 +27,7 @@ class AcercaDeIDE(QDialog):
     def __init__(self, parent=None):
         QDialog.__init__(self, parent, Qt.Dialog)
 
-        self.setWindowTitle(self.trUtf8("Acerca de SIDE-C"))
+        self.setWindowTitle(self.trUtf8("Acerca de EDIS-C"))
         self.setMaximumSize(QSize(0, 0))
         vbox = QVBoxLayout(self)
         vbox.setMargin(0)
@@ -49,7 +49,7 @@ class Tabs(QTabWidget):
         self.acerca_de_creadores = AcercaDeCreadores()
         self.licencia = Licencia()
 
-        self.addTab(self.acerca_de_side, self.trUtf8("Acerca de SIDE-C"))
+        self.addTab(self.acerca_de_side, self.trUtf8("Acerca de EDIS-C"))
         self.addTab(self.acerca_de_creadores, self.trUtf8("Creadores"))
         self.addTab(self.licencia, self.trUtf8("Licencia"))
 
@@ -62,7 +62,7 @@ class AcercaDeSide(QWidget):
         layout_vertical = QVBoxLayout(self)
 
         titulo_label = QLabel(
-            self.trUtf8('<h1>SIDE-C</h1><i>Seiryü</i>'))
+            self.trUtf8('<h1>EDIS-C</h1><i>Seiryü</i>'))
         titulo_label.setAlignment(Qt.AlignCenter)
         if configuraciones.LINUX:
             so_label = QLabel(
@@ -79,13 +79,14 @@ class AcercaDeSide(QWidget):
         layout_vertical.addWidget(so_label)
         so_label.setAlignment(Qt.AlignCenter)
         comentario_label = QLabel(
-            '<i>Entorno de Desarrollo Integrado Simple</i>\n')
+            '<i><b>E</b>ntorno de <b>D</b>esarrollo <b>I</b>ntegrado '
+            '<b>S</b>imple</i>\n')
         comentario_label.setAlignment(Qt.AlignCenter)
         layout_vertical.addWidget(comentario_label)
         self.setLayout(layout_vertical)
 
         descripcion_label = QLabel(
-            self.trUtf8('<b>SIDE-C</b> es un IDE para el lenguaje de '
+            self.trUtf8('<b>EDIS-C</b> es un IDE para el lenguaje de '
 'programación C, simple y ligero,<br>desarrollado completamente en '
 'Python y Qt (PyQt)<br>'))
         links_label = QLabel(
