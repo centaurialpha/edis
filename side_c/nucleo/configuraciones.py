@@ -65,7 +65,7 @@ MINIMAPA = True
 OPAC_MIN = 0.1
 OPAC_MAX = 0.8
 
-SIDEBAR = False
+SIDEBAR = True
 
 ###############################################################################
 qsettings = QSettings(recursos.CONFIGURACIONES_PATH, QSettings.IniFormat)
