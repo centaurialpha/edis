@@ -4,6 +4,7 @@ from PyQt4.QtGui import QFrame
 from PyQt4.QtGui import QFontMetrics
 from PyQt4.QtGui import QGraphicsOpacityEffect
 
+from PyQt4.QtCore import SIGNAL
 from PyQt4.QtCore import Qt
 from PyQt4.QtCore import QPropertyAnimation
 
@@ -24,11 +25,14 @@ class MiniMapa(QPlainTextEdit):
         self.setMouseTracking(True)
         self.viewport().setCursor(Qt.PointingHandCursor)
         self.setTextInteractionFlags(Qt.NoTextInteraction)
-        self.setStyleSheet("background: transparent;")
+       # self.setStyleSheet("background: transparent;")
 
         self.parent = parent
         self.lineas = 0
         self.highlighter = None
+
+        self.connect(self.parent, SIGNAL("updateRequest(const QRect&, int)"),
+            self.actualizar_area_visible)
 
         self.efecto = QGraphicsOpacityEffect()
         self.setGraphicsEffect(self.efecto)

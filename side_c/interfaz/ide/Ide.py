@@ -24,6 +24,7 @@ from side_c.interfaz.contenedor_principal import contenedor_principal
 from side_c.interfaz.contenedor_secundario import contenedor_secundario
 from side_c.interfaz import barra_de_estado
 
+import side_c
 from side_c import recursos
 from side_c.nucleo import configuraciones
 
@@ -70,7 +71,7 @@ class __IDE(QMainWindow):
     def __init__(self):
         QMainWindow.__init__(self)
         self.setMinimumSize(850, 700)
-        self.setWindowTitle('SIDE-C')
+        self.setWindowTitle(side_c.__nombre__)
         self._cargar_tema()
         get_pantalla = QDesktopWidget().screenGeometry()
         self.posicionar_ventana(get_pantalla)
