@@ -1,0 +1,31 @@
+QTabWidget::tab-bar:top 
+{
+     alignment: left;
+}
+
+QToolBar::separator 
+{
+    background: #b1b1b1;
+    width: 2px;
+    height: 2px;
+}
+
+QScrollBar:vertical
+{
+    width: 13px;
+}
+
+QScrollBar::handle:vertical
+{
+    border-radius: 3px;
+}
+
+QScrollBar::add-line:vertical,
+QScrollBar::sub-line:vertical,
+QScrollBar::add-page:vertical,
+QScrollBar::sub-page:vertical
+{
+    background: none;
+    border: none;
+}
+
