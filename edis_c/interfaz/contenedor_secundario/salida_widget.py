@@ -101,7 +101,7 @@ class EjecutarWidget(QWidget):
             #self.ejecutable = 'C:\\Documents'
             #print self.ejecutable
             #self.proceso_ejecucion.start(self.ejecutable)
-        comando = 'x-terminal-emulator -e bash -c ./%s'
+        comando = 'xterm -e bash -c ./%s'
         self.proceso_ejecucion.start(comando % self.ejecutable)
 
 

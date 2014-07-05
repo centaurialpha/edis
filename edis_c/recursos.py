@@ -43,6 +43,7 @@ ICONOS = {
     "compilar": os.path.join(PATH, "imagenes", "compilar.png"),
     "ejecutar": os.path.join(PATH, "imagenes", "play.png"),
     "comp-ejec": os.path.join(PATH, "imagenes", "compilar-ejecutar.png"),
+    "frenar": os.path.join(PATH, "imagenes", "frenar.png"),
     "terminal": os.path.join(PATH, "imagenes", "terminal.png"),
     "notas": os.path.join(PATH, "imagenes", "notas.png"),
     "deshacer": os.path.join(PATH, "imagenes", "deshacer.png"),
@@ -55,7 +56,11 @@ ICONOS = {
     "titulo": os.path.join(PATH, "imagenes", "titulo.svg"),
     "linea": os.path.join(PATH, "imagenes", "separador.png"),
     "editor": os.path.join(PATH, "imagenes", "editor.svg"),
-    "tema": os.path.join(PATH, "imagenes", "tema.svg")
+    "tema": os.path.join(PATH, "imagenes", "tema.svg"),
+    "indentar": os.path.join(PATH, "imagenes", "indentar.png"),
+    "desindentar": os.path.join(PATH, "imagenes", "desindentar.png"),
+    "comentar": os.path.join(PATH, "imagenes", "comentar.png"),
+    "insertar-include": os.path.join(PATH, "imagenes", "insertar-include.png")
     }
 
 # Estilos de color - Editor

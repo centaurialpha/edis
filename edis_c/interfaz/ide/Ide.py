@@ -32,11 +32,9 @@ from edis_c.nucleo import configuraciones
 
 
 ITEMS_TOOLBAR1 = [
-    "separador",
     "nuevo-archivo",
     "abrir-archivo",
     "guardar-archivo",
-    "guardar-como-archivo",
     "separador",
     "deshacer",
     "rehacer",
@@ -45,6 +43,9 @@ ITEMS_TOOLBAR1 = [
     "copiar",
     "pegar",
     "separador",
+    "indentar",
+    "desindentar",
+    "include",
     "titulo",
     "linea",
     "separador"
@@ -53,7 +54,8 @@ ITEMS_TOOLBAR1 = [
 ITEMS_TOOLBAR2 = [
     "compilar-archivo",
     "ejecutar-archivo",
-    "compilar_ejecutar-archivo"
+    "compilar_ejecutar-archivo",
+    "frenar"
     ]
 
 __instanciaIde = None
@@ -92,8 +94,8 @@ class __IDE(QMainWindow):
             self.toolbar_.setIconSize(QSize(25, 25))
             self.toolbar.setIconSize(QSize(25, 25))
         else:
-            self.toolbar_.setIconSize(QSize(20, 20))
-            self.toolbar.setIconSize(QSize(20, 20))
+            self.toolbar_.setIconSize(QSize(25, 25))
+            self.toolbar.setIconSize(QSize(25, 25))
         self.toolbar.setToolButtonStyle(Qt.ToolButtonIconOnly)
         self.addToolBar(Qt.RightToolBarArea, self.toolbar)
         self.addToolBar(Qt.RightToolBarArea, self.toolbar_)
@@ -133,6 +135,9 @@ class __IDE(QMainWindow):
             self._menu_insertar], self.toolbar, ITEMS_TOOLBAR1)
 
         self.cargar_toolbar([self._menu_codigo], self.toolbar_, ITEMS_TOOLBAR2)
+
+        #if configuraciones.MOSTRAR_PAGINA_INICIO:
+            #self.contenedor_principal.mostrar_pagina_de_inicio()
 
     def posicionar_ventana(self, pantalla):
         """ Posiciona la ventana en el centro de la pantalla. """
@@ -180,6 +185,9 @@ class __IDE(QMainWindow):
 
                 if item_tool is not None:
                     toolbar.addAction(item_tool)
+
+    def cargar_status_tips(self, accion, texto):
+        accion.setStatusTip(texto)
 
     def cambiar_titulo_de_ventana(self, titulo):
         """ Cambia el título de la ventana cuando la pestaña cambia de nombre,

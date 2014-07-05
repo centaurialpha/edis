@@ -41,31 +41,51 @@ class MenuArchivo(QObject):
         # Acciones
         self.accionNuevo = menu_archivo.addAction(
             QIcon(recursos.ICONOS['nuevo']), self.trUtf8("Nuevo archivo "))
+        self.cargar_status_tip(self.accionNuevo,
+            self.trUtf8("Crear un archivo nuevo"))
         self.accionNuevoDesdePlantilla = menu_archivo.addMenu(
             self.trUtf8("Nuevo desde plantilla"))
         menu_archivo.addSeparator()
         self.accionNuevoMain = self.accionNuevoDesdePlantilla.addAction(
             QIcon(recursos.ICONOS['main']), self.trUtf8("Archivo main.c"))
+        self.cargar_status_tip(self.accionNuevoMain,
+            self.trUtf8("Crear un nuevo archivo de C con función main"))
         self.accionAbrir = menu_archivo.addAction(
             QIcon(recursos.ICONOS['abrir']), self.trUtf8("Abrir archivo"))
+        self.cargar_status_tip(self.accionAbrir,
+            self.trUtf8("Abrir cualquier archivo de tipo C (.c .h .cpp)"))
         menu_archivo.addSeparator()
         self.accionGuardar = menu_archivo.addAction(
             QIcon(recursos.ICONOS['guardar']), self.trUtf8("Guardar"))
+        self.cargar_status_tip(self.accionGuardar,
+            self.trUtf8("Guardar cambios en el archivo actual"))
         self.accionGuardarComo = menu_archivo.addAction(
             QIcon(recursos.ICONOS['guardar-como']), self.trUtf8("Guardar como"))
+        self.cargar_status_tip(self.accionGuardarComo,
+            self.trUtf8("Elegir dónde guardar archivo actual"))
         menu_archivo.addSeparator()
         self.accionImprimir = menu_archivo.addAction(
             QIcon(recursos.ICONOS['print']), self.trUtf8("Imprimir archivo"))
+        self.cargar_status_tip(self.accionImprimir,
+            self.trUtf8("Imprimir código fuente"))
         menu_archivo.addSeparator()
         self.accionCerrarTab = menu_archivo.addAction(
             self.trUtf8("Cerrar"))
+        self.cargar_status_tip(self.accionCerrarTab,
+            self.trUtf8("Cerrar pestaña actual"))
         self.accionCerrarTodo = menu_archivo.addAction(
             self.trUtf8("Cerrar todo"))
+        self.cargar_status_tip(self.accionCerrarTodo,
+            self.trUtf8("Cerrar todas las pestañas"))
         self.accionCerrarExceptoActual = menu_archivo.addAction(
             self.trUtf8("Cerrar excepto actual"))
+        self.cargar_status_tip(self.accionCerrarExceptoActual,
+            self.trUtf8("Cerrar todas las pestañas excepto actual"))
         menu_archivo.addSeparator()
         self.accionSalir = menu_archivo.addAction(
             QIcon(recursos.ICONOS['salir']), self.trUtf8("Salir"))
+        self.cargar_status_tip(self.accionSalir,
+            self.trUtf8("Salir de EDIS-C"))
 
         # Conexión a métodos
         self.accionNuevo.triggered.connect(
@@ -99,6 +119,9 @@ class MenuArchivo(QObject):
             "guardar-archivo": self.accionGuardar,
             "guardar-como-archivo": self.accionGuardarComo
             }
+
+    def cargar_status_tip(self, accion, texto):
+        self.ide.cargar_status_tips(accion, texto)
 
     def imprimir_(self):
         """ Llama al método para imprimir archivo actual """

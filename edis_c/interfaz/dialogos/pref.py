@@ -30,6 +30,13 @@ from edis_c.nucleo import configuraciones
 from edis_c.interfaz.contenedor_principal import contenedor_principal
 
 
+class ConfiguracionGeneral(QWidget):
+
+    def __init__(self, parent):
+        super(ConfiguracionGeneral, self).__init__(parent)
+        pass
+
+
 class ConfiguracionEditor(QWidget):
 
     def __init__(self, parent):
@@ -207,6 +214,7 @@ class DialogoConfiguracion(QDialog):
         self.setWindowTitle(self.trUtf8("SIDE-C Preferencias"))
         layoutH = QHBoxLayout()
 
+        self.generalConf = ConfiguracionGeneral(self)
         self.editorConf = ConfiguracionEditor(self)
         self.temaConf = ConfiguracionTema(self)
 
@@ -218,6 +226,7 @@ class DialogoConfiguracion(QDialog):
         self.contenidos.setSpacing(5)
 
         self.stack = QStackedWidget()
+        self.stack.addWidget(self.generalConf)
         self.stack.addWidget(self.editorConf)
         self.stack.addWidget(self.temaConf)
 
@@ -304,6 +313,11 @@ class DialogoConfiguracion(QDialog):
         self.close()
 
     def iconos(self):
+        configGeneral = QListWidgetItem(self.contenidos)
+        configGeneral.setText(self.trUtf8("General"))
+        configGeneral.setTextAlignment(Qt.AlignHCenter)
+        configGeneral.setFlags(Qt.ItemIsSelectable | Qt.ItemIsEnabled)
+
         configEditor = QListWidgetItem(self.contenidos)
         configEditor.setIcon(QIcon(recursos.ICONOS['editor']))
         configEditor.setText(self.trUtf8("Editor"))

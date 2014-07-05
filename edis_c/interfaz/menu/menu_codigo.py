@@ -36,11 +36,21 @@ class MenuCodigoFuente(QObject):
         # Acciones
         self.accionCompilar = menu_codigo.addAction(
             QIcon(recursos.ICONOS['compilar']), self.trUtf8("Compilar"))
+        self.cargar_status_tip(self.accionCompilar,
+            self.trUtf8("Compilar archivo actual"))
         self.accionEjecutar = menu_codigo.addAction(
             QIcon(recursos.ICONOS['ejecutar']), self.trUtf8("Ejecutar"))
+        self.cargar_status_tip(self.accionEjecutar,
+            self.trUtf8("Ejecutar programa"))
         self.accionCompilarEjecutar = menu_codigo.addAction(
             QIcon(recursos.ICONOS['comp-ejec']),
             self.trUtf8("Compilar y ejecutar"))
+        self.cargar_status_tip(self.accionCompilarEjecutar,
+            self.trUtf8("Compilar archivo y ejecutar inmediatamente"))
+        self.accionFrenar = menu_codigo.addAction(
+            QIcon(recursos.ICONOS['frenar']), self.trUtf8("Frenar programa"))
+        self.cargar_status_tip(self.accionFrenar,
+            self.trUtf8("Terminar programa"))
 
         # Acciones desactivadas
         #self.accionCompilar.setEnabled(False)
@@ -50,7 +60,8 @@ class MenuCodigoFuente(QObject):
         self.items_toolbar = {
             "compilar-archivo": self.accionCompilar,
             "ejecutar-archivo": self.accionEjecutar,
-            "compilar_ejecutar-archivo": self.accionCompilarEjecutar
+            "compilar_ejecutar-archivo": self.accionCompilarEjecutar,
+            "frenar": self.accionFrenar
             }
 
         # Conexión a slots
@@ -58,6 +69,9 @@ class MenuCodigoFuente(QObject):
             self.metodo_compilar)
         self.connect(self.accionEjecutar, SIGNAL("triggered()"),
             self.metodo_ejecutar)
+
+    def cargar_status_tip(self, accion, texto):
+        self.ide.cargar_status_tips(accion, texto)
 
     def metodo_compilar(self):
         editorW = self.ide.contenedor_principal.devolver_editor_actual()

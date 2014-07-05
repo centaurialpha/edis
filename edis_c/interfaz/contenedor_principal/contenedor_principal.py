@@ -10,7 +10,7 @@ from PyQt4.QtCore import SIGNAL
 
 from edis_c import recursos
 from edis_c.interfaz import tab_widget
-#from side_c.interfaz import barra_de_estado
+from edis_c.interfaz import pagina_inicio
 from edis_c.interfaz.editor import editor
 from edis_c.nucleo import manejador_de_archivo
 
@@ -145,6 +145,10 @@ class __ContenedorMain(QSplitter):
             #if type(widget) is editor.Editor:
             if isinstance(widget, editor.Editor):
                 widget.actualizar_margen_linea()
+
+    def mostrar_pagina_de_inicio(self):
+        pag = pagina_inicio.PaginaDeInicio(parent=self)
+        self.agregar_tab(pag, 'Pagina Inicio')
 
     def setFocus(self):
         w = self.devolver_widget_actual()

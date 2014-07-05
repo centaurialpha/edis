@@ -18,9 +18,13 @@ class MenuInsertar(QObject):
 
         accionTitulo = menu_insertar.addAction(
             QIcon(recursos.ICONOS['titulo']), self.trUtf8("Título"))
+        self.cargar_status_tip(accionTitulo,
+            self.trUtf8("Insertar un título"))
         accionTitulo.setShortcut(Qt.CTRL + Qt.SHIFT + Qt.Key_C)
         accionSeparador = menu_insertar.addAction(
             QIcon(recursos.ICONOS['linea']), self.trUtf8("Separador"))
+        self.cargar_status_tip(accionSeparador,
+            self.trUtf8("Insertar separador"))
         accionSeparador.setShortcut(Qt.CTRL + Qt.SHIFT + Qt.Key_S)
         menuFechaHora = menu_insertar.addMenu(
             self.trUtf8("Insertar fecha y hora"))
@@ -49,6 +53,7 @@ class MenuInsertar(QObject):
         accionString = menuLibEst.addAction(
             self.trUtf8("string.h"))
         accionInclude = menuInclude.addAction(
+            QIcon(recursos.ICONOS['insertar-include']),
             self.trUtf8("#include <...>"))
 
         # Conexión
@@ -68,8 +73,12 @@ class MenuInsertar(QObject):
         # Toolbar
         self.items_toolbar = {
             "linea": accionSeparador,
-            "titulo": accionTitulo
+            "titulo": accionTitulo,
+            "include": accionInclude
             }
+
+    def cargar_status_tip(self, accion, texto):
+        self.ide.cargar_status_tips(accion, texto)
 
     def insertar_separador(self):
         editorW = self.ide.contenedor_principal.devolver_editor_actual()
