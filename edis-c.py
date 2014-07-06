@@ -21,7 +21,7 @@ def main():
     QCoreApplication.setOrganizationDomain('EDIS-C')
     QCoreApplication.setApplicationName('EDIS-C')
 
-    app.setWindowIcon(QIcon(recursos.ICONOS['icono']))
+    app.setWindowIcon(QIcon(recursos.ICONOS['seiryu_icono']))
 
     # Imágen SPLASH
     splash_imagen = QPixmap(recursos.ICONOS['splash'])

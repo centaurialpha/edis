@@ -39,6 +39,7 @@ ICONOS = {
     "salir": os.path.join(PATH, "imagenes", "salir.png"),
     "splash": os.path.join(PATH, "imagenes", "splash.png"),
     "icono": os.path.join(PATH, "imagenes", "side-c.png"),
+    # Logo dragón (originalmente verde by nessmasta) - modificado a azul
     "seiryu": os.path.join(PATH, "imagenes", "edis_seiryu.png"),
     "seiryu_icono": os.path.join(PATH, "imagenes", "seiryu_icono.png"),
     "print": os.path.join(PATH, "imagenes", "print.png"),
