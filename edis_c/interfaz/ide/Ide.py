@@ -136,8 +136,8 @@ class __IDE(QMainWindow):
 
         self.cargar_toolbar([self._menu_codigo], self.toolbar_, ITEMS_TOOLBAR2)
 
-        #if configuraciones.MOSTRAR_PAGINA_INICIO:
-            #self.contenedor_principal.mostrar_pagina_de_inicio()
+        if configuraciones.MOSTRAR_PAGINA_INICIO:
+            self.contenedor_principal.mostrar_pagina_de_inicio()
 
     def posicionar_ventana(self, pantalla):
         """ Posiciona la ventana en el centro de la pantalla. """

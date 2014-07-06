@@ -19,7 +19,7 @@ class PaginaDeInicio(QWidget, tabitem.TabItem):
         self._id = "Pagina de Inicio"
         layoutV = QVBoxLayout(self)
 
-        logo_edis = QPixmap(recursos.ICONOS['icono'])
+        logo_edis = QPixmap(recursos.ICONOS['seiryu'])
         self.logo_ = QLabel()
         self.logo_.setPixmap(logo_edis)
         self.logo_.setAlignment(Qt.AlignCenter)

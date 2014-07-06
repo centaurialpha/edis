@@ -71,7 +71,7 @@ class AcercaDeSide(QWidget):
             so_label = QLabel(
                 self.trUtf8("<h5><i>(En Windows</i>)</h5>"))
         layout_vertical.addWidget(titulo_label)
-        logo = QPixmap(recursos.ICONOS['icono'])
+        logo = QPixmap(recursos.ICONOS['seiryu_icono'])
         self.logo_label = QLabel()
         self.logo_label.setPixmap(logo)
         self.logo_label.setAlignment(Qt.AlignCenter)
