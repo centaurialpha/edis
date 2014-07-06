@@ -94,6 +94,7 @@ class Editor(QPlainTextEdit, tabitem.TabItem):
             self.minimapa.show()
             self.connect(self, SIGNAL("updateRequest(const QRect&, int)"),
                 self.minimapa.actualizar_area_visible)
+            self.minimapa.highlighter = Highlighter(self.minimapa.document())
 
     def set_id(self, id_):
         super(Editor, self).set_id(id_)
