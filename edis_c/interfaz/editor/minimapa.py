@@ -29,7 +29,7 @@ class MiniMapa(QPlainTextEdit):
         self.setMouseTracking(True)
         self.viewport().setCursor(Qt.PointingHandCursor)
         self.setTextInteractionFlags(Qt.NoTextInteraction)
-       # self.setStyleSheet("background: transparent;")
+        self.setStyleSheet("background: transparent;")
 
         self.parent = parent
         self.lineas = 0
