@@ -1,4 +1,21 @@
 #-*- coding: utf-8 -*-
+
+# <Diálogo de configuraciones.>
+# Copyright (C) <2014>  <Gabriel Acosta>
+
+# EDIS-C is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+
+# EDIS-C is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+
+# You should have received a copy of the GNU General Public License
+# along with EDIS-C.  If not, see <http://www.gnu.org/licenses/>.
+
 """ Preferencias """
 
 from PyQt4.QtGui import QWidget
@@ -222,8 +239,8 @@ class DialogoConfiguracion(QDialog):
         self.contenidos.setViewMode(QListView.IconMode)
         self.contenidos.setIconSize(QSize(96, 84))
         self.contenidos.setMovement(QListView.Static)
-        self.contenidos.setMaximumWidth(102)
-        self.contenidos.setSpacing(5)
+        self.contenidos.setMaximumWidth(70)
+        self.contenidos.setSpacing(3)
 
         self.stack = QStackedWidget()
         self.stack.addWidget(self.generalConf)
@@ -314,6 +331,7 @@ class DialogoConfiguracion(QDialog):
 
     def iconos(self):
         configGeneral = QListWidgetItem(self.contenidos)
+        configGeneral.setIcon(QIcon(recursos.ICONOS['general']))
         configGeneral.setText(self.trUtf8("General"))
         configGeneral.setTextAlignment(Qt.AlignHCenter)
         configGeneral.setFlags(Qt.ItemIsSelectable | Qt.ItemIsEnabled)

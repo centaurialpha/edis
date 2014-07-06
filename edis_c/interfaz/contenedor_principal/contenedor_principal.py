@@ -1,4 +1,21 @@
 #-*- coding: utf-8 -*-
+
+# <Contenedor Principal.>
+# Copyright (C) <2014>  <Gabriel Acosta>
+
+# EDIS-C is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+
+# EDIS-C is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+
+# You should have received a copy of the GNU General Public License
+# along with EDIS-C.  If not, see <http://www.gnu.org/licenses/>.
+
 import os
 
 from PyQt4.QtGui import QSplitter
@@ -148,7 +165,7 @@ class __ContenedorMain(QSplitter):
 
     def mostrar_pagina_de_inicio(self):
         pag = pagina_inicio.PaginaDeInicio(parent=self)
-        self.agregar_tab(pag, 'Pagina Inicio')
+        self.agregar_tab(pag, self.trUtf8('Página de inicio'))
 
     def setFocus(self):
         w = self.devolver_widget_actual()

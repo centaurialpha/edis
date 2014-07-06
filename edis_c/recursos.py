@@ -1,4 +1,21 @@
 #-*- coding: utf-8 -*-
+
+# <Directorios y otros recursos que usa el programa .>
+# Copyright (C) <2014>  <Gabriel Acosta>
+
+# EDIS-C is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+
+# EDIS-C is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+
+# You should have received a copy of the GNU General Public License
+# along with EDIS-C.  If not, see <http://www.gnu.org/licenses/>.
+
 """
 Recursos
 
@@ -58,8 +75,9 @@ ICONOS = {
     "icono-tab": os.path.join(PATH, "imagenes", "cambio-tab.svg"),
     "titulo": os.path.join(PATH, "imagenes", "titulo.svg"),
     "linea": os.path.join(PATH, "imagenes", "separador.png"),
-    "editor": os.path.join(PATH, "imagenes", "editor.svg"),
-    "tema": os.path.join(PATH, "imagenes", "tema.svg"),
+    "general": os.path.join(PATH, "imagenes", "general.png"),
+    "editor": os.path.join(PATH, "imagenes", "editor.png"),
+    "tema": os.path.join(PATH, "imagenes", "tema.png"),
     "indentar": os.path.join(PATH, "imagenes", "indentar.png"),
     "desindentar": os.path.join(PATH, "imagenes", "desindentar.png"),
     "comentar": os.path.join(PATH, "imagenes", "comentar.png"),
