@@ -83,7 +83,7 @@ OPAC_MAX = 0.8
 
 SIDEBAR = True
 
-MOSTRAR_PAGINA_INICIO = False
+MOSTRAR_PAGINA_INICIO = True
 
 ###############################################################################
 qsettings = QSettings(recursos.CONFIGURACIONES_PATH, QSettings.IniFormat)

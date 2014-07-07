@@ -24,7 +24,7 @@ from PyQt4.QtCore import SIGNAL
 from edis_c import recursos
 #from side_c.interfaz.dialogos import preferencias
 from edis_c.interfaz.dialogos import pref
-#from edis_c.interfaz.editor import acciones_
+from edis_c.interfaz.editor import acciones_
 
 
 class MenuEditar(QObject):
@@ -41,6 +41,10 @@ class MenuEditar(QObject):
         self.atajoCortar = QShortcut(recursos.ATAJOS['cortar'], self.ide)
         self.atajoCopiar = QShortcut(recursos.ATAJOS['copiar'], self.ide)
         self.atajoPegar = QShortcut(recursos.ATAJOS['pegar'], self.ide)
+        self.atajoMoverArriba = QShortcut(
+            recursos.ATAJOS['mover-arriba'], self.ide)
+        self.atajoMoverAbajo = QShortcut(
+            recursos.ATAJOS['mover-abajo'], self.ide)
 
         # Conexiones
         self.connect(self.atajoDeshacer, SIGNAL("activated()"),
@@ -53,6 +57,10 @@ class MenuEditar(QObject):
             self.ide.contenedor_principal.copiar)
         self.connect(self.atajoPegar, SIGNAL("activated()"),
             self.ide.contenedor_principal.pegar)
+        self.connect(self.atajoMoverArriba, SIGNAL("activated()"),
+            self.mover_linea_hacia_arriba)
+        self.connect(self.atajoMoverAbajo, SIGNAL("activated()"),
+            self.mover_linea_hacia_abajo)
 
         # Acciones
         self.accionDeshacer = menu_editar.addAction(QIcon(
@@ -98,6 +106,10 @@ class MenuEditar(QObject):
             self.trUtf8("Seleccionar todo"))
         self.cargar_status_tip(self.accionSeleccionarTodo,
             self.trUtf8("Seleccionar todo el código fuente"))
+        self.accionMoverArriba = menu_editar.addAction(
+            self.trUtf8("Mover arriba"))
+        self.accionMoverAbajo = menu_editar.addAction(
+            self.trUtf8("Mover abajo"))
         menu_editar.addSeparator()
         self.accionConfiguracion = menu_editar.addAction(
             self.trUtf8("Configuración"))
@@ -123,6 +135,10 @@ class MenuEditar(QObject):
             self.ide.contenedor_principal.indentar_mas)
         self.accionIndentarMenos.triggered.connect(
             self.ide.contenedor_principal.indentar_menos)
+        self.accionMoverArriba.triggered.connect(
+            self.mover_linea_hacia_arriba)
+        self.accionMoverAbajo.triggered.connect(
+            self.mover_linea_hacia_abajo)
         #self.accionIrLinea.triggered.connect(
             #self.ir_a_lin)
 
@@ -136,6 +152,16 @@ class MenuEditar(QObject):
             "indentar": self.accionIndentarMas,
             "desindentar": self.accionIndentarMenos
             }
+
+    def mover_linea_hacia_arriba(self):
+        editor = self.ide.contenedor_principal.devolver_editor_actual()
+        if editor:
+            acciones_.mover_hacia_arriba(editor)
+
+    def mover_linea_hacia_abajo(self):
+        editor = self.ide.contenedor_principal.devolver_editor_actual()
+        if editor:
+            acciones_.mover_hacia_abajo(editor)
 
     def cargar_status_tip(self, accion, texto):
         self.ide.cargar_status_tips(accion, texto)

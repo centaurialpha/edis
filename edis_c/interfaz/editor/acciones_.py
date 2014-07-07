@@ -68,6 +68,8 @@ def ir_a_linea_(editor):
 
 
 def insertar_fecha(ew, formato):
+    """ Inserta fecha formateada. """
+
     fecha = datetime.date.today()
 
     dicF = {
@@ -83,6 +85,8 @@ def insertar_fecha(ew, formato):
 
 
 def insertar_fecha_hora(ew, formato):
+    """ Inserta fecha y hora formateada. """
+
     fecha = datetime.datetime.now()
     dicF = {
         1: "%d-%m-%Y--%H:%M",
@@ -96,6 +100,8 @@ def insertar_fecha_hora(ew, formato):
 
 
 def imprimir_archivo(nombre, f):
+    """ Prepara el archivo para la impresión. """
+
     impres = QPrinter(QPrinter.HighResolution)
     impres.setPageSize(QPrinter.A4)
     impres.setOutputFileName(nombre)
@@ -111,6 +117,7 @@ def imprimir_archivo(nombre, f):
 
 
 def nuevo_main_c(ew):
+    """ Inserta un texto con la función main. """
     ew.textCursor().insertText(
 """/*
  * This program is free software; you can redistribute it and/or modify
@@ -142,6 +149,8 @@ int main(int argc, char **argv)
 
 
 def insertar_include(ew, libreria):
+    """ Inserta alguna cabecera estándar o solo el include. """
+
     includes = {
         1: '#include <stdio.h>',
         2: '#include <stdlib.h>',
@@ -157,3 +166,108 @@ def insertar_include(ew, libreria):
     else:
         texto = includes.get(4)
         ew.textCursor().insertText(texto + '<>')
+
+
+def mover_hacia_arriba(editorW):
+    """ Mueve hacia arriba una o más líneas seleccionadas. """
+
+    cursor = editorW.textCursor()
+    bloque_actual = cursor.block()
+    if bloque_actual.blockNumber > 0:
+        inicio = editorW.document().findBlock(
+            cursor.selectionStart()).firstLineNumber()
+        fin = editorW.document().findBlock(
+            cursor.selectionEnd()).firstLineNumber()
+
+        if cursor.hasSelection() and inicio != fin:
+            pos_inicio = editorW.document().findBlockByLineNumber(
+                inicio).position()
+            cursor.setPosition(pos_inicio)
+            cursor.movePosition(QTextCursor.StartOfLine)
+            cursor.movePosition(QTextCursor.Down, QTextCursor.KeepAnchor,
+                fin - inicio)
+            cursor.movePosition(QTextCursor.EndOfLine, QTextCursor.KeepAnchor)
+            mover_texto = cursor.selectedText()
+            cursor.beginEditBlock()
+            cursor.removeSelectedText()
+            cursor.deleteChar()
+            cursor.movePosition(QTextCursor.Up, QTextCursor.MoveAnchor)
+            cursor.movePosition(QTextCursor.StartOfLine,
+                QTextCursor.MoveAnchor)
+            cursor.insertText(mover_texto + '\n')
+            cursor.endEditBlock()
+            pos_inicio = editorW.document().findBlockByLineNumber(
+                (inicio - 1)).position()
+            cursor.setPosition(pos_inicio)
+            cursor.movePosition(QTextCursor.StartOfLine)
+            cursor.movePosition(QTextCursor.Down, QTextCursor.KeepAnchor,
+                fin - inicio)
+            cursor.movePosition(QTextCursor.EndOfLine, QTextCursor.KeepAnchor)
+            editorW.setTextCursor(cursor)
+
+        else:
+            bloque_anterior = bloque_actual.previous()
+            tmpLinea = str(bloque_actual.text())
+            cursor.movePosition(QTextCursor.EndOfLine, QTextCursor.MoveAnchor)
+            cursor.movePosition(QTextCursor.StartOfLine,
+                QTextCursor.KeepAnchor)
+            cursor.beginEditBlock()
+            cursor.insertText(bloque_anterior.text())
+            cursor.movePosition(QTextCursor.Up, QTextCursor.MoveAnchor)
+            cursor.movePosition(QTextCursor.EndOfLine, QTextCursor.MoveAnchor)
+            cursor.movePosition(QTextCursor.StartOfLine,
+                QTextCursor.KeepAnchor)
+            cursor.insertText(tmpLinea)
+            cursor.endEditBlock()
+            editorW.moveCursor(QTextCursor.Up, QTextCursor.MoveAnchor)
+
+
+def mover_hacia_abajo(editorW):
+    cursor = editorW.textCursor()
+    bloque_actual = cursor.block()
+
+    if bloque_actual.blockNumber() < (editorW.blockCount() - 1):
+        inicio = editorW.document().findBlock(
+            cursor.selectionStart()).firstLineNumber()
+        fin = editorW.document().findBlock(
+            cursor.selectionEnd()).firstLineNumber()
+
+        if cursor.hasSelection() and inicio != fin:
+            pos_inicio = editorW.document().findBlockByLineNumber(
+                inicio).position()
+            cursor.setPosition(pos_inicio)
+            cursor.movePosition(QTextCursor.StartOfLine)
+            cursor.movePosition(QTextCursor.Down, QTextCursor.KeepAnchor,
+                fin - inicio)
+            cursor.movePosition(QTextCursor.EndOfLine, QTextCursor.KeepAnchor)
+            mover_texto = cursor.selectedText()
+            cursor.beginEditBlock()
+            cursor.removeSelectedText()
+            cursor.deleteChar()
+            cursor.movePosition(QTextCursor.EndOfLone, QTextCursor.MoveAnchor)
+            cursor.insertText('\n' + mover_texto)
+            cursor.endEditBlock()
+            pos_inicio = editorW.document().findBlockByLineNumber(
+                (inicio - 1)).position()
+            cursor.setPosition(pos_inicio)
+            cursor.movePosition(QTextCursor.StartOfLine)
+            cursor.movePosition(QTextCursor.Down, QTextCursor.KeepAnchor,
+                fin - inicio)
+            cursor.movePosition(QTextCursor.EndOfLine, QTextCursor.KeepAnchor)
+            editorW.setTextCursor(cursor)
+
+        else:
+            bloque_sig = bloque_actual.next()
+            tmpLinea = str(bloque_actual.text())
+            cursor.movePosition(QTextCursor.EndOfLine, QTextCursor.MoveAnchor)
+            cursor.movePosition(QTextCursor.StartOfLine,
+                QTextCursor.KeepAnchor)
+            cursor.beginEditBlock()
+            cursor.insertText(bloque_sig.text())
+            cursor.movePosition(QTextCursor.Down, QTextCursor.MoveAnchor)
+            cursor.movePosition(QTextCursor.EndOfLine, QTextCursor.MoveAnchor)
+            cursor.movePosition(QTextCursor.StartOfLine,
+                QTextCursor.KeepAnchor)
+            cursor.insertText(tmpLinea)
+            cursor.endEditBlock()
+            editorW.moveCursor(QTextCursor.Down, QTextCursor.MoveAnchor)

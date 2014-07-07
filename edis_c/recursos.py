@@ -127,6 +127,8 @@ ATAJOS = {
     "cortar": QKeySequence(Qt.CTRL + Qt.Key_X),
     "copiar": QKeySequence(Qt.CTRL + Qt.Key_C),
     "pegar": QKeySequence(Qt.CTRL + Qt.Key_V),
+    "mover-arriba": QKeySequence(Qt.ALT + Qt.Key_Up),
+    "mover-abajo": QKeySequence(Qt.ALT + Qt.Key_Down),
     # Ver
     "ocultar-menu": QKeySequence(Qt.CTRL + Qt.Key_F10),
     "fullscreen": QKeySequence(Qt.CTRL + Qt.Key_F11),
