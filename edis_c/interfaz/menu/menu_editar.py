@@ -110,6 +110,10 @@ class MenuEditar(QObject):
             self.trUtf8("Mover arriba"))
         self.accionMoverAbajo = menu_editar.addAction(
             self.trUtf8("Mover abajo"))
+        self.accionConvertirMayusculas = menu_editar.addAction(
+            self.trUtf8("Texto seleccionado: a mayúsculas"))
+        self.accionConvertirMinusculas = menu_editar.addAction(
+            self.trUtf8("Texto seleccionado: a minúsculas"))
         menu_editar.addSeparator()
         self.accionConfiguracion = menu_editar.addAction(
             self.trUtf8("Configuración"))
@@ -139,6 +143,10 @@ class MenuEditar(QObject):
             self.mover_linea_hacia_arriba)
         self.accionMoverAbajo.triggered.connect(
             self.mover_linea_hacia_abajo)
+        self.accionConvertirMayusculas.triggered.connect(
+            self.ide.contenedor_principal.convertir_a_mayusculas)
+        self.accionConvertirMinusculas.triggered.connect(
+            self.ide.contenedor_principal.convertir_a_minusculas)
         #self.accionIrLinea.triggered.connect(
             #self.ir_a_lin)
 

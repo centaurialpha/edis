@@ -158,6 +158,16 @@ class __ContenedorMain(QSplitter):
         if editorW:
             editorW.indentar_menos()
 
+    def convertir_a_mayusculas(self):
+        editor = self.devolver_editor_actual()
+        if editor:
+            editor.convertir_a_mayusculas()
+
+    def convertir_a_minusculas(self):
+        editor = self.devolver_editor_actual()
+        if editor:
+            editor.convertir_a_minusculas()
+
     def actualizar_margen_editor(self):
         for i in range(self.tab_principal.count()):
             widget = self.tab_principal.widget(i)

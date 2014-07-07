@@ -16,6 +16,8 @@
 # You should have received a copy of the GNU General Public License
 # along with EDIS-C.  If not, see <http://www.gnu.org/licenses/>.
 
+import re
+
 from PyQt4.QtGui import QPlainTextEdit
 from PyQt4.QtGui import QTextEdit
 from PyQt4.QtGui import QColor
@@ -64,6 +66,7 @@ class Editor(QPlainTextEdit, tabitem.TabItem):
 
         self.texto_modificado = False
         self.nuevo_archivo = True
+        self.patronEsPalabra = re.compile('\w+')
         self.guardado_actualmente = False
         self.widget_num_lineas = None
         self.highlighter = None
@@ -148,6 +151,14 @@ class Editor(QPlainTextEdit, tabitem.TabItem):
             self.widget_num_lineas.setFixedHeight(self.height())
         if self.minimapa:
             self.minimapa.ajustar_()
+
+    def texto_abajo(self):
+        cursor = self.textCursor()
+        cursor.select(QTextCursor.WordUnderCursor)
+        palabra = cursor.selectedText()
+        r = self.patronEsPalabra.findall(palabra)
+        palabra = r[0] if r else ''
+        return palabra
 
     def paintEvent(self, event):
         """ Evento que dibuja el margen de línea."""
@@ -280,6 +291,30 @@ class Editor(QPlainTextEdit, tabitem.TabItem):
 
         self.setFont(fuente)
         self.actualizar_margen_linea(fuente)
+
+    def convertir_a_mayusculas(self):
+        self.textCursor().beginEditBlock()
+        if self.textCursor().hasSelection():
+            texto = str(self.textCursor().selectedText()).upper()
+        else:
+            texto = str(self.texto_abajo()).upper()
+            self.moveCursor(QTextCursor.StartOfWord)
+            self.moveCursor(QTextCursor.EndOfWord,
+                QTextCursor.KeepAnchor)
+        self.textCursor().insertText(texto)
+        self.textCursor().endEditBlock()
+
+    def convertir_a_minusculas(self):
+        self.textCursor().beginEditBlock()
+        if self.textCursor().hasSelection():
+            texto = str(self.textCursor().selectedText()).lower()
+        else:
+            texto = str(self.texto_abajo()).lower()
+            self.moveCursor(QTextCursor.StartOfWord)
+            self.moveCursor(QTextCursor.EndOfWord,
+                QTextCursor.KeepAnchor)
+            self.textCursor().insertText(texto)
+            self.textCursor().endEditBlock()
 
     def actualizar_margen_linea(self, fuente=None):
         if not fuente:

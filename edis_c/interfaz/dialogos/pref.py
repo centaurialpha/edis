@@ -64,7 +64,7 @@ class ConfiguracionEditor(QWidget):
         grupoCaracteristicas = QGroupBox(self.trUtf8("Características"))
         grupoMiniMapa = QGroupBox(self.trUtf8("Minimapa"))
         grupoTipoDeLetra = QGroupBox(self.trUtf8("Tipo de letra"))
-        grupoAutocompletado = QGroupBox(self.trUtf8("Autocompletado"))
+        grupoEstilo = QGroupBox(self.trUtf8("Estilo de color"))
 
         grillaCaracteristicas = QGridLayout(grupoCaracteristicas)
         grillaCaracteristicas.addWidget(QLabel(
@@ -153,10 +153,17 @@ class ConfiguracionEditor(QWidget):
             "Fuente:")), 0, 0, Qt.AlignLeft)
         grillaFuente.addWidget(self.botonFuente, 0, 1)
 
+        # Estilo
+        lista_de_estilos = QListWidget()
+        lista_de_estilos.addItem(self.tr("Blanco"))
+        lista_de_estilos.addItem(self.tr("Negro"))
+        layout = QVBoxLayout(grupoEstilo)
+        layout.addWidget(lista_de_estilos)
+
         layoutV.addWidget(grupoCaracteristicas)
         layoutV.addWidget(grupoMiniMapa)
         layoutV.addWidget(grupoTipoDeLetra)
-        layoutV.addWidget(grupoAutocompletado)
+        layoutV.addWidget(grupoEstilo)
         layoutV.addItem(QSpacerItem(0, 10, QSizePolicy.Expanding,
         QSizePolicy.Expanding))
 
