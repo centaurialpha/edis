@@ -244,7 +244,7 @@ def mover_hacia_abajo(editorW):
             cursor.beginEditBlock()
             cursor.removeSelectedText()
             cursor.deleteChar()
-            cursor.movePosition(QTextCursor.EndOfLone, QTextCursor.MoveAnchor)
+            cursor.movePosition(QTextCursor.EndOfLine, QTextCursor.MoveAnchor)
             cursor.insertText('\n' + mover_texto)
             cursor.endEditBlock()
             pos_inicio = editorW.document().findBlockByLineNumber(
