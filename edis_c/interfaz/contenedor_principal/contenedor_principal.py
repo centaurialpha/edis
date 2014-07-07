@@ -59,6 +59,8 @@ class __ContenedorMain(QSplitter):
      #       self.tab_actual_cambiado)
         self.connect(self.tab_principal, SIGNAL("saveActualEditor()"),
             self.guardar_archivo)
+        self.connect(self.tab_principal, SIGNAL("currentChanged(int)"),
+            self.tab_actual_cambiado)
 
     def agregar_editor(self, nombre_archivo="", tabIndex=None):
         editorWidget = editor.crear_editor(nombre_archivo=nombre_archivo)
@@ -189,10 +191,20 @@ class __ContenedorMain(QSplitter):
     def actual_widget(self):
         return self.tab_actual.currentWidget()
 
-    #def tab_actual_cambiado(self, indice):
-        #if self.tab_actual.widget(indice):
-            #self.emit(SIGNAL("currentTabChanged(QString)"),
-                #self.tab_actual.widget(indice))
+    def tab_actual_cambiado(self, indice):
+        if self.tab_actual.widget(indice):
+            self.emit(SIGNAL("currentTabChanged(QString)"),
+                self.tab_actual.widget(indice)._id)
+
+    def cambiar_nombre_de_tab(self, aidi, nuevoId):
+        indice_tab = self.tab_principal.esta_abierto(aidi)
+        if indice_tab is not False:
+            w = self.tab_principal.w(indice_tab)
+            TAB = self.tab_principal
+
+        nombre_de_tab = manejador_de_archivo._nombreBase(nuevoId)
+        TAB.cambiar_nombre_de_tab(indice_tab, nombre_de_tab)
+        w.ID = nuevoId
 
     def abrir_archivo(self, nombre='', tabIndex=None):
         extension = recursos.EXTENSIONES  # Filtro
@@ -295,3 +307,6 @@ class __ContenedorMain(QSplitter):
 
             if isinstance(editorW, editor.Editor):
                 self.guardar_archivo(editorW)
+
+    def esta_abierto(self, nombre):
+        return self.tab_principal.esta_abierto(nombre) is not False
