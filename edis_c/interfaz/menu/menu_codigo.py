@@ -90,6 +90,9 @@ class MenuCodigoFuente(QObject):
 
     def metodo_compilar(self):
         editorW = self.ide.contenedor_principal.devolver_editor_actual()
+        if not editorW:
+            return None
+
         path_name = self.ide.contenedor_principal.guardar_archivo(editorW)
         nombre_salida = os.path.basename(path_name).split('.')[0]
         #os.popen('gcc -Wall -o %s %s' % (nombre_salida, path_name))

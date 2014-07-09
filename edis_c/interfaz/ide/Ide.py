@@ -110,8 +110,8 @@ class __IDE(QMainWindow):
             self.toolbar_.setIconSize(QSize(25, 25))
             self.toolbar.setIconSize(QSize(25, 25))
         else:
-            self.toolbar_.setIconSize(QSize(25, 25))
-            self.toolbar.setIconSize(QSize(25, 25))
+            self.toolbar_.setIconSize(QSize(22, 22))
+            self.toolbar.setIconSize(QSize(22, 22))
         self.toolbar.setToolButtonStyle(Qt.ToolButtonIconOnly)
         self.addToolBar(Qt.RightToolBarArea, self.toolbar)
         self.addToolBar(Qt.RightToolBarArea, self.toolbar_)
@@ -209,9 +209,14 @@ class __IDE(QMainWindow):
         """ Cambia el título de la ventana cuando la pestaña cambia de nombre,
         esta emite la señal de cambio. """
 
+        if titulo == edis_c.__nombre__:
+            titulo = ""
+            return
+
         nombre_con_extension = os.path.basename(str(titulo)).split('/')[0]
         self.setWindowTitle(
-            nombre_con_extension + ' (' + titulo + ')' + ' - EDIS-C')
+            #nombre_con_extension + ' (' + titulo + ')' + ' - EDIS-C')
+            nombre_con_extension + ' (' + titulo + ') - ' + edis_c.__nombre__)
 
     def _linea_columna(self):
         editor = self.contenedor_principal.devolver_editor_actual()

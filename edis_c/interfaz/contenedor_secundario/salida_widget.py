@@ -110,16 +110,29 @@ class EjecutarWidget(QWidget):
         pass
 
     def correr_programa(self):
-        self.proceso_actual = self.proceso_ejecucion
+        """ Se encarga de correr el programa ejecutable.
+        Arreglar: Para que corra el programa con QProcess y además que borre
+        el código de salida anterior con (rm $0).
+        """
+        ejecutar = "./"
+        dash = """
+        #!/bin/sh
+        "%s%s"
+        echo \n\n\n
+        echo '-----------------------'
+        echo 'Programa terminado! Salida: $?'
+        echo 'Presione <Enter> para salir'
+        read variable_al_pp
+        """ % (ejecutar, self.ejecutable)
+        bash = """
+        #!/bin/sh
+        gnome-terminal -x bash -c "%s"
+        """ % dash
+        #self.proceso_actual = self.proceso_ejecucion
 
-        #if sys.platform is not configuraciones.TUX:
-            #comando = '%s'
-            #print "Ejecutando..."
-            #self.ejecutable = 'C:\\Documents'
-            #print self.ejecutable
-            #self.proceso_ejecucion.start(self.ejecutable)
-        comando = 'xterm -e bash -c ./%s'
-        self.proceso_ejecucion.start(comando % self.ejecutable)
+        #comando = 'xterm -e bash -c ./%s'
+        #self.proceso_ejecucion.start(comando % self.ejecutable)
+        os.popen4(bash)
 
 
 class SalidaWidget(QPlainTextEdit):

@@ -3,11 +3,23 @@ QTabWidget::tab-bar:top
      alignment: left;
 }
 
+QMenu::item 
+{
+    padding: 2px 25px 2px 20px;
+    border: 1px solid transparent;
+}
+
+QMenu::item:selected 
+{
+    border-color: darkcyan;
+    background: rgba(25, 180, 160, 90);
+}
+
 QToolBar::separator 
 {
     background: #b1b1b1;
-    width: 2px;
-    height: 2px;
+    width: 3px;
+    height: 3px;
 }
 
 QScrollBar:vertical

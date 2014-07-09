@@ -25,6 +25,7 @@ from PyQt4.QtGui import QPixmap
 
 from PyQt4.QtCore import Qt
 
+import edis_c
 from edis_c import recursos
 from edis_c.interfaz import tabitem
 
@@ -33,7 +34,7 @@ class PaginaDeInicio(QWidget, tabitem.TabItem):
 
     def __init__(self, parent=None):
         super(PaginaDeInicio, self).__init__(parent)
-        self._id = "Pagina de Inicio"
+        self._id = edis_c.__nombre__
         layoutV = QVBoxLayout(self)
         layoutV.setContentsMargins(0, 0, 0, 0)
         layoutV.setSpacing(0)
