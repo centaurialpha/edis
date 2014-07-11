@@ -45,7 +45,7 @@ class MiniMapa(QPlainTextEdit):
         self.setMouseTracking(True)
         self.viewport().setCursor(Qt.PointingHandCursor)
         self.setTextInteractionFlags(Qt.NoTextInteraction)
-        self.setStyleSheet("background: transparent;")
+        self.setStyleSheet("background: #232323;")
 
         self.parent = parent
         self.lineas = 0
@@ -56,7 +56,7 @@ class MiniMapa(QPlainTextEdit):
 
         self.efecto = QGraphicsOpacityEffect()
         self.setGraphicsEffect(self.efecto)
-        self.efecto.setOpacity(0.1)
+        self.efecto.setOpacity(0.07)
         self.animacion = QPropertyAnimation(self.efecto, "opacity")
 
         self.slider = Slider(self)

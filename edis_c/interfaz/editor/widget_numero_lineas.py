@@ -122,5 +122,9 @@ class NumeroDeLineaBar(QWidget):
             bloque = bloque.next()
 
         self.linea_superior = contar_linea
+
+        area = self.width() - self.foldArea
+        pintar.fillRect(area, 0, self.foldArea, self.height(),
+            QColor(157, 157, 157))
         pintar.end()
         super(NumeroDeLineaBar, self).paintEvent(event)

@@ -30,7 +30,7 @@ from edis_c import recursos
 #                        MÁRGEN                                               #
 ###############################################################################
 MARGEN = 80
-MOSTRAR_MARGEN = True
+MOSTRAR_MARGEN = False
 
 ###############################################################################
 #                   SISTEMA OPERATIVO                                         #
@@ -79,7 +79,7 @@ MOSTRAR_TABS = True
 ###############################################################################
 MINIMAPA = True
 OPAC_MIN = 0.1
-OPAC_MAX = 0.8
+OPAC_MAX = 0.6
 
 SIDEBAR = True
 
@@ -90,7 +90,7 @@ qsettings = QSettings(recursos.CONFIGURACIONES_PATH, QSettings.IniFormat)
 
 MARGEN = qsettings.value('configuraciones/editor/margenLinea', 80, type=int)
 MOSTRAR_MARGEN = qsettings.value(
-    'configuraciones/editor/mostrarMargen', True, type=bool)
+    'configuraciones/editor/mostrarMargen', False, type=bool)
 fuente_f = qsettings.value('configuraciones/editor/fuente', "", type='QString')
 if fuente_f:
     FUENTE = fuente_f
@@ -108,4 +108,4 @@ MINIMAPA = qsettings.value('configuraciones/editor/mini', True, type=bool)
 OPAC_MIN = float(qsettings.value('configuraciones/editor/opac_min',
     0.1, type=float))
 OPAC_MAX = float(qsettings.value('configuraciones/editor/opac_max',
-    0.8, type=float))
+    0.6, type=float))

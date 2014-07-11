@@ -51,7 +51,7 @@ class EjecutarWidget(QWidget):
         self.proceso_actual = None
         self.ejecutable = None
         self.proceso = QProcess(self)
-        self.proceso_ejecucion = QProcess(self)
+        #self.proceso_ejecucion = QProcess(self)
 
         # Conexión
         self.connect(self.proceso, SIGNAL("readyReadStandardOutput()"),
@@ -73,7 +73,8 @@ class EjecutarWidget(QWidget):
             path = "\"%s\"" % path
 
         comando = 'gcc -Wall -o %s %s' % (self.ejecutable, path)
-        self.proceso.start(comando)
+        self.proceso_actual = self.proceso
+        self.proceso_actual.start(comando)
 
         archivo = path.split('/')[-1]
         self.output.setPlainText(
@@ -119,7 +120,7 @@ class EjecutarWidget(QWidget):
         #!/bin/sh
         "%s%s"
         echo \n\n\n
-        echo '-----------------------'
+        echo '------------------------------'
         echo 'Programa terminado! Salida: $?'
         echo 'Presione <Enter> para salir'
         read variable_al_pp

@@ -36,15 +36,17 @@ SIDE_EJEC = os.path.realpath(sys.argv[0])
 
 PATH = os.path.abspath(os.path.dirname(__file__)).decode('utf-8')
 
-HOME_SIDE = os.path.join(PATH, ".side_c")
+HOME_SIDE = os.path.join(PATH, ".edis_c")
 
-CONFIGURACIONES_PATH = os.path.join(HOME_SIDE, 'side_settings.ini')
+CONFIGURACIONES_PATH = os.path.join(HOME_SIDE, 'edis_settings.ini')
 
 TEMA_BLACK_SIDE = os.path.join(PATH, "temas", "tema_side.qss")
 TEMA_POR_DEFECTO = os.path.join(PATH, "temas", "default.qss")
 TEMA_SIDE = os.path.join(PATH, "temas", "tema_por_defecto.qss")
 
 LICENCIA = os.path.join(PATH, "../", "COPYING")
+
+PAGINA_INICIO = os.path.join(PATH, "pagina_inicio")
 
 # Iconos
 ICONOS = {
@@ -87,7 +89,7 @@ ICONOS = {
 # Estilos de color - Editor
 COLOR_EDITOR = {
     "texto": "#afb4af",
-    "fondo": "#000000",
+    "fondo": "#ffffff",
     "salida-exitosa": "#86c2ff",
     "salida-error": "red",
     "fondo-input": "#1e1e1e",

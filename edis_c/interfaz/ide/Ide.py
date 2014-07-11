@@ -170,6 +170,10 @@ class __IDE(QMainWindow):
 
         self.connect(self.contenedor_principal, SIGNAL(
             "currentTabChanged(QString)"), self.cambiar_titulo_de_ventana)
+        self.connect(self.contenedor_principal, SIGNAL("nuevoArchivo()"),
+            self.contenedor_principal.agregar_editor)
+        self.connect(self.contenedor_principal, SIGNAL("abrirArchivo()"),
+            self.contenedor_principal.abrir_archivo)
         #self.widget_simbolos = simbolos_widget.SimbolosWidget()
         widget_central.agregar_contenedor_central(self.contenedor_principal)
         #widget_central.agregar_contenedor_lateral(self.widget_simbolos)
