@@ -352,6 +352,7 @@ class Editor(QPlainTextEdit, tabitem.TabItem):
             cursor = self.textCursor()
             cursor.setPosition(cursor.position())
             self.setTextCursor(cursor)
+            #self.moveCursor(QTextCursor.Left)
 
     def _completar_braces(self, evento):
         dic_braces = {'(': ')', '{': '}', '[': ']'}

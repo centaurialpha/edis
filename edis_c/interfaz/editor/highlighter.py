@@ -52,7 +52,7 @@ class Highlighter(QSyntaxHighlighter):
         palabra_clave = QTextCharFormat()
         comentario_una_linea = QTextCharFormat()
         include = QTextCharFormat()
-        _include = QTextCharFormat()
+#        _include = QTextCharFormat()
         numeros = QTextCharFormat()
         self.comentario_multiple_lineas = QTextCharFormat()
         caracter = QTextCharFormat()
@@ -105,8 +105,8 @@ class Highlighter(QSyntaxHighlighter):
         self.highlightingRules.append((QRegExp("#[^\n]*"),
             include))
 
-        _include.setForeground(recursos.HIGHLIGHTER['include_'])
-        self.highlightingRules.append((QRegExp("\<.*\>"), _include))
+ #       _include.setForeground(recursos.HIGHLIGHTER['include_'])
+  #      self.highlightingRules.append((QRegExp("\<.*\>"), _include))
 
         # Formateo
         formateo.setForeground(Qt.darkYellow)

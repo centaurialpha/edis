@@ -108,11 +108,11 @@ HIGHLIGHTER = {
     "include": QColor(50, 130, 200),
     "include_": QColor(155, 207, 217),
     #"palabra": QColor(138, 226, 52),
-    "palabra": QColor(184, 222, 50),
+    "palabra": QColor(150, 190, 10),
     "funcion": QColor(80, 164, 183),
-    "comentario": QColor(105, 105, 105),
-    "cadena": QColor(179, 105, 191),
-    "braces": QColor(100, 100, 100)
+    "comentario": QColor(225, 10, 30),
+    "cadena": QColor(100, 10, 225),
+    "braces": QColor(30, 30, 30)
     }
 
 # Atajos de teclas
