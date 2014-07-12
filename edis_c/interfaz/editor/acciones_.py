@@ -118,8 +118,11 @@ def imprimir_archivo(nombre, f):
 
 def nuevo_main_c(ew):
     """ Inserta un texto con la función main. """
+
+    nombre_usuario_equipo = obtener_user_hostname()
     ew.textCursor().insertText(
 """/*
+ * <%s@%s>
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
@@ -145,7 +148,7 @@ int main(int argc, char **argv)
 {
     return 0;
 }
-""")
+""" % (nombre_usuario_equipo[0], nombre_usuario_equipo[1]))
 
 
 def insertar_include(ew, libreria):
@@ -223,6 +226,8 @@ def mover_hacia_arriba(editorW):
 
 
 def mover_hacia_abajo(editorW):
+    """ Mueve hacia abajo una o más lineas seleccionadas. """
+
     cursor = editorW.textCursor()
     bloque_actual = cursor.block()
 
@@ -271,3 +276,12 @@ def mover_hacia_abajo(editorW):
             cursor.insertText(tmpLinea)
             cursor.endEditBlock()
             editorW.moveCursor(QTextCursor.Down, QTextCursor.MoveAnchor)
+
+
+def obtener_user_hostname():
+    import getpass
+    import socket
+
+    usuario = getpass.getuser()
+    equipo = socket.gethostname()
+    return [usuario, equipo]

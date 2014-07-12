@@ -19,8 +19,8 @@ import os
 
 from PyQt4.QtGui import QIcon
 from PyQt4.QtGui import QShortcut
-from PyQt4.QtCore import QObject
 
+from PyQt4.QtCore import QObject
 #from PyQt4.QtCore import Qt
 from PyQt4.QtCore import SIGNAL
 
@@ -33,6 +33,7 @@ class MenuCodigoFuente(QObject):
         super(MenuCodigoFuente, self).__init__()
 
         self.ide = ide
+        self.comp = False
 
         # Cargar shortcut
         self.atajoCompilar = QShortcut(recursos.ATAJOS['compilar'], self.ide)
@@ -84,6 +85,8 @@ class MenuCodigoFuente(QObject):
             self.metodo_compilar)
         self.connect(self.accionEjecutar, SIGNAL("triggered()"),
             self.metodo_ejecutar)
+        self.connect(self.accionCompilarEjecutar, SIGNAL("triggered()"),
+            self.metodo_compilar_ejecutar)
 
     def cargar_status_tip(self, accion, texto):
         self.ide.cargar_status_tips(accion, texto)
@@ -94,15 +97,30 @@ class MenuCodigoFuente(QObject):
             return None
 
         path_name = self.ide.contenedor_principal.guardar_archivo(editorW)
-        nombre_salida = os.path.basename(path_name).split('.')[0]
-        #os.popen('gcc -Wall -o %s %s' % (nombre_salida, path_name))
-        #print "Compilado"
+        if not path_name:
+            return None
 
+        self.comp = True
+        nombre_salida = os.path.basename(path_name).split('.')[0]
         self.ide.contenedor_secundario.compilar_archivo(
             nombre_salida, path_name)
 
     def metodo_ejecutar(self):
-        self.ide.contenedor_secundario.ejecutar_archivo()
+        if self.comp:
+            self.ide.contenedor_secundario.ejecutar_archivo(self.comp)
+        else:
+            self.ide.contenedor_secundario.ejecutar_archivo(self.comp)
 
     def metodo_compilar_ejecutar(self):
-        pass
+        editorW = self.ide.contenedor_principal.devolver_editor_actual()
+        if not editorW:
+            return None
+
+        path_name = self.ide.contenedor_principal.guardar_archivo(editorW)
+        if not path_name:
+            return None
+        self.comp = True
+        salida = os.path.basename(path_name).split('.')[0]
+        self.ide.contenedor_secundario.compilar_archivo(salida, path_name)
+        self.ide.contenedor_secundario.ejecutar_archivo(self.comp)
+            #self.ide.contenedor_secundario.ejecutar_archivo(self.comp)

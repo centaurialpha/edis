@@ -18,6 +18,10 @@
 
 import re
 
+from tokenize import generate_tokens, TokenError
+import token as tkn
+from StringIO import StringIO
+
 from PyQt4.QtGui import QPlainTextEdit
 from PyQt4.QtGui import QTextEdit
 from PyQt4.QtGui import QColor
@@ -71,6 +75,8 @@ class Editor(QPlainTextEdit, tabitem.TabItem):
         self.widget_num_lineas = None
         self.highlighter = None
         self.minimapa = None
+        self.braces = None
+        self.extraSelections = []
         # Carga el tema de editor
         self.estilo_editor()
 
@@ -103,6 +109,8 @@ class Editor(QPlainTextEdit, tabitem.TabItem):
         self.connect(self, SIGNAL("undoAvailable(bool)"), self._guardado)
         self.connect(self, SIGNAL("cursorPositionChanged()"),
             self.resaltar_linea_actual)
+        #self.connect(self, SIGNAL("blockCountChanged(int)"),
+            #self.actualizar_metadata)
         if self.widget_num_lineas is not None:
             self.connect(self, SIGNAL("updateRequest(const QRect&, int)"),
                 self.widget_num_lineas.actualizar_area)
@@ -160,6 +168,9 @@ class Editor(QPlainTextEdit, tabitem.TabItem):
         palabra = r[0] if r else ''
         return palabra
 
+    #def actualizar_metadata(self, v):
+        #self.resaltar_linea_actual()
+
     def paintEvent(self, event):
         """ Evento que dibuja el margen de línea."""
 
@@ -187,6 +198,7 @@ class Editor(QPlainTextEdit, tabitem.TabItem):
         self.emit(SIGNAL("cursorPositionChange(int, int)"),
             self.textCursor().blockNumber() + 1,
             self.textCursor().columnNumber())
+        self.extraSelections = []
 
         seleccion = QTextEdit.ExtraSelection()
         color = QColor(recursos.COLOR_EDITOR['linea-actual'])
@@ -196,8 +208,115 @@ class Editor(QPlainTextEdit, tabitem.TabItem):
             QTextFormat.FullWidthSelection, QVariant(True))
         seleccion.cursor = self.textCursor()
         seleccion.cursor.clearSelection()
+        self.extraSelections.append(seleccion)
 
-        self.setExtraSelections([seleccion])
+        self.setExtraSelections(self.extraSelections)
+
+        if self.braces is not None:
+            self.braces = None
+        cursor = self.textCursor()
+        if cursor.position() == 0:
+            self.setExtraSelections(self.extraSelections)
+            return
+        cursor.movePosition(QTextCursor.PreviousCharacter,
+            QTextCursor.KeepAnchor)
+
+        texto = unicode(cursor.selectedText())
+        p1 = cursor.position()
+        if texto in (")", "]", "}"):
+            p2 = self.m_braces(p1, texto, adelante=False)
+        elif texto in ("(", "[", "{"):
+            p2 = self.m_braces(p1, texto, adelante=True)
+        else:
+            self.setExtraSelections(self.extraSelections)
+            return
+
+        if p2 is not None:
+            self.braces = (p1, p2)
+            seleccion = QTextEdit.ExtraSelection()
+            seleccion.format.setForeground(QColor(60, 100, 200))
+            seleccion.cursor = cursor
+            self.extraSelections.append(seleccion)
+            seleccion = QTextEdit.ExtraSelection()
+            seleccion.format.setForeground(QColor(60, 100, 200))
+            seleccion.format.setBackground(QColor(255, 0, 0))
+            seleccion.cursor = self.textCursor()
+            seleccion.cursor.setPosition(p2)
+            seleccion.cursor.movePosition(QTextCursor.NextCharacter,
+                QTextCursor.KeepAnchor)
+            self.extraSelections.append(seleccion)
+        else:
+            self.braces = (p1,)
+            seleccion = QTextEdit.ExtraSelection()
+            seleccion.format.setBackground(QColor(255, 0, 0))
+            seleccion.format.setForeground(QColor(60, 100, 200))
+            seleccion.cursor = cursor
+            self.extraSelections.append(seleccion)
+        self.setExtraSelections(self.extraSelections)
+
+    def devolver_seleccion(self, inicio, fin):
+        cursor = self.textCursor()
+        cursor.setPosition(inicio)
+        cursor2 = self.textCursor()
+        if fin == QTextCursor.End:
+            cursor2.movePosition(fin)
+            cursor.setPosition(cursor2.position(), QTextCursor.KeepAnchor)
+        else:
+            cursor.setPosition(fin, QTextCursor.KeepAnchor)
+        return unicode(cursor.selection().toPlainText())
+
+    def __posicion_absoluta_en_texto(self, texto, pos):
+        linea, pos_relativa = pos
+        div_linea = linea - 1
+        longitud = 0
+        for cada_linea in texto.splitlines()[:div_linea]:
+            longitud += len(cada_linea)
+        return longitud + div_linea + pos_relativa
+
+    def tokenize_text(self, texto):
+        sintaxis_invalida = False
+        token_buffer = []
+        try:
+        #texto = str(texto)
+            for tkn_type, tkn_rep, tkn_begin, tkn_end, _ in \
+                        generate_tokens(StringIO(texto).readline):
+                token_buffer.append((tkn_type, tkn_rep, tkn_begin, tkn_end))
+        except (TokenError, SyntaxError):
+            sintaxis_invalida = True
+        return (sintaxis_invalida, token_buffer)
+
+    def m_braces(self, pos, brace, adelante):
+        # de NINJA-IDE
+        brace_d = {')': '(', ']': '[', '}': '{', '(': ')', '[': ']',
+        '{': '}'}
+        braceM = brace_d[brace]
+        if adelante:
+            texto = self.devolver_seleccion(pos, QTextCursor.End)
+        else:
+            texto = self.devolver_seleccion(QTextCursor.Start, pos)
+
+        braces = []
+        brace_buffer = []
+        sintaxis_invalida, tokens = self.tokenize_text(texto)
+        for tkn_tipo, tkn_rep, tkn_inicio, tkn_fin in tokens:
+            if(tkn_tipo == tkn.OP) and (tkn_rep in brace_d):
+                tkn_pos = adelante and tkn_inicio or tkn_fin
+                brace_buffer.append((tkn_rep, tkn_pos))
+        if not adelante:
+            brace_buffer.reverse()
+        if adelante and (not sintaxis_invalida):
+            brace_buffer = brace_buffer[1:]
+
+        for tkn_rep, tkn_posicion in brace_buffer:
+            if (tkn_rep == braceM) and not braces:
+                hl_position = \
+                self.__posicion_absoluta_en_texto(texto, tkn_posicion)
+                return adelante and hl_position + pos or hl_position
+            elif braces and \
+                (brace_d.get(tkn_rep, '') == braces[-1]):
+                braces.pop(-1)
+            else:
+                braces.append(tkn_rep)
 
     def keyPressEvent(self, evento):
         #if evento.key() == Qt.Key_Tab:
@@ -215,7 +334,7 @@ class Editor(QPlainTextEdit, tabitem.TabItem):
         self.emit(SIGNAL("keyPressEvent(QEvent)"), evento)
 
     def _indentar(self, evento):
-        """ Inserta 4 espacios si se preciosa la tecla Tab """
+        """ Inserta 4 espacios si se presiona la tecla Tab """
 
         if configuraciones.CHECK_INDENTACION:
             self.textCursor().insertText(' ' * configuraciones.INDENTACION)

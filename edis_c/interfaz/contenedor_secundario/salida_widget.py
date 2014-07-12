@@ -51,7 +51,7 @@ class EjecutarWidget(QWidget):
         self.proceso_actual = None
         self.ejecutable = None
         self.proceso = QProcess(self)
-        #self.proceso_ejecucion = QProcess(self)
+        self.proceso_ejecucion = QProcess(self)
 
         # Conexión
         self.connect(self.proceso, SIGNAL("readyReadStandardOutput()"),
@@ -88,7 +88,6 @@ class EjecutarWidget(QWidget):
             0 = Cuando se compila bien, aún con advertencias
             1 = Error en la compilación
         """
-
         formato = QTextCharFormat()
         formato.setAnchor(True)
 
@@ -118,7 +117,7 @@ class EjecutarWidget(QWidget):
         ejecutar = "./"
         dash = """
         #!/bin/sh
-        "%s%s"
+        %s%s
         echo \n\n\n
         echo '------------------------------'
         echo 'Programa terminado! Salida: $?'
@@ -132,7 +131,7 @@ class EjecutarWidget(QWidget):
         #self.proceso_actual = self.proceso_ejecucion
 
         #comando = 'xterm -e bash -c ./%s'
-        #self.proceso_ejecucion.start(comando % self.ejecutable)
+        #self.proceso_actual.start(bash)
         os.popen4(bash)
 
 

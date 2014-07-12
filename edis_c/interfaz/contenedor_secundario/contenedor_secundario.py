@@ -21,7 +21,7 @@ from PyQt4.QtGui import QStackedWidget
 from PyQt4.QtGui import QVBoxLayout
 from PyQt4.QtGui import QHBoxLayout
 from PyQt4.QtGui import QTextEdit
-#from PyQt4.QtGui import QSpacerItem
+from PyQt4.QtGui import QMessageBox
 from PyQt4.QtGui import QIcon
 from PyQt4.QtGui import QStyle
 #from PyQt4.QtGui import QSizePolicy
@@ -93,8 +93,12 @@ class _ContenedorBottom(QWidget):
         self.path = path
         self.salida_.correr_compilacion(self.s, self.path)
 
-    def ejecutar_archivo(self):
-        self.salida_.correr_programa()
+    def ejecutar_archivo(self, comp):
+        if comp:
+            self.salida_.correr_programa()
+        else:
+            QMessageBox.information(self, self.trUtf8("Información"),
+                self.trUtf8("No se ha compilado el fuente!"))
 
 
 class Notas(QTextEdit):

@@ -60,7 +60,7 @@ class Highlighter(QSyntaxHighlighter):
         caracter_especial = QTextCharFormat()
         cadena = QTextCharFormat()
         formateo = QTextCharFormat()
-        funciones = QTextCharFormat()
+    #    funciones = QTextCharFormat()
 
         # Palabra reservada
         color = QColor(recursos.HIGHLIGHTER['palabra'])
@@ -73,10 +73,10 @@ class Highlighter(QSyntaxHighlighter):
         for indice in palabras_claves]
 
         # Funciones
-        funciones.setFontItalic(True)
-        funciones.setForeground(recursos.HIGHLIGHTER['funcion'])
-        self.highlightingRules.append((QRegExp(
-            "\\b[A-Za-z0-9_]+(?=\\()"), funciones))
+#        funciones.setFontItalic(True)
+ #       funciones.setForeground(recursos.HIGHLIGHTER['funcion'])
+  #      self.highlightingRules.append((QRegExp(
+   #         "\\b[A-Za-z0-9_]+(?=\\()"), funciones))
 
         # Corchete - paréntesis - llave
         braces.setFontWeight(QFont.Bold)

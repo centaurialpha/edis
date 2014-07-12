@@ -88,7 +88,7 @@ ICONOS = {
 
 # Estilos de color - Editor
 COLOR_EDITOR = {
-    "texto": "#afb4af",
+    "texto": "#666",
     "fondo": "#ffffff",
     "salida-exitosa": "#86c2ff",
     "salida-error": "red",
@@ -112,7 +112,7 @@ HIGHLIGHTER = {
     "funcion": QColor(80, 164, 183),
     "comentario": QColor(105, 105, 105),
     "cadena": QColor(179, 105, 191),
-    "braces": QColor(255, 255, 255)
+    "braces": QColor(100, 100, 100)
     }
 
 # Atajos de teclas
