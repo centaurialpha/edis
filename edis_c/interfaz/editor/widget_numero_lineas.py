@@ -16,14 +16,21 @@
 # You should have received a copy of the GNU General Public License
 # along with EDIS-C.  If not, see <http://www.gnu.org/licenses/>.
 
+import re
 import math
 
 from PyQt4.QtGui import QWidget
 from PyQt4.QtGui import QPainter
 from PyQt4.QtGui import QFontMetrics
 from PyQt4.QtGui import QColor
+from PyQt4.QtGui import QPolygonF
+from PyQt4.QtGui import QPixmap
+
+from PyQt4.QtCore import QPointF
+from PyQt4.QtCore import Qt
 
 from edis_c import recursos
+from edis_c.interfaz.editor import acciones_
 
 """
 Widget que muestra los números de líneas.
@@ -38,9 +45,12 @@ class NumeroDeLineaBar(QWidget):
         QWidget.__init__(self, editor)
         self.editor = editor
         self.linea_superior = 0
-        self.foldArea = 10
+        self.foldArea = 20
+        self.rightArrowIcon = QPixmap()
+        self.downArrowIcon = QPixmap()
         self.negrita = False
-        self._foldedBlocks = []
+        self.bloques_plegados = []
+        self.pat = re.compile('(\s)*{|(\s)*#begin-fold:')
 
     def actualizar_area(self):
         linea_max = math.ceil(math.log10(self.editor.blockCount()))
@@ -52,17 +62,98 @@ class NumeroDeLineaBar(QWidget):
             self.editor.setViewportMargins(ancho, 0, 0, 0)
         self.actualizar()
 
-    def code_folding_event(self, numerolinea):
-        if self.is_folded(numerolinea):
-            self.fold(numerolinea)
+    def evento_codigo_plegado(self, numerolinea):
+        if self.se_pliega(numerolinea):
+            self.plegar(numerolinea)
 
         else:
-            self.unfold(numerolinea)
+            self.desplegar(numerolinea)
 
         self.editor.update()
         self.actualizar()
 
-    def is_folded(self, linea):
+    def plegar(self, lineNumber):
+        inicio_bloque = self.editor.document().findBlockByNumber(lineNumber - 1)
+        posicion_final = self._buscar_cierre_plegado(inicio_bloque)
+        #print posicion_final
+        final_bloque = self.editor.document().findBlockByNumber(posicion_final)
+
+        bloque = inicio_bloque.next()
+        while bloque.isValid() and bloque != final_bloque:
+            bloque.setVisible(False)
+            bloque.setLineCount(0)
+            bloque = bloque.next()
+
+        self.bloques_plegados.append(inicio_bloque.blockNumber())
+        self.editor.document().markContentsDirty(inicio_bloque.position(),
+            posicion_final)
+
+    def desplegar(self, lineNumber):
+        inicio_bloque = self.editor.document().findBlockByNumber(lineNumber - 1)
+        posicion_final = self._buscar_cierre_plegado(inicio_bloque)
+        final_bloque = self.editor.document().findBlockByNumber(posicion_final)
+
+        bloque = inicio_bloque.next()
+        while bloque.isValid() and bloque != final_bloque:
+            bloque.setVisible(True)
+            bloque.setLineCount(bloque.layout().lineCount())
+            posicion_final = bloque.position() + bloque.length()
+            if bloque.blockNumber() in self.bloques_plegados:
+                cierre = self._buscar_cierre_plegado(bloque)
+                bloque = self.editor.document().findBlockByNumber(cierre)
+            else:
+                bloque = bloque.next()
+
+        self.bloques_plegados.remove(inicio_bloque.blockNumber())
+        self.editor.document().markContentsDirty(inicio_bloque.position(),
+            posicion_final)
+
+    def _buscar_cierre_plegado(self, bloque):
+        texto = unicode(bloque.next())
+        pat = re.compile('(\s)*#begin-fold:')
+        patBrace = re.compile('(.)*{$')
+        if pat.match(texto):
+            return self._buscar_etiqueta_cierre_plegado(bloque)
+        elif patBrace.match(texto):
+            return self._buscar_cierre_llave_plegado(bloque)
+
+        espacios = acciones_.devolver_espacios(texto)
+        pat = re.compile('^\s*$|^\s*#')
+        bloque = bloque.next()
+        while bloque.isValid():
+            texto2 = unicode(bloque.text())
+            if not pat.match(texto2):
+                final_espacio = acciones_.devolver_espacios(texto2)
+                if len(final_espacio) <= len(espacios):
+                    if pat.match(unicode(bloque.previous().text())):
+                        return bloque.previous().blockNumber()
+                    else:
+                        return bloque.blockNumber()
+            bloque = bloque.next()
+        return bloque.previous().blockNumber()
+
+    def _buscar_etiqueta_cierre_plegado(self, bloque):
+        texto = unicode(bloque.next())
+        label = texto.split(':')[1]
+        bloque = bloque.next()
+        pat = re.compile('\s*#end-fold:' + label)
+        while bloque.isValid():
+            if pat.match(unicode(bloque.next())):
+                return bloque.blockNumber() + 1
+            bloque = bloque.next()
+        return bloque.blockNumber()
+
+    def _buscar_cierre_llave_plegado(self, bloque):
+        bloque = bloque.next()
+        while bloque.isValid():
+            llave_abierta = unicode(bloque.text()).count('{')
+            llave_cerrada = unicode(bloque.text()).count('}') - llave_abierta
+            if llave_cerrada > 0:
+                return bloque.blockNumber() + 1
+            bloque = bloque.next()
+        return bloque.blockNumber()
+
+    def se_pliega(self, linea):
         bloque = self.editor.document().findBlockByNumber(linea)
         if not bloque.isValid():
             return False
@@ -76,7 +167,7 @@ class NumeroDeLineaBar(QWidget):
         font_metrics = QFontMetrics(self.editor.document().defaultFont())
         bloque_actual = self.editor.document().findBlock(
             self.editor.textCursor().position())
-
+        pattern = self.pat
         pintar = QPainter(self)
         fondo = recursos.COLOR_EDITOR['widget-num-linea']
         pintar.fillRect(self.rect(), QColor(fondo))
@@ -124,7 +215,77 @@ class NumeroDeLineaBar(QWidget):
         self.linea_superior = contar_linea
 
         area = self.width() - self.foldArea
-        pintar.fillRect(area, 0, self.foldArea, self.height(),
-            QColor(157, 157, 157))
+        pintar.fillRect(area, 0, 0, self.height(),
+            Qt.transparent)
+        if self.foldArea != self.rightArrowIcon.width():
+            poligono = QPolygonF()
+
+            self.rightArrowIcon = QPixmap(self.foldArea, self.foldArea)
+            self.rightArrowIcon.fill(Qt.transparent)
+            self.downArrowIcon = QPixmap(self.foldArea, self.foldArea)
+            self.downArrowIcon.fill(Qt.transparent)
+
+            poligono.append(QPointF(self.foldArea * 0.5, self.foldArea * 0.25))
+            poligono.append(QPointF(self.foldArea * 0.5, self.foldArea * 0.75))
+            poligono.append(QPointF(self.foldArea * 0.8, self.foldArea * 0.5))
+            iconPainter = QPainter(self.rightArrowIcon)
+            iconPainter.setRenderHint(QPainter.Antialiasing)
+            iconPainter.setPen(Qt.NoPen)
+            iconPainter.setBrush(QColor(Qt.darkRed))
+            iconPainter.drawPolygon(poligono)
+
+            poligono.clear()
+            poligono.append(QPointF(self.foldArea * 0.25, self.foldArea * 0.5))
+            poligono.append(QPointF(self.foldArea * 0.75, self.foldArea * 0.5))
+            poligono.append(QPointF(self.foldArea * 0.5, self.foldArea * 0.8))
+            iconPainter = QPainter(self.downArrowIcon)
+            iconPainter.setRenderHint(QPainter.Antialiasing)
+            iconPainter.setPen(Qt.NoPen)
+            iconPainter.setBrush(Qt.darkBlue)
+            iconPainter.drawPolygon(poligono)
+
+        bloque = self.editor.firstVisibleBlock()
+        while bloque.isValid():
+            posicion = self.editor.blockBoundingGeometry(
+                bloque).topLeft() + viewport_offset
+
+            if posicion.y() > fin_pagina:
+                break
+
+            if pattern.match(unicode(bloque.text())) and bloque.isValid():
+                if bloque.blockNumber() in self.bloques_plegados:
+                    pintar.drawPixmap(area, round(posicion.y()),
+                        self.rightArrowIcon)
+                else:
+                    pintar.drawPixmap(area, round(posicion.y()),
+                        self.downArrowIcon)
+            bloque = bloque.next()
         pintar.end()
-        super(NumeroDeLineaBar, self).paintEvent(event)
+        QWidget.paintEvent(self, event)
+
+    def mousePressEvent(self, event):
+        if self.foldArea > 0:
+            area = self.width() - self.foldArea
+            font_metrics = QFontMetrics(self.editor.document().defaultFont())
+            f = font_metrics.lineSpacing()
+            y = event.posF().y()
+            numero_linea = 0
+
+            if event.pos().x() > area:
+                patron = self.pat
+                bloque = self.editor.firstVisibleBlock()
+                viewport_offset = self.editor.contentOffset()
+                fin_pagina = self.editor.viewport().height()
+
+                while bloque.isValid():
+                    posicion = self.editor.blockBoundingGeometry(
+                        bloque).topLeft() + viewport_offset
+                    if posicion.y() > fin_pagina:
+                        break
+                    if posicion.y() < y and (posicion.y() + f) > y and \
+                        patron.match(str(bloque.text())):
+                            numero_linea = bloque.blockNumber() + 1
+                            break
+                    bloque = bloque.next()
+            if numero_linea > 0:
+                self.evento_codigo_plegado(numero_linea)

@@ -244,7 +244,9 @@ class __ContenedorMain(QSplitter):
             editorW = self.agregar_editor(nombre, tabIndex=tabIndex)
             editorW.setPlainText(contenido.decode('utf-8'))
             editorW.ID = nombre
-            # Test not empty
+
+            # Reemplaza tabulaciones por espacios en blanco
+            editorW.tabulaciones_por_espacios_en_blanco()
             editorW.nuevo_archivo = False
             self.emit(SIGNAL("currentTabChanged(QString)"), nombre)
 

@@ -16,7 +16,7 @@
 # You should have received a copy of the GNU General Public License
 # along with EDIS-C.  If not, see <http://www.gnu.org/licenses/>.
 
-#import re
+import re
 
 #from datetime import date
 import datetime
@@ -285,3 +285,19 @@ def obtener_user_hostname():
     usuario = getpass.getuser()
     equipo = socket.gethostname()
     return [usuario, equipo]
+
+
+def devolver_espacios(linea):
+    patIndentacion = re.compile('^\s+')
+    espacio = patIndentacion.match(linea)
+
+    if espacio is None:
+        return ''
+    return espacio.group()
+
+
+def tabulaciones_por_espacios_en_blanco(Weditor):
+    texto = Weditor.toPlainText()
+    tabulacion = '\t'
+    texto = texto.replace(tabulacion, ' ' * 4)
+    Weditor.setPlainText(texto)

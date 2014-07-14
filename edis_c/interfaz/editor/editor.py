@@ -40,10 +40,11 @@ from PyQt4.Qt import QTextFormat
 
 from edis_c import recursos
 from edis_c.nucleo import configuraciones
-from edis_c.interfaz.editor import widget_numero_lineas
-from edis_c.interfaz.editor.highlighter import Highlighter
 from edis_c.interfaz import tabitem
+from edis_c.interfaz.editor import widget_numero_lineas
 from edis_c.interfaz.editor import minimapa
+from edis_c.interfaz.editor import acciones_
+from edis_c.interfaz.editor.highlighter import Highlighter
 
 # Diccionario teclas
 TECLA = {
@@ -69,6 +70,7 @@ class Editor(QPlainTextEdit, tabitem.TabItem):
         #self.widget_num_lineas = widget_numero_lineas.NumeroDeLineaBar(self)
 
         self.texto_modificado = False
+        self.guia_indentacion = 0
         self.nuevo_archivo = True
         self.patronEsPalabra = re.compile('\w+')
         self.guardado_actualmente = False
@@ -136,6 +138,7 @@ class Editor(QPlainTextEdit, tabitem.TabItem):
         self.setStyleSheet(tema_editor)
 
     def set_flags(self):
+        self.setWordWrapMode(QTextOption.NoWrap)
         self.setMouseTracking(True)
         doc = self.document()
         op = QTextOption()
@@ -191,6 +194,40 @@ class Editor(QPlainTextEdit, tabitem.TabItem):
             pintar.drawLine(self.posicion_margen + offset.x(), 0,
                 self.posicion_margen + offset.x(), self.viewport().height())
             pintar.end()
+
+        altura = self.viewport().height()
+        offset = self.contentOffset()
+        pintar = QPainter()
+        pintar.begin(self.viewport())
+        color = QColor(200, 200, 0)
+        color.setAlpha(100)
+        pintar.setPen(color)
+        pintar.pen().setCosmetic(True)
+        altura_char = self.fontMetrics().height()
+        bloque = self.firstVisibleBlock()
+        previous_line = []
+
+        while bloque.isValid():
+            geo = self.blockBoundingGeometry(bloque)
+            geo.translate(offset)
+            posicion_y = geo.top()
+            if posicion_y > altura:
+                break
+            col = (len(acciones_.devolver_espacios(
+                bloque.text())) // configuraciones.INDENTACION)
+            if col == 0:
+                for l in previous_line:
+                    pintar.drawLine(l, posicion_y, l, posicion_y + altura_char)
+            else:
+                previous_line = []
+            for i in range(1, col):
+                posicion_linea = self.inicio_indentacion + (
+                    self.guia_indentacion * (i - 1))
+                pintar.drawLine(posicion_linea, posicion_y, posicion_linea,
+                    posicion_y + altura_char)
+                previous_line.append(posicion_linea)
+            bloque = bloque.next()
+        pintar.end()
 
     def resaltar_linea_actual(self):
         """ Pinta la linea actual en donde está posicionado el cursor. """
@@ -383,6 +420,9 @@ class Editor(QPlainTextEdit, tabitem.TabItem):
 
             return True
 
+    def tabulaciones_por_espacios_en_blanco(self):
+        acciones_.tabulaciones_por_espacios_en_blanco(self)
+
     def _cargar_fuente(self, fuente_=configuraciones.FUENTE,
         tam=configuraciones.TAM_FUENTE):
 
@@ -451,6 +491,13 @@ class Editor(QPlainTextEdit, tabitem.TabItem):
         else:
             c_width = f_metrics.averageCharWidth()
             self.posicion_margen = c_width * configuraciones.MARGEN
+
+        self.char_width = f_metrics.averageCharWidth()
+        if configuraciones.INDENTACION:
+            self.guia_indentacion = self.char_width * \
+                configuraciones.INDENTACION
+            self.inicio_indentacion = (-(self.char_width / 2) +
+                                self.guia_indentacion + self.char_width)
 
     def saltar_a_linea(self, linea=None):
         if linea is not None:
