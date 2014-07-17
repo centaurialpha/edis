@@ -1,5 +1,5 @@
 /*
-* <Archivo en lenguaje QML.>
+* <Botón en QML.>
 * Copyright (C) <2014>  <Gabriel Acosta>
 *
 * EDIS-C is free software: you can redistribute it and/or modify
@@ -25,9 +25,8 @@ Rectangle
 	property alias text: txtButton.text
 	signal clicked
 
-	radius: 10
-	border.color: "gray"
-	border.width: 2
+	//radius: 2
+	border.color: "black"
 	
 	gradient: Gradient 
 	{

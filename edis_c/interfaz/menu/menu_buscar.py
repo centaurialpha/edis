@@ -1,6 +1,7 @@
 #-*- coding: utf-8 -*-
 
 # Copyright (C) <2014>  <Gabriel Acosta>
+# This file is part of EDIS-C.
 
 # EDIS-C is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -20,7 +21,7 @@ from PyQt4.QtGui import QShortcut
 from PyQt4.QtCore import QObject
 from PyQt4.QtCore import SIGNAL
 
-from edis_c.interfaz import widget_buscar
+from edis_c.interfaz.editor import acciones_
 from edis_c import recursos
 
 
@@ -35,10 +36,29 @@ class MenuBuscar(QObject):
         self.atajoBuscar = QShortcut(recursos.ATAJOS['buscar'], self.ide)
 
         # Conexión
-        self.connect(self.atajoBuscar, SIGNAL("activated()"),
-            widget_buscar.WidgetBuscar().show)
+        #self.connect(self.atajoBuscar, SIGNAL("activated()"),
+            #widget_buscar.WidgetBuscar().show)
 
+        # Acciones #
+        # Buscar
         accionBuscar = menu_buscar.addAction(self.trUtf8("Buscar"))
+        # Buscar siguiente
+        accionBuscarSiguiente = menu_buscar.addAction(
+            self.trUtf8("Buscar siguiente"))
+        # Buscar anterior
+        accionBuscarAnterior = menu_buscar.addAction(
+            self.trUtf8("Buscar anterior"))
+        # Reemplazar
+        accionReemplazar = menu_buscar.addAction(
+            self.trUtf8("Reemplazar"))
+        menu_buscar.addSeparator()
+        # Ir a la línea
+        accionIrALinea = menu_buscar.addAction(
+            self.trUtf8("Ir a la línea..."))
 
-        self.connect(accionBuscar, SIGNAL("triggered()"),
-            widget_buscar.WidgetBuscar().show)
+        accionIrALinea.triggered.connect(self.ir_a_la_linea)
+
+    def ir_a_la_linea(self):
+        editor = self.ide.contenedor_principal.devolver_editor_actual()
+        if editor:
+            acciones_.ir_a_la_linea(editor)

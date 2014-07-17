@@ -1,6 +1,8 @@
 #-*- coding: utf-8 -*-
 
 # <Widget que muestra la página de inicio de EDIS.>
+# This file is part of EDIS-C.
+
 # Copyright (C) <2014>  <Gabriel Acosta>
 
 # EDIS-C is free software: you can redistribute it and/or modify

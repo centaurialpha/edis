@@ -2,6 +2,7 @@
 
 # <Algunos métodos para el editor.>
 # Copyright (C) <2014>  <Gabriel Acosta>
+# This file is part of EDIS-C.
 
 # EDIS-C is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -17,7 +18,8 @@
 # along with EDIS-C.  If not, see <http://www.gnu.org/licenses/>.
 
 import re
-
+import getpass
+import socket
 #from datetime import date
 import datetime
 
@@ -278,9 +280,12 @@ def mover_hacia_abajo(editorW):
             editorW.moveCursor(QTextCursor.Down, QTextCursor.MoveAnchor)
 
 
+def ir_a_linea(Weditor):
+    pass
+
+
 def obtener_user_hostname():
-    import getpass
-    import socket
+    """ Devuelve una lista con el username y hostname. """
 
     usuario = getpass.getuser()
     equipo = socket.gethostname()
@@ -297,7 +302,136 @@ def devolver_espacios(linea):
 
 
 def tabulaciones_por_espacios_en_blanco(Weditor):
+    """ Reemplaza tabulaciones por espacios en blanco. """
     texto = Weditor.toPlainText()
     tabulacion = '\t'
     texto = texto.replace(tabulacion, ' ' * 4)
     Weditor.setPlainText(texto)
+
+
+def convertir_a_mayusculas(Weditor):
+    """ Convierte a mayúsculas un texto seleccionado o la línea en donde esta
+    posicionado el cursor. """
+
+    Weditor.textCursor().beginEditBlock()
+    if Weditor.textCursor().hasSelection():
+        texto = unicode(Weditor.textCursor().selectedText()).upper()
+    else:
+        texto = unicode(Weditor.texto_abajo()).upper()
+        Weditor.moveCursor(QTextCursor.StartOfWord)
+        Weditor.moveCursor(QTextCursor.EndOfWord, QTextCursor.KeepAnchor)
+    Weditor.textCursor().insertText(texto)
+    Weditor.textCursor().endEditBlock()
+
+
+def convertir_a_minusculas(Weditor):
+    """ Convierte a minúsculas un texto seleccionado o la línea en donde esta
+    posicionado el cursor. """
+
+    Weditor.textCursor().beginEditBlock()
+    if Weditor.textCursor().hasSelection():
+        texto = unicode(Weditor.textCursor().selectedText()).lower()
+    else:
+        texto = unicode(Weditor.texto_abajo()).lower()
+        Weditor.moveCursor(QTextCursor.StartOfWord)
+        Weditor.moveCursor(QTextCursor.EndOfWord, QTextCursor.KeepAnchor)
+    Weditor.textCursor().insertText(texto)
+    Weditor.textCursor().endEditBlock()
+
+
+def convertir_a_titulo(Weditor):
+    """ Convierte a tipo título un texto seleccionado o la línea en donde esta
+    posicionado el cursor. """
+
+    Weditor.textCursor().beginEditBlock()
+    if Weditor.textCursor().hasSelection():
+        texto = unicode(Weditor.textCursor().selectedText()).title()
+    else:
+        texto = unicode(Weditor.texto_abajo()).title()
+        Weditor.moveCursor(QTextCursor.StartOfWord)
+        Weditor.moveCursor(QTextCursor.EndOfWord, QTextCursor.KeepAnchor)
+    Weditor.textCursor().insertText(texto)
+    Weditor.textCursor().endEditBlock()
+
+
+def eliminar_linea(Weditor):
+    """ Elimina la línea en donde está posicionado el cursor. """
+
+    cursor = Weditor.textCursor()
+    cursor.beginEditBlock()
+
+    cursor.select(QTextCursor.LineUnderCursor)
+    cursor.removeSelectedText()
+    cursor.deleteChar()
+
+    cursor.endEditBlock()
+
+
+def duplicar_linea(Weditor):
+    """ Copia la línea en donde está posicionado el cursor y la inserta. """
+
+    cursor = Weditor.textCursor()
+    cursor.beginEditBlock()
+
+    bloque = cursor.block()
+    cursor.movePosition(QTextCursor.EndOfLine, QTextCursor.MoveAnchor)
+    cursor.insertBlock()
+    cursor.insertText(bloque.text())
+
+    cursor.endEditBlock()
+
+
+def comentar(Weditor):
+    """ Comenta una (posición del cursor) o más lineas seleccionadas. """
+
+    cursor = Weditor.textCursor()
+    inicio_bloque = Weditor.document().findBlock(
+        cursor.selectionStart())
+    fin_bloque = Weditor.document().findBlock(
+        cursor.selectionEnd()).next()
+    cursor.beginEditBlock()
+
+    while inicio_bloque != fin_bloque:
+        cursor.setPosition(inicio_bloque.position())
+        cursor.insertText('//')
+        inicio_bloque = inicio_bloque.next()
+
+    cursor.endEditBlock()
+
+
+def descomentar(Weditor):
+    """ Quita un (posición del cursor) o más lineas seleccionadas. """
+
+    cursor = Weditor.textCursor()
+    inicio_bloque = Weditor.document().findBlock(
+        cursor.selectionStart())
+    fin_bloque = Weditor.document().findBlock(
+        cursor.selectionEnd()).next()
+    cursor.beginEditBlock()
+
+    while inicio_bloque != fin_bloque:
+        posicion_comentario = unicode(inicio_bloque.text()).find('//')
+        if unicode(inicio_bloque.text()).startswith(
+            " " * posicion_comentario + '//'):
+            cursor.setPosition(inicio_bloque.position() + posicion_comentario)
+            cursor.movePosition(QTextCursor.Right, QTextCursor.KeepAnchor,
+                len('//'))
+            cursor.removeSelectedText()
+        inicio_bloque = inicio_bloque.next()
+
+    cursor.endEditBlock()
+
+
+def ir_a_la_linea(Weditor):
+    """ Posiciona el cursor en el número de línea que se ingresa. """
+
+    maxim = Weditor.blockCount()
+    linea = QInputDialog.getInt(Weditor, Weditor.tr("Ir a linea"),
+        Weditor.tr("Linea:"), 1, 1, maxim, 1)
+
+    if linea[1]:
+        if maxim >= linea[0]:
+            cursor = Weditor.textCursor()
+            cursor.setPosition(Weditor.document().findBlockByLineNumber(
+                linea[0] - 1).position())
+            Weditor.setTextCursor(cursor)

@@ -1,6 +1,7 @@
 #-*- coding: utf-8 -*-
 
 # Copyright (C) <2014>  <Gabriel Acosta>
+# This file is part of EDIS-C.
 
 # EDIS-C is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -56,39 +57,42 @@ class MenuVer(QObject):
             self.ocultar_mostrar_toolbars)
         self.connect(self.atajoOcultarInput, SIGNAL("activated()"),
             self.visibilidad_contenedor_secundario)
-        self.connect(self.atajoOcultarMenu, SIGNAL("activated()"),
-            self.ocultar_mostrar_menu)
+        #self.connect(self.atajoOcultarMenu, SIGNAL("activated()"),
+            #self.ocultar_mostrar_menu)
         self.connect(self.atajoZoomMas, SIGNAL("activated()"),
             self._zoom_mas)
         self.connect(self.atajoZoomMenos, SIGNAL("activated()"),
             self._zoom_menos)
 
-        # Acciones
+        # Acciones #
+        # Pantalla completa
         self.accionFullScreen = menu_ver.addAction(
             self.trUtf8("Pantalla Completa"))
         self.accionFullScreen.setCheckable(True)
+        # Mostrar/ocultar todo execpto el editor
         self.accionMostrarOcultarTodo = menu_ver.addAction(
             self.trUtf8("Mostrar/Ocultar Todo"))
         menu_ver.addAction(self.accionMostrarOcultarTodo)
         self.accionMostrarOcultarTodo.setCheckable(True)
         menu_ver.addSeparator()
+        # Mostrar/ocultar toolbars
         self.accionMostrarOcultarToolbar = menu_ver.addAction(
             self.trUtf8("Mostrar/Ocultar Toolbars"))
         self.accionMostrarOcultarToolbar.setCheckable(True)
+        # Mostrar/ocultar editor
         self.accionMostrarOcultarEditor = menu_ver.addAction(
             self.trUtf8("Mostrar/Ocultar Editor"))
         self.accionMostrarOcultarEditor.setCheckable(True)
+        # Mostrar/ocultar consola
         self.accionMostrarOcultar_input = menu_ver.addAction(
-            self.trUtf8("Mostrar/Ocultar Input"))
-        self.accionMostrarOcultar_input.setCheckable(True)
-        self.accionMostrarOcultar_menu = menu_ver.addAction(
-            self.trUtf8("Mostrar/Ocultar Menu"))
-        self.accionMostrarOcultar_menu.setCheckable(True)
+            self.trUtf8("Mostrar/Ocultar consola"))
         menu_ver.addSeparator()
+        # Acercar
         self.accionZoomMas = menu_ver.addAction(
-            self.trUtf8("Zoom +"))
+            self.trUtf8("Acercar"))
+        # Alejar
         self.accionZoomMenos = menu_ver.addAction(
-            self.trUtf8("Zoom -"))
+            self.trUtf8("Alejar"))
 
         # Conexiones a slot
         self.accionFullScreen.triggered.connect(self.pantalla_completa)
@@ -99,8 +103,6 @@ class MenuVer(QObject):
             self.visibilidad_contenedor_principal)
         self.accionMostrarOcultar_input.triggered.connect(
             self.visibilidad_contenedor_secundario)
-        self.accionMostrarOcultar_menu.triggered.connect(
-            self.ocultar_mostrar_menu)
         self.accionZoomMas.triggered.connect(self._zoom_mas)
         self.accionZoomMenos.triggered.connect(self._zoom_menos)
 
@@ -109,7 +111,6 @@ class MenuVer(QObject):
         self.accionMostrarOcultarToolbar.setChecked(True)
         self.accionMostrarOcultarEditor.setChecked(True)
         self.accionMostrarOcultar_input.setChecked(False)
-        self.accionMostrarOcultar_menu.setChecked(True)
 
     def pantalla_completa(self):
         """ Muestra en pantalla completa. """
@@ -128,14 +129,6 @@ class MenuVer(QObject):
         else:
             self.ide.toolbar.show()
             self.ide.toolbar_.show()
-
-    def ocultar_mostrar_menu(self):
-        """ Muestra/Oculta menuBar """
-
-        if self.ide.menuBar().isVisible():
-            self.ide.menuBar().hide()
-        else:
-            self.ide.menuBar().show()
 
     def visibilidad_contenedor_principal(self):
         self.ide.widget_Central.visibilidad_contenedor_principal()

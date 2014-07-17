@@ -2,6 +2,7 @@
 
 # <Contenedor Principal.>
 # Copyright (C) <2014>  <Gabriel Acosta>
+# This file is part of EDIS-C.
 
 # EDIS-C is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -113,6 +114,9 @@ class __ContenedorMain(QSplitter):
         else:
             return None
 
+    def exportar_pdf(self):
+        pass
+
     def deshacer(self):
         editorW = self.devolver_editor_actual()
         if editorW:
@@ -157,16 +161,6 @@ class __ContenedorMain(QSplitter):
         editorW = self.devolver_editor_actual()
         if editorW:
             editorW.indentar_menos()
-
-    def convertir_a_mayusculas(self):
-        editor = self.devolver_editor_actual()
-        if editor:
-            editor.convertir_a_mayusculas()
-
-    def convertir_a_minusculas(self):
-        editor = self.devolver_editor_actual()
-        if editor:
-            editor.convertir_a_minusculas()
 
     def actualizar_margen_editor(self):
         for i in range(self.tab_principal.count()):

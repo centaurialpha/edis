@@ -1,6 +1,7 @@
 #*- coding: utf-8 -*-
 
 # Copyright (C) <2014>  <Gabriel Acosta>
+# This file is part of EDIS-C.
 
 # EDIS-C is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -27,10 +28,10 @@ from PyQt4.QtCore import SIGNAL
 from edis_c import recursos
 
 
-class MenuCodigoFuente(QObject):
+class MenuEjecucion(QObject):
 
     def __init__(self, menu_codigo, toolbar, ide):
-        super(MenuCodigoFuente, self).__init__()
+        super(MenuEjecucion, self).__init__()
 
         self.ide = ide
         self.comp = False
@@ -49,20 +50,24 @@ class MenuCodigoFuente(QObject):
         self.connect(self.atajoCompilarEjecutar, SIGNAL("activated()"),
             self.metodo_compilar_ejecutar)
 
-        # Acciones
+        # Acciones #
+        # Compilar
         self.accionCompilar = menu_codigo.addAction(
             QIcon(recursos.ICONOS['compilar']), self.trUtf8("Compilar"))
         self.cargar_status_tip(self.accionCompilar,
             self.trUtf8("Compilar archivo actual"))
+        # Ejecutar
         self.accionEjecutar = menu_codigo.addAction(
             QIcon(recursos.ICONOS['ejecutar']), self.trUtf8("Ejecutar"))
         self.cargar_status_tip(self.accionEjecutar,
             self.trUtf8("Ejecutar programa"))
+        # Compilar y ejecutar
         self.accionCompilarEjecutar = menu_codigo.addAction(
             QIcon(recursos.ICONOS['comp-ejec']),
             self.trUtf8("Compilar y ejecutar"))
         self.cargar_status_tip(self.accionCompilarEjecutar,
             self.trUtf8("Compilar archivo y ejecutar inmediatamente"))
+        # Terminar programa
         self.accionFrenar = menu_codigo.addAction(
             QIcon(recursos.ICONOS['frenar']), self.trUtf8("Frenar programa"))
         self.cargar_status_tip(self.accionFrenar,

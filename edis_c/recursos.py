@@ -1,6 +1,8 @@
 #-*- coding: utf-8 -*-
 
 # <Directorios y otros recursos que usa el programa .>
+# This file is part of EDIS-C.
+
 # Copyright (C) <2014>  <Gabriel Acosta>
 
 # EDIS-C is free software: you can redistribute it and/or modify
@@ -40,6 +42,7 @@ HOME_SIDE = os.path.join(PATH, ".edis_c")
 
 CONFIGURACIONES_PATH = os.path.join(HOME_SIDE, 'edis_settings.ini')
 
+IDIOMAS = os.path.join(PATH, "idiomas")
 TEMA_BLACK_SIDE = os.path.join(PATH, "temas", "tema_side.qss")
 TEMA_POR_DEFECTO = os.path.join(PATH, "temas", "default.qss")
 TEMA_SIDE = os.path.join(PATH, "temas", "tema_por_defecto.qss")

@@ -1,6 +1,7 @@
 #-*- coding: utf-8 -*-
 
 # Copyright (C) <2014>  <Gabriel Acosta>
+# This file is part of EDIS-C.
 
 # EDIS-C is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -21,9 +22,9 @@ from PyQt4.QtGui import QShortcut
 from PyQt4.QtCore import QObject
 from PyQt4.QtCore import SIGNAL
 
+from edis_c import traducciones as tr
 from edis_c import recursos
-#from side_c.interfaz.dialogos import preferencias
-from edis_c.interfaz.dialogos import pref
+from edis_c.interfaz.dialogos.preferencias import pref
 from edis_c.interfaz.editor import acciones_
 
 
@@ -35,7 +36,7 @@ class MenuEditar(QObject):
 
         self.ide = ide
 
-        # Se cargan los shortcut
+        # Se cargan los shortcut #
         self.atajoDeshacer = QShortcut(recursos.ATAJOS['deshacer'], self.ide)
         self.atajoRehacer = QShortcut(recursos.ATAJOS['rehacer'], self.ide)
         self.atajoCortar = QShortcut(recursos.ATAJOS['cortar'], self.ide)
@@ -62,67 +63,92 @@ class MenuEditar(QObject):
         self.connect(self.atajoMoverAbajo, SIGNAL("activated()"),
             self.mover_linea_hacia_abajo)
 
-        # Acciones
+        # Acciones #
+        # Deshacer
         self.accionDeshacer = menu_editar.addAction(QIcon(
-            recursos.ICONOS['deshacer']), self.trUtf8("Deshacer"))
+            recursos.ICONOS['deshacer']), tr.TRAD_DESHACER)
         self.cargar_status_tip(self.accionDeshacer,
             self.trUtf8("Deshacer cambios"))
         self.accionDeshacer.setShortcut(recursos.ATAJOS['deshacer'])
+        # Rehacer
         self.accionRehacer = menu_editar.addAction(
-            QIcon(recursos.ICONOS['rehacer']), self.trUtf8("Rehacer"))
+            QIcon(recursos.ICONOS['rehacer']), tr.TRAD_REHACER)
         self.cargar_status_tip(self.accionRehacer,
             self.trUtf8("Rehacer cambios"))
         self.accionRehacer.setShortcut(recursos.ATAJOS['rehacer'])
         menu_editar.addSeparator()
+        # Cortar
         self.accionCortar = menu_editar.addAction(
-            QIcon(recursos.ICONOS['cortar']), self.trUtf8("Cortar"))
+            QIcon(recursos.ICONOS['cortar']), tr.TRAD_CORTAR)
         self.cargar_status_tip(self.accionCortar,
             self.trUtf8("Acción cortar"))
         self.accionCortar.setShortcut(recursos.ATAJOS['cortar'])
+        # Copiar
         self.accionCopiar = menu_editar.addAction(
-            QIcon(recursos.ICONOS['copiar']), self.trUtf8("Copiar"))
+            QIcon(recursos.ICONOS['copiar']), tr.TRAD_COPIAR)
         self.cargar_status_tip(self.accionCopiar,
             self.trUtf8("Acción copiar"))
         self.accionCopiar.setShortcut(recursos.ATAJOS['copiar'])
+        # Pegar
         self.accionPegar = menu_editar.addAction(
-            QIcon(recursos.ICONOS['pegar']), self.trUtf8("Pegar"))
+            QIcon(recursos.ICONOS['pegar']), tr.TRAD_PEGAR)
         self.cargar_status_tip(self.accionPegar,
             self.trUtf8("Acción pegar"))
         self.accionPegar.setShortcut(recursos.ATAJOS['pegar'])
         menu_editar.addSeparator()
+        # Indentar más
         self.accionIndentarMas = menu_editar.addAction(
             QIcon(recursos.ICONOS['indentar']), self.trUtf8("Indentar más"))
         self.cargar_status_tip(self.accionIndentarMas,
             self.trUtf8("Indentar una o más líneas"))
+        # Indentar menos
         self.accionIndentarMenos = menu_editar.addAction(
             QIcon(recursos.ICONOS['desindentar']),
             self.trUtf8("Indentar menos"))
         self.cargar_status_tip(self.accionIndentarMenos,
             self.trUtf8("Sacar indentación a una o más líneas"))
         menu_editar.addSeparator()
-        self.accionBorrar = menu_editar.addAction(self.trUtf8("Borrar"))
-        menu_editar.addSeparator()
+        # Seleccionar todo
         self.accionSeleccionarTodo = menu_editar.addAction(
             self.trUtf8("Seleccionar todo"))
         self.cargar_status_tip(self.accionSeleccionarTodo,
             self.trUtf8("Seleccionar todo el código fuente"))
+        # Mover hacia arriba
         self.accionMoverArriba = menu_editar.addAction(
             self.trUtf8("Mover arriba"))
+        # Mover hacia abajo
         self.accionMoverAbajo = menu_editar.addAction(
             self.trUtf8("Mover abajo"))
+        # Convertir a mayúsculas
         self.accionConvertirMayusculas = menu_editar.addAction(
             self.trUtf8("Texto seleccionado: a mayúsculas"))
+        # Convertir a minúsculas
         self.accionConvertirMinusculas = menu_editar.addAction(
             self.trUtf8("Texto seleccionado: a minúsculas"))
+        # Convertir a título
+        self.accionTitulo = menu_editar.addAction(
+            self.trUtf8("Convertir a título"))
         menu_editar.addSeparator()
+        # Eliminar línea
+        self.accionEliminarLinea = menu_editar.addAction(
+            self.trUtf8("Eliminar línea"))
+        # Duplicar línea
+        self.accionDuplicarLinea = menu_editar.addAction(
+            self.trUtf8("Duplicar línea"))
+        # Comentar
+        self.accionComentar = menu_editar.addAction(
+            self.trUtf8("Comentar"))
+        # Descomentar
+        self.accionDescomentar = menu_editar.addAction(
+            self.trUtf8("Descomentar"))
+        menu_editar.addSeparator()
+        # Preferencias
         self.accionConfiguracion = menu_editar.addAction(
-            self.trUtf8("Configuración"))
+            self.trUtf8("Preferencias"))
         self.cargar_status_tip(self.accionConfiguracion,
             self.trUtf8("Configurar preferencias de EDIS-C"))
-        #self.accionIrLinea = menu_editar.addAction(
-            #self.trUtf8("Ir a linea"))
 
-        # Conexiones a métodos
+        # Conexiones a métodos #
         self.accionDeshacer.triggered.connect(
             self.ide.contenedor_principal.deshacer)
         self.accionRehacer.triggered.connect(
@@ -133,6 +159,8 @@ class MenuEditar(QObject):
             self.ide.contenedor_principal.copiar)
         self.accionPegar.triggered.connect(
             self.ide.contenedor_principal.pegar)
+        self.accionSeleccionarTodo.triggered.connect(
+            self.ide.contenedor_principal.seleccionar_todo)
         self.accionConfiguracion.triggered.connect(
             self._configuraciones)
         self.accionIndentarMas.triggered.connect(
@@ -144,11 +172,14 @@ class MenuEditar(QObject):
         self.accionMoverAbajo.triggered.connect(
             self.mover_linea_hacia_abajo)
         self.accionConvertirMayusculas.triggered.connect(
-            self.ide.contenedor_principal.convertir_a_mayusculas)
+            self.convertir_a_mayusculas)
         self.accionConvertirMinusculas.triggered.connect(
-            self.ide.contenedor_principal.convertir_a_minusculas)
-        #self.accionIrLinea.triggered.connect(
-            #self.ir_a_lin)
+            self.convertir_a_minusculas)
+        self.accionTitulo.triggered.connect(self.convertir_a_titulo)
+        self.accionEliminarLinea.triggered.connect(self.eliminar_linea)
+        self.accionDuplicarLinea.triggered.connect(self.duplicar_linea)
+        self.accionComentar.triggered.connect(self.comentar)
+        self.accionDescomentar.triggered.connect(self.descomentar)
 
         # Toolbar - Items
         self.items_toolbar = {
@@ -178,7 +209,37 @@ class MenuEditar(QObject):
         self.preferencias = pref.DialogoConfiguracion(self.ide)
         self.preferencias.show()
 
-    #def ir_a_lin(self):
-        #ew = self.ide.contenedor_principal.devolver_editor_actual()
-        #if ew:
-            #acciones_.ir_a_linea_(ew)
+    def convertir_a_mayusculas(self):
+        editor = self.ide.contenedor_principal.devolver_editor_actual()
+        if editor:
+            acciones_.convertir_a_mayusculas(editor)
+
+    def convertir_a_minusculas(self):
+        editor = self.ide.contenedor_principal.devolver_editor_actual()
+        if editor:
+            acciones_.convertir_a_minusculas(editor)
+
+    def convertir_a_titulo(self):
+        editor = self.ide.contenedor_principal.devolver_editor_actual()
+        if editor:
+            acciones_.convertir_a_titulo(editor)
+
+    def eliminar_linea(self):
+        editor = self.ide.contenedor_principal.devolver_editor_actual()
+        if editor:
+            acciones_.eliminar_linea(editor)
+
+    def duplicar_linea(self):
+        editor = self.ide.contenedor_principal.devolver_editor_actual()
+        if editor:
+            acciones_.duplicar_linea(editor)
+
+    def comentar(self):
+        editor = self.ide.contenedor_principal.devolver_editor_actual()
+        if editor:
+            acciones_.comentar(editor)
+
+    def descomentar(self):
+        editor = self.ide.contenedor_principal.devolver_editor_actual()
+        if editor:
+            acciones_.descomentar(editor)

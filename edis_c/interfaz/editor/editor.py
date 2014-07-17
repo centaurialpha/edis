@@ -2,6 +2,7 @@
 
 # <Editor.>
 # Copyright (C) <2014>  <Gabriel Acosta>
+# This file is part of EDIS-C.
 
 # EDIS-C is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -125,8 +126,8 @@ class Editor(QPlainTextEdit, tabitem.TabItem):
                 self.minimapa.actualizar_area_visible)
             self.minimapa.highlighter = Highlighter(self.minimapa.document())
 
-    def set_id(self, id_):
-        super(Editor, self).set_id(id_)
+    def cargar_id(self, id_):
+        super(Editor, self).cargar_id(id_)
         self.minimapa.set_code(self.toPlainText())
 
     def estilo_editor(self):
@@ -249,6 +250,7 @@ class Editor(QPlainTextEdit, tabitem.TabItem):
 
         self.setExtraSelections(self.extraSelections)
 
+        # Resaltado de braces
         if self.braces is not None:
             self.braces = None
         cursor = self.textCursor()
@@ -451,30 +453,6 @@ class Editor(QPlainTextEdit, tabitem.TabItem):
 
         self.setFont(fuente)
         self.actualizar_margen_linea(fuente)
-
-    def convertir_a_mayusculas(self):
-        self.textCursor().beginEditBlock()
-        if self.textCursor().hasSelection():
-            texto = str(self.textCursor().selectedText()).upper()
-        else:
-            texto = str(self.texto_abajo()).upper()
-            self.moveCursor(QTextCursor.StartOfWord)
-            self.moveCursor(QTextCursor.EndOfWord,
-                QTextCursor.KeepAnchor)
-        self.textCursor().insertText(texto)
-        self.textCursor().endEditBlock()
-
-    def convertir_a_minusculas(self):
-        self.textCursor().beginEditBlock()
-        if self.textCursor().hasSelection():
-            texto = str(self.textCursor().selectedText()).lower()
-        else:
-            texto = str(self.texto_abajo()).lower()
-            self.moveCursor(QTextCursor.StartOfWord)
-            self.moveCursor(QTextCursor.EndOfWord,
-                QTextCursor.KeepAnchor)
-            self.textCursor().insertText(texto)
-            self.textCursor().endEditBlock()
 
     def actualizar_margen_linea(self, fuente=None):
         if not fuente:

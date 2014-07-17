@@ -2,6 +2,7 @@
 
 # <Configuraciones.>
 # Copyright (C) <2014>  <Gabriel Acosta>
+# This file is part of EDIS-C.
 
 # EDIS-C is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -85,27 +86,52 @@ SIDEBAR = True
 
 MOSTRAR_PAGINA_INICIO = True
 
-###############################################################################
-qsettings = QSettings(recursos.CONFIGURACIONES_PATH, QSettings.IniFormat)
+IDIOMAS = []
+IDIOMA = ""
 
-MARGEN = qsettings.value('configuraciones/editor/margenLinea', 80, type=int)
-MOSTRAR_MARGEN = qsettings.value(
-    'configuraciones/editor/mostrarMargen', False, type=bool)
-fuente_f = qsettings.value('configuraciones/editor/fuente', "", type='QString')
-if fuente_f:
-    FUENTE = fuente_f
-fuente_tam = qsettings.value('configuraciones/editor/fuenteTam', 0, type=int)
-if fuente_tam != 0:
-    TAM_FUENTE = fuente_tam
-INDENTACION = int(qsettings.value('configuraciones/editor/indentacion',
-    4, type=int))
-CHECK_INDENTACION = qsettings.value('configuraciones/editor/checkInd', True,
-    type=bool)
-CHECK_AUTO_INDENTACION = qsettings.value('configuraciones/editor/autoInd',
-    True, type=bool)
-MOSTRAR_TABS = qsettings.value('configuraciones/editor/tabs', True, type=bool)
-MINIMAPA = qsettings.value('configuraciones/editor/mini', True, type=bool)
-OPAC_MIN = float(qsettings.value('configuraciones/editor/opac_min',
-    0.1, type=float))
-OPAC_MAX = float(qsettings.value('configuraciones/editor/opac_max',
-    0.6, type=float))
+
+###############################################################################
+def cargar_configuraciones():
+    global MARGEN
+    global MOSTRAR_MARGEN
+    global FUENTE
+    global TAM_FUENTE
+    global INDENTACION
+    global CHECK_INDENTACION
+    global CHECK_AUTO_INDENTACION
+    global MOSTRAR_TABS
+    global MINIMAPA
+    global OPAC_MIN
+    global OPAC_MAX
+    global MOSTRAR_PAGINA_INICIO
+    global IDIOMA
+
+    qsettings = QSettings(recursos.CONFIGURACIONES_PATH, QSettings.IniFormat)
+
+    MARGEN = qsettings.value('configuraciones/editor/margenLinea', 80, type=int)
+    MOSTRAR_MARGEN = qsettings.value(
+        'configuraciones/editor/mostrarMargen', False, type=bool)
+    fuente_f = qsettings.value(
+        'configuraciones/editor/fuente', "", type='QString')
+    if fuente_f:
+        FUENTE = fuente_f
+    fuente_tam = qsettings.value(
+        'configuraciones/editor/fuenteTam', 0, type=int)
+    if fuente_tam != 0:
+        TAM_FUENTE = fuente_tam
+    INDENTACION = int(qsettings.value('configuraciones/editor/indentacion',
+        4, type=int))
+    CHECK_INDENTACION = qsettings.value('configuraciones/editor/checkInd', True,
+        type=bool)
+    CHECK_AUTO_INDENTACION = qsettings.value('configuraciones/editor/autoInd',
+        True, type=bool)
+    MOSTRAR_TABS = qsettings.value(
+        'configuraciones/editor/tabs', True, type=bool)
+    MINIMAPA = qsettings.value('configuraciones/editor/mini', True, type=bool)
+    OPAC_MIN = float(qsettings.value('configuraciones/editor/opac_min',
+        0.1, type=float))
+    OPAC_MAX = float(qsettings.value('configuraciones/editor/opac_max',
+        0.6, type=float))
+    MOSTRAR_PAGINA_INICIO = qsettings.value(
+        'configuraciones/general/paginaInicio', True, type=bool)
+    IDIOMA = qsettings.value('preferencias/general/idioma', '', type='QString')

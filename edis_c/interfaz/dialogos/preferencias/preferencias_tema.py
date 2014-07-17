@@ -1,7 +1,6 @@
 #-*- coding: utf-8 -*-
 
 # Copyright (C) <2014>  <Gabriel Acosta>
-# This file is part of EDIS-C.
 
 # EDIS-C is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -16,19 +15,24 @@
 # You should have received a copy of the GNU General Public License
 # along with EDIS-C.  If not, see <http://www.gnu.org/licenses/>.
 
+from PyQt4.QtGui import QWidget
+from PyQt4.QtGui import QVBoxLayout
+from PyQt4.QtGui import QListWidget
+from PyQt4.QtGui import QLabel
 
-class TabItem(object):
 
-    def __init__(self):
-        self._id = ""
+class ConfiguracionTema(QWidget):
 
-    def devolver_id(self):
-        return self._id
+    def __init__(self, parent):
+        super(ConfiguracionTema, self).__init__(parent)
 
-    def cargar_id(self, id_):
-        self._id = id_
-        if id_:
-            self.nuevo_archivo = False
+        layoutV = QVBoxLayout(self)
 
-    ID = property(lambda self: self.devolver_id(), lambda self,
-        nombre: self.cargar_id(nombre))
+        self.lista_temas = QListWidget()
+        self.lista_temas.addItem("Por defecto")
+        self.lista_temas.addItem("Black SIDE")
+
+        label = QLabel(self.trUtf8("Elige un tema:"))
+
+        layoutV.addWidget(label)
+        layoutV.addWidget(self.lista_temas)

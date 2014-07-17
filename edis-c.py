@@ -18,6 +18,7 @@
 
 import sys
 #import time
+#import os
 
 from PyQt4.QtGui import QApplication
 from PyQt4.QtGui import QSplashScreen
@@ -26,18 +27,23 @@ from PyQt4.QtGui import QIcon
 
 from PyQt4.QtCore import Qt
 from PyQt4.QtCore import QCoreApplication
+from PyQt4.QtCore import QTranslator
+from PyQt4.QtCore import QLocale
+from PyQt4.QtCore import QLibraryInfo
+#from PyQt4.QtCore import QSettings
 
 from edis_c import recursos
 from edis_c.interfaz.ide import Ide
+from edis_c.nucleo import configuraciones
+#from edis_c.nucleo import manejador_de_archivo
 
 
 def main():
     app = QApplication(sys.argv)
 
-    QCoreApplication.setOrganizationName('EDIS-C')
-    QCoreApplication.setOrganizationDomain('EDIS-C')
     QCoreApplication.setApplicationName('EDIS-C')
-
+    QCoreApplication.setOrganizationDomain('EDIS-C')
+    QCoreApplication.setOrganizationName('EDIS-C')
     app.setWindowIcon(QIcon(recursos.ICONOS['seiryu_icono']))
 
     # Imágen SPLASH
@@ -47,12 +53,16 @@ def main():
     splash.show()
     app.processEvents()
 
-    if sys.platform != 'win32':
-        app.setCursorFlashTime(0)
+    # Cargar idioma
+    local = unicode(QLocale.system().name())
+    # Diálogos en español
+    qtTranslator = QTranslator()
+    qtTranslator.load("qt_" + local,
+        QLibraryInfo.location(QLibraryInfo.TranslationsPath))
+    app.installTranslator(qtTranslator)
 
-    splash.showMessage("Cargando interfaz",
-        Qt.AlignRight | Qt.AlignTop, Qt.white)
-#    time.sleep(2)
+    configuraciones.cargar_configuraciones()
+
     side = Ide.IDE()
     side.show()
 

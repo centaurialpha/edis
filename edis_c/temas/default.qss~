@@ -18,8 +18,8 @@ QMenu::item:selected
 QToolBar::separator 
 {
     background: #b1b1b1;
-    width: 5px;
-    height: 5px;
+    width: 3px;
+    height: 3px;
 }
 
 QScrollBar:vertical
@@ -41,3 +41,16 @@ QScrollBar::sub-page:vertical
     border: none;
 }
 
+QGroupBox
+{
+    border: 1px solid gray;
+    border-radius: 5px;
+    margin-top: 10px;
+}
+
+QGroupBox::title 
+{
+    subcontrol-origin: margin;
+    subcontrol-position: top center;
+    padding: 5 10px;
+}

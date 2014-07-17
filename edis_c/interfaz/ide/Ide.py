@@ -2,6 +2,7 @@
 
 # <Encargado de correr la Interfáz.>
 # Copyright (C) <2014>  <Gabriel Acosta>
+# This file is part of EDIS-C.
 
 # EDIS-C is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -27,13 +28,14 @@ from PyQt4.QtGui import QMessageBox
 from PyQt4.QtCore import Qt
 from PyQt4.QtCore import QSize
 from PyQt4.QtCore import SIGNAL
+from PyQt4.QtCore import QSettings
 
 from edis_c.interfaz.menu import menu_archivo
 from edis_c.interfaz.menu import menu_editar
 from edis_c.interfaz.menu import menu_ver
-from edis_c.interfaz.menu import menu_insertar
 from edis_c.interfaz.menu import menu_buscar
-from edis_c.interfaz.menu import menu_codigo
+from edis_c.interfaz.menu import menu_herramientas
+from edis_c.interfaz.menu import menu_ejecucion
 from edis_c.interfaz.menu import menu_acerca_de
 
 from edis_c.interfaz import widget_central
@@ -126,9 +128,9 @@ class __IDE(QMainWindow):
         archivo = menu.addMenu(self.tr("&Archivo"))
         editar = menu.addMenu(self.tr("&Editar"))
         ver = menu.addMenu(self.trUtf8("&Ver"))
-        insertar = menu.addMenu(self.trUtf8("&Insertar"))
         buscar = menu.addMenu(self.trUtf8("&Buscar"))
-        codigo = menu.addMenu(self.trUtf8("&Codigo fuente"))
+        herramientas = menu.addMenu(self.trUtf8("&Herramientas"))
+        ejecucion = menu.addMenu(self.trUtf8("E&jecucion"))
         acerca = menu.addMenu(self.tr("Ace&rca de"))
 
         self._menu_archivo = menu_archivo.MenuArchivo(
@@ -136,11 +138,11 @@ class __IDE(QMainWindow):
         self._menu_editar = menu_editar.MenuEditar(
             editar, self.toolbar_, self)
         self._menu_ver = menu_ver.MenuVer(ver, self)
-        self._menu_insertar = menu_insertar.MenuInsertar(
-            insertar, self.toolbar_, self)
+        self._menu_herramientas = menu_herramientas.MenuHerramientas(
+            herramientas, self.toolbar_, self)
         self._menu_buscar = menu_buscar.MenuBuscar(buscar, self)
-        self._menu_codigo = menu_codigo.MenuCodigoFuente(
-            codigo, self.toolbar, self)
+        self._menu_ejecucion = menu_ejecucion.MenuEjecucion(
+            ejecucion, self.toolbar, self)
         self._menu_acerca_de = menu_acerca_de.MenuAcercade(acerca, self)
 
         self.connect(self.contenedor_principal, SIGNAL("fileSaved(QString)"),
@@ -148,9 +150,9 @@ class __IDE(QMainWindow):
 
         # Métodos para cargar items en las toolbar
         self.cargar_toolbar([self._menu_archivo, self._menu_editar,
-            self._menu_insertar], self.toolbar, ITEMS_TOOLBAR1)
+            self._menu_herramientas], self.toolbar, ITEMS_TOOLBAR1)
 
-        self.cargar_toolbar([self._menu_codigo], self.toolbar_, ITEMS_TOOLBAR2)
+        self.cargar_toolbar([self._menu_ejecucion], self.toolbar_, ITEMS_TOOLBAR2)
 
         if configuraciones.MOSTRAR_PAGINA_INICIO:
             self.contenedor_principal.mostrar_pagina_de_inicio()
@@ -168,6 +170,8 @@ class __IDE(QMainWindow):
         self.contenedor_secundario = \
             contenedor_secundario.ContenedorBottom(self)
 
+        self.connect(self.contenedor_principal,
+            SIGNAL("desactivarPagInicio()"), self.desactivar_pagina_de_inicio)
         self.connect(self.contenedor_principal, SIGNAL(
             "currentTabChanged(QString)"), self.cambiar_titulo_de_ventana)
         self.connect(self.contenedor_principal, SIGNAL("nuevoArchivo()"),
@@ -181,6 +185,17 @@ class __IDE(QMainWindow):
 
         self.connect(self.contenedor_principal, SIGNAL(
             "cursorPositionChange(int, int)"), self._linea_columna)
+
+    def desactivar_pagina_de_inicio(self):
+        configuraciones.MOSTRAR_PAGINA_INICIO = False
+        qsettings = QSettings()
+        qsettings.beginGroup('configuraciones')
+        qsettings.beginGroup('general')
+        qsettings.setValue('paginaInicio',
+            configuraciones.MOSTRAR_PAGINA_INICIO)
+        qsettings.endGroup()
+        qsettings.endGroup()
+        self.contenedor_principal.tab_actual.cerrar_tab()
 
     def cargar_toolbar(self, menus, toolbar, items):
         """ Carga los items en el toolbar

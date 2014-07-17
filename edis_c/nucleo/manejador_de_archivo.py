@@ -2,6 +2,7 @@
 
 # <Métodos para el manejo de archivos.>
 # Copyright (C) <2014>  <Gabriel Acosta>
+# This file is part of EDIS-C.
 
 # EDIS-C is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -33,6 +34,20 @@ def _nombreBase(nombre_de_archivo):
         nombre_de_archivo = nombre_de_archivo[:-1]
 
     return os.path.basename(nombre_de_archivo)
+
+
+def nombre_de_modulo(nombre_de_archivo):
+    modulo = os.path.basename(nombre_de_archivo)
+    return (os.path.splitext(modulo)[0])
+
+
+def archivos_desde_carpeta(carpeta, extension):
+    try:
+        archivo_extension = os.listdir(carpeta)
+    except:
+        archivo_extension = []
+    archivo_extension = [f for f in archivo_extension if f.endswith(extension)]
+    return archivo_extension
 
 
 def leer_contenido_de_archivo(archivo):
@@ -77,3 +92,13 @@ def escribir_archivo(nombre_de_archivo, contenido):
 
 def permiso_de_escritura(archivo):
     return os.access(archivo, os.W_OK)
+
+
+def crear_path(*args):
+    return os.path.join(*args)
+
+
+def archivo_existente(path, nombre_archivo=''):
+    if nombre_archivo:
+        path = os.path.join(path, nombre_archivo)
+    return os.path.isfile(path)

@@ -1,6 +1,8 @@
 #-*- coding: utf-8 -*-
 
 # <Widget encargado de buscar en el editor.>
+# This file is part of EDIS-C.
+
 # Copyright (C) <2014>  <Gabriel Acosta>
 
 # EDIS-C is free software: you can redistribute it and/or modify

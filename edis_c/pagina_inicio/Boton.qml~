@@ -18,22 +18,35 @@
 
 import QtQuick 1.1
 
-Rectangle {
+Rectangle 
+{
 
 	id: boton
 	property alias text: txtButton.text
 	signal clicked
 
-	radius: 10
-	border.color: "gray"
-	border.width: 2
+	//radius: 2
+	border.color: "black"
 	
-	gradient: Gradient {
-         GradientStop { id: stop1; position: 0.0; color: "#232323" }
-         GradientStop { id: stop2; position: 1.0; color: "#d4d4d4" }
+	gradient: Gradient 
+	{
+         GradientStop 
+		 {  
+			id: stop1; 
+			position: 0.0; 
+			color: "#232323" 
+		 }
+	
+         GradientStop 
+     	 { 
+			id: stop2; 
+			position: 1.0; 
+			color: "#d4d4d4" 
+		 }
      }
 
-	Text {
+	Text 
+	{
         id: txtButton
         anchors.centerIn: parent
 
@@ -42,27 +55,58 @@ Rectangle {
     }
 
 	states: [
-        State {
+        State 
+		{
             name: "ENTERED"
-            PropertyChanges { target: stop1; color: "blue" }
+            PropertyChanges 
+			{ 
+				target: stop1; 
+				color: "blue" 
+			}
         },
-        State {
+        State 
+		{
             name: "EXITED"
-            PropertyChanges { target: stop1; color: "#232323" }
+            PropertyChanges 
+			{ 
+				target: stop1; 
+				color: "#232323" 
+			}
         },
-        State {
+        State 
+		{
             name: "PRESSED"
-            PropertyChanges { target: stop2; color: "#2c59bd" }
-            PropertyChanges { target: stop1; color: "#2c59bd" }
+            PropertyChanges 
+			{ 
+				target: stop2; 
+				color: "#2c59bd" 
+			}
+
+            PropertyChanges 
+			{ 
+				target: stop1; 
+				color: "#2c59bd" 
+			}
         },
-        State {
+        State 
+		{
             name: "RELEASED"
-            PropertyChanges { target: stop1; color: "#232323" }
-            PropertyChanges { target: stop2; color: "#d4d4d4" }
+            PropertyChanges 
+			{ 
+				target: stop1; 
+				color: "#232323" 
+			}
+
+            PropertyChanges 
+			{ 
+				target: stop2; 
+				color: "#d4d4d4" 
+			}
         }
      ]
 
-    MouseArea {
+    MouseArea 
+	{
         anchors.fill: parent
         hoverEnabled: true
 

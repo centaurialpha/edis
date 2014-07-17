@@ -1,6 +1,8 @@
 #-*- coding: utf-8 -*-
 
 # <Encargado de correr comandos de compilación, ejecución.>
+# This file is part of EDIS-C.
+
 # Copyright (C) <2014>  <Gabriel Acosta>
 
 # EDIS-C is free software: you can redistribute it and/or modify
