@@ -171,6 +171,7 @@ def insertar_include(ew, libreria):
     else:
         texto = includes.get(4)
         ew.textCursor().insertText(texto + '<>')
+        ew.moveCursor(QTextCursor.Left, QTextCursor.MoveAnchor)
 
 
 def mover_hacia_arriba(editorW):

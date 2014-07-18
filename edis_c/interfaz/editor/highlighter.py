@@ -57,7 +57,7 @@ class Highlighter(QSyntaxHighlighter):
         numeros = QTextCharFormat()
         self.comentario_multiple_lineas = QTextCharFormat()
         caracter = QTextCharFormat()
-        braces = QTextCharFormat()
+        #braces = QTextCharFormat()
         caracter_especial = QTextCharFormat()
         cadena = QTextCharFormat()
         formateo = QTextCharFormat()
@@ -80,10 +80,10 @@ class Highlighter(QSyntaxHighlighter):
    #         "\\b[A-Za-z0-9_]+(?=\\()"), funciones))
 
         # Corchete - paréntesis - llave
-        braces.setFontWeight(QFont.Bold)
-        braces.setForeground(recursos.HIGHLIGHTER['braces'])
-        self.highlightingRules.append((QRegExp("[\[\]\(\)\{\}]"),
-        braces))
+        #braces.setFontWeight(QFont.Bold)
+        #braces.setForeground(recursos.HIGHLIGHTER['braces'])
+        #self.highlightingRules.append((QRegExp("[\[\]\(\)\{\}]"),
+        #braces))
 
         # Caracter ''
         caracter.setForeground(Qt.gray)

@@ -103,6 +103,12 @@ class ConfiguracionEditor(QWidget):
         grillaCaracteristicas.addWidget(self.checkTabs, 5, 2,
             alignment=Qt.AlignLeft)
 
+        # Wrap mode
+        self.checkWrap = QCheckBox(self.trUtf8("Modo envolver"))
+        self.checkWrap.setChecked(configuraciones.MODO_ENVOLVER)
+        grillaCaracteristicas.addWidget(self.checkWrap, 6, 2,
+            alignment=Qt.AlignLeft)
+
         # Minimapa
         grillaMini = QGridLayout(grupoMiniMapa)
         self.checkMini = QCheckBox(self.trUtf8("Activar minimapa"))

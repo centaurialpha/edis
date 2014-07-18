@@ -107,16 +107,16 @@ class TabCentral(QTabWidget):
 
         return valor
 
-    def devolver_archivos_no_guardados(self):
+    def devolver_archivos_sin_guardar(self):
         """ Devuelve una lista de todos los archivos que han sido modificados
-        y no se han guardado los cambios """
+        y no se han guardado."""
 
         archivos = []
 
         for i in range(self.count()):
             w = self.widget(i)
             if isinstance(w, editor.Editor) and w.texto_modificado:
-                archivos.append(self.tabText(i))
+                archivos.append(str(self.tabText(i)))
 
         return archivos
 

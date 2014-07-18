@@ -74,13 +74,13 @@ CHECK_AUTO_INDENTACION = True
 # TABS Y ESPACIOS
 ###############################################################################
 MOSTRAR_TABS = True
-
+MODO_ENVOLVER = False
 ###############################################################################
 # MINIMAPA
 ###############################################################################
 MINIMAPA = True
-OPAC_MIN = 0.1
-OPAC_MAX = 0.6
+OPAC_MIN = 0.2
+OPAC_MAX = 0.9
 
 SIDEBAR = True
 
@@ -129,9 +129,9 @@ def cargar_configuraciones():
         'configuraciones/editor/tabs', True, type=bool)
     MINIMAPA = qsettings.value('configuraciones/editor/mini', True, type=bool)
     OPAC_MIN = float(qsettings.value('configuraciones/editor/opac_min',
-        0.1, type=float))
+        0.2, type=float))
     OPAC_MAX = float(qsettings.value('configuraciones/editor/opac_max',
-        0.6, type=float))
+        0.9, type=float))
     MOSTRAR_PAGINA_INICIO = qsettings.value(
         'configuraciones/general/paginaInicio', True, type=bool)
     IDIOMA = qsettings.value('preferencias/general/idioma', '', type='QString')

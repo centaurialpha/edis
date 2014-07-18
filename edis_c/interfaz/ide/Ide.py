@@ -18,6 +18,10 @@
 # along with EDIS-C.  If not, see <http://www.gnu.org/licenses/>.
 
 import os
+import sys
+from re import findall
+from subprocess import Popen
+from subprocess import PIPE
 
 from PyQt4.QtGui import QMainWindow
 from PyQt4.QtGui import QDesktopWidget
@@ -94,6 +98,7 @@ class __IDE(QMainWindow):
         QMainWindow.__init__(self)
         self.setMinimumSize(850, 700)
         self.setWindowTitle(edis_c.__nombre__)
+        self.comprobar_compilador()
         self._cargar_tema()
         get_pantalla = QDesktopWidget().screenGeometry()
         self.posicionar_ventana(get_pantalla)
@@ -152,7 +157,8 @@ class __IDE(QMainWindow):
         self.cargar_toolbar([self._menu_archivo, self._menu_editar,
             self._menu_herramientas], self.toolbar, ITEMS_TOOLBAR1)
 
-        self.cargar_toolbar([self._menu_ejecucion], self.toolbar_, ITEMS_TOOLBAR2)
+        self.cargar_toolbar([self._menu_ejecucion], self.toolbar_,
+            ITEMS_TOOLBAR2)
 
         if configuraciones.MOSTRAR_PAGINA_INICIO:
             self.contenedor_principal.mostrar_pagina_de_inicio()
@@ -240,18 +246,25 @@ class __IDE(QMainWindow):
     def _linea_columna(self):
         editor = self.contenedor_principal.devolver_editor_actual()
         if editor is not None:
-            i = editor.textCursor().blockNumber() + 1
-            j = editor.textCursor().columnNumber()
-            self.barra_de_estado.linea_columna.actualizar_linea_columna(i, j)
+            linea = editor.textCursor().blockNumber() + 1
+            columna = editor.textCursor().columnNumber()
+            total_lineas = editor.devolver_cantidad_de_lineas()
+            self.barra_de_estado.linea_columna.actualizar_linea_columna(
+                linea, total_lineas, columna)
 
     def closeEvent(self, evento):
         SI = QMessageBox.Yes
         CANCELAR = QMessageBox.Cancel
 
         if self.contenedor_principal.check_tabs_sin_guardar():
+            archivos_sin_guardar = \
+                self.contenedor_principal.devolver_archivos_sin_guardar()
+            #print type(archivos_sin_guardar)
+            txt = '\n'.join(archivos_sin_guardar)
             v = QMessageBox.question(self,
-                self.trUtf8("Algunos cambios no se han guardado"),
-                (self.trUtf8("\n\n¿ Guardar los archivos ?")),
+                self.trUtf8("Archivos sin guardar!"),
+                self.trUtf8("Estos archivos no se han guardado:\n"
+                "%1\n\n¿Guardar cambios?").arg(txt),
                 SI, QMessageBox.No, CANCELAR)
 
             if v == SI:
@@ -272,3 +285,28 @@ class __IDE(QMainWindow):
         with open(qss) as q:
             tema = q.read()
         QApplication.instance().setStyleSheet(tema)
+
+    def comprobar_compilador(self):
+        sistema = sys.platform
+        execs = {'Win': True if not sistema else False}
+        discos_win = findall(r'(\w:)\\',
+            Popen('fsutil fsinfo drives', stdout=PIPE).communicate()[0]) if \
+                execs['Win'] else None
+        progs = ['gcc']
+        progs = [progs] if isinstance(progs, str) else progs
+        for prog in progs:
+            if execs['Win']:
+                win_cmds = ['dir /B /S {0}\*{1}.exe'.format(letter, prog) for
+                            letter in discos_win]
+                for cmd in win_cmds:
+                    execs[prog] = (Popen(cmd, stdout=PIPE,
+                    stderr=PIPE, shell=1).communicate()[0].split(os.linesep)[0])
+                    if execs[prog]:
+                        break
+            else:
+                try:
+                    Popen([prog, '--help'], stdout=PIPE, stderr=PIPE)
+                except OSError:
+                    QMessageBox.information(self, self.trUtf8("Advertencia!"),
+                        self.trUtf8("El compilador GCC no está instalado!\n\n"
+                        "apt-get install gcc"))

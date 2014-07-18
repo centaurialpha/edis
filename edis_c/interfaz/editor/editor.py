@@ -31,6 +31,8 @@ from PyQt4.QtGui import QPainter
 from PyQt4.QtGui import QFont
 from PyQt4.QtGui import QTextCursor
 from PyQt4.QtGui import QTextOption
+from PyQt4.QtGui import QTextDocument
+from PyQt4.QtGui import QBrush
 
 from PyQt4.QtCore import Qt
 from PyQt4.QtCore import SIGNAL
@@ -77,6 +79,7 @@ class Editor(QPlainTextEdit, tabitem.TabItem):
         self.guardado_actualmente = False
         self.widget_num_lineas = None
         self.highlighter = None
+        self.palabra_seleccionada = ''
         self.minimapa = None
         self.braces = None
         self.extraSelections = []
@@ -139,7 +142,10 @@ class Editor(QPlainTextEdit, tabitem.TabItem):
         self.setStyleSheet(tema_editor)
 
     def set_flags(self):
-        self.setWordWrapMode(QTextOption.NoWrap)
+        if not configuraciones.MODO_ENVOLVER:
+            self.setWordWrapMode(QTextOption.NoWrap)
+        else:
+            self.setWordWrapMode(QTextOption.WrapAtWordBoundaryOrAnywhere)
         self.setMouseTracking(True)
         doc = self.document()
         op = QTextOption()
@@ -152,8 +158,6 @@ class Editor(QPlainTextEdit, tabitem.TabItem):
         """ Actualiza highlight según un evento del mouse. """
 
         QPlainTextEdit.mouseReleaseEvent(self, event)
-        if event.button() == Qt.LeftButton:
-            self.resaltar_linea_actual()
 
     def resizeEvent(self, event):
         """ Redimensiona la altura del widget. """
@@ -164,6 +168,9 @@ class Editor(QPlainTextEdit, tabitem.TabItem):
         if self.minimapa:
             self.minimapa.ajustar_()
 
+    def devolver_cantidad_de_lineas(self):
+        return self.blockCount()
+
     def texto_abajo(self):
         cursor = self.textCursor()
         cursor.select(QTextCursor.WordUnderCursor)
@@ -172,8 +179,25 @@ class Editor(QPlainTextEdit, tabitem.TabItem):
         palabra = r[0] if r else ''
         return palabra
 
-    #def actualizar_metadata(self, v):
-        #self.resaltar_linea_actual()
+    def buscar_match(self, palabra, banderas, buscarSgt=False):
+        banderas = QTextDocument.FindFlags(banderas)
+        if buscarSgt:
+            self.moveCursor(QTextCursor.NoMove, QTextCursor.KeepAnchor)
+        else:
+            self.moveCursor(QTextCursor.StartOfWord, QTextCursor.KeepAnchor)
+        f = self.find(palabra, banderas)
+        if not f:
+            cursor = self.textCursor()
+            self.moveCursor(QTextCursor.Start)
+            f = self.find(palabra, banderas)
+            if not f:
+                self.setTextCursor(cursor)
+
+    def set_selection_from_pair(self, inicio, fin):
+        cursor = self.textCursor()
+        cursor.setPosition(inicio)
+        cursor.setPosition(fin, QTextCursor.KeepAnchor)
+        self.setTextCursor(cursor)
 
     def paintEvent(self, event):
         """ Evento que dibuja el margen de línea."""
@@ -273,11 +297,12 @@ class Editor(QPlainTextEdit, tabitem.TabItem):
         if p2 is not None:
             self.braces = (p1, p2)
             seleccion = QTextEdit.ExtraSelection()
-            seleccion.format.setForeground(QColor(60, 100, 200))
+            brush = QBrush(Qt.blue, Qt.SolidPattern)
+            seleccion.format.setForeground(brush)
             seleccion.cursor = cursor
             self.extraSelections.append(seleccion)
             seleccion = QTextEdit.ExtraSelection()
-            seleccion.format.setForeground(QColor(60, 100, 200))
+            seleccion.format.setForeground(brush)
             seleccion.format.setBackground(QColor(255, 0, 0))
             seleccion.cursor = self.textCursor()
             seleccion.cursor.setPosition(p2)
@@ -288,7 +313,7 @@ class Editor(QPlainTextEdit, tabitem.TabItem):
             self.braces = (p1,)
             seleccion = QTextEdit.ExtraSelection()
             seleccion.format.setBackground(QColor(255, 0, 0))
-            seleccion.format.setForeground(QColor(60, 100, 200))
+            seleccion.format.setForeground(brush)
             seleccion.cursor = cursor
             self.extraSelections.append(seleccion)
         self.setExtraSelections(self.extraSelections)
@@ -412,7 +437,7 @@ class Editor(QPlainTextEdit, tabitem.TabItem):
 
         cursor = self.textCursor()
         cursor.movePosition(QTextCursor.StartOfLine, QTextCursor.KeepAnchor)
-        texto = str(cursor.selection().toPlainText())
+        texto = unicode(cursor.selection().toPlainText())
 
         if(len(texto) % configuraciones.INDENTACION == 0) and texto.isspace():
             cursor.movePosition(QTextCursor.StartOfLine)

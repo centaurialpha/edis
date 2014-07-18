@@ -5,6 +5,7 @@ from PyQt4.QtGui import QIcon
 from PyQt4.QtCore import QObject
 
 from edis_c import recursos
+from edis_c.interfaz.editor import acciones_
 
 
 class MenuHerramientas(QObject):
@@ -59,3 +60,42 @@ class MenuHerramientas(QObject):
             "titulo": accionTitulo,
             "include": accionInclude
             }
+
+        # Conexión
+        accionSeparador.triggered.connect(self.insertar_separador)
+        accionTitulo.triggered.connect(self.insertar_titulo)
+        accionDMA.triggered.connect(lambda x: self._insertar_fecha(1))
+        accionMDA.triggered.connect(lambda x: self._insertar_fecha(2))
+        accionAMD.triggered.connect(lambda x: self._insertar_fecha(3))
+        accionDMAH.triggered.connect(lambda h: self._insertar_fecha_hora(1))
+        accionMDAH.triggered.connect(lambda h: self._insertar_fecha_hora(2))
+        accionAMDH.triggered.connect(lambda h: self._insertar_fecha_hora(3))
+        accionStdio.triggered.connect(lambda v: self._insertar_include(1))
+        accionStdlib.triggered.connect(lambda v: self._insertar_include(2))
+        accionString.triggered.connect(lambda v: self._insertar_include(3))
+        accionInclude.triggered.connect(lambda v: self._insertar_include(4))
+
+    def insertar_separador(self):
+        editorW = self.ide.contenedor_principal.devolver_editor_actual()
+        if editorW and editorW.hasFocus():
+            acciones_.insertar_linea(editorW)
+
+    def insertar_titulo(self):
+        editorW = self.ide.contenedor_principal.devolver_editor_actual()
+        if editorW and editorW.hasFocus():
+            acciones_.insertar_titulo(editorW)
+
+    def _insertar_fecha(self, formato):
+        editorW = self.ide.contenedor_principal.devolver_editor_actual()
+        if editorW and editorW.hasFocus():
+            acciones_.insertar_fecha(editorW, formato)
+
+    def _insertar_fecha_hora(self, formato):
+        editorW = self.ide.contenedor_principal.devolver_editor_actual()
+        if editorW and editorW.hasFocus():
+            acciones_.insertar_fecha_hora(editorW, formato)
+
+    def _insertar_include(self, valor):
+        editorW = self.ide.contenedor_principal.devolver_editor_actual()
+        if editorW and editorW.hasFocus():
+            acciones_.insertar_include(editorW, valor)

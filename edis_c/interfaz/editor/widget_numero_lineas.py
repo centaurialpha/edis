@@ -215,6 +215,7 @@ class NumeroDeLineaBar(QWidget):
 
         self.linea_superior = contar_linea
 
+        # Código desplegable
         area = self.width() - self.foldArea
         pintar.fillRect(area, 0, 0, self.height(),
             Qt.transparent)

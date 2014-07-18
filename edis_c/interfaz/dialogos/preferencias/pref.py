@@ -148,6 +148,10 @@ class DialogoConfiguracion(QDialog):
         qsettings.setValue('tabs', self.editorConf.checkTabs.isChecked())
         configuraciones.MOSTRAR_TABS = self.editorConf.checkTabs.isChecked()
 
+        # Wrap mode
+        qsettings.setValue('wrap', self.editorConf.checkWrap.isChecked())
+        configuraciones.MODO_ENVOLVER = self.editorConf.checkWrap.isChecked()
+
         # Minimapa
         qsettings.setValue('mini', self.editorConf.checkMini.isChecked())
         configuraciones.MINIMAPA = self.editorConf.checkMini.isChecked()
@@ -156,6 +160,7 @@ class DialogoConfiguracion(QDialog):
         configuraciones.OPAC_MAX = self.editorConf.spinMiniMax.value() / 100.0
         qsettings.setValue('opac_max', configuraciones.OPAC_MAX)
 
+        contenedor_principal.ContenedorMain().resetear_flags_editor()
         qsettings.endGroup()
         contenedor_principal.ContenedorMain().actualizar_margen_editor()
 

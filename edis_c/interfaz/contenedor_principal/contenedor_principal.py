@@ -98,8 +98,8 @@ class __ContenedorMain(QSplitter):
     def check_tabs_sin_guardar(self):
         return self.tab_principal.check_tabs_sin_guardar()
 
-    def devolver_archivos_no_guardados(self):
-        return self.tab_principal.devolver_archivos_no_guardados()
+    def devolver_archivos_sin_guardar(self):
+        return self.tab_principal.devolver_archivos_sin_guardar()
 
     def agregar_tab(self, widget, nombre_tab, tabIndex=None, nAbierta=True):
         return self.tab_actual.agregar_tab(widget, nombre_tab, index=tabIndex)
@@ -320,3 +320,9 @@ class __ContenedorMain(QSplitter):
 
     def esta_abierto(self, nombre):
         return self.tab_principal.esta_abierto(nombre) is not False
+
+    def resetear_flags_editor(self):
+        for i in range(self.tab_principal.count()):
+            widget = self.tab_principal.widget(i)
+            if isinstance(widget, editor.Editor):
+                widget.set_flags()

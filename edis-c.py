@@ -64,6 +64,7 @@ def main():
     configuraciones.cargar_configuraciones()
 
     side = Ide.IDE()
+    #side.comprobar_compilador()
     side.show()
 
     splash.finish(side)
