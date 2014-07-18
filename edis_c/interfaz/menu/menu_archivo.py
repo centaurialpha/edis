@@ -122,7 +122,9 @@ class MenuArchivo(QObject):
             self.ide.contenedor_principal.agregar_editor)
         self.accionNuevoMain.triggered.connect(
             self.archivo_main_c)
-        self.accionAbrir.triggered.connect(
+        #self.accionAbrir.triggered.connect(
+            #self.ide.contenedor_principal.abrir_archivo)
+        self.connect(self.accionAbrir, SIGNAL("triggered()"),
             self.ide.contenedor_principal.abrir_archivo)
         self.accionGuardar.triggered.connect(
             self.ide.contenedor_principal.guardar_archivo)

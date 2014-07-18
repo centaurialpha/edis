@@ -132,7 +132,7 @@ Rectangle
 		Text 
 		{
 			anchors.bottom: parent.bottom
-			width: 307
+			width: 340
 			height: 30
 			font.italic: true
 			anchors.right: parent.right

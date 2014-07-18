@@ -217,7 +217,7 @@ class __ContenedorMain(QSplitter):
     def abrir_archivo(self, nombre='', tabIndex=None):
         extension = recursos.EXTENSIONES  # Filtro
 
-        nombre = str(nombre)
+        nombre = unicode(nombre)
 
         if not nombre:
             direc = os.path.expanduser("~")
@@ -227,9 +227,11 @@ class __ContenedorMain(QSplitter):
 
         else:
             nombres = [nombre]
+        if not nombres:
+            return
 
         for nombre in nombres:
-            nombre = str(nombre)
+            nombre = unicode(nombre)
 
             self.tab_actual.no_esta_abierto = False
             #contenido = self.leer_contenido_archivo(nombre)
@@ -242,7 +244,6 @@ class __ContenedorMain(QSplitter):
             # Reemplaza tabulaciones por espacios en blanco
             editorW.tabulaciones_por_espacios_en_blanco()
             editorW.nuevo_archivo = False
-            self.emit(SIGNAL("currentTabChanged(QString)"), nombre)
 
         self.tab_actual.no_esta_abierto = True
 
