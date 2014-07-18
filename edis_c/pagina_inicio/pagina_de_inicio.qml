@@ -23,6 +23,7 @@ Rectangle
 	id: edis
 
 	property int _padding: (central.width / 4)	
+    property bool compressed: true	
 	signal nuevoArchivo
 	signal abrirArchivo
 
@@ -39,6 +40,22 @@ Rectangle
 		 	color: "#232323" 
 		 }
      }
+
+	onWidthChanged: 
+	{
+        if(edis.width < 500)
+		{
+            compressed = true;
+            edis._padding = (central.width / 2);
+            logo.width = 300;
+        }
+		else
+		{
+            compressed = false;
+            edis._padding = (central.width / 4);
+            logo.width = logo.sourceSize.width;
+        }
+    }
 
 
 
@@ -59,6 +76,7 @@ Rectangle
 			id: fondo
 			source: "fondo.png"
 			anchors.left: parent.left
+			anchors.leftMargin: edis.compressed ? 10 : edis.get_padding(logo);			
 			anchors.top: parent.top
 			opacity: 0.15
 			fillMode: Image.PreserveAspectFit
@@ -70,6 +88,7 @@ Rectangle
 			text: "¡Bienvenido a EDIS-C!"
 			anchors.horizontalCenter: parent.horizontalCenter
             anchors.top: parent.top
+			anchors.topMargin: edis.compressed ? 10: edis.get_padding(saludo);
 			color: "#2e2e2e"
 			font.bold: true
    	        font.pointSize: 45
@@ -94,6 +113,7 @@ Rectangle
 			font.pointSize: 13
 			anchors.horizontalCenter: parent.horizontalCenter
 			anchors.top: logo.bottom
+			anchors.topMargin: edis.compressed ? 10: edis.get_padding(descripcion);
 			
 			text: "EDIS-C es un Entorno de Desarrollo Integrado para el lenguaje C. Es Software Libre y posee herramientas útiles que le ayudaran en la programación con este lenguaje."
 			wrapMode: Text.WordWrap
@@ -104,16 +124,16 @@ Rectangle
 			id: columnaB
 			anchors.top: descripcion.bottom
 			anchors.horizontalCenter: parent.horizontalCenter
+			anchors.topMargin: edis.compressed ? 10: edis.get_padding(columnaB);
 			
-			
-			property int buttonWidth: 110
+			property int buttonWidth: compressed ? (central.width/2) - 20 : (central.width/4) - 50
 			Row 
 			{
 				spacing: 10
 				Boton 
 				{
 					width: columnaB.buttonWidth
-					height: 35
+					height: 30
 					text: "Nuevo archivo"
 					onClicked: nuevoArchivo();
 				}
@@ -121,32 +141,48 @@ Rectangle
 				Boton 
 				{
 					width: columnaB.buttonWidth
-					height: 35
+					height: 30
 					text: "Abrir archivo"
 					onClicked: abrirArchivo();
 				}
 			}
 
 		}
+	}
 
+	Row
+	{
+		spacing: 10
+		anchors.right: parent.right
+		anchors.bottom: parent.bottom
+		anchors.bottomMargin: 20
+		anchors.rightMargin: 30
+		
 		Text 
 		{
-			anchors.bottom: parent.bottom
-			width: 350
-			height: 30
+			id: edis_by
+			height: pyLogo.height			
+			anchors.top: parent.top
+			anchors.topMargin: 0		
 			font.italic: true
-			anchors.right: parent.right
+			anchors.rightMargin: edis.get_padding(edis_by);
 			color: "black"
+			styleColor: "white"
 			text: "EDIS-C está escrito en"
+			verticalAlignment: Text.AlignVCenter		
 		}
 
 		Image 
 		{
 			id: pyLogo
 			source: "pylogo.png"
-			anchors.bottom: parent.bottom
-			anchors.right: parent.right
+			
 		}
 	}
+	function get_padding(item)
+	{
+		var newPadding = (edis._padding - (item.width/2)) - 10;
+		return newPadding;
+	}	
 	
 }
