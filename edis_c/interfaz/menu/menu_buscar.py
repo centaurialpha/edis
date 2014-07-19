@@ -34,11 +34,11 @@ class MenuBuscar(QObject):
         self.ide = ide
 
         # Shortcut
-        self.atajoBuscar = QShortcut(recursos.ATAJOS['buscar'], self.ide)
+        #self.atajoBuscar = QShortcut(recursos.ATAJOS['buscar'], self.ide)
 
         # Conexión
-        self.connect(self.atajoBuscar, SIGNAL("activated()"),
-            dialogo_buscar.DialogoBuscar().show)
+        #self.connect(self.atajoBuscar, SIGNAL("activated()"),
+            #dialogo_buscar.DialogoBuscar().show)
 
         # Acciones #
         # Buscar

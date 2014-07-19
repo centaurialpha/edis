@@ -6,6 +6,7 @@ from PyQt4.QtCore import QObject
 
 from edis_c import recursos
 from edis_c.interfaz.editor import acciones_
+from edis_c.interfaz.dialogos import dialogo_estadisticas
 
 
 class MenuHerramientas(QObject):
@@ -53,6 +54,9 @@ class MenuHerramientas(QObject):
             self.trUtf8("mm-dd-aaaa hh:mm"))
         accionAMDH = menu_fecha_hora.addAction(
             self.trUtf8("aaaa-mm-dd hh:mm"))
+        menu_herramientas.addSeparator()
+        self.accionEstadisticas = menu_herramientas.addAction(
+            self.trUtf8("Estadísticas del documento"))
 
         # Toolbar #
         self.items_toolbar = {
@@ -74,6 +78,8 @@ class MenuHerramientas(QObject):
         accionStdlib.triggered.connect(lambda v: self._insertar_include(2))
         accionString.triggered.connect(lambda v: self._insertar_include(3))
         accionInclude.triggered.connect(lambda v: self._insertar_include(4))
+        self.accionEstadisticas.triggered.connect(
+            self.estadisticas_del_documento)
 
     def insertar_separador(self):
         editorW = self.ide.contenedor_principal.devolver_editor_actual()
@@ -99,3 +105,9 @@ class MenuHerramientas(QObject):
         editorW = self.ide.contenedor_principal.devolver_editor_actual()
         if editorW and editorW.hasFocus():
             acciones_.insertar_include(editorW, valor)
+
+    def estadisticas_del_documento(self):
+        #editorW = self.ide.contenedor_principal.devolver_editor_actual()
+        #if editorW and editorW.hasFocus():
+            #dialogo_estadisticas.DialogoEstadisticas().show()
+        self.ide.contenedor_principal.estadisticas()

@@ -41,6 +41,10 @@ def nombre_de_modulo(nombre_de_archivo):
     return (os.path.splitext(modulo)[0])
 
 
+def devolver_carpeta(nombre_de_archivo):
+    return os.path.dirname(nombre_de_archivo)
+
+
 def archivos_desde_carpeta(carpeta, extension):
     try:
         archivo_extension = os.listdir(carpeta)
@@ -61,6 +65,12 @@ def leer_contenido_de_archivo(archivo):
 
     except:
         return ""
+
+
+def devolver_tam_archivo(archivo):
+    """ Retorna el tamaño del archivo en bytes. """
+    tam = QFile(archivo).size()
+    return tam
 
 
 def escribir_archivo(nombre_de_archivo, contenido):

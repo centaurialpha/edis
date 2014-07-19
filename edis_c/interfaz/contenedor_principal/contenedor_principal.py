@@ -18,13 +18,18 @@
 # along with EDIS-C.  If not, see <http://www.gnu.org/licenses/>.
 
 import os
-
+import re
 from PyQt4.QtGui import QSplitter
 from PyQt4.QtGui import QFileDialog
-#from PyQt4.QtGui import QMessageBox
-#from PyQt4.QtGui import QApplication
+from PyQt4.QtGui import QPushButton
+from PyQt4.QtGui import QDialog
+from PyQt4.QtGui import QVBoxLayout
+from PyQt4.QtGui import QGridLayout
+from PyQt4.QtGui import QLabel
 
+from PyQt4.QtCore import QFile
 from PyQt4.QtCore import SIGNAL
+from PyQt4.QtCore import Qt
 
 from edis_c import recursos
 from edis_c.interfaz import tab_widget
@@ -220,8 +225,12 @@ class __ContenedorMain(QSplitter):
         nombre = unicode(nombre)
 
         if not nombre:
-            direc = os.path.expanduser("~")
 
+            direc = os.path.expanduser("~")
+            Weditor = self.devolver_editor_actual()
+            # Para recordar la última carpeta
+            if Weditor is not None and Weditor.ID:
+                direc = manejador_de_archivo.devolver_carpeta(Weditor.ID)
             nombres = list(QFileDialog.getOpenFileNames(self,
             self.trUtf8("Abrir archivo"), direc, extension))
 
@@ -232,7 +241,6 @@ class __ContenedorMain(QSplitter):
 
         for nombre in nombres:
             nombre = unicode(nombre)
-
             self.tab_actual.no_esta_abierto = False
             #contenido = self.leer_contenido_archivo(nombre)
             contenido = manejador_de_archivo.leer_contenido_de_archivo(
@@ -244,7 +252,7 @@ class __ContenedorMain(QSplitter):
             # Reemplaza tabulaciones por espacios en blanco
             editorW.tabulaciones_por_espacios_en_blanco()
             editorW.nuevo_archivo = False
-
+        self.emit(SIGNAL("currentTabChanged(QString)"), nombre)
         self.tab_actual.no_esta_abierto = True
 
     def guardar_archivo(self, editorW=None):
@@ -327,3 +335,54 @@ class __ContenedorMain(QSplitter):
             widget = self.tab_principal.widget(i)
             if isinstance(widget, editor.Editor):
                 widget.set_flags()
+
+    def estadisticas(self):
+        editor = self.devolver_editor_actual()
+        if editor:
+            # ruta del archivo
+            tex = editor.ID
+            tex = tex.split('/')[-1]  # se obtiene el nombre con la extensión
+            # Tamaño en kb
+            lonB = (float(QFile(editor.ID).size()) / 1024.0)
+
+            cantidad_lineas = editor.devolver_cantidad_de_lineas()
+            # Espacios en blanco y comentarios
+            espacios_com = re.findall('(^\n)|(^(\s+)?//)|(^( +)?($|\n))',
+                unicode(editor.devolver_texto()), re.M)
+            cantidad_esp = len(espacios_com)
+
+            dialogo = QDialog(self)
+            dialogo.setWindowTitle(self.trUtf8("Estadísticas del documento"))
+            layoutV = QVBoxLayout(dialogo)
+            layoutV.setContentsMargins(10, 15, 10, 10)
+            layoutV.setSpacing(10)
+
+            label = QLabel(self.trUtf8("%1").arg(tex))
+            label.setStyleSheet("font-weight: bold; font-size: 24px;")
+            layoutV.addWidget(label)
+            grilla = QGridLayout()
+            grilla.addWidget(QLabel(" "), 1, 0)
+            grilla.addWidget(QLabel(self.trUtf8(
+                "Líneas de código")), 2, 1, Qt.AlignLeft)
+            grilla.addWidget(QLabel(self.trUtf8(
+                "%1").arg(cantidad_lineas - cantidad_esp)),
+                2, 4, Qt.AlignRight)
+            grilla.addWidget(QLabel(self.trUtf8(
+                "Espacios en blanco y comentarios")), 3, 1, Qt.AlignLeft)
+            grilla.addWidget(QLabel(self.trUtf8(
+                "%1").arg(cantidad_esp)), 3, 4, Qt.AlignRight)
+            grilla.addWidget(QLabel(self.trUtf8(
+                "Tamaño (kb)")), 4, 1, Qt.AlignLeft)
+            grilla.addWidget(QLabel(self.trUtf8(
+                "%1").arg(lonB)), 4, 4, alignment=Qt.AlignRight)
+            grilla.addWidget(QLabel(self.trUtf8(
+                "Total de líneas")), 5, 1, Qt.AlignLeft)
+            grilla.addWidget(QLabel(self.trUtf8(
+                "%1").arg(cantidad_lineas)), 5, 4, Qt.AlignRight)
+            boton_aceptar = QPushButton(self.trUtf8("Aceptar"))
+            grilla.addWidget(boton_aceptar, 6, 4)
+            layoutV.addLayout(grilla)
+
+            boton_aceptar.clicked.connect(dialogo.close)
+
+            dialogo.show()
