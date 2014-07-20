@@ -53,9 +53,9 @@ class EjecutarWidget(QWidget):
 
         # Proceso
         self.proceso_actual = None
-        self.ejecutable = None
+        #self.ejecutable = None
         self.proceso = QProcess(self)
-        self.proceso_ejecucion = QProcess(self)
+        #self.proceso_ejecucion = QProcess(self)
 
         # Conexión
         self.connect(self.proceso, SIGNAL("readyReadStandardOutput()"),
@@ -82,9 +82,12 @@ class EjecutarWidget(QWidget):
             self.nombre_archivo)
         self.proceso.setWorkingDirectory(directorio_archivo)
 
+        # Parámetros adicionales
+        parametros_add = list(str(configuraciones.PARAMETROS).split())
         # Parámetros para el compilador
-        parametros_gcc = ['-Wall', '-o'] + configuraciones.PARAMETROS.split()
-
+        parametros_gcc = ['-Wall', '-o']
+        print type(parametros_add)
+        print parametros_gcc
         self.proceso_actual = self.proceso
         self.output.setPlainText(
             'Compilando archivo: %s\nDirectorio: %s ( %s )\n' %
@@ -96,7 +99,7 @@ class EjecutarWidget(QWidget):
 
         # Comenzar proceso
         self.proceso.start('gcc', parametros_gcc + [self.ejecutable] +
-            [self.nombre_archivo])
+            parametros_add + [self.nombre_archivo])
 
         #self.output.setCurrentCharFormat(self.output.formato_ok)
         #self.ejecutable = nombre_ejecutable
@@ -159,7 +162,7 @@ class EjecutarWidget(QWidget):
         """ % (direc + '/' + self.ejecutable)
         bash = """
         #!/bin/sh
-        x-terminal-emulator -x bash -c "%s"
+        xterm -e bash -c "%s"
         """ % dash
         #self.proceso_actual = self.proceso_ejecucion
 
