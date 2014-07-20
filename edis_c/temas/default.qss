@@ -55,3 +55,13 @@ QGroupBox::title
     subcontrol-position: top center;
     padding: 5 10px;
 }
+
+SalidaWidget
+{
+	font-family: monospace;
+    font-size: 10px;
+    color: black;
+    background-color: white;
+    selection-color: white;
+    selection-background-color: #437DCD;
+}

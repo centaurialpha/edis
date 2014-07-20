@@ -27,7 +27,9 @@ from PyQt4.QtGui import QMessageBox
 from PyQt4.QtCore import QObject
 
 import edis_c
+from edis_c.interfaz import estilo
 from edis_c.interfaz.dialogos import dialogo_acerca_de_ide
+from edis_c.interfaz.contenedor_principal import contenedor_principal
 
 
 class MenuAcercade(QObject):
@@ -41,11 +43,15 @@ class MenuAcercade(QObject):
         menu_acerca_de.addSeparator()
         acerca_ide = menu_acerca_de.addAction(self.tr("Acerca de IDE"))
         acerca_qt = menu_acerca_de.addAction(self.tr("Acerca de Qt"))
+        menu_acerca_de.addSeparator()
+        estilo_de_codigo = menu_acerca_de.addAction(
+            self.trUtf8("Estilo de código"))
 
         # Conexiones
         reportarBugs.triggered.connect(self.reportar_bugs_)
         acerca_ide.triggered.connect(self.acerca_de_ide)
         acerca_qt.triggered.connect(self.acerca_de_qt)
+        estilo_de_codigo.triggered.connect(self.estilo_de_codigo)
 
     def reportar_bugs_(self):
         webbrowser.open(edis_c.__reportar_bug__)
@@ -56,3 +62,9 @@ class MenuAcercade(QObject):
 
     def acerca_de_qt(self):
         QMessageBox.aboutQt(self.ide, 'Acerca de Qt')
+
+    def estilo_de_codigo(self):
+#        widget = estilo.EstiloDeCodigo()
+#        contenedor_principal.ContenedorMain().agregar_tab(widget,
+#            self.trUtf8("Estilo de Código"))
+        pass

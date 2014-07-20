@@ -97,24 +97,32 @@ class MenuEjecucion(QObject):
         self.ide.cargar_status_tips(accion, texto)
 
     def metodo_compilar(self):
-        editorW = self.ide.contenedor_principal.devolver_editor_actual()
-        if not editorW:
-            return None
+        Weditor = self.ide.contenedor_principal.devolver_editor_actual()
+        self.emit(SIGNAL("fileExecuted(QString)"), Weditor.ID)
 
-        path_name = self.ide.contenedor_principal.guardar_archivo(editorW)
-        if not path_name:
-            return None
+        if Weditor:
+            self.ide.contenedor_principal.guardar_archivo(Weditor)
+            self.ide.contenedor_secundario.compilar_archivo(Weditor.ID)
+            self.comp = True
+#        editorW = self.ide.contenedor_principal.devolver_editor_actual()
+#        if not editorW:
+#            return None
 
-        self.comp = True
-        nombre_salida = os.path.basename(path_name).split('.')[0]
-        self.ide.contenedor_secundario.compilar_archivo(
-            nombre_salida, path_name)
+#        path_name = self.ide.contenedor_principal.guardar_archivo(editorW)
+#        if not path_name:
+#            return None
+
+#        self.comp = True
+#        nombre_salida = os.path.basename(path_name).split('.')[0]
+#        self.ide.contenedor_secundario.compilar_archivo(
+#            nombre_salida, path_name)
 
     def metodo_ejecutar(self):
-        if self.comp:
-            self.ide.contenedor_secundario.ejecutar_archivo(self.comp)
-        else:
-            self.ide.contenedor_secundario.ejecutar_archivo(self.comp)
+#        if self.comp:
+#            self.ide.contenedor_secundario.ejecutar_archivo(self.comp)
+#        else:
+#            self.ide.contenedor_secundario.ejecutar_archivo(self.comp)
+        self.ide.contenedor_secundario.ejecutar_archivo(self.comp)
 
     def metodo_compilar_ejecutar(self):
         editorW = self.ide.contenedor_principal.devolver_editor_actual()

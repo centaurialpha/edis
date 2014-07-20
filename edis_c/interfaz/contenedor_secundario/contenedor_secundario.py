@@ -87,12 +87,11 @@ class _ContenedorBottom(QWidget):
 
         self.stack.show_display(v)
 
-    def compilar_archivo(self, salida, path):
+    def compilar_archivo(self, path):
         self.item_cambiado(0)
         self.show()
-        self.s = salida
-        self.path = path
-        self.salida_.correr_compilacion(self.s, self.path)
+        self.nombre_archivo = path
+        self.salida_.correr_compilacion(self.nombre_archivo)
 
     def ejecutar_archivo(self, comp):
         if comp:

@@ -93,7 +93,7 @@ ICONOS = {
 COLOR_EDITOR = {
     "texto": "#666",
     "fondo": "#ffffff",
-    "salida-exitosa": "#86c2ff",
+    "salida-exitosa": "#5acd14",
     "salida-error": "red",
     "fondo-input": "#1e1e1e",
     "linea-actual": "#919191",

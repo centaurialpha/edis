@@ -89,6 +89,8 @@ MOSTRAR_PAGINA_INICIO = True
 IDIOMAS = []
 IDIOMA = ""
 
+PARAMETROS = ""
+
 
 ###############################################################################
 def cargar_configuraciones():

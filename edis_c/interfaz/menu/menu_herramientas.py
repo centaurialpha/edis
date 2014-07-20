@@ -6,7 +6,7 @@ from PyQt4.QtCore import QObject
 
 from edis_c import recursos
 from edis_c.interfaz.editor import acciones_
-from edis_c.interfaz.dialogos import dialogo_estadisticas
+#from edis_c.interfaz.dialogos import dialogo_estadisticas
 
 
 class MenuHerramientas(QObject):

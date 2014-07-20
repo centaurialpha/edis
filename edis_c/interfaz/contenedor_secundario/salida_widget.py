@@ -19,7 +19,7 @@
 # along with EDIS-C.  If not, see <http://www.gnu.org/licenses/>.
 
 import time
-import sys
+#import sys
 import os
 
 from PyQt4.QtGui import QPlainTextEdit
@@ -29,6 +29,7 @@ from PyQt4.QtGui import QTextCharFormat
 from PyQt4.QtGui import QTextCursor
 from PyQt4.QtGui import QColor
 from PyQt4.QtGui import QBrush
+from PyQt4.QtGui import QFont
 
 from PyQt4.QtCore import QProcess
 from PyQt4.QtCore import SIGNAL
@@ -36,6 +37,7 @@ from PyQt4.QtCore import Qt
 
 from edis_c import recursos
 from edis_c.nucleo import configuraciones
+from edis_c.nucleo import manejador_de_archivo
 
 
 class EjecutarWidget(QWidget):
@@ -65,25 +67,53 @@ class EjecutarWidget(QWidget):
         self.connect(self.proceso, SIGNAL("error(QProcess::ProcessError)"),
             self.ejecucion_error)
 
-    def correr_compilacion(self, nombre_ejecutable, path):
+    def correr_compilacion(self, nombre_archivo):
         """ Se corre el comando gcc para la compilación """
 
+        # Dirección del archivo a compilar
+        self.nombre_archivo = nombre_archivo
+        # Nombre del archivo sin extensión
+        self.ejecutable = (self.nombre_archivo.split('/')[-1]).split('.')[0]
+
         self.output.setCurrentCharFormat(self.output.formato_ok)
-        self.ejecutable = nombre_ejecutable
 
-        if sys.platform is not configuraciones.LINUX:
-            path = "\"%s\"" % path
+        # Para generar el ejecutable en la carpeta del fuente
+        directorio_archivo = manejador_de_archivo.devolver_carpeta(
+            self.nombre_archivo)
+        self.proceso.setWorkingDirectory(directorio_archivo)
 
-        comando = 'gcc -Wall -o %s %s' % (self.ejecutable, path)
+        # Parámetros para el compilador
+        parametros_gcc = ['-Wall', '-o'] + configuraciones.PARAMETROS.split()
+
         self.proceso_actual = self.proceso
-        self.proceso_actual.start(comando)
-
-        archivo = path.split('/')[-1]
         self.output.setPlainText(
-            'Compilando archivo:  %s\nDirectorio: %s ( %s )\n' %
-            (archivo, os.path.dirname(path), time.ctime()))
+            'Compilando archivo: %s\nDirectorio: %s ( %s )\n' %
+            (self.nombre_archivo.split('/')[-1], self.nombre_archivo,
+                time.ctime()))
         self.output.moveCursor(QTextCursor.Down)
         self.output.moveCursor(QTextCursor.Down)
+        self.output.moveCursor(QTextCursor.Down)
+
+        # Comenzar proceso
+        self.proceso.start('gcc', parametros_gcc + [self.ejecutable] +
+            [self.nombre_archivo])
+
+        #self.output.setCurrentCharFormat(self.output.formato_ok)
+        #self.ejecutable = nombre_ejecutable
+
+        #if sys.platform is not configuraciones.LINUX:
+            #path = "\"%s\"" % path
+
+        #comando = 'gcc -Wall -o %s %s' % (self.ejecutable, path)
+        #self.proceso_actual = self.proceso
+        #self.proceso_actual.start(comando)
+
+        #archivo = path.split('/')[-1]
+        #self.output.setPlainText(
+            #'Compilando archivo:  %s\nDirectorio: %s ( %s )\n' %
+            #(archivo, os.path.dirname(path), time.ctime()))
+        #self.output.moveCursor(QTextCursor.Down)
+        #self.output.moveCursor(QTextCursor.Down)
 
     def ejecucion_terminada(self, codigoError, exitStatus):
         """ valores de codigoError
@@ -92,6 +122,7 @@ class EjecutarWidget(QWidget):
         """
         formato = QTextCharFormat()
         formato.setAnchor(True)
+        formato.setFontWeight(QFont.Bold)
 
         self.output.textCursor().insertText('\n\n')
         if exitStatus == QProcess.NormalExit and codigoError == 0:
@@ -116,25 +147,25 @@ class EjecutarWidget(QWidget):
         Arreglar: Para que corra el programa con QProcess y además que borre
         el código de salida anterior con (rm $0).
         """
-        ejecutar = "./"
+        direc = manejador_de_archivo.devolver_carpeta(self.nombre_archivo)
+        #ejecutar = "./"
         dash = """
         #!/bin/sh
-        %s%s
+        %s
         echo \n\n\n
         echo '------------------------------'
-        echo 'Programa terminado! Salida: $?'
         echo 'Presione <Enter> para salir'
         read variable_al_pp
-        """ % (ejecutar, self.ejecutable)
+        """ % (direc + '/' + self.ejecutable)
         bash = """
         #!/bin/sh
-        gnome-terminal -x bash -c "%s"
+        x-terminal-emulator -x bash -c "%s"
         """ % dash
         #self.proceso_actual = self.proceso_ejecucion
 
         #comando = 'xterm -e bash -c ./%s'
         #self.proceso_actual.start(bash)
-        os.popen4(bash)
+        os.popen(bash)
 
 
 class SalidaWidget(QPlainTextEdit):
@@ -149,8 +180,11 @@ class SalidaWidget(QPlainTextEdit):
         #self.formato_ok.setForeground(recursos.COLOR_EDITOR['texto'])
 
         # Formato para la salida de error
-        self.error_f = QTextCharFormat()
-        self.error_f.setForeground(Qt.red)
+        self.formato_error = QTextCharFormat()
+        self.formato_error.setAnchor(True)
+        self.formato_error.setFontUnderline(True)
+        self.formato_error.setUnderlineColor(Qt.red)
+        self.formato_error.setForeground(Qt.blue)
 
         # Se carga el estilo
         self.cargar_estilo()
@@ -158,7 +192,7 @@ class SalidaWidget(QPlainTextEdit):
     def cargar_estilo(self):
         """ Carga estilo de color de QPlainTextEdit """
 
-        tema = 'QPlainTextEdit {color: #afb4af; background-color: #1d1f21;}' \
+        tema = 'QPlainTextEdit {color: #333; background-color: #ffffff;}' \
         'selection-color: #FFFFFF; selection-background-color: #009B00;'
 
         self.setStyleSheet(tema)
@@ -167,7 +201,7 @@ class SalidaWidget(QPlainTextEdit):
 
         cp = self._parent.proceso
         text = cp.readAllStandardOutput().data()
-        self.textCursor().insertText(text, self.error_f)
+        self.textCursor().insertText(text, self.formato_error)
 
     def error_estandar(self):
 
@@ -175,4 +209,4 @@ class SalidaWidget(QPlainTextEdit):
         cursor = self.textCursor()
         proceso = self._parent.proceso
         texto = proceso.readAllStandardError().data().decode(codificacion)
-        cursor.insertText(texto, self.error_f)
+        cursor.insertText(texto, self.formato_error)

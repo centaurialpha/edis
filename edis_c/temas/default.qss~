@@ -46,6 +46,7 @@ QGroupBox
     border: 1px solid gray;
     border-radius: 5px;
     margin-top: 10px;
+	padding: 5px;
 }
 
 QGroupBox::title 
