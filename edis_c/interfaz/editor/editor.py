@@ -32,11 +32,12 @@ from PyQt4.QtGui import QFont
 from PyQt4.QtGui import QTextCursor
 from PyQt4.QtGui import QTextOption
 from PyQt4.QtGui import QTextDocument
-from PyQt4.QtGui import QBrush
+from PyQt4.QtGui import QCompleter
 
 from PyQt4.QtCore import Qt
 from PyQt4.QtCore import SIGNAL
 from PyQt4.QtCore import QRect
+from PyQt4.QtCore import QString
 
 from PyQt4.Qt import QVariant
 from PyQt4.Qt import QTextFormat
@@ -48,6 +49,7 @@ from edis_c.interfaz.editor import widget_numero_lineas
 from edis_c.interfaz.editor import minimapa
 from edis_c.interfaz.editor import acciones_
 from edis_c.interfaz.editor.highlighter import Highlighter
+from edis_c.interfaz import completador
 
 # Diccionario teclas
 TECLA = {
@@ -86,6 +88,9 @@ class Editor(QPlainTextEdit, tabitem.TabItem):
         # Carga el tema de editor
         self.estilo_editor()
 
+        self.completador = None
+        if not self.completador:
+            self.set_completador(completador.Completador())
         # Carga el tipo de letra
         self._cargar_fuente(configuraciones.FUENTE, configuraciones.TAM_FUENTE)
 
@@ -389,13 +394,64 @@ class Editor(QPlainTextEdit, tabitem.TabItem):
             #self._auto_indentar(evento)
         #else:
             #QPlainTextEdit.keyPressEvent(self, evento)
+        if self.completador and self.completador.popup().isVisible():
+            if evento.key() in (
+            Qt.Key_Enter,
+            Qt.Key_Return,
+            Qt.Key_Escape,
+            Qt.Key_Tab,
+            Qt.Key_Backtab):
+                evento.ignore()
+                return
+
+        ## has ctrl-E been pressed??
+        isShortcut = (evento.modifiers() == Qt.ControlModifier and
+                      evento.key() == Qt.Key_E)
+        if (not self.completador or not isShortcut):
+            QPlainTextEdit.keyPressEvent(self, evento)
+
+        ctrlOrShift = evento.modifiers() in (Qt.ControlModifier,
+                Qt.ShiftModifier)
+        if ctrlOrShift and evento.text().isEmpty():
+            # ctrl or shift key on it's own
+            return
+
+        eow = QString("~!@#$%^&*()_+{}|:\"<>?,./;'[]\\-=")  # fin de palabra
+
+        hasModifier = ((evento.modifiers() != Qt.NoModifier) and
+                        not ctrlOrShift)
+
+        completionPrefix = self.textUnderCursor()
+
+        if (not isShortcut and (hasModifier or evento.text().isEmpty() or
+        completionPrefix.length() < 3 or
+        eow.contains(evento.text().right(1)))):
+            self.completador.popup().hide()
+            return
+
+        if (completionPrefix != self.completador.completionPrefix()):
+            self.completador.setCompletionPrefix(completionPrefix)
+            popup = self.completador.popup()
+            popup.setCurrentIndex(
+                self.completador.completionModel().index(0, 0))
+
+        cr = self.cursorRect()
+        cr.setWidth(self.completador.popup().sizeHintForColumn(0)
+            + self.completador.popup().verticalScrollBar().sizeHint().width())
+        self.completador.complete(cr)  # popup it up!
+
         if self.presionadoAntes.get(evento.key(), lambda a: False)(evento):
             self.emit(SIGNAL("keyPressEvent(QEvent)"), evento)
             return
-        QPlainTextEdit.keyPressEvent(self, evento)
+        #QPlainTextEdit.keyPressEvent(self, evento)
 
         self.presionadoDespues.get(evento.key(), lambda a: False)(evento)
         self.emit(SIGNAL("keyPressEvent(QEvent)"), evento)
+
+    def textUnderCursor(self):
+        tc = self.textCursor()
+        tc.select(QTextCursor.WordUnderCursor)
+        return tc.selectedText()
 
     def _indentar(self, evento):
         """ Inserta 4 espacios si se presiona la tecla Tab """
@@ -581,6 +637,28 @@ class Editor(QPlainTextEdit, tabitem.TabItem):
             return espacio.group() + indentacion
 
         return indentacion
+
+    def set_completador(self, completador):
+        if self.completador:
+            self.disconnect(self.completador, 0, self, 0)
+        if not completador:
+            return
+
+        completador.setWidget(self)
+        completador.setCompletionMode(QCompleter.PopupCompletion)
+        completador.setCaseSensitivity(Qt.CaseInsensitive)
+        self.completador = completador
+        self.connect(self.completador,
+            SIGNAL("activated(const QString&)"), self.insertCompletion)
+
+    def insertCompletion(self, completion):
+        tc = self.textCursor()
+        extra = (completion.length() -
+            self.completador.completionPrefix().length())
+        tc.movePosition(QTextCursor.Left)
+        tc.movePosition(QTextCursor.EndOfWord)
+        tc.insertText(completion.right(extra))
+        self.setTextCursor(tc)
 
 
 def crear_editor(nombre_archivo=''):

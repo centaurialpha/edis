@@ -107,6 +107,7 @@ def cargar_configuraciones():
     global OPAC_MAX
     global MOSTRAR_PAGINA_INICIO
     global IDIOMA
+    global PARAMETROS
 
     qsettings = QSettings(recursos.CONFIGURACIONES_PATH, QSettings.IniFormat)
 
@@ -136,4 +137,7 @@ def cargar_configuraciones():
         0.9, type=float))
     MOSTRAR_PAGINA_INICIO = qsettings.value(
         'configuraciones/general/paginaInicio', True, type=bool)
-    IDIOMA = qsettings.value('preferencias/general/idioma', '', type='QString')
+    IDIOMA = qsettings.value('configuraciones/general/idioma',
+        '', type='QString')
+    PARAMETROS = qsettings.value('configuraciones/compilacion',
+        defaultValue='', type='QString')

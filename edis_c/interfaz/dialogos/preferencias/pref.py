@@ -40,6 +40,7 @@ from edis_c.nucleo import configuraciones
 from edis_c.interfaz.contenedor_principal import contenedor_principal
 from edis_c.interfaz.dialogos.preferencias import preferencias_general
 from edis_c.interfaz.dialogos.preferencias import preferencias_editor
+from edis_c.interfaz.dialogos.preferencias import preferencias_compilacion
 from edis_c.interfaz.dialogos.preferencias import preferencias_tema
 
 
@@ -53,6 +54,7 @@ class DialogoConfiguracion(QDialog):
 
         self.generalConf = preferencias_general.ConfiguracionGeneral(self)
         self.editorConf = preferencias_editor.ConfiguracionEditor(self)
+        self.compiConf = preferencias_compilacion.ConfiguracionEjecucion(self)
         self.temaConf = preferencias_tema.ConfiguracionTema(self)
 
         self.contenidos = QListWidget()
@@ -65,6 +67,7 @@ class DialogoConfiguracion(QDialog):
         self.stack = QStackedWidget()
         self.stack.addWidget(self.generalConf)
         self.stack.addWidget(self.editorConf)
+        self.stack.addWidget(self.compiConf)
         self.stack.addWidget(self.temaConf)
 
         boton_guardar = QPushButton(self.trUtf8("Guardar"))
@@ -100,7 +103,10 @@ class DialogoConfiguracion(QDialog):
 
     def guardar(self):
         qsettings = QSettings()
+        qsettings.beginGroup('configuraciones')
         qsettings.beginGroup('editor')
+        qsettings.beginGroup('general')
+        qsettings.beginGroup('compilacion')
         e = contenedor_principal.ContenedorMain().devolver_editor_actual()
 
         # General
@@ -160,8 +166,20 @@ class DialogoConfiguracion(QDialog):
         configuraciones.OPAC_MAX = self.editorConf.spinMiniMax.value() / 100.0
         qsettings.setValue('opac_max', configuraciones.OPAC_MAX)
 
-        contenedor_principal.ContenedorMain().resetear_flags_editor()
+        # Compilación
+        parametros = ''
+        if self.compiConf.checkWerror.isChecked():
+            parametros += ' -Werror'
+        if self.compiConf.checkO2.isChecked():
+            parametros += ' -O2'
+        configuraciones.PARAMETROS = parametros
+        qsettings.setValue('compilacion', parametros)
+
         qsettings.endGroup()
+        qsettings.endGroup()
+        qsettings.endGroup()
+        qsettings.endGroup()
+        contenedor_principal.ContenedorMain().resetear_flags_editor()
         contenedor_principal.ContenedorMain().actualizar_margen_editor()
 
         self.close()
@@ -178,6 +196,11 @@ class DialogoConfiguracion(QDialog):
         configEditor.setText(self.trUtf8("Editor"))
         configEditor.setTextAlignment(Qt.AlignHCenter)
         configEditor.setFlags(Qt.ItemIsSelectable | Qt.ItemIsEnabled)
+
+        configCompilador = QListWidgetItem(self.contenidos)
+        configCompilador.setText(self.trUtf8("Compilador"))
+        configCompilador.setTextAlignment(Qt.AlignHCenter)
+        configCompilador.setFlags(Qt.ItemIsSelectable | Qt.ItemIsEnabled)
 
         configTema = QListWidgetItem(self.contenidos)
         configTema.setIcon(QIcon(recursos.ICONOS['tema']))

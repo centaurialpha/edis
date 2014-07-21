@@ -53,9 +53,7 @@ class EjecutarWidget(QWidget):
 
         # Proceso
         self.proceso_actual = None
-        #self.ejecutable = None
         self.proceso = QProcess(self)
-        #self.proceso_ejecucion = QProcess(self)
 
         # Conexión
         self.connect(self.proceso, SIGNAL("readyReadStandardOutput()"),
@@ -86,8 +84,6 @@ class EjecutarWidget(QWidget):
         parametros_add = list(str(configuraciones.PARAMETROS).split())
         # Parámetros para el compilador
         parametros_gcc = ['-Wall', '-o']
-        print type(parametros_add)
-        print parametros_gcc
         self.proceso_actual = self.proceso
         self.output.setPlainText(
             'Compilando archivo: %s\nDirectorio: %s ( %s )\n' %
@@ -96,6 +92,7 @@ class EjecutarWidget(QWidget):
         self.output.moveCursor(QTextCursor.Down)
         self.output.moveCursor(QTextCursor.Down)
         self.output.moveCursor(QTextCursor.Down)
+        self.output.textCursor().insertBlock()
 
         # Comenzar proceso
         self.proceso.start('gcc', parametros_gcc + [self.ejecutable] +
@@ -126,6 +123,7 @@ class EjecutarWidget(QWidget):
         formato = QTextCharFormat()
         formato.setAnchor(True)
         formato.setFontWeight(QFont.Bold)
+        formato.setFontPointSize(11)
 
         self.output.textCursor().insertText('\n\n')
         if exitStatus == QProcess.NormalExit and codigoError == 0:
