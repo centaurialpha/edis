@@ -87,7 +87,7 @@ class Editor(QPlainTextEdit, tabitem.TabItem):
         self.extraSelections = []
         # Carga el tema de editor
         self.estilo_editor()
-
+        # Completador
         self.completador = None
         if not self.completador:
             self.set_completador(completador.Completador())
@@ -388,70 +388,58 @@ class Editor(QPlainTextEdit, tabitem.TabItem):
                 braces.append(tkn_rep)
 
     def keyPressEvent(self, evento):
-        #if evento.key() == Qt.Key_Tab:
-            #self._indentar(evento)
-        #elif evento.key() == Qt.Key_Return:
-            #self._auto_indentar(evento)
-        #else:
+        #if self.completador and self.completador.popup().isVisible():
+            #if evento.key() in (
+            #Qt.Key_Enter,
+            #Qt.Key_Return,
+            #Qt.Key_Escape,
+            #Qt.Key_Tab,
+            #Qt.Key_Backtab):
+                #evento.ignore()
+                #return
+
+        #isShortcut = (evento.modifiers() == Qt.ControlModifier and
+                      #evento.key() == Qt.Key_E)
+        #if (not self.completador or not isShortcut):
+
             #QPlainTextEdit.keyPressEvent(self, evento)
-        if self.completador and self.completador.popup().isVisible():
-            if evento.key() in (
-            Qt.Key_Enter,
-            Qt.Key_Return,
-            Qt.Key_Escape,
-            Qt.Key_Tab,
-            Qt.Key_Backtab):
-                evento.ignore()
-                return
 
-        ## has ctrl-E been pressed??
-        isShortcut = (evento.modifiers() == Qt.ControlModifier and
-                      evento.key() == Qt.Key_E)
-        if (not self.completador or not isShortcut):
-            QPlainTextEdit.keyPressEvent(self, evento)
+        #ctrlOrShift = evento.modifiers() in (Qt.ControlModifier,
+                #Qt.ShiftModifier)
+        #if ctrlOrShift and evento.text().isEmpty():
+            #return
 
-        ctrlOrShift = evento.modifiers() in (Qt.ControlModifier,
-                Qt.ShiftModifier)
-        if ctrlOrShift and evento.text().isEmpty():
-            # ctrl or shift key on it's own
-            return
+        #eow = QString("~!@#$%^&*()_+{}|:\"<>?,./;'[]\\-=")  # fin de palabra
 
-        eow = QString("~!@#$%^&*()_+{}|:\"<>?,./;'[]\\-=")  # fin de palabra
+        #hasModifier = ((evento.modifiers() != Qt.NoModifier) and
+                        #not ctrlOrShift)
 
-        hasModifier = ((evento.modifiers() != Qt.NoModifier) and
-                        not ctrlOrShift)
+        #completionPrefix = QString(self.texto_abajo())
 
-        completionPrefix = self.textUnderCursor()
+        #if (not isShortcut and (hasModifier or evento.text().isEmpty() or
+        #completionPrefix.length() < 3 or
+        #eow.contains(evento.text().right(1)))):
+            #self.completador.popup().hide()
+            #return
 
-        if (not isShortcut and (hasModifier or evento.text().isEmpty() or
-        completionPrefix.length() < 3 or
-        eow.contains(evento.text().right(1)))):
-            self.completador.popup().hide()
-            return
+        #if (completionPrefix != self.completador.completionPrefix()):
+            #self.completador.setCompletionPrefix(completionPrefix)
+            #popup = self.completador.popup()
+            #popup.setCurrentIndex(
+                #self.completador.completionModel().index(0, 0))
 
-        if (completionPrefix != self.completador.completionPrefix()):
-            self.completador.setCompletionPrefix(completionPrefix)
-            popup = self.completador.popup()
-            popup.setCurrentIndex(
-                self.completador.completionModel().index(0, 0))
-
-        cr = self.cursorRect()
-        cr.setWidth(self.completador.popup().sizeHintForColumn(0)
-            + self.completador.popup().verticalScrollBar().sizeHint().width())
-        self.completador.complete(cr)  # popup it up!
+        #cr = self.cursorRect()
+        #cr.setWidth(self.completador.popup().sizeHintForColumn(0)
+            #+ self.completador.popup().verticalScrollBar().sizeHint().width())
+        #self.completador.complete(cr)
 
         if self.presionadoAntes.get(evento.key(), lambda a: False)(evento):
             self.emit(SIGNAL("keyPressEvent(QEvent)"), evento)
             return
-        #QPlainTextEdit.keyPressEvent(self, evento)
+        QPlainTextEdit.keyPressEvent(self, evento)
 
         self.presionadoDespues.get(evento.key(), lambda a: False)(evento)
         self.emit(SIGNAL("keyPressEvent(QEvent)"), evento)
-
-    def textUnderCursor(self):
-        tc = self.textCursor()
-        tc.select(QTextCursor.WordUnderCursor)
-        return tc.selectedText()
 
     def _indentar(self, evento):
         """ Inserta 4 espacios si se presiona la tecla Tab """
