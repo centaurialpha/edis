@@ -186,6 +186,15 @@ class Editor(QPlainTextEdit, tabitem.TabItem):
         if self.minimapa:
             self.minimapa.ajustar_()
 
+    def wheelEvent(self, evento):
+        if evento.modifiers() == Qt.ControlModifier:
+            if evento.delta() == 120:
+                self.zoom_mas()
+            elif evento.delta() == -120:
+                self.zoom_menos()
+            evento.ignore()
+        QPlainTextEdit.wheelEvent(self, evento)
+
     def devolver_cantidad_de_lineas(self):
         return self.blockCount()
 
@@ -653,7 +662,7 @@ class Editor(QPlainTextEdit, tabitem.TabItem):
         completador.setCaseSensitivity(Qt.CaseInsensitive)
         self.completador = completador
         self.connect(self.completador,
-            SIGNAL("activated(const QString&)"), self.insertar_completador)
+            SIGNAL("activated(const QString&)"), self.insertar_completado)
 
     def insertar_completado(self, completion):
         tc = self.textCursor()
