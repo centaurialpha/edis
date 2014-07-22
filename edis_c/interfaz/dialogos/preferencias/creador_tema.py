@@ -24,6 +24,7 @@ class CreadorDeTemaEditor(QWidget):
         super(CreadorDeTemaEditor, self).__init__()
         self.parent = parent
         layoutV = QVBoxLayout(self)
+        layoutV.setContentsMargins(0, 0, 0, 0)
         scroll = QScrollArea()
         layoutV.addWidget(scroll)
 
@@ -39,6 +40,22 @@ class CreadorDeTemaEditor(QWidget):
         boton_cadena = QPushButton(self.trUtf8("Color"))
         self.linea_braces = QLineEdit()
         boton_braces = QPushButton(self.trUtf8("Color"))
+        self.linea_texto = QLineEdit()
+        boton_texto = QPushButton(self.trUtf8("Color"))
+        self.linea_fondoEditor = QLineEdit()
+        boton_fondoEditor = QPushButton(self.trUtf8("Color"))
+        self.linea_seleccion = QLineEdit()
+        boton_seleccion = QPushButton(self.trUtf8("Color"))
+        self.linea_fondoSeleccion = QLineEdit()
+        boton_fondoSeleccion = QPushButton(self.trUtf8("Color"))
+        self.linea_lineaActual = QLineEdit()
+        boton_lineaActual = QPushButton(self.trUtf8("Color"))
+        self.linea_sidebar = QLineEdit()
+        boton_sidebar = QPushButton(self.trUtf8("Color"))
+        self.linea_numeroLinea = QLineEdit()
+        boton_numeroLinea = QPushButton(self.trUtf8("Color"))
+        self.linea_margen = QLineEdit()
+        boton_margen = QPushButton(self.trUtf8("Color"))
 
         layoutH = QHBoxLayout()
         layoutH.addWidget(QLabel(self.trUtf8("Nombre:")))
@@ -66,6 +83,30 @@ class CreadorDeTemaEditor(QWidget):
         grilla.addWidget(QLabel(self.trUtf8("Braces:")), 5, 0)
         grilla.addWidget(self.linea_braces, 5, 1)
         grilla.addWidget(boton_braces, 5, 2)
+        grilla.addWidget(QLabel(self.trUtf8("Texto editor:")), 6, 0)
+        grilla.addWidget(self.linea_texto, 6, 1)
+        grilla.addWidget(boton_texto, 6, 2)
+        grilla.addWidget(QLabel(self.trUtf8("Fondo editor:")), 7, 0)
+        grilla.addWidget(self.linea_fondoEditor, 7, 1)
+        grilla.addWidget(boton_fondoEditor, 7, 2)
+        grilla.addWidget(QLabel(self.trUtf8("Texto seleccionado:")), 8, 0)
+        grilla.addWidget(self.linea_seleccion, 8, 1)
+        grilla.addWidget(boton_seleccion, 8, 2)
+        grilla.addWidget(QLabel(self.trUtf8("Fondo selección:")), 9, 0)
+        grilla.addWidget(self.linea_fondoSeleccion, 9, 1)
+        grilla.addWidget(boton_fondoSeleccion, 9, 2)
+        grilla.addWidget(QLabel(self.trUtf8("Linea actual:")), 10, 0)
+        grilla.addWidget(self.linea_lineaActual, 10, 1)
+        grilla.addWidget(boton_lineaActual, 10, 2)
+        grilla.addWidget(QLabel(self.trUtf8("Sidebar:")), 11, 0)
+        grilla.addWidget(self.linea_sidebar, 11, 1)
+        grilla.addWidget(boton_sidebar, 11, 2)
+        grilla.addWidget(QLabel(self.trUtf8("Número sidebar:")), 12, 0)
+        grilla.addWidget(self.linea_numeroLinea, 12, 1)
+        grilla.addWidget(boton_numeroLinea, 12, 2)
+        grilla.addWidget(QLabel(self.trUtf8("Márgen:")), 13, 0)
+        grilla.addWidget(self.linea_margen, 13, 1)
+        grilla.addWidget(boton_margen, 13, 2)
 
         frame = QFrame()
         layoutV = QVBoxLayout()
@@ -89,10 +130,59 @@ class CreadorDeTemaEditor(QWidget):
             lambda: self.estilo_boton(boton_cadena, self.linea_cadena.text()))
         self.linea_braces.textChanged[QString].connect(
             lambda: self.estilo_boton(boton_braces, self.linea_braces.text()))
+        self.linea_texto.textChanged[QString].connect(
+            lambda: self.estilo_boton(boton_texto, self.linea_texto.text()))
+        self.linea_fondoEditor.textChanged[QString].connect(
+            lambda: self.estilo_boton(boton_fondoEditor,
+                self.linea_fondoEditor.text()))
+        self.linea_seleccion.textChanged[QString].connect(
+            lambda: self.estilo_boton(boton_seleccion,
+                self.linea_seleccion.text()))
+        self.linea_fondoSeleccion.textChanged[QString].connect(
+            lambda: self.estilo_boton(boton_fondoSeleccion,
+                self.linea_fondoSeleccion.text()))
+        self.linea_lineaActual.textChanged[QString].connect(
+            lambda: self.estilo_boton(boton_lineaActual,
+                self.linea_lineaActual.text()))
+        self.linea_sidebar.textChanged[QString].connect(
+            lambda: self.estilo_boton(boton_sidebar,
+                self.linea_sidebar.text()))
+        self.linea_numeroLinea.textChanged[QString].connect(
+            lambda: self.estilo_boton(boton_numeroLinea,
+                self.linea_numeroLinea.text()))
+        self.linea_margen.textChanged[QString].connect(
+            lambda: self.estilo_boton(boton_margen,
+                self.linea_margen.text()))
 
         # Elección de color
         boton_palabraReservada.clicked.connect(lambda: self.elegir_color(
             self.linea_palabraReservada, boton_palabraReservada))
+        boton_numero.clicked.connect(lambda: self.elegir_color(
+            self.linea_numero, boton_numero))
+        boton_include.clicked.connect(lambda: self.elegir_color(
+            self.linea_include, boton_include))
+        boton_comentario.clicked.connect(lambda: self.elegir_color(
+            self.linea_comentario, boton_comentario))
+        boton_cadena.clicked.connect(lambda: self.elegir_color(
+            self.linea_cadena, boton_cadena))
+        boton_braces.clicked.connect(lambda: self.elegir_color(
+            self.linea_braces, boton_braces))
+        boton_texto.clicked.connect(lambda: self.elegir_color(
+            self.linea_texto, boton_texto))
+        boton_fondoEditor.clicked.connect(lambda: self.elegir_color(
+            self.linea_fondoEditor, boton_fondoEditor))
+        boton_seleccion.clicked.connect(lambda: self.elegir_color(
+            self.linea_seleccion, boton_seleccion))
+        boton_fondoSeleccion.clicked.connect(lambda: self.elegir_color(
+            self.linea_fondoSeleccion, boton_fondoSeleccion))
+        boton_lineaActual.clicked.connect(lambda: self.elegir_color(
+            self.linea_lineaActual, boton_lineaActual))
+        boton_sidebar.clicked.connect(lambda: self.elegir_color(
+            self.linea_sidebar, boton_sidebar))
+        boton_numeroLinea.clicked.connect(lambda: self.elegir_color(
+            self.linea_numeroLinea, boton_numeroLinea))
+        boton_margen.clicked.connect(lambda: self.elegir_color(
+            self.linea_margen, boton_margen))
 
     def aplicar_estilo_de_color(self):
         self.linea_palabraReservada.setText(
@@ -108,8 +198,27 @@ class CreadorDeTemaEditor(QWidget):
             recursos.TEMA_EDITOR['cadena']))
         self.linea_braces.setText(recursos.NUEVO_TEMA.get('braces',
             recursos.TEMA_EDITOR['braces']))
+        self.linea_texto.setText(recursos.NUEVO_TEMA.get('texto-editor',
+            recursos.TEMA_EDITOR['texto-editor']))
+        self.linea_fondoEditor.setText(recursos.NUEVO_TEMA.get('fondo-editor',
+            recursos.TEMA_EDITOR['fondo-editor']))
+        self.linea_seleccion.setText(recursos.NUEVO_TEMA.get('seleccion-editor',
+            recursos.TEMA_EDITOR['seleccion-editor']))
+        self.linea_fondoSeleccion.setText(
+            recursos.NUEVO_TEMA.get('fondo-seleccion-editor',
+                recursos.TEMA_EDITOR['fondo-seleccion-editor']))
+        self.linea_lineaActual.setText(recursos.NUEVO_TEMA.get('linea-actual',
+            recursos.TEMA_EDITOR['linea-actual']))
+        self.linea_sidebar.setText(recursos.NUEVO_TEMA.get('widget-num-linea',
+            recursos.TEMA_EDITOR['widget-num-linea']))
+        self.linea_numeroLinea.setText(recursos.NUEVO_TEMA.get('numero-linea',
+            recursos.TEMA_EDITOR['numero-linea']))
+        self.linea_margen.setText(recursos.NUEVO_TEMA.get('margen-linea',
+            recursos.TEMA_EDITOR['margen-linea']))
 
     def estilo_boton(self, boton, nombre):
+        """ Pinta los botones """
+
         if QColor(nombre).isValid():
             boton.setAutoFillBackground(True)
             estilo = ('background: %s; border-radius: 5px; '
@@ -139,7 +248,15 @@ class CreadorDeTemaEditor(QWidget):
             "include": str(self.linea_include.text()),
             "comentario": str(self.linea_comentario.text()),
             "cadena": str(self.linea_cadena.text()),
-            "braces": str(self.linea_braces.text())
+            "braces": str(self.linea_braces.text()),
+            "texto-editor": str(self.linea_texto.text()),
+            "fondo-editor": str(self.linea_fondoEditor.text()),
+            "seleccion-editor": str(self.linea_seleccion.text()),
+            "fondo-seleccion-editor": str(self.linea_fondoSeleccion.text()),
+            "linea-actual": str(self.linea_lineaActual.text()),
+            "widget-num-linea": str(self.linea_sidebar.text()),
+            "numero-linea": str(self.linea_numeroLinea.text()),
+            "margen-linea": str(self.linea_margen.text())
             }
         recursos.NUEVO_TEMA = tema
         Weditor = contenedor_principal.ContenedorMain().devolver_editor_actual()
