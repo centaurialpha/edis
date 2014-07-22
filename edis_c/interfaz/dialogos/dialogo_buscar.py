@@ -119,9 +119,9 @@ class WidgetBuscar(QWidget):
             self.style().standardIcon(QStyle.SP_DialogCloseButton), '')
         self.boton_buscar = QPushButton(QIcon(recursos.ICONOS['buscar']), '')
         self.boton_anterior = QPushButton(
-            self.style().standardIcon(QStyle.SP_ArrowLeft), '')
+            self.style().standardIcon(QStyle.SP_ArrowDown), '')
         self.boton_siguiente = QPushButton(
-            self.style().standardIcon(QStyle.SP_ArrowRight), '')
+            self.style().standardIcon(QStyle.SP_ArrowUp), '')
 
         layoutPrincipal = QGridLayout()
         layoutPrincipal.addWidget(QLabel(self.trUtf8("Buscar:")), 0, 0)

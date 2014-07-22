@@ -64,7 +64,8 @@ class Highlighter(QSyntaxHighlighter):
     #    funciones = QTextCharFormat()
 
         # Palabra reservada
-        color = QColor(recursos.HIGHLIGHTER['palabra'])
+        color = QColor(recursos.NUEVO_TEMA.get('palabra',
+            recursos.TEMA_EDITOR['palabra']))
         brush = QBrush(color, Qt.SolidPattern)
         palabra_clave.setForeground(brush)
         palabra_clave.setFontWeight(QFont.Bold)
@@ -90,19 +91,28 @@ class Highlighter(QSyntaxHighlighter):
         self.highlightingRules.append((QRegExp("\'.*\'"), caracter))
 
         # Numero
-        numeros.setForeground(recursos.HIGHLIGHTER['numero'])
+        color = QColor(recursos.NUEVO_TEMA.get('numero',
+            recursos.TEMA_EDITOR['numero']))
+        brush = QBrush(color, Qt.SolidPattern)
+        numeros.setForeground(brush)
         self.highlightingRules.append((QRegExp(
             "\\b[-+]?[0-9]*\.?[0-9]+([eE][-+]?[0-9]+)?"),
             numeros))
 
         # Cadena
-        cadena.setForeground(recursos.HIGHLIGHTER['cadena'])
+        color = QColor(recursos.NUEVO_TEMA.get('cadena',
+            recursos.TEMA_EDITOR['cadena']))
+        brush = QBrush(color, Qt.SolidPattern)
+        cadena.setForeground(brush)
         self.highlightingRules.append((QRegExp("\".*\""),
             cadena))
 
         # Include
+        color = QColor(recursos.NUEVO_TEMA.get('include',
+            recursos.TEMA_EDITOR['include']))
+        brush = QBrush(color, Qt.SolidPattern)
         include.setFontItalic(True)
-        include.setForeground(recursos.HIGHLIGHTER['include'])
+        include.setForeground(brush)
         self.highlightingRules.append((QRegExp("#[^\n]*"),
             include))
 
@@ -115,14 +125,18 @@ class Highlighter(QSyntaxHighlighter):
             formateo))
 
         # Comentario simple
-        comentario_una_linea.setForeground(
-            recursos.HIGHLIGHTER['comentario'])
+        color = QColor(recursos.NUEVO_TEMA.get('comentario',
+            recursos.TEMA_EDITOR['comentario']))
+        brush = QBrush(color, Qt.SolidPattern)
+        comentario_una_linea.setForeground(brush)
         self.highlightingRules.append((QRegExp("//[^\b]*"),
             comentario_una_linea))
 
         # Comentario múltiple
-        self.comentario_multiple_lineas.setForeground(
-            recursos.HIGHLIGHTER['comentario'])
+        color = QColor(recursos.NUEVO_TEMA.get('comentario',
+            recursos.TEMA_EDITOR['comentario']))
+        brush = QBrush(color, Qt.SolidPattern)
+        self.comentario_multiple_lineas.setForeground(brush)
 
         # Caracter especial
         caracter_especial.setForeground(Qt.gray)

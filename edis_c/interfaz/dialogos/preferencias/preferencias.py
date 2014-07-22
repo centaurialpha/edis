@@ -42,6 +42,7 @@ from edis_c.interfaz.dialogos.preferencias import preferencias_general
 from edis_c.interfaz.dialogos.preferencias import preferencias_editor
 from edis_c.interfaz.dialogos.preferencias import preferencias_compilacion
 from edis_c.interfaz.dialogos.preferencias import preferencias_tema
+#from edis_c.interfaz.dialogos.preferencias import creador_te    ma
 
 
 class DialogoConfiguracion(QDialog):
@@ -53,8 +54,8 @@ class DialogoConfiguracion(QDialog):
         layoutH = QHBoxLayout()
 
         self.generalConf = preferencias_general.ConfiguracionGeneral(self)
-        self.editorConf = preferencias_editor.ConfiguracionEditor(self)
-        self.compiConf = preferencias_compilacion.ConfiguracionEjecucion(self)
+        self.editorConf = preferencias_editor.EditorTab(self)
+        self.compiConf = preferencias_compilacion.EjecucionCompilacionTab(self)
         self.temaConf = preferencias_tema.ConfiguracionTema(self)
 
         self.contenidos = QListWidget()
@@ -102,6 +103,7 @@ class DialogoConfiguracion(QDialog):
         self.stack.setCurrentIndex(self.contenidos.row(actual))
 
     def guardar(self):
+        #FIXME Tratar de cambiar las llamadas a las clases.
         qsettings = QSettings()
         qsettings.beginGroup('configuraciones')
         qsettings.beginGroup('editor')
@@ -122,23 +124,29 @@ class DialogoConfiguracion(QDialog):
         configuraciones.IDIOMA = os.path.join(recursos.IDIOMAS, idioma)
 
         # Márgen
-        margen_linea = self.editorConf.spinMargen.value()
+        margen_linea = self.editorConf.configEditor.spinMargen.value()
         qsettings.setValue('margenLinea', margen_linea)
         configuraciones.MARGEN = margen_linea
 
         qsettings.setValue('mostrarMargen',
-            self.editorConf.checkMargen.isChecked())
-        configuraciones.MOSTRAR_MARGEN = self.editorConf.checkMargen.isChecked()
+            self.editorConf.configEditor.checkMargen.isChecked())
+        configuraciones.MOSTRAR_MARGEN = \
+            self.editorConf.configEditor.checkMargen.isChecked()
 
          # Indentación
-        qsettings.setValue('indentacion', self.editorConf.spinInd.value())
-        configuraciones.INDENTACION = self.editorConf.spinInd.value()
+        qsettings.setValue('indentacion',
+            self.editorConf.configEditor.spinInd.value())
+        configuraciones.INDENTACION = \
+            self.editorConf.configEditor.spinInd.value()
 
-        qsettings.setValue('checkInd', self.editorConf.checkInd.isChecked())
-        configuraciones.CHECK_INDENTACION = self.editorConf.checkInd.isChecked()
+        qsettings.setValue('checkInd',
+            self.editorConf.configEditor.checkInd.isChecked())
+        configuraciones.CHECK_INDENTACION = \
+            self.editorConf.configEditor.checkInd.isChecked()
 
         # Tipo de letra
-        textoFuente = self.editorConf.botonFuente.text().replace(' ', '')
+        textoFuente = \
+            self.editorConf.configEditor.botonFuente.text().replace(' ', '')
         configuraciones.FUENTE = textoFuente.split(',')[0]
         configuraciones.TAM_FUENTE = int(textoFuente.split(',')[1])
         qsettings.setValue('fuente', configuraciones.FUENTE)
@@ -147,31 +155,44 @@ class DialogoConfiguracion(QDialog):
             e._cargar_fuente(configuraciones.FUENTE, configuraciones.TAM_FUENTE)
 
         # Sidebar
-        qsettings.setValue('sidebar', self.editorConf.checkSideBar.isChecked())
-        configuraciones.SIDEBAR = self.editorConf.checkSideBar.isChecked()
+        qsettings.setValue('sidebar',
+            self.editorConf.configEditor.checkSideBar.isChecked())
+        configuraciones.SIDEBAR = \
+            self.editorConf.configEditor.checkSideBar.isChecked()
 
         # Tabs y espacios
-        qsettings.setValue('tabs', self.editorConf.checkTabs.isChecked())
-        configuraciones.MOSTRAR_TABS = self.editorConf.checkTabs.isChecked()
+        qsettings.setValue('tabs',
+            self.editorConf.configEditor.checkTabs.isChecked())
+        configuraciones.MOSTRAR_TABS = \
+            self.editorConf.configEditor.checkTabs.isChecked()
 
         # Wrap mode
-        qsettings.setValue('wrap', self.editorConf.checkWrap.isChecked())
-        configuraciones.MODO_ENVOLVER = self.editorConf.checkWrap.isChecked()
+        qsettings.setValue('wrap',
+            self.editorConf.configEditor.checkWrap.isChecked())
+        configuraciones.MODO_ENVOLVER = \
+            self.editorConf.configEditor.checkWrap.isChecked()
 
         # Minimapa
-        qsettings.setValue('mini', self.editorConf.checkMini.isChecked())
-        configuraciones.MINIMAPA = self.editorConf.checkMini.isChecked()
-        configuraciones.OPAC_MIN = self.editorConf.spinMiniMin.value() / 100.0
+        qsettings.setValue('mini',
+            self.editorConf.configEditor.checkMini.isChecked())
+        configuraciones.MINIMAPA = \
+            self.editorConf.configEditor.checkMini.isChecked()
+        configuraciones.OPAC_MIN = \
+            self.editorConf.configEditor.spinMiniMin.value() / 100.0
         qsettings.setValue('opac_min', configuraciones.OPAC_MIN)
-        configuraciones.OPAC_MAX = self.editorConf.spinMiniMax.value() / 100.0
+        configuraciones.OPAC_MAX = \
+            self.editorConf.configEditor.spinMiniMax.value() / 100.0
         qsettings.setValue('opac_max', configuraciones.OPAC_MAX)
 
         # Compilación
         parametros = ''
-        if self.compiConf.checkWerror.isChecked():
+        if self.compiConf.configCompilacion.checkWerror.isChecked():
             parametros += ' -Werror'
-        if self.compiConf.checkO2.isChecked():
-            parametros += ' -O2'
+        if self.compiConf.configCompilacion.checkEnsamblado.isChecked():
+            parametros += ' -S'
+        if self.compiConf.configCompilacion.checkOptimizacion.isChecked():
+            parametros += ' -' + \
+                self.compiConf.configCompilacion.comboOptimizacion.currentText()
         configuraciones.PARAMETROS = parametros
         qsettings.setValue('compilacion', parametros)
 
@@ -197,8 +218,14 @@ class DialogoConfiguracion(QDialog):
         configEditor.setTextAlignment(Qt.AlignHCenter)
         configEditor.setFlags(Qt.ItemIsSelectable | Qt.ItemIsEnabled)
 
+        #creadorTema = QListWidgetItem(self.contenidos)
+        #creadorTema.setText(self.trUtf8("Creador Tema"))
+        #creadorTema.setTextAlignment(Qt.AlignHCenter)
+        #creadorTema.setFlags(Qt.ItemIsSelectable | Qt.ItemIsEnabled)
+
         configCompilador = QListWidgetItem(self.contenidos)
-        configCompilador.setText(self.trUtf8("Compilador"))
+        configCompilador.setText(self.trUtf8("GCC"))
+        configCompilador.setIcon(QIcon(recursos.ICONOS['compilar']))
         configCompilador.setTextAlignment(Qt.AlignHCenter)
         configCompilador.setFlags(Qt.ItemIsSelectable | Qt.ItemIsEnabled)
 

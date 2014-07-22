@@ -38,6 +38,7 @@ from PyQt4.QtCore import Qt
 from edis_c import recursos
 from edis_c.nucleo import configuraciones
 from edis_c.nucleo import manejador_de_archivo
+from edis_c.interfaz.dialogos.preferencias import preferencias_compilacion as pc
 
 
 class EjecutarWidget(QWidget):
@@ -82,8 +83,12 @@ class EjecutarWidget(QWidget):
 
         # Parámetros adicionales
         parametros_add = list(str(configuraciones.PARAMETROS).split())
-        # Parámetros para el compilador
-        parametros_gcc = ['-Wall', '-o']
+        pref_compilador = pc.EjecucionCompilacionTab(self).configCompilacion
+        checkEnsamblador = pref_compilador.checkEnsamblado
+
+        # Ens = Verdadero si se activó la opción checkEnsamblador.
+        ensamblador = {'Ens': True if checkEnsamblador.isChecked() else False}
+
         self.proceso_actual = self.proceso
         self.output.setPlainText(
             'Compilando archivo: %s\nDirectorio: %s ( %s )\n' %
@@ -95,25 +100,14 @@ class EjecutarWidget(QWidget):
         self.output.textCursor().insertBlock()
 
         # Comenzar proceso
-        self.proceso.start('gcc', parametros_gcc + [self.ejecutable] +
-            parametros_add + [self.nombre_archivo])
-
-        #self.output.setCurrentCharFormat(self.output.formato_ok)
-        #self.ejecutable = nombre_ejecutable
-
-        #if sys.platform is not configuraciones.LINUX:
-            #path = "\"%s\"" % path
-
-        #comando = 'gcc -Wall -o %s %s' % (self.ejecutable, path)
-        #self.proceso_actual = self.proceso
-        #self.proceso_actual.start(comando)
-
-        #archivo = path.split('/')[-1]
-        #self.output.setPlainText(
-            #'Compilando archivo:  %s\nDirectorio: %s ( %s )\n' %
-            #(archivo, os.path.dirname(path), time.ctime()))
-        #self.output.moveCursor(QTextCursor.Down)
-        #self.output.moveCursor(QTextCursor.Down)
+        if not ensamblador['Ens']:
+            parametros_gcc = ['-Wall', '-o']
+            self.proceso.start('gcc', parametros_gcc + [self.ejecutable] +
+                parametros_add + [self.nombre_archivo])
+        else:
+            parametros_gcc = ['-Wall']
+            self.proceso.start('gcc', parametros_gcc +
+                parametros_add + [self.nombre_archivo])
 
     def ejecucion_terminada(self, codigoError, exitStatus):
         """ valores de codigoError

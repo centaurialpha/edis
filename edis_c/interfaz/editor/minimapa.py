@@ -136,7 +136,7 @@ class Slider(QFrame):
         self.setMouseTracking(True)
         self.setCursor(Qt.OpenHandCursor)
 
-        color = recursos.COLOR_EDITOR['num-seleccionado']
+        color = recursos.TEMA_EDITOR['num-seleccionado']
         self.setStyleSheet("background: %s;" % color)
         self.efecto = QGraphicsOpacityEffect()
         self.setGraphicsEffect(self.efecto)

@@ -31,10 +31,27 @@ from PyQt4.QtGui import QFont
 from PyQt4.QtGui import QSizePolicy
 from PyQt4.QtGui import QFontDialog
 from PyQt4.QtGui import QSpacerItem
+from PyQt4.QtGui import QTabWidget
 
 from PyQt4.QtCore import Qt
 
 from edis_c.nucleo import configuraciones
+from edis_c.interfaz.dialogos.preferencias import creador_tema
+
+
+class EditorTab(QWidget):
+
+    def __init__(self, parent):
+        super(EditorTab, self).__init__(parent)
+        vbox = QVBoxLayout(self)
+
+        self.tabs = QTabWidget()
+        self.configEditor = ConfiguracionEditor(self)
+        self.creadorTema = creador_tema.CreadorDeTemaEditor(self)
+        self.tabs.addTab(self.configEditor, self.trUtf8("Editor"))
+        self.tabs.addTab(self.creadorTema, self.trUtf8("Creador de tema"))
+
+        vbox.addWidget(self.tabs)
 
 
 class ConfiguracionEditor(QWidget):

@@ -24,7 +24,7 @@ from PyQt4.QtCore import SIGNAL
 
 from edis_c import traducciones as tr
 from edis_c import recursos
-from edis_c.interfaz.dialogos.preferencias import pref
+from edis_c.interfaz.dialogos.preferencias import preferencias
 from edis_c.interfaz.editor import acciones_
 
 
@@ -206,7 +206,7 @@ class MenuEditar(QObject):
         self.ide.cargar_status_tips(accion, texto)
 
     def _configuraciones(self):
-        self.preferencias = pref.DialogoConfiguracion(self.ide)
+        self.preferencias = preferencias.DialogoConfiguracion(self.ide)
         self.preferencias.show()
 
     def convertir_a_mayusculas(self):

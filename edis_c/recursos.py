@@ -27,7 +27,7 @@ import os
 import sys
 
 from PyQt4.QtGui import QKeySequence
-from PyQt4.QtGui import QColor
+#from PyQt4.QtGui import QColor
 
 from PyQt4.QtCore import QDir
 from PyQt4.QtCore import Qt
@@ -90,9 +90,11 @@ ICONOS = {
     }
 
 # Estilos de color - Editor
-COLOR_EDITOR = {
-    "texto": "#666",
-    "fondo": "#ffffff",
+TEMA_EDITOR = {
+    "texto-editor": "#666",
+    "fondo-editor": "#ffffff",
+    "fondo-seleccion-editor": "#111111",
+    "seleccion-editor": "#5acd14",
     "salida-exitosa": "#5acd14",
     "salida-error": "red",
     "fondo-input": "#1e1e1e",
@@ -102,21 +104,19 @@ COLOR_EDITOR = {
     "opacidad": 15,
     "numero-linea": "#1d1d1d",
     "num-seleccionado": "#3c64c8",
-    "margen-linea": "#777777"
+    "margen-linea": "#777777",
+    "numero": "#F8A032",
+    "include": "#3282C8",
+    #"include_": QColor(155, 207, 217),
+    #"palabra": QColor(138, 226, 52),
+    "palabra": "#96BE0A",
+    #"funcion": QColor(80, 164, 183),
+    "comentario": "#E10A1E",
+    "cadena": "#640AE1",
+    "braces": "#1E1E1E"
     }
 
-# Resaltado de sintaxis
-HIGHLIGHTER = {
-    "numero": QColor(248, 160, 50),
-    "include": QColor(50, 130, 200),
-    "include_": QColor(155, 207, 217),
-    #"palabra": QColor(138, 226, 52),
-    "palabra": QColor(150, 190, 10),
-    "funcion": QColor(80, 164, 183),
-    "comentario": QColor(225, 10, 30),
-    "cadena": QColor(100, 10, 225),
-    "braces": QColor(30, 30, 30)
-    }
+NUEVO_TEMA = {}
 
 # Atajos de teclas
 ATAJOS = {
@@ -154,4 +154,4 @@ ATAJOS = {
 
 
 # Extensiones soportadas
-EXTENSIONES = " Archivos C (*.c *.cpp *.h)"
+EXTENSIONES = " Archivos C (*.c *.s *.h)"

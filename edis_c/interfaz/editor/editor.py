@@ -21,7 +21,13 @@ import re
 
 from tokenize import generate_tokens, TokenError
 import token as tkn
-from StringIO import StringIO
+#lint:disable
+try:
+    from StringIO import StringIO
+except:
+    # Python 3
+    from io import StringIO
+#lint:enable
 
 from PyQt4.QtGui import QPlainTextEdit
 from PyQt4.QtGui import QTextEdit
@@ -105,12 +111,12 @@ class Editor(QPlainTextEdit, tabitem.TabItem):
         # Resaltado en posición del cursor
         self.resaltar_linea_actual()
 
-        self.presionadoAntes = {
+        self.prePresionado = {
             TECLA.get('TABULACION'): self._indentar,
             TECLA.get('BACKSPACE'): self.__tecla_backspace
             }
 
-        self.presionadoDespues = {
+        self.postPresionado = {
             TECLA.get('ENTER'): self._auto_indentar,
             TECLA.get('LLAVE'): self._completar_braces,
             TECLA.get('CORCHETE'): self._completar_braces,
@@ -141,9 +147,16 @@ class Editor(QPlainTextEdit, tabitem.TabItem):
     def estilo_editor(self):
         """ Aplica estilos de colores al editor """
 
-        tema_editor = 'QPlainTextEdit {color: %s; background-color: %s;}' \
-        % (recursos.COLOR_EDITOR['texto'], recursos.COLOR_EDITOR['fondo'])
-
+        tema_editor = 'QPlainTextEdit {color: %s; background-color: %s;' \
+        'selection-background-color: %s; selection-color: %s;}' \
+        % (recursos.NUEVO_TEMA.get('texto-editor',
+        recursos.TEMA_EDITOR['texto-editor']),
+        recursos.NUEVO_TEMA.get('fondo-editor',
+        recursos.TEMA_EDITOR['fondo-editor']),
+        recursos.NUEVO_TEMA.get('fondo-seleccion-editor',
+        recursos.TEMA_EDITOR['fondo-seleccion-editor']),
+        recursos.NUEVO_TEMA.get('seleccion-editor',
+        recursos.TEMA_EDITOR['seleccion-editor']))
         self.setStyleSheet(tema_editor)
 
     def set_flags(self):
@@ -211,14 +224,16 @@ class Editor(QPlainTextEdit, tabitem.TabItem):
         if configuraciones.MOSTRAR_MARGEN:
             pintar = QPainter()
             pintar.begin(self.viewport())
-            pintar.setPen(QColor(recursos.COLOR_EDITOR['margen-linea']))
+            pintar.setPen(QColor(recursos.NUEVO_TEMA.get('margen-linea',
+                recursos.TEMA_EDITOR['margen-linea'])))
             offset = self.contentOffset()
             ancho = self.viewport().width() - (self.posicion_margen +
                 offset.x())
             rect = QRect(self.posicion_margen + offset.x(), -1,
                 ancho + 1, self.viewport().height() + 3)
-            fondo = QColor(recursos.COLOR_EDITOR['fondo-margen'])
-            fondo.setAlpha(recursos.COLOR_EDITOR['opacidad'])
+            fondo = QColor(recursos.NUEVO_TEMA.get('fondo-margen',
+                recursos.TEMA_EDITOR['fondo-margen']))
+            fondo.setAlpha(recursos.TEMA_EDITOR['opacidad'])
             pintar.fillRect(rect, fondo)
             pintar.drawRect(rect)
             pintar.drawLine(self.posicion_margen + offset.x(), 0,
@@ -268,7 +283,8 @@ class Editor(QPlainTextEdit, tabitem.TabItem):
         self.extraSelections = []
 
         seleccion = QTextEdit.ExtraSelection()
-        color = QColor(recursos.COLOR_EDITOR['linea-actual'])
+        color = QColor(recursos.NUEVO_TEMA.get('linea-actual',
+            recursos.TEMA_EDITOR['linea-actual']))
         color.setAlpha(40)
         seleccion.format.setBackground(color)
         seleccion.format.setProperty(
@@ -433,12 +449,12 @@ class Editor(QPlainTextEdit, tabitem.TabItem):
             #+ self.completador.popup().verticalScrollBar().sizeHint().width())
         #self.completador.complete(cr)
 
-        if self.presionadoAntes.get(evento.key(), lambda a: False)(evento):
+        if self.prePresionado.get(evento.key(), lambda a: False)(evento):
             self.emit(SIGNAL("keyPressEvent(QEvent)"), evento)
             return
         QPlainTextEdit.keyPressEvent(self, evento)
 
-        self.presionadoDespues.get(evento.key(), lambda a: False)(evento)
+        self.postPresionado.get(evento.key(), lambda a: False)(evento)
         self.emit(SIGNAL("keyPressEvent(QEvent)"), evento)
 
     def _indentar(self, evento):
@@ -466,13 +482,13 @@ class Editor(QPlainTextEdit, tabitem.TabItem):
         dic_braces = {'(': ')', '{': '}', '[': ']'}
 
         brace = str(evento.text())
-        brac = dic_braces.get(brace)
+        brac = QString(dic_braces.get(brace))
         self.textCursor().insertText(brac)
         self.moveCursor(QTextCursor.Left)
 
     def devolver_texto(self):
         """ Retorna todo el contenido del editor """
-        #print self.ID
+
         return unicode(self.toPlainText())
 
     def __tecla_backspace(self, event):
@@ -637,9 +653,9 @@ class Editor(QPlainTextEdit, tabitem.TabItem):
         completador.setCaseSensitivity(Qt.CaseInsensitive)
         self.completador = completador
         self.connect(self.completador,
-            SIGNAL("activated(const QString&)"), self.insertCompletion)
+            SIGNAL("activated(const QString&)"), self.insertar_completador)
 
-    def insertCompletion(self, completion):
+    def insertar_completado(self, completion):
         tc = self.textCursor()
         extra = (completion.length() -
             self.completador.completionPrefix().length())

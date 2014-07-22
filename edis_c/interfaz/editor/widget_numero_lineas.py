@@ -76,7 +76,7 @@ class NumeroDeLineaBar(QWidget):
     def plegar(self, lineNumber):
         inicio_bloque = self.editor.document().findBlockByNumber(lineNumber - 1)
         posicion_final = self._buscar_cierre_plegado(inicio_bloque)
-        #print posicion_final
+        print posicion_final
         final_bloque = self.editor.document().findBlockByNumber(posicion_final)
 
         bloque = inicio_bloque.next()
@@ -170,7 +170,8 @@ class NumeroDeLineaBar(QWidget):
             self.editor.textCursor().position())
         pattern = self.pat
         pintar = QPainter(self)
-        fondo = recursos.COLOR_EDITOR['widget-num-linea']
+        fondo = recursos.NUEVO_TEMA.get('widget-num-lineas',
+            recursos.TEMA_EDITOR['widget-num-linea'])
         pintar.fillRect(self.rect(), QColor(fondo))
 
         bloque = self.editor.firstVisibleBlock()
@@ -186,7 +187,8 @@ class NumeroDeLineaBar(QWidget):
             if posicion.y() > fin_pagina:
                 break
 
-            pintar.setPen(QColor(recursos.COLOR_EDITOR['numero-linea']))
+            pintar.setPen(QColor(recursos.NUEVO_TEMA.get('numero-linea',
+                recursos.TEMA_EDITOR['numero-linea'])))
 
             if bloque == bloque_actual:
                 self.negrita = True
@@ -197,7 +199,8 @@ class NumeroDeLineaBar(QWidget):
                     0, round(posicion.y()) + font_metrics.descent(),
                     self.width(),
                     font_metrics.ascent() + font_metrics.descent(),
-                    QColor(recursos.COLOR_EDITOR['num-seleccionado']))
+                    QColor(recursos.NUEVO_TEMA.get('num-seleccionado',
+                        recursos.TEMA_EDITOR['num-seleccionado'])))
 
             if bloque.isVisible():
                 pintar.drawText(self.width() - self.foldArea -
