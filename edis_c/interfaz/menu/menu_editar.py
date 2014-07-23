@@ -161,8 +161,8 @@ class MenuEditar(QObject):
             self.ide.contenedor_principal.pegar)
         self.accionSeleccionarTodo.triggered.connect(
             self.ide.contenedor_principal.seleccionar_todo)
-        self.accionConfiguracion.triggered.connect(
-            self._configuraciones)
+        #self.accionConfiguracion.triggered.connect(
+            #self._configuraciones)
         self.accionIndentarMas.triggered.connect(
             self.ide.contenedor_principal.indentar_mas)
         self.accionIndentarMenos.triggered.connect(

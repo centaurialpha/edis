@@ -25,6 +25,7 @@ from PyQt4.QtGui import QLabel
 from PyQt4.QtGui import QSpinBox
 from PyQt4.QtGui import QCheckBox
 from PyQt4.QtGui import QVBoxLayout
+from PyQt4.QtGui import QHBoxLayout
 from PyQt4.QtGui import QPushButton
 from PyQt4.QtGui import QListWidget
 from PyQt4.QtGui import QFont
@@ -35,7 +36,10 @@ from PyQt4.QtGui import QTabWidget
 
 from PyQt4.QtCore import Qt
 
+from edis_c import recursos
 from edis_c.nucleo import configuraciones
+from edis_c.nucleo import manejador_de_archivo
+from edis_c.interfaz.contenedor_principal import contenedor_principal
 from edis_c.interfaz.dialogos.preferencias import creador_tema
 
 
@@ -58,7 +62,7 @@ class ConfiguracionEditor(QWidget):
 
     def __init__(self, parent):
         super(ConfiguracionEditor, self).__init__(parent)
-
+        self.current_tema = 'Default'
         layoutV = QVBoxLayout(self)
 
         grupoCaracteristicas = QGroupBox(self.trUtf8("Características"))
@@ -160,11 +164,15 @@ class ConfiguracionEditor(QWidget):
         grillaFuente.addWidget(self.botonFuente, 0, 1)
 
         # Estilo
-        lista_de_estilos = QListWidget()
-        lista_de_estilos.addItem(self.tr("Blanco"))
-        lista_de_estilos.addItem(self.tr("Negro"))
-        layout = QVBoxLayout(grupoEstilo)
-        layout.addWidget(lista_de_estilos)
+        self.lista_de_estilos = QListWidget()
+        self.lista_de_estilos.addItem(self.tr("Default"))
+        self.temas = manejador_de_archivo.cargar_temas_editor()
+        for tema in self.temas:
+            self.lista_de_estilos.addItem(tema)
+
+        #lista_de_estilos.addItem(self.tr("Negro"))
+        layout = QHBoxLayout(grupoEstilo)
+        layout.addWidget(self.lista_de_estilos)
 
         layoutV.addWidget(grupoCaracteristicas)
         layoutV.addWidget(grupoMiniMapa)
@@ -174,6 +182,8 @@ class ConfiguracionEditor(QWidget):
         QSizePolicy.Expanding))
 
         self.botonFuente.clicked.connect(self.cargar_fuente)
+        self.lista_de_estilos.itemSelectionChanged.connect(
+            self.previsualizar_estilo)
 
     def cargar_fuente(self):
         """ Se coloca el nombre y tamaño de la fuente, como texto del boton """
@@ -218,3 +228,13 @@ class ConfiguracionEditor(QWidget):
         nuevaFuente = n_fuente[0] + ', ' + n_fuente[1]
 
         return nuevaFuente
+
+    def previsualizar_estilo(self):
+        tema = self.lista_de_estilos.currentItem().text()
+        if tema == self.current_tema:
+            return
+        Weditor = contenedor_principal.ContenedorMain().devolver_editor_actual()
+        if Weditor is not None:
+            recursos.NUEVO_TEMA = self.temas.get(tema, recursos.TEMA_EDITOR)
+            Weditor.estilo_editor()
+        self.current_tema = tema

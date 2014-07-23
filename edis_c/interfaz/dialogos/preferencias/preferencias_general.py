@@ -68,7 +68,8 @@ class ConfiguracionGeneral(QWidget):
         idiomas = manejador_de_archivo.archivos_desde_carpeta(
             recursos.IDIOMAS, '.qm')
         self.idiomas = [u'Español'] + \
-            [manejador_de_archivo.nombre_de_modulo(idioma) for idioma in idiomas]
+            [manejador_de_archivo.nombre_de_modulo(idioma)
+            for idioma in idiomas]
         self.comboIdioma.addItems(self.idiomas)
         if(self.comboIdioma.count() > 1):
             self.comboIdioma.setEnabled(True)
@@ -78,3 +79,6 @@ class ConfiguracionGeneral(QWidget):
         else:
             i = 0
         self.comboIdioma.setCurrentIndex(i)
+
+    def guardar(self):
+        pass

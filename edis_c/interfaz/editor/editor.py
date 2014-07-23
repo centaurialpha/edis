@@ -139,7 +139,8 @@ class Editor(QPlainTextEdit, tabitem.TabItem):
             self.minimapa.show()
             self.connect(self, SIGNAL("updateRequest(const QRect&, int)"),
                 self.minimapa.actualizar_area_visible)
-            self.minimapa.highlighter = Highlighter(self.minimapa.document())
+            self.minimapa.highlighter = Highlighter(self.minimapa.document(),
+                recursos.NUEVO_TEMA)
 
     def cargar_id(self, id_):
         super(Editor, self).cargar_id(id_)
@@ -148,7 +149,7 @@ class Editor(QPlainTextEdit, tabitem.TabItem):
     def estilo_editor(self):
         """ Aplica estilos de colores al editor """
         if self.highlighter is None:
-            self.highlighter = Highlighter(self.document())
+            self.highlighter = Highlighter(self.document(), recursos.NUEVO_TEMA)
 
         tema_editor = 'QPlainTextEdit {color: %s; background-color: %s;' \
         'selection-background-color: %s; selection-color: %s;}' \

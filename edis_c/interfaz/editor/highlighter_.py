@@ -1,5 +1,8 @@
 #-*- coding: utf-8 -*-
 
+# Basado en Python Syntax highlighting de:
+# https://wiki.python.org/moin/PyQt/Python%20syntax%20highlighting
+
 from PyQt4.QtGui import QColor
 from PyQt4.QtGui import QTextCharFormat
 from PyQt4.QtGui import QFont
@@ -9,7 +12,7 @@ from PyQt4.QtGui import QBrush
 from PyQt4.QtCore import QRegExp
 from PyQt4.QtCore import Qt
 
-#from edis_c import recursos
+from edis_c import recursos
 from edis_c.interfaz.editor import sintaxis
 
 
@@ -30,17 +33,38 @@ def formato(color, estilo=''):
     return formato_
 
 # Estilos de sintaxis
-ESTILOS = {
-    'palabra': formato('blue', 'bold'),
-    'operador': formato('red'),
-    'brace': formato('darkGray'),
-    'struct': formato('black', 'bold'),
-    'cadena': formato('magenta'),
-    'caracter': formato('cyan'),
-    'include': formato('darkBlue'),
-    'comentario': formato('darkGreen', 'italic'),
-    'numero': formato('brown')
-}
+ESTILOS = {}
+    #'palabra': formato('blue', 'bold'),
+    #'operador': formato('red'),
+    #'brace': formato('darkGray'),
+    #'struct': formato('black', 'bold'),
+    #'cadena': formato('magenta'),
+    #'caracter': formato('cyan'),
+    #'include': formato('darkBlue'),
+    #'comentario': formato('darkGreen', 'italic'),
+    #'numero': formato('brown')
+#}
+
+
+def re_estilo(tema):
+    ESTILOS['palabra'] = formato(tema.get('palabra',
+        recursos.TEMA_EDITOR['palabra']), 'bold')
+    ESTILOS['operador'] = formato(tema.get('operador',
+        recursos.TEMA_EDITOR['operador']))
+    ESTILOS['brace'] = formato(tema.get('brace',
+        recursos.TEMA_EDITOR['brace']))
+    ESTILOS['struct'] = formato(tema.get('struct',
+        recursos.TEMA_EDITOR['struct']), 'bold')
+    ESTILOS['cadena'] = formato(tema.get('cadena',
+        recursos.TEMA_EDITOR['cadena']))
+    ESTILOS['caracter'] = formato(tema.get('caracter',
+        recursos.TEMA_EDITOR['caracter']))
+    ESTILOS['include'] = formato(tema.get('include',
+        recursos.TEMA_EDITOR['include']))
+    ESTILOS['comentario'] = formato(tema.get('comentario',
+        recursos.TEMA_EDITOR['comentario']), 'italic')
+    ESTILOS['numero'] = formato(tema.get('numero',
+        recursos.TEMA_EDITOR['numero']))
 
 
 class Highlighter(QSyntaxHighlighter):
@@ -63,9 +87,9 @@ class Highlighter(QSyntaxHighlighter):
         '\{', '\}'
         ]
 
-    def __init__(self, documento):
+    def __init__(self, documento, tema):
         QSyntaxHighlighter.__init__(self, documento)
-
+        re_estilo(tema)
         # Reglas
         reglas = []
         # Comentario múltiple

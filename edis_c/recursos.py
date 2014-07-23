@@ -46,7 +46,7 @@ IDIOMAS = os.path.join(PATH, "idiomas")
 TEMA_BLACK_SIDE = os.path.join(PATH, "temas", "tema_side.qss")
 TEMA_POR_DEFECTO = os.path.join(PATH, "temas", "default.qss")
 TEMA_SIDE = os.path.join(PATH, "temas", "tema_por_defecto.qss")
-
+TEMAS_GUARDADOS = os.path.join(PATH, "temas", "editor")
 LICENCIA = os.path.join(PATH, "../", "COPYING")
 
 PAGINA_INICIO = os.path.join(PATH, "pagina_inicio")
@@ -105,15 +105,17 @@ TEMA_EDITOR = {
     "numero-linea": "#1d1d1d",
     "num-seleccionado": "#3c64c8",
     "margen-linea": "#777777",
-    "numero": "#F8A032",
-    "include": "#3282C8",
     #"include_": QColor(155, 207, 217),
     #"palabra": QColor(138, 226, 52),
     "palabra": "#96BE0A",
-    #"funcion": QColor(80, 164, 183),
-    "comentario": "#E10A1E",
+    "operador": "yellow",
+    "brace": "#1E1E1E",
+    "struct": "black",
     "cadena": "#640AE1",
-    "braces": "#1E1E1E"
+    "caracter": "blue",
+    "include": "#3282C8",
+    "comentario": "#E10A1E",
+    "numero": "#F8A032"
     }
 
 NUEVO_TEMA = {}
