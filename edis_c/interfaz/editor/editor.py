@@ -54,7 +54,7 @@ from edis_c.interfaz import tabitem
 from edis_c.interfaz.editor import widget_numero_lineas
 from edis_c.interfaz.editor import minimapa
 from edis_c.interfaz.editor import acciones_
-from edis_c.interfaz.editor.highlighter import Highlighter
+from edis_c.interfaz.editor.highlighter_ import Highlighter
 from edis_c.interfaz import completador
 
 # Diccionario teclas
@@ -105,8 +105,9 @@ class Editor(QPlainTextEdit, tabitem.TabItem):
             self.widget_num_lineas = widget_numero_lineas.NumeroDeLineaBar(self)
 
         # Resaltado de sintáxis
-        if self.highlighter is None:
-            self.highlighter = Highlighter(self.document())
+        ##if self.highlighter is None:
+            #self.highlighter = Highlighter(self.document())
+            #self.highlighter.aplicar_highlighter()
 
         # Resaltado en posición del cursor
         self.resaltar_linea_actual()
@@ -146,6 +147,8 @@ class Editor(QPlainTextEdit, tabitem.TabItem):
 
     def estilo_editor(self):
         """ Aplica estilos de colores al editor """
+        if self.highlighter is None:
+            self.highlighter = Highlighter(self.document())
 
         tema_editor = 'QPlainTextEdit {color: %s; background-color: %s;' \
         'selection-background-color: %s; selection-color: %s;}' \

@@ -47,32 +47,57 @@ class Highlighter(QSyntaxHighlighter):
     -Comentario múltiple.
     -Caracter especial
     """
-    def __init__(self, parent):
-        QSyntaxHighlighter.__init__(self, parent)
-
-        palabra_clave = QTextCharFormat()
-        comentario_una_linea = QTextCharFormat()
-        include = QTextCharFormat()
-#        _include = QTextCharFormat()
-        numeros = QTextCharFormat()
+    def __init__(self, documento):
+        QSyntaxHighlighter.__init__(self, documento)
+        self.highlightingRules = []
+        self.comentario_inicio = QRegExp("/\\*")
+        self.comentario_final = QRegExp("\\*/")
+        self.palabra_clave = QTextCharFormat()
         self.comentario_multiple_lineas = QTextCharFormat()
-        caracter = QTextCharFormat()
-        #braces = QTextCharFormat()
-        caracter_especial = QTextCharFormat()
-        cadena = QTextCharFormat()
-        formateo = QTextCharFormat()
-    #    funciones = QTextCharFormat()
+        self.aplicar_highlighter()
 
-        # Palabra reservada
+    def aplicar_highlighter(self):
+        self.palabra_clave = QTextCharFormat()
         color = QColor(recursos.NUEVO_TEMA.get('palabra',
             recursos.TEMA_EDITOR['palabra']))
         brush = QBrush(color, Qt.SolidPattern)
-        palabra_clave.setForeground(brush)
-        palabra_clave.setFontWeight(QFont.Bold)
+        self.palabra_clave.setForeground(brush)
+        self.palabra_clave.setFontWeight(QFont.Bold)
         palabras_claves = palabras_reservadas
-        self.highlightingRules = [(QRegExp(
-            "\\b" + indice + "\\b"), palabra_clave)
-        for indice in palabras_claves]
+        if not self.highlightingRules:
+            self.highlightingRules = [(QRegExp(
+                "\\b" + indice + "\\b"), self.palabra_clave)
+                for indice in palabras_claves]
+
+        #self.comentario_multiple_lineas = QTextCharFormat()
+        color = QColor(recursos.NUEVO_TEMA.get('comentario',
+            recursos.TEMA_EDITOR['comentario']))
+        brush = QBrush(color, Qt.SolidPattern)
+        self.comentario_multiple_lineas.setForeground(brush)
+
+        #palabra_clave = QTextCharFormat()
+        #comentario_una_linea = QTextCharFormat()
+        #include = QTextCharFormat()
+##        _include = QTextCharFormat()
+        #numeros = QTextCharFormat()
+        #self.comentario_multiple_lineas = QTextCharFormat()
+        #caracter = QTextCharFormat()
+        ##braces = QTextCharFormat()
+        #caracter_especial = QTextCharFormat()
+        #cadena = QTextCharFormat()
+        #formateo = QTextCharFormat()
+    #    funciones = QTextCharFormat()
+
+        # Palabra reservada
+        #color = QColor(recursos.NUEVO_TEMA.get('palabra',
+            #recursos.TEMA_EDITOR['palabra']))
+        #brush = QBrush(color, Qt.SolidPattern)
+        #palabra_clave.setForeground(brush)
+        #palabra_clave.setFontWeight(QFont.Bold)
+        #palabras_claves = palabras_reservadas
+        #self.highlightingRules = [(QRegExp(
+            #"\\b" + indice + "\\b"), palabra_clave)
+        #for indice in palabras_claves]
 
         # Funciones
 #        funciones.setFontItalic(True)
@@ -87,63 +112,63 @@ class Highlighter(QSyntaxHighlighter):
         #braces))
 
         # Caracter ''
-        caracter.setForeground(Qt.gray)
-        self.highlightingRules.append((QRegExp("\'.*\'"), caracter))
+        #caracter.setForeground(Qt.gray)
+        #self.highlightingRules.append((QRegExp("\'.*\'"), caracter))
 
-        # Numero
-        color = QColor(recursos.NUEVO_TEMA.get('numero',
-            recursos.TEMA_EDITOR['numero']))
-        brush = QBrush(color, Qt.SolidPattern)
-        numeros.setForeground(brush)
-        self.highlightingRules.append((QRegExp(
-            "\\b[-+]?[0-9]*\.?[0-9]+([eE][-+]?[0-9]+)?"),
-            numeros))
+        ## Numero
+        #color = QColor(recursos.NUEVO_TEMA.get('numero',
+            #recursos.TEMA_EDITOR['numero']))
+        #brush = QBrush(color, Qt.SolidPattern)
+        #numeros.setForeground(brush)
+        #self.highlightingRules.append((QRegExp(
+            #"\\b[-+]?[0-9]*\.?[0-9]+([eE][-+]?[0-9]+)?"),
+            #numeros))
 
-        # Cadena
-        color = QColor(recursos.NUEVO_TEMA.get('cadena',
-            recursos.TEMA_EDITOR['cadena']))
-        brush = QBrush(color, Qt.SolidPattern)
-        cadena.setForeground(brush)
-        self.highlightingRules.append((QRegExp("\".*\""),
-            cadena))
+        ## Cadena
+        #color = QColor(recursos.NUEVO_TEMA.get('cadena',
+            #recursos.TEMA_EDITOR['cadena']))
+        #brush = QBrush(color, Qt.SolidPattern)
+        #cadena.setForeground(brush)
+        #self.highlightingRules.append((QRegExp("\".*\""),
+            #cadena))
 
-        # Include
-        color = QColor(recursos.NUEVO_TEMA.get('include',
-            recursos.TEMA_EDITOR['include']))
-        brush = QBrush(color, Qt.SolidPattern)
-        include.setFontItalic(True)
-        include.setForeground(brush)
-        self.highlightingRules.append((QRegExp("#[^\n]*"),
-            include))
+        ## Include
+        #color = QColor(recursos.NUEVO_TEMA.get('include',
+            #recursos.TEMA_EDITOR['include']))
+        #brush = QBrush(color, Qt.SolidPattern)
+        #include.setFontItalic(True)
+        #include.setForeground(brush)
+        #self.highlightingRules.append((QRegExp("#[^\n]*"),
+            #include))
 
- #       _include.setForeground(recursos.HIGHLIGHTER['include_'])
-  #      self.highlightingRules.append((QRegExp("\<.*\>"), _include))
+ ##       _include.setForeground(recursos.HIGHLIGHTER['include_'])
+  ##      self.highlightingRules.append((QRegExp("\<.*\>"), _include))
 
-        # Formateo
-        formateo.setForeground(Qt.darkYellow)
-        self.highlightingRules.append((QRegExp("%[^' ']"),
-            formateo))
+        ## Formateo
+        #formateo.setForeground(Qt.darkYellow)
+        #self.highlightingRules.append((QRegExp("%[^' ']"),
+            #formateo))
 
-        # Comentario simple
-        color = QColor(recursos.NUEVO_TEMA.get('comentario',
-            recursos.TEMA_EDITOR['comentario']))
-        brush = QBrush(color, Qt.SolidPattern)
-        comentario_una_linea.setForeground(brush)
-        self.highlightingRules.append((QRegExp("//[^\b]*"),
-            comentario_una_linea))
+        ## Comentario simple
+        #color = QColor(recursos.NUEVO_TEMA.get('comentario',
+            #recursos.TEMA_EDITOR['comentario']))
+        #brush = QBrush(color, Qt.SolidPattern)
+        #comentario_una_linea.setForeground(brush)
+        #self.highlightingRules.append((QRegExp("//[^\b]*"),
+            #comentario_una_linea))
 
         # Comentario múltiple
-        color = QColor(recursos.NUEVO_TEMA.get('comentario',
-            recursos.TEMA_EDITOR['comentario']))
-        brush = QBrush(color, Qt.SolidPattern)
-        self.comentario_multiple_lineas.setForeground(brush)
+        #color = QColor(recursos.NUEVO_TEMA.get('comentario',
+            #recursos.TEMA_EDITOR['comentario']))
+        #brush = QBrush(color, Qt.SolidPattern)
+        #self.comentario_multiple_lineas.setForeground(brush)
 
         # Caracter especial
-        caracter_especial.setForeground(Qt.gray)
-        self.highlightingRules.append((QRegExp("\\\[a-z]"), caracter_especial))
+        #caracter_especial.setForeground(Qt.gray)
+        #self.highlightingRules.append((QRegExp("\\\[a-z]"), caracter_especial))
 
-        self.comentario_inicio = QRegExp("/\\*")
-        self.comentario_final = QRegExp("\\*/")
+        #self.comentario_inicio = QRegExp("/\\*")
+        #self.comentario_final = QRegExp("\\*/")
 
     def highlightBlock(self, texto):
         for patron, format in self.highlightingRules:

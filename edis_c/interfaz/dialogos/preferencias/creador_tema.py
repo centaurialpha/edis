@@ -1,4 +1,5 @@
 #-*- coding: utf-8 -*-
+import copy
 
 from PyQt4.QtGui import QWidget
 from PyQt4.QtGui import QVBoxLayout
@@ -27,6 +28,7 @@ class CreadorDeTemaEditor(QWidget):
         layoutV.setContentsMargins(0, 0, 0, 0)
         scroll = QScrollArea()
         layoutV.addWidget(scroll)
+        self.original = copy.copy(recursos.NUEVO_TEMA)
 
         self.linea_palabraReservada = QLineEdit()
         boton_palabraReservada = QPushButton(self.trUtf8("Color"))
@@ -54,6 +56,8 @@ class CreadorDeTemaEditor(QWidget):
         boton_sidebar = QPushButton(self.trUtf8("Color"))
         self.linea_numeroLinea = QLineEdit()
         boton_numeroLinea = QPushButton(self.trUtf8("Color"))
+        self.linea_numeroSeleccionado = QLineEdit()
+        boton_numeroSeleccionado = QPushButton(self.trUtf8("Color"))
         self.linea_margen = QLineEdit()
         boton_margen = QPushButton(self.trUtf8("Color"))
 
@@ -104,9 +108,12 @@ class CreadorDeTemaEditor(QWidget):
         grilla.addWidget(QLabel(self.trUtf8("Número sidebar:")), 12, 0)
         grilla.addWidget(self.linea_numeroLinea, 12, 1)
         grilla.addWidget(boton_numeroLinea, 12, 2)
-        grilla.addWidget(QLabel(self.trUtf8("Márgen:")), 13, 0)
-        grilla.addWidget(self.linea_margen, 13, 1)
-        grilla.addWidget(boton_margen, 13, 2)
+        grilla.addWidget(QLabel(self.trUtf8("Número seleccionado:")), 13, 0)
+        grilla.addWidget(self.linea_numeroSeleccionado, 13, 1)
+        grilla.addWidget(boton_numeroSeleccionado, 13, 2)
+        grilla.addWidget(QLabel(self.trUtf8("Márgen:")), 14, 0)
+        grilla.addWidget(self.linea_margen, 14, 1)
+        grilla.addWidget(boton_margen, 14, 2)
 
         frame = QFrame()
         layoutV = QVBoxLayout()
@@ -150,6 +157,9 @@ class CreadorDeTemaEditor(QWidget):
         self.linea_numeroLinea.textChanged[QString].connect(
             lambda: self.estilo_boton(boton_numeroLinea,
                 self.linea_numeroLinea.text()))
+        self.linea_numeroSeleccionado.textChanged[QString].connect(
+            lambda: self.estilo_boton(boton_numeroSeleccionado,
+                self.linea_numeroSeleccionado.text()))
         self.linea_margen.textChanged[QString].connect(
             lambda: self.estilo_boton(boton_margen,
                 self.linea_margen.text()))
@@ -181,8 +191,16 @@ class CreadorDeTemaEditor(QWidget):
             self.linea_sidebar, boton_sidebar))
         boton_numeroLinea.clicked.connect(lambda: self.elegir_color(
             self.linea_numeroLinea, boton_numeroLinea))
+        boton_numeroSeleccionado.clicked.connect(lambda: self.elegir_color(
+            self.linea_numeroSeleccionado, boton_numeroSeleccionado))
         boton_margen.clicked.connect(lambda: self.elegir_color(
             self.linea_margen, boton_margen))
+
+        for i in range(0, 15):
+            it = grilla.itemAtPosition(i, 1).widget()
+            boton = grilla.itemAtPosition(i, 2).widget()
+            it.returnPressed.connect(self.previsualizar)
+            self.estilo_boton(boton, it.text())
 
     def aplicar_estilo_de_color(self):
         self.linea_palabraReservada.setText(
@@ -213,6 +231,9 @@ class CreadorDeTemaEditor(QWidget):
             recursos.TEMA_EDITOR['widget-num-linea']))
         self.linea_numeroLinea.setText(recursos.NUEVO_TEMA.get('numero-linea',
             recursos.TEMA_EDITOR['numero-linea']))
+        self.linea_numeroSeleccionado.setText(
+            recursos.NUEVO_TEMA.get('num-seleccionado',
+                recursos.TEMA_EDITOR['num-seleccionado']))
         self.linea_margen.setText(recursos.NUEVO_TEMA.get('margen-linea',
             recursos.TEMA_EDITOR['margen-linea']))
 
@@ -233,14 +254,6 @@ class CreadorDeTemaEditor(QWidget):
             self.estilo_boton(boton, color.name())
             self.previsualizar()
 
-    def showEvent(self, evento):
-        super(CreadorDeTemaEditor, self).showEvent(evento)
-        self.aplicar_estilo_de_color()
-        Weditor = contenedor_principal.ContenedorMain().devolver_editor_actual()
-        if Weditor is not None:
-            Weditor.estilo_editor()
-        self.aplicar_estilo_de_color()
-
     def previsualizar(self):
         tema = {
             "palabra": str(self.linea_palabraReservada.text()),
@@ -256,6 +269,7 @@ class CreadorDeTemaEditor(QWidget):
             "linea-actual": str(self.linea_lineaActual.text()),
             "widget-num-linea": str(self.linea_sidebar.text()),
             "numero-linea": str(self.linea_numeroLinea.text()),
+            "num-seleccionado": str(self.linea_numeroSeleccionado.text()),
             "margen-linea": str(self.linea_margen.text())
             }
         recursos.NUEVO_TEMA = tema
@@ -263,3 +277,10 @@ class CreadorDeTemaEditor(QWidget):
         if Weditor is not None:
             Weditor.estilo_editor()
         return tema
+
+    def showEvent(self, evento):
+        super(CreadorDeTemaEditor, self).showEvent(evento)
+        Weditor = contenedor_principal.ContenedorMain().devolver_editor_actual()
+        if Weditor is not None:
+            Weditor.estilo_editor()
+        self.aplicar_estilo_de_color()
