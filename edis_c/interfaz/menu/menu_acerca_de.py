@@ -27,9 +27,9 @@ from PyQt4.QtGui import QMessageBox
 from PyQt4.QtCore import QObject
 
 import edis_c
-from edis_c.interfaz.widgets import estilo
+#from edis_c.interfaz.widgets import estilo
 from edis_c.interfaz.dialogos import dialogo_acerca_de_ide
-from edis_c.interfaz.contenedor_principal import contenedor_principal
+#from edis_c.interfaz.contenedor_principal import contenedor_principal
 
 
 class MenuAcercade(QObject):
