@@ -60,7 +60,8 @@ Descargar el archivo .zip, descomprimir e ingresar a la carpeta y correr el arch
      
      python edis-c.py
      
-     
+* `Video (Linux)`_
+
 También puedes clonar el repositorio (Antes instalar git)::
 
      sudo apt-get install git
@@ -76,6 +77,10 @@ Instalar Python 2.7 y PyQt4 (NOTA: El instalador de PyQt debe ser para Python 2.
 Descargar el archivo zip, descomprimir, entrar a la carpeta y correr el archivo .py desde la consola::
 
      python edis-c.py
-     
+
+* `Video (Windows)`_     
+
 .. _Python: https://www.python.org/download/releases/2.7.8/
 .. _PyQt: http://www.riverbankcomputing.co.uk/software/pyqt/download
+.. _Video (Linux): https://www.youtube.com/watch?v=yXoD-RYJ0n4
+.. _Video (Windows): https://www.youtube.com/watch?v=IJkHPutAwcs
