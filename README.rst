@@ -44,6 +44,7 @@ Instrucciones para ejecutar EDIS (GNU/Linux)
 --------------------------------------------
 
 Asumiendo que ya se tiene instalado PyQt (Estoy 100% seguro que Python ya lo está ;):
+
 Sistemas basados en Debian::
 
      sudo apt-get install python-qt4
