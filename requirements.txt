@@ -1,2 +1,3 @@
 python>=2.7
 pyqt>=4.8
+mingw
