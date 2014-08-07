@@ -26,16 +26,20 @@ from PyQt4.QtGui import QDialog
 from PyQt4.QtGui import QVBoxLayout
 from PyQt4.QtGui import QGridLayout
 from PyQt4.QtGui import QLabel
+from PyQt4.QtGui import QKeySequence
+from PyQt4.QtGui import QShortcut
 
+from PyQt4.QtCore import QDir
 from PyQt4.QtCore import QFile
 from PyQt4.QtCore import SIGNAL
 from PyQt4.QtCore import Qt
 
+from edis_c.nucleo import manejador_de_archivo
 from edis_c import recursos
 from edis_c.interfaz import tab_widget
-from edis_c.interfaz import pagina_inicio2
+from edis_c.interfaz.widgets import pagina_de_bienvenida
 from edis_c.interfaz.editor import editor
-from edis_c.nucleo import manejador_de_archivo
+from edis_c.interfaz.editor import highlighter_
 
 __instanciaContenedorMain = None
 
@@ -58,15 +62,21 @@ class __ContenedorMain(QSplitter):
         self.setAcceptDrops(True)
         self.addWidget(self.tab_principal)
         self.setSizes([1, 1])
-        self.setFixedSize(0, 500)
+        self.setFixedSize(0, 450)
         self.tab_actual = self.tab_principal
-
+        highlighter_.re_estilo(recursos.NUEVO_TEMA)
     #    self.connect(self.tab_principal, SIGNAL("currentChanged(int)"),
      #       self.tab_actual_cambiado)
         self.connect(self.tab_principal, SIGNAL("saveActualEditor()"),
             self.guardar_archivo)
         self.connect(self.tab_principal, SIGNAL("currentChanged(int)"),
             self.tab_actual_cambiado)
+
+        tecla = Qt.Key_1
+        for i in range(10):
+            atajo = TabAtajos(QKeySequence(Qt.ALT + tecla), self.parent, i)
+            tecla += 1
+            atajo.activated.connect(self.cambiar_indice_de_tab)
 
     def agregar_editor(self, nombre_archivo="", tabIndex=None):
         editorWidget = editor.crear_editor(nombre_archivo=nombre_archivo)
@@ -76,8 +86,9 @@ class __ContenedorMain(QSplitter):
         else:
             nombre_tab = manejador_de_archivo._nombreBase(nombre_archivo)
 
-        self.agregar_tab(editorWidget, nombre_tab, tabIndex=tabIndex)
-
+        indice = self.agregar_tab(editorWidget, nombre_tab, tabIndex=tabIndex)
+        self.tab_actual.setTabToolTip(indice,
+            QDir.toNativeSeparators(nombre_archivo))
         self.connect(editorWidget, SIGNAL("modificationChanged(bool)"),
             self.editor_es_modificado)
         self.connect(editorWidget, SIGNAL("fileSaved(QPlainTextEdit)"),
@@ -98,7 +109,6 @@ class __ContenedorMain(QSplitter):
 
     def editor_es_guardado(self, editorW=None):
         self.tab_actual.tab_guardado(editorW)
-        #self.emit(SIGNAL("updateLocator(QString)"), editorW.ID)
 
     def check_tabs_sin_guardar(self):
         return self.tab_principal.check_tabs_sin_guardar()
@@ -118,9 +128,6 @@ class __ContenedorMain(QSplitter):
             return e
         else:
             return None
-
-    def exportar_pdf(self):
-        pass
 
     def deshacer(self):
         editorW = self.devolver_editor_actual()
@@ -174,9 +181,9 @@ class __ContenedorMain(QSplitter):
             if isinstance(widget, editor.Editor):
                 widget.actualizar_margen_linea()
 
-    def mostrar_pagina_de_inicio(self):
-        pag = pagina_inicio2.PaginaDeInicio(parent=self)
-        self.agregar_tab(pag, self.trUtf8('Página de inicio'))
+    def mostrar_pagina_de_bienvenida(self):
+        pag = pagina_de_bienvenida.PaginaDeBienvenida(parent=self)
+        self.agregar_tab(pag, self.trUtf8('EDIS-C'))
         self.connect(pag, SIGNAL("nuevoArchivo()"),
             lambda: self.emit(SIGNAL("nuevoArchivo()")))
         self.connect(pag, SIGNAL("abrirArchivo()"),
@@ -219,6 +226,16 @@ class __ContenedorMain(QSplitter):
         TAB.cambiar_nombre_de_tab(indice_tab, nombre_de_tab)
         w.ID = nuevoId
 
+    def cambiar_indice_de_tab(self):
+        Weditor = self.parent.contenedor_principal.devolver_editor_actual()
+        if Weditor is not None and Weditor.hasFocus():
+            contenedor = self.parent.contenedor_principal.tab_actual
+        else:
+            return None
+        obj = self.sender()
+        if obj.indice < contenedor.count():
+            contenedor.setCurrentIndex(obj.indice)
+
     def abrir_archivo(self, nombre='', tabIndex=None):
         extension = recursos.EXTENSIONES  # Filtro
 
@@ -255,6 +272,9 @@ class __ContenedorMain(QSplitter):
         self.emit(SIGNAL("currentTabChanged(QString)"), nombre)
         self.tab_actual.no_esta_abierto = True
 
+    def devolver_documentos_abiertos(self):
+        return [self.tab_principal.devolver_documentos_para_reabrir(), []]
+
     def guardar_archivo(self, editorW=None):
         if not editorW:
             editorW = self.devolver_editor_actual()
@@ -269,13 +289,15 @@ class __ContenedorMain(QSplitter):
                 return self.guardar_archivo_como()
 
             nombre = editorW.ID
+            carpeta_de_archivo = manejador_de_archivo.devolver_carpeta(nombre)
             self.emit(SIGNAL("beforeFileSaved(QString)"), nombre)
             contenido = editorW.devolver_texto()
             manejador_de_archivo.escribir_archivo(nombre, contenido)
             editorW.ID = nombre
 
             self.emit(SIGNAL("fileSaved(QString)"), self.tr(
-                "Guardado: %1").arg(nombre))
+                "Guardado: %0 en %1").arg((nombre).split('/')[-1],
+                carpeta_de_archivo))
 
             editorW._guardado()
 
@@ -341,9 +363,14 @@ class __ContenedorMain(QSplitter):
         if editor:
             # ruta del archivo
             tex = editor.ID
-            tex = tex.split('/')[-1]  # se obtiene el nombre con la extensión
+            # se obtiene el nombre con la extensión
+            #FIXME: no luce bien... pero funciona ;)
+            tex = tex.split('/')[-1]  # En Linux
+            tex = tex.split('\\')[-1]  # En Windows
+
             # Tamaño en kb
-            lonB = (float(QFile(editor.ID).size()) / 1024.0)
+            #FIXME: ¿ bien ?
+            lonB = (float(QFile(editor.ID).size() + 1023.0) / 1024.0)
 
             cantidad_lineas = editor.devolver_cantidad_de_lineas()
             # Espacios en blanco y comentarios
@@ -386,3 +413,10 @@ class __ContenedorMain(QSplitter):
             boton_aceptar.clicked.connect(dialogo.close)
 
             dialogo.show()
+
+
+class TabAtajos(QShortcut):
+
+    def __init__(self, tecla, parent, indice):
+        super(TabAtajos, self).__init__(tecla, parent)
+        self.indice = indice

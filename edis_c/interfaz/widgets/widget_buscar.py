@@ -1,22 +1,35 @@
 #-*- coding: utf-8 -*-
 
+# Copyright (C) <2014>  <Gabriel Acosta>
+
+# EDIS-C is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+
+# EDIS-C is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+
+# You should have received a copy of the GNU General Public License
+# along with EDIS-C.  If not, see <http://www.gnu.org/licenses/>.
+
 import re
 
-from PyQt4.QtGui import QDialog
+#from PyQt4.QtGui import QDialog
 from PyQt4.QtGui import QWidget
 from PyQt4.QtGui import QHBoxLayout
 from PyQt4.QtGui import QVBoxLayout
 from PyQt4.QtGui import QGridLayout
 from PyQt4.QtGui import QLineEdit
-from PyQt4.QtGui import QStyle
-from PyQt4.QtGui import QPushButton
-from PyQt4.QtGui import QIcon
-from PyQt4.QtGui import QCheckBox
+#from PyQt4.QtGui import QCheckBox
 from PyQt4.QtGui import QTextDocument
 from PyQt4.QtGui import QTextCursor
 from PyQt4.QtGui import QLabel
 from PyQt4.QtGui import QKeySequence
 from PyQt4.QtGui import QShortcut
+from PyQt4.QtGui import QSizePolicy
 
 from PyQt4.QtCore import Qt
 from PyQt4.QtCore import SIGNAL
@@ -24,21 +37,23 @@ from PyQt4.QtCore import QObject
 
 from edis_c import recursos
 from edis_c.interfaz.contenedor_principal import contenedor_principal
+from edis_c.interfaz.widgets.creador_widget import crear_boton
+from edis_c.interfaz.widgets.creador_widget import get_icono_estandard
 
-_dialogobuscarInstancia = None
-
-
-def DialogoBuscar(*args, **kw):
-    global _dialogobuscarInstancia
-    if _dialogobuscarInstancia is None:
-        _dialogobuscarInstancia = _DialogoBuscar(*args, **kw)
-    return _dialogobuscarInstancia
+_Instancia = None
 
 
-class _DialogoBuscar(QDialog):
+def WidgetBusqueda(*args, **kw):
+    global _Instancia
+    if _Instancia is None:
+        _Instancia = _WidgetBuscar(*args, **kw)
+    return _Instancia
+
+
+class _WidgetBuscar(QWidget):
 
     def __init__(self, parent=None):
-        QDialog.__init__(self, parent, Qt.Dialog)
+        QWidget.__init__(self, parent)
 
         self.setWindowTitle(self.trUtf8("Buscar"))
         layoutV = QVBoxLayout(self)
@@ -57,20 +72,19 @@ class _DialogoBuscar(QDialog):
         self.connect(self.tecla_escape, SIGNAL("activated()"), self.ocultar)
 
     def ocultar(self):
-        self.widget_buscar.checkSensitivo.setCheckState(Qt.Unchecked)
-        self.widget_buscar.checkToda.setCheckState(Qt.Unchecked)
+        #self.widget_buscar.boton_sensitivo.setC
+        #self.widget_buscar.boton_todo.setCheckState(Qt.Unchecked)
         self.hide()
         self.widget_buscar.setVisible(True)
-        Weditor = contenedor_principal.ContenedorMain().devolver_editor_actual()
-        #print "antes"
-        if Weditor:
-            #print "dentro"
-            Weditor.setFocus()
+        widget = contenedor_principal.ContenedorMain().devolver_widget_actual()
+        if widget is not None:
+            widget.setFocus()
 
     def buscar(self):
-        s = 0 if not self.widget_buscar.checkSensitivo.isChecked() \
+        self.widget_buscar.line_edit.setFocus()
+        s = 0 if not self.widget_buscar.boton_sensitivo.isChecked() \
             else QTextDocument.FindCaseSensitively
-        w = 0 if not self.widget_buscar.checkToda.isChecked() \
+        w = 0 if not self.widget_buscar.boton_todo.isChecked() \
             else QTextDocument.FindWholeWords
         banderas = s + w
         Weditor = contenedor_principal.ContenedorMain().devolver_editor_actual()
@@ -81,9 +95,9 @@ class _DialogoBuscar(QDialog):
     def buscar_siguiente(self):
         s = 0
         w = 0
-        s if not self.widget_buscar.checkSensitivo.isChecked() \
+        s if not self.widget_buscar.boton_sensitivo.isChecked() \
             else QTextDocument.FindCaseSensitively
-        w if not self.widget_buscar.checkToda.isChecked() \
+        w if not self.widget_buscar.boton_todo.isChecked() \
             else QTextDocument.FindWholeWords
         banderas = 0 + s + w
         Weditor = contenedor_principal.ContenedorMain().devolver_editor_actual()
@@ -92,9 +106,9 @@ class _DialogoBuscar(QDialog):
                 banderas, True)
 
     def buscar_anterior(self):
-        s = 0 if not self.widget_buscar.checkSensitivo.isChecked() \
+        s = 0 if not self.widget_buscar.boton_sensitivo.isChecked() \
             else QTextDocument.FindCaseSensitively
-        w = 0 if not self.widget_buscar.checkToda.isChecked() \
+        w = 0 if not self.widget_buscar.boton_todo.isChecked() \
             else QTextDocument.FindWholeWords
         banderas = 1 + s + w
         Weditor = contenedor_principal.ContenedorMain().devolver_editor_actual()
@@ -108,45 +122,48 @@ class WidgetBuscar(QWidget):
     def __init__(self, parent):
         QWidget.__init__(self, parent)
         self._parent = parent
+        grilla = QGridLayout()
+        grilla.setContentsMargins(0, 0, 0, 0)
+        self.setLayout(grilla)
 
-        self.checkSensitivo = QCheckBox(self.trUtf8(
-            "Respetar sensitivo al contexto"))
-        self.checkToda = QCheckBox(self.trUtf8(
-            "Buscar toda la palabra"))
+        self.boton_sensitivo = crear_boton(self,
+            triggered=self.check_state_changed, icono=get_icono_estandard(
+                'FileDialogContentsView'), tip='Sensitivo')
+        self.boton_todo = crear_boton(self,
+            triggered=self.check_state_changed, icono=get_icono_estandard(
+                'FileDialogDetailedView'), tip='Toda la palabra')
         self.line_edit = LineEdit(self)
         self.line_edit.setMinimumWidth(300)
-        self.boton_cerrar = QPushButton(
-            self.style().standardIcon(QStyle.SP_DialogCloseButton), '')
-        self.boton_buscar = QPushButton(QIcon(recursos.ICONOS['buscar']), '')
-        self.boton_anterior = QPushButton(
-            self.style().standardIcon(QStyle.SP_ArrowDown), '')
-        self.boton_siguiente = QPushButton(
-            self.style().standardIcon(QStyle.SP_ArrowUp), '')
+        self.boton_cerrar = crear_boton(self, triggered=self.hide,
+            icono=get_icono_estandard('DialogCloseButton'), tip='Cerrar')
+        self.boton_buscar = crear_boton(self, triggered=self.buscar_siguiente,
+            icono=recursos.ICONOS['buscar'], tip='Buscar')
+        self.boton_anterior = crear_boton(self, triggered=self.buscar_anterior,
+            icono=get_icono_estandard('ArrowLeft'), tip='Buscar anterior')
+        self.boton_siguiente = crear_boton(self,
+            triggered=self.buscar_siguiente, icono=get_icono_estandard(
+                'ArrowRight'), tip='Buscar siguiente')
+        self.boton_sensitivo.setCheckable(True)
+        self.boton_todo.setCheckable(True)
 
-        layoutPrincipal = QGridLayout()
-        layoutPrincipal.addWidget(QLabel(self.trUtf8("Buscar:")), 0, 0)
-        layoutPrincipal.addWidget(self.line_edit, 0, 1)
-        layoutPrincipal.addWidget(self.boton_buscar, 0, 2)
-        layoutPrincipal.addWidget(self.boton_anterior, 0, 3)
-        layoutPrincipal.addWidget(self.boton_siguiente, 0, 4)
-        layoutPrincipal.addWidget(self.checkSensitivo, 1, 0)
-        layoutPrincipal.addWidget(self.checkToda, 2, 0)
-        self.setLayout(layoutPrincipal)
+        layoutH = QHBoxLayout()
+        self.widgets = [
+            self.boton_cerrar,
+            self.line_edit,
+            self.boton_buscar,
+            self.boton_anterior,
+            self.boton_siguiente,
+            self.boton_sensitivo,
+            self.boton_todo
+            ]
+        for widget in self.widgets:
+            layoutH.addWidget(widget)
+        grilla.addLayout(layoutH, 0, 1)
+        self.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Fixed)
 
         self.total = 0
         self.indice = 0
         self.line_edit.contador_.actualizar_contador(self.indice, self.total)
-
-        self.connect(self.boton_buscar, SIGNAL("clicked()"),
-            self.buscar_siguiente)
-        self.connect(self.boton_siguiente, SIGNAL("clicked()"),
-            self.buscar_siguiente)
-        self.connect(self.boton_anterior, SIGNAL("clicked()"),
-            self.buscar_anterior)
-        self.connect(self.checkSensitivo, SIGNAL("stateChanged(int)"),
-            self.check_state_changed)
-        self.connect(self.checkToda, SIGNAL("stateChanged(int)"),
-            self.check_state_changed)
 
     def check_state_changed(self):
         editor = contenedor_principal.ContenedorMain().devolver_editor_actual()
@@ -180,11 +197,11 @@ class WidgetBuscar(QWidget):
         texto = editor.devolver_texto()
         search = unicode(self.line_edit.text())
         hasSearch = len(search) > 0
-        if self.checkToda.isChecked():
+        if self.boton_todo.isChecked():
             patron = r'\b%s\b' % search
             temp_text = ' '.join(re.findall(patron, texto, re.IGNORECASE))
             texto = temp_text if temp_text != '' else texto
-        if self.checkSensitivo.isChecked():
+        if self.boton_sensitivo.isChecked():
             self.total = texto.count(search)
         else:
             self.total = texto.lower().count(search.lower())
@@ -215,6 +232,7 @@ class LineEdit(QLineEdit):
         QLineEdit.__init__(self, parent)
         self._parent = parent
         self.contador_ = Contador(self)
+        self.setPlaceholderText(self.trUtf8("Buscar!"))
 
     def keyPressEvent(self, event):
         editor = contenedor_principal.ContenedorMain().devolver_editor_actual()
@@ -238,20 +256,21 @@ class Contador(QObject):
         QObject.__init__(self)
         self.line = line_edit
         layoutH = QHBoxLayout(line_edit)
-        layoutH.setMargin(0)
+        layoutH.setMargin(4)
         line_edit.setLayout(layoutH)
         layoutH.addStretch()
         self.contador = QLabel(line_edit)
         layoutH.addWidget(self.contador)
-        line_edit.setStyleSheet("padding-right: 1px;")
-        line_edit.setTextMargins(0, 0, 0, 0)
 
     def actualizar_contador(self, indice_, total_, hasSearch_=False):
         mensaje = self.tr("%1 de %2").arg(indice_).arg(total_)
         self.contador.setText(mensaje)
-        self.line.setStyleSheet("background: none;color: gray;")
-        if indice_ == 0 and total_ == 0 and hasSearch_:
-            #self.contador.setStyleSheet(
-                #"background: red;color; white;border-radius: 3px;")
+        ESTILO = {
+            'True': True if indice_ == 0 and total_ == 0 and hasSearch_ else
+            False
+            }
+        if ESTILO['True']:
             self.line.setStyleSheet(
-                "background: red;color;white;border-radius: 3px")
+                'background-color: rgb(255, 100, 10);border-radius: 3px;')
+        else:
+            self.line.setStyleSheet("color: gray;")

@@ -22,12 +22,17 @@ from PyQt4.QtGui import QStackedWidget
 from PyQt4.QtGui import QVBoxLayout
 from PyQt4.QtGui import QHBoxLayout
 from PyQt4.QtGui import QTextEdit
-from PyQt4.QtGui import QMessageBox
+#from PyQt4.QtGui import QMessageBox
 from PyQt4.QtGui import QIcon
 from PyQt4.QtGui import QStyle
-#from PyQt4.QtGui import QSizePolicy
+from PyQt4.QtGui import QShortcut
+from PyQt4.QtGui import QKeySequence
+from PyQt4.QtGui import QTableWidget
+from PyQt4.QtGui import QTableWidgetItem
+from PyQt4.QtGui import QAbstractItemView
+from PyQt4.QtGui import QHeaderView
 
-from PyQt4.QtCore import SIGNAL
+from PyQt4.QtCore import Qt
 
 from edis_c.interfaz.contenedor_secundario import salida_widget
 from edis_c import recursos
@@ -36,15 +41,16 @@ from edis_c import recursos
 _instanciaContenedorSecundario = None
 
 
-def ContenedorBottom(*args, **kw):
+# Singleton
+def ContenedorSecundario(*args, **kw):
     global _instanciaContenedorSecundario
     if _instanciaContenedorSecundario is None:
-        _instanciaContenedorSecundario = _ContenedorBottom(*args, **kw)
+        _instanciaContenedorSecundario = _ContenedorSecundario(*args, **kw)
 
     return _instanciaContenedorSecundario
 
 
-class _ContenedorBottom(QWidget):
+class _ContenedorSecundario(QWidget):
 
     def __init__(self, parent=None):
         QWidget.__init__(self, parent)
@@ -70,16 +76,17 @@ class _ContenedorBottom(QWidget):
 
         layoutV.addWidget(self.botonSalida)
         layoutV.addWidget(self.botonNotas)
-        #layoutV.addSpacerItem(QSpacerItem(0, 0, 0))
+
         layoutV.addWidget(boton_cerrar)
         hbox.addLayout(layoutV)
 
-        self.connect(self.botonSalida, SIGNAL("clicked()"),
-            lambda: self.item_cambiado(0))
-        self.connect(self.botonNotas, SIGNAL("clicked()"),
-            lambda: self.item_cambiado(1))
-        self.connect(boton_cerrar, SIGNAL("clicked()"),
-            self.hide)
+        # Conexiones
+        self.atajoEscape = QShortcut(QKeySequence(Qt.Key_Escape),
+            self)
+        self.botonSalida.clicked.connect(lambda: self.item_cambiado(0))
+        self.botonNotas.clicked.connect(lambda: self.item_cambiado(1))
+        boton_cerrar.clicked.connect(self.hide)
+        self.atajoEscape.activated.connect(self.hide)
 
     def item_cambiado(self, v):
         if not self.isVisible():
@@ -87,18 +94,17 @@ class _ContenedorBottom(QWidget):
 
         self.stack.show_display(v)
 
-    def compilar_archivo(self, path):
+    def compilar(self, path):
         self.item_cambiado(0)
         self.show()
         self.nombre_archivo = path
         self.salida_.correr_compilacion(self.nombre_archivo)
+        self.salida_.output.setFoco()
 
-    def ejecutar_archivo(self, comp):
-        if comp:
+    def ejecutar(self):
+        #FIXME: revisar!
+        if self.salida_.compilado:
             self.salida_.correr_programa()
-        else:
-            QMessageBox.information(self, self.trUtf8("Información"),
-                self.trUtf8("No se ha compilado el fuente!"))
 
 
 class Notas(QTextEdit):
@@ -106,6 +112,26 @@ class Notas(QTextEdit):
     def __init__(self, parent):
         QTextEdit.__init__(self, parent)
         self.setText(self.trUtf8("Acá puedes escribir notas..."))
+
+
+class SalidaCompilador(QWidget):
+
+    def __init__(self, parent):
+        super(SalidaCompilador, self).__init__(parent)
+        vbox = QVBoxLayout(self)
+        self.tabla = QTableWidget(0, 3)
+        self.tabla.setSelectionBehavior(QAbstractItemView.SelectRows)
+        self.tabla.setHorizontalHeaderLabels((self.trUtf8("Archivo"),
+            self.trUtf8("Línea"), self.trUtf8("Error")))
+        self.tabla.horizontalHeader().setResizeMode(
+            2, QHeaderView.Stretch)
+        self.tabla.setShowGrid(True)
+        vbox.addWidget(self.tabla)
+
+        item = QTableWidgetItem('Hola')
+        fila = self.tabla.rowCount()
+        self.tabla.insertRow(fila)
+        self.tabla.setItem(fila, 0, item)
 
 
 class Stacked(QStackedWidget):

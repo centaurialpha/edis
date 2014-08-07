@@ -22,34 +22,33 @@
 Recursos
 
 """
-
+# Módulos Python
 import os
 import sys
 
+# Módulos QtGui
 from PyQt4.QtGui import QKeySequence
-#from PyQt4.QtGui import QColor
 
+#Módulos QtCore
 from PyQt4.QtCore import QDir
 from PyQt4.QtCore import Qt
 
+# Carpetas
 HOME_PATH = QDir.toNativeSeparators(QDir.homePath())
-
 SIDE_EJEC = os.path.realpath(sys.argv[0])
-
 PATH = os.path.abspath(os.path.dirname(__file__)).decode('utf-8')
+frozen = getattr(sys, 'frozen', '')
+if frozen in ('dll', 'console_exe', 'windows_exe'):
+    PATH = os.path.abspath(os.path.dirname(sys.executable))
 
 HOME_SIDE = os.path.join(PATH, ".edis_c")
-
-CONFIGURACIONES_PATH = os.path.join(HOME_SIDE, 'edis_settings.ini')
-
-IDIOMAS = os.path.join(PATH, "idiomas")
-TEMA_BLACK_SIDE = os.path.join(PATH, "temas", "tema_side.qss")
-TEMA_POR_DEFECTO = os.path.join(PATH, "temas", "default.qss")
-TEMA_SIDE = os.path.join(PATH, "temas", "tema_por_defecto.qss")
-TEMAS_GUARDADOS = os.path.join(PATH, "temas", "editor")
+INSTALADOR = os.path.join(PATH, "nucleo", "mingw.exe")
+IDIOMAS = os.path.join(PATH, "otros", "idiomas")
+TEMA_POR_DEFECTO = os.path.join(PATH, "otros", "temas", "default.qss")
+TEMAS_GUARDADOS = os.path.join(PATH, "otros", "temas", "editor")
 LICENCIA = os.path.join(PATH, "../", "COPYING")
-
-PAGINA_INICIO = os.path.join(PATH, "pagina_inicio")
+PAGINA_INICIO = os.path.join(PATH, "otros", "pagina_de_bienvenida")
+NOTIFICACION = os.path.join(PATH, "otros", "QtQML")
 
 # Iconos
 ICONOS = {
@@ -78,13 +77,13 @@ ICONOS = {
     "pegar": os.path.join(PATH, "imagenes", "pegar.png"),
     "buscar": os.path.join(PATH, "imagenes", "buscar.png"),
     "icono-tab": os.path.join(PATH, "imagenes", "cambio-tab.svg"),
-    "titulo": os.path.join(PATH, "imagenes", "titulo.svg"),
+    "titulo": os.path.join(PATH, "imagenes", "titulo.png"),
     "linea": os.path.join(PATH, "imagenes", "separador.png"),
     "general": os.path.join(PATH, "imagenes", "general.png"),
     "editor": os.path.join(PATH, "imagenes", "editor.png"),
     "tema": os.path.join(PATH, "imagenes", "tema.png"),
     "indentar": os.path.join(PATH, "imagenes", "indentar.png"),
-    "desindentar": os.path.join(PATH, "imagenes", "desindentar.png"),
+    "quitar-indentacion": os.path.join(PATH, "imagenes", "desindentar.png"),
     "comentar": os.path.join(PATH, "imagenes", "comentar.png"),
     "insertar-include": os.path.join(PATH, "imagenes", "insertar-include.png")
     }
@@ -99,16 +98,14 @@ TEMA_EDITOR = {
     "salida-error": "red",
     "fondo-input": "#1e1e1e",
     "linea-actual": "#919191",
-    "widget-num-linea": "#7a7a7a",
-    "fondo-margen": "#cacad4",
+    "widget-num-linea": "#121212",
+    "fondo-margen": "#232323",
     "opacidad": 15,
     "numero-linea": "#1d1d1d",
     "num-seleccionado": "#3c64c8",
     "margen-linea": "#777777",
-    #"include_": QColor(155, 207, 217),
-    #"palabra": QColor(138, 226, 52),
     "palabra": "#96BE0A",
-    "operador": "yellow",
+    "operador": "black",
     "brace": "#1E1E1E",
     "struct": "black",
     "cadena": "#640AE1",
@@ -134,15 +131,16 @@ ATAJOS = {
     "cortar": QKeySequence(Qt.CTRL + Qt.Key_X),
     "copiar": QKeySequence(Qt.CTRL + Qt.Key_C),
     "pegar": QKeySequence(Qt.CTRL + Qt.Key_V),
+    "seleccionar": QKeySequence(Qt.CTRL + Qt.Key_A),
+    "indentar": QKeySequence(Qt.Key_Tab),
+    "quitar-indentacion": QKeySequence(Qt.SHIFT + Qt.Key_Tab),
     "mover-arriba": QKeySequence(Qt.ALT + Qt.Key_Up),
     "mover-abajo": QKeySequence(Qt.ALT + Qt.Key_Down),
     # Ver
-    "ocultar-menu": QKeySequence(Qt.CTRL + Qt.Key_F10),
     "fullscreen": QKeySequence(Qt.CTRL + Qt.Key_F11),
-    "modo-dev": QKeySequence(Qt.CTRL + Qt.Key_F9),
+    "ocultar-todo": QKeySequence(Qt.Key_F11),
     "ocultar-toolbar": QKeySequence(Qt.CTRL + Qt.Key_F12),
-    "ocultar-lateral": QKeySequence(Qt.Key_F10),
-    "ocultar-menu": QKeySequence(Qt.CTRL + Qt.Key_F8),
+    "ocultar-editor": QKeySequence(Qt.CTRL + Qt.Key_F1),
     "ocultar-input": QKeySequence(Qt.Key_F7),
     "zoom-mas": QKeySequence(Qt.CTRL + Qt.Key_Plus),
     "zoom-menos": QKeySequence(Qt.CTRL + Qt.Key_Minus),
@@ -151,9 +149,10 @@ ATAJOS = {
     "ejecutar": QKeySequence(Qt.CTRL + Qt.Key_F6),
     "comp-ejec": QKeySequence(Qt.CTRL + Qt.Key_F10),
     # Buscar
-    "buscar": QKeySequence(Qt.CTRL + Qt.Key_F)
+    "buscar": QKeySequence(Qt.CTRL + Qt.Key_F),
+    "buscar-archivos": QKeySequence(Qt.CTRL + Qt.Key_G),
+    "ir": QKeySequence(Qt.CTRL + Qt.Key_J)
     }
-
 
 # Extensiones soportadas
 EXTENSIONES = " Archivos C (*.c *.s *.h)"

@@ -52,9 +52,7 @@ def insertar_titulo(ew):
 
     r = str(QInputDialog.getText(ew, ew.tr("Titulo"), ew.tr(
         "Ingresa el titulo:"))[0])
-    if not r:
-        return None
-    else:
+    if r:
         ew.textCursor().beginEditBlock()
         ew.moveCursor(QTextCursor.StartOfLine, QTextCursor.MoveAnchor)
         com = comentario_inicio + (('*' * ((configuraciones.MARGEN - 10) / 2)))
@@ -160,18 +158,17 @@ def insertar_include(ew, libreria):
         1: '#include <stdio.h>',
         2: '#include <stdlib.h>',
         3: '#include <string.h>',
-        4: '#include '
         }
 
-    if libreria != 4:
+    if libreria != 3:
         for lib in includes:
             texto = includes.get(libreria)
         ew.textCursor().insertText(texto)
 
-    else:
-        texto = includes.get(4)
-        ew.textCursor().insertText(texto + '<>')
-        ew.moveCursor(QTextCursor.Left, QTextCursor.MoveAnchor)
+    #else:
+        #texto = includes.get(4)
+        #ew.textCursor().insertText(texto + '<>')
+        #ew.moveCursor(QTextCursor.Left, QTextCursor.MoveAnchor)
 
 
 def mover_hacia_arriba(editorW):
@@ -429,6 +426,7 @@ def ir_a_la_linea(Weditor):
     maxim = Weditor.blockCount()
     linea = QInputDialog.getInt(Weditor, Weditor.tr("Ir a linea"),
         Weditor.tr("Linea:"), 1, 1, maxim, 1)
+    print linea
 
     if linea[1]:
         if maxim >= linea[0]:
@@ -436,3 +434,4 @@ def ir_a_la_linea(Weditor):
             cursor.setPosition(Weditor.document().findBlockByLineNumber(
                 linea[0] - 1).position())
             Weditor.setTextCursor(cursor)
+    Weditor.setFocus()

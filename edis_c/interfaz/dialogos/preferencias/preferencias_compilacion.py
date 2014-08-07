@@ -1,24 +1,40 @@
 #-*- coding: utf-8 -*-
 
+# Copyright (C) <2014>  <Gabriel Acosta>
+
+# EDIS-C is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+
+# EDIS-C is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+
+# You should have received a copy of the GNU General Public License
+# along with EDIS-C.  If not, see <http://www.gnu.org/licenses/>.
+
 from PyQt4.QtGui import QWidget
 from PyQt4.QtGui import QGroupBox
 from PyQt4.QtGui import QVBoxLayout
 from PyQt4.QtGui import QHBoxLayout
 from PyQt4.QtGui import QCheckBox
 from PyQt4.QtGui import QComboBox
-from PyQt4.QtGui import QLineEdit
-from PyQt4.QtGui import QLabel
-from PyQt4.QtGui import QPushButton
+#from PyQt4.QtGui import QLineEdit
+#from PyQt4.QtGui import QLabel
+#from PyQt4.QtGui import QPushButton
 from PyQt4.QtGui import QFileDialog
 from PyQt4.QtGui import QTabWidget
 
 from edis_c.nucleo import configuraciones
+from edis_c.nucleo import comprobar_terminales
 
 
-class EjecucionCompilacionTab(QWidget):
+class ECTab(QWidget):
 
     def __init__(self, parent):
-        super(EjecucionCompilacionTab, self).__init__(parent)
+        super(ECTab, self).__init__(parent)
         vbox = QVBoxLayout(self)
 
         self.tabs = QTabWidget()
@@ -30,6 +46,10 @@ class EjecucionCompilacionTab(QWidget):
             self.trUtf8("Ejecución"))
 
         vbox.addWidget(self.tabs)
+
+    def guardar(self):
+        for i in range(self.tabs.count()):
+            self.tabs.widget(i).guardar()
 
 
 class ConfiguracionCompilacion(QWidget):
@@ -78,6 +98,9 @@ class ConfiguracionCompilacion(QWidget):
 
         layoutV.addWidget(grupoCompilacion)
 
+    def guardar(self):
+        pass
+
 
 class ConfiguracionEjecucion(QWidget):
 
@@ -93,11 +116,12 @@ class ConfiguracionEjecucion(QWidget):
 
         #Ejecución
         layoutPath = QHBoxLayout()
-        self.path_terminal = QLineEdit()
-        self.boton_path = QPushButton("...")
-        layoutPath.addWidget(QLabel(self.trUtf8("Terminal:")))
-        layoutPath.addWidget(self.path_terminal)
-        layoutPath.addWidget(self.boton_path)
+        self.terminales = QComboBox()
+        terminales = comprobar_terminales.comprobar()
+        for terminal in terminales:
+            self.terminales.addItem(terminal)
+
+        layoutPath.addWidget(self.terminales)
         grillaE.addLayout(layoutPath)
 
         self.checkTiempo = QCheckBox(
@@ -107,10 +131,12 @@ class ConfiguracionEjecucion(QWidget):
 
         layoutV.addWidget(grupoEjecucion)
 
-        self.boton_path.clicked.connect(self.cargar_terminal)
-
     def cargar_terminal(self):
         path = QFileDialog.getOpenFileName(self,
             self.trUtf8("Seleccione la terminal"))
         if path:
             self.path_terminal.setText(path)
+
+    def guardar(self):
+        print self.terminales.currentIndex()
+        print self.terminales.currentText()

@@ -22,7 +22,7 @@ from PyQt4 import QtCore
 tr = QtCore.QCoreApplication.translate
 
 # Menú
-TRAD_MENU_ARCHIVO = tr("EDIS-C", "&Archivo")
+TRAD_MENU_ARCHIVO = ("&Archivo")
 TRAD_MENU_EDITAR = tr("EDIS-C", "&Editar")
 TRAD_MENU_VER = tr("EDIS-C", "&Ver")
 TRAD_MENU_INSERTAR = tr("EDIS-C", "&Insertar")

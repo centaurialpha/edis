@@ -1,12 +1,29 @@
 #-*- coding: utf-8 -*-
 
-from PyQt4.QtGui import QIcon
+# Copyright (C) <2014>  <Gabriel Acosta>
+
+# EDIS-C is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+
+# EDIS-C is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+
+# You should have received a copy of the GNU General Public License
+# along with EDIS-C.  If not, see <http://www.gnu.org/licenses/>.
+
 
 from PyQt4.QtCore import QObject
 
 from edis_c import recursos
 from edis_c.interfaz.editor import acciones_
-#from edis_c.interfaz.dialogos import dialogo_estadisticas
+#from edis_c.interfaz import acciones
+from edis_c.interfaz.widgets.creador_widget import crear_accion
+
+_ICONO = recursos.ICONOS
 
 
 class MenuHerramientas(QObject):
@@ -15,28 +32,25 @@ class MenuHerramientas(QObject):
         super(MenuHerramientas, self).__init__()
 
         self.ide = ide
-
+        #TODO:
+        #FIXME:
         # Acciones #
         # Insertar título
-        accionTitulo = menu_herramientas.addAction(
-            QIcon(recursos.ICONOS['titulo']), self.trUtf8("Insertar título"))
+        accionTitulo = crear_accion(self, "Insertar título",
+            icono=_ICONO['titulo'], slot=self.insertar_titulo)
+        menu_herramientas.addAction(accionTitulo)
         # Insertar separador
-        accionSeparador = menu_herramientas.addAction(
-            QIcon(recursos.ICONOS['linea']), self.trUtf8("Insertar separador"))
+        accionSeparador = crear_accion(self, "Insertar separador",
+            icono=_ICONO['linea'], slot=self.insertar_separador)
+        menu_herramientas.addAction(accionSeparador)
         # Insertar include
-        menu_include = menu_herramientas.addMenu(
-            self.trUtf8("Insertar '#include'"))
-        menu_libreria_estandar = menu_include.addMenu(
-            self.trUtf8("Librería estándar"))
-        accionStdio = menu_libreria_estandar.addAction(
-            self.trUtf8("stdio.h"))
-        accionStdlib = menu_libreria_estandar.addAction(
-            self.trUtf8("stdlib.h"))
-        accionString = menu_libreria_estandar.addAction(
-            self.trUtf8("string.h"))
-        accionInclude = menu_include.addAction(
-            QIcon(recursos.ICONOS['insertar-include']),
-            self.trUtf8("#include <...>"))
+        accionInclude = crear_accion(self, "Insertar '#include'",
+            icono=_ICONO['insertar-include'],
+            slot=self.ide.distribuidor.insertar_include)
+        menu_herramientas.addAction(accionInclude)
+        accionInsertarMacro = crear_accion(self, "Insertar '#define'",
+            slot=self.insertar_macro)
+        menu_herramientas.addAction(accionInsertarMacro)
         menu_herramientas.addSeparator()
         # Insertar fecha y hora
         menu_fecha_hora = menu_herramientas.addMenu(
@@ -55,8 +69,9 @@ class MenuHerramientas(QObject):
         accionAMDH = menu_fecha_hora.addAction(
             self.trUtf8("aaaa-mm-dd hh:mm"))
         menu_herramientas.addSeparator()
-        self.accionEstadisticas = menu_herramientas.addAction(
-            self.trUtf8("Estadísticas del documento"))
+        self.accionEstadisticas = crear_accion(self,
+            "Estadísticas del documento", slot=self.estadisticas_del_documento)
+        menu_herramientas.addAction(self.accionEstadisticas)
 
         # Toolbar #
         self.items_toolbar = {
@@ -66,48 +81,35 @@ class MenuHerramientas(QObject):
             }
 
         # Conexión
-        accionSeparador.triggered.connect(self.insertar_separador)
-        accionTitulo.triggered.connect(self.insertar_titulo)
         accionDMA.triggered.connect(lambda x: self._insertar_fecha(1))
         accionMDA.triggered.connect(lambda x: self._insertar_fecha(2))
         accionAMD.triggered.connect(lambda x: self._insertar_fecha(3))
         accionDMAH.triggered.connect(lambda h: self._insertar_fecha_hora(1))
         accionMDAH.triggered.connect(lambda h: self._insertar_fecha_hora(2))
         accionAMDH.triggered.connect(lambda h: self._insertar_fecha_hora(3))
-        accionStdio.triggered.connect(lambda v: self._insertar_include(1))
-        accionStdlib.triggered.connect(lambda v: self._insertar_include(2))
-        accionString.triggered.connect(lambda v: self._insertar_include(3))
-        accionInclude.triggered.connect(lambda v: self._insertar_include(4))
-        self.accionEstadisticas.triggered.connect(
-            self.estadisticas_del_documento)
 
     def insertar_separador(self):
         editorW = self.ide.contenedor_principal.devolver_editor_actual()
-        if editorW and editorW.hasFocus():
+        if editorW:
             acciones_.insertar_linea(editorW)
 
     def insertar_titulo(self):
         editorW = self.ide.contenedor_principal.devolver_editor_actual()
-        if editorW and editorW.hasFocus():
+        if editorW:
             acciones_.insertar_titulo(editorW)
 
     def _insertar_fecha(self, formato):
         editorW = self.ide.contenedor_principal.devolver_editor_actual()
-        if editorW and editorW.hasFocus():
+        if editorW:
             acciones_.insertar_fecha(editorW, formato)
 
     def _insertar_fecha_hora(self, formato):
         editorW = self.ide.contenedor_principal.devolver_editor_actual()
-        if editorW and editorW.hasFocus():
+        if editorW:
             acciones_.insertar_fecha_hora(editorW, formato)
 
-    def _insertar_include(self, valor):
-        editorW = self.ide.contenedor_principal.devolver_editor_actual()
-        if editorW and editorW.hasFocus():
-            acciones_.insertar_include(editorW, valor)
+    def insertar_macro(self):
+        self.ide.distribuidor.insertar_macro()
 
     def estadisticas_del_documento(self):
-        #editorW = self.ide.contenedor_principal.devolver_editor_actual()
-        #if editorW and editorW.hasFocus():
-            #dialogo_estadisticas.DialogoEstadisticas().show()
         self.ide.contenedor_principal.estadisticas()

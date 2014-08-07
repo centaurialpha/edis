@@ -17,20 +17,22 @@
 # You should have received a copy of the GNU General Public License
 # along with EDIS-C.  If not, see <http://www.gnu.org/licenses/>.
 
+# Módulos QtGui
 from PyQt4.QtGui import QStatusBar
 from PyQt4.QtGui import QWidget
 from PyQt4.QtGui import QVBoxLayout
 from PyQt4.QtGui import QGridLayout
-#from PyQt4.QtGui import QLineEdit
+from PyQt4.QtGui import QProgressBar
 from PyQt4.QtGui import QHBoxLayout
 from PyQt4.QtGui import QLabel
-#from PyQt4.QtGui import QPushButton
 
+# Módulos QtCore
 from PyQt4.QtCore import SIGNAL
 from PyQt4.QtCore import Qt
 
-#from edis_c import recursos
+# Módulos EDIS
 from edis_c.interfaz.editor import acciones_
+from edis_c.interfaz.contenedor_secundario import contenedor_secundario
 
 _instanciaBarraDeEstado = None
 
@@ -74,8 +76,9 @@ class _BarraDeEstado(QStatusBar):
         self.connect(self, SIGNAL("messageChanged(QString)"),
             self.mensaje_terminado)
 
-        self.addWidget(self.widget)
-        self.addWidget(self.widget_)
+        self.addWidget(self.linea_columna, Qt.AlignLeft)
+        self.addWidget(self.user_host, Qt.AlignRight)
+        #self.addWidget(self.widget_)
 
     def showMessage(self, mensaje, tiempo):
         self.linea_columna.hide()
@@ -97,7 +100,7 @@ class EstadoLineaColumna(QWidget):
         layoutV.setContentsMargins(0, 0, 0, 0)
         layoutH = QHBoxLayout()
         layoutH.setContentsMargins(0, 0, 0, 0)
-        self.texto = "Linea: %s / %s | Columna: %s"
+        self.texto = "Linea: <b>%s</b> / <b>%s</b> | Columna:<b>%s</b>"
         self.posicion_cursor = QLabel(self.trUtf8(
             self.texto % (0, 0, 0)))
 
@@ -121,7 +124,7 @@ class UserHost(QWidget):
         layoutV.setContentsMargins(0, 0, 0, 0)
         layoutH = QHBoxLayout()
         layoutH.setContentsMargins(0, 0, 0, 0)
-        self.user_host = "user_name: %s  hostname: %s"
+        self.user_host = "user_name: <b>%s</b>  hostname: <b>%s</b>"
         self.label = QLabel(self.trUtf8(
             self.user_host % (0, 0)))
 
@@ -136,3 +139,12 @@ class UserHost(QWidget):
 
     def texto_user_host(self, username, hostname):
         self.label.setText(self.trUtf8(self.user_host % (username, hostname)))
+
+
+class BarraDeProgreso(QProgressBar):
+
+    def __init__(self, parent):
+        super(BarraDeProgreso, self).__init__(parent)
+        self.setMaximumWidth(150)
+        self.setValue(20)
+        self.salida = contenedor_secundario.salida_widget.EjecutarWidget()

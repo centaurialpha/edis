@@ -26,8 +26,8 @@ from PyQt4.QtGui import QApplication
 PATH = os.path.abspath(os.path.dirname(__file__))
 sys.path.append('../')
 
-from side_c.interfaz.dialogos import preferencias
-from side_c.nucleo import configuraciones
+from edis_c.interfaz.dialogos.preferencias import preferencias_editor
+from edis_c.nucleo import configuraciones
 
 
 class PruebaConfiguracionEditor(unittest.TestCase):
@@ -36,7 +36,7 @@ class PruebaConfiguracionEditor(unittest.TestCase):
     """
     def setUp(self):
         self.aplicacion = QApplication(sys.argv)
-        self.wid = preferencias.ConfiguracionEditor(None)
+        self.wid = preferencias_editor.CaracteristicasEditor()
 
     def poner_en_cero(self):
         """ Setea los valores en 0 """
@@ -58,11 +58,11 @@ class PruebaConfiguracionEditor(unittest.TestCase):
         # Test
         self.wid.spinMargen.setValue(80)
         self.assertEqual(self.wid.spinMargen.value(),
-            configuraciones.MARGEN)
+            configuraciones.MARGEN)  # ok!
 
         self.wid.spinInd.setValue(4)
         self.assertEqual(self.wid.spinInd.value(),
-            configuraciones.INDENTACION)
+            configuraciones.INDENTACION)  # ok!
 
     def test_checkBoxs(self):
         """ Prueba CheckBox """
@@ -70,12 +70,13 @@ class PruebaConfiguracionEditor(unittest.TestCase):
         self.poner_en_cero()
 
         # Test
-        self.wid.checkMargen.setChecked(True)
+        self.wid.checkMargen.setChecked(False)
         self.assertEqual(self.wid.checkMargen.isChecked(),
-            configuraciones.MOSTRAR_MARGEN)
+            configuraciones.MOSTRAR_MARGEN)  # ok!
         self.wid.checkInd.setChecked(True)
         self.assertEqual(self.wid.checkInd.isChecked(),
-            configuraciones.CHECK_INDENTACION)
+            configuraciones.CHECK_INDENTACION)  # ok!
+
 
 if __name__ == "__main__":
     unittest.main()

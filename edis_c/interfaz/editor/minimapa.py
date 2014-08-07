@@ -46,7 +46,7 @@ class MiniMapa(QPlainTextEdit):
         self.setMouseTracking(True)
         self.viewport().setCursor(Qt.PointingHandCursor)
         self.setTextInteractionFlags(Qt.NoTextInteraction)
-        self.setStyleSheet("background: #232323;")
+        self.setStyleSheet("background: transparent;")
 
         self.parent = parent
         self.lineas = 0
@@ -116,7 +116,7 @@ class MiniMapa(QPlainTextEdit):
 
     def ajustar_(self):
         self.setFixedHeight(self.parent.height())
-        self.setFixedWidth(self.parent.width() * 0.15)
+        self.setFixedWidth(self.parent.width() * configuraciones.MINI_TAM)
         x = self.parent.width() - self.width()
         self.move(x, 0)
         tam_fuente = int(self.width() / configuraciones.MARGEN)

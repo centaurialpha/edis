@@ -1,21 +1,35 @@
 #-*- coding: utf-8 -*-
+
+# Copyright (C) <2014>  <Gabriel Acosta>
+
+# EDIS-C is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+
+# EDIS-C is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+
+# You should have received a copy of the GNU General Public License
+# along with EDIS-C.  If not, see <http://www.gnu.org/licenses/>.
+
 import copy
 
 from PyQt4.QtGui import QWidget
 from PyQt4.QtGui import QVBoxLayout
 from PyQt4.QtGui import QHBoxLayout
-from PyQt4.QtGui import QScrollArea
 from PyQt4.QtGui import QLineEdit
 from PyQt4.QtGui import QPushButton
 from PyQt4.QtGui import QGridLayout
 from PyQt4.QtGui import QLabel
-from PyQt4.QtGui import QFrame
 from PyQt4.QtGui import QColor
 from PyQt4.QtGui import QColorDialog
 from PyQt4.QtGui import QMessageBox
+from PyQt4.QtGui import QGroupBox
 
 from PyQt4.QtCore import QString
-from PyQt4.QtCore import SIGNAL
 
 from edis_c import recursos
 from edis_c.nucleo import manejador_de_archivo
@@ -27,10 +41,10 @@ class CreadorDeTemaEditor(QWidget):
     def __init__(self, parent):
         super(CreadorDeTemaEditor, self).__init__()
         self.parent = parent
-        layoutV = QVBoxLayout(self)
-        layoutV.setContentsMargins(0, 0, 0, 0)
-        scroll = QScrollArea()
-        layoutV.addWidget(scroll)
+        layoutM = QVBoxLayout(self)
+        layoutH = QHBoxLayout()
+        layoutH.setContentsMargins(0, 0, 0, 0)
+
         self.original = copy.copy(recursos.NUEVO_TEMA)
 
         self.linea_palabraReservada = QLineEdit()
@@ -70,14 +84,15 @@ class CreadorDeTemaEditor(QWidget):
         self.linea_margen = QLineEdit()
         boton_margen = QPushButton(self.trUtf8("Color"))
 
-        layoutH = QHBoxLayout()
-        layoutH.addWidget(QLabel(self.trUtf8("Nombre:")))
-        self.linea_nombre = QLineEdit()
-        layoutH.addWidget(self.linea_nombre)
-        boton_guardarTema = QPushButton(self.trUtf8("Guardar tema!"))
-        layoutH.addWidget(boton_guardarTema)
+        layoutHo = QHBoxLayout()
+        grupoResaltado = QGroupBox(self.trUtf8("Resaltado de Sintaxis:"))
+        grupoEditor = QGroupBox(self.trUtf8("Editor:"))
+        grilla = QGridLayout(grupoResaltado)
+        grilla_ = QGridLayout(grupoEditor)
+        layoutHo.addWidget(grupoResaltado)
+        layoutHo.addWidget(grupoEditor)
 
-        grilla = QGridLayout()
+        # Resaltado de Sintaxis
         grilla.addWidget(QLabel(self.trUtf8("Palabra reservada:")), 0, 0)
         grilla.addWidget(self.linea_palabraReservada, 0, 1)
         grilla.addWidget(boton_palabraReservada, 0, 2)
@@ -105,40 +120,46 @@ class CreadorDeTemaEditor(QWidget):
         grilla.addWidget(QLabel(self.trUtf8("Número:")), 8, 0)
         grilla.addWidget(self.linea_numero, 8, 1)
         grilla.addWidget(boton_numero, 8, 2)
-        grilla.addWidget(QLabel(self.trUtf8("Texto editor:")), 9, 0)
-        grilla.addWidget(self.linea_texto, 9, 1)
-        grilla.addWidget(boton_texto, 9, 2)
-        grilla.addWidget(QLabel(self.trUtf8("Fondo editor:")), 10, 0)
-        grilla.addWidget(self.linea_fondoEditor, 10, 1)
-        grilla.addWidget(boton_fondoEditor, 10, 2)
-        grilla.addWidget(QLabel(self.trUtf8("Texto seleccionado:")), 11, 0)
-        grilla.addWidget(self.linea_seleccion, 11, 1)
-        grilla.addWidget(boton_seleccion, 11, 2)
-        grilla.addWidget(QLabel(self.trUtf8("Fondo selección:")), 12, 0)
-        grilla.addWidget(self.linea_fondoSeleccion, 12, 1)
-        grilla.addWidget(boton_fondoSeleccion, 12, 2)
-        grilla.addWidget(QLabel(self.trUtf8("Linea actual:")), 13, 0)
-        grilla.addWidget(self.linea_lineaActual, 13, 1)
-        grilla.addWidget(boton_lineaActual, 13, 2)
-        grilla.addWidget(QLabel(self.trUtf8("Sidebar:")), 14, 0)
-        grilla.addWidget(self.linea_sidebar, 14, 1)
-        grilla.addWidget(boton_sidebar, 14, 2)
-        grilla.addWidget(QLabel(self.trUtf8("Número sidebar:")), 15, 0)
-        grilla.addWidget(self.linea_numeroLinea, 15, 1)
-        grilla.addWidget(boton_numeroLinea, 15, 2)
-        grilla.addWidget(QLabel(self.trUtf8("Número seleccionado:")), 16, 0)
-        grilla.addWidget(self.linea_numeroSeleccionado, 16, 1)
-        grilla.addWidget(boton_numeroSeleccionado, 16, 2)
-        grilla.addWidget(QLabel(self.trUtf8("Márgen:")), 17, 0)
-        grilla.addWidget(self.linea_margen, 17, 1)
-        grilla.addWidget(boton_margen, 17, 2)
+        # Tema editor
+        grilla_.addWidget(QLabel(self.trUtf8("Texto editor:")), 0, 0)
+        grilla_.addWidget(self.linea_texto, 0, 1)
+        grilla_.addWidget(boton_texto, 0, 2)
+        grilla_.addWidget(QLabel(self.trUtf8("Fondo editor:")), 1, 0)
+        grilla_.addWidget(self.linea_fondoEditor, 1, 1)
+        grilla_.addWidget(boton_fondoEditor, 1, 2)
+        grilla_.addWidget(QLabel(self.trUtf8("Texto seleccionado:")), 2, 0)
+        grilla_.addWidget(self.linea_seleccion, 2, 1)
+        grilla_.addWidget(boton_seleccion, 2, 2)
+        grilla_.addWidget(QLabel(self.trUtf8("Fondo selección:")), 3, 0)
+        grilla_.addWidget(self.linea_fondoSeleccion, 3, 1)
+        grilla_.addWidget(boton_fondoSeleccion, 3, 2)
+        grilla_.addWidget(QLabel(self.trUtf8("Linea actual:")), 4, 0)
+        grilla_.addWidget(self.linea_lineaActual, 4, 1)
+        grilla_.addWidget(boton_lineaActual, 4, 2)
+        grilla_.addWidget(QLabel(self.trUtf8("Sidebar:")), 5, 0)
+        grilla_.addWidget(self.linea_sidebar, 5, 1)
+        grilla_.addWidget(boton_sidebar, 5, 2)
+        grilla_.addWidget(QLabel(self.trUtf8("Número sidebar:")), 6, 0)
+        grilla_.addWidget(self.linea_numeroLinea, 6, 1)
+        grilla_.addWidget(boton_numeroLinea, 6, 2)
+        grilla_.addWidget(QLabel(self.trUtf8("Número seleccionado:")), 7, 0)
+        grilla_.addWidget(self.linea_numeroSeleccionado, 7, 1)
+        grilla_.addWidget(boton_numeroSeleccionado, 7, 2)
+        grilla_.addWidget(QLabel(self.trUtf8("Márgen:")), 8, 0)
+        grilla_.addWidget(self.linea_margen, 8, 1)
+        grilla_.addWidget(boton_margen, 8, 2)
 
-        frame = QFrame()
-        layoutV = QVBoxLayout()
-        layoutV.addLayout(layoutH)
-        layoutV.addLayout(grilla)
-        frame.setLayout(layoutV)
-        scroll.setWidget(frame)
+        layoutHH = QHBoxLayout()
+        layoutHH.addWidget(QLabel(self.trUtf8("Guardar tema:")))
+        lineEdit = QLineEdit()
+        layoutHH.addWidget(lineEdit)
+        boton_guardarTema = QPushButton(self.trUtf8("Guardar"))
+        layoutHH.addWidget(boton_guardarTema)
+
+        layoutH.addWidget(grupoResaltado)
+        layoutH.addWidget(grupoEditor)
+        layoutM.addLayout(layoutHH)
+        layoutM.addLayout(layoutH)
 
         # Color de botón obtenido del texto.
         self.linea_palabraReservada.textChanged[QString].connect(
@@ -228,13 +249,14 @@ class CreadorDeTemaEditor(QWidget):
         boton_margen.clicked.connect(lambda: self.elegir_color(
             self.linea_margen, boton_margen))
 
-        for i in range(0, 17):
-            it = grilla.itemAtPosition(i, 1).widget()
-            boton = grilla.itemAtPosition(i, 2).widget()
-            it.returnPressed.connect(self.previsualizar)
-            self.estilo_boton(boton, it.text())
+        # Para previsualizar el editor cuando se presiona Enter
+        for i in range(0, 8):
+            item = grilla_.itemAtPosition(i, 1).widget()
+            boton = grilla_.itemAtPosition(i, 2).widget()
+            item.returnPressed.connect(self.previsualizar)
+            self.estilo_boton(boton, item.text())
 
-        self.connect(boton_guardarTema, SIGNAL("clicked()"), self.guardar_tema)
+        boton_guardarTema.clicked.connect(self.guardar_tema)
 
     def aplicar_estilo_de_color(self):
         self.linea_palabraReservada.setText(
@@ -297,11 +319,14 @@ class CreadorDeTemaEditor(QWidget):
     def previsualizar(self):
         tema = {
             "palabra": str(self.linea_palabraReservada.text()),
-            "numero": str(self.linea_numero.text()),
+            "operador": str(self.linea_operador.text()),
+            "brace": str(self.linea_braces.text()),
+            "struct": str(self.linea_struct.text()),
+            "cadena": str(self.linea_cadena.text()),
+            "caracter": str(self.linea_caracter.text()),
             "include": str(self.linea_include.text()),
             "comentario": str(self.linea_comentario.text()),
-            "cadena": str(self.linea_cadena.text()),
-            "brace": str(self.linea_braces.text()),
+            "numero": str(self.linea_numero.text()),
             "texto-editor": str(self.linea_texto.text()),
             "fondo-editor": str(self.linea_fondoEditor.text()),
             "seleccion-editor": str(self.linea_seleccion.text()),
@@ -317,6 +342,12 @@ class CreadorDeTemaEditor(QWidget):
         if Weditor is not None:
             Weditor.estilo_editor()
         return tema
+
+    def hideEvent(self, evento):
+        super(CreadorDeTemaEditor, self).hideEvent(evento)
+        Weditor = contenedor_principal.ContenedorMain().devolver_editor_actual()
+        if Weditor is not None:
+            Weditor.estilo_editor()
 
     def showEvent(self, evento):
         super(CreadorDeTemaEditor, self).showEvent(evento)
@@ -346,3 +377,6 @@ class CreadorDeTemaEditor(QWidget):
         elif r == QMessageBox.Yes:
             QMessageBox.information(self, self.trUtf8("Tema no guardado!"),
                 self.trUtf8("El nombre es inválido!"))
+
+    def guardar(self):
+        pass

@@ -43,7 +43,8 @@ from PyQt4.QtCore import Qt
 #from edis_c.interfaz.contenedor_principal import contenedor_principal
 from edis_c.interfaz.dialogos.preferencias import preferencias_general
 from edis_c.interfaz.dialogos.preferencias import preferencias_editor
-#from edis_c.interfaz.dialogos.preferencias import preferencias_compilacion
+from edis_c.interfaz.dialogos.preferencias import preferencias_gui
+from edis_c.interfaz.dialogos.preferencias import preferencias_compilacion
 #from edis_c.interfaz.dialogos.preferencias import preferencias_tema
 #from edis_c.interfaz.dialogos.preferencias import creador_te    ma
 
@@ -58,11 +59,15 @@ class DialogoConfiguracion(QDialog):
 
         layoutV = QVBoxLayout(self)
         self.tabs = Tab()
-        self.general = preferencias_general.ConfiguracionGeneral(self)
-        self.editor = preferencias_editor.ConfiguracionEditor(self)
+        self.general = preferencias_general.TabGeneral(self)
+        self.editor = preferencias_editor.TabEditor()
+        self.gui = preferencias_gui.TabGUI(self)
+        self.compilacion = preferencias_compilacion.ECTab(self)
 
         self.tabs.addTab(self.general, self.trUtf8("General"))
         self.tabs.addTab(self.editor, self.trUtf8("Editor"))
+        self.tabs.addTab(self.gui, self.trUtf8("GUI"))
+        self.tabs.addTab(self.compilacion, self.trUtf8("Compilador"))
 
         layoutH = QHBoxLayout()
         self.boton_guardar = QPushButton(self.trUtf8("Guardar"))
@@ -78,8 +83,13 @@ class DialogoConfiguracion(QDialog):
         layoutV.addLayout(grilla)
 
         self.boton_cancelar.clicked.connect(self.cancelar)
+        self.boton_guardar.clicked.connect(self.guardar_)
 
     def cancelar(self):
+        self.close()
+
+    def guardar_(self):
+        [self.tabs.widget(i).guardar() for i in range(self.tabs.count())]
         self.close()
 
 

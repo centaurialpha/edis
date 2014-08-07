@@ -1,4 +1,4 @@
-#*- coding: utf-8 -*-
+#-*- coding: utf-8 -*-
 
 # Copyright (C) <2014>  <Gabriel Acosta>
 # This file is part of EDIS-C.
@@ -18,14 +18,16 @@
 
 import os
 
-from PyQt4.QtGui import QIcon
-from PyQt4.QtGui import QShortcut
-
 from PyQt4.QtCore import QObject
-#from PyQt4.QtCore import Qt
 from PyQt4.QtCore import SIGNAL
 
 from edis_c import recursos
+from edis_c.nucleo import configuraciones
+from edis_c.interfaz.widgets.creador_widget import crear_accion
+
+_TUX = configuraciones.LINUX
+_ICONO = recursos.ICONOS
+_ATAJO = recursos.ATAJOS
 
 
 class MenuEjecucion(QObject):
@@ -34,94 +36,33 @@ class MenuEjecucion(QObject):
         super(MenuEjecucion, self).__init__()
 
         self.ide = ide
-        self.comp = False
-
-        # Cargar shortcut
-        self.atajoCompilar = QShortcut(recursos.ATAJOS['compilar'], self.ide)
-        self.atajoEjecutar = QShortcut(recursos.ATAJOS['ejecutar'], self.ide)
-        self.atajoCompilarEjecutar = QShortcut(recursos.ATAJOS['comp-ejec'],
-            self.ide)
-
-        # Conexiones
-        self.connect(self.atajoCompilar, SIGNAL("activated()"),
-            self.metodo_compilar)
-        self.connect(self.atajoEjecutar, SIGNAL("activated()"),
-            self.metodo_ejecutar)
-        self.connect(self.atajoCompilarEjecutar, SIGNAL("activated()"),
-            self.metodo_compilar_ejecutar)
+        #self.comp = False
 
         # Acciones #
         # Compilar
-        self.accionCompilar = menu_codigo.addAction(
-            QIcon(recursos.ICONOS['compilar']), self.trUtf8("Compilar"))
-        self.cargar_status_tip(self.accionCompilar,
-            self.trUtf8("Compilar archivo actual"))
+        self.accionCompilar = crear_accion(self, "Compilar",
+            icono=_ICONO['compilar'], atajo=_ATAJO['compilar'],
+            slot=self.ide.distribuidor.compilar)
         # Ejecutar
-        self.accionEjecutar = menu_codigo.addAction(
-            QIcon(recursos.ICONOS['ejecutar']), self.trUtf8("Ejecutar"))
-        self.cargar_status_tip(self.accionEjecutar,
-            self.trUtf8("Ejecutar programa"))
+        self.accionEjecutar = crear_accion(self, "Ejecutar",
+            icono=_ICONO['ejecutar'], atajo=_ATAJO['ejecutar'],
+            slot=self.ide.distribuidor.ejecutar)
         # Compilar y ejecutar
-        self.accionCompilarEjecutar = menu_codigo.addAction(
-            QIcon(recursos.ICONOS['comp-ejec']),
-            self.trUtf8("Compilar y ejecutar"))
-        self.cargar_status_tip(self.accionCompilarEjecutar,
-            self.trUtf8("Compilar archivo y ejecutar inmediatamente"))
-        # Terminar programa
-        self.accionFrenar = menu_codigo.addAction(
-            QIcon(recursos.ICONOS['frenar']), self.trUtf8("Frenar programa"))
-        self.cargar_status_tip(self.accionFrenar,
-            self.trUtf8("Terminar programa"))
+        self.accionCompilarEjecutar = crear_accion(self, "Compilar y ejecutar",
+            icono=_ICONO['comp-ejec'], atajo=_ATAJO['comp-ejec'])
 
-        # Acciones desactivadas
-        #self.accionCompilar.setEnabled(False)
-        #self.accionEjecutar.setEnabled(False)
-        #self.accionCompilarEjecutar.setEnabled(False)
+        # Agregar acciones al menú #
+        menu_codigo.addAction(self.accionCompilar)
+        menu_codigo.addAction(self.accionEjecutar)
+        menu_codigo.addAction(self.accionCompilarEjecutar)
 
         self.items_toolbar = {
             "compilar-archivo": self.accionCompilar,
             "ejecutar-archivo": self.accionEjecutar,
-            "compilar_ejecutar-archivo": self.accionCompilarEjecutar,
-            "frenar": self.accionFrenar
+            "compilar-ejecutar-archivo": self.accionCompilarEjecutar
             }
 
-        # Conexión a slots
-        self.connect(self.accionCompilar, SIGNAL("triggered()"),
-            self.metodo_compilar)
-        self.connect(self.accionEjecutar, SIGNAL("triggered()"),
-            self.metodo_ejecutar)
-        self.connect(self.accionCompilarEjecutar, SIGNAL("triggered()"),
-            self.metodo_compilar_ejecutar)
-
-    def cargar_status_tip(self, accion, texto):
-        self.ide.cargar_status_tips(accion, texto)
-
-    def metodo_compilar(self):
-        Weditor = self.ide.contenedor_principal.devolver_editor_actual()
-        self.emit(SIGNAL("fileExecuted(QString)"), Weditor.ID)
-
-        if Weditor:
-            self.ide.contenedor_principal.guardar_archivo(Weditor)
-            self.ide.contenedor_secundario.compilar_archivo(Weditor.ID)
-            self.comp = True
-#        editorW = self.ide.contenedor_principal.devolver_editor_actual()
-#        if not editorW:
-#            return None
-
-#        path_name = self.ide.contenedor_principal.guardar_archivo(editorW)
-#        if not path_name:
-#            return None
-
-#        self.comp = True
-#        nombre_salida = os.path.basename(path_name).split('.')[0]
-#        self.ide.contenedor_secundario.compilar_archivo(
-#            nombre_salida, path_name)
-
     def metodo_ejecutar(self):
-#        if self.comp:
-#            self.ide.contenedor_secundario.ejecutar_archivo(self.comp)
-#        else:
-#            self.ide.contenedor_secundario.ejecutar_archivo(self.comp)
         self.ide.contenedor_secundario.ejecutar_archivo(self.comp)
 
     def metodo_compilar_ejecutar(self):
@@ -132,8 +73,7 @@ class MenuEjecucion(QObject):
         path_name = self.ide.contenedor_principal.guardar_archivo(editorW)
         if not path_name:
             return None
-        self.comp = True
+        #self.comp = True
         salida = os.path.basename(path_name).split('.')[0]
         self.ide.contenedor_secundario.compilar_archivo(salida, path_name)
         self.ide.contenedor_secundario.ejecutar_archivo(self.comp)
-            #self.ide.contenedor_secundario.ejecutar_archivo(self.comp)

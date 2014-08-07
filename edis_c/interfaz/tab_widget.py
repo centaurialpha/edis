@@ -18,13 +18,16 @@
 # You should have received a copy of the GNU General Public License
 # along with EDIS-C.  If not, see <http://www.gnu.org/licenses/>.
 
+# Módulos QtGui
 from PyQt4.QtGui import QTabWidget
 from PyQt4.QtGui import QColor
 from PyQt4.QtGui import QMessageBox
 
+# Módulos QtCore
 from PyQt4.QtCore import SIGNAL
 from PyQt4.QtCore import Qt
 
+# Módulos EDIS
 from edis_c.interfaz.editor import editor
 
 
@@ -38,7 +41,6 @@ class TabCentral(QTabWidget):
         self.setAcceptDrops(True)
         self.parent = parent
         self.no_esta_abierto = True
-
         self.connect(self, SIGNAL("tabCloseRequested(int)"),
             self.removeTab)
 
@@ -76,13 +78,6 @@ class TabCentral(QTabWidget):
 
     def tab_es_modificado(self, v):
         e = self.currentWidget()
-        #texto = str(self.tabBar().tabText(self.currentIndex()))
-
-        #if isinstance(e, editor.Editor) and self.no_esta_abierto and v \
-        #and not texto.startswith('* '):
-            #t = '* %s' % self.tabBar().tabText(self.currentIndex())
-            #self.tabBar().setTabText(self.currentIndex(), t)
-
         if isinstance(e, editor.Editor) and self.no_esta_abierto and v:
             e.texto_modificado = True
             self.tabBar().setTabTextColor(self.currentIndex(),
@@ -90,10 +85,6 @@ class TabCentral(QTabWidget):
 
     def tab_guardado(self, e):
         indice = self.indexOf(e)
-        #texto = str(self.tabBar().tabText(indice))
-
-        #if texto.startswith('* '):
-            #texto = texto[2:]
         self.tabBar().setTabTextColor(indice, QColor(70, 70, 70))
 
     def check_tabs_sin_guardar(self):
@@ -106,6 +97,15 @@ class TabCentral(QTabWidget):
                 valor = valor or self.widget(i).texto_modificado
 
         return valor
+
+    def devolver_documentos_para_reabrir(self):
+        archivos = []
+        for i in range(self.count()):
+            if isinstance(self.widget(i), editor.Editor) \
+            and self.widget(i).ID != '':
+                archivos.append([self.widget(i).ID,
+                    self.widget(i).devolver_posicion_del_cursor()])
+        return archivos
 
     def devolver_archivos_sin_guardar(self):
         """ Devuelve una lista de todos los archivos que han sido modificados

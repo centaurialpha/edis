@@ -18,10 +18,12 @@
 # You should have received a copy of the GNU General Public License
 # along with EDIS-C.  If not, see <http://www.gnu.org/licenses/>.
 
+# Módulos QtGui
 from PyQt4.QtGui import QWidget
 from PyQt4.QtGui import QSplitter
-from PyQt4.QtGui import QHBoxLayout
+from PyQt4.QtGui import QVBoxLayout
 
+# Módulos QtCore
 from PyQt4.QtCore import Qt
 
 
@@ -30,18 +32,28 @@ class WidgetCentral(QWidget):
     def __init__(self, parent=None):
         QWidget.__init__(self, parent)
         self.parent = parent
-
-        layout_horizontal = QHBoxLayout(self)
+        layout_horizontal = QVBoxLayout(self)
         layout_horizontal.setContentsMargins(0, 0, 0, 0)
         layout_horizontal.setSpacing(0)
 
         self.split_principal = QSplitter(Qt.Vertical)
-
+        self.layout = QVBoxLayout()
         layout_horizontal.addWidget(self.split_principal)
+        layout_horizontal.addLayout(self.layout)
 
     def agregar_contenedor_central(self, contenedor):
         self.contenedor_principal = contenedor
         self.split_principal.insertWidget(0, contenedor)
+
+    def agregar_buscador(self, buscador):
+        self.buscador = buscador
+        self.buscador.hide()
+        self.layout.addWidget(buscador)
+
+    def agregar_buscador_de_archivos(self, buscador):
+        self.buscador_archivos = buscador
+        self.buscador_archivos.hide()
+        self.layout.addWidget(buscador)
 
     def agregar_contenedor_bottom(self, contenedor):
         self.contenedor_bottom = contenedor

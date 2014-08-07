@@ -16,14 +16,13 @@
 # You should have received a copy of the GNU General Public License
 # along with EDIS-C.  If not, see <http://www.gnu.org/licenses/>.
 
-from PyQt4.QtGui import QShortcut
-
 from PyQt4.QtCore import QObject
-from PyQt4.QtCore import SIGNAL
 
-from edis_c.interfaz.editor import acciones_
 from edis_c import recursos
-from edis_c.interfaz.dialogos import dialogo_buscar
+from edis_c.interfaz.editor import acciones_
+from edis_c.interfaz.widgets.creador_widget import crear_accion
+
+_ATAJO = recursos.ATAJOS
 
 
 class MenuBuscar(QObject):
@@ -33,33 +32,22 @@ class MenuBuscar(QObject):
 
         self.ide = ide
 
-        # Shortcut
-        self.atajoBuscar = QShortcut(recursos.ATAJOS['buscar'], self.ide)
-
-        # Conexión
-        self.connect(self.atajoBuscar, SIGNAL("activated()"),
-            dialogo_buscar.DialogoBuscar().show)
-
         # Acciones #
         # Buscar
-        accionBuscar = menu_buscar.addAction(self.trUtf8("Buscar"))
-        # Buscar siguiente
-        #accionBuscarSiguiente = menu_buscar.addAction(
-            #self.trUtf8("Buscar siguiente"))
-        # Buscar anterior
-        #accionBuscarAnterior = menu_buscar.addAction(
-            #self.trUtf8("Buscar anterior"))
-        # Reemplazar
-        #accionReemplazar = menu_buscar.addAction(
-            #self.trUtf8("Reemplazar"))
-        menu_buscar.addSeparator()
+        accionBuscar = crear_accion(self, "Buscar", atajo=_ATAJO['buscar'],
+            slot=self.buscar)
+        # Buscar en archivos
+        accionBuscarEnArchivos = crear_accion(self, "Buscar en archivos",
+            atajo=_ATAJO['buscar-archivos'])
         # Ir a la línea
-        accionIrALinea = menu_buscar.addAction(
-            self.trUtf8("Ir a la línea..."))
+        accionIrALinea = crear_accion(self, "Ir a la línea...",
+        atajo=_ATAJO['ir'], slot=self.ir_a_la_linea)
 
-        accionIrALinea.triggered.connect(self.ir_a_la_linea)
-        accionBuscar.triggered.connect(self.buscar)
-        #accionReemplazar.triggered.connect(self.reemplazar)
+        # Agregar acción al menú #
+        menu_buscar.addAction(accionBuscar)
+        menu_buscar.addAction(accionBuscarEnArchivos)
+        menu_buscar.addSeparator()
+        menu_buscar.addAction(accionIrALinea)
 
     def ir_a_la_linea(self):
         editor = self.ide.contenedor_principal.devolver_editor_actual()
@@ -67,4 +55,15 @@ class MenuBuscar(QObject):
             acciones_.ir_a_la_linea(editor)
 
     def buscar(self):
-        dialogo_buscar.DialogoBuscar().show()
+        if self.ide.buscador.isVisible():
+            self.ide.buscador.hide()
+        else:
+            self.ide.buscador.show()
+            self.ide.buscador.widget_buscar.line_edit.setFocus()
+
+    def buscar_en_archivos(self):
+        if self.ide.buscador_archivos.isVisible():
+            self.ide.buscador_archivos.hide()
+        else:
+            self.ide.buscador_archivos.show()
+            #self.ide.buscador

@@ -193,9 +193,9 @@ class Editor(QPlainTextEdit, tabitem.TabItem):
     def wheelEvent(self, evento):
         if evento.modifiers() == Qt.ControlModifier:
             if evento.delta() == 120:
-                self.zoom_mas()
+                self.acercar()
             elif evento.delta() == -120:
-                self.zoom_menos()
+                self.alejar()
             evento.ignore()
         QPlainTextEdit.wheelEvent(self, evento)
 
@@ -246,46 +246,48 @@ class Editor(QPlainTextEdit, tabitem.TabItem):
                 ancho + 1, self.viewport().height() + 3)
             fondo = QColor(recursos.NUEVO_TEMA.get('fondo-margen',
                 recursos.TEMA_EDITOR['fondo-margen']))
-            fondo.setAlpha(recursos.TEMA_EDITOR['opacidad'])
+            fondo.setAlpha(configuraciones.OPACIDAD_MARGEN)
             pintar.fillRect(rect, fondo)
             pintar.drawRect(rect)
             pintar.drawLine(self.posicion_margen + offset.x(), 0,
                 self.posicion_margen + offset.x(), self.viewport().height())
             pintar.end()
 
-        altura = self.viewport().height()
-        offset = self.contentOffset()
-        pintar = QPainter()
-        pintar.begin(self.viewport())
-        color = QColor(200, 200, 0)
-        color.setAlpha(100)
-        pintar.setPen(color)
-        pintar.pen().setCosmetic(True)
-        altura_char = self.fontMetrics().height()
-        bloque = self.firstVisibleBlock()
-        previous_line = []
+        if configuraciones.GUIA_INDENTACION:
+            altura = self.viewport().height()
+            offset = self.contentOffset()
+            pintar = QPainter()
+            pintar.begin(self.viewport())
+            color = QColor(200, 200, 0)
+            color.setAlpha(100)
+            pintar.setPen(color)
+            pintar.pen().setCosmetic(True)
+            altura_char = self.fontMetrics().height()
+            bloque = self.firstVisibleBlock()
+            previous_line = []
 
-        while bloque.isValid():
-            geo = self.blockBoundingGeometry(bloque)
-            geo.translate(offset)
-            posicion_y = geo.top()
-            if posicion_y > altura:
-                break
-            col = (len(acciones_.devolver_espacios(
-                bloque.text())) // configuraciones.INDENTACION)
-            if col == 0:
-                for l in previous_line:
-                    pintar.drawLine(l, posicion_y, l, posicion_y + altura_char)
-            else:
-                previous_line = []
-            for i in range(1, col):
-                posicion_linea = self.inicio_indentacion + (
-                    self.guia_indentacion * (i - 1))
-                pintar.drawLine(posicion_linea, posicion_y, posicion_linea,
-                    posicion_y + altura_char)
-                previous_line.append(posicion_linea)
-            bloque = bloque.next()
-        pintar.end()
+            while bloque.isValid():
+                geo = self.blockBoundingGeometry(bloque)
+                geo.translate(offset)
+                posicion_y = geo.top()
+                if posicion_y > altura:
+                    break
+                col = (len(acciones_.devolver_espacios(
+                    bloque.text())) // configuraciones.INDENTACION)
+                if col == 0:
+                    for l in previous_line:
+                        pintar.drawLine(
+                            l, posicion_y, l, posicion_y + altura_char)
+                else:
+                    previous_line = []
+                for i in range(1, col):
+                    posicion_linea = self.inicio_indentacion + (
+                        self.guia_indentacion * (i - 1))
+                    pintar.drawLine(posicion_linea, posicion_y, posicion_linea,
+                        posicion_y + altura_char)
+                    previous_line.append(posicion_linea)
+                bloque = bloque.next()
+            pintar.end()
 
     def resaltar_linea_actual(self):
         """ Pinta la linea actual en donde está posicionado el cursor. """
@@ -504,6 +506,9 @@ class Editor(QPlainTextEdit, tabitem.TabItem):
 
         return unicode(self.toPlainText())
 
+    def devolver_posicion_del_cursor(self):
+        return self.textCursor().position()
+
     def __tecla_backspace(self, event):
         if self.textCursor().hasSelection():
             return False
@@ -530,7 +535,7 @@ class Editor(QPlainTextEdit, tabitem.TabItem):
             self.document().setDefaultFont(fuente)
             self.actualizar_margen_linea(fuente)
 
-    def zoom_mas(self):
+    def acercar(self):
         fuente = self.document().defaultFont()
         tam = fuente.pointSize()
 
@@ -541,7 +546,7 @@ class Editor(QPlainTextEdit, tabitem.TabItem):
         self.setFont(fuente)
         self.actualizar_margen_linea(fuente)
 
-    def zoom_menos(self):
+    def alejar(self):
         fuente = self.document().defaultFont()
         tam = fuente.pointSize()
 

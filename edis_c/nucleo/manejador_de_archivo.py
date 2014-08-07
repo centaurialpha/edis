@@ -80,7 +80,7 @@ def devolver_tam_archivo(archivo):
 
 
 def escribir_archivo(nombre_de_archivo, contenido):
-    """ Se escribe en el archivo, si el nombre no tiene extension se agrega .c
+    """ Se escribe en el archivo, si el nombre no tiene extensión se agrega .c
     """
     extension = (os.path.splitext(nombre_de_archivo)[-1])[1:]
     if not extension:

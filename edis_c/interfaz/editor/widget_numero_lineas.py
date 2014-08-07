@@ -76,7 +76,6 @@ class NumeroDeLineaBar(QWidget):
     def plegar(self, lineNumber):
         inicio_bloque = self.editor.document().findBlockByNumber(lineNumber - 1)
         posicion_final = self._buscar_cierre_plegado(inicio_bloque)
-        print posicion_final
         final_bloque = self.editor.document().findBlockByNumber(posicion_final)
 
         bloque = inicio_bloque.next()
@@ -135,7 +134,7 @@ class NumeroDeLineaBar(QWidget):
 
     def _buscar_etiqueta_cierre_plegado(self, bloque):
         texto = unicode(bloque.next())
-        label = texto.split(':')[1]
+        label = texto.split(':')[0]
         bloque = bloque.next()
         pat = re.compile('\s*#end-fold:' + label)
         while bloque.isValid():
@@ -170,8 +169,9 @@ class NumeroDeLineaBar(QWidget):
             self.editor.textCursor().position())
         pattern = self.pat
         pintar = QPainter(self)
-        fondo = recursos.NUEVO_TEMA.get('widget-num-lineas',
-            recursos.TEMA_EDITOR['widget-num-linea'])
+        fondo = QColor(recursos.NUEVO_TEMA.get('widget-num-lineas',
+            recursos.TEMA_EDITOR['widget-num-linea']))
+        fondo.setAlpha(40)
         pintar.fillRect(self.rect(), QColor(fondo))
 
         bloque = self.editor.firstVisibleBlock()
@@ -220,7 +220,7 @@ class NumeroDeLineaBar(QWidget):
 
         # Código desplegable
         area = self.width() - self.foldArea
-        pintar.fillRect(area, 0, 0, self.height(),
+        pintar.fillRect(area, 0, self.foldArea, self.height(),
             Qt.transparent)
         if self.foldArea != self.rightArrowIcon.width():
             poligono = QPolygonF()

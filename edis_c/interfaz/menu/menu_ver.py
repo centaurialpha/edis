@@ -16,13 +16,12 @@
 # You should have received a copy of the GNU General Public License
 # along with EDIS-C.  If not, see <http://www.gnu.org/licenses/>.
 
-from PyQt4.QtGui import QShortcut
-#from PyQt4.QtGui import QKeySequence
-
 from PyQt4.QtCore import QObject
-from PyQt4.QtCore import SIGNAL
 
 from edis_c import recursos
+from edis_c.interfaz.widgets.creador_widget import crear_accion
+
+_ATAJO = recursos.ATAJOS
 
 
 class MenuVer(QObject):
@@ -32,85 +31,46 @@ class MenuVer(QObject):
 
         self.ide = ide
 
-        # Se cargan los atajos
-        self.atajoFullScreen = QShortcut(
-            recursos.ATAJOS['fullscreen'], self.ide)
-        self.atajoModoDev = QShortcut(
-            recursos.ATAJOS['modo-dev'], self.ide)
-        self.atajoOcultarToolbar = QShortcut(
-            recursos.ATAJOS['ocultar-toolbar'], self.ide)
-        self.atajoOcultarInput = QShortcut(
-            recursos.ATAJOS['ocultar-input'], self.ide)
-        self.atajoOcultarMenu = QShortcut(
-            recursos.ATAJOS['ocultar-menu'], self.ide)
-        self.atajoZoomMas = QShortcut(
-            recursos.ATAJOS['zoom-mas'], self.ide)
-        self.atajoZoomMenos = QShortcut(
-            recursos.ATAJOS['zoom-menos'], self.ide)
-
-        # Conexiones
-        self.connect(self.atajoFullScreen, SIGNAL("activated()"),
-            self.pantalla_completa)
-        self.connect(self.atajoModoDev, SIGNAL("activated()"),
-            self.modo_dev)
-        self.connect(self.atajoOcultarToolbar, SIGNAL("activated()"),
-            self.ocultar_mostrar_toolbars)
-        self.connect(self.atajoOcultarInput, SIGNAL("activated()"),
-            self.visibilidad_contenedor_secundario)
-        #self.connect(self.atajoOcultarMenu, SIGNAL("activated()"),
-            #self.ocultar_mostrar_menu)
-        self.connect(self.atajoZoomMas, SIGNAL("activated()"),
-            self._zoom_mas)
-        self.connect(self.atajoZoomMenos, SIGNAL("activated()"),
-            self._zoom_menos)
-
         # Acciones #
         # Pantalla completa
-        self.accionFullScreen = menu_ver.addAction(
-            self.trUtf8("Pantalla Completa"))
+        self.accionFullScreen = crear_accion(self,
+            "Pantalla completa", atajo=_ATAJO['fullscreen'],
+            slot=self.pantalla_completa)
         self.accionFullScreen.setCheckable(True)
-        # Mostrar/ocultar todo execpto el editor
-        self.accionMostrarOcultarTodo = menu_ver.addAction(
-            self.trUtf8("Mostrar/Ocultar Todo"))
-        menu_ver.addAction(self.accionMostrarOcultarTodo)
-        self.accionMostrarOcultarTodo.setCheckable(True)
-        menu_ver.addSeparator()
-        # Mostrar/ocultar toolbars
-        self.accionMostrarOcultarToolbar = menu_ver.addAction(
-            self.trUtf8("Mostrar/Ocultar Toolbars"))
+        # Mostrar/ocultar barra de herramientas
+        self.accionMostrarOcultarToolbar = crear_accion(self,
+            "Mostrar/ocultar barra de herramientas",
+            atajo=_ATAJO['ocultar-toolbar'], slot=self.ocultar_mostrar_toolbars)
         self.accionMostrarOcultarToolbar.setCheckable(True)
         # Mostrar/ocultar editor
-        self.accionMostrarOcultarEditor = menu_ver.addAction(
-            self.trUtf8("Mostrar/Ocultar Editor"))
+        self.accionMostrarOcultarEditor = crear_accion(self,
+            "Mostrar/ocultar editor", atajo=_ATAJO['ocultar-editor'],
+            slot=self.visibilidad_contenedor_principal)
         self.accionMostrarOcultarEditor.setCheckable(True)
         # Mostrar/ocultar consola
-        self.accionMostrarOcultar_input = menu_ver.addAction(
-            self.trUtf8("Mostrar/Ocultar consola"))
-        menu_ver.addSeparator()
+        self.accionMostrarOcultarInput = crear_accion(self,
+            "Mostrar/ocultar consola", atajo=_ATAJO['ocultar-input'],
+            slot=self.visibilidad_contenedor_secundario)
         # Acercar
-        self.accionZoomMas = menu_ver.addAction(
-            self.trUtf8("Acercar"))
+        self.accionAcercar = crear_accion(self, "Acercar",
+            atajo=_ATAJO['zoom-mas'], slot=self._acercar)
         # Alejar
-        self.accionZoomMenos = menu_ver.addAction(
-            self.trUtf8("Alejar"))
+        self.accionAlejar = crear_accion(self, "Alejar",
+            atajo=_ATAJO['zoom-menos'], slot=self._alejar)
 
-        # Conexiones a slot
-        self.accionFullScreen.triggered.connect(self.pantalla_completa)
-        self.accionMostrarOcultarTodo.triggered.connect(self.modo_dev)
-        self.accionMostrarOcultarToolbar.triggered.connect(
-            self.ocultar_mostrar_toolbars)
-        self.accionMostrarOcultarEditor.triggered.connect(
-            self.visibilidad_contenedor_principal)
-        self.accionMostrarOcultar_input.triggered.connect(
-            self.visibilidad_contenedor_secundario)
-        self.accionZoomMas.triggered.connect(self._zoom_mas)
-        self.accionZoomMenos.triggered.connect(self._zoom_menos)
+        # Agregar acciones al menú #
+        menu_ver.addAction(self.accionFullScreen)
+        menu_ver.addAction(self.accionMostrarOcultarToolbar)
+        menu_ver.addAction(self.accionMostrarOcultarEditor)
+        menu_ver.addAction(self.accionMostrarOcultarInput)
+        menu_ver.addSeparator()
+        menu_ver.addAction(self.accionAcercar)
+        menu_ver.addAction(self.accionAlejar)
 
         self.accionFullScreen.setChecked(False)
-        self.accionMostrarOcultarTodo.setChecked(False)
         self.accionMostrarOcultarToolbar.setChecked(True)
         self.accionMostrarOcultarEditor.setChecked(True)
-        self.accionMostrarOcultar_input.setChecked(False)
+        self.accionMostrarOcultarInput.setChecked(False)
 
     def pantalla_completa(self):
         """ Muestra en pantalla completa. """
@@ -123,12 +83,12 @@ class MenuVer(QObject):
     def ocultar_mostrar_toolbars(self):
         """ Muestra/oculta las toolbars """
 
-        if self.ide.toolbar.isVisible() and self.ide.toolbar_.isVisible():
+        if self.ide.toolbar.isVisible():
             self.ide.toolbar.hide()
-            self.ide.toolbar_.hide()
+            #self.ide.toolbar_.hide()
         else:
             self.ide.toolbar.show()
-            self.ide.toolbar_.show()
+            #self.ide.toolbar.show()
 
     def visibilidad_contenedor_principal(self):
         self.ide.widget_Central.visibilidad_contenedor_principal()
@@ -137,7 +97,7 @@ class MenuVer(QObject):
 
     def visibilidad_contenedor_secundario(self):
         self.ide.widget_Central.mostrar_ocultar_widget_bottom()
-        self.ide._menu_ver.accionMostrarOcultar_input.setChecked(
+        self.ide._menu_ver.accionMostrarOcultarInput.setChecked(
             self.ide.widget_Central.contenedor_bottom.isVisible())
 
     def modo_dev(self):
@@ -145,12 +105,12 @@ class MenuVer(QObject):
 
         if self.ide.menuBar().isVisible():
             self.ide.toolbar.hide()
-            self.ide.toolbar_.hide()
+            #self.ide.toolbar_.hide()
             self.ide.menuBar().hide()
             self.ide.contenedor_secundario.hide()
         else:
             self.ide.toolbar.show()
-            self.ide.toolbar_.show()
+            #self.ide.toolbar_.show()
             self.ide.menuBar().show()
         self.ide._menu_ver.accionMostrarOcultarTodo.setChecked(
             self.ide.menuBar().isVisible())
@@ -160,15 +120,15 @@ class MenuVer(QObject):
             self.ide.widget_Central.contenedor_principal.isVisible())
         self.ide._menu_ver.accionMostrarOcultarToolbar.setChecked(
             self.ide.toolbar.isVisible())
-        self.ide._menu_ver.accionMostrarOcultarToolbar.setChecked(
-            self.ide.toolbar_.isVisible())
+        #self.ide._menu_ver.accionMostrarOcultarToolbar.setChecked(
+            #self.ide.toolbar_.isVisible())
 
-    def _zoom_mas(self):
+    def _acercar(self):
         editor = self.ide.contenedor_principal.devolver_editor_actual()
         if editor:
-            editor.zoom_mas()
+            editor.acercar()
 
-    def _zoom_menos(self):
+    def _alejar(self):
         editor = self.ide.contenedor_principal.devolver_editor_actual()
         if editor:
-            editor.zoom_menos()
+            editor.alejar()

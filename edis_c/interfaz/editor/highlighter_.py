@@ -92,13 +92,6 @@ class Highlighter(QSyntaxHighlighter):
         re_estilo(tema)
         # Reglas
         reglas = []
-        # Comentario múltiple
-        self.comentario_multiple_lineas = QTextCharFormat()
-        color = QColor(200, 0, 10)
-        brush = QBrush(color, Qt.SolidPattern)
-        self.comentario_multiple_lineas.setForeground(brush)
-        self.comentario_inicio = QRegExp("/\\*")
-        self.comentario_final = QRegExp("\\*/")
         # Palabras reservadas
         reglas += [(r'\b%s\b' % w, 0, ESTILOS['palabra'])
             for w in Highlighter.palabras_reservadas]
@@ -110,20 +103,26 @@ class Highlighter(QSyntaxHighlighter):
             for b in Highlighter.braces]
         # Struct
         reglas += [(r'\bstruct\b\s*(\w+)', 1, ESTILOS['struct'])]
-        # Comentario simple
-        reglas += [(r'//[^\n]*', 0, ESTILOS['comentario'])]
         # Caracter
         reglas += [(r"'[^'\\]*(\\.[^'\\]*)*'", 0, ESTILOS['caracter'])]
-        # Cadena
-        reglas += [(r'"[^"\\]*(\\.[^"\\]*)*"', 0, ESTILOS['cadena'])]
-        # Include
-        reglas += [(r'#[^\n]*', 0, ESTILOS['include'])]
-
         # Numeros
         reglas += [(r'\b[+-]?[0-9]+[lL]?\b', 0, ESTILOS['numero']),
             (r'\b[+-]?0[xX][0-9A-Fa-f]+[lL]?\b', 0, ESTILOS['numero']),
             (r'\b[+-]?[0-9]+(?:\.[0-9]+)?(?:[eE][+-]?[0-9]+)?\b',
                 0, ESTILOS['numero'])]
+        # Cadena
+        reglas += [(r'"[^"\\]*(\\.[^"\\]*)*"', 0, ESTILOS['cadena'])]
+        # Include
+        reglas += [(r'#[^\n]*', 0, ESTILOS['include'])]
+        # Comentario simple
+        reglas += [(r'//[^\n]*', 0, ESTILOS['comentario'])]
+        # Comentario múltiple
+        self.comentario_multiple_lineas = QTextCharFormat()
+        color = QColor(200, 0, 10)
+        brush = QBrush(color, Qt.SolidPattern)
+        self.comentario_multiple_lineas.setForeground(brush)
+        self.comentario_inicio = QRegExp("/\\*")
+        self.comentario_final = QRegExp("\\*/")
 
         self.reglas = [(QRegExp(pat), indice, fmt)
             for (pat, indice, fmt) in reglas]

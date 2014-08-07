@@ -16,14 +16,17 @@
 # You should have received a copy of the GNU General Public License
 # along with EDIS-C.  If not, see <http://www.gnu.org/licenses/>.
 
-from PyQt4.QtGui import QIcon
-from PyQt4.QtGui import QShortcut
-from PyQt4.QtCore import SIGNAL
+from PyQt4.QtGui import QMessageBox
 from PyQt4.QtCore import QObject
 
 from edis_c.interfaz.editor import acciones_
+from edis_c.interfaz.editor import editor
 from edis_c import recursos
 from edis_c import traducciones as tr
+from edis_c.interfaz.widgets.creador_widget import crear_accion
+
+_ICONO = recursos.ICONOS
+_ATAJO = recursos.ATAJOS
 
 
 class MenuArchivo(QObject):
@@ -35,113 +38,71 @@ class MenuArchivo(QObject):
         # Contenedor del Widget Principal
         self.ide = ide
 
-        # Se cargan los shortcut #
-
-        self.atajoNuevo = QShortcut(recursos.ATAJOS['nuevo'], self.ide)
-        self.atajoAbrir = QShortcut(recursos.ATAJOS['abrir'], self.ide)
-        self.atajoGuardar = QShortcut(recursos.ATAJOS['guardar'], self.ide)
-        self.atajoImprimir = QShortcut(recursos.ATAJOS['imprimir'], self.ide)
-        self.atajoCerrarTab = QShortcut(recursos.ATAJOS['cerrar-tab'], self.ide)
-
-        # Conexiones
-        self.connect(self.atajoNuevo, SIGNAL("activated()"),
-            self.ide.contenedor_principal.agregar_editor)
-        self.connect(self.atajoAbrir, SIGNAL("activated()"),
-            self.ide.contenedor_principal.abrir_archivo)
-        self.connect(self.atajoGuardar, SIGNAL("activated()"),
-            self.ide.contenedor_principal.guardar_archivo)
-        self.connect(self.atajoCerrarTab, SIGNAL("activated()"),
-            self.ide.contenedor_principal.cerrar_tab)
-        self.connect(self.atajoImprimir, SIGNAL("activated()"),
-            self.imprimir_)
-
         # Acciones #
         # Nuevo
-        self.accionNuevo = menu_archivo.addAction(
-            QIcon(recursos.ICONOS['nuevo']), self.trUtf8(tr.TRAD_NUEVO))
-        self.cargar_status_tip(self.accionNuevo,
-            self.trUtf8("Crear un archivo nuevo"))
-        # Nuevo desde plantilla
+        self.accionNuevo = crear_accion(self, "Nuevo", icono=_ICONO['nuevo'],
+            atajo=_ATAJO['nuevo'],
+            slot=self.ide.contenedor_principal.agregar_editor)
+        ## Nuevo desde plantilla
+        self.accionNuevoMain = crear_accion(self, "Nuevo main",
+            icono=_ICONO['main'], slot=self.archivo_main_c)
+        # Abrir
+        self.accionAbrir = crear_accion(self, "Abrir", icono=_ICONO['abrir'],
+            atajo=_ATAJO['abrir'],
+            slot=self.ide.contenedor_principal.abrir_archivo)
+        # Guardar
+        self.accionGuardar = crear_accion(self, "Guardar",
+            icono=_ICONO['guardar'], atajo=_ATAJO['guardar'],
+            slot=self.ide.contenedor_principal.guardar_archivo)
+        # Guardar como
+        self.accionGuardarComo = crear_accion(self, "Guardar como",
+            icono=_ICONO['guardar-como'],
+            slot=self.ide.contenedor_principal.guardar_archivo_como)
+        # Guardar todo
+        self.accionGuardarTodo = crear_accion(self, "Guardar todo",
+            slot=self.ide.contenedor_principal.guardar_todo)
+        # Imprimir
+        self.accionImprimir = crear_accion(self, "Imprimir",
+            icono=_ICONO['print'], atajo=_ATAJO['imprimir'],
+            slot=self.ide.distribuidor.imprimir_documento)
+        # Exportar a PDF
+        self.accionExportarComoPDF = crear_accion(self, "Exportar a PDF",
+            slot=self.ide.distribuidor.exportar_como_pdf)
+        # Cerrar
+        self.accionCerrarTab = crear_accion(self, "Cerrar",
+            atajo=_ATAJO['cerrar-tab'],
+            slot=self.ide.contenedor_principal.cerrar_tab)
+        # Cerrar todo
+        self.accionCerrarTodo = crear_accion(self, "Cerrar todo",
+            slot=self.ide.contenedor_principal.cerrar_todo)
+        # Cerrar todo excepto actual
+        self.accionCerrarExceptoActual = crear_accion(self,
+            "Cerrar todo excepto actual",
+            slot=self.ide.contenedor_principal.cerrar_excepto_actual)
+        # Salir
+        self.accionSalir = crear_accion(self, "Salir", icono=_ICONO['salir'],
+            slot=self.ide.close)
+
+        # Agregar acciones #
+        menu_archivo.addAction(self.accionNuevo)
         self.accionNuevoDesdePlantilla = menu_archivo.addMenu(
             tr.TRAD_NUEVO_PLANTILLA)
         menu_archivo.addSeparator()
-        self.accionNuevoMain = self.accionNuevoDesdePlantilla.addAction(
-            QIcon(recursos.ICONOS['main']), tr.TRAD_NUEVO_MAIN)
-        self.cargar_status_tip(self.accionNuevoMain,
-            self.trUtf8("Crear un nuevo archivo de C con función main"))
-        # Abrir
-        self.accionAbrir = menu_archivo.addAction(
-            QIcon(recursos.ICONOS['abrir']), tr.TRAD_ABRIR)
-        self.cargar_status_tip(self.accionAbrir,
-            self.trUtf8("Abrir cualquier archivo de tipo C (.c .h .cpp)"))
+        self.accionNuevoDesdePlantilla.addAction(self.accionNuevoMain)
+        menu_archivo.addAction(self.accionAbrir)
         menu_archivo.addSeparator()
-        # Guardar
-        self.accionGuardar = menu_archivo.addAction(
-            QIcon(recursos.ICONOS['guardar']), tr.TRAD_GUARDAR)
-        self.cargar_status_tip(self.accionGuardar,
-            self.trUtf8("Guardar cambios en el archivo actual"))
-        # Guardar como
-        self.accionGuardarComo = menu_archivo.addAction(
-            QIcon(recursos.ICONOS['guardar-como']), tr.TRAD_GUARDAR_COMO)
-        self.cargar_status_tip(self.accionGuardarComo,
-            self.trUtf8("Elegir dónde guardar archivo actual"))
-        # Guardar todo
-        self.accionGuardarTodo = menu_archivo.addAction(tr.TRAD_GUARDAR_TODO)
+        menu_archivo.addAction(self.accionGuardar)
+        menu_archivo.addAction(self.accionGuardarComo)
+        menu_archivo.addAction(self.accionGuardarTodo)
         menu_archivo.addSeparator()
-        # Imprimir
-        self.accionImprimir = menu_archivo.addAction(
-            QIcon(recursos.ICONOS['print']), tr.TRAD_IMPRIMIR)
-        self.cargar_status_tip(self.accionImprimir,
-            self.trUtf8("Imprimir código fuente"))
-        # Exportar a PDF
-        self.accionExportarComoPDF = menu_archivo.addAction(
-            self.trUtf8("Exportar a PDF"))
+        menu_archivo.addAction(self.accionImprimir)
+        menu_archivo.addAction(self.accionExportarComoPDF)
         menu_archivo.addSeparator()
-        # Cerrar
-        self.accionCerrarTab = menu_archivo.addAction(tr.TRAD_CERRAR)
-        self.cargar_status_tip(self.accionCerrarTab,
-            self.trUtf8("Cerrar pestaña actual"))
-        # Cerrar todo
-        self.accionCerrarTodo = menu_archivo.addAction(tr.TRAD_CERRAR_TODO)
-        self.cargar_status_tip(self.accionCerrarTodo,
-            self.trUtf8("Cerrar todas las pestañas"))
-        # Cerrar todo excepto actual
-        self.accionCerrarExceptoActual = menu_archivo.addAction(
-            tr.TRAD_CERRAR_EXC)
-        self.cargar_status_tip(self.accionCerrarExceptoActual,
-            self.trUtf8("Cerrar todas las pestañas excepto actual"))
+        menu_archivo.addAction(self.accionCerrarTab)
+        menu_archivo.addAction(self.accionCerrarTodo)
+        menu_archivo.addAction(self.accionCerrarExceptoActual)
         menu_archivo.addSeparator()
-        # Salir
-        self.accionSalir = menu_archivo.addAction(
-            QIcon(recursos.ICONOS['salir']), tr.TRAD_SALIR)
-        self.cargar_status_tip(self.accionSalir,
-            self.trUtf8("Salir de EDIS-C"))
-
-        # Conexión a métodos #
-        self.accionNuevo.triggered.connect(
-            self.ide.contenedor_principal.agregar_editor)
-        self.accionNuevoMain.triggered.connect(
-            self.archivo_main_c)
-        #self.accionAbrir.triggered.connect(
-            #self.ide.contenedor_principal.abrir_archivo)
-        self.connect(self.accionAbrir, SIGNAL("triggered()"),
-            self.ide.contenedor_principal.abrir_archivo)
-        self.accionGuardar.triggered.connect(
-            self.ide.contenedor_principal.guardar_archivo)
-        self.accionGuardarComo.triggered.connect(
-            self.ide.contenedor_principal.guardar_archivo_como)
-        self.accionGuardarTodo.triggered.connect(
-            self.ide.contenedor_principal.guardar_todo)
-        self.accionImprimir.triggered.connect(
-            self.imprimir_)
-        self.accionCerrarTab.triggered.connect(
-            self.ide.contenedor_principal.cerrar_tab)
-        self.accionCerrarExceptoActual.triggered.connect(
-            self.ide.contenedor_principal.cerrar_excepto_actual)
-        self.accionCerrarTodo.triggered.connect(
-            self.ide.contenedor_principal.cerrar_todo)
-        self.accionSalir.triggered.connect(
-            self.ide.close)
+        menu_archivo.addAction(self.accionSalir)
 
         # Toolbar #
         self.items_toolbar = {
@@ -151,20 +112,12 @@ class MenuArchivo(QObject):
             "guardar-como-archivo": self.accionGuardarComo
             }
 
-    def cargar_status_tip(self, accion, texto):
-        self.ide.cargar_status_tips(accion, texto)
-
-    def imprimir_(self):
-        """ Llama al método para imprimir archivo actual """
-
-        editorW = self.ide.contenedor_principal.devolver_editor_actual()
-        if editorW is not None:
-            nombre = "Documento_nuevo.pdf"
-
-            acciones_.imprimir_archivo(nombre, editorW.print_)
-        return False
-
     def archivo_main_c(self):
-        editorW = self.ide.contenedor_principal.devolver_editor_actual()
-        if editorW is not None:
-            acciones_.nuevo_main_c(editorW)
+        widget = self.ide.contenedor_principal.devolver_widget_actual()
+        if isinstance(widget, editor.Editor):
+            acciones_.nuevo_main_c(widget)
+            widget.setFocus()
+        else:
+            QMessageBox.information(widget, self.trUtf8("Información!"),
+                self.trUtf8("Primero crea un nuevo archivo!"))
+        widget.setFocus()

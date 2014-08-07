@@ -18,10 +18,15 @@
 # You should have received a copy of the GNU General Public License
 # along with EDIS-C.  If not, see <http://www.gnu.org/licenses/>.
 
+# Módulos Python
 import time
-#import sys
-import os
+import sys
+from subprocess import Popen
+from subprocess import PIPE
+if sys.platform == 'win32':
+    from subprocess import CREATE_NEW_CONSOLE
 
+# Módulos QtGui
 from PyQt4.QtGui import QPlainTextEdit
 from PyQt4.QtGui import QVBoxLayout
 from PyQt4.QtGui import QWidget
@@ -30,21 +35,28 @@ from PyQt4.QtGui import QTextCursor
 from PyQt4.QtGui import QColor
 from PyQt4.QtGui import QBrush
 from PyQt4.QtGui import QFont
+from PyQt4.QtGui import QMenu
 
+# Módulos QtCore
 from PyQt4.QtCore import QProcess
 from PyQt4.QtCore import SIGNAL
 from PyQt4.QtCore import Qt
 
+# Módulos EDIS
 from edis_c import recursos
 from edis_c.nucleo import configuraciones
 from edis_c.nucleo import manejador_de_archivo
 from edis_c.interfaz.dialogos.preferencias import preferencias_compilacion as pc
+
+_TUX = configuraciones.LINUX
 
 
 class EjecutarWidget(QWidget):
 
     def __init__(self):
         super(EjecutarWidget, self).__init__()
+        self.compilado = False
+
         layoutV = QVBoxLayout(self)
         layoutV.setContentsMargins(0, 0, 0, 0)
         layoutV.setSpacing(0)
@@ -53,27 +65,31 @@ class EjecutarWidget(QWidget):
         self.setLayout(layoutV)
 
         # Proceso
-        self.proceso_actual = None
         self.proceso = QProcess(self)
 
         # Conexión
-        self.connect(self.proceso, SIGNAL("readyReadStandardOutput()"),
+        self.proceso.readyReadStandardOutput.connect(
             self.output.salida_estandar)
-        self.connect(self.proceso, SIGNAL("readyReadStandardError()"),
+        self.proceso.readyReadStandardError.connect(
             self.output.error_estandar)
-        self.connect(self.proceso, SIGNAL(
-            "finished(int, QProcess::ExitStatus)"), self.ejecucion_terminada)
+        self.proceso.readyReadStandardError.connect(
+            self.output.datos_tabla)
+        self.proceso.finished[int, QProcess.ExitStatus].connect(
+            self.ejecucion_terminada)
         self.connect(self.proceso, SIGNAL("error(QProcess::ProcessError)"),
             self.ejecucion_error)
 
-    def correr_compilacion(self, nombre_archivo):
+    def correr_compilacion(self, nombre_archivo=''):
         """ Se corre el comando gcc para la compilación """
 
         # Dirección del archivo a compilar
         self.nombre_archivo = nombre_archivo
         # Nombre del archivo sin extensión
-        self.ejecutable = (self.nombre_archivo.split('/')[-1]).split('.')[0]
-
+        if not _TUX:
+            self.ejecutable = (
+                self.nombre_archivo.split('\\')[-1]).split('.')[0]
+        else:
+            self.ejecutable = (self.nombre_archivo.split('/')[-1]).split('.')[0]
         self.output.setCurrentCharFormat(self.output.formato_ok)
 
         # Para generar el ejecutable en la carpeta del fuente
@@ -83,16 +99,16 @@ class EjecutarWidget(QWidget):
 
         # Parámetros adicionales
         parametros_add = list(str(configuraciones.PARAMETROS).split())
-        pref_compilador = pc.EjecucionCompilacionTab(self).configCompilacion
+        pref_compilador = pc.ECTab(self).configCompilacion
         checkEnsamblador = pref_compilador.checkEnsamblado
 
         # Ens = Verdadero si se activó la opción checkEnsamblador.
         ensamblador = {'Ens': True if checkEnsamblador.isChecked() else False}
 
-        self.proceso_actual = self.proceso
         self.output.setPlainText(
             'Compilando archivo: %s\nDirectorio: %s ( %s )\n' %
-            (self.nombre_archivo.split('/')[-1], self.nombre_archivo,
+            (self.nombre_archivo.split('/')[-1] if _TUX
+            else self.nombre_archivo.split('\\')[-1], self.nombre_archivo,
                 time.ctime()))
         self.output.moveCursor(QTextCursor.Down)
         self.output.moveCursor(QTextCursor.Down)
@@ -108,6 +124,7 @@ class EjecutarWidget(QWidget):
             parametros_gcc = ['-Wall']
             self.proceso.start('gcc', parametros_gcc +
                 parametros_add + [self.nombre_archivo])
+        self.compilado = True
 
     def ejecucion_terminada(self, codigoError, exitStatus):
         """ valores de codigoError
@@ -122,48 +139,63 @@ class EjecutarWidget(QWidget):
         self.output.textCursor().insertText('\n\n')
         if exitStatus == QProcess.NormalExit and codigoError == 0:
             formato.setForeground(
-                QBrush(QColor(recursos.COLOR_EDITOR['salida-exitosa'])))
+                QBrush(QColor(recursos.TEMA_EDITOR['salida-exitosa'])))
             self.output.textCursor().insertText(
                 self.trUtf8("¡Compilación exitosa!"), formato)
 
         else:
             formato.setForeground(
-                QBrush(QColor(recursos.COLOR_EDITOR['salida-error'])))
+                QBrush(QColor(recursos.TEMA_EDITOR['salida-error'])))
             self.output.textCursor().insertText(
                 self.trUtf8("No hubo compilación!"), formato)
-        self.output.textCursor().insertText('\n')
         self.output.moveCursor(QTextCursor.Down)
 
     def ejecucion_error(self, error):
-        pass
+        self.proceso.kill()
+        formato = QTextCharFormat()
+        formato.setAnchor(True)
+        formato.setForeground(Qt.red)
+        if error == 0:
+            self.output.textCursor().insertText(self.trUtf8("Error!"), formato)
+        else:
+            self.output.textCursor().insertText(self.trUtf8(
+                "Error proceso: %d" % error), formato)
 
     def correr_programa(self):
-        """ Se encarga de correr el programa ejecutable.
-        Arreglar: Para que corra el programa con QProcess y además que borre
-        el código de salida anterior con (rm $0).
-        """
-        direc = manejador_de_archivo.devolver_carpeta(self.nombre_archivo)
-        #ejecutar = "./"
-        dash = """
-        #!/bin/sh
-        %s
-        echo \n\n\n
-        echo '------------------------------'
-        echo 'Presione <Enter> para salir'
-        read variable_al_pp
-        """ % (direc + '/' + self.ejecutable)
-        bash = """
-        #!/bin/sh
-        xterm -e bash -c "%s"
-        """ % dash
-        #self.proceso_actual = self.proceso_ejecucion
+        """ Se encarga de correr el programa objeto generado """
 
-        #comando = 'xterm -e bash -c ./%s'
-        #self.proceso_actual.start(bash)
-        os.popen(bash)
+        direc = manejador_de_archivo.devolver_carpeta(self.nombre_archivo)
+        if _TUX:
+            # Para nombres de carpeta con espacios (Linux)
+            direc = direc.replace(' ', '\\ ')
+        # Scripts en BASH para impedir que la terminal se cierre al ejecutar
+        # el archivo objeto
+        DASH = [
+            '#!/bin/sh',
+            '%s',
+            'echo \n\n\n',
+            'echo presione Enter',
+            'read I']
+        BASH = [
+            '#!/bin/sh',
+            'xterm -e bash -c "%s"']
+        dash = ''
+        for i in DASH:
+            dash += i + '\n'
+        dash = dash % (direc + '/' + self.ejecutable)
+        bash = ''
+        for i in BASH:
+            bash += i + '\n'
+        bash = bash % dash
+        if _TUX:
+            Popen(bash, stdout=PIPE, stderr=PIPE, shell=True)
+        else:
+            Popen(direc + '/' + self.ejecutable,
+                creationflags=CREATE_NEW_CONSOLE)
 
 
 class SalidaWidget(QPlainTextEdit):
+    """ Clase Widget para la salida del compilador. """
 
     def __init__(self, parent):
         QPlainTextEdit.__init__(self, parent)
@@ -172,14 +204,23 @@ class SalidaWidget(QPlainTextEdit):
 
         # Formato para la salida estándar
         self.formato_ok = QTextCharFormat()
-        #self.formato_ok.setForeground(recursos.COLOR_EDITOR['texto'])
 
+        self.formato_funcion = QTextCharFormat()
+        self.formato_funcion.setForeground(Qt.darkBlue)
         # Formato para la salida de error
         self.formato_error = QTextCharFormat()
         self.formato_error.setAnchor(True)
         self.formato_error.setFontUnderline(True)
         self.formato_error.setUnderlineColor(Qt.red)
-        self.formato_error.setForeground(Qt.blue)
+        self.formato_error.setFontPointSize(10)
+        self.formato_error.setForeground(Qt.darkRed)
+        # Formato para la salida de error (warnings)
+        self.formato_warning = QTextCharFormat()
+        self.formato_warning.setAnchor(True)
+        self.formato_warning.setFontUnderline(True)
+        self.formato_warning.setUnderlineColor(Qt.yellow)
+        self.formato_warning.setFontPointSize(9)
+        self.formato_warning.setForeground(Qt.darkYellow)
 
         # Se carga el estilo
         self.cargar_estilo()
@@ -187,21 +228,56 @@ class SalidaWidget(QPlainTextEdit):
     def cargar_estilo(self):
         """ Carga estilo de color de QPlainTextEdit """
 
-        tema = 'QPlainTextEdit {color: #333; background-color: #ffffff;}' \
+        tema = 'QPlainTextEdit {color: #333; background-color: #f6f6f6;}' \
         'selection-color: #FFFFFF; selection-background-color: #009B00;'
 
         self.setStyleSheet(tema)
 
+    def contextMenuEvent(self, evento):
+        """ Context menú """
+
+        menu = self.createStandardContextMenu()
+
+        menuSalida = QMenu(self.trUtf8("Salida"))
+        limpiar = menuSalida.addAction(self.trUtf8("Limpiar"))
+        menu.insertSeparator(menu.actions()[0])
+        menu.insertMenu(menu.actions()[0], menuSalida)
+
+        limpiar.triggered.connect(lambda: self.setPlainText('\n\n'))
+
+        menu.exec_(evento.globalPos())
+
     def salida_estandar(self):
+        """ Muestra la salida estándar. """
 
         cp = self._parent.proceso
         text = cp.readAllStandardOutput().data()
-        self.textCursor().insertText(text, self.formato_error)
+        self.textCursor().insertText(text, self.formato_ok)
 
     def error_estandar(self):
+        """ Analizador de errores y advertencias de stderr."""
 
         codificacion = 'utf-8'
         cursor = self.textCursor()
         proceso = self._parent.proceso
         texto = proceso.readAllStandardError().data().decode(codificacion)
-        cursor.insertText(texto, self.formato_error)
+        lineas = texto.split('\n')
+        cursor.insertText(lineas[0], self.formato_funcion)
+        for t in lineas:
+            if _TUX:
+                cursor.insertBlock()
+            for i in t.split(':'):
+                if i == ' error':
+                    cursor.insertText(t, self.formato_error)
+                elif i == ' warning':
+                    cursor.insertText(t, self.formato_warning)
+
+    def datos_tabla(self):
+        pass
+
+    def errores_advertencias(self, errores, warnings):
+        #TODO: mostrar cantidad de errores y línea
+        pass
+
+    def setFoco(self):
+        self.setFocus()

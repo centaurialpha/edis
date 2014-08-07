@@ -16,180 +16,141 @@
 # You should have received a copy of the GNU General Public License
 # along with EDIS-C.  If not, see <http://www.gnu.org/licenses/>.
 
-from PyQt4.QtGui import QIcon
-from PyQt4.QtGui import QShortcut
+# Módulos QtGui
 
+# Módulos QtCore
 from PyQt4.QtCore import QObject
-from PyQt4.QtCore import SIGNAL
 
-from edis_c import traducciones as tr
+# Módulos EDIS
 from edis_c import recursos
 from edis_c.interfaz.dialogos.preferencias import preferencias
 from edis_c.interfaz.editor import acciones_
+from edis_c.interfaz.widgets.creador_widget import crear_accion
+
+_ICONO = recursos.ICONOS
+_ATAJO = recursos.ATAJOS
 
 
 class MenuEditar(QObject):
-    """ Items del menú Editar """
+    """
+        Items del menú Editar
+
+        Estructura del módulo 'crear_accion':
+        @parent: parent.
+        @icono: ícono.
+        @texto: texto.
+        @atajo: shorcut.
+        @tip: status tip.
+
+    """
 
     def __init__(self, menu_editar, toolbar, ide):
         super(MenuEditar, self).__init__()
 
         self.ide = ide
 
-        # Se cargan los shortcut #
-        self.atajoDeshacer = QShortcut(recursos.ATAJOS['deshacer'], self.ide)
-        self.atajoRehacer = QShortcut(recursos.ATAJOS['rehacer'], self.ide)
-        self.atajoCortar = QShortcut(recursos.ATAJOS['cortar'], self.ide)
-        self.atajoCopiar = QShortcut(recursos.ATAJOS['copiar'], self.ide)
-        self.atajoPegar = QShortcut(recursos.ATAJOS['pegar'], self.ide)
-        self.atajoMoverArriba = QShortcut(
-            recursos.ATAJOS['mover-arriba'], self.ide)
-        self.atajoMoverAbajo = QShortcut(
-            recursos.ATAJOS['mover-abajo'], self.ide)
-
-        # Conexiones
-        self.connect(self.atajoDeshacer, SIGNAL("activated()"),
-            self.ide.contenedor_principal.deshacer)
-        self.connect(self.atajoRehacer, SIGNAL("activated()"),
-            self.ide.contenedor_principal.rehacer)
-        self.connect(self.atajoCortar, SIGNAL("activated()"),
-            self.ide.contenedor_principal.cortar)
-        self.connect(self.atajoCopiar, SIGNAL("activated()"),
-            self.ide.contenedor_principal.copiar)
-        self.connect(self.atajoPegar, SIGNAL("activated()"),
-            self.ide.contenedor_principal.pegar)
-        self.connect(self.atajoMoverArriba, SIGNAL("activated()"),
-            self.mover_linea_hacia_arriba)
-        self.connect(self.atajoMoverAbajo, SIGNAL("activated()"),
-            self.mover_linea_hacia_abajo)
-
         # Acciones #
         # Deshacer
-        self.accionDeshacer = menu_editar.addAction(QIcon(
-            recursos.ICONOS['deshacer']), tr.TRAD_DESHACER)
-        self.cargar_status_tip(self.accionDeshacer,
-            self.trUtf8("Deshacer cambios"))
-        self.accionDeshacer.setShortcut(recursos.ATAJOS['deshacer'])
+        self.accionDeshacer = crear_accion(self, "Deshacer",
+            icono=_ICONO['deshacer'], atajo=_ATAJO['deshacer'],
+            slot=self.ide.contenedor_principal.deshacer)
         # Rehacer
-        self.accionRehacer = menu_editar.addAction(
-            QIcon(recursos.ICONOS['rehacer']), tr.TRAD_REHACER)
-        self.cargar_status_tip(self.accionRehacer,
-            self.trUtf8("Rehacer cambios"))
-        self.accionRehacer.setShortcut(recursos.ATAJOS['rehacer'])
-        menu_editar.addSeparator()
+        self.accionRehacer = crear_accion(self, "Rehacer",
+            icono=_ICONO['rehacer'], atajo=_ATAJO['rehacer'],
+            slot=self.ide.contenedor_principal.rehacer)
         # Cortar
-        self.accionCortar = menu_editar.addAction(
-            QIcon(recursos.ICONOS['cortar']), tr.TRAD_CORTAR)
-        self.cargar_status_tip(self.accionCortar,
-            self.trUtf8("Acción cortar"))
-        self.accionCortar.setShortcut(recursos.ATAJOS['cortar'])
+        self.accionCortar = crear_accion(self, "Cortar", icono=_ICONO['cortar'],
+            atajo=_ATAJO['cortar'], slot=self.ide.contenedor_principal.cortar)
         # Copiar
-        self.accionCopiar = menu_editar.addAction(
-            QIcon(recursos.ICONOS['copiar']), tr.TRAD_COPIAR)
-        self.cargar_status_tip(self.accionCopiar,
-            self.trUtf8("Acción copiar"))
-        self.accionCopiar.setShortcut(recursos.ATAJOS['copiar'])
+        self.accionCopiar = crear_accion(self, "Copiar", icono=_ICONO['copiar'],
+            atajo=_ATAJO['copiar'], slot=self.ide.contenedor_principal.copiar)
         # Pegar
-        self.accionPegar = menu_editar.addAction(
-            QIcon(recursos.ICONOS['pegar']), tr.TRAD_PEGAR)
-        self.cargar_status_tip(self.accionPegar,
-            self.trUtf8("Acción pegar"))
-        self.accionPegar.setShortcut(recursos.ATAJOS['pegar'])
-        menu_editar.addSeparator()
+        self.accionPegar = crear_accion(self, "Pegar", icono=_ICONO['pegar'],
+            atajo=_ATAJO['pegar'], slot=self.ide.contenedor_principal.pegar)
         # Indentar más
-        self.accionIndentarMas = menu_editar.addAction(
-            QIcon(recursos.ICONOS['indentar']), self.trUtf8("Indentar más"))
-        self.cargar_status_tip(self.accionIndentarMas,
-            self.trUtf8("Indentar una o más líneas"))
+        self.accionIndentar = crear_accion(self, "Indentar",
+            icono=_ICONO['indentar'], atajo=_ATAJO['indentar'],
+            slot=self.ide.contenedor_principal.indentar_mas)
         # Indentar menos
-        self.accionIndentarMenos = menu_editar.addAction(
-            QIcon(recursos.ICONOS['desindentar']),
-            self.trUtf8("Indentar menos"))
-        self.cargar_status_tip(self.accionIndentarMenos,
-            self.trUtf8("Sacar indentación a una o más líneas"))
-        menu_editar.addSeparator()
+        self.accionQuitarIndentacion = crear_accion(self, "Quitar indentación",
+            icono=_ICONO['quitar-indentacion'],
+            atajo=_ATAJO['quitar-indentacion'],
+            slot=self.ide.contenedor_principal.indentar_menos)
         # Seleccionar todo
-        self.accionSeleccionarTodo = menu_editar.addAction(
-            self.trUtf8("Seleccionar todo"))
-        self.cargar_status_tip(self.accionSeleccionarTodo,
-            self.trUtf8("Seleccionar todo el código fuente"))
+        self.accionSeleccionarTodo = crear_accion(self, "Seleccionar todo",
+            atajo=_ATAJO['seleccionar'],
+            slot=self.ide.contenedor_principal.seleccionar_todo)
         # Mover hacia arriba
-        self.accionMoverArriba = menu_editar.addAction(
-            self.trUtf8("Mover arriba"))
+        self.accionMoverArriba = crear_accion(self, "Mover hacia arriba",
+            atajo=_ATAJO['mover-arriba'], slot=self.mover_linea_hacia_arriba)
         # Mover hacia abajo
-        self.accionMoverAbajo = menu_editar.addAction(
-            self.trUtf8("Mover abajo"))
+        self.accionMoverAbajo = crear_accion(self, "Mover hacia abajo",
+            atajo=_ATAJO['mover-abajo'], slot=self.mover_linea_hacia_abajo)
         # Convertir a mayúsculas
-        self.accionConvertirMayusculas = menu_editar.addAction(
-            self.trUtf8("Texto seleccionado: a mayúsculas"))
+        self.accionConvertirMayusculas = crear_accion(self,
+            "Texto seleccionado: a mayúsculas",
+            slot=self.convertir_a_mayusculas)
         # Convertir a minúsculas
-        self.accionConvertirMinusculas = menu_editar.addAction(
-            self.trUtf8("Texto seleccionado: a minúsculas"))
+        self.accionConvertirMinusculas = crear_accion(self,
+            "Texto seleccionado: a minúsculas",
+            slot=self.convertir_a_minusculas)
         # Convertir a título
-        self.accionTitulo = menu_editar.addAction(
-            self.trUtf8("Convertir a título"))
+        self.accionTitulo = crear_accion(self, "Convertir a título",
+            slot=self.convertir_a_titulo)
         menu_editar.addSeparator()
         # Eliminar línea
-        self.accionEliminarLinea = menu_editar.addAction(
-            self.trUtf8("Eliminar línea"))
+        self.accionEliminarLinea = crear_accion(self, "Eliminar línea",
+            slot=self.eliminar_linea)
         # Duplicar línea
-        self.accionDuplicarLinea = menu_editar.addAction(
-            self.trUtf8("Duplicar línea"))
+        self.accionDuplicarLinea = crear_accion(self, "Duplicar línea",
+            self.duplicar_linea, slot=self.duplicar_linea)
         # Comentar
-        self.accionComentar = menu_editar.addAction(
-            self.trUtf8("Comentar"))
+        self.accionComentar = crear_accion(self, "Comentar", slot=self.comentar)
         # Descomentar
-        self.accionDescomentar = menu_editar.addAction(
-            self.trUtf8("Descomentar"))
+        self.accionDescomentar = crear_accion(self, "Descomentar",
+            slot=self.descomentar)
         menu_editar.addSeparator()
         # Preferencias
-        self.accionConfiguracion = menu_editar.addAction(
-            self.trUtf8("Preferencias"))
-        self.cargar_status_tip(self.accionConfiguracion,
-            self.trUtf8("Configurar preferencias de EDIS-C"))
+        self.accionConfiguracion = crear_accion(self, "Preferencias",
+            slot=self._configuraciones)
 
-        # Conexiones a métodos #
-        self.accionDeshacer.triggered.connect(
-            self.ide.contenedor_principal.deshacer)
-        self.accionRehacer.triggered.connect(
-            self.ide.contenedor_principal.rehacer)
-        self.accionCortar.triggered.connect(
-            self.ide.contenedor_principal.cortar)
-        self.accionCopiar.triggered.connect(
-            self.ide.contenedor_principal.copiar)
-        self.accionPegar.triggered.connect(
-            self.ide.contenedor_principal.pegar)
-        self.accionSeleccionarTodo.triggered.connect(
-            self.ide.contenedor_principal.seleccionar_todo)
-        #self.accionConfiguracion.triggered.connect(
-            #self._configuraciones)
-        self.accionIndentarMas.triggered.connect(
-            self.ide.contenedor_principal.indentar_mas)
-        self.accionIndentarMenos.triggered.connect(
-            self.ide.contenedor_principal.indentar_menos)
-        self.accionMoverArriba.triggered.connect(
-            self.mover_linea_hacia_arriba)
-        self.accionMoverAbajo.triggered.connect(
-            self.mover_linea_hacia_abajo)
-        self.accionConvertirMayusculas.triggered.connect(
-            self.convertir_a_mayusculas)
-        self.accionConvertirMinusculas.triggered.connect(
-            self.convertir_a_minusculas)
-        self.accionTitulo.triggered.connect(self.convertir_a_titulo)
-        self.accionEliminarLinea.triggered.connect(self.eliminar_linea)
-        self.accionDuplicarLinea.triggered.connect(self.duplicar_linea)
-        self.accionComentar.triggered.connect(self.comentar)
-        self.accionDescomentar.triggered.connect(self.descomentar)
+        # Agregar acciones al menú #
+        menu_editar.addAction(self.accionDeshacer)
+        menu_editar.addAction(self.accionRehacer)
+        menu_editar.addSeparator()
+        menu_editar.addAction(self.accionCortar)
+        menu_editar.addAction(self.accionCopiar)
+        menu_editar.addAction(self.accionPegar)
+        menu_editar.addSeparator()
+        menu_editar.addAction(self.accionIndentar)
+        menu_editar.addAction(self.accionQuitarIndentacion)
+        menu_editar.addSeparator()
+        menu_editar.addAction(self.accionSeleccionarTodo)
+        menu_editar.addSeparator()
+        menu_editar.addAction(self.accionMoverArriba)
+        menu_editar.addAction(self.accionMoverAbajo)
+        menu_editar.addSeparator()
+        menu_editar.addAction(self.accionConvertirMayusculas)
+        menu_editar.addAction(self.accionConvertirMinusculas)
+        menu_editar.addAction(self.accionTitulo)
+        menu_editar.addSeparator()
+        menu_editar.addAction(self.accionEliminarLinea)
+        menu_editar.addAction(self.accionDuplicarLinea)
+        menu_editar.addSeparator()
+        menu_editar.addAction(self.accionComentar)
+        menu_editar.addAction(self.accionDescomentar)
+        menu_editar.addSeparator()
+        menu_editar.addAction(self.accionConfiguracion)
 
-        # Toolbar - Items
+        # Items de la barra de herramientas
         self.items_toolbar = {
             "deshacer": self.accionDeshacer,
             "rehacer": self.accionRehacer,
             "cortar": self.accionCortar,
             "copiar": self.accionCopiar,
             "pegar": self.accionPegar,
-            "indentar": self.accionIndentarMas,
-            "desindentar": self.accionIndentarMenos
+            "indentar": self.accionIndentar,
+            "desindentar": self.accionQuitarIndentacion
             }
 
     def mover_linea_hacia_arriba(self):
@@ -201,9 +162,6 @@ class MenuEditar(QObject):
         editor = self.ide.contenedor_principal.devolver_editor_actual()
         if editor:
             acciones_.mover_hacia_abajo(editor)
-
-    def cargar_status_tip(self, accion, texto):
-        self.ide.cargar_status_tips(accion, texto)
 
     def _configuraciones(self):
         self.preferencias = preferencias.DialogoConfiguracion(self.ide)

@@ -35,155 +35,157 @@ from PyQt4.QtGui import QSpacerItem
 from PyQt4.QtGui import QTabWidget
 
 from PyQt4.QtCore import Qt
+from PyQt4.QtCore import QSettings
 
 from edis_c import recursos
 from edis_c.nucleo import configuraciones
-from edis_c.nucleo import manejador_de_archivo
+#from edis_c.nucleo import manejador_de_archivo
 from edis_c.interfaz.contenedor_principal import contenedor_principal
 from edis_c.interfaz.dialogos.preferencias import creador_tema
 
 
-class EditorTab(QWidget):
+class TabEditor(QWidget):
+    """ Tab Editor """
 
-    def __init__(self, parent):
-        super(EditorTab, self).__init__(parent)
+    def __init__(self):
+        super(TabEditor, self).__init__()
         vbox = QVBoxLayout(self)
+        vbox.setContentsMargins(0, 0, 0, 0)
 
         self.tabs = QTabWidget()
-        self.configEditor = ConfiguracionEditor(self)
+        self.configEditor = CaracteristicasEditor()
+        self.generalEditor = GeneralEditor()
         self.creadorTema = creador_tema.CreadorDeTemaEditor(self)
-        self.tabs.addTab(self.configEditor, self.trUtf8("Editor"))
+        self.tabs.addTab(self.configEditor, self.trUtf8("Características"))
+        self.tabs.addTab(self.generalEditor, self.trUtf8("General"))
         self.tabs.addTab(self.creadorTema, self.trUtf8("Creador de tema"))
 
         vbox.addWidget(self.tabs)
 
+    def guardar(self):
+        for i in range(self.tabs.count()):
+            self.tabs.widget(i).guardar()
 
-class ConfiguracionEditor(QWidget):
 
-    def __init__(self, parent):
-        super(ConfiguracionEditor, self).__init__(parent)
-        self.current_tema = 'Default'
+class CaracteristicasEditor(QWidget):
+    """ Clase Configuracion Editor """
+
+    def __init__(self):
+        super(CaracteristicasEditor, self).__init__()
         layoutV = QVBoxLayout(self)
 
         grupoCaracteristicas = QGroupBox(self.trUtf8("Características"))
         grupoMiniMapa = QGroupBox(self.trUtf8("Minimapa"))
         grupoTipoDeLetra = QGroupBox(self.trUtf8("Tipo de letra"))
-        grupoEstilo = QGroupBox(self.trUtf8("Estilo de color"))
 
         grillaCaracteristicas = QGridLayout(grupoCaracteristicas)
-        grillaCaracteristicas.addWidget(QLabel(
-            self.trUtf8("Márgen de línea: ")), 1, 0, Qt.AlignLeft)
+        grillaCaracteristicas.setContentsMargins(5, 15, 5, 5)
+        # Check márgen
+        self.checkMargen = QCheckBox(self.trUtf8("Márgen de línea:"))
+        grillaCaracteristicas.addWidget(self.checkMargen, 0, 0)
+        # Spin opacidad de fondo
+        self.spinOpacidadMargen = QSpinBox()
+        self.spinOpacidadMargen.setSuffix(self.trUtf8("% Opacidad"))
+        self.spinOpacidadMargen.setRange(0, 100)
+        grillaCaracteristicas.addWidget(self.spinOpacidadMargen, 0, 3)
 
         # Spin márgen
         self.spinMargen = QSpinBox()
         self.spinMargen.setAlignment(Qt.AlignLeft)
+        self.spinMargen.setSuffix(self.trUtf8(" Caractéres"))
         self.spinMargen.setMaximum(200)
-        self.spinMargen.setValue(configuraciones.MARGEN)
-        grillaCaracteristicas.addWidget(self.spinMargen, 1, 1,
-            alignment=Qt.AlignLeft)
-
-        # Check márgen
-        self.checkMargen = QCheckBox(self.trUtf8("Mostrar márgen"))
-        self.checkMargen.setChecked(configuraciones.MOSTRAR_MARGEN)
-        grillaCaracteristicas.addWidget(self.checkMargen, 1, 2,
-            alignment=Qt.AlignTop)
+        grillaCaracteristicas.addWidget(self.spinMargen, 0, 1)
 
         # Spin indentación
         self.spinInd = QSpinBox()
+        self.spinInd.setSuffix(self.trUtf8(" Espacios"))
         self.spinInd.setAlignment(Qt.AlignLeft)
         self.spinInd.setMaximum(20)
-        self.spinInd.setValue(configuraciones.INDENTACION)
-        grillaCaracteristicas.addWidget(QLabel(
-            self.trUtf8("Indentación: ")), 2, 0, Qt.AlignLeft)
-        grillaCaracteristicas.addWidget(self.spinInd, 2, 1,
-            alignment=Qt.AlignLeft)
+        grillaCaracteristicas.addWidget(self.spinInd, 1, 1)
 
         # Check indentación
         self.checkInd = QCheckBox(self.trUtf8("Activar indentación"))
-        self.checkInd.setChecked(configuraciones.CHECK_INDENTACION)
-        grillaCaracteristicas.addWidget(self.checkInd, 2, 2,
-            alignment=Qt.AlignTop)
+        grillaCaracteristicas.addWidget(self.checkInd, 1, 0)
 
         # Check autoindentación
         self.checkAutoInd = QCheckBox(self.trUtf8("Activar autoindentación"))
-        self.checkAutoInd.setChecked(
-            configuraciones.CHECK_AUTO_INDENTACION)
-        grillaCaracteristicas.addWidget(self.checkAutoInd, 3, 2,
-            alignment=Qt.AlignLeft)
+        grillaCaracteristicas.addWidget(self.checkAutoInd, 2, 0)
+
+        # Guía indentación
+        self.checkGuia = QCheckBox(self.trUtf8("Mostrar guía"))
+        grillaCaracteristicas.addWidget(self.checkGuia, 3, 3)
 
         # Sidebar
         self.checkSideBar = QCheckBox(self.trUtf8("Mostrar números de línea"))
-        self.checkSideBar.setChecked(
-            configuraciones.SIDEBAR)
-        grillaCaracteristicas.addWidget(self.checkSideBar, 4, 2,
-            alignment=Qt.AlignLeft)
+        grillaCaracteristicas.addWidget(self.checkSideBar, 3, 0)
 
         # Tabs y espacios
         self.checkTabs = QCheckBox(self.trUtf8("Mostrar tabs y espacios"))
-        self.checkTabs.setChecked(configuraciones.MOSTRAR_TABS)
-        grillaCaracteristicas.addWidget(self.checkTabs, 5, 2,
-            alignment=Qt.AlignLeft)
+        grillaCaracteristicas.addWidget(self.checkTabs, 1, 3)
 
         # Wrap mode
         self.checkWrap = QCheckBox(self.trUtf8("Modo envolver"))
-        self.checkWrap.setChecked(configuraciones.MODO_ENVOLVER)
-        grillaCaracteristicas.addWidget(self.checkWrap, 6, 2,
-            alignment=Qt.AlignLeft)
+        grillaCaracteristicas.addWidget(self.checkWrap, 2, 3)
 
         # Minimapa
         grillaMini = QGridLayout(grupoMiniMapa)
+        grillaMini.setContentsMargins(5, 15, 5, 5)
         self.checkMini = QCheckBox(self.trUtf8("Activar minimapa"))
-        self.checkMini.setChecked(configuraciones.MINIMAPA)
         self.spinMiniMin = QSpinBox()
-        self.spinMiniMin.setMaximum(100)
-        self.spinMiniMin.setMinimum(0)
+        self.spinMiniMin.setRange(0, 100)
+        self.spinMiniMin.setSuffix('% Min.')
         self.spinMiniMin.setAlignment(Qt.AlignLeft)
-        self.spinMiniMin.setValue(configuraciones.OPAC_MIN * 100)
         self.spinMiniMax = QSpinBox()
-        self.spinMiniMax.setMaximum(100)
-        self.spinMiniMax.setMinimum(0)
+        self.spinMiniMax.setRange(0, 100)
+        self.spinMiniMax.setSuffix('% Max.')
         self.spinMiniMax.setAlignment(Qt.AlignLeft)
-        self.spinMiniMax.setValue(configuraciones.OPAC_MAX * 100)
-        grillaMini.addWidget(self.checkMini, 1, 0,
-            alignment=Qt.AlignLeft)
-        grillaMini.addWidget(QLabel(self.trUtf8("Opacidad mínima:")),
-            2, 0, alignment=Qt.AlignLeft)
-        grillaMini.addWidget(self.spinMiniMin, 2, 1,
-            alignment=Qt.AlignLeft)
-        grillaMini.addWidget(QLabel(self.trUtf8("Opacidad máxima:")),
-            3, 0, alignment=Qt.AlignLeft)
-        grillaMini.addWidget(self.spinMiniMax, 3, 1,
-            alignment=Qt.AlignLeft)
+        self.spinTamanio = QSpinBox()
+        self.spinTamanio.setMaximum(100)
+        self.spinTamanio.setMinimum(0)
+        self.spinTamanio.setSuffix(self.trUtf8('% Respecto al editor'))
+
+        grillaMini.addWidget(self.checkMini, 0, 1)
+        grillaMini.addWidget(QLabel(self.trUtf8("Opacidad:")),
+            1, 0, alignment=Qt.AlignRight)
+        grillaMini.addWidget(self.spinMiniMin, 1, 1)
+        grillaMini.addWidget(self.spinMiniMax, 1, 2)
+        grillaMini.addWidget(QLabel(self.trUtf8("Tamaño:")),
+            2, 0, alignment=Qt.AlignRight)
+        grillaMini.addWidget(self.spinTamanio, 2, 1)
 
         # Fuente
         grillaFuente = QGridLayout(grupoTipoDeLetra)
+        grillaFuente.setContentsMargins(5, 15, 5, 5)
         self.botonFuente = QPushButton(', '.join([str(configuraciones.FUENTE),
             str(configuraciones.TAM_FUENTE)]))
         grillaFuente.addWidget(QLabel(self.trUtf8(
-            "Fuente:")), 0, 0, Qt.AlignLeft)
+            "Fuente:")), 0, 0, Qt.AlignRight)
         grillaFuente.addWidget(self.botonFuente, 0, 1)
 
-        # Estilo
-        self.lista_de_estilos = QListWidget()
-        self.lista_de_estilos.addItem(self.tr("Default"))
-        self.temas = manejador_de_archivo.cargar_temas_editor()
-        for tema in self.temas:
-            self.lista_de_estilos.addItem(tema)
-
-        #lista_de_estilos.addItem(self.tr("Negro"))
-        layout = QHBoxLayout(grupoEstilo)
-        layout.addWidget(self.lista_de_estilos)
+        # Configuraciones
+        self.checkMargen.setChecked(configuraciones.MOSTRAR_MARGEN)
+        self.spinOpacidadMargen.setValue(configuraciones.OPACIDAD_MARGEN)
+        self.spinMargen.setValue(configuraciones.MARGEN)
+        self.spinInd.setValue(configuraciones.INDENTACION)
+        self.checkInd.setChecked(configuraciones.CHECK_INDENTACION)
+        self.checkAutoInd.setChecked(configuraciones.CHECK_AUTO_INDENTACION)
+        self.checkGuia.setChecked(configuraciones.GUIA_INDENTACION)
+        self.checkTabs.setChecked(configuraciones.MOSTRAR_TABS)
+        self.checkSideBar.setChecked(configuraciones.SIDEBAR)
+        self.checkWrap.setChecked(configuraciones.MODO_ENVOLVER)
+        self.checkMini.setChecked(configuraciones.MINIMAPA)
+        self.spinMiniMin.setValue(configuraciones.OPAC_MIN * 100)
+        self.spinTamanio.setValue(configuraciones.MINI_TAM * 100)
+        self.spinMiniMax.setValue(configuraciones.OPAC_MAX * 100)
 
         layoutV.addWidget(grupoCaracteristicas)
         layoutV.addWidget(grupoMiniMapa)
         layoutV.addWidget(grupoTipoDeLetra)
-        layoutV.addWidget(grupoEstilo)
         layoutV.addItem(QSpacerItem(0, 10, QSizePolicy.Expanding,
         QSizePolicy.Expanding))
 
+        # Conexión
         self.botonFuente.clicked.connect(self.cargar_fuente)
-        self.lista_de_estilos.itemSelectionChanged.connect(
-            self.previsualizar_estilo)
 
     def cargar_fuente(self):
         """ Se coloca el nombre y tamaño de la fuente, como texto del boton """
@@ -238,3 +240,49 @@ class ConfiguracionEditor(QWidget):
             recursos.NUEVO_TEMA = self.temas.get(tema, recursos.TEMA_EDITOR)
             Weditor.estilo_editor()
         self.current_tema = tema
+
+    def guardar(self):
+        """ Guarda las configuraciones del Editor. """
+
+        qconfig = QSettings()
+        qconfig.beginGroup('configuraciones')
+        qconfig.beginGroup('editor')
+        qconfig.setValue('margenLinea', self.spinMargen.value())
+        configuraciones.MARGEN = self.spinMargen.value()
+        qconfig.setValue('mostrarMargen', self.checkMargen.isChecked())
+        configuraciones.OPACIDAD_MARGEN = self.spinOpacidadMargen.value()
+        qconfig.setValue('opacidadMargen', self.spinOpacidadMargen.value())
+        configuraciones.MOSTRAR_MARGEN = self.checkMargen.isChecked()
+        qconfig.setValue('checkInd', self.checkInd.isChecked())
+        configuraciones.CHECK_INDENTACION = self.checkInd.isChecked()
+        qconfig.setValue('guiaInd', self.checkGuia.isChecked())
+        configuraciones.GUIA_INDENTACION = self.checkGuia.isChecked()
+        qconfig.setValue('indentacion', self.spinInd.value())
+        configuraciones.INDENTACION = self.spinInd.value()
+        configuraciones.MINIMAPA = self.checkMini.isChecked()
+        qconfig.setValue('mini', configuraciones.MINIMAPA)
+        configuraciones.MINI_TAM = self.spinTamanio.value() / 100.0
+        qconfig.setValue('miniTam', configuraciones.MINI_TAM)
+        contenedor_principal.ContenedorMain().actualizar_margen_editor()
+        qconfig.endGroup()
+        qconfig.endGroup()
+
+
+class GeneralEditor(QWidget):
+
+    def __init__(self):
+        super(GeneralEditor, self).__init__()
+        layoutV = QVBoxLayout(self)
+
+        grupoEstilo = QGroupBox(self.trUtf8("Estilo de color"))
+
+        # Estilo
+        self.lista_de_estilos = QListWidget()
+        self.lista_de_estilos.addItem(self.tr("Default"))
+
+        layoutH = QHBoxLayout(grupoEstilo)
+        layoutH.addWidget(self.lista_de_estilos)
+        layoutV.addWidget(grupoEstilo)
+
+    def guardar(self):
+        pass
