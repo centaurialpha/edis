@@ -68,7 +68,7 @@ También puedes clonar el repositorio (Antes instalar git)::
 Instrucciones para ejecutar EDIS (Windows)
 ------------------------------------------
 
-Instalar Python 2.7 y PyQt4 (NOTA: El instalador de PyQt debe ser para Python 2.7)::
+Instalar Python 2.7 y PyQt4 (NOTA: El instalador de PyQt debe ser para Python 2.7):
 
 * `Python`_
 * `PyQt`_
