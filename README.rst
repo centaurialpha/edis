@@ -11,18 +11,51 @@ EDIS-C | Entorno de Desarrollo Integrado Simple para C.
 .. image:: http://img.shields.io/badge/Licencia-GPLv3-red.svg
      :target: http://gplv3.fsf.org
      
+**Versión actual:** 1.0-alpha *(por favor enviar reportes de cualquier bug, o sugerencia de característica desde el menú Acerca de/Reportar bugs).*
+
+.. note::  This is a **note** box.
+
+     
+Características
+---------------
+
+* Acciones básicas de un editor. (Crear, abrir, guardar, deshacer, cortar, copiar, exportar como pdf, imprimir, etc...).
+* Márgen de línea.
+* Minimapa.
+* Resaltado de sintaxis.
+* Plegado de código.
+* Comentar, descomentar código.
+* Eliminar, duplicar línea(s).
+* Insertado de #include y #define desde cualquier parte.
+* Insertado de título y separador.
+* Resaltado de braces (corchetes, llaves y paréntesis).
+* Mover línea o bloques de código.
+* Autoindentación.
+* Autocompletado de braces.
+* Guía de bloques.
+* Zoom.
+* Insertado de fecha y hora.
+* Pestañas.
+* Desplazamiento de pestañas con ALT + (1-9).
+* Indentar y quitar indentación de una línea o bloques seleccionados.
+* Converción a mayúsculas, minúsculas y título a partir de una selección.
+* Búsqueda de palabras.
+* Ir a una línea específica.
+* Estadísticas del documento (número de líneas, espacios en blanco, tamaño, etc.).
+
 Instrucciones para ejecutar EDIS (GNU/Linux)
 --------------------------------------------
 
 Asumiendo que ya se tiene instalado PyQt (Estoy 100% seguro que Python ya lo está ;):
-Sistemas basados en Debian:
+Sistemas basados en Debian::
+
      sudo apt-get install python-qt4
 
-Sistemas basados en Archlinux:
+Sistemas basados en Archlinux::
 
      sudo pacman -S python2-pyqt4
      
-Descargar el archivo .zip, descomprimir e ingresar a la carpeta y correr el archivo .py:
+Descargar el archivo .zip, descomprimir e ingresar a la carpeta y correr el archivo .py::
 
      unzip -x edis-master.zip
      
@@ -31,19 +64,19 @@ Descargar el archivo .zip, descomprimir e ingresar a la carpeta y correr el arch
      python edis-c.py
      
      
-También puedes clonar el repositorio (Antes instalar git):
+También puedes clonar el repositorio (Antes instalar git)::
 
      sudo apt-get install git
 
 Instrucciones para ejecutar EDIS (Windows)
 ------------------------------------------
 
-Instalar Python 2.7 y PyQt4 (NOTA: El instalador de PyQt debe ser para Python 2.7):
+Instalar Python 2.7 y PyQt4 (NOTA: El instalador de PyQt debe ser para Python 2.7)::
 
 * `Python`_
 * `PyQt`_
 
-Descargar el archivo zip, descomprimir, entrar a la carpeta y correr el archivo .py desde la consola:
+Descargar el archivo zip, descomprimir, entrar a la carpeta y correr el archivo .py desde la consola::
 
      python edis-c.py
      
