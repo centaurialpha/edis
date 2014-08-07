@@ -1,5 +1,7 @@
 # **EDIS-C** | Entorno de Desarrollo Integrado Simple para C.
-
+.. image:: https://requires.io/github/centaurialpha/edis/requirements.png?branch=master
+     :target: https://requires.io/github/centaurialpha/edis/requirements/?branch=master
+     
 ## Dependencias
 
 - [Python](http://python.org) >= 2.7
