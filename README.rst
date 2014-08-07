@@ -12,9 +12,6 @@ EDIS-C | Entorno de Desarrollo Integrado Simple para C.
      :target: http://gplv3.fsf.org
      
 **Versión actual:** 1.0-alpha *(por favor enviar reportes de cualquier bug, o sugerencia de característica desde el menú Acerca de/Reportar bugs).*
-
-.. note::  This is a **note** box.
-
      
 Características
 ---------------
