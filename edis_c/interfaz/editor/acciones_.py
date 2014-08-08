@@ -435,3 +435,18 @@ def ir_a_la_linea(Weditor):
                 linea[0] - 1).position())
             Weditor.setTextCursor(cursor)
     Weditor.setFocus()
+
+
+def quitar_espacios_en_blanco(editorWidget):
+    cursor = editorWidget.textCursor()
+    cursor.beginEditBlock()
+    block = editorWidget.document().findBlockByLineNumber(0)
+    while block.isValid():
+        text = unicode(block.text())
+        if text.endswith((' ', '\t')):
+            cursor.setPosition(block.position())
+            cursor.select(QTextCursor.LineUnderCursor)
+            cursor.insertText(text.rstrip())
+        block = block.next()
+    cursor.movePosition(QTextCursor.End, QTextCursor.MoveAnchor)
+    cursor.endEditBlock()

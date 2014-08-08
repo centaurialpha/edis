@@ -348,13 +348,12 @@ class Editor(QPlainTextEdit, tabitem.TabItem):
         if p2 is not None:
             self.braces = (p1, p2)
             seleccion = QTextEdit.ExtraSelection()
-            #brush = QBrush(Qt.blue, Qt.SolidPattern)
-            seleccion.format.setForeground(QColor(Qt.blue))
+            seleccion.format.setForeground(QColor(Qt.red))
             seleccion.cursor = cursor
             self.extraSelections.append(seleccion)
             seleccion = QTextEdit.ExtraSelection()
-            seleccion.format.setForeground(QColor(Qt.blue))
-            seleccion.format.setBackground(QColor(255, 0, 0))
+            seleccion.format.setForeground(QColor(Qt.white))
+            seleccion.format.setBackground(QColor(0, 100, 255))
             seleccion.cursor = self.textCursor()
             seleccion.cursor.setPosition(p2)
             seleccion.cursor.movePosition(QTextCursor.NextCharacter,
@@ -363,8 +362,8 @@ class Editor(QPlainTextEdit, tabitem.TabItem):
         else:
             self.braces = (p1,)
             seleccion = QTextEdit.ExtraSelection()
-            seleccion.format.setBackground(QColor(255, 0, 0))
-            seleccion.format.setForeground(QColor(Qt.blue))
+            seleccion.format.setBackground(QColor(0, 100, 255))
+            seleccion.format.setForeground(QColor(Qt.white))
             seleccion.cursor = cursor
             self.extraSelections.append(seleccion)
         self.setExtraSelections(self.extraSelections)

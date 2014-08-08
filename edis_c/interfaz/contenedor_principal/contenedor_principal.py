@@ -40,6 +40,7 @@ from edis_c.interfaz import tab_widget
 from edis_c.interfaz.widgets import pagina_de_bienvenida
 from edis_c.interfaz.editor import editor
 from edis_c.interfaz.editor import highlighter_
+from edis_c.interfaz.editor import acciones_
 
 __instanciaContenedorMain = None
 
@@ -291,6 +292,7 @@ class __ContenedorMain(QSplitter):
             nombre = editorW.ID
             carpeta_de_archivo = manejador_de_archivo.devolver_carpeta(nombre)
             self.emit(SIGNAL("beforeFileSaved(QString)"), nombre)
+            acciones_.quitar_espacios_en_blanco(editorW)
             contenido = editorW.devolver_texto()
             manejador_de_archivo.escribir_archivo(nombre, contenido)
             editorW.ID = nombre
@@ -320,6 +322,7 @@ class __ContenedorMain(QSplitter):
             if not nombre:
                 return False
 
+            acciones_.quitar_espacios_en_blanco(editorW)
             nombre = manejador_de_archivo.escribir_archivo(
                 nombre, editorW.devolver_texto())
 
