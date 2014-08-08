@@ -35,7 +35,7 @@ Características
 * Pestañas.
 * Desplazamiento de pestañas con ALT + (1-9).
 * Indentar y quitar indentación de una línea o bloques seleccionados.
-* Converción a mayúsculas, minúsculas y título a partir de una selección.
+* Conversión a mayúsculas, minúsculas y título a partir de una selección.
 * Búsqueda de palabras.
 * Ir a una línea específica.
 * Estadísticas del documento (número de líneas, espacios en blanco, tamaño, etc.).
