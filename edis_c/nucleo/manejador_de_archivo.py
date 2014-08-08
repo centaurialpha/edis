@@ -20,10 +20,12 @@
 """ Manejo de archivos """
 
 import os
+#lint:disable
 try:
     import json
 except ImportError:
     import simplejson as json
+#lint:enable
 
 from PyQt4.QtGui import QMessageBox
 
@@ -42,7 +44,8 @@ def _nombreBase(nombre_de_archivo):
     return os.path.basename(nombre_de_archivo)
 
 
-def nombre_de_modulo(nombre_de_archivo):
+def nombre_de_archivo(nombre_de_archivo):
+    """ Devuelve el nombre de un archivo, sin extensión. """
     modulo = os.path.basename(nombre_de_archivo)
     return (os.path.splitext(modulo)[0])
 
@@ -52,6 +55,9 @@ def devolver_carpeta(nombre_de_archivo):
 
 
 def archivos_desde_carpeta(carpeta, extension):
+    """ Devuelve una lista con todos los archivos de @carpeta con extensión
+    @extension. """
+
     try:
         archivo_extension = os.listdir(carpeta)
     except:
@@ -63,18 +69,18 @@ def archivos_desde_carpeta(carpeta, extension):
 def leer_contenido_de_archivo(archivo):
     """ Intenta abrir y leer el contenido del archivo, lo retorna en caso de
     éxito, de lo contrario se retora un string vacío  """
+
     try:
         with open(archivo, 'r') as f:
             contenido = f.read()
-
         return contenido
-
     except:
         return ""
 
 
 def devolver_tam_archivo(archivo):
     """ Retorna el tamaño del archivo en bytes. """
+
     tam = QFile(archivo).size()
     return tam
 
@@ -82,6 +88,7 @@ def devolver_tam_archivo(archivo):
 def escribir_archivo(nombre_de_archivo, contenido):
     """ Se escribe en el archivo, si el nombre no tiene extensión se agrega .c
     """
+
     extension = (os.path.splitext(nombre_de_archivo)[-1])[1:]
     if not extension:
         nombre_de_archivo += '.c'
@@ -107,6 +114,9 @@ def escribir_archivo(nombre_de_archivo, contenido):
 
 
 def permiso_de_escritura(archivo):
+    """ Retorna True si el archivo tiene permisos de escritura o False
+    en caso contrario. """
+
     return os.access(archivo, os.W_OK)
 
 
@@ -115,6 +125,9 @@ def crear_path(*args):
 
 
 def archivo_existente(path, nombre_archivo=''):
+    """ Devuelve True si el archivo se encuentra en @path y False en caso
+    contrario. """
+
     if nombre_archivo:
         path = os.path.join(path, nombre_archivo)
     return os.path.isfile(path)

@@ -62,10 +62,18 @@ TECLA = {
     'TABULACION': Qt.Key_Tab,
     'ENTER': Qt.Key_Return,
     'LLAVE': Qt.Key_BraceLeft,
+    'LLAVE-D': Qt.Key_BraceRight,
     'PARENTESIS': Qt.Key_ParenLeft,
+    'PARENTESIS-D': Qt.Key_ParenRight,
     'CORCHETE': Qt.Key_BracketLeft,
-    'BACKSPACE': Qt.Key_Backspace
+    'CORCHETE-D': Qt.Key_BracketRight,
+    'BACKSPACE': Qt.Key_Backspace,
+    'COMILLAS': Qt.Key_Apostrophe,
+    'COMILLAS-D': Qt.Key_QuoteDbl
     }
+
+BRACES = configuraciones.BRACES
+COMILLAS = configuraciones.COMILLAS
 
 
 class Editor(QPlainTextEdit, tabitem.TabItem):
@@ -114,14 +122,21 @@ class Editor(QPlainTextEdit, tabitem.TabItem):
 
         self.prePresionado = {
             TECLA.get('TABULACION'): self._indentar,
-            TECLA.get('BACKSPACE'): self.__tecla_backspace
+            TECLA.get('BACKSPACE'): self.__tecla_backspace,
+            TECLA.get('LLAVE-D'): self.autocompletar_braces,
+            TECLA.get('CORCHETE-D'): self.autocompletar_braces,
+            TECLA.get('PARENTESIS-D'): self.autocompletar_braces,
+            TECLA.get('COMILLAS'): self.autocompletar_comillas,
+            TECLA.get('COMILLAS-D'): self.autocompletar_comillas
             }
 
         self.postPresionado = {
             TECLA.get('ENTER'): self._auto_indentar,
-            TECLA.get('LLAVE'): self._completar_braces,
-            TECLA.get('CORCHETE'): self._completar_braces,
-            TECLA.get('PARENTESIS'): self._completar_braces
+            TECLA.get('LLAVE'): self.autocompletado_braces,
+            TECLA.get('CORCHETE'): self.autocompletado_braces,
+            TECLA.get('PARENTESIS'): self.autocompletado_braces,
+            TECLA.get('COMILLAS'): self.autocompletado_comillas,
+            TECLA.get('COMILLAS-D'): self.autocompletado_comillas
             }
 
         self.connect(self, SIGNAL("undoAvailable(bool)"), self._guardado)
@@ -419,54 +434,11 @@ class Editor(QPlainTextEdit, tabitem.TabItem):
                 braces.append(tkn_rep)
 
     def keyPressEvent(self, evento):
-        #if self.completador and self.completador.popup().isVisible():
-            #if evento.key() in (
-            #Qt.Key_Enter,
-            #Qt.Key_Return,
-            #Qt.Key_Escape,
-            #Qt.Key_Tab,
-            #Qt.Key_Backtab):
-                #evento.ignore()
-                #return
-
-        #isShortcut = (evento.modifiers() == Qt.ControlModifier and
-                      #evento.key() == Qt.Key_E)
-        #if (not self.completador or not isShortcut):
-
-            #QPlainTextEdit.keyPressEvent(self, evento)
-
-        #ctrlOrShift = evento.modifiers() in (Qt.ControlModifier,
-                #Qt.ShiftModifier)
-        #if ctrlOrShift and evento.text().isEmpty():
-            #return
-
-        #eow = QString("~!@#$%^&*()_+{}|:\"<>?,./;'[]\\-=")  # fin de palabra
-
-        #hasModifier = ((evento.modifiers() != Qt.NoModifier) and
-                        #not ctrlOrShift)
-
-        #completionPrefix = QString(self.texto_abajo())
-
-        #if (not isShortcut and (hasModifier or evento.text().isEmpty() or
-        #completionPrefix.length() < 3 or
-        #eow.contains(evento.text().right(1)))):
-            #self.completador.popup().hide()
-            #return
-
-        #if (completionPrefix != self.completador.completionPrefix()):
-            #self.completador.setCompletionPrefix(completionPrefix)
-            #popup = self.completador.popup()
-            #popup.setCurrentIndex(
-                #self.completador.completionModel().index(0, 0))
-
-        #cr = self.cursorRect()
-        #cr.setWidth(self.completador.popup().sizeHintForColumn(0)
-            #+ self.completador.popup().verticalScrollBar().sizeHint().width())
-        #self.completador.complete(cr)
 
         if self.prePresionado.get(evento.key(), lambda a: False)(evento):
             self.emit(SIGNAL("keyPressEvent(QEvent)"), evento)
             return
+        self.texto_seleccionado = self.textCursor().selectedText()
         QPlainTextEdit.keyPressEvent(self, evento)
 
         self.postPresionado.get(evento.key(), lambda a: False)(evento)
@@ -493,13 +465,87 @@ class Editor(QPlainTextEdit, tabitem.TabItem):
             self.setTextCursor(cursor)
             #self.moveCursor(QTextCursor.Left)
 
-    def _completar_braces(self, evento):
+    def autocompletado_braces(self, evento):
         dic_braces = {'(': ')', '{': '}', '[': ']'}
+        brace = unicode(evento.text())
+        if brace not in BRACES:
+            return
 
-        brace = str(evento.text())
-        brac = QString(dic_braces.get(brace))
-        self.textCursor().insertText(brac)
-        self.moveCursor(QTextCursor.Left)
+        texto = self.textCursor().block().text()
+        brace_complementario = QString(dic_braces.get(brace))
+        buffer_ = []
+        _, tokens = self.tokenize_text(texto)
+        unb = 0
+        for t_t, t_r, t_c, t_f in tokens:
+            if t_r == brace:
+                unb += 1
+            elif t_r == brace_complementario:
+                unb -= 1
+            if t_r.strip():
+                buffer_.append((t_r, t_f[1]))
+            unb = (unb >= 0) and unb or 0
+        if (len(buffer_) == 3) and (buffer_[2][0] == brace):
+            self.textCursor().insertText(self.texto_seleccionado)
+        elif buffer_ and (not unb) and self.texto_seleccionado:
+            self.textCursor().insertText(self.texto_seleccionado)
+        elif unb:
+            self.textCursor().insertText(brace_complementario)
+            self.moveCursor(QTextCursor.Left)
+            self.textCursor().insertText(self.texto_seleccionado)
+
+    def autocompletar_braces(self, evento):
+        """ Mueve el cursor a la derecha si el autocompletado está activado,
+        esto para no repetir el cerrado de un brace. """
+
+        BRACE = {')': '(', ']': '[', '}': '{', '(': ')', '[': ']', '{': '}'}
+        balance = False
+        texto = unicode(evento.text())
+        for texto in BRACES.values():
+            porcion = self.reverse_texto_seleccionado(1, 1)
+            brace_abierto = porcion[0]
+            brace_cerrado = porcion[1] if len(porcion) > 1 else None
+            if (BRACE.get(brace_abierto, None) == texto) and \
+                (texto == brace_cerrado):
+                balance = True
+            if balance:
+                self.moveCursor(QTextCursor.Right)
+                return True
+
+    def autocompletado_comillas(self, evento):
+        #COMILLAS = {'"': '"', "'": "'"}
+        cursor = self.textCursor()
+        cursor.movePosition(QTextCursor.StartOfLine, QTextCursor.KeepAnchor)
+        comilla = unicode(evento.text())
+        if comilla in COMILLAS:
+            self.textCursor().insertText(comilla)
+            self.moveCursor(QTextCursor.Left)
+            self.textCursor().insertText(self.texto_seleccionado)
+
+    def autocompletar_comillas(self, evento):
+        texto = unicode(evento.text())
+        sup = False
+        pre = self.reverse_texto_seleccionado(0, 3)
+        pos = self.reverse_texto_seleccionado(3, 0)
+        if pos[:1] == texto:
+            pre = self.reverse_texto_seleccionado(0, 5)
+            if pre == texto:
+                sup = True
+            elif pre[-1] == texto:
+                sup = True
+        if sup:
+            self.moveCursor(QTextCursor.Right)
+        return sup
+
+    def reverse_texto_seleccionado(self, comienzo, fin):
+        cursor = self.textCursor()
+        pos_cursor = cursor.position()
+        cursor.setPosition(pos_cursor + comienzo)
+        while (cursor.position() == pos_cursor) and comienzo > 0:
+            comienzo -= 1
+            cursor.setPosition(pos_cursor + comienzo)
+        cursor.setPosition(pos_cursor - fin, QTextCursor.KeepAnchor)
+        texto_seleccionado = unicode(cursor.selectedText())
+        return texto_seleccionado
 
     def devolver_texto(self):
         """ Retorna todo el contenido del editor """
@@ -587,14 +633,14 @@ class Editor(QPlainTextEdit, tabitem.TabItem):
             return
 
     def ir_a_linea(self, linea):
-        self.unfold_blocks_for_jump(linea)
+        self.desplegar_bloques_saltar(linea)
         if self.blockCount() >= linea:
             cursor = self.textCursor()
             cursor.setPosition(self.document().findBlockByLineNumber(
                 linea).position())
             self.setTextCursor(cursor)
 
-    def unfold_blocks_for_jump(self, linea):
+    def desplegar_bloques_saltar(self, linea):
         for l in self.widget_num_lineas._foldedBlocks:
             if linea >= l:
                 self.widget_num_lineas.code_folding_event(l + 1)

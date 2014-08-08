@@ -141,6 +141,17 @@ BARRA_HERRAMIENTAS_ORIGINAL = [
     #"frenar",
     ]
 
+COMILLAS = {
+    "'": "'",  # Comillas simples
+    '"': '"'  # Comillas dobles
+    }
+
+BRACES = {
+    '{': '}',
+    '[': ']',
+    '(': ')'
+    }
+
 
 ###############################################################################
 def cargar_configuraciones():
@@ -209,3 +220,23 @@ def cargar_configuraciones():
         BARRA_HERRAMIENTAS_ITEMS = items_barra
     ULTIMA_SESION = qsettings.value('configuraciones/general/ultimaSesion',
         True, type=bool)
+    comillas_simples = qsettings.value('configuraciones/editor/comillasS',
+        True, type=bool)
+    if not comillas_simples:
+        del COMILLAS["'"]
+    comillas_dobles = qsettings.value('configuraciones/editor/comillasD',
+        True).toBool()
+    if not comillas_dobles:
+        del COMILLAS['"']
+    llaves = qsettings.value('configuraciones/editor/llaves',
+        True).toBool()
+    if not llaves:
+        del BRACES['{']
+    corchetes = qsettings.value('configuraciones/editor/corchetes',
+        True).toBool()
+    if not corchetes:
+        del BRACES['[']
+    parentesis = qsettings.value('configuraciones/editor/parentesis',
+        True).toBool()
+    if not parentesis:
+        del BRACES['(']

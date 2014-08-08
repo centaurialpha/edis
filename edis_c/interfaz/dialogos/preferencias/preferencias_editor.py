@@ -77,6 +77,7 @@ class CaracteristicasEditor(QWidget):
         grupoCaracteristicas = QGroupBox(self.trUtf8("Características"))
         grupoMiniMapa = QGroupBox(self.trUtf8("Minimapa"))
         grupoTipoDeLetra = QGroupBox(self.trUtf8("Tipo de letra"))
+        grupoAutocompletado = QGroupBox(self.trUtf8("Autocompletado:"))
 
         grillaCaracteristicas = QGridLayout(grupoCaracteristicas)
         grillaCaracteristicas.setContentsMargins(5, 15, 5, 5)
@@ -162,6 +163,35 @@ class CaracteristicasEditor(QWidget):
             "Fuente:")), 0, 0, Qt.AlignRight)
         grillaFuente.addWidget(self.botonFuente, 0, 1)
 
+        # Autocompletado
+        grillaAutocompletado = QGridLayout(grupoAutocompletado)
+        grillaAutocompletado.setContentsMargins(5, 15, 5, 5)
+        self.checkComillasSimples = QCheckBox()
+        self.checkComillasDobles = QCheckBox()
+        grillaAutocompletado.addWidget(QLabel(self.trUtf8("Comillas simples:")),
+            1, 0, alignment=Qt.AlignTop)
+        grillaAutocompletado.addWidget(self.checkComillasSimples, 1, 1,
+            alignment=Qt.AlignTop)
+        grillaAutocompletado.addWidget(QLabel(self.trUtf8("Comillas dobles:")),
+            2, 0, alignment=Qt.AlignTop)
+        grillaAutocompletado.addWidget(self.checkComillasDobles, 2, 1,
+            alignment=Qt.AlignTop)
+        self.checkParentesis = QCheckBox()
+        grillaAutocompletado.addWidget(QLabel(self.trUtf8("Paréntesis:")),
+            1, 2, alignment=Qt.AlignTop)
+        grillaAutocompletado.addWidget(self.checkParentesis, 1, 3,
+            alignment=Qt.AlignTop)
+        self.checkCorchetes = QCheckBox()
+        grillaAutocompletado.addWidget(QLabel(self.trUtf8("Corchetes:")),
+            2, 2, alignment=Qt.AlignTop)
+        grillaAutocompletado.addWidget(self.checkCorchetes, 2, 3,
+            alignment=Qt.AlignTop)
+        self.checkLlaves = QCheckBox()
+        grillaAutocompletado.addWidget(QLabel(self.trUtf8("Llaves:")),
+            4, 2, alignment=Qt.AlignTop)
+        grillaAutocompletado.addWidget(self.checkLlaves, 4, 3,
+            alignment=Qt.AlignTop)
+
         # Configuraciones
         self.checkMargen.setChecked(configuraciones.MOSTRAR_MARGEN)
         self.spinOpacidadMargen.setValue(configuraciones.OPACIDAD_MARGEN)
@@ -177,10 +207,16 @@ class CaracteristicasEditor(QWidget):
         self.spinMiniMin.setValue(configuraciones.OPAC_MIN * 100)
         self.spinTamanio.setValue(configuraciones.MINI_TAM * 100)
         self.spinMiniMax.setValue(configuraciones.OPAC_MAX * 100)
+        self.checkComillasSimples.setChecked("'" in configuraciones.COMILLAS)
+        self.checkComillasDobles.setChecked('"' in configuraciones.COMILLAS)
+        self.checkLlaves.setChecked("{" in configuraciones.BRACES)
+        self.checkCorchetes.setChecked("[" in configuraciones.BRACES)
+        self.checkParentesis.setChecked("(" in configuraciones.BRACES)
 
         layoutV.addWidget(grupoCaracteristicas)
         layoutV.addWidget(grupoMiniMapa)
         layoutV.addWidget(grupoTipoDeLetra)
+        layoutV.addWidget(grupoAutocompletado)
         layoutV.addItem(QSpacerItem(0, 10, QSizePolicy.Expanding,
         QSizePolicy.Expanding))
 
@@ -263,6 +299,31 @@ class CaracteristicasEditor(QWidget):
         qconfig.setValue('mini', configuraciones.MINIMAPA)
         configuraciones.MINI_TAM = self.spinTamanio.value() / 100.0
         qconfig.setValue('miniTam', configuraciones.MINI_TAM)
+        qconfig.setValue('comillasS', self.checkComillasSimples.isChecked())
+        qconfig.setValue('comillasD', self.checkComillasDobles.isChecked())
+        qconfig.setValue('llaves', self.checkLlaves.isChecked())
+        qconfig.setValue('corchetes', self.checkCorchetes.isChecked())
+        qconfig.setValue('parentesis', self.checkParentesis.isChecked())
+        if self.checkComillasSimples.isChecked():
+            configuraciones.COMILLAS["'"] = "'"
+        elif ("'") in configuraciones.COMILLAS:
+            del configuraciones.COMILLAS["'"]
+        if self.checkComillasDobles.isChecked():
+            configuraciones.COMILLAS['"'] = '"'
+        elif ('"') in configuraciones.COMILLAS:
+            del configuraciones.COMILLAS['"']
+        if self.checkLlaves.isChecked():
+            configuraciones.BRACES['{'] = '}'
+        elif ("{") in configuraciones.BRACES:
+            del configuraciones.BRACES['{']
+        if self.checkCorchetes.isChecked():
+            configuraciones.BRACES['['] = ']'
+        elif ("[") in configuraciones.BRACES:
+            del configuraciones.BRACES["["]
+        if self.checkParentesis.isChecked():
+            configuraciones.BRACES['('] = ')'
+        elif ("(") in configuraciones.BRACES:
+            del configuraciones.BRACES['(']
         contenedor_principal.ContenedorMain().actualizar_margen_editor()
         qconfig.endGroup()
         qconfig.endGroup()

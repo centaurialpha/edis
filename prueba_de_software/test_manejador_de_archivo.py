@@ -1,6 +1,6 @@
 #-*- coding: utf8 -*-
 
-# Prueba de leer contenido de un archivo
+# Pruebas con archivos y carpetas
 
 import unittest
 import os
@@ -12,7 +12,8 @@ sys.path.append('../')
 
 from edis_c.nucleo.manejador_de_archivo import leer_contenido_de_archivo
 from edis_c.nucleo.manejador_de_archivo import _nombreBase
-from edis_c.nucleo.manejador_de_archivo import nombre_de_modulo
+from edis_c.nucleo.manejador_de_archivo import nombre_de_archivo
+from edis_c.nucleo.manejador_de_archivo import archivos_desde_carpeta
 
 
 class Prueba(unittest.TestCase):
@@ -26,13 +27,13 @@ class Prueba(unittest.TestCase):
         contenido = leer_contenido_de_archivo(archivo)
         resultado_esperado = ("#include <stdio.h>\n\nint main( void )\n"
         "{\n\tputs( \"Testing\" );\n\treturn 0;\n}\n")
-        self.assertEqual(contenido, resultado_esperado)
+        self.assertEqual(contenido, resultado_esperado)  # ok!
 
     def test_leer_caracteres_raros(self):
         archivo = os.path.join(self.carpeta, 'caracteres.c')
         contenido = leer_contenido_de_archivo(archivo)
         resultado_esperado = ("\xc3\xb1\xc3\xa1m\n")
-        self.assertEqual(contenido, resultado_esperado)
+        self.assertEqual(contenido, resultado_esperado)  # ok!
 
     def test_nombreBase(self):
         archivo = '/home/edis/archivo.c'
@@ -42,12 +43,19 @@ class Prueba(unittest.TestCase):
         self.assertEqual(prueba, resultado_esperado)  # ok!
         #print prueba
 
-    def test_nombre_de_modulo(self):
+    def test_nombre_de_archivo(self):
         archivo = '/home/gabo/edis/main.c'
-        prueba = nombre_de_modulo(archivo)
+        prueba = nombre_de_archivo(archivo)
         resultado_esperado = 'main'
         self.assertEqual(prueba, resultado_esperado)  # ok!
         #print prueba
+
+    def test_archivos_desde_carpeta(self):
+        carpeta = '/home/gabo/prueba'
+        extension = '.c'
+        prueba = archivos_desde_carpeta(carpeta, extension)
+        resultado_esperado = ['lala.c', 'test.c']
+        self.assertEqual(prueba, resultado_esperado)  # ok!
 
 
 if __name__ == "__main__":
