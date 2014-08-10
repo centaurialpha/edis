@@ -198,7 +198,7 @@ class CaracteristicasEditor(QWidget):
         self.spinMargen.setValue(configuraciones.MARGEN)
         self.spinInd.setValue(configuraciones.INDENTACION)
         self.checkInd.setChecked(configuraciones.CHECK_INDENTACION)
-        self.checkAutoInd.setChecked(configuraciones.CHECK_AUTO_INDENTACION)
+        self.checkAutoInd.setChecked(configuraciones.CHECK_AUTOINDENTACION)
         self.checkGuia.setChecked(configuraciones.GUIA_INDENTACION)
         self.checkTabs.setChecked(configuraciones.MOSTRAR_TABS)
         self.checkSideBar.setChecked(configuraciones.SIDEBAR)
@@ -279,7 +279,7 @@ class CaracteristicasEditor(QWidget):
 
     def guardar(self):
         """ Guarda las configuraciones del Editor. """
-
+        contenedor_principal_ = contenedor_principal.ContenedorMain()
         qconfig = QSettings()
         qconfig.beginGroup('configuraciones')
         qconfig.beginGroup('editor')
@@ -295,10 +295,27 @@ class CaracteristicasEditor(QWidget):
         configuraciones.GUIA_INDENTACION = self.checkGuia.isChecked()
         qconfig.setValue('indentacion', self.spinInd.value())
         configuraciones.INDENTACION = self.spinInd.value()
+        qconfig.setValue('autoInd', self.checkAutoInd.isChecked())
+        configuraciones.CHECK_AUTOINDENTACION = self.checkAutoInd.isChecked()
+        qconfig.setValue('tabs', self.checkTabs.isChecked())
+        configuraciones.MOSTRAR_TABS = self.checkTabs.isChecked()
+        qconfig.setValue('envolver', self.checkWrap.isChecked())
+        configuraciones.MODO_ENVOLVER = self.checkWrap.isChecked()
+        qconfig.setValue('sidebar', self.checkSideBar.isChecked())
+        configuraciones.SIDEBAR = self.checkSideBar.isChecked()
         configuraciones.MINIMAPA = self.checkMini.isChecked()
         qconfig.setValue('mini', configuraciones.MINIMAPA)
         configuraciones.MINI_TAM = self.spinTamanio.value() / 100.0
         qconfig.setValue('miniTam', configuraciones.MINI_TAM)
+        qconfig.setValue('opac_min', configuraciones.OPAC_MIN)
+        configuraciones.OPAC_MIN = self.spinMiniMin.value() / 100.0
+        qconfig.setValue('opac_max', configuraciones.OPAC_MAX)
+        configuraciones.OPAC_MAX = self.spinMiniMax.value() / 100.0
+        fuente = unicode(self.botonFuente.text().replace(' ', ''))
+        configuraciones.FUENTE = fuente.split(',')[0]
+        configuraciones.TAM_FUENTE = int(fuente.split(',')[1])
+        qconfig.setValue('fuente', configuraciones.FUENTE)
+        qconfig.setValue('fuenteTam', configuraciones.TAM_FUENTE)
         qconfig.setValue('comillasS', self.checkComillasSimples.isChecked())
         qconfig.setValue('comillasD', self.checkComillasDobles.isChecked())
         qconfig.setValue('llaves', self.checkLlaves.isChecked())
@@ -324,7 +341,12 @@ class CaracteristicasEditor(QWidget):
             configuraciones.BRACES['('] = ')'
         elif ("(") in configuraciones.BRACES:
             del configuraciones.BRACES['(']
-        contenedor_principal.ContenedorMain().actualizar_margen_editor()
+        contenedor_principal_.actualizar_margen_editor()
+        contenedor_principal_.resetear_flags_editor()
+        Weditor = contenedor_principal_.devolver_editor_actual()
+        if Weditor is not None:
+            Weditor._cargar_fuente(
+                configuraciones.FUENTE, configuraciones.TAM_FUENTE)
         qconfig.endGroup()
         qconfig.endGroup()
 

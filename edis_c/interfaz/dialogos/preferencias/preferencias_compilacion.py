@@ -138,5 +138,6 @@ class ConfiguracionEjecucion(QWidget):
             self.path_terminal.setText(path)
 
     def guardar(self):
-        print self.terminales.currentIndex()
-        print self.terminales.currentText()
+        #print self.terminales.currentIndex()
+        #print self.terminales.currentText()
+        pass

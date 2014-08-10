@@ -100,6 +100,8 @@ class ConfiguracionGeneral(QWidget):
         self.boton_reestablecer = QPushButton(
             self.trUtf8("Reestablecer preferencias"))
         layoutReset.addWidget(self.boton_reestablecer, alignment=Qt.AlignLeft)
+        layoutReset.addWidget(QLabel(
+            self.trUtf8("<i>Reiniciar para ver cambios.</i>")))
 
         # Configuraciones
         self.checkPaginaInicio.setChecked(configuraciones.PAGINA_BIENVENIDA)

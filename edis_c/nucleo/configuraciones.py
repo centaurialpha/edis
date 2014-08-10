@@ -67,7 +67,7 @@ FUENTE_MIN_TAM = 6
 ###############################################################################
 INDENTACION = 4
 CHECK_INDENTACION = True
-CHECK_AUTO_INDENTACION = True
+CHECK_AUTOINDENTACION = True
 GUIA_INDENTACION = False
 ###############################################################################
 # TABS Y ESPACIOS
@@ -180,8 +180,10 @@ def cargar_configuraciones():
     global INDENTACION
     global GUIA_INDENTACION
     global CHECK_INDENTACION
-    global CHECK_AUTO_INDENTACION
+    global CHECK_AUTOINDENTACION
     global MOSTRAR_TABS
+    global MODO_ENVOLVER
+    global SIDEBAR
     global MINIMAPA
     global MINI_TAM
     global OPAC_MIN
@@ -211,10 +213,13 @@ def cargar_configuraciones():
         False, type=bool)
     CHECK_INDENTACION = qsettings.value('configuraciones/editor/checkInd', True,
         type=bool)
-    CHECK_AUTO_INDENTACION = qsettings.value('configuraciones/editor/autoInd',
+    CHECK_AUTOINDENTACION = qsettings.value('configuraciones/editor/autoInd',
         True, type=bool)
     MOSTRAR_TABS = qsettings.value(
         'configuraciones/editor/tabs', True, type=bool)
+    MODO_ENVOLVER = qsettings.value('configuraciones/editor/envolver',
+        True, type=bool)
+    SIDEBAR = qsettings.value('configuraciones/editor/sidebar', True, type=bool)
     MINIMAPA = qsettings.value('configuraciones/editor/mini', True, type=bool)
     MINI_TAM = float(qsettings.value('configuraciones/editor(miniTam',
     0.17, type=float))
