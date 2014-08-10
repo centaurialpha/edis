@@ -50,6 +50,8 @@ class MenuEjecucion(QObject):
         # Compilar y ejecutar
         self.accionCompilarEjecutar = crear_accion(self, "Compilar y ejecutar",
             icono=_ICONO['comp-ejec'], atajo=_ATAJO['comp-ejec'])
+        self.accionFrenar = crear_accion(self, "Frenar programa",
+            icono=_ICONO['frenar'], slot=self.ide.distribuidor.frenar)
 
         # Agregar acciones al menú #
         menu_codigo.addAction(self.accionCompilar)
@@ -59,7 +61,8 @@ class MenuEjecucion(QObject):
         self.items_toolbar = {
             "compilar-archivo": self.accionCompilar,
             "ejecutar-archivo": self.accionEjecutar,
-            "compilar-ejecutar-archivo": self.accionCompilarEjecutar
+            "compilar-ejecutar-archivo": self.accionCompilarEjecutar,
+            "frenar": self.accionFrenar
             }
 
     def metodo_ejecutar(self):

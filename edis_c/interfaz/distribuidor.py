@@ -117,3 +117,6 @@ class Distribuidor(QObject):
 
     def ejecutar(self):
         self.edis.contenedor_secundario.ejecutar()
+
+    def frenar(self):
+        self.edis.contenedor_secundario.frenar()

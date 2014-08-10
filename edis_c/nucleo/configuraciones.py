@@ -111,15 +111,17 @@ BARRA_HERRAMIENTAS_ITEMS = [
     "separador",
     "indentar",
     "desindentar",
+    "arriba",
+    "abajo",
     "include",
-    "titulo",
+    "macro",
     "linea",
     "separador",
     "compilar-archivo",
     "ejecutar-archivo",
     "compilar-ejecutar-archivo",
+    "frenar",
     "separador"
-    #"frenar",
     ]
 
 BARRA_HERRAMIENTAS_ORIGINAL = [
@@ -142,15 +144,17 @@ BARRA_HERRAMIENTAS_ORIGINAL = [
     "separador",
     "indentar",
     "desindentar",
+    "arriba",
+    "abajo",
     "include",
-    "titulo",
+    "macro",
     "linea",
     "separador",
     "compilar-archivo",
     "ejecutar-archivo",
     "compilar-ejecutar-archivo",
+    "frenar",
     "separador"
-    #"frenar",
     ]
 
 COMILLAS = {

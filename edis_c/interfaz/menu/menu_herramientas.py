@@ -49,7 +49,7 @@ class MenuHerramientas(QObject):
             slot=self.ide.distribuidor.insertar_include)
         menu_herramientas.addAction(accionInclude)
         accionInsertarMacro = crear_accion(self, "Insertar '#define'",
-            slot=self.insertar_macro)
+            icono=_ICONO['insertar-macro'], slot=self.insertar_macro)
         menu_herramientas.addAction(accionInsertarMacro)
         menu_herramientas.addSeparator()
         # Insertar fecha y hora
@@ -76,8 +76,8 @@ class MenuHerramientas(QObject):
         # Toolbar #
         self.items_toolbar = {
             "linea": accionSeparador,
-            "titulo": accionTitulo,
-            "include": accionInclude
+            "macro": accionInsertarMacro,
+            "include": accionInclude,
             }
 
         # Conexión

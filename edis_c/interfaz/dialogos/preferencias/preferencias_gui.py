@@ -75,7 +75,7 @@ class TabGUI(QWidget):
 
         self.toolbar_bar_items = QToolBar()
         self.toolbar_bar_items.setToolButtonStyle(Qt.ToolButtonIconOnly)
-        self.toolbar_bar_items.setIconSize(QSize(18, 18))
+        self.toolbar_bar_items.setIconSize(QSize(15, 15))
         self.cargar_toolbar()
 
         # Estilo
@@ -134,12 +134,16 @@ class TabGUI(QWidget):
                 'Indentar'],
             'desindentar': [QIcon(recursos.ICONOS['quitar-indentacion']),
                 'Desindentar'],
+            'arriba': [QIcon(recursos.ICONOS['arriba']),
+                'Mover hacia arriba'],
+            'abajo': [QIcon(recursos.ICONOS['abajo']),
+                'Mover hacia abajo'],
             'include': [QIcon(recursos.ICONOS['insertar-include']),
                 'Include'],
-            'titulo': [QIcon(recursos.ICONOS['titulo']),
-                'Titulo'],
+            'macro': [QIcon(recursos.ICONOS['insertar-macro']),
+                'Macro'],
             'linea': [QIcon(recursos.ICONOS['linea']),
-                'Linea'],
+                'Separador'],
             'compilar-archivo': [QIcon(recursos.ICONOS['compilar']),
                 'Compilar'],
             'ejecutar-archivo': [QIcon(recursos.ICONOS['ejecutar']),

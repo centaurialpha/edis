@@ -47,7 +47,7 @@ def edis(app):
     QCoreApplication.setApplicationName('EDIS-C')
 
     # Ícono
-    app.setWindowIcon(QIcon(recursos.ICONOS['seiryu_icono']))
+    app.setWindowIcon(QIcon(recursos.ICONOS['icono']))
     # Estilo por defecto
     estilo = list(QStyleFactory.keys()).pop()
     QApplication.setStyle(QStyleFactory.create(estilo))

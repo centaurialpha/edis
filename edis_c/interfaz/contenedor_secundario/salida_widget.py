@@ -66,6 +66,7 @@ class EjecutarWidget(QWidget):
 
         # Proceso
         self.proceso = QProcess(self)
+        self.pro = None
 
         # Conexión
         self.proceso.readyReadStandardOutput.connect(
@@ -188,10 +189,16 @@ class EjecutarWidget(QWidget):
             bash += i + '\n'
         bash = bash % dash
         if _TUX:
-            Popen(bash, stdout=PIPE, stderr=PIPE, shell=True)
+            self.pro = Popen(bash, stdout=PIPE, stderr=PIPE, shell=True)
+            #stdout, stderr = self.pro.communicate()
         else:
             Popen(direc + '/' + self.ejecutable,
                 creationflags=CREATE_NEW_CONSOLE)
+
+    def terminar_proceso(self):
+        """ Termina el proceso """
+
+        self.pro.terminate()
 
 
 class SalidaWidget(QPlainTextEdit):

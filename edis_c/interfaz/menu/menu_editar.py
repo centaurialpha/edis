@@ -82,10 +82,12 @@ class MenuEditar(QObject):
             slot=self.ide.contenedor_principal.seleccionar_todo)
         # Mover hacia arriba
         self.accionMoverArriba = crear_accion(self, "Mover hacia arriba",
-            atajo=_ATAJO['mover-arriba'], slot=self.mover_linea_hacia_arriba)
+            icono=_ICONO['arriba'], atajo=_ATAJO['mover-arriba'],
+            slot=self.mover_linea_hacia_arriba)
         # Mover hacia abajo
         self.accionMoverAbajo = crear_accion(self, "Mover hacia abajo",
-            atajo=_ATAJO['mover-abajo'], slot=self.mover_linea_hacia_abajo)
+            icono=_ICONO['abajo'], atajo=_ATAJO['mover-abajo'],
+            slot=self.mover_linea_hacia_abajo)
         # Convertir a mayúsculas
         self.accionConvertirMayusculas = crear_accion(self,
             "Texto seleccionado: a mayúsculas",
@@ -150,7 +152,9 @@ class MenuEditar(QObject):
             "copiar": self.accionCopiar,
             "pegar": self.accionPegar,
             "indentar": self.accionIndentar,
-            "desindentar": self.accionQuitarIndentacion
+            "desindentar": self.accionQuitarIndentacion,
+            "arriba": self.accionMoverArriba,
+            "abajo": self.accionMoverAbajo
             }
 
     def mover_linea_hacia_arriba(self):

@@ -27,9 +27,13 @@ from PyQt4.QtGui import QMessageBox
 from PyQt4.QtCore import QObject
 
 import edis_c
+from edis_c import recursos
 #from edis_c.interfaz.widgets import estilo
 from edis_c.interfaz.dialogos import dialogo_acerca_de_ide
 #from edis_c.interfaz.contenedor_principal import contenedor_principal
+from edis_c.interfaz.widgets.creador_widget import crear_accion
+
+_ICONO = recursos.ICONOS
 
 
 class MenuAcercade(QObject):
@@ -39,18 +43,24 @@ class MenuAcercade(QObject):
 
         # Contenedor del Widget Principal
         self.ide = ide
-        reportarBugs = menu_acerca_de.addAction(self.trUtf8("Reportar bugs!"))
+        reportarBugs = crear_accion(self, "Reportar Bug!",
+            icono=_ICONO['bug'], slot=self.reportar_bugs_)
+        menu_acerca_de.addAction(reportarBugs)
         menu_acerca_de.addSeparator()
-        acerca_ide = menu_acerca_de.addAction(self.tr("Acerca de IDE"))
-        acerca_qt = menu_acerca_de.addAction(self.tr("Acerca de Qt"))
+        acerca_ide = crear_accion(self, "Acerca de EDIS",
+            icono=_ICONO['acerca-edis'], slot=self.acerca_de_ide)
+        menu_acerca_de.addAction(acerca_ide)
+        acerca_qt = crear_accion(self, "Acerca de Qt",
+            icono=_ICONO['acerca-qt'], slot=self.acerca_de_qt)
+        menu_acerca_de.addAction(acerca_qt)
         menu_acerca_de.addSeparator()
         estilo_de_codigo = menu_acerca_de.addAction(
             self.trUtf8("Estilo de código"))
 
         # Conexiones
-        reportarBugs.triggered.connect(self.reportar_bugs_)
-        acerca_ide.triggered.connect(self.acerca_de_ide)
-        acerca_qt.triggered.connect(self.acerca_de_qt)
+        #reportarBugs.triggered.connect(self.reportar_bugs_)
+        #acerca_ide.triggered.connect(self.acerca_de_ide)
+        #acerca_qt.triggered.connect(self.acerca_de_qt)
         estilo_de_codigo.triggered.connect(self.estilo_de_codigo)
 
     def reportar_bugs_(self):

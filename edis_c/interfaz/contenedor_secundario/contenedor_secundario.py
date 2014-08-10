@@ -106,6 +106,9 @@ class _ContenedorSecundario(QWidget):
         if self.salida_.compilado:
             self.salida_.correr_programa()
 
+    def frenar(self):
+        self.salida_.terminar_proceso()
+
 
 class Notas(QTextEdit):
 

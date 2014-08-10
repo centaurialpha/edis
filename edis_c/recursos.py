@@ -50,6 +50,7 @@ LICENCIA = os.path.join(PATH, "../", "COPYING")
 PAGINA_INICIO = os.path.join(PATH, "otros", "pagina_de_bienvenida")
 NOTIFICACION = os.path.join(PATH, "otros", "QtQML")
 
+
 # Iconos
 ICONOS = {
     "nuevo": os.path.join(PATH, "imagenes", "nuevo.png"),
@@ -59,13 +60,15 @@ ICONOS = {
     "guardar": os.path.join(PATH, "imagenes", "guardar.png"),
     "guardar-como": os.path.join(PATH, "imagenes", "guardarComo.png"),
     "guardar-todo": os.path.join(PATH, "imagenes", "guardarTodo.png"),
+    "cerrar": os.path.join(PATH, "imagenes", "cerrarTab.png"),
     "salir": os.path.join(PATH, "imagenes", "cerrar.png"),
     "splash": os.path.join(PATH, "imagenes", "splash.png"),
     "icono": os.path.join(PATH, "imagenes", "side-c.png"),
     # Logo dragón (originalmente verde by nessmasta) - modificado a azul
     "seiryu": os.path.join(PATH, "imagenes", "edis_seiryu.png"),
-    "seiryu_icono": os.path.join(PATH, "imagenes", "seiryu_icono.png"),
-    "print": os.path.join(PATH, "imagenes", "print.png"),
+    "icono": os.path.join(PATH, "imagenes", "edis_c.ico"),
+    "imprimir": os.path.join(PATH, "imagenes", "imprimir.png"),
+    "exportar": os.path.join(PATH, "imagenes", "exportar.png"),
     "compilar": os.path.join(PATH, "imagenes", "compilar.png"),
     "ejecutar": os.path.join(PATH, "imagenes", "ejecutar.png"),
     "comp-ejec": os.path.join(PATH, "imagenes", "compilarEjecutar.png"),
@@ -77,10 +80,13 @@ ICONOS = {
     "cortar": os.path.join(PATH, "imagenes", "cortar.png"),
     "copiar": os.path.join(PATH, "imagenes", "copiar.png"),
     "pegar": os.path.join(PATH, "imagenes", "pegar.png"),
+    "arriba": os.path.join(PATH, "imagenes", "arriba.png"),
+    "abajo": os.path.join(PATH, "imagenes", "abajo.png"),
     "buscar": os.path.join(PATH, "imagenes", "buscar.png"),
     "siguiente": os.path.join(PATH, "imagenes", "siguiente.png"),
     "anterior": os.path.join(PATH, "imagenes", "anterior.png"),
     "icono-tab": os.path.join(PATH, "imagenes", "cambio-tab.svg"),
+    "fullscreen": os.path.join(PATH, "imagenes", "pantalla_completa.png"),
     "acercar": os.path.join(PATH, "imagenes", "acercar.png"),
     "alejar": os.path.join(PATH, "imagenes", "alejar.png"),
     "titulo": os.path.join(PATH, "imagenes", "titulo.png"),
@@ -91,7 +97,11 @@ ICONOS = {
     "indentar": os.path.join(PATH, "imagenes", "indentar.png"),
     "quitar-indentacion": os.path.join(PATH, "imagenes", "desindentar.png"),
     "comentar": os.path.join(PATH, "imagenes", "comentar.png"),
-    "insertar-include": os.path.join(PATH, "imagenes", "insertar-include.png")
+    "insertar-include": os.path.join(PATH, "imagenes", "include.png"),
+    "insertar-macro": os.path.join(PATH, "imagenes", "macro.png"),
+    "acerca-qt": os.path.join(PATH, "imagenes", "acercaDeQt.png"),
+    "acerca-edis": os.path.join(PATH, "imagenes", "acercaDe.png"),
+    "bug": os.path.join(PATH, "imagenes", "bug.png")
     }
 
 # Estilos de color - Editor

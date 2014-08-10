@@ -314,7 +314,7 @@ class __ContenedorMain(QSplitter):
             return editorW.ID
         except:
             editorW.guardado_actualmente = False
-        return False
+            return False
 
     def guardar_archivo_como(self):
         editorW = self.devolver_editor_actual()
@@ -335,7 +335,7 @@ class __ContenedorMain(QSplitter):
                 nombre, editorW.devolver_texto())
             ext = manejador_de_archivo._nombreBase(nombre)[-1]
             if ext == 'c':
-                icono = recursos.ICONOS['c']
+                icono = recursos.ICONOS['main']
             else:
                 icono = recursos.ICONOS['cabecera']
             self.tab_actual.setTabText(self.tab_actual.currentIndex(),

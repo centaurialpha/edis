@@ -64,14 +64,15 @@ class MenuArchivo(QObject):
             slot=self.ide.contenedor_principal.guardar_todo)
         # Imprimir
         self.accionImprimir = crear_accion(self, "Imprimir",
-            icono=_ICONO['print'], atajo=_ATAJO['imprimir'],
+            icono=_ICONO['imprimir'], atajo=_ATAJO['imprimir'],
             slot=self.ide.distribuidor.imprimir_documento)
         # Exportar a PDF
         self.accionExportarComoPDF = crear_accion(self, "Exportar a PDF",
+            icono=_ICONO['exportar'],
             slot=self.ide.distribuidor.exportar_como_pdf)
         # Cerrar
         self.accionCerrarTab = crear_accion(self, "Cerrar",
-            atajo=_ATAJO['cerrar-tab'],
+            icono=_ICONO['cerrar'], atajo=_ATAJO['cerrar-tab'],
             slot=self.ide.contenedor_principal.cerrar_tab)
         # Cerrar todo
         self.accionCerrarTodo = crear_accion(self, "Cerrar todo",
