@@ -28,6 +28,7 @@ from PyQt4.QtGui import QGridLayout
 from PyQt4.QtGui import QLabel
 from PyQt4.QtGui import QKeySequence
 from PyQt4.QtGui import QShortcut
+from PyQt4.QtGui import QIcon
 
 from PyQt4.QtCore import QDir
 from PyQt4.QtCore import QFile
@@ -332,9 +333,15 @@ class __ContenedorMain(QSplitter):
             acciones_.quitar_espacios_en_blanco(editorW)
             nombre = manejador_de_archivo.escribir_archivo(
                 nombre, editorW.devolver_texto())
-
+            ext = manejador_de_archivo._nombreBase(nombre)[-1]
+            if ext == 'c':
+                icono = recursos.ICONOS['c']
+            else:
+                icono = recursos.ICONOS['cabecera']
             self.tab_actual.setTabText(self.tab_actual.currentIndex(),
                 manejador_de_archivo._nombreBase(nombre))
+            self.tab_actual.setTabIcon(self.tab_actual.currentIndex(),
+                QIcon(icono))
             editorW.ID = nombre
 
             # Señal de guardado para la barra de estado
