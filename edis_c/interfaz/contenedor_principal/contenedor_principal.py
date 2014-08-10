@@ -79,15 +79,22 @@ class __ContenedorMain(QSplitter):
             tecla += 1
             atajo.activated.connect(self.cambiar_indice_de_tab)
 
-    def agregar_editor(self, nombre_archivo="", tabIndex=None):
+    def agregar_editor(self, nombre_archivo=""):
         editorWidget = editor.crear_editor(nombre_archivo=nombre_archivo)
-
         if not nombre_archivo:
             nombre_tab = "Nuevo archivo"
+            icono = False
         else:
             nombre_tab = manejador_de_archivo._nombreBase(nombre_archivo)
+            ext = nombre_tab.strip('.')[-1]
+            if ext == 'c':
+                icono = recursos.ICONOS['main']
+            elif ext == 'h':
+                icono = recursos.ICONOS['cabecera']
+            else:
+                icono = False
 
-        indice = self.agregar_tab(editorWidget, nombre_tab, tabIndex=tabIndex)
+        indice = self.agregar_tab(editorWidget, icono, nombre_tab)
         self.tab_actual.setTabToolTip(indice,
             QDir.toNativeSeparators(nombre_archivo))
         self.connect(editorWidget, SIGNAL("modificationChanged(bool)"),
@@ -117,8 +124,8 @@ class __ContenedorMain(QSplitter):
     def devolver_archivos_sin_guardar(self):
         return self.tab_principal.devolver_archivos_sin_guardar()
 
-    def agregar_tab(self, widget, nombre_tab, tabIndex=None, nAbierta=True):
-        return self.tab_actual.agregar_tab(widget, nombre_tab, index=tabIndex)
+    def agregar_tab(self, widget, icono, nombre_tab, nAbierta=True):
+        return self.tab_actual.agregar_tab(widget, icono, nombre_tab)
 
     def devolver_widget_actual(self):
         return self.tab_actual.currentWidget()
@@ -184,7 +191,7 @@ class __ContenedorMain(QSplitter):
 
     def mostrar_pagina_de_bienvenida(self):
         pag = pagina_de_bienvenida.PaginaDeBienvenida(parent=self)
-        self.agregar_tab(pag, self.trUtf8('EDIS-C'))
+        self.agregar_tab(pag, False, self.trUtf8('EDIS-C'))
         self.connect(pag, SIGNAL("nuevoArchivo()"),
             lambda: self.emit(SIGNAL("nuevoArchivo()")))
         self.connect(pag, SIGNAL("abrirArchivo()"),
@@ -237,7 +244,7 @@ class __ContenedorMain(QSplitter):
         if obj.indice < contenedor.count():
             contenedor.setCurrentIndex(obj.indice)
 
-    def abrir_archivo(self, nombre='', tabIndex=None):
+    def abrir_archivo(self, nombre=''):
         extension = recursos.EXTENSIONES  # Filtro
 
         nombre = unicode(nombre)
@@ -263,7 +270,7 @@ class __ContenedorMain(QSplitter):
             #contenido = self.leer_contenido_archivo(nombre)
             contenido = manejador_de_archivo.leer_contenido_de_archivo(
                 nombre)
-            editorW = self.agregar_editor(nombre, tabIndex=tabIndex)
+            editorW = self.agregar_editor(nombre)
             editorW.setPlainText(contenido.decode('utf-8'))
             editorW.ID = nombre
 

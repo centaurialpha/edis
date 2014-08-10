@@ -42,6 +42,8 @@ from edis_c.interfaz.widgets.creador_widget import get_icono_estandard
 
 _Instancia = None
 
+_ICONO = recursos.ICONOS
+
 
 def WidgetBusqueda(*args, **kw):
     global _Instancia
@@ -135,14 +137,14 @@ class WidgetBuscar(QWidget):
         self.line_edit = LineEdit(self)
         self.line_edit.setMinimumWidth(300)
         self.boton_cerrar = crear_boton(self, triggered=self.hide,
-            icono=get_icono_estandard('DialogCloseButton'), tip='Cerrar')
+            icono=_ICONO['salir'], tip='Cerrar')
         self.boton_buscar = crear_boton(self, triggered=self.buscar_siguiente,
             icono=recursos.ICONOS['buscar'], tip='Buscar')
         self.boton_anterior = crear_boton(self, triggered=self.buscar_anterior,
-            icono=get_icono_estandard('ArrowLeft'), tip='Buscar anterior')
+            icono=_ICONO['anterior'], tip='Buscar anterior')
         self.boton_siguiente = crear_boton(self,
-            triggered=self.buscar_siguiente, icono=get_icono_estandard(
-                'ArrowRight'), tip='Buscar siguiente')
+            triggered=self.buscar_siguiente, icono=_ICONO['siguiente'],
+            tip='Buscar siguiente')
         self.boton_sensitivo.setCheckable(True)
         self.boton_todo.setCheckable(True)
 

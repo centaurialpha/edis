@@ -127,10 +127,10 @@ class __IDE(QMainWindow):
             archivo, self.toolbar, self)
         self._menu_editar = menu_editar.MenuEditar(
             editar, self.toolbar, self)
-        self._menu_ver = menu_ver.MenuVer(ver, self)
+        self._menu_ver = menu_ver.MenuVer(ver, self.toolbar, self)
         self._menu_herramientas = menu_herramientas.MenuHerramientas(
             herramientas, self.toolbar, self)
-        self._menu_buscar = menu_buscar.MenuBuscar(buscar, self)
+        self._menu_buscar = menu_buscar.MenuBuscar(buscar, self.toolbar, self)
         self._menu_ejecucion = menu_ejecucion.MenuEjecucion(
             ejecucion, self.toolbar, self)
         self._menu_acerca_de = menu_acerca_de.MenuAcercade(acerca, self)
@@ -218,6 +218,8 @@ class __IDE(QMainWindow):
 
         items.update(self._menu_archivo.items_toolbar)
         items.update(self._menu_editar.items_toolbar)
+        items.update(self._menu_buscar.items_toolbar)
+        items.update(self._menu_ver.items_toolbar)
         items.update(self._menu_herramientas.items_toolbar)
         items.update(self._menu_ejecucion.items_toolbar)
 

@@ -23,11 +23,12 @@ from edis_c.interfaz.editor import acciones_
 from edis_c.interfaz.widgets.creador_widget import crear_accion
 
 _ATAJO = recursos.ATAJOS
+_ICONO = recursos.ICONOS
 
 
 class MenuBuscar(QObject):
 
-    def __init__(self, menu_buscar, ide):
+    def __init__(self, menu_buscar, toolbar, ide):
         super(MenuBuscar, self).__init__()
 
         self.ide = ide
@@ -35,7 +36,7 @@ class MenuBuscar(QObject):
         # Acciones #
         # Buscar
         accionBuscar = crear_accion(self, "Buscar", atajo=_ATAJO['buscar'],
-            slot=self.buscar)
+            icono=_ICONO['buscar'], slot=self.buscar)
         # Buscar en archivos
         accionBuscarEnArchivos = crear_accion(self, "Buscar en archivos",
             atajo=_ATAJO['buscar-archivos'])
@@ -48,6 +49,10 @@ class MenuBuscar(QObject):
         menu_buscar.addAction(accionBuscarEnArchivos)
         menu_buscar.addSeparator()
         menu_buscar.addAction(accionIrALinea)
+
+        self.items_toolbar = {
+            'buscar': accionBuscar
+            }
 
     def ir_a_la_linea(self):
         editor = self.ide.contenedor_principal.devolver_editor_actual()

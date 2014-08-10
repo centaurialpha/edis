@@ -22,6 +22,7 @@
 from PyQt4.QtGui import QTabWidget
 from PyQt4.QtGui import QColor
 from PyQt4.QtGui import QMessageBox
+from PyQt4.QtGui import QIcon
 
 # Módulos QtCore
 from PyQt4.QtCore import SIGNAL
@@ -44,16 +45,10 @@ class TabCentral(QTabWidget):
         self.connect(self, SIGNAL("tabCloseRequested(int)"),
             self.removeTab)
 
-    def agregar_tab(self, widget, titulo, index=None):
-
-        if index is not None:
-            insertar = self.insertTab(index, widget, titulo)
-        else:
-            insertar = self.addTab(widget, titulo)
-
+    def agregar_tab(self, widget, icono, titulo):
+        insertar = self.addTab(widget, QIcon(icono), titulo)
         self.setCurrentIndex(insertar)
         widget.setFocus()
-
         return insertar
 
     def cerrar_tab(self):

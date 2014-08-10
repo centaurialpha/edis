@@ -60,6 +60,7 @@ class MenuArchivo(QObject):
             slot=self.ide.contenedor_principal.guardar_archivo_como)
         # Guardar todo
         self.accionGuardarTodo = crear_accion(self, "Guardar todo",
+            icono=_ICONO['guardar-todo'],
             slot=self.ide.contenedor_principal.guardar_todo)
         # Imprimir
         self.accionImprimir = crear_accion(self, "Imprimir",
@@ -109,7 +110,8 @@ class MenuArchivo(QObject):
             "nuevo-archivo": self.accionNuevo,
             "abrir-archivo": self.accionAbrir,
             "guardar-archivo": self.accionGuardar,
-            "guardar-como-archivo": self.accionGuardarComo
+            "guardar-como": self.accionGuardarComo,
+            "guardar-todo": self.accionGuardarTodo
             }
 
     def archivo_main_c(self):

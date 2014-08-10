@@ -22,11 +22,12 @@ from edis_c import recursos
 from edis_c.interfaz.widgets.creador_widget import crear_accion
 
 _ATAJO = recursos.ATAJOS
+_ICONO = recursos.ICONOS
 
 
 class MenuVer(QObject):
 
-    def __init__(self, menu_ver, ide):
+    def __init__(self, menu_ver, toolbar, ide):
         super(MenuVer, self).__init__()
 
         self.ide = ide
@@ -53,10 +54,12 @@ class MenuVer(QObject):
             slot=self.visibilidad_contenedor_secundario)
         # Acercar
         self.accionAcercar = crear_accion(self, "Acercar",
-            atajo=_ATAJO['zoom-mas'], slot=self._acercar)
+            icono=_ICONO['acercar'], atajo=_ATAJO['zoom-mas'],
+            slot=self._acercar)
         # Alejar
         self.accionAlejar = crear_accion(self, "Alejar",
-            atajo=_ATAJO['zoom-menos'], slot=self._alejar)
+            icono=_ICONO['alejar'], atajo=_ATAJO['zoom-menos'],
+            slot=self._alejar)
 
         # Agregar acciones al menú #
         menu_ver.addAction(self.accionFullScreen)
@@ -71,6 +74,11 @@ class MenuVer(QObject):
         self.accionMostrarOcultarToolbar.setChecked(True)
         self.accionMostrarOcultarEditor.setChecked(True)
         self.accionMostrarOcultarInput.setChecked(False)
+
+        self.items_toolbar = {
+            "acercar": self.accionAcercar,
+            "alejar": self.accionAlejar
+            }
 
     def pantalla_completa(self):
         """ Muestra en pantalla completa. """
