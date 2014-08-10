@@ -192,7 +192,7 @@ class EjecutarWidget(QWidget):
             self.pro = Popen(bash, stdout=PIPE, stderr=PIPE, shell=True)
             #stdout, stderr = self.pro.communicate()
         else:
-            Popen(direc + '/' + self.ejecutable,
+            self.pro = Popen(direc + '/' + self.ejecutable,
                 creationflags=CREATE_NEW_CONSOLE)
 
     def terminar_proceso(self):
