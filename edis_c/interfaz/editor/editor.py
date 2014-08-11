@@ -17,8 +17,8 @@
 # You should have received a copy of the GNU General Public License
 # along with EDIS-C.  If not, see <http://www.gnu.org/licenses/>.
 
+# Módulos Python
 import re
-
 from tokenize import generate_tokens, TokenError
 import token as tkn
 #lint:disable
@@ -29,6 +29,7 @@ except:
     from io import StringIO
 #lint:enable
 
+# Módulos QtGui
 from PyQt4.QtGui import QPlainTextEdit
 from PyQt4.QtGui import QTextEdit
 from PyQt4.QtGui import QColor
@@ -40,6 +41,7 @@ from PyQt4.QtGui import QTextOption
 from PyQt4.QtGui import QTextDocument
 from PyQt4.QtGui import QCompleter
 
+# Módulos Qtcore
 from PyQt4.QtCore import Qt
 from PyQt4.QtCore import SIGNAL
 from PyQt4.QtCore import QRect
@@ -48,6 +50,7 @@ from PyQt4.QtCore import QString
 from PyQt4.Qt import QVariant
 from PyQt4.Qt import QTextFormat
 
+# Módulos EDIS
 from edis_c import recursos
 from edis_c.nucleo import configuraciones
 from edis_c.interfaz import tabitem

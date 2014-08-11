@@ -16,11 +16,14 @@
 # You should have received a copy of the GNU General Public License
 # along with EDIS-C.  If not, see <http://www.gnu.org/licenses/>.
 
+# Módulos Python
 import os
 
+# Módulos QtCore
 from PyQt4.QtCore import QObject
-from PyQt4.QtCore import SIGNAL
+#from PyQt4.QtCore import SIGNAL
 
+# Módulos EDIS
 from edis_c import recursos
 from edis_c.nucleo import configuraciones
 from edis_c.interfaz.widgets.creador_widget import crear_accion

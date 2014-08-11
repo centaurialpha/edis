@@ -16,6 +16,7 @@
 # You should have received a copy of the GNU General Public License
 # along with EDIS-C.  If not, see <http://www.gnu.org/licenses/>.
 
+# Módulos QtGui
 from PyQt4.QtGui import QWidget
 from PyQt4.QtGui import QPushButton
 from PyQt4.QtGui import QStackedWidget
@@ -32,8 +33,10 @@ from PyQt4.QtGui import QTableWidgetItem
 from PyQt4.QtGui import QAbstractItemView
 from PyQt4.QtGui import QHeaderView
 
+# Módulos QtCore
 from PyQt4.QtCore import Qt
 
+# Módulos EDIS
 from edis_c.interfaz.contenedor_secundario import salida_widget
 from edis_c import recursos
 

@@ -28,6 +28,7 @@ from PyQt4.QtCore import Qt
 
 
 class WidgetCentral(QWidget):
+    """ Clase contenedora de los widgets. """
 
     def __init__(self, parent=None):
         QWidget.__init__(self, parent)
@@ -42,10 +43,12 @@ class WidgetCentral(QWidget):
         layout_horizontal.addLayout(self.layout)
 
     def agregar_contenedor_central(self, contenedor):
+        """ Agrega widget principal. """
         self.contenedor_principal = contenedor
         self.split_principal.insertWidget(0, contenedor)
 
     def agregar_buscador(self, buscador):
+        """ Agrega widget de búsqueda. """
         self.buscador = buscador
         self.buscador.hide()
         self.layout.addWidget(buscador)
@@ -56,6 +59,7 @@ class WidgetCentral(QWidget):
         self.layout.addWidget(buscador)
 
     def agregar_contenedor_bottom(self, contenedor):
+        """ Agrega widget de la salida del compilador. """
         self.contenedor_bottom = contenedor
         self.contenedor_bottom.hide()
         self.split_principal.insertWidget(1, contenedor)

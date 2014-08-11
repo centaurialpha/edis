@@ -18,9 +18,11 @@
 
 """ Preferencias """
 
+# Módulos Python
 #import os
 #import copy
 
+# Módulos QtGui
 #from PyQt4.QtGui import QWidget
 #from PyQt4.QtGui import QListWidget
 #from PyQt4.QtGui import QStackedWidget
@@ -38,6 +40,7 @@ from PyQt4.QtCore import QSize
 from PyQt4.QtCore import Qt
 #from PyQt4.QtCore import QSettings
 
+# Módulos EDIS
 #from edis_c import recursos
 #from edis_c.nucleo import configuraciones
 #from edis_c.interfaz.contenedor_principal import contenedor_principal

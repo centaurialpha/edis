@@ -59,6 +59,11 @@ class TabCentral(QTabWidget):
             self.cerrar_excepto_actual)
 
     def agregar_tab(self, widget, icono, titulo):
+        """ Agrega una pestaña
+        @widget: tipo de widget (generalmente se obtiene un QPlainTextEdit)
+        @icono: ícono para la pestaña.
+        @titulo: texto de la pestaña.
+        """
         tab = self.addTab(widget, QIcon(icono), titulo)
         self.setCurrentIndex(tab)
         widget.setFocus()
@@ -85,6 +90,8 @@ class TabCentral(QTabWidget):
                 self.removeTab(1)
 
     def tab_es_modificado(self, v):
+        """ @v: valor booleano. """
+
         e = self.currentWidget()
         if isinstance(e, editor.Editor) and self.no_esta_abierto and v:
             e.texto_modificado = True
@@ -92,6 +99,7 @@ class TabCentral(QTabWidget):
                 QColor(Qt.red))
 
     def tab_guardado(self, e):
+        """ @e: valor booleano. """
         indice = self.indexOf(e)
         self.tabBar().setTabTextColor(indice, QColor(70, 70, 70))
 
@@ -145,6 +153,8 @@ class TabCentral(QTabWidget):
             self.emit(SIGNAL("allTabsClosed()"))
 
     def removeTab(self, indice):
+        """ Reimplementación del método removeTab de QTabWidget. """
+
         if indice != -1:
             self.setCurrentIndex(indice)
             w = self.currentWidget()
@@ -179,7 +189,7 @@ class TabCentral(QTabWidget):
 
 
 class BotonTab(QToolButton):
-    """ Botón personalizado """
+    """ Botón personalizado colocado a la izquierda del QTabWidget. """
 
     def __init__(self):
         super(BotonTab, self).__init__()

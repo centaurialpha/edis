@@ -21,11 +21,17 @@
 menu acerca de
 
 """
+
+# Módulos Python
 import webbrowser
 
+# Módulos QtGui
 from PyQt4.QtGui import QMessageBox
+
+# Módulos QtCore
 from PyQt4.QtCore import QObject
 
+# Módulos EDIS
 import edis_c
 from edis_c import recursos
 #from edis_c.interfaz.widgets import estilo

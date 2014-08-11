@@ -45,6 +45,7 @@ def _Distribuidor(*args, **kw):
 class Distribuidor(QObject):
     """ Esta clase puede acceder a todos los contenedores,
         distribuyendo las acciones de los widgets. """
+
     _TUX = configuraciones.LINUX
 
     def __init__(self, edis):
@@ -53,6 +54,10 @@ class Distribuidor(QObject):
         self.edis = edis
 
     def imprimir_documento(self):
+        """ Éste método da una previsualización del documento con la
+        de imprimirlo.
+        """
+
         Weditor = self.edis.contenedor_principal.devolver_editor_actual()
         if Weditor is not None:
             nombre = 'Sin_nombre.pdf'
@@ -70,6 +75,10 @@ class Distribuidor(QObject):
             vista.exec_()
 
     def insertar_include(self):
+        """ Llama a una clase encargada de mostrar un diálogo para insertar
+        un include en el código.
+        """
+
         Weditor = self.edis.contenedor_principal.devolver_editor_actual()
         if Weditor is not None:
             dialogo = dialogo_insertar_include.DialogoInsertarInclude(Weditor,
@@ -77,6 +86,10 @@ class Distribuidor(QObject):
             dialogo.show()
 
     def insertar_macro(self):
+        """ Llama a una clase encargada de mostrar un diálogo para insertar
+        una macro.
+        """
+
         Weditor = self.edis.contenedor_principal.devolver_editor_actual()
         if Weditor is not None:
             dialogo = dialogo_insertar_macro.DialogoInsertarMacro(Weditor,
@@ -84,12 +97,14 @@ class Distribuidor(QObject):
             dialogo.show()
 
     def estadisticas_de_archivo(self):
+
         Weditor = self.edis.contenedor_principal.devolver_editor_actual()
         if Weditor is not None:
             pass
             #FIXME:
 
     def exportar_como_pdf(self):
+        """ Exporta el documento a formato .PDF. """
         Weditor = self.edis.contenedor_principal.devolver_editor_actual()
         if Weditor is not None:
             nombre = QFileDialog.getSaveFileName(Weditor,
@@ -105,9 +120,17 @@ class Distribuidor(QObject):
         #FIXME: Mover a un helper
 
     def recargar_barra_de_herramientas(self):
+        """ Llama al método cargar_toolbar para recargar la barra de
+        herramientas.
+        """
+
         self.edis.cargar_toolbar()
 
     def compilar(self):
+        """ Guarda el archivo y lo manda a otro método con el path
+        como argumento. Si el sistema es NT se reemplaza / por \ en el path.
+        """
+
         Weditor = self.edis.contenedor_principal.devolver_editor_actual()
         if Weditor is not None:
             if not self._TUX:
@@ -116,7 +139,11 @@ class Distribuidor(QObject):
             self.edis.contenedor_secundario.compilar(Weditor.ID)
 
     def ejecutar(self):
+        """ Llama al método de ejecutar del contenedor secundario. """
+
         self.edis.contenedor_secundario.ejecutar()
 
     def frenar(self):
+        """ Llama al método de terminar el proceso. """
+
         self.edis.contenedor_secundario.frenar()

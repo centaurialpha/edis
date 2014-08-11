@@ -16,8 +16,10 @@
 # You should have received a copy of the GNU General Public License
 # along with EDIS-C.  If not, see <http://www.gnu.org/licenses/>.
 
+# Módulos Python
 import webbrowser
 
+# Módulos QtGui
 from PyQt4.QtGui import QDialog
 from PyQt4.QtGui import QVBoxLayout
 from PyQt4.QtGui import QLabel
@@ -26,13 +28,13 @@ from PyQt4.QtGui import QTabWidget
 from PyQt4.QtGui import QWidget
 from PyQt4.QtGui import QTextBrowser
 
+# Módulos QtCore
 from PyQt4.QtCore import QSize
 from PyQt4.QtCore import Qt
 from PyQt4.QtCore import QString
 
-
+# Módulos EDIS
 import edis_c
-
 from edis_c import recursos
 from edis_c.nucleo import configuraciones
 
@@ -86,7 +88,7 @@ class AcercaDeSide(QWidget):
             so_label = QLabel(
                 self.trUtf8("<h5><i>(En Windows</i>)</h5>"))
         layout_vertical.addWidget(titulo_label)
-        logo = QPixmap(recursos.ICONOS['seiryu_icono'])
+        logo = QPixmap(recursos.ICONOS['icono'])
         self.logo_label = QLabel()
         self.logo_label.setPixmap(logo)
         self.logo_label.setAlignment(Qt.AlignCenter)

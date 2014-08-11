@@ -16,9 +16,13 @@
 # You should have received a copy of the GNU General Public License
 # along with EDIS-C.  If not, see <http://www.gnu.org/licenses/>.
 
+# Módulos QtGui
 from PyQt4.QtGui import QMessageBox
+
+# Módulos QtCore
 from PyQt4.QtCore import QObject
 
+# Módulos EDIS
 from edis_c.interfaz.editor import acciones_
 from edis_c.interfaz.editor import editor
 from edis_c import recursos

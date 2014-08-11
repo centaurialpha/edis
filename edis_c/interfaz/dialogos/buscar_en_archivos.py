@@ -15,6 +15,7 @@
 # You should have received a copy of the GNU General Public License
 # along with EDIS-C.  If not, see <http://www.gnu.org/licenses/>.
 
+# Módulos QtGui
 from PyQt4.QtGui import QWidget
 from PyQt4.QtGui import QHBoxLayout
 from PyQt4.QtGui import QPushButton
@@ -33,6 +34,7 @@ from PyQt4.QtGui import QTableWidgetItem
 from PyQt4.QtGui import QShortcut
 from PyQt4.QtGui import QKeySequence
 
+# Módulos QtCore
 from PyQt4.QtCore import QTextStream
 from PyQt4.QtCore import QDir
 from PyQt4.QtCore import QUrl
@@ -42,6 +44,7 @@ from PyQt4.QtCore import QFileInfo
 from PyQt4.QtCore import Qt
 from PyQt4.QtCore import SIGNAL
 
+# Módulos EDIS
 from edis_c.interfaz.contenedor_principal import contenedor_principal
 
 _Instancia = None

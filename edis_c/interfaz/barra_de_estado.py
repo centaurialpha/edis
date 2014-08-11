@@ -81,6 +81,10 @@ class _BarraDeEstado(QStatusBar):
         #self.addWidget(self.widget_)
 
     def showMessage(self, mensaje, tiempo):
+        """ @mensaje: texto QString que será mostrado en la barra de estado.
+            @tiempo: tiempo en milisegundos que se mostrará el mensaje.
+        """
+
         self.linea_columna.hide()
         QStatusBar.showMessage(self, mensaje, tiempo)
 
@@ -109,6 +113,10 @@ class EstadoLineaColumna(QWidget):
         layoutV.addLayout(layoutH)
 
     def actualizar_linea_columna(self, linea, total, columna):
+        """ Actualiza la barra de estado con linea, columna
+        y total de líneas.
+        """
+
         self.posicion_cursor.setText(
             self.trUtf8(self.texto % (linea, total, columna)))
 
@@ -134,10 +142,16 @@ class UserHost(QWidget):
         self.obtener_texto()
 
     def obtener_texto(self):
+        """ Obtiene el nombre de usuario y máquina del sistema.  """
+
         texto = acciones_.obtener_user_hostname()
         self.texto_user_host(texto[0], texto[1])
 
     def texto_user_host(self, username, hostname):
+        """ Coloca el nombre de usuario y máquina obtenido por el método
+        obtener_texto.
+        """
+
         self.label.setText(self.trUtf8(self.user_host % (username, hostname)))
 
 

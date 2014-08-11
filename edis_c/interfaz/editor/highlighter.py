@@ -17,16 +17,18 @@
 # You should have received a copy of the GNU General Public License
 # along with EDIS-C.  If not, see <http://www.gnu.org/licenses/>.
 
+# Módulos QtGui
 from PyQt4.QtGui import QSyntaxHighlighter
 from PyQt4.QtGui import QFont
 from PyQt4.QtGui import QColor
 from PyQt4.QtGui import QBrush
 
+# Módulos QtCore
 from PyQt4.Qt import QTextCharFormat
-
 from PyQt4.QtCore import Qt
 from PyQt4.QtCore import QRegExp
 
+# Módulos EDIS
 from edis_c.interfaz.editor.sintaxis import palabras_reservadas
 from edis_c import recursos
 

@@ -41,7 +41,6 @@ from PyQt4.QtCore import QSettings
 import edis_c
 from edis_c import recursos
 from edis_c.nucleo import configuraciones
-
 from edis_c.interfaz.menu import menu_archivo
 from edis_c.interfaz.menu import menu_editar
 from edis_c.interfaz.menu import menu_ver
@@ -49,7 +48,6 @@ from edis_c.interfaz.menu import menu_buscar
 from edis_c.interfaz.menu import menu_herramientas
 from edis_c.interfaz.menu import menu_ejecucion
 from edis_c.interfaz.menu import menu_acerca_de
-
 from edis_c.interfaz import widget_central
 from edis_c.interfaz import barra_de_estado
 from edis_c.interfaz.distribuidor import Distribuidor

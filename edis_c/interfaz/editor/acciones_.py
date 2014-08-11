@@ -17,18 +17,21 @@
 # You should have received a copy of the GNU General Public License
 # along with EDIS-C.  If not, see <http://www.gnu.org/licenses/>.
 
+# Módulos Python
 import re
 import getpass
 import socket
 #from datetime import date
 import datetime
 
+# Módulos QtGui
 from PyQt4.QtGui import QTextCursor
 from PyQt4.QtGui import QInputDialog
 from PyQt4.QtGui import QPrinter
 from PyQt4.QtGui import QPrintPreviewDialog
 from PyQt4.QtGui import QApplication
 
+# Módulos EDIS
 from edis_c.nucleo import configuraciones
 
 comentario_inicio = '/*'

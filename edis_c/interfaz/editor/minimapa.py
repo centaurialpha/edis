@@ -19,16 +19,19 @@
 
 """ Minimapa """
 
+# Módulos QtGui
 from PyQt4.QtGui import QPlainTextEdit
 from PyQt4.QtGui import QTextOption
 from PyQt4.QtGui import QFrame
 from PyQt4.QtGui import QFontMetrics
 from PyQt4.QtGui import QGraphicsOpacityEffect
 
+# Módulos QtCore
 from PyQt4.QtCore import SIGNAL
 from PyQt4.QtCore import Qt
 from PyQt4.QtCore import QPropertyAnimation
 
+# Módulos EDIS
 from edis_c import recursos
 from edis_c.nucleo import configuraciones
 

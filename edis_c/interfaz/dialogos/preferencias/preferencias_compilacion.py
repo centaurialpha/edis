@@ -15,6 +15,7 @@
 # You should have received a copy of the GNU General Public License
 # along with EDIS-C.  If not, see <http://www.gnu.org/licenses/>.
 
+# Módulos QtGui
 from PyQt4.QtGui import QWidget
 from PyQt4.QtGui import QGroupBox
 from PyQt4.QtGui import QVBoxLayout
@@ -27,8 +28,10 @@ from PyQt4.QtGui import QComboBox
 from PyQt4.QtGui import QFileDialog
 from PyQt4.QtGui import QTabWidget
 
+# Módulos QtCore
 from PyQt4.QtCore import QSettings
 
+# Módulos EDIS
 from edis_c.nucleo import configuraciones
 from edis_c.nucleo import comprobar_terminales
 

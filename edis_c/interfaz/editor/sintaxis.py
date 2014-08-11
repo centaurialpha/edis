@@ -56,4 +56,5 @@ palabras_reservadas = (
     "unsigned",
     "void",
     "volatile",
-    "while")
+    "while"
+    )

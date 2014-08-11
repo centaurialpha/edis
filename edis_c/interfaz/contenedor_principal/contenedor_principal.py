@@ -17,8 +17,11 @@
 # You should have received a copy of the GNU General Public License
 # along with EDIS-C.  If not, see <http://www.gnu.org/licenses/>.
 
+# Módulos Python
 import os
 import re
+
+# Módulos QtGui
 from PyQt4.QtGui import QSplitter
 from PyQt4.QtGui import QFileDialog
 from PyQt4.QtGui import QPushButton
@@ -30,11 +33,13 @@ from PyQt4.QtGui import QKeySequence
 from PyQt4.QtGui import QShortcut
 from PyQt4.QtGui import QIcon
 
+# Módulos QtCore
 from PyQt4.QtCore import QDir
 from PyQt4.QtCore import QFile
 from PyQt4.QtCore import SIGNAL
 from PyQt4.QtCore import Qt
 
+# Módulos EDIS
 from edis_c.nucleo import manejador_de_archivo
 from edis_c import recursos
 from edis_c.interfaz import tab_widget
@@ -55,6 +60,7 @@ def ContenedorMain(*args, **kw):
 
 
 class __ContenedorMain(QSplitter):
+    """ Splitter principal que contiene el editor. """
 
     def __init__(self, parent=None):
         QSplitter.__init__(self, parent)
@@ -83,6 +89,11 @@ class __ContenedorMain(QSplitter):
             atajo.activated.connect(self.cambiar_indice_de_tab)
 
     def agregar_editor(self, nombre_archivo=""):
+        """ Agrega un QPlainTextEdit
+            @nombre_archivo: texto QString para el nombre del documento.
+            por defecto False.
+        """
+
         editorWidget = editor.crear_editor(nombre_archivo=nombre_archivo)
         if not nombre_archivo:
             nombre_tab = "Nuevo archivo"
@@ -125,15 +136,27 @@ class __ContenedorMain(QSplitter):
         return self.tab_principal.check_tabs_sin_guardar()
 
     def devolver_archivos_sin_guardar(self):
+        """ Retorna una lista con archivos sin guardar. """
+
         return self.tab_principal.devolver_archivos_sin_guardar()
 
     def agregar_tab(self, widget, icono, nombre_tab, nAbierta=True):
+        """ Se llama al método agregar_tab de la clase TabCentral
+        retorna QTabWidget.
+        """
+
         return self.tab_actual.agregar_tab(widget, icono, nombre_tab)
 
     def devolver_widget_actual(self):
+        """ Retorna QTabWidget actual. """
+
         return self.tab_actual.currentWidget()
 
     def devolver_editor_actual(self):
+        """ Si el widget es una instancia de QPlainTextEdit se lo retorna,
+        de lo contrario se retorna None.
+        """
+
         e = self.tab_actual.currentWidget()
         if isinstance(e, editor.Editor):
             return e

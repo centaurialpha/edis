@@ -17,9 +17,11 @@
 # You should have received a copy of the GNU General Public License
 # along with EDIS-C.  If not, see <http://www.gnu.org/licenses/>.
 
+# Módulos Python
 import re
 import math
 
+# Módulos QtGui
 from PyQt4.QtGui import QWidget
 from PyQt4.QtGui import QPainter
 from PyQt4.QtGui import QFontMetrics
@@ -27,9 +29,11 @@ from PyQt4.QtGui import QColor
 from PyQt4.QtGui import QPolygonF
 from PyQt4.QtGui import QPixmap
 
+# Módulos QtCore
 from PyQt4.QtCore import QPointF
 from PyQt4.QtCore import Qt
 
+# Módulos EDIS
 from edis_c import recursos
 from edis_c.interfaz.editor import acciones_
 

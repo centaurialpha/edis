@@ -3,15 +3,18 @@
 # Basado en Python Syntax highlighting de:
 # https://wiki.python.org/moin/PyQt/Python%20syntax%20highlighting
 
+# Módulos QtGui
 from PyQt4.QtGui import QColor
 from PyQt4.QtGui import QTextCharFormat
 from PyQt4.QtGui import QFont
 from PyQt4.QtGui import QSyntaxHighlighter
 from PyQt4.QtGui import QBrush
 
+# Módulos QtCore
 from PyQt4.QtCore import QRegExp
 from PyQt4.QtCore import Qt
 
+# Módulos EDIS
 from edis_c import recursos
 from edis_c.interfaz.editor import sintaxis
 
