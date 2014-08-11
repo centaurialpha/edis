@@ -27,6 +27,8 @@ from PyQt4.QtGui import QComboBox
 from PyQt4.QtGui import QFileDialog
 from PyQt4.QtGui import QTabWidget
 
+from PyQt4.QtCore import QSettings
+
 from edis_c.nucleo import configuraciones
 from edis_c.nucleo import comprobar_terminales
 
@@ -99,7 +101,14 @@ class ConfiguracionCompilacion(QWidget):
         layoutV.addWidget(grupoCompilacion)
 
     def guardar(self):
-        pass
+        qconfig = QSettings()
+        qconfig.beginGroup('configuraciones')
+        parametros = ''
+        if self.checkEnsamblado.isChecked():
+            parametros += ' -S'
+        configuraciones.PARAMETROS = parametros
+        qconfig.setValue('compilacion', parametros)
+        qconfig.endGroup()
 
 
 class ConfiguracionEjecucion(QWidget):

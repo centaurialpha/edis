@@ -73,6 +73,8 @@ class __ContenedorMain(QSplitter):
             self.guardar_archivo)
         self.connect(self.tab_principal, SIGNAL("currentChanged(int)"),
             self.tab_actual_cambiado)
+        self.tab_principal.boton.clicked.connect(
+            lambda: self.agregar_editor(''))
 
         tecla = Qt.Key_1
         for i in range(10):
@@ -96,6 +98,7 @@ class __ContenedorMain(QSplitter):
                 icono = False
 
         indice = self.agregar_tab(editorWidget, icono, nombre_tab)
+        print indice
         self.tab_actual.setTabToolTip(indice,
             QDir.toNativeSeparators(nombre_archivo))
         self.connect(editorWidget, SIGNAL("modificationChanged(bool)"),
