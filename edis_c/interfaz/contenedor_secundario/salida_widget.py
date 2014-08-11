@@ -175,7 +175,8 @@ class EjecutarWidget(QWidget):
             '#!/bin/sh',
             '%s',
             'echo \n\n\n',
-            'echo presione Enter',
+            'echo Programa terminado con salida: $?',
+            'echo Presione Enter para salir.',
             'read I']
         BASH = [
             '#!/bin/sh',
