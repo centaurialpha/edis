@@ -198,7 +198,8 @@ class EjecutarWidget(QWidget):
 
     def terminar_proceso(self):
         """ Termina el proceso """
-
+        if not self.pro:
+            return
         self.pro.terminate()
 
 
