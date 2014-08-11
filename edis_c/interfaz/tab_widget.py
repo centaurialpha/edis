@@ -24,12 +24,16 @@ from PyQt4.QtGui import QColor
 from PyQt4.QtGui import QMessageBox
 from PyQt4.QtGui import QIcon
 from PyQt4.QtGui import QToolButton
+from PyQt4.QtGui import QMenu
+from PyQt4.QtGui import QAction
+#from PyQt4.QtGui import QSizePolicy
 
 # Módulos QtCore
 from PyQt4.QtCore import SIGNAL
 from PyQt4.QtCore import Qt
 
 # Módulos EDIS
+from edis_c import recursos
 from edis_c.interfaz.editor import editor
 
 
@@ -43,17 +47,22 @@ class TabCentral(QTabWidget):
         self.setAcceptDrops(True)
         self.parent = parent
         self.no_esta_abierto = True
+        self.boton = BotonTab()
+        self.setCornerWidget(self.boton, Qt.TopLeftCorner)
+
+        # Conexión
         self.connect(self, SIGNAL("tabCloseRequested(int)"),
             self.removeTab)
-        self.boton = QToolButton(self)
-        self.boton.setText('+')
-        self.setCornerWidget(self.boton)
+        self.boton.accionCerrar.triggered.connect(self.cerrar_tab)
+        self.boton.accionCerrarTodo.triggered.connect(self.cerrar_todo)
+        self.boton.accionCerrarExcepto.triggered.connect(
+            self.cerrar_excepto_actual)
 
     def agregar_tab(self, widget, icono, titulo):
-        insertar = self.addTab(widget, QIcon(icono), titulo)
-        self.setCurrentIndex(insertar)
+        tab = self.addTab(widget, QIcon(icono), titulo)
+        self.setCurrentIndex(tab)
         widget.setFocus()
-        return insertar
+        return tab
 
     def cerrar_tab(self):
         """ Cierra la pestaña actual. """
@@ -167,3 +176,31 @@ class TabCentral(QTabWidget):
                 self.emit(SIGNAL("allTabsClosed()"))
             del w
             self.actualizar_widget_actual()
+
+
+class BotonTab(QToolButton):
+    """ Botón personalizado """
+
+    def __init__(self):
+        super(BotonTab, self).__init__()
+        self.setAutoRaise(True)
+        self.setIcon(QIcon(recursos.ICONOS['tab']))
+        self.setPopupMode(2)
+
+        self.crear_menu()
+
+    def crear_menu(self):
+        """ Menú """
+
+        menu = QMenu(self)
+        self.accionCrear = QAction(self.trUtf8("Nueva pestaña"), self)
+        self.accionCerrar = QAction(self.trUtf8("Cerrar"), self)
+        self.accionCerrarTodo = QAction(self.trUtf8("Cerrar todo"), self)
+        self.accionCerrarExcepto = QAction(
+            self.trUtf8("Cerrar los demás"), self)
+        menu.addAction(self.accionCrear)
+        menu.addSeparator()
+        menu.addAction(self.accionCerrar)
+        menu.addAction(self.accionCerrarTodo)
+        menu.addAction(self.accionCerrarExcepto)
+        self.setMenu(menu)

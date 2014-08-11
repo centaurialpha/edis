@@ -85,7 +85,7 @@ ICONOS = {
     "buscar": os.path.join(PATH, "imagenes", "buscar.png"),
     "siguiente": os.path.join(PATH, "imagenes", "siguiente.png"),
     "anterior": os.path.join(PATH, "imagenes", "anterior.png"),
-    "icono-tab": os.path.join(PATH, "imagenes", "cambio-tab.svg"),
+    "tab": os.path.join(PATH, "imagenes", "tab.png"),
     "fullscreen": os.path.join(PATH, "imagenes", "pantalla_completa.png"),
     "acercar": os.path.join(PATH, "imagenes", "acercar.png"),
     "alejar": os.path.join(PATH, "imagenes", "alejar.png"),
