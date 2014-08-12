@@ -77,9 +77,9 @@ class CaracteristicasEditor(QWidget):
         super(CaracteristicasEditor, self).__init__()
         layoutV = QVBoxLayout(self)
 
-        grupoCaracteristicas = QGroupBox(self.trUtf8("Características"))
-        grupoMiniMapa = QGroupBox(self.trUtf8("Minimapa"))
-        grupoTipoDeLetra = QGroupBox(self.trUtf8("Tipo de letra"))
+        grupoCaracteristicas = QGroupBox(self.trUtf8("Características:"))
+        grupoMiniMapa = QGroupBox(self.trUtf8("Minimapa:"))
+        grupoTipoDeLetra = QGroupBox(self.trUtf8("Tipo de letra:"))
         grupoAutocompletado = QGroupBox(self.trUtf8("Autocompletado:"))
 
         grillaCaracteristicas = QGridLayout(grupoCaracteristicas)
@@ -221,7 +221,7 @@ class CaracteristicasEditor(QWidget):
         layoutV.addWidget(grupoTipoDeLetra)
         layoutV.addWidget(grupoAutocompletado)
         layoutV.addItem(QSpacerItem(0, 10, QSizePolicy.Expanding,
-        QSizePolicy.Expanding))
+            QSizePolicy.Expanding))
 
         # Conexión
         self.botonFuente.clicked.connect(self.cargar_fuente)

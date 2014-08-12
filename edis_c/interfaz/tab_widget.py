@@ -27,6 +27,7 @@ from PyQt4.QtGui import QToolButton
 from PyQt4.QtGui import QMenu
 from PyQt4.QtGui import QAction
 #from PyQt4.QtGui import QSizePolicy
+#from PyQt4.QtGui import QSpacerItem
 
 # Módulos QtCore
 from PyQt4.QtCore import SIGNAL
@@ -41,7 +42,6 @@ class TabCentral(QTabWidget):
 
     def __init__(self, parent):
         QTabWidget.__init__(self, parent)
-
         self.setTabsClosable(True)
         self.setMovable(True)
         self.setAcceptDrops(True)
@@ -49,8 +49,6 @@ class TabCentral(QTabWidget):
         self.no_esta_abierto = True
         self.boton = BotonTab()
         self.setCornerWidget(self.boton, Qt.TopLeftCorner)
-
-        # Conexión
         self.connect(self, SIGNAL("tabCloseRequested(int)"),
             self.removeTab)
         self.boton.accionCerrar.triggered.connect(self.cerrar_tab)
@@ -196,7 +194,6 @@ class BotonTab(QToolButton):
         self.setAutoRaise(True)
         self.setIcon(QIcon(recursos.ICONOS['tab']))
         self.setPopupMode(2)
-
         self.crear_menu()
 
     def crear_menu(self):

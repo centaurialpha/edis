@@ -61,6 +61,7 @@ class DialogoConfiguracion(QDialog):
         self.setMaximumSize(QSize(0, 0))
 
         layoutV = QVBoxLayout(self)
+        layoutV.setContentsMargins(0, 0, 0, 0)
         self.tabs = Tab()
         self.general = preferencias_general.TabGeneral(self)
         self.editor = preferencias_editor.TabEditor()

@@ -52,8 +52,8 @@ class TabGUI(QWidget):
         self.barra_herramientas = configuraciones.BARRA_HERRAMIENTAS_ITEMS
 
         # Grupos
-        grupoToolbar = QGroupBox(self.trUtf8("Editar Barra de Herramientas"))
-        grupoEstilo = QGroupBox(self.trUtf8("Estilo de Widgets"))
+        grupoToolbar = QGroupBox(self.trUtf8("Editar Barra de Herramientas:"))
+        grupoEstilo = QGroupBox(self.trUtf8("Estilo de Widgets:"))
 
         layoutVT = QVBoxLayout(grupoToolbar)
         layoutVE = QVBoxLayout(grupoEstilo)

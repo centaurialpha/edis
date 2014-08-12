@@ -23,8 +23,8 @@ from PyQt4.QtGui import QHBoxLayout
 from PyQt4.QtGui import QCheckBox
 from PyQt4.QtGui import QComboBox
 #from PyQt4.QtGui import QLineEdit
-#from PyQt4.QtGui import QLabel
-#from PyQt4.QtGui import QPushButton
+from PyQt4.QtGui import QSizePolicy
+from PyQt4.QtGui import QSpacerItem
 from PyQt4.QtGui import QFileDialog
 from PyQt4.QtGui import QTabWidget
 
@@ -65,7 +65,7 @@ class ConfiguracionCompilacion(QWidget):
         layoutV = QVBoxLayout(self)
 
         grupoCompilacion = QGroupBox(
-            self.trUtf8("Opciones de compilación"))
+            self.trUtf8("Opciones de compilación:"))
 
         grilla = QVBoxLayout(grupoCompilacion)
 
@@ -74,12 +74,15 @@ class ConfiguracionCompilacion(QWidget):
             self.trUtf8("Considerar los warnings como error."))
         self.checkOptimizacion = QCheckBox(self.trUtf8("Optimización:"))
         self.comboOptimizacion = QComboBox()
+        self.comboOptimizacion.setEnabled(False)
         self.comboOptimizacion.addItems(['01', 'O2', 'O3', 'Os', 'Og'])
         self.checkEnsamblado = QCheckBox(
             self.trUtf8("Generar código Ensamblador."))
         self.checkEnsamblado.setToolTip(
             self.trUtf8("Se genera un código en lenguaje ensamblador "
             "propio del procesador."))
+        self.checkOptimizacion.toggled.connect(
+            self.comboOptimizacion.setEnabled)
 
         grilla.addWidget(self.checkWerror)
         layoutH = QHBoxLayout()
@@ -102,6 +105,8 @@ class ConfiguracionCompilacion(QWidget):
             self.checkEnsamblado.setChecked(True)
 
         layoutV.addWidget(grupoCompilacion)
+        layoutV.addItem(QSpacerItem(10, 0, QSizePolicy.Expanding,
+            QSizePolicy.Expanding))
 
     def guardar(self):
         qconfig = QSettings()
@@ -122,7 +127,7 @@ class ConfiguracionEjecucion(QWidget):
         layoutV = QVBoxLayout(self)
 
         grupoEjecucion = QGroupBox(
-            self.trUtf8("Opciones de ejecución"))
+            self.trUtf8("Opciones de ejecución:"))
 
         grillaE = QVBoxLayout(grupoEjecucion)
 
@@ -142,10 +147,12 @@ class ConfiguracionEjecucion(QWidget):
         grillaE.addWidget(self.checkTiempo)
 
         layoutV.addWidget(grupoEjecucion)
+        layoutV.addItem(QSpacerItem(0, 10, QSizePolicy.Expanding,
+            QSizePolicy.Expanding))
 
     def cargar_terminal(self):
         path = QFileDialog.getOpenFileName(self,
-            self.trUtf8("Seleccione la terminal"))
+            self.trUtf8("Seleccione la terminal:"))
         if path:
             self.path_terminal.setText(path)
 

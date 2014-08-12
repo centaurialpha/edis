@@ -28,6 +28,8 @@ from PyQt4.QtGui import QComboBox
 from PyQt4.QtGui import QPushButton
 from PyQt4.QtGui import QTabWidget
 from PyQt4.QtGui import QMessageBox
+from PyQt4.QtGui import QSpacerItem
+from PyQt4.QtGui import QSizePolicy
 
 # Módulos QtCore
 from PyQt4.QtCore import Qt
@@ -71,7 +73,7 @@ class ConfiguracionGeneral(QWidget):
         grupoAlCerrar = QGroupBox(self.trUtf8("Al cerrar:"))
         grupoIdioma = QGroupBox(self.trUtf8("Idioma:"))
         grupoReestablecer = QGroupBox(
-            self.trUtf8("Reestablecer configuraciones de EDIS"))
+            self.trUtf8("Reestablecer configuraciones de EDIS:"))
 
         # Al iniciar EDIS
         # Check página de inicio
@@ -115,7 +117,8 @@ class ConfiguracionGeneral(QWidget):
         layoutV.addWidget(grupoAlCerrar)
         layoutV.addWidget(grupoIdioma)
         layoutV.addWidget(grupoReestablecer)
-
+        layoutV.addItem(QSpacerItem(0, 10, QSizePolicy.Expanding,
+            QSizePolicy.Expanding))
         self.cargar_idiomas()
 
         # Conexión
