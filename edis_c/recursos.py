@@ -101,7 +101,9 @@ ICONOS = {
     "insertar-macro": os.path.join(PATH, "imagenes", "macro.png"),
     "acerca-qt": os.path.join(PATH, "imagenes", "acercaDeQt.png"),
     "acerca-edis": os.path.join(PATH, "imagenes", "acercaDe.png"),
-    "bug": os.path.join(PATH, "imagenes", "bug.png")
+    "bug": os.path.join(PATH, "imagenes", "bug.png"),
+    "ir-linea": os.path.join(PATH, "imagenes", "ir_linea.png"),
+    "buscar-tool": os.path.join(PATH, "imagenes", "buscar_tool.png")
     }
 
 # Estilos de color - Editor

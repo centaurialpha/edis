@@ -91,9 +91,8 @@ class __IDE(QMainWindow):
         # ToolBar
         self.toolbar = QToolBar(self)
         self.toolbar_busqueda = QToolBar(self)
-        self.toolbar_busqueda.addWidget(line_busqueda.LineBusqueda())
-        self.toolbar_busqueda.addSeparator()
-        self.toolbar_busqueda.addWidget(line_busqueda.LineLinea())
+        self.toolbar_busqueda.addWidget(line_busqueda.Widget())
+        self.toolbar_busqueda.setMovable(False)
         self.toolbar.setToolTip(self.trUtf8("Mantén presionado y mueve"))
 
         # Tamaño de íconos de barra de herramientas

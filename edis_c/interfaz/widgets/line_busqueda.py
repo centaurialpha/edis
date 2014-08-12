@@ -1,15 +1,50 @@
 #-*- coding: utf-8 -*-
 
-#from PyQt4.QtGui import QWidget
+# Módulos QtGui
 from PyQt4.QtGui import QHBoxLayout
-from PyQt4.QtCore import QSize
 from PyQt4.QtGui import QLineEdit
 from PyQt4.QtGui import QToolButton
+from PyQt4.QtGui import QWidget
+from PyQt4.QtGui import QSizePolicy
+from PyQt4.QtGui import QSpacerItem
+from PyQt4.QtGui import QIcon
 
+# Módulos QtCore
+from PyQt4.QtCore import QSize
 from PyQt4.QtCore import Qt
 
+# Módulos EDIS
+from edis_c import recursos
 from edis_c.interfaz.widgets import creador_widget
 from edis_c.interfaz.contenedor_principal import contenedor_principal
+
+
+class Widget(QWidget):
+
+    def __init__(self):
+        super(Widget, self).__init__()
+        hbox = QHBoxLayout(self)
+        hbox.setContentsMargins(0, 0, 0, 0)
+        self.linea_busqueda = LineBusqueda()
+        self.linea_linea = LineLinea()
+        boton_buscar = QToolButton()
+        boton_buscar.setAutoRaise(True)
+        boton_buscar.setIcon(QIcon(recursos.ICONOS['buscar-tool']))
+        boton_buscar_linea = QToolButton()
+        boton_buscar_linea.setAutoRaise(True)
+        boton_buscar_linea.setIcon(QIcon(recursos.ICONOS['ir-linea']))
+        hbox.addWidget(self.linea_busqueda)
+        hbox.addWidget(boton_buscar)
+        hbox.addWidget(self.linea_linea)
+        hbox.addWidget(boton_buscar_linea)
+        hbox.addItem(QSpacerItem(0, 10, QSizePolicy.Expanding,
+            QSizePolicy.Expanding))
+
+        self.setLayout(hbox)
+
+        # Conexión
+        boton_buscar.clicked.connect(self.linea_busqueda.buscar)
+        boton_buscar_linea.clicked.connect(self.linea_linea.buscar_linea)
 
 
 class LineBusqueda(QLineEdit):
@@ -19,6 +54,7 @@ class LineBusqueda(QLineEdit):
         self.setPlaceholderText(self.trUtf8("Búsqueda rápida!"))
         self.setMaximumSize(QSize(200, 29))
         self.boton = QToolButton(self)
+        self.boton.setAutoRaise(True)
         self.boton.setCursor(Qt.PointingHandCursor)
         self.boton.setFocusPolicy(Qt.NoFocus)
         self.boton.setIcon(
@@ -43,8 +79,7 @@ class LineLinea(QLineEdit):
     def __init__(self):
         super(LineLinea, self).__init__()
         self.setMaximumSize(QSize(100, 25))
-        self.setPlaceholderText(self.trUtf8("Línea"))
-        #self.setStyleSheet("")
+        self.setPlaceholderText(self.trUtf8("Saltar"))
         self.returnPressed.connect(self.buscar_linea)
 
     def buscar_linea(self):
