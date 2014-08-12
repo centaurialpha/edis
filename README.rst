@@ -13,7 +13,7 @@ EDIS-C | Entorno de Desarrollo Integrado Simple para C.
      
 **Versión actual:** 1.0-alpha *(por favor enviar reportes de cualquier bug, o sugerencia de característica desde el menú Acerca de/Reportar bugs).*
 
-.. image:: http://s11.postimg.org/eitnbtacj/Captura_de_pantalla_de_2014_08_08_12_28_48.png
+.. image:: http://s30.postimg.org/7p33x4zo1/muestra.png
 
 Características
 ---------------
