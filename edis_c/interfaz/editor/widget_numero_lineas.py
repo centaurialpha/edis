@@ -55,7 +55,7 @@ class NumeroDeLineaBar(QWidget):
         self.downArrowIcon = QPixmap()
         self.negrita = False
         self.bloques_plegados = []
-        self.pat = re.compile('(\s)*{|(\s)*#begin-fold:')
+        self.pat = re.compile('(\s)*#begin-fold:|(.)*{')
 
     def actualizar_area(self):
         linea_max = math.ceil(math.log10(self.editor.blockCount()))
@@ -171,7 +171,7 @@ class NumeroDeLineaBar(QWidget):
         font_metrics = QFontMetrics(self.editor.document().defaultFont())
         bloque_actual = self.editor.document().findBlock(
             self.editor.textCursor().position())
-        pattern = self.pat
+
         pintar = QPainter(self)
         fondo = QColor(recursos.NUEVO_TEMA.get('widget-num-lineas',
             recursos.TEMA_EDITOR['widget-num-linea']))
@@ -261,7 +261,7 @@ class NumeroDeLineaBar(QWidget):
             if posicion.y() > fin_pagina:
                 break
 
-            if pattern.match(unicode(bloque.text())) and bloque.isValid():
+            if self.pat.match(unicode(bloque.text())) and bloque.isValid():
                 if bloque.blockNumber() in self.bloques_plegados:
                     pintar.drawPixmap(area, round(posicion.y()),
                         self.rightArrowIcon)
