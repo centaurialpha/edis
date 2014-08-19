@@ -41,6 +41,7 @@ from PyQt4.QtCore import QSettings
 import edis_c
 from edis_c import recursos
 from edis_c.nucleo import configuraciones
+from edis_c.interfaz import actualizaciones
 from edis_c.interfaz.menu import menu_archivo
 from edis_c.interfaz.menu import menu_editar
 from edis_c.interfaz.menu import menu_ver
@@ -102,6 +103,9 @@ class __IDE(QMainWindow):
         self.toolbar.setToolButtonStyle(Qt.ToolButtonIconOnly)
         self.addToolBar(Qt.TopToolBarArea, self.toolbar)
         self.addToolBar(Qt.TopToolBarArea, self.toolbar_busqueda)
+
+        self.tray = actualizaciones.Actualizacion(self)
+        self.tray.show()
 
         self.noti = notificacion.Notificacion(self)
         # Barra de estado

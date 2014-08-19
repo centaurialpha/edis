@@ -38,6 +38,8 @@ __python__ = "https://www.python.org/"
 __qt__ = "https://qt.digia.com/"
 __pyqt__ = "http://www.riverbankcomputing.co.uk/software/pyqt/intro"
 __reportar_bug__ = "http://github.com/centaurialpha/edis/issues"
+__actualizar__ = \
+    "https://raw.githubusercontent.com/centaurialpha/edis/master/version"
 
 
 # Correr Interfáz

@@ -63,7 +63,7 @@ ICONOS = {
     "cerrar": os.path.join(PATH, "imagenes", "cerrarTab.png"),
     "salir": os.path.join(PATH, "imagenes", "cerrar.png"),
     "splash": os.path.join(PATH, "imagenes", "splash.png"),
-    "icono": os.path.join(PATH, "imagenes", "side-c.png"),
+    #"icono": os.path.join(PATH, "imagenes", "side-c.png"),
     # Logo dragón (originalmente verde by nessmasta) - modificado a azul
     "seiryu": os.path.join(PATH, "imagenes", "edis_seiryu.png"),
     "icono": os.path.join(PATH, "imagenes", "edis_c.ico"),
