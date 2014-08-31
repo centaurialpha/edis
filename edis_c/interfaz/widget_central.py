@@ -1,4 +1,4 @@
-#-*- coding: utf-8 -*-
+# -*- coding: utf-8 -*-
 
 # <Agrega el contenedor lateral, central y el output.>
 # This file is part of EDIS-C.

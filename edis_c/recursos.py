@@ -1,4 +1,4 @@
-#-*- coding: utf-8 -*-
+# -*- coding: utf-8 -*-
 
 # <Directorios y otros recursos que usa el programa .>
 # This file is part of EDIS-C.
@@ -29,7 +29,7 @@ import sys
 # Módulos QtGui
 from PyQt4.QtGui import QKeySequence
 
-#Módulos QtCore
+# Módulos QtCore
 from PyQt4.QtCore import QDir
 from PyQt4.QtCore import Qt
 
@@ -63,7 +63,7 @@ ICONOS = {
     "cerrar": os.path.join(PATH, "imagenes", "cerrarTab.png"),
     "salir": os.path.join(PATH, "imagenes", "cerrar.png"),
     "splash": os.path.join(PATH, "imagenes", "splash.png"),
-    #"icono": os.path.join(PATH, "imagenes", "side-c.png"),
+    # "icono": os.path.join(PATH, "imagenes", "side-c.png"),
     # Logo dragón (originalmente verde by nessmasta) - modificado a azul
     "seiryu": os.path.join(PATH, "imagenes", "edis_seiryu.png"),
     "icono": os.path.join(PATH, "imagenes", "edis_c.ico"),

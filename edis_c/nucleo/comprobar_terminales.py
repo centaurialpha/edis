@@ -1,4 +1,4 @@
-#-*- coding: utf-8 -*-
+# -*- coding: utf-8 -*-
 
 # Copyright (C) <2014>  <Gabriel Acosta>
 # This file is part of EDIS-C.
@@ -24,18 +24,18 @@ def comprobar():
     """ Devuelve una lista con las terminales disponibles en el sistema. """
 
     terminales = [
-    "gnome-terminal",
-    "x-terminal-emulator",
-    "terminator",
-    "guake",
-    "lxterminal",
-    "yakuake",
-    "eterm",
-    "rxvt",
-    "wterm",
-    "konsole",
-    "xterm"
-    ]
+        "gnome-terminal",
+        "x-terminal-emulator",
+        "terminator",
+        "guake",
+        "lxterminal",
+        "yakuake",
+        "eterm",
+        "rxvt",
+        "wterm",
+        "konsole",
+        "xterm"
+        ]
 
     ex = {}
     instaladas = []

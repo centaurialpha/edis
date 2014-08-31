@@ -66,7 +66,7 @@ def edis(app):
     # Diálogos en español
     qtTraductor = QTranslator()
     qtTraductor.load("qt_" + local,
-        QLibraryInfo.location(QLibraryInfo.TranslationsPath))
+                     QLibraryInfo.location(QLibraryInfo.TranslationsPath))
     app.installTranslator(qtTraductor)
 
     configuraciones.cargar_configuraciones()
@@ -74,6 +74,6 @@ def edis(app):
     edis = IDE()
     edis.show()
 
-    #splash.finish(edis)
+    # splash.finish(edis)
 
     sys.exit(app.exec_())

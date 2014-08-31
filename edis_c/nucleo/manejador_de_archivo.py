@@ -1,4 +1,4 @@
-#-*- coding: utf-8 -*-
+# -*- coding: utf-8 -*-
 
 # <Métodos para el manejo de archivos.>
 # Copyright (C) <2014>  <Gabriel Acosta>
@@ -20,12 +20,12 @@
 """ Manejo de archivos """
 
 import os
-#lint:disable
+# lint:disable
 try:
     import json
 except ImportError:
     import simplejson as json
-#lint:enable
+# lint:enable
 
 from PyQt4.QtGui import QMessageBox
 

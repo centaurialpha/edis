@@ -30,7 +30,7 @@ class Actualizacion(QSystemTrayIcon):
 
         self.hilo = Hilo()
         self.connect(self.hilo, SIGNAL("versionEdis(QString, QString)"),
-            self.mostrar_mensaje)
+                     self.mostrar_mensaje)
         self.hilo.start()
 
     def menu_(self, descargas=False):
@@ -53,15 +53,17 @@ class Actualizacion(QSystemTrayIcon):
             if self.supportsMessages():
                 self.menu_(True)
                 self.showMessage(self.trUtf8("EDIS - Actualización!"),
-                    self.trUtf8("Nueva versión disponible: ") +
-                    self.version_ +
-                    self.trUtf8("\nClick en el ícono para ir a la web!"),
-                    QSystemTrayIcon.Information, 10000)
+                                 self.trUtf8("Nueva versión disponible: ") +
+                                 self.version_ +
+                                 self.trUtf8("\nClick en el ícono para ir "
+                                             "a la web!"),
+                                 QSystemTrayIcon.Information, 10000)
             else:
                 boton = QMessageBox.information(self.parent(),
-                    self.tr("EDIS - Actualizar!"),
-                    self.tr("Nueva version disponible: ") +
-                    self.version_)
+                                                self.tr("EDIS - Actualizar!"),
+                                                self.tr("Nueva version "
+                                                        "disponible: ") +
+                                                self.version_)
                 if boton == QMessageBox.Ok:
                     self.mostrar_descarga()
         else:
@@ -81,7 +83,7 @@ class Hilo(QThread):
         version_ = urllib.urlopen(edis_c.__actualizar__)
         edis = parsear(version_)
         self.emit(SIGNAL("versionEdis(QString, QString)"),
-            edis.get('version', '0'), edis.get('descarga', ''))
+                  edis.get('version', '0'), edis.get('descarga', ''))
 
 
 def parsear(version_):

@@ -1,4 +1,4 @@
-#-*- coding: utf-8 -*-
+# -*- coding: utf-8 -*-
 
 # <Barra de estado, muestra statustips y eventos que ocurren en el editor.>
 # Copyright (C) <2014>  <Gabriel Acosta>
@@ -53,15 +53,6 @@ class _BarraDeEstado(QStatusBar):
         self.widget = QWidget()
         self.widget_ = QWidget()
 
-        #v_layout = QVBoxLayout(self.widget)
-        #hbox = QHBoxLayout(self.widget)
-        #v_layout.setContentsMargins(0, 0, 0, 0)
-        ##v_layout.setSpacing(20)
-
-        #self.linea_columna = EstadoLineaColumna(self)
-        #v_layout.addWidget(self.linea_columna)
-        #self.user_host = UserHost(self)
-        #hbox.addWidget(self.user_host)
         layout = QGridLayout(self.widget)
         layout_ = QGridLayout(self.widget_)
         layout.setContentsMargins(0, 0, 0, 0)
@@ -74,11 +65,10 @@ class _BarraDeEstado(QStatusBar):
 
         layout_.addWidget(self.user_host, 3, 1, alignment=Qt.AlignRight)
         self.connect(self, SIGNAL("messageChanged(QString)"),
-            self.mensaje_terminado)
+                     self.mensaje_terminado)
 
         self.addWidget(self.linea_columna, Qt.AlignLeft)
         self.addWidget(self.user_host, Qt.AlignRight)
-        #self.addWidget(self.widget_)
 
     def showMessage(self, mensaje, tiempo):
         """ @mensaje: texto QString que será mostrado en la barra de estado.

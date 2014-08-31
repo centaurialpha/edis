@@ -1,4 +1,4 @@
-#-*- coding: utf-8 -*-
+# -*- coding: utf-8 -*-
 
 # <Widget de pestañas.>
 # This file is part of EDIS-C.
@@ -26,8 +26,6 @@ from PyQt4.QtGui import QIcon
 from PyQt4.QtGui import QToolButton
 from PyQt4.QtGui import QMenu
 from PyQt4.QtGui import QAction
-#from PyQt4.QtGui import QSizePolicy
-#from PyQt4.QtGui import QSpacerItem
 
 # Módulos QtCore
 from PyQt4.QtCore import SIGNAL
@@ -50,7 +48,7 @@ class TabCentral(QTabWidget):
         self.boton = BotonTab()
         self.setCornerWidget(self.boton, Qt.TopLeftCorner)
         self.connect(self, SIGNAL("tabCloseRequested(int)"),
-            self.removeTab)
+                     self.removeTab)
         self.boton.accionCerrar.triggered.connect(self.cerrar_tab)
         self.boton.accionCerrarTodo.triggered.connect(self.cerrar_todo)
         self.boton.accionCerrarExcepto.triggered.connect(
@@ -94,7 +92,7 @@ class TabCentral(QTabWidget):
         if isinstance(e, editor.Editor) and self.no_esta_abierto and v:
             e.texto_modificado = True
             self.tabBar().setTabTextColor(self.currentIndex(),
-                QColor(Qt.red))
+                                          QColor(Qt.red))
 
     def tab_guardado(self, e):
         """ @e: valor booleano. """
@@ -116,9 +114,9 @@ class TabCentral(QTabWidget):
         archivos = []
         for i in range(self.count()):
             if isinstance(self.widget(i), editor.Editor) \
-            and self.widget(i)._id != '':
+                    and self.widget(i)._id != '':
                 archivos.append([self.widget(i)._id,
-                    self.widget(i).devolver_posicion_del_cursor()])
+                                 self.widget(i).devolver_posicion_del_cursor()])
         return archivos
 
     def devolver_archivos_sin_guardar(self):
@@ -165,10 +163,10 @@ class TabCentral(QTabWidget):
                 respuesta = NO
                 if w.texto_modificado:
                     nombre = self.tabBar().tabText(self.currentIndex())
-                    respuesta = QMessageBox.question(self,
-                        (str(self.trUtf8('El archivo **%s no esta guardado')) %
+                    respuesta = QMessageBox.question(self, (str(self.trUtf8(
+                        'El archivo **%s no esta guardado')) %
                         str(nombre)), self.trUtf8("¿Guardar antes de cerrar?"),
-                            SI | NO | CANCELAR)
+                        SI | NO | CANCELAR)
 
                 if respuesta == SI:
                     self.emit(SIGNAL("saveActualEditor()"))

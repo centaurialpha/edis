@@ -1,4 +1,4 @@
-#-*- coding: utf-8 -*-
+# -*- coding: utf-8 -*-
 
 # <Configuraciones.>
 # Copyright (C) <2014>  <Gabriel Acosta>
@@ -27,7 +27,7 @@ import sys
 # Módulos QtCore
 from PyQt4.QtCore import QSettings
 
-#from edis_c import recursos
+# from edis_c import recursos
 
 ###############################################################################
 #                        MÁRGEN                                               #
@@ -194,7 +194,8 @@ def cargar_configuraciones():
     global PARAMETROS
     global BARRA_HERRAMIENTAS_ITEMS
     global ULTIMA_SESION
-    MARGEN = qsettings.value('configuraciones/editor/margenLinea', 80, type=int)
+    MARGEN = qsettings.value('configuraciones/editor/margenLinea', 80,
+                             type=int)
     MOSTRAR_MARGEN = qsettings.value(
         'configuraciones/editor/mostrarMargen', False, type=bool)
     OPACIDAD_MARGEN = int(qsettings.value(
@@ -208,56 +209,58 @@ def cargar_configuraciones():
     if fuente_tam != 0:
         TAM_FUENTE = fuente_tam
     INDENTACION = int(qsettings.value('configuraciones/editor/indentacion',
-        4, type=int))
+                                      4, type=int))
     GUIA_INDENTACION = qsettings.value('configuraciones/editor/guiaInd',
-        False, type=bool)
-    CHECK_INDENTACION = qsettings.value('configuraciones/editor/checkInd', True,
-        type=bool)
+                                       False, type=bool)
+    CHECK_INDENTACION = qsettings.value('configuraciones/editor/checkInd',
+                                        True, type=bool)
     CHECK_AUTOINDENTACION = qsettings.value('configuraciones/editor/autoInd',
-        True, type=bool)
+                                            True, type=bool)
     MOSTRAR_TABS = qsettings.value(
         'configuraciones/editor/tabs', True, type=bool)
     MODO_ENVOLVER = qsettings.value('configuraciones/editor/envolver',
-        True, type=bool)
-    SIDEBAR = qsettings.value('configuraciones/editor/sidebar', True, type=bool)
+                                    True, type=bool)
+    SIDEBAR = qsettings.value('configuraciones/editor/sidebar', True,
+                              type=bool)
     MINIMAPA = qsettings.value('configuraciones/editor/mini', True, type=bool)
     MINI_TAM = float(qsettings.value('configuraciones/editor(miniTam',
-    0.17, type=float))
+                                     0.17, type=float))
     OPAC_MIN = float(qsettings.value('configuraciones/editor/opac_min',
-        0.2, type=float))
+                                     0.2, type=float))
     OPAC_MAX = float(qsettings.value('configuraciones/editor/opac_max',
-        0.9, type=float))
+                                     0.9, type=float))
     PAGINA_BIENVENIDA = qsettings.value(
         'configuraciones/general/paginaBienvenida', True).toBool()
     CONFIRMAR_AL_CERRAR = qsettings.value(
         'configuraciones/general/confirmacionCerrar', True).toBool()
     IDIOMA = qsettings.value('configuraciones/general/idioma',
-        '', type='QString')
+                             '', type='QString')
     PARAMETROS = qsettings.value('configuraciones/compilacion',
-        defaultValue='', type='QString')
+                                 defaultValue='', type='QString')
     items_barra = [str(i.toString()) for i in qsettings.value(
         'configuraciones/gui/barra', []).toList()]
     if items_barra:
         BARRA_HERRAMIENTAS_ITEMS = items_barra
     ULTIMA_SESION = qsettings.value('configuraciones/general/ultimaSesion',
-        True, type=bool)
+                                    True, type=bool)
     comillas_simples = qsettings.value('configuraciones/editor/comillasS',
-        True, type=bool)
+                                       True, type=bool)
+
     if not comillas_simples:
         del COMILLAS["'"]
     comillas_dobles = qsettings.value('configuraciones/editor/comillasD',
-        True).toBool()
+                                      True).toBool()
     if not comillas_dobles:
         del COMILLAS['"']
     llaves = qsettings.value('configuraciones/editor/llaves',
-        True).toBool()
+                             True).toBool()
     if not llaves:
         del BRACES['{']
     corchetes = qsettings.value('configuraciones/editor/corchetes',
-        True).toBool()
+                                True).toBool()
     if not corchetes:
         del BRACES['[']
     parentesis = qsettings.value('configuraciones/editor/parentesis',
-        True).toBool()
+                                 True).toBool()
     if not parentesis:
         del BRACES['(']

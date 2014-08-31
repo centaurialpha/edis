@@ -1,4 +1,4 @@
-#-*- coding: utf-8 -*-
+# -*- coding: utf-8 -*-
 
 # Copyright (C) <2014>  <Gabriel Acosta>
 # This file is part of EDIS-C.

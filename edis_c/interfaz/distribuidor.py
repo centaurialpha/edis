@@ -1,4 +1,4 @@
-#-*- coding: utf-8 -*-
+# -*- coding: utf-8 -*-
 
 # Copyright (C) <2014>  <Gabriel Acosta>
 
@@ -81,8 +81,8 @@ class Distribuidor(QObject):
 
         Weditor = self.edis.contenedor_principal.devolver_editor_actual()
         if Weditor is not None:
-            dialogo = dialogo_insertar_include.DialogoInsertarInclude(Weditor,
-                self.edis)
+            dialogo = dialogo_insertar_include.DialogoInsertarInclude(
+                Weditor, self.edis)
             dialogo.show()
 
     def insertar_macro(self):
@@ -93,7 +93,7 @@ class Distribuidor(QObject):
         Weditor = self.edis.contenedor_principal.devolver_editor_actual()
         if Weditor is not None:
             dialogo = dialogo_insertar_macro.DialogoInsertarMacro(Weditor,
-                self.edis)
+                                                                  self.edis)
             dialogo.show()
 
     def estadisticas_de_archivo(self):
@@ -101,14 +101,15 @@ class Distribuidor(QObject):
         Weditor = self.edis.contenedor_principal.devolver_editor_actual()
         if Weditor is not None:
             pass
-            #FIXME:
+            # FIXME:
 
     def exportar_como_pdf(self):
         """ Exporta el documento a formato .PDF. """
         Weditor = self.edis.contenedor_principal.devolver_editor_actual()
         if Weditor is not None:
             nombre = QFileDialog.getSaveFileName(Weditor,
-                self.trUtf8("Exportar a PDF"), filter='(*.pdf)')
+                                                 self.trUtf8("Exportar a PDF"),
+                                                 filter='(*.pdf)')
             nombre += '.pdf'
             if nombre:
                 p = QPrinter(QPrinter.HighResolution)
@@ -117,7 +118,8 @@ class Distribuidor(QObject):
                 p.setOutputFormat(QPrinter.PdfFormat)
                 p.setOutputFileName(nombre)
                 Weditor.document().print_(p)
-        #FIXME: Mover a un helper
+
+            # FIXME: Mover a un helper
 
     def recargar_barra_de_herramientas(self):
         """ Llama al método cargar_toolbar para recargar la barra de

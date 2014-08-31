@@ -1,4 +1,4 @@
-#-*- coding: utf-8 -*-
+# -*- coding: utf-8 -*-
 
 # <Archivo principal, para correr el programa se debe ejecutar este archivo.>
 # Copyright (C) <2014>  <Gabriel Acosta>
