@@ -116,8 +116,8 @@ class TabCentral(QTabWidget):
         archivos = []
         for i in range(self.count()):
             if isinstance(self.widget(i), editor.Editor) \
-            and self.widget(i).ID != '':
-                archivos.append([self.widget(i).ID,
+            and self.widget(i)._id != '':
+                archivos.append([self.widget(i)._id,
                     self.widget(i).devolver_posicion_del_cursor()])
         return archivos
 

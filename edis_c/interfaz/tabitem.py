@@ -22,13 +22,12 @@ class TabItem(object):
     def __init__(self):
         self._id = ""
 
-    def devolver_id(self):
+    @property
+    def iD(self):
         return self._id
 
-    def cargar_id(self, id_):
+    @iD.setter
+    def iD(self, id_):
         self._id = id_
         if id_:
             self.nuevo_archivo = False
-
-    ID = property(lambda self: self.devolver_id(), lambda self,
-        nombre: self.cargar_id(nombre))

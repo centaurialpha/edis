@@ -258,7 +258,7 @@ class __ContenedorMain(QSplitter):
 
         nombre_de_tab = manejador_de_archivo._nombreBase(nuevoId)
         TAB.cambiar_nombre_de_tab(indice_tab, nombre_de_tab)
-        w.ID = nuevoId
+        w.iD = nuevoId
 
     def cambiar_indice_de_tab(self):
         Weditor = self.parent.contenedor_principal.devolver_editor_actual()
@@ -280,8 +280,8 @@ class __ContenedorMain(QSplitter):
             direc = os.path.expanduser("~")
             Weditor = self.devolver_editor_actual()
             # Para recordar la última carpeta
-            if Weditor is not None and Weditor.ID:
-                direc = manejador_de_archivo.devolver_carpeta(Weditor.ID)
+            if Weditor is not None and Weditor._id:
+                direc = manejador_de_archivo.devolver_carpeta(Weditor._id)
             nombres = list(QFileDialog.getOpenFileNames(self,
             self.trUtf8("Abrir archivo"), direc, extension))
 
@@ -298,7 +298,7 @@ class __ContenedorMain(QSplitter):
                 nombre)
             editorW = self.agregar_editor(nombre)
             editorW.setPlainText(contenido.decode('utf-8'))
-            editorW.ID = nombre
+            editorW.iD = nombre
 
             # Reemplaza tabulaciones por espacios en blanco
             editorW.tabulaciones_por_espacios_en_blanco()
@@ -319,16 +319,16 @@ class __ContenedorMain(QSplitter):
             editorW.guardado_actualmente = True
 
             if editorW.nuevo_archivo or \
-            not manejador_de_archivo.permiso_de_escritura(editorW.ID):
+            not manejador_de_archivo.permiso_de_escritura(editorW._id):
                 return self.guardar_archivo_como()
 
-            nombre = editorW.ID
+            nombre = editorW._id
             carpeta_de_archivo = manejador_de_archivo.devolver_carpeta(nombre)
             self.emit(SIGNAL("beforeFileSaved(QString)"), nombre)
             acciones_.quitar_espacios_en_blanco(editorW)
             contenido = editorW.devolver_texto()
             manejador_de_archivo.escribir_archivo(nombre, contenido)
-            editorW.ID = nombre
+            editorW.iD = nombre
 
             self.emit(SIGNAL("fileSaved(QString)"), self.tr(
                 "Guardado: %0 en %1").arg((nombre).split('/')[-1],
@@ -336,7 +336,7 @@ class __ContenedorMain(QSplitter):
 
             editorW._guardado()
 
-            return editorW.ID
+            return editorW._id
         except:
             editorW.guardado_actualmente = False
             return False
@@ -367,14 +367,14 @@ class __ContenedorMain(QSplitter):
                 manejador_de_archivo._nombreBase(nombre))
             self.tab_actual.setTabIcon(self.tab_actual.currentIndex(),
                 QIcon(icono))
-            editorW.ID = nombre
+            editorW.iD = nombre
 
             # Señal de guardado para la barra de estado
             self.emit(SIGNAL("fileSaved(QString)"),
                 self.tr("Guardado: %1").arg(nombre))
             editorW._guardado()
 
-            return editorW.ID
+            return editorW._id
 
         except:
             #pass
@@ -404,7 +404,7 @@ class __ContenedorMain(QSplitter):
         editor = self.devolver_editor_actual()
         if editor:
             # ruta del archivo
-            tex = editor.ID
+            tex = editor._id
             # se obtiene el nombre con la extensión
             #FIXME: no luce bien... pero funciona ;)
             tex = tex.split('/')[-1]  # En Linux
@@ -412,7 +412,7 @@ class __ContenedorMain(QSplitter):
 
             # Tamaño en kb
             #FIXME: ¿ bien ?
-            lonB = (float(QFile(editor.ID).size() + 1023.0) / 1024.0)
+            lonB = (float(QFile(editor._id).size() + 1023.0) / 1024.0)
 
             cantidad_lineas = editor.devolver_cantidad_de_lineas()
             # Espacios en blanco y comentarios
