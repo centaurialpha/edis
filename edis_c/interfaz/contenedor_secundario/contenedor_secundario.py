@@ -18,12 +18,13 @@
 
 # Módulos QtGui
 from PyQt4.QtGui import QWidget
-from PyQt4.QtGui import QPushButton
+#from PyQt4.QtGui import QPushButton
 from PyQt4.QtGui import QStackedWidget
 from PyQt4.QtGui import QVBoxLayout
 from PyQt4.QtGui import QHBoxLayout
 from PyQt4.QtGui import QTextEdit
-#from PyQt4.QtGui import QMessageBox
+from PyQt4.QtGui import QToolBar
+from PyQt4.QtGui import QToolButton
 from PyQt4.QtGui import QIcon
 from PyQt4.QtGui import QStyle
 from PyQt4.QtGui import QShortcut
@@ -37,51 +38,56 @@ from PyQt4.QtGui import QHeaderView
 from PyQt4.QtCore import Qt
 
 # Módulos EDIS
-from edis_c.interfaz.contenedor_secundario import salida_widget
+from edis_c.interfaz.contenedor_secundario import procesos
 from edis_c import recursos
 
 
-_instanciaContenedorSecundario = None
+class ContenedorSecundario(QWidget):
+    instancia = None
 
+    def __new__(clase, *args, **kw):
+        """ Singleton """
 
-# Singleton
-def ContenedorSecundario(*args, **kw):
-    global _instanciaContenedorSecundario
-    if _instanciaContenedorSecundario is None:
-        _instanciaContenedorSecundario = _ContenedorSecundario(*args, **kw)
-
-    return _instanciaContenedorSecundario
-
-
-class _ContenedorSecundario(QWidget):
+        if clase.instancia is None:
+            clase.instancia = QWidget.__new__(clase, *args, **kw)
+        return clase.instancia
 
     def __init__(self, parent=None):
         QWidget.__init__(self, parent)
+
         layoutV = QVBoxLayout()
 
-        hbox = QHBoxLayout(self)
-        hbox.setContentsMargins(0, 0, 0, 0)
-        hbox.setSpacing(0)
+        layoutH = QHBoxLayout(self)
+        layoutH.setContentsMargins(0, 0, 0, 0)
+        layoutH.setSpacing(0)
 
         self.stack = Stacked()
-        hbox.addWidget(self.stack)
+        layoutH.addWidget(self.stack)
 
-        self.salida_ = salida_widget.EjecutarWidget()
+        self._toolbar = QToolBar()
+        self._toolbar.setToolButtonStyle(Qt.ToolButtonIconOnly)
+        self._toolbar.setObjectName('custom')
+        self._toolbar.setOrientation(2)
+
+        self.salida_ = procesos.EjecutarWidget()
         self.stack.addWidget(self.salida_)
 
         self.notas = Notas(self)
         self.stack.addWidget(self.notas)
 
-        self.botonSalida = QPushButton(QIcon(recursos.ICONOS['terminal']), '')
-        self.botonNotas = QPushButton(QIcon(recursos.ICONOS['notas']), '')
-        boton_cerrar = QPushButton(
-            self.style().standardIcon(QStyle.SP_DialogCloseButton), '')
+        self.botonSalida = QToolButton()
+        self.botonSalida.setIcon(QIcon(recursos.ICONOS['terminal']))
+        self.botonNotas = QToolButton()
+        self.botonNotas.setIcon(QIcon(recursos.ICONOS['notas']))
+        boton_cerrar = QToolButton()
+        boton_cerrar.setIcon(
+            QIcon(self.style().standardIcon(QStyle.SP_DialogCloseButton)))
 
-        layoutV.addWidget(self.botonSalida)
-        layoutV.addWidget(self.botonNotas)
-
-        layoutV.addWidget(boton_cerrar)
-        hbox.addLayout(layoutV)
+        layoutV.addWidget(self._toolbar)
+        self._toolbar.addWidget(self.botonSalida)
+        self._toolbar.addWidget(self.botonNotas)
+        self._toolbar.addWidget(boton_cerrar)
+        layoutH.addLayout(layoutV)
 
         # Conexiones
         self.atajoEscape = QShortcut(QKeySequence(Qt.Key_Escape),

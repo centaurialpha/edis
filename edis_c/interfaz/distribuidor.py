@@ -136,9 +136,9 @@ class Distribuidor(QObject):
         Weditor = self.edis.contenedor_principal.devolver_editor_actual()
         if Weditor is not None:
             if not self._TUX:
-                Weditor.ID = Weditor.ID.replace('/', '\\')
+                Weditor._id = Weditor.iD.replace('/', '\\')
             self.edis.contenedor_principal.guardar_archivo(Weditor)
-            self.edis.contenedor_secundario.compilar(Weditor.ID)
+            self.edis.contenedor_secundario.compilar(Weditor.iD)
 
     def ejecutar(self):
         """ Llama al método de ejecutar del contenedor secundario. """

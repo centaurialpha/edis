@@ -27,7 +27,6 @@ if sys.platform == 'win32':
     from subprocess import CREATE_NEW_CONSOLE
 
 # Módulos QtGui
-from PyQt4.QtGui import QPlainTextEdit
 from PyQt4.QtGui import QVBoxLayout
 from PyQt4.QtGui import QWidget
 from PyQt4.QtGui import QTextCharFormat
@@ -35,7 +34,6 @@ from PyQt4.QtGui import QTextCursor
 from PyQt4.QtGui import QColor
 from PyQt4.QtGui import QBrush
 from PyQt4.QtGui import QFont
-from PyQt4.QtGui import QMenu
 
 # Módulos QtCore
 from PyQt4.QtCore import QProcess
@@ -46,6 +44,7 @@ from PyQt4.QtCore import Qt
 from edis_c import recursos
 from edis_c.nucleo import configuraciones
 from edis_c.nucleo import manejador_de_archivo
+from edis_c.interfaz.contenedor_secundario import salida_compilador
 from edis_c.interfaz.dialogos.preferencias import preferencias_compilacion as pc
 
 _TUX = configuraciones.LINUX
@@ -56,11 +55,11 @@ class EjecutarWidget(QWidget):
     def __init__(self):
         super(EjecutarWidget, self).__init__()
         self.compilado = False
-
+        self.tiempo = 0.0
         layoutV = QVBoxLayout(self)
         layoutV.setContentsMargins(0, 0, 0, 0)
         layoutV.setSpacing(0)
-        self.output = SalidaWidget(self)
+        self.output = salida_compilador.SalidaWidget(self)
         layoutV.addWidget(self.output)
         self.setLayout(layoutV)
 
@@ -72,7 +71,7 @@ class EjecutarWidget(QWidget):
         self.proceso.readyReadStandardOutput.connect(
             self.output.salida_estandar)
         self.proceso.readyReadStandardError.connect(
-            self.output.error_estandar)
+            self.output.parser_salida_stderr)
         self.proceso.readyReadStandardError.connect(
             self.output.datos_tabla)
         self.proceso.finished[int, QProcess.ExitStatus].connect(
@@ -81,7 +80,7 @@ class EjecutarWidget(QWidget):
             self.ejecucion_error)
 
     def correr_compilacion(self, nombre_archivo=''):
-        """ Se corre el comando gcc para la compilación """
+        """ Se corre el comando clang para la compilación """
 
         # Dirección del archivo a compilar
         self.nombre_archivo = nombre_archivo
@@ -119,13 +118,16 @@ class EjecutarWidget(QWidget):
         # Comenzar proceso
         if not ensamblador['Ens']:
             parametros_gcc = ['-Wall', '-o']
-            self.proceso.start('gcc', parametros_gcc + [self.ejecutable] +
+            inicio = time.time()
+            self.proceso.start('clang', parametros_gcc + [self.ejecutable] +
                 parametros_add + [self.nombre_archivo])
+            fin = time.time()
         else:
             parametros_gcc = ['-Wall']
-            self.proceso.start('gcc', parametros_gcc +
+            self.proceso.start('clang', parametros_gcc +
                 parametros_add + [self.nombre_archivo])
         self.compilado = True
+        self.tiempo = fin - inicio
 
     def ejecucion_terminada(self, codigoError, exitStatus):
         """ valores de codigoError
@@ -134,15 +136,22 @@ class EjecutarWidget(QWidget):
         """
         formato = QTextCharFormat()
         formato.setAnchor(True)
-        formato.setFontWeight(QFont.Bold)
+        #formato.setFontWeight(QFont.Bold)
         formato.setFontPointSize(11)
+        formato_tiempo = QTextCharFormat()
+        formato_tiempo.setForeground(QBrush(
+            QColor(recursos.TEMA_EDITOR['salida-exitosa'])))
+        formato_tiempo.setFontPointSize(9)
 
         self.output.textCursor().insertText('\n\n')
         if exitStatus == QProcess.NormalExit and codigoError == 0:
             formato.setForeground(
                 QBrush(QColor(recursos.TEMA_EDITOR['salida-exitosa'])))
             self.output.textCursor().insertText(
-                self.trUtf8("¡Compilación exitosa!"), formato)
+                self.trUtf8("¡Compilación exitosa! "), formato)
+            self.output.textCursor().insertText(
+                str(self.trUtf8("(tiempo total: %.4f segundos)")) %
+                            self.tiempo, formato_tiempo)
 
         else:
             formato.setForeground(
@@ -201,92 +210,3 @@ class EjecutarWidget(QWidget):
         if not self.pro:
             return
         self.pro.terminate()
-
-
-class SalidaWidget(QPlainTextEdit):
-    """ Clase Widget para la salida del compilador. """
-
-    def __init__(self, parent):
-        QPlainTextEdit.__init__(self, parent)
-        self._parent = parent
-        self.setReadOnly(True)
-
-        # Formato para la salida estándar
-        self.formato_ok = QTextCharFormat()
-
-        self.formato_funcion = QTextCharFormat()
-        self.formato_funcion.setForeground(Qt.darkBlue)
-        # Formato para la salida de error
-        self.formato_error = QTextCharFormat()
-        self.formato_error.setAnchor(True)
-        self.formato_error.setFontUnderline(True)
-        self.formato_error.setUnderlineColor(Qt.red)
-        self.formato_error.setFontPointSize(10)
-        self.formato_error.setForeground(Qt.darkRed)
-        # Formato para la salida de error (warnings)
-        self.formato_warning = QTextCharFormat()
-        self.formato_warning.setAnchor(True)
-        self.formato_warning.setFontUnderline(True)
-        self.formato_warning.setUnderlineColor(Qt.yellow)
-        self.formato_warning.setFontPointSize(9)
-        self.formato_warning.setForeground(Qt.darkYellow)
-
-        # Se carga el estilo
-        self.cargar_estilo()
-
-    def cargar_estilo(self):
-        """ Carga estilo de color de QPlainTextEdit """
-
-        tema = 'QPlainTextEdit {color: #333; background-color: #f6f6f6;}' \
-        'selection-color: #FFFFFF; selection-background-color: #009B00;'
-
-        self.setStyleSheet(tema)
-
-    def contextMenuEvent(self, evento):
-        """ Context menú """
-
-        menu = self.createStandardContextMenu()
-
-        menuSalida = QMenu(self.trUtf8("Salida"))
-        limpiar = menuSalida.addAction(self.trUtf8("Limpiar"))
-        menu.insertSeparator(menu.actions()[0])
-        menu.insertMenu(menu.actions()[0], menuSalida)
-
-        limpiar.triggered.connect(lambda: self.setPlainText('\n\n'))
-
-        menu.exec_(evento.globalPos())
-
-    def salida_estandar(self):
-        """ Muestra la salida estándar. """
-
-        cp = self._parent.proceso
-        text = cp.readAllStandardOutput().data()
-        self.textCursor().insertText(text, self.formato_ok)
-
-    def error_estandar(self):
-        """ Analizador de errores y advertencias de stderr."""
-
-        codificacion = 'utf-8'
-        cursor = self.textCursor()
-        proceso = self._parent.proceso
-        texto = proceso.readAllStandardError().data().decode(codificacion)
-        lineas = texto.split('\n')
-        cursor.insertText(lineas[0], self.formato_funcion)
-        for t in lineas:
-            if _TUX:
-                cursor.insertBlock()
-            for i in t.split(':'):
-                if i == ' error':
-                    cursor.insertText(t, self.formato_error)
-                elif i == ' warning':
-                    cursor.insertText(t, self.formato_warning)
-
-    def datos_tabla(self):
-        pass
-
-    def errores_advertencias(self, errores, warnings):
-        #TODO: mostrar cantidad de errores y línea
-        pass
-
-    def setFoco(self):
-        self.setFocus()
