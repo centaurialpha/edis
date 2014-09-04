@@ -27,7 +27,7 @@ import sys
 # Módulos QtCore
 from PyQt4.QtCore import QSettings
 
-# from edis_c import recursos
+from edis_c import recursos
 
 ###############################################################################
 #                        MÁRGEN                                               #
@@ -88,7 +88,7 @@ PAGINA_BIENVENIDA = True
 CONFIRMAR_AL_CERRAR = True
 IDIOMAS = []
 IDIOMA = ""
-ULTIMA_SESION = True
+#ULTIMA_SESION = True
 PARAMETROS = ""
 
 BARRA_HERRAMIENTAS_ITEMS = [
@@ -171,7 +171,8 @@ BRACES = {
 
 ###############################################################################
 def cargar_configuraciones():
-    qsettings = QSettings()
+    qsettings = QSettings(recursos.CONFIGURACION, QSettings.IniFormat)
+
     global MARGEN
     global MOSTRAR_MARGEN
     global OPACIDAD_MARGEN
@@ -193,7 +194,7 @@ def cargar_configuraciones():
     global IDIOMA
     global PARAMETROS
     global BARRA_HERRAMIENTAS_ITEMS
-    global ULTIMA_SESION
+    #global ULTIMA_SESION
     MARGEN = qsettings.value('configuraciones/editor/margenLinea', 80,
                              type=int)
     MOSTRAR_MARGEN = qsettings.value(
@@ -241,8 +242,8 @@ def cargar_configuraciones():
         'configuraciones/gui/barra', []).toList()]
     if items_barra:
         BARRA_HERRAMIENTAS_ITEMS = items_barra
-    ULTIMA_SESION = qsettings.value('configuraciones/general/ultimaSesion',
-                                    True, type=bool)
+    #ULTIMA_SESION = qsettings.value('configuraciones/general/ultimaSesion',
+                                    #True, type=bool)
     comillas_simples = qsettings.value('configuraciones/editor/comillasS',
                                        True, type=bool)
 

@@ -93,7 +93,9 @@ class DialogoConfiguracion(QDialog):
         self.close()
 
     def guardar_(self):
-        [self.tabs.widget(i).guardar() for i in range(self.tabs.count())]
+        #[self.tabs.widget(i).guardar() for i in range(self.tabs.count())]
+        for i in range(self.tabs.count()):
+            self.tabs.widget(i).guardar()
         self.close()
 
 

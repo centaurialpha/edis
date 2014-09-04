@@ -81,12 +81,18 @@ class __ContenedorMain(QSplitter):
             self.tab_actual_cambiado)
         self.tab_principal.boton.accionCrear.triggered.connect(
             lambda: self.agregar_editor(''))
+        self.connect(self.tab_principal,
+            SIGNAL("recentTabsModified(QStringList)"),
+            self.archivos_recientes_cambiado)
 
         tecla = Qt.Key_1
         for i in range(10):
             atajo = TabAtajos(QKeySequence(Qt.ALT + tecla), self.parent, i)
             tecla += 1
             atajo.activated.connect(self.cambiar_indice_de_tab)
+
+    def archivos_recientes_cambiado(self, archivos):
+        self.emit(SIGNAL("recentTabsModified(QStringList)"), archivos)
 
     def agregar_editor(self, nombre_archivo=""):
         """ Agrega un QPlainTextEdit
@@ -270,6 +276,11 @@ class __ContenedorMain(QSplitter):
         if obj.indice < contenedor.count():
             contenedor.setCurrentIndex(obj.indice)
 
+    def abrir_archivos(self, archivos):
+        self.tab_actual = self.tab_principal
+        for data in archivos:
+            self.abrir_archivo(unicode(data[0]), data[1])
+
     def abrir_archivo(self, nombre=''):
         extension = recursos.EXTENSIONES  # Filtro
 
@@ -306,8 +317,8 @@ class __ContenedorMain(QSplitter):
         self.emit(SIGNAL("currentTabChanged(QString)"), nombre)
         self.tab_actual.no_esta_abierto = True
 
-    def devolver_documentos_abiertos(self):
-        return [self.tab_principal.devolver_documentos_para_reabrir(), []]
+    def get_documentos_abiertos(self):
+        return [self.tab_principal.devolver_documentos_para_reabrir()]
 
     def guardar_archivo(self, editorW=None):
         if not editorW:

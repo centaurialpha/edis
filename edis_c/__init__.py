@@ -24,7 +24,7 @@ from PyQt4.QtGui import QApplication
 from PyQt4.QtCore import QLocale
 from PyQt4.QtCore import QTranslator
 from PyQt4.QtCore import QLibraryInfo
-
+from PyQt4.QtCore import QSettings
 
 from edis_c.nucleo import configuraciones
 from edis_c import recursos
@@ -44,6 +44,7 @@ __actualizar__ = \
 
 # Correr Interfáz
 def edis(app):
+    qconfig = QSettings()
     QCoreApplication.setOrganizationName('EDIS-C')
     QCoreApplication.setOrganizationDomain('EDIS-C')
     QCoreApplication.setApplicationName('EDIS-C')
@@ -73,7 +74,24 @@ def edis(app):
 
     edis = IDE()
     edis.show()
+    archivos_principales = qconfig.value('archivosAbiertos/mainTab',
+        []).toList()
+    tmp = []
+    for archivo in archivos_principales:
+        data = archivo.toList()
+        if data:
+            tmp.append((unicode(data[0].toString()), data[1].toInt()[0]))
+    archivos_principales = tmp
+    # Archivos recientes
+    recent = qconfig.value('archivosAbiertos/archivosRecientes', []).toList()
+    if recent is not None:
+        archivos_recientes = list(recent)
+    else:
+        archivos_recientes = list()
+    archivos_recientes = [archivo for archivo in archivos_recientes]
 
-    # splash.finish(edis)
+    archivo_actual = unicode(
+        qconfig.value('archivosAbiertos/archivoActual', '').toString())
+    edis.load_session(archivos_principales, archivo_actual, archivos_recientes)
 
     sys.exit(app.exec_())

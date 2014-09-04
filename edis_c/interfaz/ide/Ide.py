@@ -136,8 +136,13 @@ class __IDE(QMainWindow):
             ejecucion, self.toolbar, self)
         self._menu_acerca_de = menu_acerca_de.MenuAcercade(acerca, self)
 
+        self.connect(self.contenedor_principal,
+            SIGNAL("recentTabsModified(QStringList)"),
+            self._menu_archivo.actualizar_archivos_recientes)
         self.connect(self.contenedor_principal, SIGNAL("fileSaved(QString)"),
             self.mostrar_barra_de_estado)
+        self.connect(self._menu_archivo, SIGNAL("openFile(QString)"),
+            self.contenedor_principal.abrir_archivo)
 
         # Método para cargar items en las toolbar
         self.cargar_toolbar()
@@ -297,6 +302,14 @@ class __IDE(QMainWindow):
             tema = q.read()
         QApplication.instance().setStyleSheet(tema)
 
+    def load_session(self, archivosPrincipales, archivo_actual,
+        archivos_recientes=None):
+        self.contenedor_principal.abrir_archivos(archivosPrincipales)
+        if archivo_actual:
+            self.contenedor_principal.abrir_archivo(archivo_actual)
+        if archivos_recientes:
+            self._menu_archivo.actualizar_archivos_recientes(archivos_recientes)
+
     def comprobar_compilador(self):
         """ Antes de cargar la interfáz de EDIS se comprueba si GCC está
         presente en el sistema. """
@@ -333,13 +346,15 @@ class __IDE(QMainWindow):
 
     def guardar_configuraciones(self):
         qconfig = QSettings()
-#        Weditor = self.contenedor_principal.devolver_editor_actual()
-
-        if qconfig.value('configuraciones/general/ultimaSesion',
-            True, type=bool):
-                archivos_abiertos = \
-                self.contenedor_principal.devolver_documentos_abiertos()
-                print archivos_abiertos
-                if len(archivos_abiertos) > 0:
-                    qconfig.value('archivosAbiertos/tab',
-                        archivos_abiertos[0])
+        Weditor = self.contenedor_principal.devolver_editor_actual()
+        archivo_act = ''
+        if Weditor is not None:
+            archivo_act = Weditor.iD
+        archivosAbiertos_ = self.contenedor_principal.get_documentos_abiertos()
+        if qconfig.value('configuraciones/general/cargarArchivos',
+            True).toBool():
+                qconfig.setValue('archivosAbiertos/mainTab',
+                    archivosAbiertos_[0])
+                qconfig.setValue('archivosAbiertos/archivoActual', archivo_act)
+                qconfig.setValue('archivosAbiertos/archivosRecientes',
+                    self.contenedor_principal.tab_principal.get_rf())

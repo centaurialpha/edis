@@ -109,9 +109,11 @@ class ConfiguracionGeneral(QWidget):
             self.trUtf8("<i>Reiniciar para ver cambios.</i>")))
 
         # Configuraciones
+        qconfig = QSettings()
         self.checkPaginaInicio.setChecked(configuraciones.PAGINA_BIENVENIDA)
         self.checkAlCerrar.setChecked(configuraciones.CONFIRMAR_AL_CERRAR)
-        self.checkUltimaSesion.setChecked(configuraciones.ULTIMA_SESION)
+        self.checkUltimaSesion.setChecked(
+            qconfig.value('cargarArchivos', True, type=bool))
 
         layoutV.addWidget(grupoAlInicio)
         layoutV.addWidget(grupoAlCerrar)
@@ -143,14 +145,15 @@ class ConfiguracionGeneral(QWidget):
     def guardar(self):
         """ Guarda las configuraciones Generales. """
 
-        qconfig = QSettings()
+        qconfig = QSettings(recursos.CONFIGURACION, QSettings.IniFormat)
         qconfig.beginGroup('configuraciones')
         qconfig.beginGroup('general')
         qconfig.setValue('paginaInicio', self.checkPaginaInicio.isChecked())
+        configuraciones.PAGINA_BIENVENIDA = self.checkPaginaInicio.isChecked()
         qconfig.setValue('confirmacionCerrar', self.checkAlCerrar.isChecked())
         configuraciones.CONFIRMAR_AL_CERRAR = self.checkAlCerrar.isChecked()
-        qconfig.setValue('ultimaSesion', self.checkUltimaSesion.isChecked())
-        configuraciones.ULTIMA_SESION = self.checkUltimaSesion.isChecked()
+        qconfig.setValue('cargarArchivos', self.checkUltimaSesion.isChecked())
+        #configuraciones.ULTIMA_SESION = self.checkUltimaSesion.isChecked()
         qconfig.endGroup()
         qconfig.endGroup()
 

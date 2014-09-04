@@ -44,6 +44,7 @@ class TabCentral(QTabWidget):
         self.setMovable(True)
         self.setAcceptDrops(True)
         self.parent = parent
+        self._lastOpened = []
         self.no_esta_abierto = True
         self.boton = BotonTab()
         self.setCornerWidget(self.boton, Qt.TopLeftCorner)
@@ -53,6 +54,18 @@ class TabCentral(QTabWidget):
         self.boton.accionCerrarTodo.triggered.connect(self.cerrar_todo)
         self.boton.accionCerrarExcepto.triggered.connect(
             self.cerrar_excepto_actual)
+
+    def get_rf(self):
+        print("las", self._lastOpened)
+        return self._lastOpened
+
+    def _add_to_last_opened(self, path):
+        if path not in self._lastOpened:
+            self._lastOpened.append(path)
+            if len(self._lastOpened) > 3:
+                self._lastOpened = self._lastOpened[1:]
+            self.emit(SIGNAL("recentTabsModified(QStringList)"),
+                self._lastOpened)
 
     def agregar_tab(self, widget, icono, titulo):
         """ Agrega una pestaña
@@ -114,9 +127,10 @@ class TabCentral(QTabWidget):
         archivos = []
         for i in range(self.count()):
             if isinstance(self.widget(i), editor.Editor) \
-                    and self.widget(i)._id != '':
+            and self.widget(i)._id != '':
                 archivos.append([self.widget(i)._id,
                                  self.widget(i).devolver_posicion_del_cursor()])
+        print(archivos)
         return archivos
 
     def devolver_archivos_sin_guardar(self):
@@ -174,7 +188,9 @@ class TabCentral(QTabWidget):
                         return
                 elif respuesta == CANCELAR:
                     return
-
+            if type(w) is editor.Editor and w.iD:
+                print("si")
+                self._add_to_last_opened(w._id)
             super(TabCentral, self).removeTab(indice)
             if self.currentWidget() is not None:
                 self.currentWidget().setFocus()

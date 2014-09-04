@@ -33,7 +33,7 @@ from PyQt4.QtGui import QTextCharFormat
 from PyQt4.QtGui import QTextCursor
 from PyQt4.QtGui import QColor
 from PyQt4.QtGui import QBrush
-from PyQt4.QtGui import QFont
+#from PyQt4.QtGui import QFont
 
 # Módulos QtCore
 from PyQt4.QtCore import QProcess

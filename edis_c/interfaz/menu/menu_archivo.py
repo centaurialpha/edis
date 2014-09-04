@@ -21,6 +21,7 @@ from PyQt4.QtGui import QMessageBox
 
 # Módulos QtCore
 from PyQt4.QtCore import QObject
+from PyQt4.QtCore import SIGNAL
 
 # Módulos EDIS
 from edis_c.interfaz.editor import acciones_
@@ -74,6 +75,11 @@ class MenuArchivo(QObject):
         self.accionExportarComoPDF = crear_accion(self, "Exportar a PDF",
             icono=_ICONO['exportar'],
             slot=self.ide.distribuidor.exportar_como_pdf)
+        # Archivos recientes
+        self.archivos_recientes = menu_archivo.addMenu(
+            self.trUtf8("Archivos recientes"))
+        self.connect(self.archivos_recientes, SIGNAL("triggered(QAction*)"),
+            self._abrir_archivo)
         # Cerrar
         self.accionCerrarTab = crear_accion(self, "Cerrar",
             icono=_ICONO['cerrar'], atajo=_ATAJO['cerrar-tab'],
@@ -118,6 +124,15 @@ class MenuArchivo(QObject):
             "guardar-como": self.accionGuardarComo,
             "guardar-todo": self.accionGuardarTodo
             }
+
+    def _abrir_archivo(self, accion):
+        path = accion.text()
+        self.emit(SIGNAL("openFile(QString)"), path)
+
+    def actualizar_archivos_recientes(self, archivos):
+        self.archivos_recientes.clear()
+        for i in range(len(archivos)):
+            self.archivos_recientes.addAction(archivos[i])
 
     def archivo_main_c(self):
         widget = self.ide.contenedor_principal.devolver_widget_actual()

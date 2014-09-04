@@ -41,7 +41,8 @@ frozen = getattr(sys, 'frozen', '')
 if frozen in ('dll', 'console_exe', 'windows_exe'):
     PATH = os.path.abspath(os.path.dirname(sys.executable))
 
-HOME_SIDE = os.path.join(PATH, ".edis_c")
+HOME_EDIS = os.path.join(PATH, ".edis_c")
+CONFIGURACION = os.path.join(HOME_EDIS, 'config.ini')
 INSTALADOR = os.path.join(PATH, "nucleo", "mingw.exe")
 IDIOMAS = os.path.join(PATH, "otros", "idiomas")
 TEMA_POR_DEFECTO = os.path.join(PATH, "otros", "temas", "default.qss")
