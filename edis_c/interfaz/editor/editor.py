@@ -40,6 +40,7 @@ from PyQt4.QtGui import QTextCursor
 from PyQt4.QtGui import QTextOption
 from PyQt4.QtGui import QTextDocument
 from PyQt4.QtGui import QCompleter
+from PyQt4.QtGui import QTextCharFormat
 
 # Módulos Qtcore
 from PyQt4.QtCore import Qt
@@ -316,9 +317,10 @@ class Editor(QPlainTextEdit, tabitem.TabItem):
         self.extraSelections = []
 
         seleccion = QTextEdit.ExtraSelection()
-        color = QColor(recursos.NUEVO_TEMA.get('linea-actual',
-            recursos.TEMA_EDITOR['linea-actual']))
-        color.setAlpha(40)
+        #color = QColor(recursos.NUEVO_TEMA.get('linea-actual',
+            #recursos.TEMA_EDITOR['linea-actual']))
+        color = QColor('lightblue').lighter(120)
+        #color.setAlpha(40)
         seleccion.format.setBackground(color)
         seleccion.format.setProperty(
             QTextFormat.FullWidthSelection, QVariant(True))
@@ -326,50 +328,136 @@ class Editor(QPlainTextEdit, tabitem.TabItem):
         seleccion.cursor.clearSelection()
         self.extraSelections.append(seleccion)
 
+        extra = self.resaltar_braces()
+        if extra:
+            self.extraSelections.extend(extra)
         self.setExtraSelections(self.extraSelections)
 
-        # Resaltado de braces
-        if self.braces is not None:
-            self.braces = None
+    def resaltar_braces(self):
+        # Basado en: https://gitorious.org/khteditor
+
+        izquierdo, derecho = QTextEdit.ExtraSelection(),\
+                      QTextEdit.ExtraSelection()
+
         cursor = self.textCursor()
-        if cursor.position() == 0:
-            self.setExtraSelections(self.extraSelections)
-            return
-        cursor.movePosition(QTextCursor.PreviousCharacter,
-            QTextCursor.KeepAnchor)
+        bloque = cursor.block()
 
-        texto = unicode(cursor.selectedText())
-        p1 = cursor.position()
-        if texto in (")", "]", "}"):
-            p2 = self.m_braces(p1, texto, adelante=False)
-        elif texto in ("(", "[", "{"):
-            p2 = self.m_braces(p1, texto, adelante=True)
-        else:
-            self.setExtraSelections(self.extraSelections)
-            return
+        data = bloque.userData()
+        anterior, siguiente = None, None
 
-        if p2 is not None:
-            self.braces = (p1, p2)
-            seleccion = QTextEdit.ExtraSelection()
-            seleccion.format.setForeground(QColor(Qt.red))
-            seleccion.cursor = cursor
-            self.extraSelections.append(seleccion)
-            seleccion = QTextEdit.ExtraSelection()
-            seleccion.format.setForeground(QColor(Qt.white))
-            seleccion.format.setBackground(QColor(0, 100, 255))
-            seleccion.cursor = self.textCursor()
-            seleccion.cursor.setPosition(p2)
-            seleccion.cursor.movePosition(QTextCursor.NextCharacter,
-                QTextCursor.KeepAnchor)
-            self.extraSelections.append(seleccion)
-        else:
-            self.braces = (p1,)
-            seleccion = QTextEdit.ExtraSelection()
-            seleccion.format.setBackground(QColor(0, 100, 255))
-            seleccion.format.setForeground(QColor(Qt.white))
-            seleccion.cursor = cursor
-            self.extraSelections.append(seleccion)
-        self.setExtraSelections(self.extraSelections)
+        if data is not None:
+            posicion = cursor.position()
+            pos_bloque = cursor.block().position()
+            braces = data.braces
+            N = len(braces)
+
+            for k in range(0, N):
+                if braces[k].position == posicion - pos_bloque or\
+                   braces[k].position == posicion - pos_bloque - 1:
+                    anterior = braces[k].position + pos_bloque
+                    if braces[k].character in ['{', '(', '[']:
+                        siguiente = self.match_izq(bloque,
+                                               braces[k].character,
+                                               k + 1, 0)
+                    elif braces[k].character in ['}', ')', ']']:
+                        siguiente = self.match_der(bloque,
+                                                braces[k].character,
+                                                k, 0)
+
+        if (siguiente is not None and siguiente > 0) \
+            and (anterior is not None and anterior > 0):
+
+            formato = QTextCharFormat()
+
+            cursor.setPosition(anterior)
+            cursor.movePosition(QTextCursor.NextCharacter,
+                                QTextCursor.KeepAnchor)
+
+            formato.setForeground(QColor('white'))
+            formato.setBackground(QColor('blue'))
+            izquierdo.format = formato
+            izquierdo.cursor = cursor
+
+            cursor.setPosition(siguiente)
+            cursor.movePosition(QTextCursor.NextCharacter,
+                                QTextCursor.KeepAnchor)
+
+            formato.setForeground(QColor('white'))
+            formato.setBackground(QColor('red'))
+            derecho.format = formato
+            derecho.cursor = cursor
+
+            return izquierdo, derecho
+
+        elif anterior is not None:
+            formato = QTextCharFormat()
+
+            cursor.setPosition(anterior)
+            cursor.movePosition(QTextCursor.NextCharacter,
+                                QTextCursor.KeepAnchor)
+
+            formato.setForeground(QColor('white'))
+            formato.setBackground(QColor('red'))
+            izquierdo.format = formato
+            izquierdo.cursor = cursor
+            return (izquierdo,)
+        elif siguiente is not None:
+            formato = QTextCharFormat()
+
+            cursor.setPosition(siguiente)
+            cursor.movePosition(QTextCursor.NextCharacter,
+                                QTextCursor.KeepAnchor)
+
+            formato.setForeground(QColor('white'))
+            formato.setBackground(QColor('green'))
+            izquierdo.format = formato
+            izquierdo.cursor = cursor
+            return (izquierdo,)
+
+    def match_izq(self, bloque, caracter, inicio, found):
+        dic = {'{': '}', '(': ')', '[': ']'}
+        bj = 0
+
+        while bloque.isValid() and (bj < 20):
+            data = bloque.userData()
+            if data is not None:
+                braces = data.braces
+                N = len(braces)
+
+                for k in range(inicio, N):
+                    if braces[k].character == caracter:
+                        found += 1
+                    if braces[k].character == dic[caracter]:
+                        if not found:
+                            return braces[k].position + bloque.position()
+                        else:
+                            found -= 1
+                bloque = bloque.next()
+                bj += 1
+                inicio = 0
+
+    def match_der(self, bloque, caracter, inicio, found):
+        dic = {'}': '{', ')': '(', ']': '['}
+        bj = 0
+        while bloque.isValid() and (bj < 20):
+            data = bloque.userData()
+
+            if data is not None:
+                braces = data.braces
+
+                if inicio is None:
+                    inicio = len(braces)
+                for k in range(inicio - 1, -1, -1):
+                    if braces[k].character == caracter:
+                        found += 1
+                    if braces[k].character == dic[caracter]:
+                        if found == 0:
+                            return braces[k].position + bloque.position()
+                        else:
+                            found -= 1
+                bloque = bloque.previous()
+                bj += 1
+                inicio = None
 
     def devolver_seleccion(self, inicio, fin):
         cursor = self.textCursor()

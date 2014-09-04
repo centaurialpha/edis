@@ -9,6 +9,7 @@ from PyQt4.QtGui import QTextCharFormat
 from PyQt4.QtGui import QFont
 from PyQt4.QtGui import QSyntaxHighlighter
 from PyQt4.QtGui import QBrush
+from PyQt4.QtGui import QTextBlockUserData
 
 # Módulos QtCore
 from PyQt4.QtCore import QRegExp
@@ -93,6 +94,7 @@ class Highlighter(QSyntaxHighlighter):
     def __init__(self, documento, tema):
         QSyntaxHighlighter.__init__(self, documento)
         re_estilo(tema)
+        self.braces = QRegExp('(\{|\}|\(|\)|\[|\])')
         # Reglas
         reglas = []
         # Palabras reservadas
@@ -133,6 +135,16 @@ class Highlighter(QSyntaxHighlighter):
 
     def highlightBlock(self, texto):
 
+        block_data = TextBlockData()
+        braces = self.braces
+        ind = braces.indexIn(texto, 0)
+        while ind >= 0:
+            match_brace = str(braces.capturedTexts()[0])
+            info = BracketsInfo(match_brace, ind)
+            block_data.insert_brackets_info(info)
+            ind = braces.indexIn(texto, ind + 1)
+        self.setCurrentBlockUserData(block_data)
+
         for expresion, nth, formato in self.reglas:
             indice = expresion.indexIn(texto, 0)
 
@@ -158,3 +170,25 @@ class Highlighter(QSyntaxHighlighter):
                 self.comentario_multiple_lineas)
             inicio_indice = self.comentario_final.indexIn(texto,
                 inicio_indice + commentLength)
+
+
+class BracketsInfo:
+
+    def __init__(self, character, position):
+        self.character = character
+        self.position = position
+
+
+class TextBlockData(QTextBlockUserData):
+
+    def __init__(self, parent=None):
+        super(TextBlockData, self).__init__()
+        self.braces = []
+        self.valid = False
+
+    def insert_brackets_info(self, info):
+        self.valid = True
+        self.braces.append(info)
+
+    def isValid(self):
+        return self.valid

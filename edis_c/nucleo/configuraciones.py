@@ -27,7 +27,7 @@ import sys
 # Módulos QtCore
 from PyQt4.QtCore import QSettings
 
-from edis_c import recursos
+#from edis_c import recursos
 
 ###############################################################################
 #                        MÁRGEN                                               #
@@ -171,7 +171,7 @@ BRACES = {
 
 ###############################################################################
 def cargar_configuraciones():
-    qsettings = QSettings(recursos.CONFIGURACION, QSettings.IniFormat)
+    qsettings = QSettings()
 
     global MARGEN
     global MOSTRAR_MARGEN
@@ -231,7 +231,7 @@ def cargar_configuraciones():
     OPAC_MAX = float(qsettings.value('configuraciones/editor/opac_max',
                                      0.9, type=float))
     PAGINA_BIENVENIDA = qsettings.value(
-        'configuraciones/general/paginaBienvenida', True).toBool()
+        'configuraciones/general/paginaBienvenida', True, type=bool)
     CONFIRMAR_AL_CERRAR = qsettings.value(
         'configuraciones/general/confirmacionCerrar', True).toBool()
     IDIOMA = qsettings.value('configuraciones/general/idioma',

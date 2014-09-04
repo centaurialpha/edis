@@ -42,7 +42,6 @@ if frozen in ('dll', 'console_exe', 'windows_exe'):
     PATH = os.path.abspath(os.path.dirname(sys.executable))
 
 HOME_EDIS = os.path.join(PATH, ".edis_c")
-CONFIGURACION = os.path.join(HOME_EDIS, 'config.ini')
 INSTALADOR = os.path.join(PATH, "nucleo", "mingw.exe")
 IDIOMAS = os.path.join(PATH, "otros", "idiomas")
 TEMA_POR_DEFECTO = os.path.join(PATH, "otros", "temas", "default.qss")
@@ -123,13 +122,13 @@ TEMA_EDITOR = {
     "numero-linea": "#1d1d1d",
     "num-seleccionado": "#3c64c8",
     "margen-linea": "#777777",
-    "palabra": "#96BE0A",
+    "palabra": "#952b9f",
     "operador": "black",
     "brace": "#1E1E1E",
     "struct": "black",
-    "cadena": "#640AE1",
-    "caracter": "blue",
-    "include": "#3282C8",
+    "cadena": "#16b700",
+    "caracter": "brown",
+    "include": "blue",
     "comentario": "#E10A1E",
     "numero": "#F8A032"
     }
@@ -174,4 +173,4 @@ ATAJOS = {
     }
 
 # Extensiones soportadas
-EXTENSIONES = " Archivos C (*.c *.s *.h)"
+EXTENSIONES = " Archivos C (*.c *.s *.h);;(*.*)"
