@@ -34,16 +34,18 @@ from PyQt4.QtCore import QDir
 from PyQt4.QtCore import Qt
 
 # Carpetas
-HOME_PATH = QDir.toNativeSeparators(QDir.homePath())
+HOME_PATH = unicode(QDir.toNativeSeparators(QDir.homePath()))
 SIDE_EJEC = os.path.realpath(sys.argv[0])
 PATH = os.path.abspath(os.path.dirname(__file__)).decode('utf-8')
 frozen = getattr(sys, 'frozen', '')
 if frozen in ('dll', 'console_exe', 'windows_exe'):
     PATH = os.path.abspath(os.path.dirname(sys.executable))
 
-HOME_EDIS = os.path.join(PATH, ".edis_c")
+HOME_EDIS = os.path.join(HOME_PATH, ".edis_c")
+CONFIGURACION = os.path.join(HOME_EDIS, "config.ini")
+OTROS = (HOME_EDIS, 'otros')
 INSTALADOR = os.path.join(PATH, "nucleo", "mingw.exe")
-IDIOMAS = os.path.join(PATH, "otros", "idiomas")
+IDIOMAS = os.path.join(HOME_EDIS, "otros", "idiomas")
 TEMA_POR_DEFECTO = os.path.join(PATH, "otros", "temas", "default.qss")
 TEMAS_GUARDADOS = os.path.join(PATH, "otros", "temas", "editor")
 LICENCIA = os.path.join(PATH, "../", "COPYING")
@@ -116,7 +118,7 @@ TEMA_EDITOR = {
     "salida-error": "red",
     "fondo-input": "#1e1e1e",
     "linea-actual": "#919191",
-    "widget-num-linea": "#121212",
+    "widget-num-linea": "gray",
     "fondo-margen": "#232323",
     "opacidad": 15,
     "numero-linea": "#1d1d1d",

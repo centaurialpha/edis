@@ -41,7 +41,7 @@ from PyQt4.QtCore import SIGNAL
 from PyQt4.QtCore import Qt
 
 # Módulos EDIS
-from edis_c import recursos
+#from edis_c import recursos
 from edis_c.nucleo import configuraciones
 from edis_c.nucleo import manejador_de_archivo
 from edis_c.interfaz.contenedor_secundario import salida_compilador
@@ -91,7 +91,7 @@ class EjecutarWidget(QWidget):
         else:
             self.ejecutable = (self.nombre_archivo.split('/')[-1]).split('.')[0]
         self.output.setCurrentCharFormat(self.output.formato_ok)
-
+        print(self.ejecutable)
         # Para generar el ejecutable en la carpeta del fuente
         directorio_archivo = manejador_de_archivo.devolver_carpeta(
             self.nombre_archivo)
@@ -139,28 +139,24 @@ class EjecutarWidget(QWidget):
         """
         formato = QTextCharFormat()
         formato.setAnchor(True)
-        #formato.setFontWeight(QFont.Bold)
         formato.setFontPointSize(11)
         formato_tiempo = QTextCharFormat()
-        formato_tiempo.setForeground(QBrush(
-            QColor(recursos.TEMA_EDITOR['salida-exitosa'])))
+        formato_tiempo.setForeground(QBrush(QColor("#007c00")))
         formato_tiempo.setFontPointSize(9)
 
         self.output.textCursor().insertText('\n\n')
         if exitStatus == QProcess.NormalExit and codigoError == 0:
-            formato.setForeground(
-                QBrush(QColor(recursos.TEMA_EDITOR['salida-exitosa'])))
+            formato.setForeground(QBrush(QColor('#007c00')))
             self.output.textCursor().insertText(
-                self.trUtf8("¡Compilación exitosa! "), formato)
+                self.trUtf8("¡COMPILACIÓN EXITOSA! "), formato)
             self.output.textCursor().insertText(
                 str(self.trUtf8("(tiempo total: %.4f segundos)")) %
                             self.tiempo, formato_tiempo)
 
         else:
-            formato.setForeground(
-                QBrush(QColor(recursos.TEMA_EDITOR['salida-error'])))
+            formato.setForeground(QBrush(QColor('red')))
             self.output.textCursor().insertText(
-                self.trUtf8("No hubo compilación!"), formato)
+                self.trUtf8("¡LA COMPILACIÓN HA FALLADO!"), formato)
         self.output.moveCursor(QTextCursor.Down)
 
     def ejecucion_error(self, error):
@@ -169,7 +165,8 @@ class EjecutarWidget(QWidget):
         formato.setAnchor(True)
         formato.setForeground(Qt.red)
         if error == 0:
-            self.output.textCursor().insertText(self.trUtf8("Error!"), formato)
+            self.output.textCursor().insertText(
+                self.trUtf8("Error: no se encuentra el compilador."), formato)
         else:
             self.output.textCursor().insertText(self.trUtf8(
                 "Error proceso: %d" % error), formato)

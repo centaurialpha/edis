@@ -282,8 +282,9 @@ class CaracteristicasEditor(QWidget):
 
     def guardar(self):
         """ Guarda las configuraciones del Editor. """
+
         contenedor_principal_ = contenedor_principal.ContenedorMain()
-        qconfig = QSettings()
+        qconfig = QSettings(recursos.CONFIGURACION, QSettings.IniFormat)
         qconfig.beginGroup('configuraciones')
         qconfig.beginGroup('editor')
         qconfig.setValue('margenLinea', self.spinMargen.value())

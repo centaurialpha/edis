@@ -144,10 +144,8 @@ class ConfiguracionGeneral(QWidget):
     def guardar(self):
         """ Guarda las configuraciones Generales. """
 
-        qconfig = QSettings()
-        #qconfig.beginGroup('configuraciones')
-        #qconfig.beginGroup('general')
-        qconfig.setValue('configuraciones/general/paginaInicio',
+        qconfig = QSettings(recursos.CONFIGURACION, QSettings.IniFormat)
+        qconfig.setValue('configuraciones/general/paginaBienvenida',
             self.checkPaginaInicio.isChecked())
         configuraciones.PAGINA_BIENVENIDA = self.checkPaginaInicio.isChecked()
         qconfig.setValue('configuraciones/general/confirmacionCerrar',
@@ -155,9 +153,6 @@ class ConfiguracionGeneral(QWidget):
         configuraciones.CONFIRMAR_AL_CERRAR = self.checkAlCerrar.isChecked()
         qconfig.setValue('configuraciones/general/cargarArchivos',
             self.checkUltimaSesion.isChecked())
-        #configuraciones.ULTIMA_SESION = self.checkUltimaSesion.isChecked()
-        #qconfig.endGroup()
-        #qconfig.endGroup()
 
     def reestablecer(self):
         SI = QMessageBox.Yes

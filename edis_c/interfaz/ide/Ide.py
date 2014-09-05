@@ -187,13 +187,9 @@ class __IDE(QMainWindow):
         """ Desactiva la página de inicio al iniciar próxima sesión. """
 
         configuraciones.PAGINA_BIENVENIDA = False
-        qsettings = QSettings()
-        qsettings.beginGroup('configuraciones')
-        qsettings.beginGroup('general')
-        qsettings.setValue('paginaBienvenida',
+        qconfig = QSettings(recursos.CONFIGURACION, QSettings.IniFormat)
+        qconfig.setValue('configuraciones/general/paginaBienvenida',
             configuraciones.PAGINA_BIENVENIDA)
-        qsettings.endGroup()
-        qsettings.endGroup()
         self.contenedor_principal.tab_actual.cerrar_tab()
 
     def cargar_toolbar(self):

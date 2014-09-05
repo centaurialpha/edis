@@ -50,7 +50,7 @@ class NumeroDeLineaBar(QWidget):
         QWidget.__init__(self, editor)
         self.editor = editor
         self.linea_superior = 0
-        self.foldArea = 20
+        self.foldArea = 18
         self.rightArrowIcon = QPixmap()
         self.downArrowIcon = QPixmap()
         self.negrita = False
@@ -61,7 +61,7 @@ class NumeroDeLineaBar(QWidget):
         linea_max = math.ceil(math.log10(self.editor.blockCount()))
         ancho = QFontMetrics(
             self.editor.document().defaultFont()).width('0' * int(linea_max)) \
-            + 13 + self.foldArea
+            + 10 + self.foldArea
         if self.width() != ancho:
             self.setFixedWidth(ancho)
             self.editor.setViewportMargins(ancho, 0, 0, 0)
@@ -208,7 +208,7 @@ class NumeroDeLineaBar(QWidget):
 
             if bloque.isVisible():
                 pintar.drawText(self.width() - self.foldArea -
-                font_metrics.width(str(contar_linea)) - 3,
+                font_metrics.width(str(contar_linea)) - 1,
                 round(posicion.y()) + font_metrics.ascent() +
                 font_metrics.descent() - 1,
                 str(contar_linea))

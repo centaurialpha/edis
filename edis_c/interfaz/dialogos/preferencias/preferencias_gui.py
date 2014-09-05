@@ -218,10 +218,7 @@ class TabGUI(QWidget):
         """ Guarda las configuraciones de la GUI. """
 
         configuraciones.BARRA_HERRAMIENTAS_ITEMS = self.barra_herramientas
-        qconfig = QSettings()
-        qconfig.beginGroup('configuraciones')
-        qconfig.beginGroup('gui')
-        qconfig.setValue('barra', configuraciones.BARRA_HERRAMIENTAS_ITEMS)
-        qconfig.endGroup()
-        qconfig.endGroup()
+        qconfig = QSettings(recursos.CONFIGURACION, QSettings.IniFormat)
+        qconfig.setValue('configuraciones/gui/barra',
+            configuraciones.BARRA_HERRAMIENTAS_ITEMS)
         distribuidor.Distribuidor(self).recargar_barra_de_herramientas()
