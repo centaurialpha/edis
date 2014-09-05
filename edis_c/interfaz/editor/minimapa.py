@@ -74,7 +74,7 @@ class MiniMapa(QPlainTextEdit):
         self.actualizar_area_visible()
 
     def set_code(self, codigo):
-        self.setPlainText(unicode(codigo))
+        self.setPlainText(codigo)
         self.calcular_max()
 
     def actualizar_area_visible(self):

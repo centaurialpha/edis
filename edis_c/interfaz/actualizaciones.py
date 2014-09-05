@@ -80,8 +80,12 @@ class Hilo(QThread):
         super(Hilo, self).__init__()
 
     def run(self):
-        version_ = urllib.urlopen(edis_c.__actualizar__)
-        edis = parsear(version_)
+        edis = {}
+        try:
+            version_ = urllib.urlopen(edis_c.__actualizar__)
+            edis = parsear(version_)
+        except:
+            raise("No hay conexión!")
         self.emit(SIGNAL("versionEdis(QString, QString)"),
                   edis.get('version', '0'), edis.get('descarga', ''))
 

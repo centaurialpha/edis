@@ -31,6 +31,7 @@ except:
 
 # Módulos QtGui
 from PyQt4.QtGui import QPlainTextEdit
+from PyQt4.QtGui import QBrush
 from PyQt4.QtGui import QTextEdit
 from PyQt4.QtGui import QColor
 from PyQt4.QtGui import QFontMetricsF
@@ -163,7 +164,8 @@ class Editor(QPlainTextEdit, tabitem.TabItem):
 
     def cargar_id(self, id_):
         super(Editor, self).cargar_id(id_)
-        self.minimapa.set_code(self.toPlainText())
+        if self.minimapa:
+            self.minimapa.set_code(unicode(self.toPlainText()))
 
     def estilo_editor(self):
         """ Aplica estilos de colores al editor """
@@ -277,7 +279,9 @@ class Editor(QPlainTextEdit, tabitem.TabItem):
             offset = self.contentOffset()
             pintar = QPainter()
             pintar.begin(self.viewport())
-            color = QColor(200, 200, 0)
+            color = QColor('gray')
+            brush = QBrush(color, 10)
+            pintar.setBackground(brush)
             color.setAlpha(100)
             pintar.setPen(color)
             pintar.pen().setCosmetic(True)

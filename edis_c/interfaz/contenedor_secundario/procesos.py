@@ -80,7 +80,7 @@ class EjecutarWidget(QWidget):
             self.ejecucion_error)
 
     def correr_compilacion(self, nombre_archivo=''):
-        """ Se corre el comando clang para la compilación """
+        """ Se corre el comando gcc para la compilación """
 
         # Dirección del archivo a compilar
         self.nombre_archivo = nombre_archivo
@@ -116,18 +116,21 @@ class EjecutarWidget(QWidget):
         self.output.textCursor().insertBlock()
 
         # Comenzar proceso
+        #FIXME: moverlo a un check temporal (?
         if not ensamblador['Ens']:
             parametros_gcc = ['-Wall', '-o']
             inicio = time.time()
-            self.proceso.start('clang', parametros_gcc + [self.ejecutable] +
+            self.proceso.start('gcc', parametros_gcc + [self.ejecutable] +
                 parametros_add + [self.nombre_archivo])
             fin = time.time()
+            #FIXME: test!
+            self.tiempo = fin - inicio
         else:
             parametros_gcc = ['-Wall']
-            self.proceso.start('clang', parametros_gcc +
+            self.proceso.start('gcc', parametros_gcc +
                 parametros_add + [self.nombre_archivo])
+        #FIXME: revisar!
         self.compilado = True
-        self.tiempo = fin - inicio
 
     def ejecucion_terminada(self, codigoError, exitStatus):
         """ valores de codigoError
