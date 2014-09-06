@@ -74,6 +74,7 @@ class TabCentral(QTabWidget):
         @icono: ícono para la pestaña.
         @titulo: texto de la pestaña.
         """
+
         tab = self.addTab(widget, QIcon(icono), titulo)
         self.setCurrentIndex(tab)
         widget.setFocus()
@@ -91,7 +92,7 @@ class TabCentral(QTabWidget):
             self.removeTab(0)
 
     def cerrar_excepto_actual(self):
-        """ Cierrar todas las pestañas excepto la pestaña actual.
+        """ Cierra todas las pestañas excepto la pestaña actual.
         """
 
         self.tabBar().moveTab(self.currentIndex(), 0)

@@ -60,19 +60,15 @@ from edis_c.interfaz.widgets import line_busqueda
 from edis_c.interfaz.dialogos import buscar_en_archivos
 
 
-__instanciaIde = None
-
-
-# Singleton
-def IDE(*args, **kw):
-    global __instanciaIde
-    if __instanciaIde is None:
-        __instanciaIde = __IDE(*args, **kw)
-    return __instanciaIde
-
-
-class __IDE(QMainWindow):
+class IDE(QMainWindow):
     """ Aplicación principal """
+
+    instancia = None
+
+    def __new__(cls, *args, **kargs):
+        if cls.instancia is None:
+            cls.instancia = QMainWindow.__new__(cls, *args, **kargs)
+        return cls.instancia
 
     def __init__(self):
         QMainWindow.__init__(self)
@@ -84,11 +80,12 @@ class __IDE(QMainWindow):
         self.posicionar_ventana(get_pantalla)
         self.showMaximized()
 
+        # Distribuidor
+        self.distribuidor = Distribuidor()
         # Widget Central
         self.widget_Central = widget_central.WidgetCentral(self)
         self.cargar_ui(self.widget_Central)
         self.setCentralWidget(self.widget_Central)
-
         # ToolBar
         self.toolbar = QToolBar(self)
         self.toolbar_busqueda = QToolBar(self)
@@ -112,8 +109,6 @@ class __IDE(QMainWindow):
         self.barra_de_estado = barra_de_estado.BarraDeEstado(self)
         #self.barra_de_estado.hide()
         self.setStatusBar(self.barra_de_estado)
-        # Distribuidor
-        self.distribuidor = Distribuidor(self)
         # Menu
         menu = self.menuBar()
         archivo = menu.addMenu(self.tr("&Archivo"))
@@ -149,6 +144,9 @@ class __IDE(QMainWindow):
 
         if configuraciones.PAGINA_BIENVENIDA:
             self.contenedor_principal.mostrar_pagina_de_bienvenida()
+        # Iniciar distribuidor despues de la interfáz
+        #FIXME: arreglar !!
+        self.distribuidor.ini_ide(self)
 
     def posicionar_ventana(self, pantalla):
         """ Posiciona la ventana en el centro de la pantalla. """
@@ -224,7 +222,7 @@ class __IDE(QMainWindow):
         items.update(self._menu_ver.items_toolbar)
         items.update(self._menu_herramientas.items_toolbar)
         items.update(self._menu_ejecucion.items_toolbar)
-
+        print("SISI")
         for i in configuraciones.BARRA_HERRAMIENTAS_ITEMS:
             if i == 'separador':
                 self.toolbar.addSeparator()

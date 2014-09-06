@@ -98,19 +98,21 @@ class MenuEditar(QObject):
             slot=self.convertir_a_minusculas)
         # Convertir a título
         self.accionTitulo = crear_accion(self, "Convertir a título",
-            slot=self.convertir_a_titulo)
+            atajo=_ATAJO['titulo'], slot=self.convertir_a_titulo)
         menu_editar.addSeparator()
         # Eliminar línea
         self.accionEliminarLinea = crear_accion(self, "Eliminar línea",
-            slot=self.eliminar_linea)
+            atajo=_ATAJO['eliminar'], slot=self.eliminar_linea)
         # Duplicar línea
         self.accionDuplicarLinea = crear_accion(self, "Duplicar línea",
-            self.duplicar_linea, slot=self.duplicar_linea)
+            self.duplicar_linea, atajo=_ATAJO['duplicar'],
+            slot=self.duplicar_linea)
         # Comentar
-        self.accionComentar = crear_accion(self, "Comentar", slot=self.comentar)
+        self.accionComentar = crear_accion(self, "Comentar",
+            atajo=_ATAJO['comentar'], slot=self.comentar)
         # Descomentar
         self.accionDescomentar = crear_accion(self, "Descomentar",
-            slot=self.descomentar)
+            atajo=_ATAJO['descomentar'], slot=self.descomentar)
         menu_editar.addSeparator()
         # Preferencias
         self.accionConfiguracion = crear_accion(self, "Preferencias",

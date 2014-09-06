@@ -379,7 +379,8 @@ class __ContenedorMain(QSplitter):
         try:
             editorW.guardado_actualmente = True
             nombre = str(QFileDialog.getSaveFileName(
-                self.parent, self.tr("Guardar"), direc, '(*.c);;(*.*)'))
+                self.parent, self.tr("Guardar"), direc,
+                '(*.c);;(*.h);;(*.*)'))
             if not nombre:
                 return False
 

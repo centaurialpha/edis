@@ -40,7 +40,7 @@ from PyQt4.QtCore import QSize
 # Módulos EDIS
 from edis_c import recursos
 from edis_c.nucleo import configuraciones
-from edis_c.interfaz import distribuidor
+#from edis_c.interfaz import distribuidor
 
 
 class TabGUI(QWidget):
@@ -221,4 +221,4 @@ class TabGUI(QWidget):
         qconfig = QSettings(recursos.CONFIGURACION, QSettings.IniFormat)
         qconfig.setValue('configuraciones/gui/barra',
             configuraciones.BARRA_HERRAMIENTAS_ITEMS)
-        distribuidor.Distribuidor(self).recargar_barra_de_herramientas()
+        #distribuidor.Distribuidor().recargar_barra_de_herramientas()  # bug!

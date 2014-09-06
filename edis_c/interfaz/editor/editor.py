@@ -549,6 +549,7 @@ class Editor(QPlainTextEdit, tabitem.TabItem):
     def _auto_indentar(self, evento):
         """ Inserta automáticamente 4 espacios después de presionar Enter,
         previamente escrito '{' """
+
         if configuraciones.CHECK_AUTOINDENTACION:
             texto = self.textCursor().block().previous().text()
             espacios = self.__indentacion(texto, configuraciones.INDENTACION)
@@ -676,6 +677,8 @@ class Editor(QPlainTextEdit, tabitem.TabItem):
             self.actualizar_margen_linea(fuente)
 
     def acercar(self):
+        """ Aumenta el tamaño de la fuente y actualiza el márgen. """
+
         fuente = self.document().defaultFont()
         tam = fuente.pointSize()
 
@@ -687,6 +690,8 @@ class Editor(QPlainTextEdit, tabitem.TabItem):
         self.actualizar_margen_linea(fuente)
 
     def alejar(self):
+        """ Disminuye el tamaño de la fuente y actualiza el márgen. """
+
         fuente = self.document().defaultFont()
         tam = fuente.pointSize()
 
@@ -742,6 +747,8 @@ class Editor(QPlainTextEdit, tabitem.TabItem):
                 break
 
     def indentar_mas(self):
+        """ Inserta indentación a un bloque de código. """
+
         cursor = self.textCursor()
         bloque = self.document().findBlock(cursor.selectionStart())
         fin = self.document().findBlock(cursor.selectionEnd()).next()
@@ -758,6 +765,8 @@ class Editor(QPlainTextEdit, tabitem.TabItem):
         cursor.endEditBlock()
 
     def indentar_menos(self):
+        """ Quita indentación a un bloque de código. """
+
         cursor = self.textCursor()
         if not cursor.hasSelection():
             cursor.movePosition(QTextCursor.EndOfLine)

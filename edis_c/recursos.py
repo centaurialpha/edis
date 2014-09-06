@@ -156,6 +156,11 @@ ATAJOS = {
     "quitar-indentacion": QKeySequence(Qt.SHIFT + Qt.Key_Tab),
     "mover-arriba": QKeySequence(Qt.ALT + Qt.Key_Up),
     "mover-abajo": QKeySequence(Qt.ALT + Qt.Key_Down),
+    "comentar": QKeySequence(Qt.CTRL + Qt.Key_D),
+    "descomentar": QKeySequence(Qt.CTRL + Qt.SHIFT + Qt.Key_D),
+    "titulo": QKeySequence(Qt.CTRL + Qt.Key_T),
+    "eliminar": QKeySequence(Qt.CTRL + Qt.SHIFT + Qt.Key_X),
+    "duplicar": QKeySequence(Qt.ALT + Qt.Key_D),
     # Ver
     "fullscreen": QKeySequence(Qt.CTRL + Qt.Key_F11),
     "ocultar-todo": QKeySequence(Qt.Key_F11),
