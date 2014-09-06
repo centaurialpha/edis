@@ -106,7 +106,7 @@ class __IDE(QMainWindow):
 
         self.tray = actualizaciones.Actualizacion(self)
         self.tray.show()
-
+        # Notificaciones
         self.noti = notificacion.Notificacion(self)
         # Barra de estado
         self.barra_de_estado = barra_de_estado.BarraDeEstado(self)
@@ -139,9 +139,9 @@ class __IDE(QMainWindow):
         self.connect(self.contenedor_principal,
             SIGNAL("recentTabsModified(QStringList)"),
             self._menu_archivo.actualizar_archivos_recientes)
-        self.connect(self.contenedor_principal, SIGNAL("fileSaved(QString)"),
-            self.mostrar_barra_de_estado)
-        self.connect(self._menu_archivo, SIGNAL("openFile(QString)"),
+        self.connect(self.contenedor_principal,
+            SIGNAL("archivoGuardado(QString)"), self.mostrar_barra_de_estado)
+        self.connect(self._menu_archivo, SIGNAL("abrirArchivo(QString)"),
             self.contenedor_principal.abrir_archivo)
 
         # Método para cargar items en las toolbar
@@ -298,11 +298,10 @@ class __IDE(QMainWindow):
             tema = q.read()
         QApplication.instance().setStyleSheet(tema)
 
-    def load_session(self, archivosPrincipales, archivo_actual,
-        archivos_recientes=None):
+    def cargar_sesion(self, archivosPrincipales, archivos_recientes=None):
+        """ Carga archivos desde la última sesión. """
+
         self.contenedor_principal.abrir_archivos(archivosPrincipales)
-        if archivo_actual:
-            self.contenedor_principal.abrir_archivo(archivo_actual)
         if archivos_recientes:
             self._menu_archivo.actualizar_archivos_recientes(archivos_recientes)
 
@@ -341,16 +340,11 @@ class __IDE(QMainWindow):
                         Popen(instalador)
 
     def guardar_configuraciones(self):
-        qconfig = QSettings()
-        Weditor = self.contenedor_principal.devolver_editor_actual()
-        archivo_act = ''
-        if Weditor is not None:
-            archivo_act = Weditor.iD
+        qconfig = QSettings(recursos.CONFIGURACION, QSettings.IniFormat)
         archivosAbiertos_ = self.contenedor_principal.get_documentos_abiertos()
         if qconfig.value('configuraciones/general/cargarArchivos',
             True).toBool():
                 qconfig.setValue('archivosAbiertos/mainTab',
                     archivosAbiertos_[0])
-                qconfig.setValue('archivosAbiertos/archivoActual', archivo_act)
                 qconfig.setValue('archivosAbiertos/archivosRecientes',
-                    self.contenedor_principal.tab_principal.get_rf())
+                    self.contenedor_principal.tab.get_archivos_recientes)

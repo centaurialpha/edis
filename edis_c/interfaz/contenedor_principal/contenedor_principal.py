@@ -66,22 +66,21 @@ class __ContenedorMain(QSplitter):
         QSplitter.__init__(self, parent)
 
         self.parent = parent
-        self.tab_principal = tab_widget.TabCentral(self)
+        self.tab = tab_widget.TabCentral(self)
         self.setAcceptDrops(True)
-        self.addWidget(self.tab_principal)
+        self.addWidget(self.tab)
         self.setSizes([1, 1])
         self.setFixedSize(0, 450)
-        self.tab_actual = self.tab_principal
         highlighter_.re_estilo(recursos.NUEVO_TEMA)
-    #    self.connect(self.tab_principal, SIGNAL("currentChanged(int)"),
-     #       self.tab_actual_cambiado)
-        self.connect(self.tab_principal, SIGNAL("saveActualEditor()"),
-            self.guardar_archivo)
-        self.connect(self.tab_principal, SIGNAL("currentChanged(int)"),
+        self.connect(self.tab, SIGNAL("currentChanged(int)"),
             self.tab_actual_cambiado)
-        self.tab_principal.boton.accionCrear.triggered.connect(
+        self.connect(self.tab, SIGNAL("saveActualEditor()"),
+            self.guardar_archivo)
+        self.connect(self.tab, SIGNAL("currentChanged(int)"),
+            self.tab_actual_cambiado)
+        self.tab.boton.accionCrear.triggered.connect(
             lambda: self.agregar_editor(''))
-        self.connect(self.tab_principal,
+        self.connect(self.tab,
             SIGNAL("recentTabsModified(QStringList)"),
             self.archivos_recientes_cambiado)
 
@@ -106,6 +105,7 @@ class __ContenedorMain(QSplitter):
             icono = False
         else:
             nombre_tab = manejador_de_archivo._nombreBase(nombre_archivo)
+            # Extensión del archivo
             ext = nombre_tab.strip('.')[-1]
             if ext == 'c':
                 icono = recursos.ICONOS['main']
@@ -115,11 +115,11 @@ class __ContenedorMain(QSplitter):
                 icono = False
 
         indice = self.agregar_tab(editorWidget, icono, nombre_tab)
-        self.tab_actual.setTabToolTip(indice,
+        self.tab.setTabToolTip(indice,
             QDir.toNativeSeparators(nombre_archivo))
         self.connect(editorWidget, SIGNAL("modificationChanged(bool)"),
             self.editor_es_modificado)
-        self.connect(editorWidget, SIGNAL("fileSaved(QPlainTextEdit)"),
+        self.connect(editorWidget, SIGNAL("archivoGuardado(QPlainTextEdit)"),
             self.editor_es_guardado)
         self.connect(editorWidget, SIGNAL("openDropFile(QString)"),
             self.abrir_archivo)
@@ -133,37 +133,37 @@ class __ContenedorMain(QSplitter):
         self.emit(SIGNAL("editorKeyPressEvent(QEvent)"), evento)
 
     def editor_es_modificado(self, v=True):
-        self.tab_actual.tab_es_modificado(v)
+        self.tab.tab_es_modificado(v)
 
     def editor_es_guardado(self, editorW=None):
-        self.tab_actual.tab_guardado(editorW)
+        self.tab.tab_guardado(editorW)
 
     def check_tabs_sin_guardar(self):
-        return self.tab_principal.check_tabs_sin_guardar()
+        return self.tab.check_tabs_sin_guardar()
 
     def devolver_archivos_sin_guardar(self):
         """ Retorna una lista con archivos sin guardar. """
 
-        return self.tab_principal.devolver_archivos_sin_guardar()
+        return self.tab.devolver_archivos_sin_guardar()
 
     def agregar_tab(self, widget, icono, nombre_tab, nAbierta=True):
         """ Se llama al método agregar_tab de la clase TabCentral
         retorna QTabWidget.
         """
 
-        return self.tab_actual.agregar_tab(widget, icono, nombre_tab)
+        return self.tab.agregar_tab(widget, icono, nombre_tab)
 
     def devolver_widget_actual(self):
         """ Retorna QTabWidget actual. """
 
-        return self.tab_actual.currentWidget()
+        return self.tab.currentWidget()
 
     def devolver_editor_actual(self):
         """ Si el widget es una instancia de QPlainTextEdit se lo retorna,
         de lo contrario se retorna None.
         """
 
-        e = self.tab_actual.currentWidget()
+        e = self.tab.currentWidget()
         if isinstance(e, editor.Editor):
             return e
         else:
@@ -215,8 +215,8 @@ class __ContenedorMain(QSplitter):
             editorW.indentar_menos()
 
     def actualizar_margen_editor(self):
-        for i in range(self.tab_principal.count()):
-            widget = self.tab_principal.widget(i)
+        for i in range(self.tab.count()):
+            widget = self.tab.widget(i)
             #if type(widget) is editor.Editor:
             if isinstance(widget, editor.Editor):
                 widget.actualizar_margen_linea()
@@ -240,27 +240,27 @@ class __ContenedorMain(QSplitter):
     def cerrar_tab(self):
         """ Se llama al método removeTab de QTabWidget. """
 
-        self.tab_actual.cerrar_tab()
+        self.tab.cerrar_tab()
 
     def cerrar_todo(self):
-        self.tab_actual.cerrar_todo()
+        self.tab.cerrar_todo()
 
     def cerrar_excepto_actual(self):
-        self.tab_actual.cerrar_excepto_actual()
+        self.tab.cerrar_excepto_actual()
 
     def actual_widget(self):
-        return self.tab_actual.currentWidget()
+        return self.tab.currentWidget()
 
     def tab_actual_cambiado(self, indice):
-        if self.tab_actual.widget(indice):
+        if self.tab.widget(indice):
             self.emit(SIGNAL("currentTabChanged(QString)"),
-                self.tab_actual.widget(indice)._id)
+                self.tab.widget(indice)._id)
 
     def cambiar_nombre_de_tab(self, aidi, nuevoId):
-        indice_tab = self.tab_principal.esta_abierto(aidi)
+        indice_tab = self.tab.esta_abierto(aidi)
         if indice_tab is not False:
-            w = self.tab_principal.w(indice_tab)
-            TAB = self.tab_principal
+            w = self.tab.w(indice_tab)
+            TAB = self.tab
 
         nombre_de_tab = manejador_de_archivo._nombreBase(nuevoId)
         TAB.cambiar_nombre_de_tab(indice_tab, nombre_de_tab)
@@ -269,7 +269,7 @@ class __ContenedorMain(QSplitter):
     def cambiar_indice_de_tab(self):
         Weditor = self.parent.contenedor_principal.devolver_editor_actual()
         if Weditor is not None and Weditor.hasFocus():
-            contenedor = self.parent.contenedor_principal.tab_actual
+            contenedor = self.parent.contenedor_principal.tab
         else:
             return None
         obj = self.sender()
@@ -277,9 +277,10 @@ class __ContenedorMain(QSplitter):
             contenedor.setCurrentIndex(obj.indice)
 
     def abrir_archivos(self, archivos):
-        self.tab_actual = self.tab_principal
         for data in archivos:
-            self.abrir_archivo(unicode(data[0]), data[1])
+            if not data:
+                return
+            self.abrir_archivo(data[0])
 
     def abrir_archivo(self, nombre=''):
         extension = recursos.EXTENSIONES  # Filtro
@@ -303,22 +304,38 @@ class __ContenedorMain(QSplitter):
 
         for nombre in nombres:
             nombre = unicode(nombre)
-            self.tab_actual.no_esta_abierto = False
             #contenido = self.leer_contenido_archivo(nombre)
-            contenido = manejador_de_archivo.leer_contenido_de_archivo(
-                nombre)
-            editorW = self.agregar_editor(nombre)
-            editorW.setPlainText(contenido.decode('utf-8'))
-            editorW.iD = nombre
+            if not self.abierto(nombre):
+                self.tab.no_esta_abierto = False
+                contenido = manejador_de_archivo.leer_contenido_de_archivo(
+                    nombre)
+                editorW = self.agregar_editor(nombre)
+                editorW.setPlainText(contenido.decode('utf-8'))
+                editorW.iD = nombre
 
-            # Reemplaza tabulaciones por espacios en blanco
-            editorW.tabulaciones_por_espacios_en_blanco()
-            editorW.nuevo_archivo = False
+                # Reemplaza tabulaciones por espacios en blanco
+                editorW.tabulaciones_por_espacios_en_blanco()
+                editorW.nuevo_archivo = False
+            else:
+                self.mover_abierto(nombre)
         self.emit(SIGNAL("currentTabChanged(QString)"), nombre)
-        self.tab_actual.no_esta_abierto = True
+        self.tab.no_esta_abierto = True
+
+    def abierto(self, archivo):
+        """ Comprueba si el archivo ya esta abierto. """
+
+        t = self.tab.abierto(archivo)
+        if t is not False:
+            return t
+
+    def mover_abierto(self, archivo):
+        if self.tab.abierto(archivo) != -1:
+            self.tab.mover_abierto(archivo)
+        self.tab.currentWidget().setFocus()
+        self.emit(SIGNAL("currentTabChanged(QString)"), archivo)
 
     def get_documentos_abiertos(self):
-        return [self.tab_principal.devolver_documentos_para_reabrir()]
+        return [self.tab.devolver_documentos_para_reabrir()]
 
     def guardar_archivo(self, editorW=None):
         if not editorW:
@@ -341,7 +358,7 @@ class __ContenedorMain(QSplitter):
             manejador_de_archivo.escribir_archivo(nombre, contenido)
             editorW.iD = nombre
 
-            self.emit(SIGNAL("fileSaved(QString)"), self.tr(
+            self.emit(SIGNAL("archivoGuardado(QString)"), self.tr(
                 "Guardado: %0 en %1").arg((nombre).split('/')[-1],
                 carpeta_de_archivo))
 
@@ -374,14 +391,14 @@ class __ContenedorMain(QSplitter):
                 icono = recursos.ICONOS['main']
             else:
                 icono = recursos.ICONOS['cabecera']
-            self.tab_actual.setTabText(self.tab_actual.currentIndex(),
+            self.tab.setTabText(self.tab.currentIndex(),
                 manejador_de_archivo._nombreBase(nombre))
-            self.tab_actual.setTabIcon(self.tab_actual.currentIndex(),
+            self.tab.setTabIcon(self.tab.currentIndex(),
                 QIcon(icono))
             editorW.iD = nombre
 
             # Señal de guardado para la barra de estado
-            self.emit(SIGNAL("fileSaved(QString)"),
+            self.emit(SIGNAL("archivoGuardado(QString)"),
                 self.tr("Guardado: %1").arg(nombre))
             editorW._guardado()
 
@@ -390,24 +407,21 @@ class __ContenedorMain(QSplitter):
         except:
             #pass
             editorW.guardado_actualmente = False
-            self.tab_actual.setTabText(self.tab_actual.currentIndex(),
+            self.tab.setTabText(self.tab.currentIndex(),
                 self.trUtf8("Nuevo archivo"))
         return False
 
     def guardar_todo(self):
 
-        for i in range(self.tab_principal.count()):
-            editorW = self.tab_principal.widget(i)
+        for i in range(self.tab.count()):
+            editorW = self.tab.widget(i)
 
             if isinstance(editorW, editor.Editor):
                 self.guardar_archivo(editorW)
 
-    def esta_abierto(self, nombre):
-        return self.tab_principal.esta_abierto(nombre) is not False
-
     def resetear_flags_editor(self):
-        for i in range(self.tab_principal.count()):
-            widget = self.tab_principal.widget(i)
+        for i in range(self.tab.count()):
+            widget = self.tab.widget(i)
             if isinstance(widget, editor.Editor):
                 widget.set_flags()
 

@@ -75,11 +75,6 @@ class MenuArchivo(QObject):
         self.accionExportarComoPDF = crear_accion(self, "Exportar a PDF",
             icono=_ICONO['exportar'],
             slot=self.ide.distribuidor.exportar_como_pdf)
-        # Archivos recientes
-        self.archivos_recientes = menu_archivo.addMenu(
-            self.trUtf8("Archivos recientes"))
-        self.connect(self.archivos_recientes, SIGNAL("triggered(QAction*)"),
-            self._abrir_archivo)
         # Cerrar
         self.accionCerrarTab = crear_accion(self, "Cerrar",
             icono=_ICONO['cerrar'], atajo=_ATAJO['cerrar-tab'],
@@ -102,6 +97,11 @@ class MenuArchivo(QObject):
         menu_archivo.addSeparator()
         self.accionNuevoDesdePlantilla.addAction(self.accionNuevoMain)
         menu_archivo.addAction(self.accionAbrir)
+        # Archivos recientes
+        self.archivos_recientes = menu_archivo.addMenu(
+            self.trUtf8("Archivos recientes"))
+        self.connect(self.archivos_recientes, SIGNAL("triggered(QAction*)"),
+            self._abrir_archivo)
         menu_archivo.addSeparator()
         menu_archivo.addAction(self.accionGuardar)
         menu_archivo.addAction(self.accionGuardarComo)
@@ -127,12 +127,12 @@ class MenuArchivo(QObject):
 
     def _abrir_archivo(self, accion):
         path = accion.text()
-        self.emit(SIGNAL("openFile(QString)"), path)
+        self.emit(SIGNAL("abrirArchivo(QString)"), path)
 
     def actualizar_archivos_recientes(self, archivos):
         self.archivos_recientes.clear()
         for i in range(len(archivos)):
-            self.archivos_recientes.addAction(archivos[i])
+            self.archivos_recientes.addAction(unicode(archivos[i]))
 
     def archivo_main_c(self):
         widget = self.ide.contenedor_principal.devolver_widget_actual()

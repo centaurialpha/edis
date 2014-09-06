@@ -15,17 +15,26 @@
 
 # You should have received a copy of the GNU General Public License
 # along with EDIS-C.  If not, see <http://www.gnu.org/licenses/>.
+
+# Módulos Python
 import sys
 
-from PyQt4.QtCore import QCoreApplication
+# Módulos QtGui
 from PyQt4.QtGui import QIcon
 from PyQt4.QtGui import QStyleFactory
 from PyQt4.QtGui import QApplication
+from PyQt4.QtGui import QSplashScreen
+from PyQt4.QtGui import QPixmap
+
+# Módulos QtCore
+from PyQt4.QtCore import Qt
+from PyQt4.QtCore import QCoreApplication
 from PyQt4.QtCore import QLocale
 from PyQt4.QtCore import QTranslator
 from PyQt4.QtCore import QLibraryInfo
 from PyQt4.QtCore import QSettings
 
+# Módulos EDIS
 from edis_c.nucleo import configuraciones
 from edis_c import recursos
 from edis_c.interfaz.ide.Ide import IDE
@@ -44,7 +53,7 @@ __actualizar__ = \
 
 # Correr Interfáz
 def edis(app):
-    qconfig = QSettings()
+    qconfig = QSettings(recursos.CONFIGURACION, QSettings.IniFormat)
     QCoreApplication.setOrganizationName('EDIS-C')
     QCoreApplication.setOrganizationDomain('EDIS-C')
     QCoreApplication.setApplicationName('EDIS-C')
@@ -55,10 +64,10 @@ def edis(app):
     estilo = list(QStyleFactory.keys()).pop()
     QApplication.setStyle(QStyleFactory.create(estilo))
     # Splash
-#    imagen_splash = QPixmap(':imagenes/splash')
-#    splash = QSplashScreen(imagen_splash, Qt.WindowStaysOnTopHint)
-#    splash.setMask(imagen_splash.mask())
-#    splash.show()
+    imagen_splash = QPixmap(recursos.ICONOS['splash'])
+    splash = QSplashScreen(imagen_splash, Qt.WindowStaysOnTopHint)
+    splash.setMask(imagen_splash.mask())
+    splash.show()
 
     app.processEvents()
 
@@ -73,25 +82,38 @@ def edis(app):
     configuraciones.cargar_configuraciones()
 
     edis = IDE()
+    # Splash GUI
+    splash.showMessage("Cargando GUI...",
+        Qt.AlignCenter | Qt.AlignTop, Qt.black)
     edis.show()
+
+    # Splash para la carga de archivos, recientes...
+    splash.showMessage("Cargando archivos",
+        Qt.AlignCenter | Qt.AlignTop, Qt.black)
     archivos_principales = qconfig.value('archivosAbiertos/mainTab',
-        []).toList()
+                                        []).toList()
     tmp = []
     for archivo in archivos_principales:
         data = archivo.toList()
-        if data:
-            tmp.append((unicode(data[0].toString()), data[1].toInt()[0]))
+        tmp.append((unicode(data[0].toString()),
+            data[1].toInt()[0]))
     archivos_principales = tmp
+
     # Archivos recientes
     recent = qconfig.value('archivosAbiertos/archivosRecientes', []).toList()
+    # Pasar de QVariant a String la lista de archivos recientes
+    tmp_re = []
+    for i in recent:
+        data = i.toString()
+        tmp_re.append(data)
+    recent = tmp_re
     if recent is not None:
         archivos_recientes = list(recent)
     else:
         archivos_recientes = list()
     archivos_recientes = [archivo for archivo in archivos_recientes]
 
-    archivo_actual = unicode(
-        qconfig.value('archivosAbiertos/archivoActual', '').toString())
-    edis.load_session(archivos_principales, archivo_actual, archivos_recientes)
+    edis.cargar_sesion(archivos_principales, archivos_recientes)
 
+    splash.finish(edis)  # Quitar splash
     sys.exit(app.exec_())

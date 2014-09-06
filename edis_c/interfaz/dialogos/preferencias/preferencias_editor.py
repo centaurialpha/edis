@@ -307,8 +307,9 @@ class CaracteristicasEditor(QWidget):
         configuraciones.MODO_ENVOLVER = self.checkWrap.isChecked()
         qconfig.setValue('sidebar', self.checkSideBar.isChecked())
         configuraciones.SIDEBAR = self.checkSideBar.isChecked()
+        qconfig.setValue('configuraciones/editor/mini',
+            self.checkMini.isChecked())
         configuraciones.MINIMAPA = self.checkMini.isChecked()
-        qconfig.setValue('mini', configuraciones.MINIMAPA)
         configuraciones.MINI_TAM = self.spinTamanio.value() / 100.0
         qconfig.setValue('miniTam', configuraciones.MINI_TAM)
         qconfig.setValue('opac_min', configuraciones.OPAC_MIN)

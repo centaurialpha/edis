@@ -20,10 +20,12 @@
 # Módulos QtGui
 from PyQt4.QtGui import QWidget
 from PyQt4.QtGui import QVBoxLayout
+from PyQt4.QtGui import QHBoxLayout
 from PyQt4.QtGui import QGridLayout
 from PyQt4.QtGui import QGroupBox
 from PyQt4.QtGui import QLabel
 from PyQt4.QtGui import QCheckBox
+from PyQt4.QtGui import QSpinBox
 from PyQt4.QtGui import QComboBox
 from PyQt4.QtGui import QPushButton
 from PyQt4.QtGui import QTabWidget
@@ -70,6 +72,7 @@ class ConfiguracionGeneral(QWidget):
         layoutV = QVBoxLayout(self)
 
         grupoAlInicio = QGroupBox(self.trUtf8("Al iniciar:"))
+        grupoRecientes = QGroupBox(self.trUtf8("Archivos recientes:"))
         grupoAlCerrar = QGroupBox(self.trUtf8("Al cerrar:"))
         grupoIdioma = QGroupBox(self.trUtf8("Idioma:"))
         grupoReestablecer = QGroupBox(
@@ -87,6 +90,13 @@ class ConfiguracionGeneral(QWidget):
             0, 0, alignment=Qt.AlignLeft)
         grillaAlInicio.addWidget(self.checkUltimaSesion,
             0, 1, alignment=Qt.AlignLeft)
+
+        # Archivos recientes
+        layoutRecientes = QHBoxLayout(grupoRecientes)
+        self.spinArchivosRecientes = QSpinBox()
+        self.spinArchivosRecientes.setMinimum(configuraciones.MAX_RECIENTES)
+        self.spinArchivosRecientes.setMaximum(20)
+        layoutRecientes.addWidget(self.spinArchivosRecientes)
 
         # Al cerrar EDIS
         grillaAlCerrar = QGridLayout(grupoAlCerrar)
@@ -109,12 +119,15 @@ class ConfiguracionGeneral(QWidget):
             self.trUtf8("<i>Reiniciar para ver cambios.</i>")))
 
         # Configuraciones
+        qconfig = QSettings(recursos.CONFIGURACION, QSettings.IniFormat)
         self.checkPaginaInicio.setChecked(configuraciones.PAGINA_BIENVENIDA)
         self.checkAlCerrar.setChecked(configuraciones.CONFIRMAR_AL_CERRAR)
-        #self.checkUltimaSesion.setChecked(
-            #qconfig.value('cargarArchivos', True, type=bool))
+        self.checkUltimaSesion.setChecked(
+            qconfig.value('configuraciones/general/cargarArchivos',
+                True, type=bool))
 
         layoutV.addWidget(grupoAlInicio)
+        layoutV.addWidget(grupoRecientes)
         layoutV.addWidget(grupoAlCerrar)
         layoutV.addWidget(grupoIdioma)
         layoutV.addWidget(grupoReestablecer)
@@ -134,7 +147,6 @@ class ConfiguracionGeneral(QWidget):
         self.comboIdioma.addItems(self.idiomas)
         if(self.comboIdioma.count() > 1):
             self.comboIdioma.setEnabled(True)
-        print configuraciones.IDIOMA
         if configuraciones.IDIOMA:
             i = self.comboIdioma.findText(configuraciones.IDIOMA)
         else:
@@ -153,6 +165,9 @@ class ConfiguracionGeneral(QWidget):
         configuraciones.CONFIRMAR_AL_CERRAR = self.checkAlCerrar.isChecked()
         qconfig.setValue('configuraciones/general/cargarArchivos',
             self.checkUltimaSesion.isChecked())
+        qconfig.setValue('configuraciones/general/cantRecientes',
+            self.spinArchivosRecientes.value())
+        configuraciones.MAX_RECIENTES = self.spinArchivosRecientes.value()
 
     def reestablecer(self):
         SI = QMessageBox.Yes
@@ -162,5 +177,5 @@ class ConfiguracionGeneral(QWidget):
             self.trUtf8("Quiere reestablecer las configuraciones?"),
             SI | NO)
         if r == SI:
-            QSettings().clear()
+            QSettings(recursos.CONFIGURACION, QSettings.IniFormat).clear()
             self.dialogo.close()

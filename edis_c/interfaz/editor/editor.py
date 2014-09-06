@@ -100,8 +100,8 @@ class Editor(QPlainTextEdit, tabitem.TabItem):
         self.guardado_actualmente = False
         self.widget_num_lineas = None
         self.highlighter = None
-        self.palabra_seleccionada = ''
         self.minimapa = None
+        self.palabra_seleccionada = ''
         self.braces = None
         self.extraSelections = []
         # Carga el tema de editor
@@ -162,10 +162,10 @@ class Editor(QPlainTextEdit, tabitem.TabItem):
             self.minimapa.highlighter = Highlighter(self.minimapa.document(),
                 recursos.NUEVO_TEMA)
 
-    def cargar_id(self, id_):
-        super(Editor, self).cargar_id(id_)
+    def set_id(self, id_):
+        super(Editor, self).set_id(id_)
         if self.minimapa:
-            self.minimapa.set_code(unicode(self.toPlainText()))
+            self.minimapa.set_code(self.toPlainText())
 
     def estilo_editor(self):
         """ Aplica estilos de colores al editor """
@@ -782,7 +782,7 @@ class Editor(QPlainTextEdit, tabitem.TabItem):
 
     def _guardado(self, uA=False):
         if not uA:
-            self.emit(SIGNAL("fileSaved(QPlainTextEdit)"), self)
+            self.emit(SIGNAL("archivoGuardado(QPlainTextEdit)"), self)
             self.nuevo_archivo = False
             self.texto_modificado = False
             self.document().setModified(self.texto_modificado)

@@ -33,8 +33,8 @@ from edis_c import recursos
 #                        MÁRGEN                                               #
 ###############################################################################
 MARGEN = 80
-MOSTRAR_MARGEN = False
-OPACIDAD_MARGEN = 17
+MOSTRAR_MARGEN = True
+OPACIDAD_MARGEN = 0
 ###############################################################################
 #                   SISTEMA OPERATIVO                                         #
 ###############################################################################
@@ -82,6 +82,7 @@ MINI_TAM = 0.17
 OPAC_MIN = 0.2
 OPAC_MAX = 0.9
 POSS = 0
+MAX_RECIENTES = 5
 SIDEBAR = True
 
 PAGINA_BIENVENIDA = True
@@ -200,9 +201,9 @@ def cargar_configuraciones():
     MARGEN = qsettings.value('configuraciones/editor/margenLinea', 80,
                              type=int)
     MOSTRAR_MARGEN = qsettings.value(
-        'configuraciones/editor/mostrarMargen', False, type=bool)
+        'configuraciones/editor/mostrarMargen', True, type=bool)
     OPACIDAD_MARGEN = int(qsettings.value(
-        'configuraciones/editor/opacidadMargen', 15, type=int))
+        'configuraciones/editor/opacidadMargen', 0, type=int))
     fuente_f = qsettings.value(
         'configuraciones/editor/fuente', "", type='QString')
     if fuente_f:
@@ -244,8 +245,6 @@ def cargar_configuraciones():
         'configuraciones/gui/barra', []).toList()]
     if items_barra:
         BARRA_HERRAMIENTAS_ITEMS = items_barra
-    #ULTIMA_SESION = qsettings.value('configuraciones/general/ultimaSesion',
-                                    #True, type=bool)
     comillas_simples = qsettings.value('configuraciones/editor/comillasS',
                                        True, type=bool)
 

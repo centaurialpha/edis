@@ -33,6 +33,7 @@ from PyQt4.QtCore import Qt
 
 # Módulos EDIS
 from edis_c import recursos
+from edis_c.nucleo import configuraciones
 from edis_c.interfaz.editor import editor
 
 
@@ -44,7 +45,7 @@ class TabCentral(QTabWidget):
         self.setMovable(True)
         self.setAcceptDrops(True)
         self.parent = parent
-        self._lastOpened = []
+        self._recientes = []
         self.no_esta_abierto = True
         self.boton = BotonTab()
         self.setCornerWidget(self.boton, Qt.TopLeftCorner)
@@ -55,17 +56,17 @@ class TabCentral(QTabWidget):
         self.boton.accionCerrarExcepto.triggered.connect(
             self.cerrar_excepto_actual)
 
-    def get_rf(self):
-        print("las", self._lastOpened)
-        return self._lastOpened
+    @property
+    def get_archivos_recientes(self):
+        return self._recientes
 
-    def _add_to_last_opened(self, path):
-        if path not in self._lastOpened:
-            self._lastOpened.append(path)
-            if len(self._lastOpened) > 3:
-                self._lastOpened = self._lastOpened[1:]
+    def _agregar_reciente_al_ultimo(self, path):
+        if path not in self._recientes:
+            self._recientes.append(path)
+            if len(self._recientes) > configuraciones.MAX_RECIENTES:
+                self._recientes = self._recientes[1:]
             self.emit(SIGNAL("recentTabsModified(QStringList)"),
-                self._lastOpened)
+                self._recientes)
 
     def agregar_tab(self, widget, icono, titulo):
         """ Agrega una pestaña
@@ -107,8 +108,27 @@ class TabCentral(QTabWidget):
             self.tabBar().setTabTextColor(self.currentIndex(),
                                           QColor(Qt.red))
 
+    def abierto(self, archivo):
+        """ Comprueba si el tab = archivo. Devuelve el indice del tab. """
+
+        for i in range(self.count()):
+            if self.widget(i)._id == archivo:
+                return i
+        return False
+
+    def mover_abierto(self, archivo):
+        """ Mueve el tab abierto si tab = archivo. Esto para no reabrir el
+            mismo archivo.
+        """
+
+        for i in range(self.count()):
+            if self.widget(i) == archivo:
+                self.setCurrentIndex(i)
+                return
+
     def tab_guardado(self, e):
         """ @e: valor booleano. """
+
         indice = self.indexOf(e)
         self.tabBar().setTabTextColor(indice, QColor(70, 70, 70))
 
@@ -130,7 +150,6 @@ class TabCentral(QTabWidget):
             and self.widget(i)._id != '':
                 archivos.append([self.widget(i)._id,
                                  self.widget(i).devolver_posicion_del_cursor()])
-        print(archivos)
         return archivos
 
     def devolver_archivos_sin_guardar(self):
@@ -189,8 +208,7 @@ class TabCentral(QTabWidget):
                 elif respuesta == CANCELAR:
                     return
             if type(w) is editor.Editor and w.iD:
-                print("si")
-                self._add_to_last_opened(w._id)
+                self._agregar_reciente_al_ultimo(w._id)
             super(TabCentral, self).removeTab(indice)
             if self.currentWidget() is not None:
                 self.currentWidget().setFocus()
