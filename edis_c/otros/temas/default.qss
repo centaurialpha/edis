@@ -39,12 +39,12 @@ QGroupBox::title
     padding: 5 10px;
 }
 
-SalidaWidget
+/*SalidaWidget
 {
-	font-family: monospace;
+    font-family: monospace;
     font-size: 10px;
     color: black;
     background-color: white;
     selection-color: white;
     selection-background-color: #437DCD;
-}
+}*/

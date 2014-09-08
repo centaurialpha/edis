@@ -48,6 +48,7 @@ class TabGeneral(QWidget):
 
     def __init__(self, parent):
         super(TabGeneral, self).__init__()
+        self.parent = parent
         layoutV = QVBoxLayout(self)
         layoutV.setContentsMargins(0, 0, 0, 0)
         self.tabs = QTabWidget()
@@ -68,7 +69,7 @@ class ConfiguracionGeneral(QWidget):
 
     def __init__(self, parent):
         super(ConfiguracionGeneral, self).__init__(parent)
-        self.dialogo = parent
+        self.dialogo = parent.parent
         layoutV = QVBoxLayout(self)
 
         grupoAlInicio = QGroupBox(self.trUtf8("Al iniciar:"))

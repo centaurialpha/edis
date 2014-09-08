@@ -20,6 +20,8 @@
 
 # Módulos QtGui
 from PyQt4.QtGui import QWidget
+from PyQt4.QtGui import QLCDNumber
+from PyQt4.QtGui import QSlider
 from PyQt4.QtGui import QGroupBox
 from PyQt4.QtGui import QGridLayout
 from PyQt4.QtGui import QLabel
@@ -37,6 +39,7 @@ from PyQt4.QtGui import QTabWidget
 
 # Módulos QtCore
 from PyQt4.QtCore import Qt
+from PyQt4.QtCore import SIGNAL
 from PyQt4.QtCore import QSettings
 
 # Módulos EDIS
@@ -77,129 +80,119 @@ class CaracteristicasEditor(QWidget):
         super(CaracteristicasEditor, self).__init__()
         layoutV = QVBoxLayout(self)
 
-        grupoCaracteristicas = QGroupBox(self.trUtf8("Características:"))
-        grupoMiniMapa = QGroupBox(self.trUtf8("Minimapa:"))
+        grupoMargen = QGroupBox(self.trUtf8("Márgen de línea:"))
+        grupoIndentacion = QGroupBox(self.trUtf8("Indentación:"))
+        grupoMinimapa = QGroupBox(self.trUtf8("Minimapa:"))
+        grupoExtras = QGroupBox(self.trUtf8("Extras:"))
         grupoTipoDeLetra = QGroupBox(self.trUtf8("Tipo de letra:"))
         grupoAutocompletado = QGroupBox(self.trUtf8("Autocompletado:"))
 
-        grillaCaracteristicas = QGridLayout(grupoCaracteristicas)
-        grillaCaracteristicas.setContentsMargins(5, 15, 5, 5)
-        # Check márgen
-        self.checkMargen = QCheckBox(self.trUtf8("Márgen de línea:"))
-        grillaCaracteristicas.addWidget(self.checkMargen, 0, 0)
+        # Márgen
+        boxMargen = QHBoxLayout(grupoMargen)
+        boxMargen.setContentsMargins(5, 5, 5, 0)
+        # Check
+        self.checkMargen = QCheckBox(self.trUtf8("Márgen: "))
+        boxMargen.addWidget(self.checkMargen)
         # Spin opacidad de fondo
         self.spinOpacidadMargen = QSpinBox()
         self.spinOpacidadMargen.setSuffix(self.trUtf8("% Opacidad"))
         self.spinOpacidadMargen.setRange(0, 100)
-        grillaCaracteristicas.addWidget(self.spinOpacidadMargen, 0, 3)
+        boxMargen.addWidget(self.spinOpacidadMargen)
+        # Slide márgen
+        self.slideMargen = QSlider(Qt.Horizontal)
+        self.slideMargen.setMaximum(200)
+        boxMargen.addWidget(self.slideMargen)
+        self.connect(self.slideMargen, SIGNAL("valueChanged(int)"),
+            lambda v: self.lcdMargen.display(v))
+        # LCD márgen
+        self.lcdMargen = QLCDNumber()
+        boxMargen.addWidget(self.lcdMargen)
 
-        # Spin márgen
-        self.spinMargen = QSpinBox()
-        self.spinMargen.setAlignment(Qt.AlignLeft)
-        self.spinMargen.setSuffix(self.trUtf8(" Caractéres"))
-        self.spinMargen.setMaximum(200)
-        grillaCaracteristicas.addWidget(self.spinMargen, 0, 1)
-
-        # Spin indentación
-        self.spinInd = QSpinBox()
-        self.spinInd.setSuffix(self.trUtf8(" Espacios"))
-        self.spinInd.setAlignment(Qt.AlignLeft)
-        self.spinInd.setMaximum(20)
-        grillaCaracteristicas.addWidget(self.spinInd, 1, 1)
-
+        # Indentación
+        boxIndentacion = QGridLayout(grupoIndentacion)
+        boxIndentacion.setContentsMargins(0, 0, 0, 0)
         # Check indentación
         self.checkInd = QCheckBox(self.trUtf8("Activar indentación"))
-        grillaCaracteristicas.addWidget(self.checkInd, 1, 0)
-
+        boxIndentacion.addWidget(self.checkInd, 1, 0)
+        self.sliderInd = QSlider(Qt.Horizontal)
+        self.sliderInd.setMaximum(20)
+        boxIndentacion.addWidget(self.sliderInd, 1, 1)
+        self.connect(self.sliderInd, SIGNAL("valueChanged(int)"),
+            lambda v: self.lcdInd.display(v))
+        self.lcdInd = QLCDNumber()
+        boxIndentacion.addWidget(self.lcdInd, 1, 2)
         # Check autoindentación
         self.checkAutoInd = QCheckBox(self.trUtf8("Activar autoindentación"))
-        grillaCaracteristicas.addWidget(self.checkAutoInd, 2, 0)
-
+        boxIndentacion.addWidget(self.checkAutoInd, 2, 0)
         # Guía indentación
         self.checkGuia = QCheckBox(self.trUtf8("Mostrar guía"))
-        grillaCaracteristicas.addWidget(self.checkGuia, 3, 3)
+        boxIndentacion.addWidget(self.checkGuia, 2, 1)
 
-        # Sidebar
+        # Extras
+        boxExtras = QGridLayout(grupoExtras)
+        boxExtras.setContentsMargins(0, 5, 0, 0)
         self.checkSideBar = QCheckBox(self.trUtf8("Mostrar números de línea"))
-        grillaCaracteristicas.addWidget(self.checkSideBar, 3, 0)
+        boxExtras.addWidget(self.checkSideBar, 4, 0)
 
         # Tabs y espacios
         self.checkTabs = QCheckBox(self.trUtf8("Mostrar tabs y espacios"))
-        grillaCaracteristicas.addWidget(self.checkTabs, 1, 3)
+        boxExtras.addWidget(self.checkTabs, 4, 1)
 
         # Wrap mode
         self.checkWrap = QCheckBox(self.trUtf8("Modo envolver"))
-        grillaCaracteristicas.addWidget(self.checkWrap, 2, 3)
+        boxExtras.addWidget(self.checkWrap, 5, 0)
 
         # Minimapa
-        grillaMini = QGridLayout(grupoMiniMapa)
+        grillaMini = QGridLayout(grupoMinimapa)
         grillaMini.setContentsMargins(5, 15, 5, 5)
         self.checkMini = QCheckBox(self.trUtf8("Activar minimapa"))
         self.spinMiniMin = QSpinBox()
         self.spinMiniMin.setRange(0, 100)
-        self.spinMiniMin.setSuffix('% Min.')
+        self.spinMiniMin.setPrefix('Opacidad Min: ')
+        self.spinMiniMin.setSuffix(' %')
         self.spinMiniMin.setAlignment(Qt.AlignLeft)
         self.spinMiniMax = QSpinBox()
         self.spinMiniMax.setRange(0, 100)
-        self.spinMiniMax.setSuffix('% Max.')
+        self.spinMiniMax.setPrefix('Opacidad Max: ')
+        self.spinMiniMax.setSuffix(' %')
         self.spinMiniMax.setAlignment(Qt.AlignLeft)
         self.spinTamanio = QSpinBox()
+        self.spinTamanio.setPrefix(self.trUtf8('Tamaño: '))
+        self.spinTamanio.setSuffix(self.tr(' %'))
         self.spinTamanio.setMaximum(100)
         self.spinTamanio.setMinimum(0)
-        self.spinTamanio.setSuffix(self.trUtf8('% Respecto al editor'))
 
-        grillaMini.addWidget(self.checkMini, 0, 1)
-        grillaMini.addWidget(QLabel(self.trUtf8("Opacidad:")),
-            1, 0, alignment=Qt.AlignRight)
+        grillaMini.addWidget(self.checkMini, 0, 2)
         grillaMini.addWidget(self.spinMiniMin, 1, 1)
         grillaMini.addWidget(self.spinMiniMax, 1, 2)
-        grillaMini.addWidget(QLabel(self.trUtf8("Tamaño:")),
-            2, 0, alignment=Qt.AlignRight)
-        grillaMini.addWidget(self.spinTamanio, 2, 1)
+        grillaMini.addWidget(self.spinTamanio, 1, 3)
 
         # Fuente
         grillaFuente = QGridLayout(grupoTipoDeLetra)
-        grillaFuente.setContentsMargins(5, 15, 5, 5)
+        grillaFuente.setContentsMargins(0, 0, 0, 0)
         self.botonFuente = QPushButton(', '.join([str(configuraciones.FUENTE),
             str(configuraciones.TAM_FUENTE)]))
-        grillaFuente.addWidget(QLabel(self.trUtf8(
-            "Fuente:")), 0, 0, Qt.AlignRight)
-        grillaFuente.addWidget(self.botonFuente, 0, 1)
+        grillaFuente.addWidget(self.botonFuente, 0, 0)
 
         # Autocompletado
         grillaAutocompletado = QGridLayout(grupoAutocompletado)
-        grillaAutocompletado.setContentsMargins(5, 15, 5, 5)
-        self.checkComillasSimples = QCheckBox()
-        self.checkComillasDobles = QCheckBox()
-        grillaAutocompletado.addWidget(QLabel(self.trUtf8("Comillas simples:")),
-            1, 0, alignment=Qt.AlignTop)
-        grillaAutocompletado.addWidget(self.checkComillasSimples, 1, 1,
-            alignment=Qt.AlignTop)
-        grillaAutocompletado.addWidget(QLabel(self.trUtf8("Comillas dobles:")),
-            2, 0, alignment=Qt.AlignTop)
-        grillaAutocompletado.addWidget(self.checkComillasDobles, 2, 1,
-            alignment=Qt.AlignTop)
-        self.checkParentesis = QCheckBox()
-        grillaAutocompletado.addWidget(QLabel(self.trUtf8("Paréntesis:")),
-            1, 2, alignment=Qt.AlignTop)
-        grillaAutocompletado.addWidget(self.checkParentesis, 1, 3,
-            alignment=Qt.AlignTop)
-        self.checkCorchetes = QCheckBox()
-        grillaAutocompletado.addWidget(QLabel(self.trUtf8("Corchetes:")),
-            2, 2, alignment=Qt.AlignTop)
-        grillaAutocompletado.addWidget(self.checkCorchetes, 2, 3,
-            alignment=Qt.AlignTop)
-        self.checkLlaves = QCheckBox()
-        grillaAutocompletado.addWidget(QLabel(self.trUtf8("Llaves:")),
-            4, 2, alignment=Qt.AlignTop)
-        grillaAutocompletado.addWidget(self.checkLlaves, 4, 3,
-            alignment=Qt.AlignTop)
+        grillaAutocompletado.setContentsMargins(0, 5, 0, 0)
+        self.checkComillasSimples = QCheckBox(self.trUtf8("Comillas simples"))
+        self.checkComillasDobles = QCheckBox(self.trUtf8("Comillas dobles"))
+        grillaAutocompletado.addWidget(self.checkComillasSimples, 0, 0)
+        grillaAutocompletado.addWidget(self.checkComillasDobles, 1, 0)
+        self.checkParentesis = QCheckBox(self.trUtf8("Paréntesis"))
+        grillaAutocompletado.addWidget(self.checkParentesis, 0, 1)
+        self.checkCorchetes = QCheckBox(self.trUtf8("Corchetes"))
+        grillaAutocompletado.addWidget(self.checkCorchetes, 1, 1)
+        self.checkLlaves = QCheckBox(self.trUtf8("Llaves"))
+        grillaAutocompletado.addWidget(self.checkLlaves, 0, 2)
 
         # Configuraciones
         self.checkMargen.setChecked(configuraciones.MOSTRAR_MARGEN)
         self.spinOpacidadMargen.setValue(configuraciones.OPACIDAD_MARGEN)
-        self.spinMargen.setValue(configuraciones.MARGEN)
-        self.spinInd.setValue(configuraciones.INDENTACION)
+        self.slideMargen.setValue(configuraciones.MARGEN)
+        self.sliderInd.setValue(configuraciones.INDENTACION)
         self.checkInd.setChecked(configuraciones.CHECK_INDENTACION)
         self.checkAutoInd.setChecked(configuraciones.CHECK_AUTOINDENTACION)
         self.checkGuia.setChecked(configuraciones.GUIA_INDENTACION)
@@ -216,9 +209,13 @@ class CaracteristicasEditor(QWidget):
         self.checkCorchetes.setChecked("[" in configuraciones.BRACES)
         self.checkParentesis.setChecked("(" in configuraciones.BRACES)
 
-        layoutV.addWidget(grupoCaracteristicas)
-        layoutV.addWidget(grupoMiniMapa)
-        layoutV.addWidget(grupoTipoDeLetra)
+        hbox = QHBoxLayout()
+        layoutV.addWidget(grupoMargen)
+        layoutV.addWidget(grupoIndentacion)
+        layoutV.addWidget(grupoMinimapa)
+        hbox.addWidget(grupoExtras)
+        hbox.addWidget(grupoTipoDeLetra)
+        layoutV.addLayout(hbox)
         layoutV.addWidget(grupoAutocompletado)
         layoutV.addItem(QSpacerItem(0, 10, QSizePolicy.Expanding,
             QSizePolicy.Expanding))
@@ -287,8 +284,8 @@ class CaracteristicasEditor(QWidget):
         qconfig = QSettings(recursos.CONFIGURACION, QSettings.IniFormat)
         qconfig.beginGroup('configuraciones')
         qconfig.beginGroup('editor')
-        qconfig.setValue('margenLinea', self.spinMargen.value())
-        configuraciones.MARGEN = self.spinMargen.value()
+        qconfig.setValue('margenLinea', self.slideMargen.value())
+        configuraciones.MARGEN = self.slideMargen.value()
         qconfig.setValue('mostrarMargen', self.checkMargen.isChecked())
         configuraciones.MOSTRAR_MARGEN = self.checkMargen.isChecked()
         configuraciones.OPACIDAD_MARGEN = self.spinOpacidadMargen.value()
@@ -297,8 +294,8 @@ class CaracteristicasEditor(QWidget):
         configuraciones.CHECK_INDENTACION = self.checkInd.isChecked()
         qconfig.setValue('guiaInd', self.checkGuia.isChecked())
         configuraciones.GUIA_INDENTACION = self.checkGuia.isChecked()
-        qconfig.setValue('indentacion', self.spinInd.value())
-        configuraciones.INDENTACION = self.spinInd.value()
+        qconfig.setValue('indentacion', self.sliderInd.value())
+        configuraciones.INDENTACION = self.sliderInd.value()
         qconfig.setValue('autoInd', self.checkAutoInd.isChecked())
         configuraciones.CHECK_AUTOINDENTACION = self.checkAutoInd.isChecked()
         qconfig.setValue('tabs', self.checkTabs.isChecked())

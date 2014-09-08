@@ -244,17 +244,17 @@ class LineEdit(QLineEdit):
     def __init__(self, parent):
         QLineEdit.__init__(self, parent)
         self._parent = parent
-        self.palabras = ['gabo', 'gabriel']
+        self.palabras = []
         self.completer = None
-        self.listaComp = QStringList()
+        #self.listaComp = QStringList()
         self.contador_ = Contador(self)
-        self.setPlaceholderText(self.trUtf8("Buscar!"))
+        #self.setPlaceholderText(self.trUtf8("Buscar!"))
         # Completador
         #for i in self.palabras:
             #self.listaComp.append(QString(i))
-        if self.completer is None:
-            self.completer = Completer(self.palabras)
-            self.setCompleter(self.completer)
+        #if self.completer is None:
+            #self.completer = Completer(self.palabras)
+            #self.setCompleter(self.completer)
             #self.completer.setWidget(self)
 
     def agregar_al_completer(self):
@@ -264,14 +264,14 @@ class LineEdit(QLineEdit):
             self.listaComp.append(str(i))
         self.completer = Completer(self.palabras)
         self.setCompleter(self.completer)
-        print(self.palabras)
+
             #if not self.palabras[i] == palabra:
                 #self.listaComp.append(QString(i))
         ##pass
 
     def keyPressEvent(self, event):
-        if event.key() == Qt.Key_Return:
-            self.agregar_al_completer()
+        #if event.key() == Qt.Key_Return:
+            #self.agregar_al_completer()
         editor = contenedor_principal.ContenedorMain().devolver_editor_actual()
         if editor is None:
             super(LineEdit, self).keyPressEvent(event)
