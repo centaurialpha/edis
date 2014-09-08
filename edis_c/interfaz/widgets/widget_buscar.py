@@ -18,6 +18,7 @@
 import re
 
 #from PyQt4.QtGui import QDialog
+from PyQt4.QtGui import QCompleter
 from PyQt4.QtGui import QWidget
 from PyQt4.QtGui import QHBoxLayout
 from PyQt4.QtGui import QVBoxLayout
@@ -32,6 +33,8 @@ from PyQt4.QtGui import QShortcut
 from PyQt4.QtGui import QSizePolicy
 
 from PyQt4.QtCore import Qt
+from PyQt4.QtCore import QStringList
+from PyQt4.QtCore import QString
 from PyQt4.QtCore import SIGNAL
 from PyQt4.QtCore import QObject
 
@@ -228,15 +231,47 @@ class WidgetReemplazo(QWidget):
         super(WidgetReemplazo, self).__init__(parent)
 
 
+class Completer(QCompleter):
+
+    def __init__(self, palabras):
+        super(Completer, self).__init__(palabras)
+        self.setCompletionMode(QCompleter.PopupCompletion)
+        self.setCaseSensitivity(Qt.CaseInsensitive)
+
+
 class LineEdit(QLineEdit):
 
     def __init__(self, parent):
         QLineEdit.__init__(self, parent)
         self._parent = parent
+        self.palabras = ['gabo', 'gabriel']
+        self.completer = None
+        self.listaComp = QStringList()
         self.contador_ = Contador(self)
         self.setPlaceholderText(self.trUtf8("Buscar!"))
+        # Completador
+        #for i in self.palabras:
+            #self.listaComp.append(QString(i))
+        if self.completer is None:
+            self.completer = Completer(self.palabras)
+            self.setCompleter(self.completer)
+            #self.completer.setWidget(self)
+
+    def agregar_al_completer(self):
+        palabra = self.text()
+        self.palabras.append(palabra)
+        for i in self.palabras:
+            self.listaComp.append(str(i))
+        self.completer = Completer(self.palabras)
+        self.setCompleter(self.completer)
+        print(self.palabras)
+            #if not self.palabras[i] == palabra:
+                #self.listaComp.append(QString(i))
+        ##pass
 
     def keyPressEvent(self, event):
+        if event.key() == Qt.Key_Return:
+            self.agregar_al_completer()
         editor = contenedor_principal.ContenedorMain().devolver_editor_actual()
         if editor is None:
             super(LineEdit, self).keyPressEvent(event)

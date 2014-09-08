@@ -210,7 +210,6 @@ class TabGUI(QWidget):
         self.cargar_toolbar()
 
     def cambiar_estilo(self, estilo):
-        #print self.lista_estilos.currentItem()
         QApplication.setStyle(QStyleFactory.create(estilo))
         QApplication.setPalette(QApplication.style().standardPalette())
 

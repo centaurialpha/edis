@@ -44,6 +44,7 @@ if frozen in ('dll', 'console_exe', 'windows_exe'):
 HOME_EDIS = os.path.join(HOME_PATH, ".edis_c")
 CONFIGURACION = os.path.join(HOME_EDIS, "config.ini")
 OTROS = (HOME_EDIS, 'otros')
+LOG = os.path.join(HOME_EDIS, 'edis.log')
 INSTALADOR = os.path.join(PATH, "nucleo", "mingw.exe")
 IDIOMAS = os.path.join(HOME_EDIS, "otros", "idiomas")
 TEMA_POR_DEFECTO = os.path.join(PATH, "otros", "temas", "default.qss")

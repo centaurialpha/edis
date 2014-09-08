@@ -38,18 +38,18 @@ from PyQt4.QtGui import QHeaderView
 from PyQt4.QtCore import Qt
 
 # Módulos EDIS
-from edis_c.interfaz.contenedor_secundario import procesos
 from edis_c import recursos
+#from edis_c.interfaz.decorador_singleton import singleton
+from edis_c.interfaz.contenedor_secundario import procesos
 
 
 class ContenedorSecundario(QWidget):
+
     instancia = None
 
-    def __new__(clase, *args, **kw):
-        """ Singleton """
-
+    def __new__(clase, *args, **kargs):
         if clase.instancia is None:
-            clase.instancia = QWidget.__new__(clase, *args, **kw)
+            clase.instancia = QWidget.__new__(clase, *args, **kargs)
         return clase.instancia
 
     def __init__(self, parent=None):
@@ -117,6 +117,12 @@ class ContenedorSecundario(QWidget):
 
     def frenar(self):
         self.salida_.terminar_proceso()
+
+    def showEvent(self, evento):
+        super(ContenedorSecundario, self).showEvent(evento)
+        w = self.stack.currentWidget()
+        if w:
+            w.setFocus()
 
 
 class Notas(QTextEdit):

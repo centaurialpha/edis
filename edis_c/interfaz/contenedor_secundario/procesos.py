@@ -91,7 +91,6 @@ class EjecutarWidget(QWidget):
         else:
             self.ejecutable = (self.nombre_archivo.split('/')[-1]).split('.')[0]
         self.output.setCurrentCharFormat(self.output.formato_ok)
-        print(self.ejecutable)
         # Para generar el ejecutable en la carpeta del fuente
         directorio_archivo = manejador_de_archivo.devolver_carpeta(
             self.nombre_archivo)

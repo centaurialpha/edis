@@ -118,7 +118,7 @@ class IDE(QMainWindow):
         herramientas = menu.addMenu(self.trUtf8("&Herramientas"))
         ejecucion = menu.addMenu(self.trUtf8("E&jecucion"))
         acerca = menu.addMenu(self.tr("Ace&rca de"))
-
+        menu.hide()
         self._menu_archivo = menu_archivo.MenuArchivo(
             archivo, self.toolbar, self)
         self._menu_editar = menu_editar.MenuEditar(
@@ -257,6 +257,13 @@ class IDE(QMainWindow):
             total_lineas = editor.devolver_cantidad_de_lineas()
             self.barra_de_estado.linea_columna.actualizar_linea_columna(
                 linea, total_lineas, columna)
+
+    def keyPressEvent(self, evento):
+        if evento.modifiers() == Qt.AltModifier:
+            if self.menuBar().isVisible():
+                self.menuBar().hide()
+            else:
+                self.menuBar().show()
 
     def closeEvent(self, evento):
         """ Al cerrar EDIS se comprueba los archivos sin guardar """

@@ -30,37 +30,43 @@ except:
 #lint:enable
 
 # Módulos QtGui
-from PyQt4.QtGui import QPlainTextEdit
-from PyQt4.QtGui import QBrush
-from PyQt4.QtGui import QTextEdit
-from PyQt4.QtGui import QColor
-from PyQt4.QtGui import QFontMetricsF
-from PyQt4.QtGui import QPainter
-from PyQt4.QtGui import QFont
-from PyQt4.QtGui import QTextCursor
-from PyQt4.QtGui import QTextOption
-from PyQt4.QtGui import QTextDocument
-from PyQt4.QtGui import QCompleter
-from PyQt4.QtGui import QTextCharFormat
+from PyQt4.QtGui import (
+    QPlainTextEdit,
+    QBrush,
+    QTextEdit,
+    QColor,
+    QFontMetricsF,
+    QPainter,
+    QFont,
+    QTextCursor,
+    QTextOption,
+    QTextDocument,
+    QTextCharFormat,
+    )
 
 # Módulos Qtcore
-from PyQt4.QtCore import Qt
-from PyQt4.QtCore import SIGNAL
-from PyQt4.QtCore import QRect
-from PyQt4.QtCore import QString
+from PyQt4.QtCore import (
+    Qt,
+    SIGNAL,
+    QRect,
+    QString
+    )
 
-from PyQt4.Qt import QVariant
-from PyQt4.Qt import QTextFormat
+from PyQt4.Qt import (
+    QVariant,
+    QTextFormat
+    )
 
 # Módulos EDIS
 from edis_c import recursos
 from edis_c.nucleo import configuraciones
 from edis_c.interfaz import tabitem
-from edis_c.interfaz.editor import widget_numero_lineas
-from edis_c.interfaz.editor import minimapa
-from edis_c.interfaz.editor import acciones_
+from edis_c.interfaz.editor import (
+    minimapa,
+    acciones_,
+    widget_numero_lineas,
+    )
 from edis_c.interfaz.editor.highlighter_ import Highlighter
-from edis_c.interfaz import completador
 
 # Diccionario teclas
 TECLA = {
@@ -107,20 +113,14 @@ class Editor(QPlainTextEdit, tabitem.TabItem):
         # Carga el tema de editor
         self.estilo_editor()
         # Completador
+        #FIXME: completador
         self.completador = None
-        if not self.completador:
-            self.set_completador(completador.Completador())
         # Carga el tipo de letra
         self._cargar_fuente(configuraciones.FUENTE, configuraciones.TAM_FUENTE)
 
         # Sidebar
         if configuraciones.SIDEBAR:
             self.widget_num_lineas = widget_numero_lineas.NumeroDeLineaBar(self)
-
-        # Resaltado de sintáxis
-        ##if self.highlighter is None:
-            #self.highlighter = Highlighter(self.document())
-            #self.highlighter.aplicar_highlighter()
 
         # Resaltado en posición del cursor
         self.resaltar_linea_actual()
@@ -808,28 +808,6 @@ class Editor(QPlainTextEdit, tabitem.TabItem):
             return espacio.group() + indentacion
 
         return indentacion
-
-    def set_completador(self, completador):
-        if self.completador:
-            self.disconnect(self.completador, 0, self, 0)
-        if not completador:
-            return
-
-        completador.setWidget(self)
-        completador.setCompletionMode(QCompleter.PopupCompletion)
-        completador.setCaseSensitivity(Qt.CaseInsensitive)
-        self.completador = completador
-        self.connect(self.completador,
-            SIGNAL("activated(const QString&)"), self.insertar_completado)
-
-    def insertar_completado(self, completion):
-        tc = self.textCursor()
-        extra = (completion.length() -
-            self.completador.completionPrefix().length())
-        tc.movePosition(QTextCursor.Left)
-        tc.movePosition(QTextCursor.EndOfWord)
-        tc.insertText(completion.right(extra))
-        self.setTextCursor(tc)
 
 
 def crear_editor(nombre_archivo=''):
