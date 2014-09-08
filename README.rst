@@ -1,7 +1,5 @@
 EDIS-C | Entorno de Desarrollo Integrado Simple para C.
 =========================================================
-.. image:: https://requires.io/github/centaurialpha/edis/requirements.png?branch=master
-     :target: https://requires.io/github/centaurialpha/edis/requirements/?branch=master
 .. image:: http://img.shields.io/badge/Python-2.7-yellow.svg
      :target: https://python.org
 .. image:: http://img.shields.io/badge/Qt-4.8-brightgreen.svg
