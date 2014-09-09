@@ -5,11 +5,16 @@ from PyQt4.QtGui import (
     QWidget,
     QStandardItemModel,
     QStandardItem,
-    QVBoxLayout
+    QVBoxLayout,
+    QMenu,
+    QAction
     )
 from PyQt4.QtCore import (
     SIGNAL,
-    QThread
+    QThread,
+    Qt,
+    QModelIndex,
+    pyqtSlot
     )
 
 from edis_c.interfaz.contenedor_principal import contenedor_principal
@@ -27,24 +32,41 @@ class Explorador(QWidget):
 
         vbox = QVBoxLayout(self)
         vbox.setContentsMargins(0, 0, 0, 0)
-        self.lista = QListView()
+        self.lista = ListView(self)
         vbox.addWidget(self.lista)
         self.hilo = ThreadArchivos(self)
         self.connect(self.hilo, SIGNAL("archivosRecibidos(QStringList)"),
             self.cargar_archivos)
+        self.lista.clicked.connect(self.cambiar_tab)
+
+    @pyqtSlot(QModelIndex)
+    def cambiar_tab(self, indice):
+        self.emit(SIGNAL("cambioPes(int)"), indice.row())
 
     def cargar_archivos(self, archivos):
         archivos = list(archivos)
         if self.model is None:
             self.model = QStandardItemModel(self.lista)
             for i in archivos:
-                item = QStandardItem(i.split('/')[-1])
+                item = QStandardItem(i)
                 self.model.appendRow(item)
         self.lista.setModel(self.model)
 
-    def cargar_archivo(self, archivo):
-        item = QStandardItem(archivo.split('/')[-1])
-        self.model.appendRow(item)
+    def enterEvent(self, event):
+        pass
+
+    def leaveEvent(self, event):
+        pass
+
+    def cargar_archivo(self, archivos):
+        if len(list(archivos)) == 1:
+            archivo = list(archivos)[0]
+            item = QStandardItem(archivo)
+            self.model.appendRow(item)
+        else:
+            for i in archivos:
+                item = QStandardItem(i)
+                self.model.appendRow(item)
 
     def borrar_item(self, item):
         self.model.removeRow(item)
@@ -52,9 +74,26 @@ class Explorador(QWidget):
     def get_archivos(self):
         return contenedor_principal.ContenedorMain().get_archivos()
 
+    def get_indice(self):
+        print(self.model.currentIndex())
+
     def cambiar(self):
-        #string = self.lista.currentIndex().data().toString()
         pass
+
+
+class ListView(QListView):
+
+    def __init__(self, parent):
+        super(ListView, self).__init__()
+        self.parent = parent
+
+    def contextMenuEvent(self, evento):
+        self.setContextMenuPolicy(Qt.CustomContextMenu)
+        menu = QMenu(self)
+        accionC = QAction('Cerrar', self)
+        menu.addAction(accionC)
+        accionC.triggered.connect(self.parent.borrar_item)
+        menu.exec_(evento.globalPos())
 
 
 class ThreadArchivos(QThread):

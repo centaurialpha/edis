@@ -182,6 +182,9 @@ class IDE(QMainWindow):
 
         self.connect(self.contenedor_principal, SIGNAL(
             "cursorPositionChange(int, int)"), self._linea_columna)
+        #FIXME: quitar función lambda
+        self.connect(self.explorador, SIGNAL("cambioPes(int)"),
+            lambda i: self.contenedor_principal.tab.setCurrentIndex(i))
 
     def desactivar_pagina_de_bienvenida(self):
         """ Desactiva la página de inicio al iniciar próxima sesión. """

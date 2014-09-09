@@ -85,8 +85,8 @@ class __ContenedorMain(QSplitter):
             self.archivos_recientes_cambiado)
         self.connect(self.tab, SIGNAL("archivoCerrado(int)"),
             self.cerrar_item_lista)
-        self.connect(self, SIGNAL("abriendoArchivo(QString)"),
-            self.abrir_archivo_lista)
+        self.connect(self, SIGNAL("abriendoArchivos(QStringList)"),
+            self.cargar_archivo_lista)
 
         tecla = Qt.Key_1
         for i in range(10):
@@ -180,11 +180,11 @@ class __ContenedorMain(QSplitter):
         else:
             return None
 
+    def cargar_archivo_lista(self, archivos):
+        self.parent.explorador.cargar_archivo(archivos)
+
     def cerrar_item_lista(self, indice):
         self.parent.explorador.borrar_item(indice)
-
-    def abrir_archivo_lista(self, archivo):
-        self.parent.explorador.cargar_archivo(archivo)
 
     def deshacer(self):
         self.get_archivos()
@@ -337,7 +337,7 @@ class __ContenedorMain(QSplitter):
             else:
                 self.mover_abierto(nombre)
         self.emit(SIGNAL("currentTabChanged(QString)"), nombre)
-        self.emit(SIGNAL("abriendoArchivo(QString)"), nombre)
+        self.emit(SIGNAL("abriendoArchivos(QStringList)"), nombres)
         self.tab.no_esta_abierto = True
 
     def abierto(self, archivo):
