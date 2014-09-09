@@ -38,6 +38,9 @@ from PyQt4.QtCore import QSettings
 from edis_c.nucleo import configuraciones
 from edis_c import recursos
 from edis_c.interfaz.ide.Ide import IDE
+from edis_c.nucleo import logger
+
+log = logger.edisLogger('edis_c.__init__')
 
 # METADATOS
 __nombre__ = "EDIS-C"
@@ -83,11 +86,13 @@ def edis(app):
 
     edis = IDE()
     # Splash GUI
+    log.debug("Cargando interfáz")
     splash.showMessage("Cargando GUI...",
         Qt.AlignCenter | Qt.AlignTop, Qt.black)
     edis.show()
 
     # Splash para la carga de archivos, recientes...
+    log.debug("Cargando archivos")
     splash.showMessage("Cargando archivos",
         Qt.AlignCenter | Qt.AlignTop, Qt.black)
     archivos_principales = qconfig.value('archivosAbiertos/mainTab',
@@ -118,5 +123,6 @@ def edis(app):
 
     splash.finish(edis)  # Quitar splash
     if edis.ini:
-        edis.explorador.hilo.start()
+        log.debug("Cargando archivos al navegador")
+        edis.explorador.navegador.hilo.start()
     sys.exit(app.exec_())

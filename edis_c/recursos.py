@@ -106,7 +106,9 @@ ICONOS = {
     "acerca-edis": os.path.join(PATH, "imagenes", "acercaDe.png"),
     "bug": os.path.join(PATH, "imagenes", "bug.png"),
     "ir-linea": os.path.join(PATH, "imagenes", "ir_linea.png"),
-    "buscar-tool": os.path.join(PATH, "imagenes", "buscar_tool.png")
+    "buscar-tool": os.path.join(PATH, "imagenes", "buscar_tool.png"),
+    "explorador": os.path.join(PATH, "imagenes", "explorador.png"),
+    "navegador": os.path.join(PATH, "imagenes", "navegador.png")
     }
 
 # Estilos de color - Editor

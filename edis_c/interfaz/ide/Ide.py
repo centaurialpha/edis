@@ -163,7 +163,7 @@ class IDE(QMainWindow):
         self.contenedor_principal = contenedor_principal.ContenedorMain(self)
         self.contenedor_secundario = \
             contenedor_secundario.ContenedorSecundario(self)
-        self.explorador = explorador.Explorador(self)
+        self.explorador = explorador.TabExplorador(self)
         self.buscador = widget_buscar.WidgetBusqueda(self)
         self.connect(self.contenedor_principal,
             SIGNAL("desactivarBienvenida()"),
@@ -183,8 +183,13 @@ class IDE(QMainWindow):
         self.connect(self.contenedor_principal, SIGNAL(
             "cursorPositionChange(int, int)"), self._linea_columna)
         #FIXME: quitar función lambda
-        self.connect(self.explorador, SIGNAL("cambioPes(int)"),
+        self.connect(self.explorador.navegador, SIGNAL("cambioPes(int)"),
             lambda i: self.contenedor_principal.tab.setCurrentIndex(i))
+        self.connect(self.explorador.explorador,
+            SIGNAL("dobleClickArchivo(QString)"),
+            lambda f: self.contenedor_principal.abrir_archivo(f))
+        self.connect(self.contenedor_principal, SIGNAL("guardadoList(QString)"),
+            self.explorador.navegador.cargar_archivo)
 
     def desactivar_pagina_de_bienvenida(self):
         """ Desactiva la página de inicio al iniciar próxima sesión. """

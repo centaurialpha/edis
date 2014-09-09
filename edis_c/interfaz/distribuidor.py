@@ -55,7 +55,6 @@ class Distribuidor(QObject):
 
     def ini_ide(self, edis):
         self.edis = edis
-        print(type(self.edis))
 
     def imprimir_documento(self):
         """ Éste método da una previsualización del documento con la
@@ -131,7 +130,6 @@ class Distribuidor(QObject):
         """
 
         #FIXME: type: None
-        print(type(self.edis))
         self.edis.cargar_toolbar()
 
     def compilar(self):

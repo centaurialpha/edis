@@ -181,10 +181,10 @@ class __ContenedorMain(QSplitter):
             return None
 
     def cargar_archivo_lista(self, archivos):
-        self.parent.explorador.cargar_archivo(archivos)
+        self.parent.explorador.navegador.cargar_archivo(archivos)
 
     def cerrar_item_lista(self, indice):
-        self.parent.explorador.borrar_item(indice)
+        self.parent.explorador.navegador.borrar_item(indice)
 
     def deshacer(self):
         self.get_archivos()
@@ -380,7 +380,6 @@ class __ContenedorMain(QSplitter):
             self.emit(SIGNAL("archivoGuardado(QString)"), self.tr(
                 "Guardado: %0 en %1").arg((nombre).split('/')[-1],
                 carpeta_de_archivo))
-
             editorW._guardado()
 
             return editorW._id
@@ -420,6 +419,8 @@ class __ContenedorMain(QSplitter):
             # Señal de guardado para la barra de estado
             self.emit(SIGNAL("archivoGuardado(QString)"),
                 self.tr("Guardado: %1").arg(nombre))
+            self.emit(SIGNAL("guardadoList(QString)"),
+                editorW._id)
             editorW._guardado()
 
             return editorW._id

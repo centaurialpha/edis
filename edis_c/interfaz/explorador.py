@@ -7,26 +7,91 @@ from PyQt4.QtGui import (
     QStandardItem,
     QVBoxLayout,
     QMenu,
-    QAction
+    QAction,
+    QTabWidget,
+    QIcon,
+    QTreeView,
+    QFileSystemModel,
     )
 from PyQt4.QtCore import (
     SIGNAL,
     QThread,
     Qt,
     QModelIndex,
-    pyqtSlot
+    pyqtSlot,
+    QStringList,
+    QString,
+    QDir
     )
 
 from edis_c.interfaz.contenedor_principal import contenedor_principal
 from edis_c.nucleo import logger
+from edis_c import recursos
 log = logger.edisLogger('edis_c.interfaz.explorador')
 
 
-class Explorador(QWidget):
+class TabExplorador(QWidget):
 
     def __init__(self, parent=None):
-        super(Explorador, self).__init__(parent)
-        self._parent = parent
+        super(TabExplorador, self).__init__()
+        vbox = QVBoxLayout(self)
+        vbox.setContentsMargins(0, 0, 0, 0)
+        self.tabs = QTabWidget()
+        self.tabs.setTabPosition(1)
+        self.navegador = Navegador(self)
+        self.explorador = Explorador(self)
+        self.tabs.addTab(self.navegador,
+            QIcon(recursos.ICONOS['navegador']), '')
+        self.tabs.addTab(self.explorador,
+            QIcon(recursos.ICONOS['explorador']), '')
+        vbox.addWidget(self.tabs)
+
+
+class Explorador(QWidget):
+    """ Explorador de archivos basado en QFileSystemModel """
+
+    def __init__(self, parent=None):
+        super(Explorador, self).__init__()
+        vb = QVBoxLayout(self)
+        vb.setContentsMargins(0, 0, 0, 0)
+
+        self.tree = QTreeView()
+        self.tree.header().setHidden(True)
+        self.tree.setAnimated(True)
+
+        self.model = QFileSystemModel(self.tree)
+        home_path = QDir.toNativeSeparators(QDir.homePath())
+        self.model.setRootPath(home_path)
+        filtro = QStringList("")
+        filtro << "*.c" << "*.h"  # Filtro
+        self.tree.setModel(self.model)
+        self.tree.setRootIndex(QModelIndex(self.model.index(home_path)))
+        self.model.setNameFilters(filtro)
+        self.model.setNameFilterDisables(False)
+
+        # Se ocultan algunas columnas (size, type, y date modified)
+        self.tree.hideColumn(1)
+        self.tree.hideColumn(2)
+        self.tree.hideColumn(3)
+
+        vb.addWidget(self.tree)
+
+        # Conexión a slot
+        self.tree.doubleClicked.connect(self.doble_click)
+
+    @pyqtSlot(QModelIndex)
+    def doble_click(self, i):
+        ind = self.model.index(i.row(), 0, i.parent())
+        archivo = self.model.filePath(ind)
+        # Señal emitida -> ruta completa del archivo
+        self.emit(SIGNAL("dobleClickArchivo(QString)"), archivo)
+
+
+class Navegador(QWidget):
+
+    def __init__(self, parent=None):
+        super(Navegador, self).__init__(parent)
+        self.parent = parent
         self.model = None
         self.archivos = []
 
@@ -59,6 +124,8 @@ class Explorador(QWidget):
         pass
 
     def cargar_archivo(self, archivos):
+        if isinstance(archivos, QString):
+            archivos = [str(archivos)]
         if len(list(archivos)) == 1:
             archivo = list(archivos)[0]
             item = QStandardItem(archivo)
@@ -75,7 +142,7 @@ class Explorador(QWidget):
         return contenedor_principal.ContenedorMain().get_archivos()
 
     def get_indice(self):
-        print(self.model.currentIndex())
+        pass
 
     def cambiar(self):
         pass
