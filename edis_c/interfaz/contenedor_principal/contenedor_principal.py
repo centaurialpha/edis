@@ -83,6 +83,10 @@ class __ContenedorMain(QSplitter):
         self.connect(self.tab,
             SIGNAL("recentTabsModified(QStringList)"),
             self.archivos_recientes_cambiado)
+        self.connect(self.tab, SIGNAL("archivoCerrado(int)"),
+            self.cerrar_item_lista)
+        self.connect(self, SIGNAL("abriendoArchivo(QString)"),
+            self.abrir_archivo_lista)
 
         tecla = Qt.Key_1
         for i in range(10):
@@ -146,6 +150,13 @@ class __ContenedorMain(QSplitter):
 
         return self.tab.devolver_archivos_sin_guardar()
 
+    def get_archivos(self):
+        archivos = []
+        for i in range(self.tab.count()):
+            editorW = self.tab.widget(i)
+            if isinstance(editorW, editor.Editor):
+                archivos.append(editorW._id.split('/')[-1])
+
     def agregar_tab(self, widget, icono, nombre_tab, nAbierta=True):
         """ Se llama al método agregar_tab de la clase TabCentral
         retorna QTabWidget.
@@ -169,7 +180,14 @@ class __ContenedorMain(QSplitter):
         else:
             return None
 
+    def cerrar_item_lista(self, indice):
+        self.parent.explorador.borrar_item(indice)
+
+    def abrir_archivo_lista(self, archivo):
+        self.parent.explorador.cargar_archivo(archivo)
+
     def deshacer(self):
+        self.get_archivos()
         editorW = self.devolver_editor_actual()
         if editorW:
             editorW.undo()
@@ -319,6 +337,7 @@ class __ContenedorMain(QSplitter):
             else:
                 self.mover_abierto(nombre)
         self.emit(SIGNAL("currentTabChanged(QString)"), nombre)
+        self.emit(SIGNAL("abriendoArchivo(QString)"), nombre)
         self.tab.no_esta_abierto = True
 
     def abierto(self, archivo):

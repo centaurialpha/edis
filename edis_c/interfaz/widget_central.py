@@ -25,6 +25,7 @@ from PyQt4.QtGui import QVBoxLayout
 
 # Módulos QtCore
 from PyQt4.QtCore import Qt
+from PyQt4.QtCore import SIGNAL
 
 
 class WidgetCentral(QWidget):
@@ -33,29 +34,32 @@ class WidgetCentral(QWidget):
     def __init__(self, parent=None):
         QWidget.__init__(self, parent)
         self.parent = parent
+        self.lateral = None
         layout_horizontal = QVBoxLayout(self)
         layout_horizontal.setContentsMargins(0, 0, 0, 0)
         layout_horizontal.setSpacing(0)
 
+        self.split_horizontal = QSplitter(Qt.Horizontal)
         self.split_principal = QSplitter(Qt.Vertical)
         self.layout = QVBoxLayout()
-        layout_horizontal.addWidget(self.split_principal)
+        #layout_horizontal.addWidget(self.split_principal)
         layout_horizontal.addLayout(self.layout)
+        layout_horizontal.addWidget(self.split_horizontal)
 
     def agregar_contenedor_central(self, contenedor):
         """ Agrega widget principal. """
         self.contenedor_principal = contenedor
         self.split_principal.insertWidget(0, contenedor)
 
+    def agregar_contenedor_lateral(self, explorador):
+        self.lateral = explorador
+        self.split_horizontal.insertWidget(0, self.lateral)
+        self.emit(SIGNAL("lateral()"))
+
     def agregar_buscador(self, buscador):
         """ Agrega widget de búsqueda. """
         self.buscador = buscador
         self.buscador.hide()
-        self.layout.addWidget(buscador)
-
-    def agregar_buscador_de_archivos(self, buscador):
-        self.buscador_archivos = buscador
-        self.buscador_archivos.hide()
         self.layout.addWidget(buscador)
 
     def agregar_contenedor_bottom(self, contenedor):
@@ -80,3 +84,13 @@ class WidgetCentral(QWidget):
             self.contenedor_principal.hide()
         else:
             self.contenedor_principal.show()
+
+    def showEvent(self, evento):
+        QWidget.showEvent(self, evento)
+        self.split_horizontal.insertWidget(1, self.split_principal)
+        alto = [self.height() / 3 * 2, self.height() / 3]
+        ancho = [self.width() / 6 * 7, self.width() / 6]
+        size_principal = [alto[1], alto[0]]
+        size_horizontal = [ancho[1], ancho[0]]
+        self.split_principal.setSizes(size_principal)
+        self.split_horizontal.setSizes(size_horizontal)

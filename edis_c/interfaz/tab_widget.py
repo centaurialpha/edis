@@ -83,6 +83,8 @@ class TabCentral(QTabWidget):
     def cerrar_tab(self):
         """ Cierra la pestaña actual. """
 
+        self.emit(SIGNAL("archivoCerrado(int)"),
+            self.currentIndex())
         self.removeTab(self.currentIndex())
 
     def cerrar_todo(self):
@@ -151,6 +153,14 @@ class TabCentral(QTabWidget):
             and self.widget(i)._id != '':
                 archivos.append([self.widget(i)._id,
                                  self.widget(i).devolver_posicion_del_cursor()])
+        return archivos
+
+    def get_archivos_para_hilo(self):
+        archivos = []
+        for i in range(self.count()):
+            if isinstance(self.widget(i), editor.Editor) and \
+                    self.widget(i)._id != '':
+                archivos.append(self.widget(i)._id)
         return archivos
 
     def devolver_archivos_sin_guardar(self):

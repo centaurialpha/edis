@@ -95,8 +95,9 @@ def edis(app):
     tmp = []
     for archivo in archivos_principales:
         data = archivo.toList()
-        tmp.append((unicode(data[0].toString()),
-            data[1].toInt()[0]))
+        if data:
+            tmp.append((unicode(data[0].toString()),
+                data[1].toInt()[0]))
     archivos_principales = tmp
 
     # Archivos recientes
@@ -116,4 +117,6 @@ def edis(app):
     edis.cargar_sesion(archivos_principales, archivos_recientes)
 
     splash.finish(edis)  # Quitar splash
+    if edis.ini:
+        edis.explorador.hilo.start()
     sys.exit(app.exec_())

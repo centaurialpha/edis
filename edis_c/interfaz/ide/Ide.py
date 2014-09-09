@@ -54,10 +54,10 @@ from edis_c.interfaz import barra_de_estado
 from edis_c.interfaz.distribuidor import Distribuidor
 from edis_c.interfaz.contenedor_principal import contenedor_principal
 from edis_c.interfaz.contenedor_secundario import contenedor_secundario
+from edis_c.interfaz import explorador
 from edis_c.interfaz.widgets import notificacion
 from edis_c.interfaz.widgets import widget_buscar
 from edis_c.interfaz.widgets import line_busqueda
-from edis_c.interfaz.dialogos import buscar_en_archivos
 
 
 class IDE(QMainWindow):
@@ -72,6 +72,7 @@ class IDE(QMainWindow):
 
     def __init__(self):
         QMainWindow.__init__(self)
+        self.ini = False
         self.setMinimumSize(850, 700)
         self.setWindowTitle(edis_c.__nombre__)
         self.comprobar_compilador()
@@ -118,7 +119,6 @@ class IDE(QMainWindow):
         herramientas = menu.addMenu(self.trUtf8("&Herramientas"))
         ejecucion = menu.addMenu(self.trUtf8("E&jecucion"))
         acerca = menu.addMenu(self.tr("Ace&rca de"))
-        menu.hide()
         self._menu_archivo = menu_archivo.MenuArchivo(
             archivo, self.toolbar, self)
         self._menu_editar = menu_editar.MenuEditar(
@@ -147,6 +147,7 @@ class IDE(QMainWindow):
         # Iniciar distribuidor despues de la interfáz
         #FIXME: arreglar !!
         self.distribuidor.ini_ide(self)
+        self.ini = True
 
     def posicionar_ventana(self, pantalla):
         """ Posiciona la ventana en el centro de la pantalla. """
@@ -162,8 +163,8 @@ class IDE(QMainWindow):
         self.contenedor_principal = contenedor_principal.ContenedorMain(self)
         self.contenedor_secundario = \
             contenedor_secundario.ContenedorSecundario(self)
+        self.explorador = explorador.Explorador(self)
         self.buscador = widget_buscar.WidgetBusqueda(self)
-        self.buscador_archivos = buscar_en_archivos.WidgetBuscarEnArchivos(self)
         self.connect(self.contenedor_principal,
             SIGNAL("desactivarBienvenida()"),
             self.desactivar_pagina_de_bienvenida)
@@ -173,9 +174,10 @@ class IDE(QMainWindow):
             self.contenedor_principal.agregar_editor)
         self.connect(self.contenedor_principal, SIGNAL("abrirArchivo()"),
             self.contenedor_principal.abrir_archivo)
-        widget_central.agregar_buscador_de_archivos(self.buscador_archivos)
+
         widget_central.agregar_contenedor_central(self.contenedor_principal)
         widget_central.agregar_contenedor_bottom(self.contenedor_secundario)
+        widget_central.agregar_contenedor_lateral(self.explorador)
         widget_central.agregar_buscador(self.buscador)
 
         self.connect(self.contenedor_principal, SIGNAL(
@@ -222,7 +224,6 @@ class IDE(QMainWindow):
         items.update(self._menu_ver.items_toolbar)
         items.update(self._menu_herramientas.items_toolbar)
         items.update(self._menu_ejecucion.items_toolbar)
-        print("SISI")
         for i in configuraciones.BARRA_HERRAMIENTAS_ITEMS:
             if i == 'separador':
                 self.toolbar.addSeparator()
@@ -259,11 +260,12 @@ class IDE(QMainWindow):
                 linea, total_lineas, columna)
 
     def keyPressEvent(self, evento):
-        if evento.modifiers() == Qt.AltModifier:
-            if self.menuBar().isVisible():
-                self.menuBar().hide()
-            else:
-                self.menuBar().show()
+        #if evento.modifiers() == Qt.AltModifier:
+            #if self.menuBar().isVisible():
+                #self.menuBar().hide()
+            #else:
+                #self.menuBar().show()
+        pass
 
     def closeEvent(self, evento):
         """ Al cerrar EDIS se comprueba los archivos sin guardar """
