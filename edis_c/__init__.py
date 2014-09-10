@@ -18,6 +18,7 @@
 
 # Módulos Python
 import sys
+import time
 
 # Módulos QtGui
 from PyQt4.QtGui import QIcon
@@ -56,6 +57,7 @@ __actualizar__ = \
 
 # Correr Interfáz
 def edis(app):
+    t0 = time.time()
     qconfig = QSettings(recursos.CONFIGURACION, QSettings.IniFormat)
     QCoreApplication.setOrganizationName('EDIS-C')
     QCoreApplication.setOrganizationDomain('EDIS-C')
@@ -125,4 +127,5 @@ def edis(app):
     if edis.ini:
         log.debug("Cargando archivos al navegador")
         edis.explorador.navegador.hilo.start()
+    log.debug("Tiempo en ejecutarse: {0}".format(time.time() - t0))
     sys.exit(app.exec_())

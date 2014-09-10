@@ -21,7 +21,8 @@
 # Módulos QtGui
 from PyQt4.QtGui import QWidget
 from PyQt4.QtGui import QSplitter
-from PyQt4.QtGui import QVBoxLayout
+#from PyQt4.QtGui import QVBoxLayout
+from PyQt4.QtGui import QHBoxLayout
 
 # Módulos QtCore
 from PyQt4.QtCore import Qt
@@ -35,19 +36,20 @@ class WidgetCentral(QWidget):
         QWidget.__init__(self, parent)
         self.parent = parent
         self.lateral = None
-        layout_horizontal = QVBoxLayout(self)
+        layout_horizontal = QHBoxLayout(self)
         layout_horizontal.setContentsMargins(0, 0, 0, 0)
         layout_horizontal.setSpacing(0)
 
         self.split_horizontal = QSplitter(Qt.Horizontal)
         self.split_principal = QSplitter(Qt.Vertical)
-        self.layout = QVBoxLayout()
-        #layout_horizontal.addWidget(self.split_principal)
-        layout_horizontal.addLayout(self.layout)
+        self.layout = QHBoxLayout()
+
         layout_horizontal.addWidget(self.split_horizontal)
+        layout_horizontal.addLayout(self.layout)
 
     def agregar_contenedor_central(self, contenedor):
         """ Agrega widget principal. """
+
         self.contenedor_principal = contenedor
         self.split_principal.insertWidget(0, contenedor)
 
@@ -58,15 +60,16 @@ class WidgetCentral(QWidget):
 
     def agregar_buscador(self, buscador):
         """ Agrega widget de búsqueda. """
+
         self.buscador = buscador
         self.buscador.hide()
-        self.layout.addWidget(buscador)
+        self.split_principal.insertWidget(1, buscador)
 
     def agregar_contenedor_bottom(self, contenedor):
         """ Agrega widget de la salida del compilador. """
         self.contenedor_bottom = contenedor
         self.contenedor_bottom.hide()
-        self.split_principal.insertWidget(1, contenedor)
+        self.split_principal.insertWidget(2, contenedor)
 
     def mostrar_ocultar_widget_bottom(self):
         """ Muestra/oculta widget secundario. """

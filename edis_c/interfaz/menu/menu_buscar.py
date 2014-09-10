@@ -37,18 +37,14 @@ class MenuBuscar(QObject):
 
         # Acciones #
         # Buscar
-        accionBuscar = crear_accion(self, "Buscar", atajo=_ATAJO['buscar'],
-            icono=_ICONO['buscar'], slot=self.buscar)
-        # Buscar en archivos
-        accionBuscarEnArchivos = crear_accion(self, "Buscar en archivos",
-            atajo=_ATAJO['buscar-archivos'])
+        accionBuscar = crear_accion(self, "Buscar", icono=_ICONO['buscar'])
+
         # Ir a la línea
         accionIrALinea = crear_accion(self, "Ir a la línea...",
         atajo=_ATAJO['ir'], slot=self.ir_a_la_linea)
 
         # Agregar acción al menú #
         menu_buscar.addAction(accionBuscar)
-        menu_buscar.addAction(accionBuscarEnArchivos)
         menu_buscar.addSeparator()
         menu_buscar.addAction(accionIrALinea)
 
@@ -67,10 +63,3 @@ class MenuBuscar(QObject):
         else:
             self.ide.buscador.show()
             self.ide.buscador.widget_buscar.line_edit.setFocus()
-
-    def buscar_en_archivos(self):
-        if self.ide.buscador_archivos.isVisible():
-            self.ide.buscador_archivos.hide()
-        else:
-            self.ide.buscador_archivos.show()
-            #self.ide.buscador

@@ -35,6 +35,7 @@ from PyQt4.QtCore import Qt
 from edis_c import recursos
 from edis_c.nucleo import configuraciones
 from edis_c.interfaz.editor import editor
+from edis_c.interfaz.widgets import popup_busqueda
 
 
 class TabCentral(QTabWidget):
@@ -48,6 +49,10 @@ class TabCentral(QTabWidget):
         self._recientes = []
         self.no_esta_abierto = True
         self.boton = BotonTab()
+        self.botonPopup = QToolButton()
+        self.botonPopup.setAutoRaise(True)
+        self.botonPopup.setIcon(QIcon(recursos.ICONOS['buscar']))
+        self.setCornerWidget(self.botonPopup, Qt.TopRightCorner)
         self.setCornerWidget(self.boton, Qt.TopLeftCorner)
         self.connect(self, SIGNAL("tabCloseRequested(int)"),
                      self.removeTab)
@@ -55,6 +60,12 @@ class TabCentral(QTabWidget):
         self.boton.accionCerrarTodo.triggered.connect(self.cerrar_todo)
         self.boton.accionCerrarExcepto.triggered.connect(
             self.cerrar_excepto_actual)
+        self.botonPopup.clicked.connect(self.mostrar_popup)
+
+    def mostrar_popup(self):
+        self.popup = popup_busqueda.PopupBusqueda(self, self.botonPopup)
+        self.popup.show()
+        self.popup.line.setFocus()
 
     @property
     def get_archivos_recientes(self):

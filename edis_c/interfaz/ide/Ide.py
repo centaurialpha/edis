@@ -56,8 +56,8 @@ from edis_c.interfaz.contenedor_principal import contenedor_principal
 from edis_c.interfaz.contenedor_secundario import contenedor_secundario
 from edis_c.interfaz import explorador
 from edis_c.interfaz.widgets import notificacion
-from edis_c.interfaz.widgets import widget_buscar
-from edis_c.interfaz.widgets import line_busqueda
+#from edis_c.interfaz.widgets import widget_buscar
+#from edis_c.interfaz.widgets import line_busqueda
 
 
 class IDE(QMainWindow):
@@ -90,7 +90,7 @@ class IDE(QMainWindow):
         # ToolBar
         self.toolbar = QToolBar(self)
         self.toolbar_busqueda = QToolBar(self)
-        self.toolbar_busqueda.addWidget(line_busqueda.Widget())
+        #self.toolbar_busqueda.addWidget(line_busqueda.Widget())
         self.toolbar_busqueda.setMovable(False)
         self.toolbar.setToolTip(self.trUtf8("Mantén presionado y mueve"))
 
@@ -164,7 +164,7 @@ class IDE(QMainWindow):
         self.contenedor_secundario = \
             contenedor_secundario.ContenedorSecundario(self)
         self.explorador = explorador.TabExplorador(self)
-        self.buscador = widget_buscar.WidgetBusqueda(self)
+        #self.buscador = mini_dialogo_busqueda.MiniDialogoBusqueda(self)
         self.connect(self.contenedor_principal,
             SIGNAL("desactivarBienvenida()"),
             self.desactivar_pagina_de_bienvenida)
@@ -178,7 +178,7 @@ class IDE(QMainWindow):
         widget_central.agregar_contenedor_central(self.contenedor_principal)
         widget_central.agregar_contenedor_bottom(self.contenedor_secundario)
         widget_central.agregar_contenedor_lateral(self.explorador)
-        widget_central.agregar_buscador(self.buscador)
+        #widget_central.agregar_buscador(self.buscador)
 
         self.connect(self.contenedor_principal, SIGNAL(
             "cursorPositionChange(int, int)"), self._linea_columna)
