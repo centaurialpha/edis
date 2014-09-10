@@ -51,6 +51,8 @@ class NumeroDeLineaBar(QWidget):
         self.editor = editor
         self.linea_superior = 0
         self.foldArea = 18
+        #FIXME: Obtener número de línea de los errores
+        self.errores = []
         self.rightArrowIcon = QPixmap()
         self.downArrowIcon = QPixmap()
         self.negrita = False
@@ -190,9 +192,19 @@ class NumeroDeLineaBar(QWidget):
 
             if posicion.y() > fin_pagina:
                 break
-
-            pintar.setPen(QColor(recursos.NUEVO_TEMA.get('numero-linea',
-                recursos.TEMA_EDITOR['numero-linea'])))
+            # Errores
+            #FIXME
+            error = False
+            if (contar_linea - 1) in self.errores:
+                pintar.setPen(QColor(255, 0, 0))
+                fuente = pintar.font()
+                fuente.setItalic(True)
+                fuente.setUnderline(True)
+                pintar.setFont(fuente)
+                error = True
+            else:
+                pintar.setPen(QColor(recursos.NUEVO_TEMA.get('numero-linea',
+                    recursos.TEMA_EDITOR['numero-linea'])))
 
             if bloque == bloque_actual:
                 self.negrita = True
@@ -217,6 +229,11 @@ class NumeroDeLineaBar(QWidget):
                 fuente = pintar.font()
                 fuente.setBold(False)
                 pintar.setFont(fuente)
+            if error:
+                f = pintar.font()
+                f.setItalic(False)
+                f.setUnderline(False)
+                pintar.setFont(f)
 
             bloque = bloque.next()
 

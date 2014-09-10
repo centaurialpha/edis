@@ -88,7 +88,8 @@ class SalidaWidget(QPlainTextEdit):
     def parser_salida_stderr(self):
         """ Parser de la salida stderr """
 
-        # FIXME: obtener n línea, tipo, error...
+        #FIXME: obtener n línea, tipo, error...
+        self.errores = []
         codificacion = 'utf-8'
         cursor = self.textCursor()
         proceso = self._parent.proceso
