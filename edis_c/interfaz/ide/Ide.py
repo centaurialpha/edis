@@ -21,43 +21,48 @@
 import os
 import sys
 from re import findall
-from subprocess import Popen
-from subprocess import PIPE
+from subprocess import Popen, PIPE
 
 # Módulos QtGui
-from PyQt4.QtGui import QMainWindow
-from PyQt4.QtGui import QDesktopWidget
-from PyQt4.QtGui import QToolBar
-from PyQt4.QtGui import QApplication
-from PyQt4.QtGui import QMessageBox
+from PyQt4.QtGui import (
+    QMainWindow,
+    QDesktopWidget,
+    QToolBar,
+    QApplication,
+    QMessageBox
+    )
 
 # Módulos QtCore
-from PyQt4.QtCore import Qt
-from PyQt4.QtCore import QSize
-from PyQt4.QtCore import SIGNAL
-from PyQt4.QtCore import QSettings
+from PyQt4.QtCore import (
+    Qt,
+    QSize,
+    SIGNAL,
+    QSettings
+    )
 
 # Módulos EDIS
-import edis_c
+from edis_c import interfaz
 from edis_c import recursos
 from edis_c.nucleo import configuraciones
 from edis_c.interfaz import actualizaciones
-from edis_c.interfaz.menu import menu_archivo
-from edis_c.interfaz.menu import menu_editar
-from edis_c.interfaz.menu import menu_ver
-from edis_c.interfaz.menu import menu_buscar
-from edis_c.interfaz.menu import menu_herramientas
-from edis_c.interfaz.menu import menu_ejecucion
-from edis_c.interfaz.menu import menu_acerca_de
-from edis_c.interfaz import widget_central
-from edis_c.interfaz import barra_de_estado
+from edis_c.interfaz.menu import (
+    menu_archivo,
+    menu_editar,
+    menu_ver,
+    menu_buscar,
+    menu_herramientas,
+    menu_ejecucion,
+    menu_acerca_de
+    )
+from edis_c.interfaz import (
+    widget_central,
+    barra_de_estado
+    )
 from edis_c.interfaz.distribuidor import Distribuidor
 from edis_c.interfaz.contenedor_principal import contenedor_principal
 from edis_c.interfaz.contenedor_secundario import contenedor_secundario
 from edis_c.interfaz import explorador
 from edis_c.interfaz.widgets import notificacion
-#from edis_c.interfaz.widgets import widget_buscar
-#from edis_c.interfaz.widgets import line_busqueda
 
 
 class IDE(QMainWindow):
@@ -74,7 +79,7 @@ class IDE(QMainWindow):
         QMainWindow.__init__(self)
         self.ini = False
         self.setMinimumSize(850, 700)
-        self.setWindowTitle(edis_c.__nombre__)
+        self.setWindowTitle(interfaz.__nombre__)
         self.comprobar_compilador()
         self._cargar_tema()
         get_pantalla = QDesktopWidget().screenGeometry()
@@ -247,14 +252,14 @@ class IDE(QMainWindow):
         """ Cambia el título de la ventana cuando la pestaña cambia de nombre,
         esta emite la señal de cambio. """
 
-        if titulo == edis_c.__nombre__:
+        if titulo == interfaz.__nombre__:
             titulo = ""
             return
 
         nombre_con_extension = os.path.basename(str(titulo)).split('/')[0]
         self.setWindowTitle(
             #nombre_con_extension + ' (' + titulo + ')' + ' - EDIS-C')
-            nombre_con_extension + ' (' + titulo + ') - ' + edis_c.__nombre__)
+            nombre_con_extension + ' (' + titulo + ') - ' + interfaz.__nombre__)
 
     def _linea_columna(self):
         """ Muestra el número de línea y columna del archivo actual. """

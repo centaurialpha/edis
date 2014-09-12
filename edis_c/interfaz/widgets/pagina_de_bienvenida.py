@@ -30,7 +30,7 @@ from PyQt4.QtCore import SIGNAL
 from PyQt4.QtDeclarative import QDeclarativeView
 
 # Módulos EDIS
-import edis_c
+from edis_c import interfaz
 from edis_c import recursos
 
 
@@ -38,7 +38,7 @@ class PaginaDeBienvenida(QtGui.QWidget):
 
     def __init__(self, parent=None):
         super(PaginaDeBienvenida, self).__init__(parent)
-        self._id = edis_c.__nombre__
+        self._id = interfaz.__nombre__
         vbox = QtGui.QVBoxLayout(self)
         vbox.setSpacing(0)
         vbox.setContentsMargins(0, 0, 0, 0)

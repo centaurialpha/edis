@@ -16,13 +16,14 @@
 # You should have received a copy of the GNU General Public License
 # along with EDIS-C.  If not, see <http://www.gnu.org/licenses/>.
 
-from PyQt4.QtGui import QApplication
+#from PyQt4.QtGui import QApplication
 
 import edis_c
-from edis_c import crear_carpetas
+#from edis_c import crear_carpetas
 
-app = QApplication([])
+#app = QApplication([])
 
 if __name__ == "__main__":
-    crear_carpetas.crear_carpetas_edis()
-    edis_c.edis(app)
+    edis_c.edis()
+    #crear_carpetas.crear_carpetas_edis()
+    #edis_c.edis(app)

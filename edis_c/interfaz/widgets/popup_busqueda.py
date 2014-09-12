@@ -35,6 +35,7 @@ from PyQt4.QtCore import (
     )
 
 from . import creador_widget
+from edis_c.interfaz.editor.editor import Editor
 
 
 class PopupBusqueda(QWidget):
@@ -116,13 +117,15 @@ class PopupBusqueda(QWidget):
             self.indice = 1
         self.line.contador_.actualizar(self.indice, self.total)
 
-    def buscar_palabras(self, editor):
-        codigo = editor.devolver_texto()
+    def buscar_palabras(self, weditor):
+        if type(weditor) is not Editor:
+            return False
+        codigo = weditor.devolver_texto()
         texto_buscado = unicode(self.line.text())
         busqueda = len(texto_buscado) > 0
         self.total = codigo.count(texto_buscado)
         if busqueda and self.total > 0:
-            cursor = editor.textCursor()
+            cursor = weditor.textCursor()
             cursor.movePosition(QTextCursor.WordLeft)
             cursor.movePosition(QTextCursor.Start, QTextCursor.KeepAnchor)
             codigo = unicode(cursor.selectedText())

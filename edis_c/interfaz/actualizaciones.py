@@ -14,7 +14,7 @@ from PyQt4.QtGui import QIcon
 from PyQt4.QtCore import SIGNAL
 from PyQt4.QtCore import QThread
 
-import edis_c
+from edis_c import interfaz
 from edis_c import recursos
 
 
@@ -47,7 +47,7 @@ class Actualizacion(QSystemTrayIcon):
     def mostrar_mensaje(self, version_, link):
         self.version_ = str(version_)
         self.link = str(link)
-        version_local = version.LooseVersion(edis_c.__version__)
+        version_local = version.LooseVersion(interfaz.__version__)
         version_web = version.LooseVersion(self.version_)
         if version_local < version_web:
             if self.supportsMessages():
@@ -82,7 +82,7 @@ class Hilo(QThread):
     def run(self):
         edis = {}
         try:
-            version_ = urllib.urlopen(edis_c.__actualizar__)
+            version_ = urllib.urlopen(interfaz.__actualizar__)
             edis = parsear(version_)
         except:
             print("No hay conexión a la red!")
