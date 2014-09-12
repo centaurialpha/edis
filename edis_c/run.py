@@ -98,5 +98,6 @@ def correr_interfaz(app):
     edis.cargar_sesion(archivos_abiertos, archivos_recientes)
 
     splash.finish(edis)
+    edis.explorador.navegador.hilo.start()
     DEBUG('Tiempo: {0}'.format(time() - t0))
     sys.exit(app.exec_())

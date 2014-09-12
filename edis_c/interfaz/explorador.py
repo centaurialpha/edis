@@ -25,6 +25,7 @@ from PyQt4.QtCore import (
     )
 
 from edis_c.interfaz.contenedor_principal import contenedor_principal
+from edis_c.interfaz.editor.editor import Editor
 from edis_c.nucleo import logger
 from edis_c import recursos
 log = logger.edisLogger('edis_c.interfaz.explorador')
@@ -124,8 +125,10 @@ class Navegador(QWidget):
         pass
 
     def cargar_archivo(self, archivos):
-        if isinstance(archivos, QString):
-            archivos = [str(archivos)]
+        #if isinstance(archivos, QString):
+            #archivos = [str(archivos)]
+        self.model = QStandardItemModel(self.lista)
+        self.lista.setModel(self.model)
         if len(list(archivos)) == 1:
             archivo = list(archivos)[0]
             item = QStandardItem(archivo)

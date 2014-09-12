@@ -48,3 +48,28 @@ QGroupBox::title
     selection-color: white;
     selection-background-color: #437DCD;
 }*/
+/*
+QPushButton
+{
+    color: gray;
+    background: transparent;
+    border-radius: 3px;
+    min-width: 90px;
+
+}
+QPushButton:pressed {
+    background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
+                                       stop: 0 #666, stop: 1 #666);
+ }
+QPushButton:flat
+{
+    border.color: red;
+}
+
+QPushButton:hover 
+{
+    background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
+        stop: 0 gray, stop: 1.0 gray);
+    color: white;
+}
+*/

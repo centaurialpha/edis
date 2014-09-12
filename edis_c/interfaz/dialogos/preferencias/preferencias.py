@@ -16,91 +16,91 @@
 # You should have received a copy of the GNU General Public License
 # along with EDIS-C.  If not, see <http://www.gnu.org/licenses/>.
 
-""" Preferencias """
+from PyQt4.QtGui import (
+    QDialog,
+    QVBoxLayout,
+    QHBoxLayout,
+    QGridLayout,
+    QComboBox,
+    QPushButton,
+    QStackedWidget
+    )
 
-# Módulos Python
-#import os
-#import copy
+from PyQt4.QtCore import (
+    SIGNAL,
+    Qt
+    )
 
-# Módulos QtGui
-#from PyQt4.QtGui import QWidget
-#from PyQt4.QtGui import QListWidget
-#from PyQt4.QtGui import QStackedWidget
-from PyQt4.QtGui import QPushButton
-from PyQt4.QtGui import QHBoxLayout
-from PyQt4.QtGui import QVBoxLayout
-from PyQt4.QtGui import QGridLayout
-from PyQt4.QtGui import QDialog
-from PyQt4.QtGui import QTabWidget
-#from PyQt4.QtGui import QListView
-#from PyQt4.QtGui import QListWidgetItem
-#from PyQt4.QtGui import QIcon
-#from PyQt4.QtGui import QLabel
-from PyQt4.QtCore import QSize
-from PyQt4.QtCore import Qt
-#from PyQt4.QtCore import QSettings
-
-# Módulos EDIS
-#from edis_c import recursos
-#from edis_c.nucleo import configuraciones
-#from edis_c.interfaz.contenedor_principal import contenedor_principal
-from edis_c.interfaz.dialogos.preferencias import preferencias_general
-from edis_c.interfaz.dialogos.preferencias import preferencias_editor
-from edis_c.interfaz.dialogos.preferencias import preferencias_gui
-from edis_c.interfaz.dialogos.preferencias import preferencias_compilacion
-#from edis_c.interfaz.dialogos.preferencias import preferencias_tema
-#from edis_c.interfaz.dialogos.preferencias import creador_te    ma
+from edis_c.interfaz.dialogos.preferencias import (
+    preferencias_general,
+    preferencias_editor,
+    preferencias_gui,
+    preferencias_compilacion
+    )
 
 
-class DialogoConfiguracion(QDialog):
-    """ Clase QDialog preferencias """
+class DialogoPreferencias(QDialog):
 
     def __init__(self, parent=None):
-        super(DialogoConfiguracion, self).__init__(parent)
-        self.setWindowTitle(self.trUtf8("EDIS-C Preferencias"))
-        self.setMaximumSize(QSize(0, 0))
-
-        layoutV = QVBoxLayout(self)
-        layoutV.setContentsMargins(0, 0, 0, 0)
-        self.tabs = Tab()
+        super(DialogoPreferencias, self).__init__(parent)
+        self.setWindowTitle(self.trUtf8("EDIS - Preferencias"))
+        vLayout = QVBoxLayout(self)
+        vLayout.setContentsMargins(0, 0, 0, 0)
+        self.combo = QComboBox()
+        vLayout.addWidget(self.combo)
+        self.stack = Stack()
+        vLayout.addWidget(self.stack)
         self.general = preferencias_general.TabGeneral(self)
         self.editor = preferencias_editor.TabEditor()
         self.gui = preferencias_gui.TabGUI(self)
         self.compilacion = preferencias_compilacion.ECTab(self)
+        widgets = [
+            self.general,
+            self.editor,
+            self.gui,
+            self.compilacion,
+            ]
 
-        self.tabs.addTab(self.general, self.trUtf8("General"))
-        self.tabs.addTab(self.editor, self.trUtf8("Editor"))
-        self.tabs.addTab(self.gui, self.trUtf8("GUI"))
-        self.tabs.addTab(self.compilacion, self.trUtf8("Compilador"))
+        [self.stack.addWidget(widget) for widget in widgets]
+        texto_combo = [
+            'General',
+            'Editor',
+            'GUI',
+            'Compilador'
+            ]
+        [self.combo.addItem(item) for item in texto_combo]
 
-        layoutH = QHBoxLayout()
-        self.boton_guardar = QPushButton(self.trUtf8("Guardar"))
-        self.boton_cancelar = QPushButton(self.trUtf8("Cancelar"))
+        hLayout = QHBoxLayout()
+        self.botonCancelar = QPushButton(self.trUtf8("Cancelar"))
+        self.botonGuardar = QPushButton(self.trUtf8("Guardar"))
+        layoutBotones = QGridLayout()
+        hLayout.addWidget(self.botonCancelar)
+        hLayout.addWidget(self.botonGuardar)
+        layoutBotones.addLayout(hLayout, 0, 0, Qt.AlignRight)
+        vLayout.addLayout(layoutBotones)
 
-        layoutH.addWidget(self.boton_cancelar)
-        layoutH.addWidget(self.boton_guardar)
+        self.connect(self.combo, SIGNAL("currentIndexChanged(int)"),
+            lambda: self.cambiar_widget(self.combo.currentIndex()))
+        self.connect(self.botonCancelar, SIGNAL("clicked()"), self.close)
+        self.connect(self.botonGuardar, SIGNAL("clicked()"), self._guardar)
 
-        grilla = QGridLayout()
-        grilla.addLayout(layoutH, 0, 0, Qt.AlignRight)
+    def cambiar_widget(self, indice):
+        if not self.isVisible():
+            self.show()
+        self.stack.mostrar_widget(indice)
 
-        layoutV.addWidget(self.tabs)
-        layoutV.addLayout(grilla)
-
-        self.boton_cancelar.clicked.connect(self.cancelar)
-        self.boton_guardar.clicked.connect(self.guardar_)
-
-    def cancelar(self):
+    def _guardar(self):
+        [self.stack.widget(i).guardar() for i in range(self.combo.count())]
         self.close()
 
-    def guardar_(self):
-        [self.tabs.widget(i).guardar() for i in range(self.tabs.count())]
-        self.close()
 
-
-class Tab(QTabWidget):
-    """ Clase Tab """
+class Stack(QStackedWidget):
 
     def __init__(self):
-        super(Tab, self).__init__()
-        self.setMovable(False)
-        self.setTabPosition(QTabWidget.East)
+        super(Stack, self).__init__()
+
+    def setCurrentIndex(self, indice):
+        QStackedWidget.setCurrentIndex(self, indice)
+
+    def mostrar_widget(self, indice):
+        self.setCurrentIndex(indice)

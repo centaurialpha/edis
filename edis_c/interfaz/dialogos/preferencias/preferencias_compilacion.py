@@ -43,6 +43,7 @@ class ECTab(QWidget):
         vbox = QVBoxLayout(self)
 
         self.tabs = QTabWidget()
+        self.tabs.setTabPosition(3)
         self.configCompilacion = ConfiguracionCompilacion(self)
         self.configEjecucion = ConfiguracionEjecucion(self)
         self.tabs.addTab(self.configCompilacion,

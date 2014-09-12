@@ -59,6 +59,7 @@ class TabEditor(QWidget):
         vbox.setContentsMargins(0, 0, 0, 0)
 
         self.tabs = QTabWidget()
+        self.tabs.setTabPosition(3)
         self.configEditor = CaracteristicasEditor()
         self.generalEditor = GeneralEditor()
         self.creadorTema = creador_tema.CreadorDeTemaEditor(self)

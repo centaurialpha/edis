@@ -52,6 +52,7 @@ class TabGeneral(QWidget):
         layoutV = QVBoxLayout(self)
         layoutV.setContentsMargins(0, 0, 0, 0)
         self.tabs = QTabWidget()
+        self.tabs.setTabPosition(3)
         self.configuracionGeneral = ConfiguracionGeneral(self)
         #self.atajos = atajos.ConfiguracionAtajos()
 

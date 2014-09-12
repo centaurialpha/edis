@@ -170,7 +170,7 @@ class MenuEditar(QObject):
             acciones_.mover_hacia_abajo(editor)
 
     def _configuraciones(self):
-        self.preferencias = preferencias.DialogoConfiguracion(self.ide)
+        self.preferencias = preferencias.DialogoPreferencias(self.ide)
         self.preferencias.show()
 
     def convertir_a_mayusculas(self):
