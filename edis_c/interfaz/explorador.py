@@ -20,12 +20,11 @@ from PyQt4.QtCore import (
     QModelIndex,
     pyqtSlot,
     QStringList,
-    QString,
     QDir
     )
 
 from edis_c.interfaz.contenedor_principal import contenedor_principal
-from edis_c.interfaz.editor.editor import Editor
+#from edis_c.interfaz.editor.editor import Editor
 from edis_c.nucleo import logger
 from edis_c import recursos
 log = logger.edisLogger('edis_c.interfaz.explorador')
@@ -93,14 +92,15 @@ class Navegador(QWidget):
     def __init__(self, parent=None):
         super(Navegador, self).__init__(parent)
         self.parent = parent
-        self.model = None
         self.archivos = []
 
         vbox = QVBoxLayout(self)
         vbox.setContentsMargins(0, 0, 0, 0)
         self.lista = ListView(self)
+        self.model = QStandardItemModel(self.lista)
         vbox.addWidget(self.lista)
         self.hilo = ThreadArchivos(self)
+
         self.connect(self.hilo, SIGNAL("archivosRecibidos(QStringList)"),
             self.cargar_archivos)
         self.lista.clicked.connect(self.cambiar_tab)
@@ -111,11 +111,15 @@ class Navegador(QWidget):
 
     def cargar_archivos(self, archivos):
         archivos = list(archivos)
-        if self.model is None:
-            self.model = QStandardItemModel(self.lista)
-            for i in archivos:
-                item = QStandardItem(i)
-                self.model.appendRow(item)
+
+        for i in archivos:
+            item = QStandardItem(i)
+            if str(i[-1]).startswith('h'):
+                item.setIcon(QIcon(recursos.ICONOS['cabecera']))
+            if str(i[-1]).startswith('c'):
+                item.setIcon(QIcon(recursos.ICONOS['main']))
+
+            self.model.appendRow(item)
         self.lista.setModel(self.model)
 
     def enterEvent(self, event):
@@ -127,16 +131,17 @@ class Navegador(QWidget):
     def cargar_archivo(self, archivos):
         #if isinstance(archivos, QString):
             #archivos = [str(archivos)]
-        self.model = QStandardItemModel(self.lista)
-        self.lista.setModel(self.model)
-        if len(list(archivos)) == 1:
-            archivo = list(archivos)[0]
-            item = QStandardItem(archivo)
-            self.model.appendRow(item)
-        else:
-            for i in archivos:
-                item = QStandardItem(i)
-                self.model.appendRow(item)
+        #self.model = QStandardItemModel(self.lista)
+        #self.lista.setModel(self.model)
+        #if len(list(archivos)) == 1:
+            #archivo = list(archivos)[0]
+            #item = QStandardItem(archivo)
+            #self.model.appendRow(item)
+        #else:
+            #for i in archivos:
+                #item = QStandardItem(i)
+                #self.model.appendRow(item)
+        pass
 
     def borrar_item(self, item):
         self.model.removeRow(item)
@@ -170,9 +175,10 @@ class ThreadArchivos(QThread):
 
     def __init__(self, parent):
         super(ThreadArchivos, self).__init__()
-        self.arc = []
 
     def run(self):
+        import time
+        time.sleep(2)
         try:
             cp = contenedor_principal.ContenedorMain()
             archivos = cp.tab.get_archivos_para_hilo()

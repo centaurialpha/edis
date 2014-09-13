@@ -95,9 +95,13 @@ def correr_interfaz(app):
         archivos_recientes = list()
     archivos_recientes = [archivo for archivo in archivos_recientes]
 
+    archivos_abiertos_hilo = []
+    for i in range(len(archivos_abiertos)):
+        archivos_abiertos_hilo.append(archivos_abiertos[i][0])
+
     edis.cargar_sesion(archivos_abiertos, archivos_recientes)
 
     splash.finish(edis)
-    edis.explorador.navegador.hilo.start()
+    #edis.explorador.navegador.hilo.start()
     DEBUG('Tiempo: {0}'.format(time() - t0))
     sys.exit(app.exec_())

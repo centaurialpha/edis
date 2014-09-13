@@ -181,7 +181,7 @@ class __ContenedorMain(QSplitter):
             return None
 
     def cargar_archivo_lista(self, archivos):
-        self.parent.explorador.navegador.cargar_archivo(archivos)
+        self.parent.explorador.navegador.cargar_archivos(archivos)
 
     def cerrar_item_lista(self, indice):
         self.parent.explorador.navegador.borrar_item(indice)
@@ -338,6 +338,7 @@ class __ContenedorMain(QSplitter):
                 self.mover_abierto(nombre)
         self.emit(SIGNAL("currentTabChanged(QString)"), nombre)
         self.emit(SIGNAL("abriendoArchivos(QStringList)"), nombres)
+        #self.emit(SIGNAL("archivosRecibidos(QStringList)"), nombres)
         self.tab.no_esta_abierto = True
 
     def abierto(self, archivo):
