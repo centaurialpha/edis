@@ -34,7 +34,7 @@ from PyQt4.QtCore import Qt
 from PyQt4.QtCore import QString
 
 # Módulos EDIS
-import edis_c
+from edis_c import interfaz
 from edis_c import recursos
 from edis_c.nucleo import configuraciones
 
@@ -111,8 +111,8 @@ class AcercaDeSide(QWidget):
             '</span></a><br><b>Qt:</b> <a href="%s"><span style="color: '
             '#4dbee8;">%s</span></a><br><b>PyQt:</b> <a href="%s"><span style='
             '"color: #4dbee8;">%s</span></a>') %
-        (edis_c.__python__, edis_c.__python__, edis_c.__qt__, edis_c.__qt__,
-            edis_c.__pyqt__, edis_c.__pyqt__))
+        (interfaz.__python__, interfaz.__python__, interfaz.__qt__,
+            interfaz.__qt__, interfaz.__pyqt__, interfaz.__pyqt__))
 
         descripcion_label.setAlignment(Qt.AlignLeft)
 
@@ -120,13 +120,13 @@ class AcercaDeSide(QWidget):
         layout_vertical.addWidget(links_label)
 
         version_edis = QLabel(
-            ('<b>Version:</b> %s') % (edis_c.__version__))
+            ('<b>Version:</b> %s') % (interfaz.__version__))
         layout_vertical.addWidget(version_edis)
 
         link_codigo_fuente = QLabel(
             ('<b>Codigo fuente:</b> <a href="%s"><span style=" '
             'color: #4dbee8;">%s</span></a>') %
-            (edis_c.__codigo_fuente__, edis_c.__codigo_fuente__))
+            (interfaz.__codigo_fuente__, interfaz.__codigo_fuente__))
         layout_vertical.addWidget(link_codigo_fuente)
 
         # Conexiones

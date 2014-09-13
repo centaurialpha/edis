@@ -740,7 +740,7 @@ class Editor(QPlainTextEdit, tabitem.TabItem):
             self.setTextCursor(cursor)
 
     def desplegar_bloques_saltar(self, linea):
-        for l in self.widget_num_lineas._foldedBlocks:
+        for l in self.widget_num_lineas.bloques_plegados:
             if linea >= l:
                 self.widget_num_lineas.code_folding_event(l + 1)
             else:
