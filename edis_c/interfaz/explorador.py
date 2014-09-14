@@ -102,7 +102,7 @@ class Navegador(QWidget):
         self.hilo = ThreadArchivos(self)
 
         self.connect(self.hilo, SIGNAL("archivosRecibidos(QStringList)"),
-            self.cargar_archivos)
+                     self.cargar_archivos)
         self.lista.clicked.connect(self.cambiar_tab)
 
     @pyqtSlot(QModelIndex)

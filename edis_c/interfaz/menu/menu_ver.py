@@ -40,6 +40,10 @@ class MenuVer(QObject):
             icono=_ICONO['fullscreen'], atajo=_ATAJO['fullscreen'],
             slot=self.pantalla_completa)
         self.accionFullScreen.setCheckable(True)
+        # Widget lateral
+        self.accionMostrarLateral = crear_accion(self,
+            "Mostrar/ocultar navegador", slot=self.ocultar_mostrar_navegador)
+        self.accionMostrarLateral.setCheckable(True)
         # Mostrar/ocultar barra de herramientas
         self.accionMostrarOcultarToolbar = crear_accion(self,
             "Mostrar/ocultar barra de herramientas",
@@ -65,6 +69,7 @@ class MenuVer(QObject):
 
         # Agregar acciones al menú #
         menu_ver.addAction(self.accionFullScreen)
+        menu_ver.addAction(self.accionMostrarLateral)
         menu_ver.addAction(self.accionMostrarOcultarToolbar)
         menu_ver.addAction(self.accionMostrarOcultarEditor)
         menu_ver.addAction(self.accionMostrarOcultarInput)
@@ -73,6 +78,7 @@ class MenuVer(QObject):
         menu_ver.addAction(self.accionAlejar)
 
         self.accionFullScreen.setChecked(False)
+        self.accionMostrarLateral.setChecked(True)
         self.accionMostrarOcultarToolbar.setChecked(True)
         self.accionMostrarOcultarEditor.setChecked(True)
         self.accionMostrarOcultarInput.setChecked(False)
@@ -99,6 +105,12 @@ class MenuVer(QObject):
         else:
             self.ide.toolbar.show()
             #self.ide.toolbar.show()
+
+    def ocultar_mostrar_navegador(self):
+        if self.ide.explorador.isVisible():
+            self.ide.explorador.hide()
+        else:
+            self.ide.explorador.show()
 
     def visibilidad_contenedor_principal(self):
         self.ide.widget_Central.visibilidad_contenedor_principal()

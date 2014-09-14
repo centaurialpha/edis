@@ -128,7 +128,7 @@ class Editor(QPlainTextEdit, tabitem.TabItem):
         self.prePresionado = {
             TECLA.get('TABULACION'): self._indentar,
             TECLA.get('BACKSPACE'): self.__tecla_backspace,
-            TECLA.get('LLAVE-D'): self.autocompletar_braces,
+            #TECLA.get('LLAVE-D'): self.autocompletar_braces,
             TECLA.get('CORCHETE-D'): self.autocompletar_braces,
             TECLA.get('PARENTESIS-D'): self.autocompletar_braces,
             TECLA.get('COMILLAS'): self.autocompletar_comillas,
@@ -137,7 +137,7 @@ class Editor(QPlainTextEdit, tabitem.TabItem):
 
         self.postPresionado = {
             TECLA.get('ENTER'): self._auto_indentar,
-            TECLA.get('LLAVE'): self.autocompletado_braces,
+            #TECLA.get('LLAVE'): self.autocompletado_braces,
             TECLA.get('CORCHETE'): self.autocompletado_braces,
             TECLA.get('PARENTESIS'): self.autocompletado_braces,
             TECLA.get('COMILLAS'): self.autocompletado_comillas,
@@ -496,8 +496,7 @@ class Editor(QPlainTextEdit, tabitem.TabItem):
 
     def m_braces(self, pos, brace, adelante):
         # de NINJA-IDE
-        brace_d = {')': '(', ']': '[', '}': '{', '(': ')', '[': ']',
-        '{': '}'}
+        brace_d = {')': '(', ']': '[', '(': ')', '[': ']',}
         braceM = brace_d[brace]
         if adelante:
             texto = self.devolver_seleccion(pos, QTextCursor.End)
@@ -550,18 +549,19 @@ class Editor(QPlainTextEdit, tabitem.TabItem):
         """ Inserta automáticamente 4 espacios después de presionar Enter,
         previamente escrito '{' """
 
+        cursor = self.textCursor()
         if configuraciones.CHECK_AUTOINDENTACION:
-            texto = self.textCursor().block().previous().text()
+            texto = cursor.block().previous().text()
             espacios = self.__indentacion(texto, configuraciones.INDENTACION)
-            self.textCursor().insertText(espacios)
-
-            cursor = self.textCursor()
-            cursor.setPosition(cursor.position())
-            self.setTextCursor(cursor)
-            #self.moveCursor(QTextCursor.Left)
+            if not str(texto).startswith(' '):
+                cursor.insertText(espacios + '\n' + '}')
+                cursor.movePosition(QTextCursor.Left, QTextCursor.KeepAnchor, 2)
+                cursor.setPosition(cursor.position())
+                self.setTextCursor(cursor)
+        #TODO: Arreglar!!!!!!!!!!
 
     def autocompletado_braces(self, evento):
-        dic_braces = {'(': ')', '{': '}', '[': ']'}
+        dic_braces = {'(': ')', '[': ']'}
         brace = unicode(evento.text())
         if brace not in BRACES:
             return
@@ -592,7 +592,7 @@ class Editor(QPlainTextEdit, tabitem.TabItem):
         """ Mueve el cursor a la derecha si el autocompletado está activado,
         esto para no repetir el cerrado de un brace. """
 
-        BRACE = {')': '(', ']': '[', '}': '{', '(': ')', '[': ']', '{': '}'}
+        BRACE = {')': '(', ']': '[', '(': ')', '[': ']'}
         balance = False
         texto = unicode(evento.text())
         for texto in BRACES.values():

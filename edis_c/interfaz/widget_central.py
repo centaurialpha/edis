@@ -88,6 +88,12 @@ class WidgetCentral(QWidget):
         else:
             self.contenedor_principal.show()
 
+    def visibilidad_lateral(self):
+        if self.lateral.isVisible():
+            self.lateral.hide()
+        else:
+            self.lateral.show()
+
     def showEvent(self, evento):
         QWidget.showEvent(self, evento)
         self.split_horizontal.insertWidget(1, self.split_principal)
