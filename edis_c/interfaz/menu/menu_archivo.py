@@ -50,7 +50,7 @@ class MenuArchivo(QObject):
             slot=self.ide.contenedor_principal.agregar_editor)
         ## Nuevo desde plantilla
         self.accionNuevoMain = crear_accion(self, "Nuevo main",
-            icono=_ICONO['main'], slot=self.archivo_main_c)
+            icono=_ICONO['c'], slot=self.archivo_main_c)
         # Abrir
         self.accionAbrir = crear_accion(self, "Abrir", icono=_ICONO['abrir'],
             atajo=_ATAJO['abrir'],
@@ -87,7 +87,7 @@ class MenuArchivo(QObject):
             "Cerrar todo excepto actual",
             slot=self.ide.contenedor_principal.cerrar_excepto_actual)
         # Salir
-        self.accionSalir = crear_accion(self, "Salir", icono=_ICONO['salir'],
+        self.accionSalir = crear_accion(self, "Salir", icono=_ICONO['cerrar'],
             slot=self.ide.close)
 
         # Agregar acciones #

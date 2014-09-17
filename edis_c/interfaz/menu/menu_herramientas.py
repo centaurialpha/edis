@@ -38,19 +38,19 @@ class MenuHerramientas(QObject):
         # Acciones #
         # Insertar título
         accionTitulo = crear_accion(self, "Insertar título",
-            icono=_ICONO['titulo'], slot=self.insertar_titulo)
+            slot=self.insertar_titulo)
         menu_herramientas.addAction(accionTitulo)
         # Insertar separador
         accionSeparador = crear_accion(self, "Insertar separador",
-            icono=_ICONO['linea'], slot=self.insertar_separador)
+            icono=_ICONO['separador'], slot=self.insertar_separador)
         menu_herramientas.addAction(accionSeparador)
         # Insertar include
         accionInclude = crear_accion(self, "Insertar '#include'",
-            icono=_ICONO['insertar-include'],
+            icono=_ICONO['include'],
             slot=self.ide.distribuidor.insertar_include)
         menu_herramientas.addAction(accionInclude)
         accionInsertarMacro = crear_accion(self, "Insertar '#define'",
-            icono=_ICONO['insertar-macro'], slot=self.insertar_macro)
+            icono=_ICONO['macro'], slot=self.insertar_macro)
         menu_herramientas.addAction(accionInsertarMacro)
         menu_herramientas.addSeparator()
         # Insertar fecha y hora

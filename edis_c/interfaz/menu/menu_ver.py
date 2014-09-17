@@ -37,7 +37,7 @@ class MenuVer(QObject):
         # Acciones #
         # Pantalla completa
         self.accionFullScreen = crear_accion(self, "Pantalla completa",
-            icono=_ICONO['fullscreen'], atajo=_ATAJO['fullscreen'],
+            icono=_ICONO['pantalla-completa'], atajo=_ATAJO['fullscreen'],
             slot=self.pantalla_completa)
         self.accionFullScreen.setCheckable(True)
         # Widget lateral

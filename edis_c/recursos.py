@@ -41,6 +41,7 @@ frozen = getattr(sys, 'frozen', '')
 if frozen in ('dll', 'console_exe', 'windows_exe'):
     PATH = os.path.abspath(os.path.dirname(sys.executable))
 
+PATH_ICONOS = os.path.join(PATH, "imagenes")
 HOME_EDIS = os.path.join(HOME_PATH, ".edis_c")
 CONFIGURACION = os.path.join(HOME_EDIS, "config.ini")
 OTROS = (HOME_EDIS, 'otros')
@@ -55,61 +56,10 @@ NOTIFICACION = os.path.join(PATH, "otros", "QtQML")
 
 
 # Iconos
-ICONOS = {
-    "nuevo": os.path.join(PATH, "imagenes", "nuevo.png"),
-    "main": os.path.join(PATH, "imagenes", "c.png"),
-    "cabecera": os.path.join(PATH, "imagenes", "cabecera.png"),
-    "abrir": os.path.join(PATH, "imagenes", "abrir.png"),
-    "guardar": os.path.join(PATH, "imagenes", "guardar.png"),
-    "guardar-como": os.path.join(PATH, "imagenes", "guardarComo.png"),
-    "guardar-todo": os.path.join(PATH, "imagenes", "guardarTodo.png"),
-    "cerrar": os.path.join(PATH, "imagenes", "cerrarTab.png"),
-    "salir": os.path.join(PATH, "imagenes", "cerrar.png"),
-    "splash": os.path.join(PATH, "imagenes", "splash.png"),
-    # "icono": os.path.join(PATH, "imagenes", "side-c.png"),
-    # Logo dragón (originalmente verde by nessmasta) - modificado a azul
-    "seiryu": os.path.join(PATH, "imagenes", "edis_seiryu.png"),
-    "icono": os.path.join(PATH, "imagenes", "edis_c.ico"),
-    "imprimir": os.path.join(PATH, "imagenes", "imprimir.png"),
-    "exportar": os.path.join(PATH, "imagenes", "exportar.png"),
-    "compilar": os.path.join(PATH, "imagenes", "compilar.png"),
-    "ejecutar": os.path.join(PATH, "imagenes", "ejecutar.png"),
-    "comp-ejec": os.path.join(PATH, "imagenes", "compilarEjecutar.png"),
-    "frenar": os.path.join(PATH, "imagenes", "frenar.png"),
-    "terminal": os.path.join(PATH, "imagenes", "terminal.png"),
-    "notas": os.path.join(PATH, "imagenes", "notas.png"),
-    "deshacer": os.path.join(PATH, "imagenes", "deshacer.png"),
-    "rehacer": os.path.join(PATH, "imagenes", "rehacer.png"),
-    "cortar": os.path.join(PATH, "imagenes", "cortar.png"),
-    "copiar": os.path.join(PATH, "imagenes", "copiar.png"),
-    "pegar": os.path.join(PATH, "imagenes", "pegar.png"),
-    "arriba": os.path.join(PATH, "imagenes", "arriba.png"),
-    "abajo": os.path.join(PATH, "imagenes", "abajo.png"),
-    "buscar": os.path.join(PATH, "imagenes", "buscar.png"),
-    "siguiente": os.path.join(PATH, "imagenes", "siguiente.png"),
-    "anterior": os.path.join(PATH, "imagenes", "anterior.png"),
-    "tab": os.path.join(PATH, "imagenes", "tab.png"),
-    "fullscreen": os.path.join(PATH, "imagenes", "pantalla_completa.png"),
-    "acercar": os.path.join(PATH, "imagenes", "acercar.png"),
-    "alejar": os.path.join(PATH, "imagenes", "alejar.png"),
-    "titulo": os.path.join(PATH, "imagenes", "titulo.png"),
-    "linea": os.path.join(PATH, "imagenes", "separador.png"),
-    "general": os.path.join(PATH, "imagenes", "general.png"),
-    "editor": os.path.join(PATH, "imagenes", "editor.png"),
-    "tema": os.path.join(PATH, "imagenes", "tema.png"),
-    "indentar": os.path.join(PATH, "imagenes", "indentar.png"),
-    "quitar-indentacion": os.path.join(PATH, "imagenes", "desindentar.png"),
-    "comentar": os.path.join(PATH, "imagenes", "comentar.png"),
-    "insertar-include": os.path.join(PATH, "imagenes", "include.png"),
-    "insertar-macro": os.path.join(PATH, "imagenes", "macro.png"),
-    "acerca-qt": os.path.join(PATH, "imagenes", "acercaDeQt.png"),
-    "acerca-edis": os.path.join(PATH, "imagenes", "acercaDe.png"),
-    "bug": os.path.join(PATH, "imagenes", "bug.png"),
-    "ir-linea": os.path.join(PATH, "imagenes", "ir_linea.png"),
-    "buscar-tool": os.path.join(PATH, "imagenes", "buscar_tool.png"),
-    "explorador": os.path.join(PATH, "imagenes", "explorador.png"),
-    "navegador": os.path.join(PATH, "imagenes", "navegador.png")
-    }
+ICONOS = {}
+for icono in os.listdir(PATH_ICONOS):
+    ICONOS[icono.split('.')[0]] = os.path.join(PATH_ICONOS, icono)
+
 
 # Estilos de color - Editor
 TEMA_EDITOR = {

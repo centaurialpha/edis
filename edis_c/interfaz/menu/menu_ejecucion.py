@@ -52,7 +52,7 @@ class MenuEjecucion(QObject):
             slot=self.ide.distribuidor.ejecutar)
         # Compilar y ejecutar
         self.accionCompilarEjecutar = crear_accion(self, "Compilar y ejecutar",
-            icono=_ICONO['comp-ejec'], atajo=_ATAJO['comp-ejec'])
+            icono=_ICONO['compilar-ejecutar'], atajo=_ATAJO['comp-ejec'])
         self.accionFrenar = crear_accion(self, "Frenar programa",
             icono=_ICONO['frenar'], slot=self.ide.distribuidor.frenar)
 
