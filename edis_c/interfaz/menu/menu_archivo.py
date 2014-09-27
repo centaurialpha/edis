@@ -29,6 +29,7 @@ from edis_c.interfaz.editor import editor
 from edis_c import recursos
 from edis_c import traducciones as tr
 from edis_c.interfaz.widgets.creador_widget import crear_accion
+from edis_c.interfaz.dialogos import dialogo_proyecto
 
 _ICONO = recursos.ICONOS
 _ATAJO = recursos.ATAJOS
@@ -51,6 +52,9 @@ class MenuArchivo(QObject):
         ## Nuevo desde plantilla
         self.accionNuevoMain = crear_accion(self, "Nuevo main",
             icono=_ICONO['c'], slot=self.archivo_main_c)
+        # Nuevo proyecto
+        self.accionProyecto = crear_accion(self, "Nuevo proyecto",
+            slot=self.nuevo_proyecto)
         # Abrir
         self.accionAbrir = crear_accion(self, "Abrir", icono=_ICONO['abrir'],
             atajo=_ATAJO['abrir'],
@@ -94,6 +98,7 @@ class MenuArchivo(QObject):
         menu_archivo.addAction(self.accionNuevo)
         self.accionNuevoDesdePlantilla = menu_archivo.addMenu(
             tr.TRAD_NUEVO_PLANTILLA)
+        menu_archivo.addAction(self.accionProyecto)
         menu_archivo.addSeparator()
         self.accionNuevoDesdePlantilla.addAction(self.accionNuevoMain)
         menu_archivo.addAction(self.accionAbrir)
@@ -143,3 +148,7 @@ class MenuArchivo(QObject):
             QMessageBox.information(widget, self.trUtf8("Información!"),
                 self.trUtf8("Primero crea un nuevo archivo!"))
         widget.setFocus()
+
+    def nuevo_proyecto(self):
+        proyecto = dialogo_proyecto.DialogoProyecto(self)
+        proyecto.exec_()

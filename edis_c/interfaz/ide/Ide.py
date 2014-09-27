@@ -193,8 +193,6 @@ class IDE(QMainWindow):
         self.connect(self.explorador.explorador,
             SIGNAL("dobleClickArchivo(QString)"),
             lambda f: self.contenedor_principal.abrir_archivo(f))
-        self.connect(self.contenedor_principal, SIGNAL("guardadoList(QString)"),
-            self.explorador.navegador.cargar_archivo)
 
     def desactivar_pagina_de_bienvenida(self):
         """ Desactiva la página de inicio al iniciar próxima sesión. """

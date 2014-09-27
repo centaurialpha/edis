@@ -41,7 +41,7 @@ class TabExplorador(QWidget):
         self.navegador = Navegador(self)
         self.explorador = Explorador(self)
         self.tabs.addTab(self.navegador,
-            QIcon(recursos.ICONOS['navegador']), '')
+                        QIcon(recursos.ICONOS['navegador']), '')
         self.tabs.addTab(self.explorador,
             QIcon(recursos.ICONOS['explorador']), '')
         vbox.addWidget(self.tabs)
@@ -107,6 +107,7 @@ class Navegador(QWidget):
 
     @pyqtSlot(QModelIndex)
     def cambiar_tab(self, indice):
+
         self.emit(SIGNAL("cambioPes(int)"), indice.row())
 
     def cargar_archivos(self, archivos):
@@ -117,7 +118,7 @@ class Navegador(QWidget):
             if str(i[-1]).startswith('h'):
                 item.setIcon(QIcon(recursos.ICONOS['cabecera']))
             if str(i[-1]).startswith('c'):
-                item.setIcon(QIcon(recursos.ICONOS['main']))
+                item.setIcon(QIcon(recursos.ICONOS['c']))
 
             self.model.appendRow(item)
         self.lista.setModel(self.model)

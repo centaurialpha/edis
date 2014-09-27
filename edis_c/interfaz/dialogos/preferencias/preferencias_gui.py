@@ -105,7 +105,7 @@ class TabGUI(QWidget):
 
     def cargar_comboBox(self, comboBox):
         self.items_barra = {
-            'separador': [QIcon(recursos.ICONOS['linea']),
+            'separador': [QIcon(recursos.ICONOS['separador']),
                 'Agregar separador'],
             'nuevo-archivo': [QIcon(recursos.ICONOS['nuevo']),
                 'Nuevo archivo'],
@@ -141,18 +141,18 @@ class TabGUI(QWidget):
                 'Mover hacia arriba'],
             'abajo': [QIcon(recursos.ICONOS['abajo']),
                 'Mover hacia abajo'],
-            'include': [QIcon(recursos.ICONOS['insertar-include']),
+            'include': [QIcon(recursos.ICONOS['include']),
                 'Include'],
-            'macro': [QIcon(recursos.ICONOS['insertar-macro']),
+            'macro': [QIcon(recursos.ICONOS['macro']),
                 'Macro'],
-            'linea': [QIcon(recursos.ICONOS['linea']),
+            'linea': [QIcon(recursos.ICONOS['separador']),
                 'Separador'],
             'compilar-archivo': [QIcon(recursos.ICONOS['compilar']),
                 'Compilar'],
             'ejecutar-archivo': [QIcon(recursos.ICONOS['ejecutar']),
                 'Ejecutar'],
-            'compilar-ejecutar-archivo': [QIcon(recursos.ICONOS['comp-ejec']),
-                'Compilar y Ejecutar'],
+            'compilar-ejecutar-archivo': [QIcon(
+                recursos.ICONOS['compilar-ejecutar']), 'Compilar y Ejecutar'],
             'frenar': [QIcon(recursos.ICONOS['frenar']),
                 'Frenar']
                 }

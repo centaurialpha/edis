@@ -112,7 +112,7 @@ class __ContenedorMain(QSplitter):
             # Extensión del archivo
             ext = nombre_tab.strip('.')[-1]
             if ext == 'c':
-                icono = recursos.ICONOS['main']
+                icono = recursos.ICONOS['c']
             elif ext == 'h':
                 icono = recursos.ICONOS['cabecera']
             else:
