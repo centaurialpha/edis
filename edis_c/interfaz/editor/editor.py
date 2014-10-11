@@ -546,19 +546,49 @@ class Editor(QPlainTextEdit, tabitem.TabItem):
         return False
 
     def _auto_indentar(self, evento):
-        """ Inserta automáticamente 4 espacios después de presionar Enter,
-        previamente escrito '{' """
+        """ Indentación automática y autocompletado de llave. """
 
         cursor = self.textCursor()
         if configuraciones.CHECK_AUTOINDENTACION:
             texto = cursor.block().previous().text()
-            espacios = self.__indentacion(texto, configuraciones.INDENTACION)
-            if not str(texto).startswith(' '):
-                cursor.insertText(espacios + '\n' + '}')
-                cursor.movePosition(QTextCursor.Left, QTextCursor.KeepAnchor, 2)
-                cursor.setPosition(cursor.position())
-                self.setTextCursor(cursor)
-        #TODO: Arreglar!!!!!!!!!!
+            patron = re.compile('^\s+')
+            indentacion = ''
+            b = False
+            tam = len(texto)
+            if tam > 0 and texto[-1] == '{':
+                b = True
+                indentacion = ' ' * configuraciones.INDENTACION
+            espacio = patron.match(texto)
+            if espacio is not None:
+                espacios = espacio.group() + indentacion
+            else:
+                espacios = indentacion
+            print(len(espacios))
+            cursor.insertText(espacios)
+            if b:
+                cursor.insertText('\n')
+                if len(espacios) == 4:
+                    espacios = ''
+                    cursor.insertText(espacios)
+                    cursor.insertText('}')
+                    cursor.movePosition(QTextCursor.Left,
+                                        QTextCursor.KeepAnchor, 2)
+                else:
+                    cursor.insertText(espacios)
+                    cursor.movePosition(QTextCursor.Left,
+                                        QTextCursor.KeepAnchor)
+                    cursor.movePosition(QTextCursor.Left,
+                                        QTextCursor.KeepAnchor,
+                                        configuraciones.INDENTACION - 1)
+                    cursor.removeSelectedText()
+                    cursor.insertText('}')
+                    cursor.movePosition(QTextCursor.Up,
+                                        QTextCursor.KeepAnchor)
+                    cursor.movePosition(QTextCursor.Right,
+                                        QTextCursor.KeepAnchor,
+                                        configuraciones.INDENTACION - 1)
+            cursor.setPosition(cursor.position())
+            self.setTextCursor(cursor)
 
     def autocompletado_braces(self, evento):
         dic_braces = {'(': ')', '[': ']'}
@@ -657,7 +687,7 @@ class Editor(QPlainTextEdit, tabitem.TabItem):
         cursor = self.textCursor()
         cursor.movePosition(QTextCursor.StartOfLine, QTextCursor.KeepAnchor)
         texto = unicode(cursor.selection().toPlainText())
-
+        print(texto)
         if(len(texto) % configuraciones.INDENTACION == 0) and texto.isspace():
             cursor.movePosition(QTextCursor.StartOfLine)
             cursor.movePosition(QTextCursor.Right, QTextCursor.KeepAnchor,
@@ -796,18 +826,18 @@ class Editor(QPlainTextEdit, tabitem.TabItem):
             self.texto_modificado = False
             self.document().setModified(self.texto_modificado)
 
-    def __indentacion(self, linea, ind=configuraciones.INDENTACION):
-        import re
-        patronInd = re.compile('^\s+')
-        indentacion = ''
+    #def __indentacion(self, linea, ind=configuraciones.INDENTACION):
+        #import re
+        #patronInd = re.compile('^\s+')
+        #indentacion = ''
 
-        if len(linea) > 0 and linea[-1] == '{':
-            indentacion = ' ' * ind
-        espacio = patronInd.match(linea)
-        if espacio is not None:
-            return espacio.group() + indentacion
+        #if len(linea) > 0 and linea[-1] == '{':
+            #indentacion = ' ' * ind
+        #espacio = patronInd.match(linea)
+        #if espacio is not None:
+            #return espacio.group() + indentacion
 
-        return indentacion
+        #return indentacion
 
 
 def crear_editor(nombre_archivo=''):
