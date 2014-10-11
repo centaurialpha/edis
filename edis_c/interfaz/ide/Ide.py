@@ -63,6 +63,7 @@ from edis_c.interfaz.contenedor_principal import contenedor_principal
 from edis_c.interfaz.contenedor_secundario import contenedor_secundario
 from edis_c.interfaz import explorador
 from edis_c.interfaz.widgets import notificacion
+from edis_c.interfaz.dialogos import dialogo_guardar_archivos
 
 
 class IDE(QMainWindow):
@@ -279,27 +280,16 @@ class IDE(QMainWindow):
         pass
 
     def closeEvent(self, evento):
-        """ Al cerrar EDIS se comprueba los archivos sin guardar """
-
-        SI = QMessageBox.Yes
-        CANCELAR = QMessageBox.Cancel
+        """ Al cerrar EDIS se comprueba archivos no guardados y se guardan
+        las configuraciones. """
 
         if self.contenedor_principal.check_tabs_sin_guardar() and \
         configuraciones.CONFIRMAR_AL_CERRAR:
             archivos_sin_guardar = \
                 self.contenedor_principal.devolver_archivos_sin_guardar()
-            #print type(archivos_sin_guardar)
-            txt = '\n'.join(archivos_sin_guardar)
-            v = QMessageBox.question(self,
-                self.trUtf8("Archivos sin guardar!"),
-                self.trUtf8("Estos archivos no se han guardado:\n"
-                "%1\n\n¿Guardar cambios?").arg(txt),
-                SI, QMessageBox.No, CANCELAR)
-
-            if v == SI:
-                self.contenedor_principal.guardar_todo()
-
-            if v == CANCELAR:
+            dialogo = dialogo_guardar_archivos.Dialogo(archivos_sin_guardar)
+            dialogo.exec_()
+            if dialogo.ignorado():
                 evento.ignore()
         self.guardar_configuraciones()
 

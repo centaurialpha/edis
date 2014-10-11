@@ -183,7 +183,8 @@ class TabCentral(QTabWidget):
         for i in range(self.count()):
             w = self.widget(i)
             if isinstance(w, editor.Editor) and w.texto_modificado:
-                archivos.append(str(self.tabText(i)))
+                #archivos.append(str(self.tabText(i)))
+                archivos.append(str(self.widget(i)._id))
 
         return archivos
 

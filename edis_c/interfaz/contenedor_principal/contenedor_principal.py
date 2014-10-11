@@ -441,6 +441,14 @@ class __ContenedorMain(QSplitter):
             if isinstance(editorW, editor.Editor):
                 self.guardar_archivo(editorW)
 
+    def guardar_seleccionado(self, nombre):
+        for i in range(self.tab.count()):
+            editorW = self.tab.widget(i)
+
+            if isinstance(editorW, editor.Editor):
+                if editorW._id == nombre:
+                    self.guardar_archivo(editorW)
+
     def resetear_flags_editor(self):
         for i in range(self.tab.count()):
             widget = self.tab.widget(i)
