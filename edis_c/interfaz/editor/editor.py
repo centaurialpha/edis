@@ -264,7 +264,7 @@ class Editor(QPlainTextEdit, tabitem.TabItem):
             ancho = self.viewport().width() - (self.posicion_margen +
                 offset.x())
             rect = QRect(self.posicion_margen + offset.x(), -1,
-                ancho + 1, self.viewport().height() + 3)
+                ancho + 1, self.viewport().height() + 5)
             fondo = QColor(recursos.NUEVO_TEMA.get('fondo-margen',
                 recursos.TEMA_EDITOR['fondo-margen']))
             fondo.setAlpha(configuraciones.OPACIDAD_MARGEN)
@@ -496,7 +496,7 @@ class Editor(QPlainTextEdit, tabitem.TabItem):
 
     def m_braces(self, pos, brace, adelante):
         # de NINJA-IDE
-        brace_d = {')': '(', ']': '[', '(': ')', '[': ']',}
+        brace_d = {')': '(', ']': '[', '(': ')', '[': ']'}
         braceM = brace_d[brace]
         if adelante:
             texto = self.devolver_seleccion(pos, QTextCursor.End)
@@ -686,7 +686,6 @@ class Editor(QPlainTextEdit, tabitem.TabItem):
         cursor = self.textCursor()
         cursor.movePosition(QTextCursor.StartOfLine, QTextCursor.KeepAnchor)
         texto = unicode(cursor.selection().toPlainText())
-        print(texto)
         if(len(texto) % configuraciones.INDENTACION == 0) and texto.isspace():
             cursor.movePosition(QTextCursor.StartOfLine)
             cursor.movePosition(QTextCursor.Right, QTextCursor.KeepAnchor,
@@ -824,19 +823,6 @@ class Editor(QPlainTextEdit, tabitem.TabItem):
             self.nuevo_archivo = False
             self.texto_modificado = False
             self.document().setModified(self.texto_modificado)
-
-    #def __indentacion(self, linea, ind=configuraciones.INDENTACION):
-        #import re
-        #patronInd = re.compile('^\s+')
-        #indentacion = ''
-
-        #if len(linea) > 0 and linea[-1] == '{':
-            #indentacion = ' ' * ind
-        #espacio = patronInd.match(linea)
-        #if espacio is not None:
-            #return espacio.group() + indentacion
-
-        #return indentacion
 
 
 def crear_editor(nombre_archivo=''):

@@ -26,6 +26,7 @@ from PyQt4.QtGui import QWidget
 from PyQt4.QtGui import QPainter
 from PyQt4.QtGui import QFontMetrics
 from PyQt4.QtGui import QColor
+from PyQt4.QtGui import QBrush
 from PyQt4.QtGui import QPolygonF
 from PyQt4.QtGui import QPixmap
 
@@ -179,7 +180,6 @@ class NumeroDeLineaBar(QWidget):
             recursos.TEMA_EDITOR['widget-num-linea']))
         fondo.setAlpha(40)
         pintar.fillRect(self.rect(), QColor(fondo))
-
         bloque = self.editor.firstVisibleBlock()
         viewport_offset = self.editor.contentOffset()
         contar_linea = bloque.blockNumber()
@@ -240,9 +240,10 @@ class NumeroDeLineaBar(QWidget):
         self.linea_superior = contar_linea
 
         # Código desplegable
-        area = self.width() - self.foldArea
-        pintar.fillRect(area, 0, self.foldArea, self.height(),
-            Qt.transparent)
+        area = self.width() - 17
+        color = QColor(Qt.gray)
+        brush = QBrush(color, Qt.Dense6Pattern)
+        pintar.fillRect(area, 0, self.foldArea, self.height(), brush)
         if self.foldArea != self.rightArrowIcon.width():
             poligono = QPolygonF()
 
