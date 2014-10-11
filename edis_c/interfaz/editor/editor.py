@@ -563,7 +563,6 @@ class Editor(QPlainTextEdit, tabitem.TabItem):
                 espacios = espacio.group() + indentacion
             else:
                 espacios = indentacion
-            print(len(espacios))
             cursor.insertText(espacios)
             if b:
                 cursor.insertText('\n')
