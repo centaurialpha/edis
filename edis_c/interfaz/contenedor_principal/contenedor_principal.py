@@ -408,7 +408,7 @@ class __ContenedorMain(QSplitter):
                 nombre, editorW.devolver_texto())
             ext = manejador_de_archivo._nombreBase(nombre)[-1]
             if ext == 'c':
-                icono = recursos.ICONOS['main']
+                icono = recursos.ICONOS['c']
             else:
                 icono = recursos.ICONOS['cabecera']
             self.tab.setTabText(self.tab.currentIndex(),
