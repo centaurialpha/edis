@@ -138,7 +138,7 @@ class __ContenedorMain(QSplitter):
 
     def editor_es_modificado(self, v=True):
         self.tab.tab_es_modificado(v)
-        self.parent.barra_de_estado.archivo_guardado.modificado(v)
+        self.parent.barra_de_estado.archivo_modificado.modificado(v)
 
     def editor_es_guardado(self, editorW=None):
         self.tab.tab_guardado(editorW)

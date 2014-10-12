@@ -22,10 +22,13 @@ from PyQt4.QtGui import (
     QVBoxLayout,
     QHBoxLayout,
     QLabel,
-    QFrame
+    QFrame,
+    QSpinBox
     )
 
-from edis_c.interfaz.contenedor_secundario import procesos
+from PyQt4.QtCore import SIGNAL
+
+from edis_c.nucleo import configuraciones
 
 
 class BarraDeEstado(QStatusBar):
@@ -39,23 +42,33 @@ class BarraDeEstado(QStatusBar):
         #separador4 = Separador()
 
         self.contenedor = QWidget()
-        self.proceso_compilacion = procesos.EjecutarWidget()
 
         hLayout = QHBoxLayout(self.contenedor)
         hLayout.setContentsMargins(0, 0, 0, 0)
 
         self.nombre_archivo = NombreArchivo()
         self.estado_cursor = WidgetLineaColumna(self)
-        self.archivo_guardado = MensajeArchivoModificado()
+        self.archivo_modificado = MensajeArchivoModificado()
+        self.indentacion_frame = QSpinBox()
+        self.indentacion_frame.setRange(4, 12)
+        self.indentacion_frame.setPrefix(self.trUtf8("Indentación "))
+        self.indentacion_frame.setValue(configuraciones.INDENTACION)
 
         hLayout.addWidget(self.nombre_archivo, stretch=1)
         hLayout.addWidget(separador)
         hLayout.addWidget(self.estado_cursor)
         hLayout.addWidget(separador2)
-        hLayout.addWidget(self.archivo_guardado)
+        hLayout.addWidget(self.archivo_modificado)
         hLayout.addWidget(separador3)
+        hLayout.addWidget(self.indentacion_frame)
 
         self.addWidget(self.contenedor)
+
+        self.connect(self.indentacion_frame, SIGNAL("valueChanged(int)"),
+            self.cambiar_indentacion)
+
+    def cambiar_indentacion(self, valor):
+        configuraciones.INDENTACION = valor
 
     def mostrar_mensaje(self, mensaje, tiempo=3000):
         self.showMessage(mensaje, tiempo)
