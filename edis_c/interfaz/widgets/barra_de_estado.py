@@ -25,6 +25,8 @@ from PyQt4.QtGui import (
     QFrame
     )
 
+from edis_c.interfaz.contenedor_secundario import procesos
+
 
 class BarraDeEstado(QStatusBar):
 
@@ -34,17 +36,19 @@ class BarraDeEstado(QStatusBar):
         separador = Separador()
         separador2 = Separador()
         separador3 = Separador()
+        #separador4 = Separador()
 
         self.contenedor = QWidget()
+        self.proceso_compilacion = procesos.EjecutarWidget()
 
         hLayout = QHBoxLayout(self.contenedor)
         hLayout.setContentsMargins(0, 0, 0, 0)
 
         self.nombre_archivo = NombreArchivo()
         self.estado_cursor = WidgetLineaColumna(self)
-        self.archivo_guardado = MensajeArchivoGuardado(self)
+        self.archivo_guardado = MensajeArchivoModificado()
 
-        hLayout.addWidget(self.nombre_archivo)
+        hLayout.addWidget(self.nombre_archivo, stretch=1)
         hLayout.addWidget(separador)
         hLayout.addWidget(self.estado_cursor)
         hLayout.addWidget(separador2)
@@ -66,10 +70,10 @@ class NombreArchivo(QLabel):
         self.setText(archivo)
 
 
-class MensajeArchivoGuardado(QLabel):
+class MensajeArchivoModificado(QLabel):
 
-    def __init__(self, parent):
-        super(MensajeArchivoGuardado, self).__init__()
+    def __init__(self):
+        super(MensajeArchivoModificado, self).__init__()
         self.setText('')
 
     def modificado(self, modificado=False):
