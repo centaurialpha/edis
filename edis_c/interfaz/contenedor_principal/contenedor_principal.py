@@ -138,6 +138,7 @@ class __ContenedorMain(QSplitter):
 
     def editor_es_modificado(self, v=True):
         self.tab.tab_es_modificado(v)
+        self.parent.barra_de_estado.archivo_guardado.modificado(v)
 
     def editor_es_guardado(self, editorW=None):
         self.tab.tab_guardado(editorW)
@@ -371,7 +372,7 @@ class __ContenedorMain(QSplitter):
                 return self.guardar_archivo_como()
 
             nombre = editorW._id
-            carpeta_de_archivo = manejador_de_archivo.devolver_carpeta(nombre)
+            #carpeta_de_archivo = manejador_de_archivo.devolver_carpeta(nombre)
             self.emit(SIGNAL("beforeFileSaved(QString)"), nombre)
             acciones_.quitar_espacios_en_blanco(editorW)
             contenido = editorW.devolver_texto()
@@ -379,8 +380,7 @@ class __ContenedorMain(QSplitter):
             editorW.iD = nombre
 
             self.emit(SIGNAL("archivoGuardado(QString)"), self.tr(
-                "Guardado: %0 en %1").arg((nombre).split('/')[-1],
-                carpeta_de_archivo))
+                "Guardado: %1").arg(nombre))
             editorW._guardado()
 
             return editorW._id

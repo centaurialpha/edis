@@ -56,13 +56,14 @@ from edis_c.interfaz.menu import (
     )
 from edis_c.interfaz import (
     widget_central,
-    barra_de_estado
+    #barra_de_estado
     )
+
 from edis_c.interfaz.distribuidor import Distribuidor
 from edis_c.interfaz.contenedor_principal import contenedor_principal
 from edis_c.interfaz.contenedor_secundario import contenedor_secundario
 from edis_c.interfaz import explorador
-from edis_c.interfaz.widgets import notificacion
+from edis_c.interfaz.widgets import barra_de_estado
 from edis_c.interfaz.dialogos import dialogo_guardar_archivos
 
 
@@ -111,7 +112,7 @@ class IDE(QMainWindow):
         self.tray = actualizaciones.Actualizacion(self)
         self.tray.show()
         # Notificaciones
-        self.noti = notificacion.Notificacion(self)
+        #self.noti = notificacion.Notificacion(self)
         # Barra de estado
         self.barra_de_estado = barra_de_estado.BarraDeEstado(self)
         #self.barra_de_estado.hide()
@@ -140,8 +141,8 @@ class IDE(QMainWindow):
         self.connect(self.contenedor_principal,
             SIGNAL("recentTabsModified(QStringList)"),
             self._menu_archivo.actualizar_archivos_recientes)
-        self.connect(self.contenedor_principal,
-            SIGNAL("archivoGuardado(QString)"), self.mostrar_barra_de_estado)
+        #self.connect(self.contenedor_principal,
+            #SIGNAL("archivoGuardado(QString)"), self.mostrar_barra_de_estado)
         self.connect(self._menu_archivo, SIGNAL("abrirArchivo(QString)"),
             self.contenedor_principal.abrir_archivo)
 
@@ -176,6 +177,8 @@ class IDE(QMainWindow):
             self.desactivar_pagina_de_bienvenida)
         self.connect(self.contenedor_principal, SIGNAL(
             "currentTabChanged(QString)"), self.cambiar_titulo_de_ventana)
+        self.connect(self.contenedor_principal, SIGNAL(
+            "currentTabChanged(QString)"), self.cambiar_barra_estado)
         self.connect(self.contenedor_principal, SIGNAL("nuevoArchivo()"),
             self.contenedor_principal.agregar_editor)
         self.connect(self.contenedor_principal, SIGNAL("abrirArchivo()"),
@@ -247,6 +250,9 @@ class IDE(QMainWindow):
     def cargar_status_tips(self, accion, texto):
         accion.setStatusTip(texto)
 
+    def cambiar_barra_estado(self, archivo):
+        self.barra_de_estado.nombre_archivo.cambiar_texto(archivo)
+
     def cambiar_titulo_de_ventana(self, titulo):
         """ Cambia el título de la ventana cuando la pestaña cambia de nombre,
         esta emite la señal de cambio. """
@@ -268,7 +274,7 @@ class IDE(QMainWindow):
             linea = editor.textCursor().blockNumber() + 1
             columna = editor.textCursor().columnNumber()
             total_lineas = editor.devolver_cantidad_de_lineas()
-            self.barra_de_estado.linea_columna.actualizar_linea_columna(
+            self.barra_de_estado.estado_cursor.actualizar_posicion_cursor(
                 linea, total_lineas, columna)
 
     def keyPressEvent(self, evento):
@@ -293,11 +299,10 @@ class IDE(QMainWindow):
                 evento.ignore()
         self.guardar_configuraciones()
 
-    def mostrar_barra_de_estado(self, mensaje, duracion=4000):
-        """ Muestra la barra de estado. """
-
-        self.noti.set_message(mensaje, duracion)
-        self.noti.show()
+    #def mostrar_barra_de_estado(self, mensaje, tiempo=3000):
+        #""" Muestra la barra de estado. """
+        #pass
+        ##self.barra_de_estado.archivo_guardado.archivo_guardado_mensaje(mensaje)
 
     def _cargar_tema(self):
         """ Carga el tema por defecto """
