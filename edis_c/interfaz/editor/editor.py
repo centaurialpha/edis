@@ -566,14 +566,15 @@ class Editor(QPlainTextEdit, tabitem.TabItem):
             cursor.insertText(espacios)
             if b:
                 cursor.insertText('\n')
-                if len(espacios) == 4:
-                    espacios = ''
-                    cursor.insertText(espacios)
+                if len(espacios) == configuraciones.INDENTACION:
+                    #espacios = ''
+                    cursor.insertText('')
                     cursor.insertText('}')
                     cursor.movePosition(QTextCursor.Left,
                                         QTextCursor.KeepAnchor, 2)
                 else:
                     cursor.insertText(espacios)
+                    #cursor.insertText('}')
                     cursor.movePosition(QTextCursor.Left,
                                         QTextCursor.KeepAnchor)
                     cursor.movePosition(QTextCursor.Left,
@@ -581,11 +582,10 @@ class Editor(QPlainTextEdit, tabitem.TabItem):
                                         configuraciones.INDENTACION - 1)
                     cursor.removeSelectedText()
                     cursor.insertText('}')
-                    cursor.movePosition(QTextCursor.Up,
+                    cursor.movePosition(QTextCursor.StartOfLine,
                                         QTextCursor.KeepAnchor)
-                    cursor.movePosition(QTextCursor.Right,
-                                        QTextCursor.KeepAnchor,
-                                        configuraciones.INDENTACION - 1)
+                    cursor.movePosition(QTextCursor.Left,
+                                        QTextCursor.KeepAnchor)
             cursor.setPosition(cursor.position())
             self.setTextCursor(cursor)
 
