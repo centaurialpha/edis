@@ -89,20 +89,24 @@ class SalidaWidget(QPlainTextEdit):
         """ Parser de la salida stderr """
 
         #FIXME: obtener n línea, tipo, error...
-        self.errores = []
-        codificacion = 'utf-8'
+        #self.errores = []
+        #codificacion = 'utf-8'
+        #cursor = self.textCursor()
+        #proceso = self._parent.proceso
+        #texto = proceso.readAllStandardError().data().decode(codificacion)
+        #lineas = texto.split('\n')
+        #for linea in lineas:
+            #for l in linea.split(':'):
+                #if l == ' error':
+                    #cursor.insertText(linea, self.formato_error)
+                    #cursor.insertText('\n')
+                #elif l == ' warning':
+                    #cursor.insertText(linea, self.formato_warning)
+                    #cursor.insertText('\n')
         cursor = self.textCursor()
         proceso = self._parent.proceso
-        texto = proceso.readAllStandardError().data().decode(codificacion)
-        lineas = texto.split('\n')
-        for linea in lineas:
-            for l in linea.split(':'):
-                if l == ' error':
-                    cursor.insertText(linea, self.formato_error)
-                    cursor.insertText('\n')
-                elif l == ' warning':
-                    cursor.insertText(linea, self.formato_warning)
-                    cursor.insertText('\n')
+        texto = proceso.readAllStandardError().data().decode('utf-8')
+        cursor.insertText(texto)
 
     def parsear_string(self, cadena):
         pass
