@@ -262,9 +262,7 @@ class IDE(QMainWindow):
             return
 
         nombre_con_extension = os.path.basename(str(titulo)).split('/')[0]
-        self.setWindowTitle(
-            #nombre_con_extension + ' (' + titulo + ')' + ' - EDIS-C')
-            nombre_con_extension + ' (' + titulo + ') - ' + interfaz.__nombre__)
+        self.setWindowTitle(nombre_con_extension + ' - ' + interfaz.__nombre__)
 
     def _linea_columna(self):
         """ Muestra el número de línea y columna del archivo actual. """
@@ -298,11 +296,6 @@ class IDE(QMainWindow):
             if dialogo.ignorado():
                 evento.ignore()
         self.guardar_configuraciones()
-
-    #def mostrar_barra_de_estado(self, mensaje, tiempo=3000):
-        #""" Muestra la barra de estado. """
-        #pass
-        ##self.barra_de_estado.archivo_guardado.archivo_guardado_mensaje(mensaje)
 
     def _cargar_tema(self):
         """ Carga el tema por defecto """
