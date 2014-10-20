@@ -12,6 +12,7 @@ from PyQt4.QtGui import (
     QIcon,
     QTreeView,
     QFileSystemModel,
+    QAbstractItemView
     )
 from PyQt4.QtCore import (
     SIGNAL,
@@ -97,6 +98,7 @@ class Navegador(QWidget):
         vbox = QVBoxLayout(self)
         vbox.setContentsMargins(0, 0, 0, 0)
         self.lista = ListView(self)
+        self.lista.setEditTriggers(QAbstractItemView.NoEditTriggers)
         self.model = QStandardItemModel(self.lista)
         vbox.addWidget(self.lista)
         self.hilo = ThreadArchivos(self)
@@ -114,7 +116,7 @@ class Navegador(QWidget):
         archivos = list(archivos)
 
         for i in archivos:
-            item = QStandardItem(i)
+            item = QStandardItem(i.split('/')[-1])
             if str(i[-1]).startswith('h'):
                 item.setIcon(QIcon(recursos.ICONOS['cabecera']))
             if str(i[-1]).startswith('c'):
@@ -145,6 +147,7 @@ class Navegador(QWidget):
         pass
 
     def borrar_item(self, item):
+
         self.model.removeRow(item)
 
     def get_archivos(self):
