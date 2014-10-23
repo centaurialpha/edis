@@ -12,7 +12,7 @@ from PyQt4.QtGui import (
     QIcon,
     QTreeView,
     QFileSystemModel,
-    QAbstractItemView
+    QAbstractItemView,
     )
 from PyQt4.QtCore import (
     SIGNAL,
@@ -25,7 +25,7 @@ from PyQt4.QtCore import (
     )
 
 from edis_c.interfaz.contenedor_principal import contenedor_principal
-#from edis_c.interfaz.editor.editor import Editor
+from edis_c.interfaz.widgets import arbol_simbolos
 from edis_c.nucleo import logger
 from edis_c import recursos
 log = logger.edisLogger('edis_c.interfaz.explorador')
@@ -39,13 +39,21 @@ class TabExplorador(QWidget):
         vbox.setContentsMargins(0, 0, 0, 0)
         self.tabs = QTabWidget()
         self.tabs.setTabPosition(1)
+        self.thread_simbolos = arbol_simbolos.ThreadSimbolos()
+        self.simbolos = arbol_simbolos.ArbolDeSimbolos()
         self.navegador = Navegador(self)
         self.explorador = Explorador(self)
+        self.tabs.addTab(self.simbolos, '')
         self.tabs.addTab(self.navegador,
                         QIcon(recursos.ICONOS['navegador']), '')
         self.tabs.addTab(self.explorador,
             QIcon(recursos.ICONOS['explorador']), '')
         vbox.addWidget(self.tabs)
+
+    def actualizar_simbolos(self, archivo):
+        self.thread_simbolos.archivo = archivo
+        simbolos = self.thread_simbolos.run()
+        self.simbolos.actualizar_simbolos(simbolos)
 
 
 class Explorador(QWidget):

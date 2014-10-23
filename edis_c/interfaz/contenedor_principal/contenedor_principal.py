@@ -142,6 +142,7 @@ class __ContenedorMain(QSplitter):
 
     def editor_es_guardado(self, editorW=None):
         self.tab.tab_guardado(editorW)
+        self.emit(SIGNAL("actualizarSimbolos(QString)"), editorW.iD)
 
     def check_tabs_sin_guardar(self):
         return self.tab.check_tabs_sin_guardar()

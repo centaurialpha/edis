@@ -190,6 +190,8 @@ class IDE(QMainWindow):
         #widget_central.agregar_buscador(self.buscador)
 
         self.connect(self.contenedor_principal, SIGNAL(
+            "actualizarSimbolos(QString)"), self.explorador.actualizar_simbolos)
+        self.connect(self.contenedor_principal, SIGNAL(
             "cursorPositionChange(int, int)"), self._linea_columna)
         #FIXME: quitar función lambda
         self.connect(self.explorador.navegador, SIGNAL("cambioPes(int)"),
