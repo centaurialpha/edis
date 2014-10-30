@@ -76,16 +76,17 @@ TEMA_EDITOR = {
     "opacidad": 15,
     "numero-linea": "#1d1d1d",
     "num-seleccionado": "#3c64c8",
-    "margen-linea": "#777777",
+    "margen-linea": "lightblue",
     "palabra": "#952b9f",
     "operador": "black",
-    "brace": "#1E1E1E",
+    "brace": "red",
     "struct": "black",
     "cadena": "#16b700",
     "caracter": "brown",
     "include": "blue",
     "comentario": "#E10A1E",
-    "numero": "#F8A032"
+    "numero": "#F8A032",
+    "pcoma": "red"
     }
 
 NUEVO_TEMA = {}

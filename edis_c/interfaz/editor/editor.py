@@ -48,7 +48,6 @@ from PyQt4.QtGui import (
 from PyQt4.QtCore import (
     Qt,
     SIGNAL,
-    QRect,
     QString
     )
 
@@ -162,6 +161,9 @@ class Editor(QPlainTextEdit, tabitem.TabItem):
             self.minimapa.highlighter = Highlighter(self.minimapa.document(),
                 recursos.NUEVO_TEMA)
 
+    def print_linea(self, l):
+        print(l)
+
     def set_id(self, id_):
         super(Editor, self).set_id(id_)
         if self.minimapa:
@@ -261,15 +263,15 @@ class Editor(QPlainTextEdit, tabitem.TabItem):
             pintar.setPen(QColor(recursos.NUEVO_TEMA.get('margen-linea',
                 recursos.TEMA_EDITOR['margen-linea'])))
             offset = self.contentOffset()
-            ancho = self.viewport().width() - (self.posicion_margen +
-                offset.x())
-            rect = QRect(self.posicion_margen + offset.x(), -1,
-                ancho + 1, self.viewport().height() + 5)
+            #ancho = self.viewport().width() - (self.posicion_margen +
+                #offset.x())
+            #rect = QRect(self.posicion_margen + offset.x(), -1,
+                #ancho + 1, self.viewport().height() + 5)
             fondo = QColor(recursos.NUEVO_TEMA.get('fondo-margen',
                 recursos.TEMA_EDITOR['fondo-margen']))
             fondo.setAlpha(configuraciones.OPACIDAD_MARGEN)
-            pintar.fillRect(rect, fondo)
-            pintar.drawRect(rect)
+            #pintar.fillRect(rect, fondo)
+            #pintar.drawRect(rect)
             pintar.drawLine(self.posicion_margen + offset.x(), 0,
                 self.posicion_margen + offset.x(), self.viewport().height())
             pintar.end()

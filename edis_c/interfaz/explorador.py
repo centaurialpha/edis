@@ -26,6 +26,8 @@ from PyQt4.QtCore import (
 
 from edis_c.interfaz.contenedor_principal import contenedor_principal
 from edis_c.interfaz.widgets import arbol_simbolos
+from edis_c.ectags.ctags import CTags
+from edis_c.ectags.ctags import Parser
 from edis_c.nucleo import logger
 from edis_c import recursos
 log = logger.edisLogger('edis_c.interfaz.explorador')
@@ -38,22 +40,36 @@ class TabExplorador(QWidget):
         vbox = QVBoxLayout(self)
         vbox.setContentsMargins(0, 0, 0, 0)
         self.tabs = QTabWidget()
-        self.tabs.setTabPosition(1)
-        self.thread_simbolos = arbol_simbolos.ThreadSimbolos()
+        self.tabs.setTabPosition(2)
+        self.thread_simbolos = ThreadSimbolos()
         self.simbolos = arbol_simbolos.ArbolDeSimbolos()
         self.navegador = Navegador(self)
         self.explorador = Explorador(self)
-        self.tabs.addTab(self.simbolos, '')
-        self.tabs.addTab(self.navegador,
-                        QIcon(recursos.ICONOS['navegador']), '')
-        self.tabs.addTab(self.explorador,
-            QIcon(recursos.ICONOS['explorador']), '')
+        self.tabs.addTab(self.simbolos, self.trUtf8("Símbolos"))
+        #self.tabs.addTab(self.navegador,
+                        #QIcon(recursos.ICONOS['navegador']), '')
+        self.tabs.addTab(self.navegador, self.tr("Navegador"))
+        #self.tabs.addTab(self.explorador,
+            #QIcon(recursos.ICONOS['explorador']), '')
+        self.tabs.addTab(self.explorador, self.tr("Explorador"))
         vbox.addWidget(self.tabs)
 
     def actualizar_simbolos(self, archivo):
-        self.thread_simbolos.archivo = archivo
-        simbolos = self.thread_simbolos.run()
+        self.thread_simbolos.run(archivo)
+        simbolos = self.thread_simbolos.parser.symbols
         self.simbolos.actualizar_simbolos(simbolos)
+
+
+class ThreadSimbolos(QThread):
+
+    def __init__(self):
+        super(ThreadSimbolos, self).__init__()
+        self.ctags = CTags()
+        self.parser = Parser()
+
+    def run(self, archivo):
+        tag = self.ctags.start_ctags(archivo)
+        self.parser.parser_tag(tag)
 
 
 class Explorador(QWidget):
@@ -140,18 +156,6 @@ class Navegador(QWidget):
         pass
 
     def cargar_archivo(self, archivos):
-        #if isinstance(archivos, QString):
-            #archivos = [str(archivos)]
-        #self.model = QStandardItemModel(self.lista)
-        #self.lista.setModel(self.model)
-        #if len(list(archivos)) == 1:
-            #archivo = list(archivos)[0]
-            #item = QStandardItem(archivo)
-            #self.model.appendRow(item)
-        #else:
-            #for i in archivos:
-                #item = QStandardItem(i)
-                #self.model.appendRow(item)
         pass
 
     def borrar_item(self, item):

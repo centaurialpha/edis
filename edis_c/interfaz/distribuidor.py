@@ -153,3 +153,8 @@ class Distribuidor(QObject):
         """ Llama al método de terminar el proceso. """
 
         self.edis.contenedor_secundario.frenar()
+
+    def ir_a_linea(self, linea):
+        Weditor = self.edis.contenedor_principal.devolver_editor_actual()
+        if Weditor is not None:
+            Weditor.ir_a_linea(linea - 1)

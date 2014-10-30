@@ -69,6 +69,8 @@ def re_estilo(tema):
         recursos.TEMA_EDITOR['comentario']), 'italic')
     ESTILOS['numero'] = formato(tema.get('numero',
         recursos.TEMA_EDITOR['numero']))
+    ESTILOS['pcoma'] = formato(tema.get('pcoma',
+        recursos.TEMA_EDITOR['pcoma']), 'bold')
 
 
 class Highlighter(QSyntaxHighlighter):
@@ -103,6 +105,7 @@ class Highlighter(QSyntaxHighlighter):
         # Operadores
         reglas += [(r'%s' % o, 0, ESTILOS['operador'])
             for o in Highlighter.operadores]
+        reglas += [(r';', 0, ESTILOS['pcoma'])]
         # Braces
         reglas += [(r'%s' % b, 0, ESTILOS['brace'])
             for b in Highlighter.braces]

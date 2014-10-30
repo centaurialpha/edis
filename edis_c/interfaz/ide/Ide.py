@@ -1,6 +1,5 @@
 #-*- coding: utf-8 -*-
 
-# <Encargado de correr la Interfáz.>
 # Copyright (C) <2014>  <Gabriel Acosta>
 # This file is part of EDIS-C.
 
@@ -141,11 +140,11 @@ class IDE(QMainWindow):
         self.connect(self.contenedor_principal,
             SIGNAL("recentTabsModified(QStringList)"),
             self._menu_archivo.actualizar_archivos_recientes)
-        #self.connect(self.contenedor_principal,
-            #SIGNAL("archivoGuardado(QString)"), self.mostrar_barra_de_estado)
         self.connect(self._menu_archivo, SIGNAL("abrirArchivo(QString)"),
             self.contenedor_principal.abrir_archivo)
-
+        self.connect(self.contenedor_principal,
+            SIGNAL("currentTabChanged(QString)"),
+            self.explorador.actualizar_simbolos)
         # Método para cargar items en las toolbar
         self.cargar_toolbar()
 
@@ -171,7 +170,6 @@ class IDE(QMainWindow):
         self.contenedor_secundario = \
             contenedor_secundario.ContenedorSecundario(self)
         self.explorador = explorador.TabExplorador(self)
-        #self.buscador = mini_dialogo_busqueda.MiniDialogoBusqueda(self)
         self.connect(self.contenedor_principal,
             SIGNAL("desactivarBienvenida()"),
             self.desactivar_pagina_de_bienvenida)
@@ -187,8 +185,11 @@ class IDE(QMainWindow):
         widget_central.agregar_contenedor_central(self.contenedor_principal)
         widget_central.agregar_contenedor_bottom(self.contenedor_secundario)
         widget_central.agregar_contenedor_lateral(self.explorador)
-        #widget_central.agregar_buscador(self.buscador)
 
+        self.connect(self.explorador.simbolos, SIGNAL("infoSimbolo(QString)"),
+                    widget_central.lateral.set_info_simbolo)
+        self.connect(self.explorador.simbolos, SIGNAL(
+            "irALinea(int)"), self.distribuidor.ir_a_linea)
         self.connect(self.contenedor_principal, SIGNAL(
             "actualizarSimbolos(QString)"), self.explorador.actualizar_simbolos)
         self.connect(self.contenedor_principal, SIGNAL(
@@ -278,11 +279,6 @@ class IDE(QMainWindow):
                 linea, total_lineas, columna)
 
     def keyPressEvent(self, evento):
-        #if evento.modifiers() == Qt.AltModifier:
-            #if self.menuBar().isVisible():
-                #self.menuBar().hide()
-            #else:
-                #self.menuBar().show()
         pass
 
     def closeEvent(self, evento):
