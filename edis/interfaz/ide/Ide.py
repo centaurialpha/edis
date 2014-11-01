@@ -180,6 +180,12 @@ class IDE(QMainWindow):
         widget_central.agregar_contenedor_bottom(self.contenedor_secundario)
         widget_central.agregar_contenedor_lateral(self.lateral)
 
+        self.connect(self.contenedor_principal, SIGNAL(
+            "logging(QString, QString)"),
+                self.contenedor_secundario.logging.add_log)
+        self.connect(self.contenedor_principal.tab, SIGNAL(
+            "logging(QString, QString)"),
+                self.contenedor_secundario.logging.add_log)
         self.connect(self.lateral.symbols_widget,
             SIGNAL("infoSimbolo(QString)"),
             widget_central.lateral.set_info_simbolo)

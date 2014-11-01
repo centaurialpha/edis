@@ -94,8 +94,6 @@ class TabCentral(QTabWidget):
     def cerrar_tab(self):
         """ Cierra la pestaña actual. """
 
-        #self.emit(SIGNAL("archivoCerrado(int)"),
-            #self.currentIndex())
         self.removeTab(self.currentIndex())
 
     def cerrar_todo(self):
@@ -237,6 +235,8 @@ class TabCentral(QTabWidget):
                 self.currentWidget().setFocus()
             else:
                 self.emit(SIGNAL("allTabsClosed()"))
+            self.emit(SIGNAL("logging(QString, QString)"),
+                            w.iD, self.trUtf8("cerrado"))
             del w
             self.actualizar_widget_actual()
             self.emit(SIGNAL("archivoCerrado(int)"), indice)

@@ -39,8 +39,11 @@ from PyQt4.QtCore import Qt
 
 # Módulos EDIS
 from edis import recursos
-#from edis.interfaz.decorador_singleton import singleton
-from edis.interfaz.contenedor_secundario import procesos
+#from edis.interfaz.c
+from edis.interfaz.contenedor_secundario import (
+    procesos,
+    logging_widget
+    )
 
 
 class ContenedorSecundario(QWidget):
@@ -75,6 +78,12 @@ class ContenedorSecundario(QWidget):
         self.notas = Notas(self)
         self.stack.addWidget(self.notas)
 
+        self.logging = logging_widget.Logging(self)
+        self.stack.addWidget(self.logging)
+
+        self.boton_logging = QToolButton()
+        self.boton_logging.setText(self.tr("Log"))
+
         self.botonSalida = QToolButton()
         self.botonSalida.setIcon(QIcon(recursos.ICONOS['terminal']))
         self.botonNotas = QToolButton()
@@ -84,6 +93,7 @@ class ContenedorSecundario(QWidget):
             QIcon(self.style().standardIcon(QStyle.SP_DialogCloseButton)))
 
         layoutV.addWidget(self._toolbar)
+        self._toolbar.addWidget(self.boton_logging)
         self._toolbar.addWidget(self.botonSalida)
         self._toolbar.addWidget(self.botonNotas)
         self._toolbar.addWidget(boton_cerrar)
@@ -94,6 +104,7 @@ class ContenedorSecundario(QWidget):
             self)
         self.botonSalida.clicked.connect(lambda: self.item_cambiado(0))
         self.botonNotas.clicked.connect(lambda: self.item_cambiado(1))
+        self.boton_logging.clicked.connect(lambda: self.item_cambiado(2))
         boton_cerrar.clicked.connect(self.hide)
         self.atajoEscape.activated.connect(self.hide)
 

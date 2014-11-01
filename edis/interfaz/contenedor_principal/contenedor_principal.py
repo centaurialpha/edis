@@ -339,7 +339,8 @@ class __ContenedorMain(QSplitter):
                 self.mover_abierto(nombre)
         self.emit(SIGNAL("currentTabChanged(QString)"), nombre)
         self.emit(SIGNAL("abriendoArchivos(QStringList)"), nombres)
-        #self.emit(SIGNAL("archivosRecibidos(QStringList)"), nombres)
+        self.emit(SIGNAL("logging(QString, QString)"),
+            editorW.iD, self.trUtf8("abierto"))
         self.tab.no_esta_abierto = True
 
     def abierto(self, archivo):
@@ -381,6 +382,8 @@ class __ContenedorMain(QSplitter):
 
             self.emit(SIGNAL("archivoGuardado(QString)"), self.tr(
                 "Guardado: %1").arg(nombre))
+            self.emit(SIGNAL("logging(QString, QString)"),
+                editorW.iD, self.trUtf8("guardado"))
             editorW._guardado()
 
             return editorW._id
@@ -423,6 +426,8 @@ class __ContenedorMain(QSplitter):
             self.emit(SIGNAL("guardadoList(QString)"),
                 editorW._id)
             editorW._guardado()
+            self.emit(SIGNAL("logging(QString, QString)"),
+                editorW.iD, self.trUtf8("guardado"))
 
             return editorW._id
 
