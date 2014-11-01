@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 
-# <Archivo principal, para correr el programa se debe ejecutar este archivo.>
 # Copyright (C) <2014>  <Gabriel Acosta>
 
 # EDIS is free software: you can redistribute it and/or modify
@@ -15,11 +14,3 @@
 
 # You should have received a copy of the GNU General Public License
 # along with EDIS.  If not, see <http://www.gnu.org/licenses/>.
-
-#from PyQt4.QtGui import QApplication
-
-import edis
-
-
-if __name__ == "__main__":
-    edis.edis()

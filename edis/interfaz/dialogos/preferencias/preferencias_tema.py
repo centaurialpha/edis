@@ -1,6 +1,5 @@
-# -*- coding: utf-8 -*-
+#-*- coding: utf-8 -*-
 
-# <Archivo principal, para correr el programa se debe ejecutar este archivo.>
 # Copyright (C) <2014>  <Gabriel Acosta>
 
 # EDIS is free software: you can redistribute it and/or modify
@@ -16,10 +15,25 @@
 # You should have received a copy of the GNU General Public License
 # along with EDIS.  If not, see <http://www.gnu.org/licenses/>.
 
-#from PyQt4.QtGui import QApplication
+# Módulos QtGui
+from PyQt4.QtGui import QWidget
+from PyQt4.QtGui import QVBoxLayout
+from PyQt4.QtGui import QListWidget
+from PyQt4.QtGui import QLabel
 
-import edis
 
+class ConfiguracionTema(QWidget):
 
-if __name__ == "__main__":
-    edis.edis()
+    def __init__(self, parent):
+        super(ConfiguracionTema, self).__init__(parent)
+
+        layoutV = QVBoxLayout(self)
+
+        self.lista_temas = QListWidget()
+        self.lista_temas.addItem("Por defecto")
+        self.lista_temas.addItem("Black SIDE")
+
+        label = QLabel(self.trUtf8("Elige un tema:"))
+
+        layoutV.addWidget(label)
+        layoutV.addWidget(self.lista_temas)

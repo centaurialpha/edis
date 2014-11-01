@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
-# <Archivo principal, para correr el programa se debe ejecutar este archivo.>
+# This file is part of EDIS.
+
 # Copyright (C) <2014>  <Gabriel Acosta>
 
 # EDIS is free software: you can redistribute it and/or modify
@@ -16,10 +17,21 @@
 # You should have received a copy of the GNU General Public License
 # along with EDIS.  If not, see <http://www.gnu.org/licenses/>.
 
-#from PyQt4.QtGui import QApplication
+import os
 
-import edis
+from . import recursos
 
 
-if __name__ == "__main__":
-    edis.edis()
+def crear_carpetas_edis():
+    """ Se crea la estructura de carpetas que guarda archivos de
+        configuracion, temas, etc.
+    """
+
+    if not es_carpeta(recursos.HOME_EDIS):
+        os.mkdir(recursos.HOME_EDIS)
+
+
+def es_carpeta(carpeta):
+    if os.path.isdir(carpeta):
+        return True
+    return False

@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
-# <Archivo principal, para correr el programa se debe ejecutar este archivo.>
 # Copyright (C) <2014>  <Gabriel Acosta>
+# This file is part of EDIS.
 
 # EDIS is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -16,10 +16,19 @@
 # You should have received a copy of the GNU General Public License
 # along with EDIS.  If not, see <http://www.gnu.org/licenses/>.
 
-#from PyQt4.QtGui import QApplication
 
-import edis
+class TabItem(object):
 
+    def __init__(self):
+        self._id = ""
 
-if __name__ == "__main__":
-    edis.edis()
+    def get_id(self):
+        return self._id
+
+    def set_id(self, id_):
+        self._id = id_
+        if id_:
+            self.nuevo_archivo = False
+
+    iD = property(lambda self: self.get_id(), lambda self,
+        nombre: self.set_id(nombre))

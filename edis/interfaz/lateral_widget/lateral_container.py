@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 
-# <Archivo principal, para correr el programa se debe ejecutar este archivo.>
 # Copyright (C) <2014>  <Gabriel Acosta>
 
 # EDIS is free software: you can redistribute it and/or modify
@@ -16,10 +15,25 @@
 # You should have received a copy of the GNU General Public License
 # along with EDIS.  If not, see <http://www.gnu.org/licenses/>.
 
-#from PyQt4.QtGui import QApplication
+from PyQt4.QtGui import (
+    QTabWidget,
+    )
 
-import edis
+from edis.nucleo import configuraciones
+from edis.interfaz.widgets import arbol_simbolos
 
 
-if __name__ == "__main__":
-    edis.edis()
+class LateralContainer(QTabWidget):
+
+    def __init__(self, parent):
+        super(LateralContainer, self).__init__()
+
+        self.symbols_widget = None
+
+        if configuraciones.SYMBOLS:
+            self.add_symbols_widget()
+
+    def add_symbols_widget(self):
+        if not self.symbols_widget:
+            self.symbols_widget = arbol_simbolos.ArbolDeSimbolos()
+            self.addTab(self.symbols_widget, self.trUtf8("Símbolos"))
