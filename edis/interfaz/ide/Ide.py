@@ -53,15 +53,11 @@ from edis.interfaz.menu import (
     menu_ejecucion,
     menu_acerca_de
     )
-from edis.interfaz import (
-    widget_central,
-    #barra_de_estado
-    )
-
+from edis.interfaz import widget_central
 from edis.interfaz.distribuidor import Distribuidor
 from edis.interfaz.contenedor_principal import contenedor_principal
 from edis.interfaz.contenedor_secundario import contenedor_secundario
-from edis.interfaz import explorador
+from edis.interfaz.lateral_widget import lateral_container
 from edis.interfaz.widgets import barra_de_estado
 from edis.interfaz.dialogos import dialogo_guardar_archivos
 
@@ -110,8 +106,6 @@ class IDE(QMainWindow):
 
         self.tray = actualizaciones.Actualizacion(self)
         self.tray.show()
-        # Notificaciones
-        #self.noti = notificacion.Notificacion(self)
         # Barra de estado
         self.barra_de_estado = barra_de_estado.BarraDeEstado(self)
         #self.barra_de_estado.hide()
@@ -144,7 +138,7 @@ class IDE(QMainWindow):
             self.contenedor_principal.abrir_archivo)
         self.connect(self.contenedor_principal,
             SIGNAL("currentTabChanged(QString)"),
-            self.explorador.actualizar_simbolos)
+            self.lateral.actualizar_simbolos)
         # Método para cargar items en las toolbar
         self.cargar_toolbar()
 
@@ -169,7 +163,7 @@ class IDE(QMainWindow):
         self.contenedor_principal = contenedor_principal.ContenedorMain(self)
         self.contenedor_secundario = \
             contenedor_secundario.ContenedorSecundario(self)
-        self.explorador = explorador.TabExplorador(self)
+        self.lateral = lateral_container.LateralContainer(self)
         self.connect(self.contenedor_principal,
             SIGNAL("desactivarBienvenida()"),
             self.desactivar_pagina_de_bienvenida)
@@ -184,20 +178,19 @@ class IDE(QMainWindow):
 
         widget_central.agregar_contenedor_central(self.contenedor_principal)
         widget_central.agregar_contenedor_bottom(self.contenedor_secundario)
-        widget_central.agregar_contenedor_lateral(self.explorador)
+        widget_central.agregar_contenedor_lateral(self.lateral)
 
-        self.connect(self.explorador.simbolos, SIGNAL("infoSimbolo(QString)"),
-                    widget_central.lateral.set_info_simbolo)
-        self.connect(self.explorador.simbolos, SIGNAL(
-            "irALinea(int)"), self.distribuidor.ir_a_linea)
+        self.connect(self.lateral.symbols_widget,
+            SIGNAL("infoSimbolo(QString)"),
+            widget_central.lateral.set_info_simbolo)
         self.connect(self.contenedor_principal, SIGNAL(
-            "actualizarSimbolos(QString)"), self.explorador.actualizar_simbolos)
+            "actualizarSimbolos(QString)"), self.lateral.actualizar_simbolos)
         self.connect(self.contenedor_principal, SIGNAL(
             "cursorPositionChange(int, int)"), self._linea_columna)
         #FIXME: quitar función lambda
-        self.connect(self.explorador.navegador, SIGNAL("cambioPes(int)"),
+        self.connect(self.lateral.file_navigator, SIGNAL("cambioPes(int)"),
             lambda i: self.contenedor_principal.tab.setCurrentIndex(i))
-        self.connect(self.explorador.explorador,
+        self.connect(self.lateral.file_explorer,
             SIGNAL("dobleClickArchivo(QString)"),
             lambda f: self.contenedor_principal.abrir_archivo(f))
 

@@ -183,10 +183,10 @@ class __ContenedorMain(QSplitter):
             return None
 
     def cargar_archivo_lista(self, archivos):
-        self.parent.explorador.navegador.cargar_archivos(archivos)
+        self.parent.lateral.file_navigator.cargar_archivos(archivos)
 
     def cerrar_item_lista(self, indice):
-        self.parent.explorador.navegador.borrar_item(indice)
+        self.parent.lateral.file_navigator.borrar_item(indice)
 
     def deshacer(self):
         self.get_archivos()
