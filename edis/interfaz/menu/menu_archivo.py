@@ -79,6 +79,9 @@ class MenuArchivo(QObject):
         self.accionImprimir = crear_accion(self, "Imprimir",
             icono=_ICONO['imprimir'], atajo=_ATAJO['imprimir'],
             slot=self.ide.distribuidor.imprimir_documento)
+        # Propiedades
+        self.accion_propiedades = crear_accion(self, "Propiedades",
+            slot=self.ide.distribuidor.file_property)
         # Exportar a PDF
         self.accionExportarComoPDF = crear_accion(self, "Exportar a PDF",
             icono=_ICONO['exportar'],
@@ -117,6 +120,7 @@ class MenuArchivo(QObject):
         menu_archivo.addAction(self.accionGuardarTodo)
         menu_archivo.addSeparator()
         menu_archivo.addAction(self.accionImprimir)
+        menu_archivo.addAction(self.accion_propiedades)
         menu_archivo.addAction(self.accionExportarComoPDF)
         menu_archivo.addSeparator()
         menu_archivo.addAction(self.accionCerrarTab)

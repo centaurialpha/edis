@@ -19,23 +19,16 @@
 
 # Módulos Python
 import os
-import re
 
 # Módulos QtGui
 from PyQt4.QtGui import QSplitter
 from PyQt4.QtGui import QFileDialog
-from PyQt4.QtGui import QPushButton
-from PyQt4.QtGui import QDialog
-from PyQt4.QtGui import QVBoxLayout
-from PyQt4.QtGui import QGridLayout
-from PyQt4.QtGui import QLabel
 from PyQt4.QtGui import QKeySequence
 from PyQt4.QtGui import QShortcut
 from PyQt4.QtGui import QIcon
 
 # Módulos QtCore
 from PyQt4.QtCore import QDir
-from PyQt4.QtCore import QFile
 from PyQt4.QtCore import SIGNAL
 from PyQt4.QtCore import Qt
 
@@ -459,62 +452,6 @@ class __ContenedorMain(QSplitter):
             widget = self.tab.widget(i)
             if isinstance(widget, editor.Editor):
                 widget.set_flags()
-
-    def estadisticas(self):
-        editor = self.devolver_editor_actual()
-        if editor:
-            # ruta del archivo
-            tex = editor._id
-            # se obtiene el nombre con la extensión
-            #FIXME: no luce bien... pero funciona ;)
-            tex = tex.split('/')[-1]  # En Linux
-            tex = tex.split('\\')[-1]  # En Windows
-
-            # Tamaño en kb
-            #FIXME: ¿ bien ?
-            lonB = (float(QFile(editor._id).size() + 1023.0) / 1024.0)
-
-            cantidad_lineas = editor.devolver_cantidad_de_lineas()
-            # Espacios en blanco y comentarios
-            espacios_com = re.findall('(^\n)|(^(\s+)?//)|(^( +)?($|\n))',
-                unicode(editor.devolver_texto()), re.M)
-            cantidad_esp = len(espacios_com)
-
-            dialogo = QDialog(self)
-            dialogo.setWindowTitle(self.trUtf8("Estadísticas del documento"))
-            layoutV = QVBoxLayout(dialogo)
-            layoutV.setContentsMargins(10, 15, 10, 10)
-            layoutV.setSpacing(10)
-
-            label = QLabel(self.trUtf8("%1").arg(tex))
-            label.setStyleSheet("font-weight: bold; font-size: 24px;")
-            layoutV.addWidget(label)
-            grilla = QGridLayout()
-            grilla.addWidget(QLabel(" "), 1, 0)
-            grilla.addWidget(QLabel(self.trUtf8(
-                "Líneas de código")), 2, 1, Qt.AlignLeft)
-            grilla.addWidget(QLabel(self.trUtf8(
-                "%1").arg(cantidad_lineas - cantidad_esp)),
-                2, 4, Qt.AlignRight)
-            grilla.addWidget(QLabel(self.trUtf8(
-                "Espacios en blanco y comentarios")), 3, 1, Qt.AlignLeft)
-            grilla.addWidget(QLabel(self.trUtf8(
-                "%1").arg(cantidad_esp)), 3, 4, Qt.AlignRight)
-            grilla.addWidget(QLabel(self.trUtf8(
-                "Tamaño (kb)")), 4, 1, Qt.AlignLeft)
-            grilla.addWidget(QLabel(self.trUtf8(
-                "%1").arg(lonB)), 4, 4, alignment=Qt.AlignRight)
-            grilla.addWidget(QLabel(self.trUtf8(
-                "Total de líneas")), 5, 1, Qt.AlignLeft)
-            grilla.addWidget(QLabel(self.trUtf8(
-                "%1").arg(cantidad_lineas)), 5, 4, Qt.AlignRight)
-            boton_aceptar = QPushButton(self.trUtf8("Aceptar"))
-            grilla.addWidget(boton_aceptar, 6, 4)
-            layoutV.addLayout(grilla)
-
-            boton_aceptar.clicked.connect(dialogo.close)
-
-            dialogo.show()
 
 
 class TabAtajos(QShortcut):
