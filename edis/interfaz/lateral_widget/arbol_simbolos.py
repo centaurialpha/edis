@@ -126,6 +126,8 @@ class ArbolDeSimbolos(QTreeWidget):
         tooltip = ""
 
         if dato[0] == 'f':
+            if dato[1][1] is None:
+                dato[1][1] = ""
             tooltip = dato[1][1] + ", " + dato[1][0]
         if dato[0] == 'v':
             tooltip = ", " + dato[1]

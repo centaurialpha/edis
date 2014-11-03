@@ -46,16 +46,11 @@ if SISTEMA_OPERATIVO == 'win32':
     WINDOWS = True
     LINUX = False
 else:
-    try:
-        FUENTE = 'Ubuntu Mono'
-        TAM_FUENTE = 12
-        LINUX = True
-        WINDOWS = False
-    except:
-        FUENTE = 'Monospace'
-        TAM_FUENTE = 11
-        LINUX = True
-        WINDOWS = False
+    FUENTE = 'Monospace'
+    TAM_FUENTE = 9
+    LINUX = True
+    WINDOWS = False
+
 ###############################################################################
 # FUENTE
 ###############################################################################
@@ -92,7 +87,10 @@ IDIOMA = ""
 #ULTIMA_SESION = True
 PARAMETROS = ""
 
+# Lateral widgets
 SYMBOLS = True
+FILE_EXPLORER = True
+FILE_NAVIGATOR = True
 
 BARRA_HERRAMIENTAS_ITEMS = [
     "nuevo-archivo",

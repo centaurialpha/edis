@@ -15,12 +15,21 @@
 # You should have received a copy of the GNU General Public License
 # along with EDIS.  If not, see <http://www.gnu.org/licenses/>.
 
+from collections import OrderedDict
+
 from PyQt4.QtGui import (
-    QTabWidget,
+    QWidget,
+    QComboBox,
+    QVBoxLayout,
+    QStackedWidget,
+    QIcon
     )
 
-from PyQt4.QtCore import QThread
-
+from PyQt4.QtCore import (
+    SIGNAL,
+    QThread
+    )
+from edis import recursos
 from edis.nucleo import configuraciones
 from edis.interfaz.lateral_widget import (
     arbol_simbolos,
@@ -33,41 +42,69 @@ from edis.ectags.ctags import (
     )
 
 
-class LateralContainer(QTabWidget):
-    """ Lateral tabs, container explorer, symbols, and browser """
+class LateralContainer(QWidget):
+    icon = {
+        'symbol': recursos.ICONOS['struct'],
+        'navigator': recursos.ICONOS['navegador'],
+        'explorer': recursos.ICONOS['explorador']
+        }
 
     def __init__(self, parent):
         super(LateralContainer, self).__init__()
-        self.setTabPosition(QTabWidget.West)
         self.thread_symbols = ThreadSimbolos()
-
         self.symbols_widget = None
-        self.file_explorer = None
-        self.file_navigator = None
-
         if configuraciones.SYMBOLS:
-            self.add_symbols_widget()
-
-        self.add_file_explorer()
-        self.add_file_navigator()
-
-    def add_symbols_widget(self):
-        if not self.symbols_widget:
             self.symbols_widget = arbol_simbolos.ArbolDeSimbolos()
-            self.addTab(self.symbols_widget, self.trUtf8("Símbolos"))
 
-    def add_file_explorer(self):
-        self.file_explorer = file_explorer.Explorador()
-        self.addTab(self.file_explorer, self.trUtf8("Explorador"))
+        self.file_explorer = None
+        if configuraciones.FILE_EXPLORER:
+            self.file_explorer = file_explorer.Explorador()
 
-    def add_file_navigator(self):
-        self.file_navigator = file_navigator.Navegador()
-        self.addTab(self.file_navigator, self.trUtf8("Navegador"))
+        self.file_navigator = None
+        if configuraciones.FILE_NAVIGATOR:
+            self.file_navigator = file_navigator.Navegador()
+
+        self.lateral_widgets = OrderedDict([
+            (self.trUtf8('Símbolos'), [QIcon(self.icon['symbol']),
+                                        self.symbols_widget]),
+            (self.trUtf8('Navegador'), [QIcon(self.icon['navigator']),
+                                        self.file_navigator]),
+            (self.trUtf8('Explorador'), [QIcon(self.icon['explorer']),
+                                        self.file_explorer])
+            ])
+
+        self.load_ui()
+
+        self.connect(self.combo_selector, SIGNAL("currentIndexChanged(int)"),
+            lambda: self.change_widget(self.combo_selector.currentIndex()))
+
+    def load_ui(self):
+        vbox = QVBoxLayout(self)
+        vbox.setContentsMargins(0, 0, 0, 0)
+        vbox.setSpacing(0)
+
+        self.combo_selector = QComboBox()
+        vbox.addWidget(self.combo_selector)
+
+        for widget in list(self.lateral_widgets.keys()):
+            self.combo_selector.addItem(
+                self.lateral_widgets[widget][0], widget)
+
+        self.stack = Stack()
+        vbox.addWidget(self.stack)
+
+        for widget in list(self.lateral_widgets.values()):
+            self.stack.addWidget(widget[1])
+
+    def change_widget(self, indice):
+        if not self.isVisible():
+            self.show()
+        self.stack.mostrar_widget(indice)
 
     def actualizar_simbolos(self, archivo):
         self.thread_symbols.run(archivo)
-        simbolos = self.thread_symbols.parser.symbols
-        self.symbols_widget.actualizar_simbolos(simbolos)
+        symbols = self.thread_symbols.parser.symbols
+        self.symbols_widget.actualizar_simbolos(symbols)
 
 
 class ThreadSimbolos(QThread):
@@ -80,3 +117,15 @@ class ThreadSimbolos(QThread):
     def run(self, archivo):
         tag = self.ctags.start_ctags(archivo)
         self.parser.parser_tag(tag)
+
+
+class Stack(QStackedWidget):
+
+    def __init__(self):
+        super(Stack, self).__init__()
+
+    def setCurrentIndex(self, indice):
+        QStackedWidget.setCurrentIndex(self, indice)
+
+    def mostrar_widget(self, indice):
+        self.setCurrentIndex(indice)
