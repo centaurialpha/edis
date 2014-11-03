@@ -28,8 +28,12 @@ from PyQt4.QtGui import QFileDialog
 
 # Módulos EDIS
 from edis.nucleo import configuraciones
-from edis.interfaz.dialogos import dialogo_insertar_include
-from edis.interfaz.dialogos import dialogo_insertar_macro
+from edis.interfaz.dialogos import (
+    dialogo_insertar_include,
+    dialogo_insertar_macro,
+    dialogo_propiedades
+    )
+
 
 __Instancia = None
 
@@ -123,6 +127,12 @@ class Distribuidor(QObject):
                 Weditor.document().print_(p)
 
             # FIXME: Mover a un helper
+
+    def file_property(self):
+        Weditor = self.edis.contenedor_principal.devolver_editor_actual()
+        if Weditor is not None:
+            dialog = dialogo_propiedades.FileProperty(Weditor, self.edis)
+            dialog.show()
 
     def recargar_barra_de_herramientas(self):
         """ Llama al método cargar_toolbar para recargar la barra de

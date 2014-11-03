@@ -70,9 +70,6 @@ class MenuHerramientas(QObject):
         accionAMDH = menu_fecha_hora.addAction(
             self.trUtf8("aaaa-mm-dd hh:mm"))
         menu_herramientas.addSeparator()
-        self.accionEstadisticas = crear_accion(self,
-            "Estadísticas del documento", slot=self.estadisticas_del_documento)
-        menu_herramientas.addAction(self.accionEstadisticas)
 
         # Toolbar #
         self.items_toolbar = {
@@ -111,6 +108,3 @@ class MenuHerramientas(QObject):
 
     def insertar_macro(self):
         self.ide.distribuidor.insertar_macro()
-
-    def estadisticas_del_documento(self):
-        self.ide.contenedor_principal.estadisticas()
