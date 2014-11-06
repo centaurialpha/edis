@@ -86,6 +86,7 @@ IDIOMAS = []
 IDIOMA = ""
 #ULTIMA_SESION = True
 PARAMETROS = ""
+TERMINAL = ""
 
 # Lateral widgets
 SYMBOLS = True
@@ -209,6 +210,7 @@ def cargar_configuraciones():
     global IDIOMA
     global PARAMETROS
     global BARRA_HERRAMIENTAS_ITEMS
+    global TERMINAL
     #global ULTIMA_SESION
     MARGEN = qsettings.value('configuraciones/editor/margenLinea', 80,
                              type=int)
@@ -245,6 +247,8 @@ def cargar_configuraciones():
                                      0.2, type=float))
     OPAC_MAX = float(qsettings.value('configuraciones/editor/opac_max',
                                      0.9, type=float))
+    TERMINAL = qsettings.value('configuraciones/ejecucion/terminal', "",
+        type='QString')
     PAGINA_BIENVENIDA = qsettings.value(
         'configuraciones/general/paginaBienvenida', True).toBool()
     CONFIRMAR_AL_CERRAR = qsettings.value(

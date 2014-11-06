@@ -174,38 +174,19 @@ class EjecutarWidget(QWidget):
         """ Se encarga de correr el programa objeto generado """
 
         direc = manejador_de_archivo.devolver_carpeta(self.nombre_archivo)
+
         if _TUX:
-            # Para nombres de carpeta con espacios (Linux)
-            direc = direc.replace(' ', '\\ ')
-        # Scripts en BASH para impedir que la terminal se cierre al ejecutar
-        # el archivo objeto
-        DASH = [
-            '#!/bin/sh',
-            '%s',
-            'echo \n\n\n',
-            'echo Programa terminado con salida: $?',
-            'echo Presione Enter para salir.',
-            'read I']
-        BASH = [
-            '#!/bin/sh',
-            'xterm -e bash -c "%s"']
-        dash = ''
-        for i in DASH:
-            dash += i + '\n'
-        dash = dash % (direc + '/' + self.ejecutable)
-        bash = ''
-        for i in BASH:
-            bash += i + '\n'
-        bash = bash % dash
-        if _TUX:
-            self.pro = Popen(bash, stdout=PIPE, stderr=PIPE, shell=True)
-            #stdout, stderr = self.pro.communicate()
+            terminal = configuraciones.TERMINAL
+            bash = '%s -e "bash -c ./%s;read n"' % (terminal, self.ejecutable)
+            self.pro = Popen(bash, stdout=PIPE, stderr=PIPE, shell=True,
+                cwd=direc)
         else:
             self.pro = Popen(direc + '/' + self.ejecutable,
                 creationflags=CREATE_NEW_CONSOLE)
 
     def terminar_proceso(self):
         """ Termina el proceso """
+
         if not self.pro:
             return
         self.pro.terminate()

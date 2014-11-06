@@ -27,11 +27,17 @@ from PyQt4.QtGui import QSizePolicy
 from PyQt4.QtGui import QSpacerItem
 from PyQt4.QtGui import QFileDialog
 from PyQt4.QtGui import QTabWidget
+from PyQt4.QtGui import QLineEdit
+from PyQt4.QtGui import QRadioButton
 
 # Módulos QtCore
-from PyQt4.QtCore import QSettings
+from PyQt4.QtCore import (
+    QSettings,
+    SIGNAL
+    )
 
 # Módulos EDIS
+from edis import recursos
 from edis.nucleo import configuraciones
 from edis.nucleo import comprobar_terminales
 
@@ -110,7 +116,7 @@ class ConfiguracionCompilacion(QWidget):
             QSizePolicy.Expanding))
 
     def guardar(self):
-        qconfig = QSettings()
+        qconfig = QSettings(recursos.CONFIGURACION, QSettings.IniFormat)
         qconfig.beginGroup('configuraciones')
         parametros = ''
         if self.checkEnsamblado.isChecked():
@@ -126,30 +132,31 @@ class ConfiguracionEjecucion(QWidget):
         super(ConfiguracionEjecucion, self).__init__(parent)
 
         layoutV = QVBoxLayout(self)
+        layout_radio = QVBoxLayout()
 
         grupoEjecucion = QGroupBox(
-            self.trUtf8("Opciones de ejecución:"))
+            self.trUtf8("Terminales disponibles:"))
 
         grillaE = QVBoxLayout(grupoEjecucion)
 
         #Ejecución
-        layoutPath = QHBoxLayout()
-        self.terminales = QComboBox()
+        self.terminales_radio = []
         terminales = comprobar_terminales.comprobar()
         for terminal in terminales:
-            self.terminales.addItem(terminal)
+            self.terminales_radio.append(QRadioButton(terminal))
+        for i in self.terminales_radio:
+            layout_radio.addWidget(i)
+            if i.text() == configuraciones.TERMINAL:
+                i.setChecked(True)
 
-        layoutPath.addWidget(self.terminales)
-        grillaE.addLayout(layoutPath)
-
-        self.checkTiempo = QCheckBox(
-            self.trUtf8("Tiempo de ejecución."))
-
-        grillaE.addWidget(self.checkTiempo)
+        grillaE.addLayout(layout_radio)
 
         layoutV.addWidget(grupoEjecucion)
         layoutV.addItem(QSpacerItem(0, 10, QSizePolicy.Expanding,
             QSizePolicy.Expanding))
+
+    def change_index(self, term):
+        self.line_terminales.setText(term)
 
     def cargar_terminal(self):
         path = QFileDialog.getOpenFileName(self,
@@ -158,6 +165,10 @@ class ConfiguracionEjecucion(QWidget):
             self.path_terminal.setText(path)
 
     def guardar(self):
-        #print self.terminales.currentIndex()
-        #print self.terminales.currentText()
-        pass
+        qconfig = QSettings(recursos.CONFIGURACION, QSettings.IniFormat)
+        terminal = ""
+        for i in self.terminales_radio:
+            if i.isChecked():
+                terminal = i.text()
+        qconfig.setValue('configuraciones/ejecucion/terminal', terminal)
+        configuraciones.TERMINAL = terminal
