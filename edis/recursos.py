@@ -41,7 +41,7 @@ frozen = getattr(sys, 'frozen', '')
 if frozen in ('dll', 'console_exe', 'windows_exe'):
     PATH = os.path.abspath(os.path.dirname(sys.executable))
 
-PATH_ICONOS = os.path.join(PATH, "imagenes")
+PATH_ICONOS = os.path.join(PATH, "images")
 HOME_EDIS = os.path.join(HOME_PATH, ".edis")
 CONFIGURACION = os.path.join(HOME_EDIS, "config.ini")
 OTROS = (HOME_EDIS, 'otros')
@@ -63,7 +63,7 @@ for icono in os.listdir(PATH_ICONOS):
 
 # Estilos de color - Editor
 TEMA_EDITOR = {
-    "texto-editor": "#666",
+    "texto-editor": "000000",
     "fondo-editor": "#ffffff",
     "fondo-seleccion-editor": "#111111",
     "seleccion-editor": "#5acd14",
@@ -77,16 +77,17 @@ TEMA_EDITOR = {
     "numero-linea": "#1d1d1d",
     "num-seleccionado": "#3c64c8",
     "margen-linea": "lightblue",
-    "palabra": "#952b9f",
+    "palabra": "darkblue",
     "operador": "black",
-    "brace": "red",
-    "struct": "black",
-    "cadena": "#16b700",
-    "caracter": "brown",
-    "include": "blue",
-    "comentario": "#E10A1E",
+    "types": "darkblue",
+    "brace": "black",
+    "struct": "gray",
+    "cadena": "red",
+    "caracter": "red",
+    "include": "#228b22",
+    "comentario": "gray",
     "numero": "#F8A032",
-    "pcoma": "red"
+    "pcoma": "black"
     }
 
 NUEVO_TEMA = {}
@@ -134,4 +135,4 @@ ATAJOS = {
     }
 
 # Extensiones soportadas
-EXTENSIONES = " Archivos C (*.c *.s *.h);;(*.*)"
+EXTENSIONES = " Archivos C/C++(*.cpp *.c);;ASM(*.s);;HEADERS(*.h);;(*.*)"

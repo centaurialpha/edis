@@ -37,7 +37,7 @@ from PyQt4.QtCore import (
 from edis import recursos
 from edis.nucleo import configuraciones
 from edis.nucleo import logger
-from .interfaz.ide.Ide import IDE
+from .ui.ide.Ide import IDE
 
 log = logger.edisLogger('edis.run')
 DEBUG = log.debug
