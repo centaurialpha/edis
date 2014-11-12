@@ -20,7 +20,8 @@
 from subprocess import Popen, PIPE
 
 """
-COMMAND = ctags -n --fields=fiKmnsSzt -f  - filename
+COMMAND = ctags -n --sort=foldcase --fields=fiKmnsSzt --language-force=C++ -f
+
 
 """
 
@@ -45,7 +46,8 @@ class CTags:
     def start_ctags(self, filename):
         """ Run the command ctags """
 
-        cmd = ["ctags", "-n", "--fields=fimKnsSzt", "-f", "-", filename]
+        cmd = ["ctags", "-n", "--sort=foldcase", "--fields=fimKnsSzt",
+                "--language-force=C++", "-f", "-", filename]
         process = Popen(cmd, 0, stdout=PIPE, stderr=PIPE, shell=False)
         tag = process.communicate()[0]
 
@@ -135,6 +137,7 @@ class Parser(object):
             if i.isFunction:
                 functions[i.name] = i.line
             if i.isGlobal:
+                #print(i.memberOf)
                 globalss[i.name] = i.line
             if i.isAttribute:
                 atr.append(i)
