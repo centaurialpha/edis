@@ -20,7 +20,7 @@
 from subprocess import Popen, PIPE
 
 """
-COMANDO = ctags -n --fields=fiKmnsSzt -f  - filename
+COMMAND = ctags -n --fields=fiKmnsSzt -f  - filename
 
 """
 
@@ -59,12 +59,8 @@ class Parser(object):
 
     def parser_tag(self, tag):
         """
-        Parse the tag for obtain the symbols of source code.
+        Parse the tag file and generates a list of objects type Tag.
 
-        functions = {name: [line, definition]}
-        variables = {name: line}
-        structs = {name: {line: [members]}}
-"
         """
         tagc = None
 
@@ -117,6 +113,8 @@ class Parser(object):
                 self._tags.append(tagc)
 
     def get_symbols(self):
+        """ Scans the list of Tags and generates a dictionary of symbols"""
+
         symbols = {}
 
         classes = dict()
@@ -179,6 +177,15 @@ class Parser(object):
 
 
 class Tag(object):
+    """ Class Tag
+        Example object Tag:
+
+        name: "name"
+        line: 12
+        type = member of struct
+        isMember: True
+        memberOf: "ufo" --> ufo is a struct
+    """
 
     def __init__(self, name, type_='', line=None):
         self.name = name
