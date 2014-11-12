@@ -103,7 +103,7 @@ class LateralContainer(QWidget):
 
     def actualizar_simbolos(self, archivo):
         self.thread_symbols.run(archivo)
-        symbols = self.thread_symbols.parser.symbols
+        symbols = self.thread_symbols.parser.get_symbols()
         self.symbols_widget.actualizar_simbolos(symbols)
 
 

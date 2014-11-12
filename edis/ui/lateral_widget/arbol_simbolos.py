@@ -33,6 +33,7 @@ from edis import recursos
 
 class ArbolDeSimbolos(QTreeWidget):
     iconos = {
+        'clase': recursos.ICONOS['class'],
         'funcion': recursos.ICONOS['funcion'],
         'struct': recursos.ICONOS['struct'],
         'miembro': recursos.ICONOS['miembro'],
@@ -62,90 +63,108 @@ class ArbolDeSimbolos(QTreeWidget):
     def actualizar_simbolos(self, simbolos):
         self.clear()
 
-        if 'functions' in simbolos:
-            funciones = QTreeWidgetItem(self)
-            funciones.setText(0, self.tr("Funciones"))
-            funciones.setIcon(0, QIcon(self.iconos['funcion']))
-            funciones.setSelected(False)
-            for f in list(simbolos['functions'].keys()):
-                funcion = QTreeWidgetItem(funciones)
-                funcion.setText(0, f)
-                funcion.setToolTip(0, self.tooltip(
-                    ['f', simbolos['functions'][f]]))
-                funcion.setIcon(0, QIcon(self.iconos['funcion']))
-            funciones.setExpanded(True)
-
-        if 'variables' in simbolos:
-            globales = QTreeWidgetItem(self)
-            globales.setText(0, self.tr("Variables"))
-            globales.setIcon(0, QIcon(self.iconos['global']))
-            for v in list(simbolos['variables'].keys()):
-                variable = QTreeWidgetItem(globales)
-                variable.setText(0, v)
+        if 'globals' in simbolos:
+            globalss = Item(self, [self.tr("Variables")])
+            globalss.clicked = False
+            globalss.setIcon(0, QIcon(self.iconos['global']))
+            for v in list(simbolos['globals'].keys()):
+                variable = Item(globalss, [v])
+                variable.line = simbolos['globals'][v]
                 variable.setIcon(0, QIcon(self.iconos['global']))
-                variable.setToolTip(0,
-                    self.tooltip(['v', simbolos['variables'][v]]))
-            globales.setExpanded(True)
+            globalss.setExpanded(True)
+
+        if 'classes' in simbolos:
+            classs = Item(self, [self.tr("Clases")])
+            classs.clicked = False
+            classs.setIcon(0, QIcon(self.iconos['clase']))
+            for c in list(simbolos['classes'].keys()):
+                clase = Item(classs, [c])
+                clase.line = simbolos['classes'][c][0]
+                clase.setIcon(0, QIcon(self.iconos['clase']))
+                if simbolos['classes'][c][1]['attributes']:
+                    att = Item(clase, [self.tr("Atributos")])
+                    att.clicked = False
+                    att.setIcon(0, QIcon(self.iconos['miembro']))
+                    for at in simbolos['classes'][c][1]['attributes']:
+                        atr = Item(att, [at])
+                        atr.line = simbolos['classes'][c][1]['attributes'][at]
+                        atr.setIcon(0, QIcon(self.iconos['miembro']))
+                    att.setExpanded(True)
+                if simbolos['classes'][c][2]['methods']:
+                    mett = Item(clase, [self.trUtf8("Métodos")])
+                    mett.clicked = False
+                    mett.setIcon(0, QIcon(self.iconos['funcion']))
+                    for m in simbolos['classes'][c][2]['methods']:
+                        met = Item(mett, [m])
+                        met.line = simbolos['classes'][c][2]['methods'][m]
+                        met.setIcon(0, QIcon(self.iconos['funcion']))
+                    mett.setExpanded(True)
+                    clase.setExpanded(True)
+                classs.setExpanded(True)
 
         if 'structs' in simbolos:
-            structs = QTreeWidgetItem(self)
-            structs.setText(0, self.tr("Structs"))
+            structs = Item(self, [self.tr("Estructuras")])
+            structs.clicked = False
             structs.setIcon(0, QIcon(self.iconos['struct']))
             for s in list(simbolos['structs'].keys()):
-                struct = QTreeWidgetItem(structs)
-                struct.setText(0, s)
+                struct = Item(structs, [s])
+                struct.line = simbolos['structs'][s][0]
                 struct.setIcon(0, QIcon(self.iconos['struct']))
-                struct.setToolTip(0,
-                    self.tooltip(['s', s, simbolos['structs'][s]]))
-                for k in simbolos['structs'][s]:
-                    for i in range(len(simbolos['structs'][s][k])):
-                        miembro = QTreeWidgetItem(struct)
-                        miembro.setText(0, simbolos['structs'][s][k][i])
-                        miembro.setIcon(0, QIcon(self.iconos['miembro']))
-
+                for m in simbolos['structs'][s][1]['members']:
+                    member = Item(struct, [m])
+                    member.line = simbolos['structs'][s][1]['members'][m]
+                    member.setIcon(0, QIcon(self.iconos['miembro']))
                 struct.setExpanded(True)
             structs.setExpanded(True)
+        if 'functions' in simbolos:
+            functions = Item(self, [self.tr("Funciones")])
+            functions.clicked = False
+            functions.setIcon(0, QIcon(self.iconos['funcion']))
+            for f in list(simbolos['functions'].keys()):
+                function = Item(functions, [f])
+                function.line = simbolos['functions'][f]
+                function.setIcon(0, QIcon(self.iconos['funcion']))
+            functions.setExpanded(True)
 
         if 'enums' in simbolos:
-            enums = QTreeWidgetItem(self)
-            enums.setText(0, self.tr("Enums"))
+            enums = Item(self, [self.tr("Enums")])
+            enums.clicked = False
             enums.setIcon(0, QIcon(self.iconos['enums']))
             for e in list(simbolos['enums'].keys()):
-                enum = QTreeWidgetItem(enums)
+                enum = Item(enums, [e])
+                enum.line = simbolos['enums'][e][0]
                 enum.setIcon(0, QIcon(self.iconos['enums']))
-                enum.setText(0, e)
-                for en in simbolos['enums'][e]:
-                    for i in range(len(simbolos['enums'][e][en])):
-                        enumerator = QTreeWidgetItem(enum)
-                        enumerator.setText(0, simbolos['enums'][e][en][i])
-                        enumerator.setIcon(0, QIcon(self.iconos['enumerator']))
+                for enu in simbolos['enums'][e][1]['enumerators']:
+                    enumerator = Item(enum, [enu])
+                    enumerator.line = \
+                                    simbolos['enums'][e][1]['enumerators'][enu]
+                    enumerator.setIcon(0, QIcon(self.iconos['enumerator']))
                 enum.setExpanded(True)
             enums.setExpanded(True)
 
     def tooltip(self, dato):
-        tooltip = ""
-
-        if dato[0] == 'f':
-            if dato[1][1] is None:
-                dato[1][1] = ""
-            tooltip = dato[1][1] + ", " + dato[1][0]
-        if dato[0] == 'v':
-            tooltip = ", " + dato[1]
-        if dato[0] == 's':
-            tooltip = ', ' + str(dato[-1].keys()[0])
-
-        return tooltip
+        pass
 
     def info_item(self, treeItem):
-        nombre = treeItem.text(0)
-        tooltip = str(treeItem.toolTip(0))
-        info = nombre + ' ' + tooltip
-        self.emit(SIGNAL("infoSimbolo(QString)"), info)
+        pass
+        #self.emit(SIGNAL("infoSimbolo(QString)"), info)
 
     def ir_a_linea(self, item):
-        #FIXME: revisar en miembros y enums
-        try:
-            linea = int(item.toolTip(0).split(',')[-1])
-            self.emit(SIGNAL("irALinea(int)"), linea)
-        except:
-            pass
+        if item.clicked:
+            self.emit(SIGNAL("irALinea(int)"), int(item.line))
+
+
+class Item(QTreeWidgetItem):
+
+    def __init__(self, parent, name):
+        QTreeWidgetItem.__init__(self, parent, name)
+        self.__line = None
+        self.clicked = True
+
+    def set_line(self, line):
+        self.__line = line
+
+    def get_line(self):
+        return self.__line
+
+    line = property(get_line, set_line)

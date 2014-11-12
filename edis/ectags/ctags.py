@@ -55,11 +55,7 @@ class CTags:
 class Parser(object):
 
     def __init__(self):
-        self._symbols = {}
-
-    @property
-    def symbols(self):
-        return self._symbols
+        self._tags = []
 
     def parser_tag(self, tag):
         """
@@ -68,16 +64,9 @@ class Parser(object):
         functions = {name: [line, definition]}
         variables = {name: line}
         structs = {name: {line: [members]}}
-
+"
         """
-
-        symbols = dict()
-        functions = dict()
-        variables = dict()
-        structs = dict()
-        members = dict()
-        enums = dict()
-        enumerators = dict()
+        tagc = None
 
         for line in tag.splitlines():
             name = None
@@ -92,45 +81,116 @@ class Parser(object):
                 if e == 4:
                     nline = v.split(':')[-1]
                 if e == 5:
-                    definition = v.split(':')[-1]
+                    definition = (v.split(':')[-1], v.split(':')[0])
 
+            tagc = Tag(name, type_, nline)
+            if type_ == 'class':
+                tagc.isClass = True
+                self._tags.append(tagc)
             if type_ == 'function':
-                functions[name] = [nline, definition]
-            if type_ == 'variable':
-                variables[name] = nline
-            if type_ == 'enum':
-                enums[name] = {nline: []}
+                if definition[1] == 'class':
+                    tagc.isMethod = True
+                    tagc.memberOf = definition[0]
+                else:
+                    tagc.memberOf = definition[0]
+                    tagc.isFunction = True
+                self._tags.append(tagc)
             if type_ == 'struct':
-                structs[name] = {nline: []}
-            if type_ == 'enumerator':
-                if not definition in enumerators:
-                    enumerators[definition] = [name]
-                else:
-                    enumerators[definition].append(name)
+                tagc.isStruct = True
+                self._tags.append(tagc)
+            if type_ == 'variable':
+                tagc.isGlobal = True
+                self._tags.append(tagc)
             if type_ == 'member':
-                if not definition in members:
-                    members[definition] = [name]
+                if definition[1] == 'class':
+                    tagc.isAttribute = True
                 else:
-                    members[definition].append(name)
+                    tagc.isMember = True
+                tagc.memberOf = definition[0]
+                self._tags.append(tagc)
+            if type_ == 'enum':
+                tagc.isEnum = True
+                self._tags.append(tagc)
+            if type_ == 'enumerator':
+                tagc.memberOf = definition[0]
+                tagc.isEnumerator = True
+                self._tags.append(tagc)
 
-        for k in list(members.keys()):
-            for m in members[k]:
-                key = list(structs[k].keys()).pop()
-                structs[k][key].append(m)
+    def get_symbols(self):
+        symbols = {}
 
-        for e in list(enumerators.keys()):
-            for en in enumerators[e]:
-                key = list(enums[e].keys()).pop()
-                enums[e][key].append(en)
+        classes = dict()
+        structs = dict()
+        globalss = dict()
+        functions = dict()
+        enums = dict()
+        atr = []
+        met = []
+        stc = []
+        enu = []
+
+        for i in self._tags:
+            if i.isClass:
+                classes[i.name] = (i.line, {'attributes': {}}, {'methods': {}})
+            if i.isStruct:
+                structs[i.name] = (i.line, {'members': {}})
+            if i.isFunction:
+                functions[i.name] = i.line
+            if i.isGlobal:
+                globalss[i.name] = i.line
+            if i.isAttribute:
+                atr.append(i)
+            if i.isMethod:
+                met.append(i)
+            if i.isMember:
+                stc.append(i)
+            if i.isEnum:
+                enums[i.name] = (i.line, {'enumerators': {}})
+            if i.isEnumerator:
+                enu.append(i)
+
+        for i in atr:
+            if i.memberOf in classes:
+                classes[i.memberOf][1]['attributes'].update({i.name: i.line})
+        for i in met:
+            if i.memberOf in classes:
+                classes[i.memberOf][2]['methods'].update({i.name: i.line})
+        for i in stc:
+            if i.memberOf in structs:
+                structs[i.memberOf][1]['members'].update({i.name: i.line})
+        for i in enu:
+            if i.memberOf in enums:
+                enums[i.memberOf][1]['enumerators'].update({i.name: i.line})
 
         if functions:
             symbols['functions'] = functions
-        if variables:
-            symbols['variables'] = variables
+        if globalss:
+            symbols['globals'] = globalss
+        if classes:
+            symbols['classes'] = classes
         if structs:
             symbols['structs'] = structs
         if enums:
             symbols['enums'] = enums
-        self._symbols = symbols
 
-        #FIXME: Obtener números de miembros y enumerators
+        self._tags = []
+
+        return symbols
+
+
+class Tag(object):
+
+    def __init__(self, name, type_='', line=None):
+        self.name = name
+        self.line = line
+        self.type = type_
+        self.isClass = False
+        self.isFunction = False
+        self.isMethod = False
+        self.isAttribute = False
+        self.isGlobal = False
+        self.isMember = False
+        self.isStruct = False
+        self.isEnum = False
+        self.isEnumerator = False
+        self.memberOf = ''
