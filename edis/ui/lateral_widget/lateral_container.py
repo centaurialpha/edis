@@ -19,7 +19,6 @@ from collections import OrderedDict
 
 from PyQt4.QtGui import (
     QWidget,
-    QComboBox,
     QVBoxLayout,
     QStackedWidget,
     QIcon
@@ -31,6 +30,7 @@ from PyQt4.QtCore import (
     )
 from edis import recursos
 from edis.nucleo import configuraciones
+from edis.ui.widgets.creador_widget import ComboSelector
 from edis.ui.lateral_widget import (
     arbol_simbolos,
     file_explorer,
@@ -83,7 +83,7 @@ class LateralContainer(QWidget):
         vbox.setContentsMargins(0, 0, 0, 0)
         vbox.setSpacing(0)
 
-        self.combo_selector = QComboBox()
+        self.combo_selector = ComboSelector()
         vbox.addWidget(self.combo_selector)
 
         for widget in list(self.lateral_widgets.keys()):

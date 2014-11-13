@@ -90,19 +90,9 @@ class IDE(QMainWindow):
         self.cargar_ui(self.widget_Central)
         self.setCentralWidget(self.widget_Central)
         # ToolBar
-        self.toolbar = QToolBar(self)
-        self.toolbar_busqueda = QToolBar(self)
-        #self.toolbar_busqueda.addWidget(line_busqueda.Widget())
-        self.toolbar_busqueda.setMovable(False)
+        self.toolbar = ToolBar(self)
         self.toolbar.setToolTip(self.trUtf8("Mantén presionado y mueve"))
-
-        # Tamaño de íconos de barra de herramientas
-        self.toolbar.setIconSize(QSize(20, 20)) if not configuraciones.LINUX \
-            else self.toolbar.setIconSize(QSize(19, 19))
-
-        self.toolbar.setToolButtonStyle(Qt.ToolButtonIconOnly)
-        self.addToolBar(Qt.TopToolBarArea, self.toolbar)
-        self.addToolBar(Qt.TopToolBarArea, self.toolbar_busqueda)
+        self.addToolBar(Qt.LeftToolBarArea, self.toolbar)
 
         self.tray = actualizaciones.Actualizacion(self)
         self.tray.show()
@@ -216,8 +206,8 @@ class IDE(QMainWindow):
         items = {}
 
         items.update(self._menu_archivo.items_toolbar)
-        items.update(self._menu_editar.items_toolbar)
-        items.update(self._menu_buscar.items_toolbar)
+        #items.update(self._menu_editar.items_toolbar)
+        #items.update(self._menu_buscar.items_toolbar)
         #items.update(self._menu_ver.items_toolbar)
         #items.update(self._menu_herramientas.items_toolbar)
         items.update(self._menu_ejecucion.items_toolbar)
@@ -332,3 +322,12 @@ class IDE(QMainWindow):
                     archivosAbiertos_[0])
                 qconfig.setValue('archivosAbiertos/archivosRecientes',
                     self.contenedor_principal.tab.get_archivos_recientes)
+
+
+class ToolBar(QToolBar):
+
+    def __init__(self, parent=None):
+        QToolBar.__init__(self, parent)
+        self.setMovable(False)
+        self.setToolButtonStyle(Qt.ToolButtonIconOnly)
+        self.setIconSize(QSize(40, 40))

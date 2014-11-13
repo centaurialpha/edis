@@ -16,15 +16,21 @@
 # along with EDIS.  If not, see <http://www.gnu.org/licenses/>.
 
 # Módulos QtGui
-from PyQt4.QtGui import QToolButton
-from PyQt4.QtGui import QIcon
-from PyQt4.QtGui import QWidget
-from PyQt4.QtGui import QStyle
-from PyQt4.QtGui import QAction
+from PyQt4.QtGui import (
+    QToolButton,
+    QIcon,
+    QWidget,
+    QStyle,
+    QAction,
+    QComboBox
+    )
 
 # Módulos QtCore
-from PyQt4.QtCore import SIGNAL
-from PyQt4.QtCore import QObject
+from PyQt4.QtCore import (
+    SIGNAL,
+    QObject,
+    Qt
+    )
 
 
 def crear_boton(parent, texto=None, atajo=None, icono=None, tip=None,
@@ -79,3 +85,35 @@ def crear_accion(parent, texto, icono=None, atajo=None, tip=None,
     if slot is not None:
         parent.connect(accion, SIGNAL("triggered()"), slot)
     return accion
+
+
+def create_button(parent, text=None, shortcut=None, icon=None,
+                    triggered=None, autoraise=True, action=None):
+
+    """ Create a ToolButton """
+
+    tbutton = Button(parent)
+    if text is not None:
+        tbutton.setToolButtonStyle(Qt.ToolButtonTextUnderIcon)
+    if icon is not None:
+        tbutton.setIcon(icon)
+    tbutton.setAutoRaise(autoraise)
+    if triggered is not None:
+        QObject.connect(tbutton, SIGNAL("clicked()"), triggered)
+    if shortcut is not None:
+        tbutton.setShortcut(shortcut)
+    if action is not None:
+        tbutton.setDefaultAction(action)
+    return tbutton
+
+
+class Button(QToolButton):
+
+    def __init__(self, parent=None):
+        QToolButton.__init__(self, parent)
+
+
+class ComboSelector(QComboBox):
+
+    def __init__(self, parent=None):
+        QComboBox.__init__(self, parent)

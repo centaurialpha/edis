@@ -19,9 +19,9 @@
 # Módulos QtGui
 from PyQt4.QtGui import (
     QMessageBox,
-    QIcon,
     QToolButton,
-    QMenu
+    QMenu,
+    QSizePolicy
     )
 
 # Módulos QtCore
@@ -34,7 +34,10 @@ from edis.ui.editor import editor
 from edis import recursos
 from edis.nucleo import configuraciones
 from edis import traducciones as tr
-from edis.ui.widgets.creador_widget import crear_accion
+from edis.ui.widgets.creador_widget import (
+    crear_accion,
+    create_button
+    )
 #from edis.ui.dialogos import dialogo_proyecto
 
 _ICONO = recursos.ICONOS
@@ -53,19 +56,19 @@ class MenuArchivo(QObject):
 
         # Acciones #
         # Nuevo
-        self.accionNuevo = crear_accion(self, "Nuevo", icono=_ICONO['nuevo'],
+        self.accionNuevo = crear_accion(self, "Nuevo", icono=_ICONO['new'],
             atajo=_ATAJO['nuevo'],
             slot=self.ide.contenedor_principal.agregar_editor)
         ## Nuevo desde plantilla
         self.accionNuevoMain = crear_accion(self, "Nuevo main",
             icono=_ICONO['c'], slot=self.archivo_main_c)
         # Abrir
-        self.accionAbrir = crear_accion(self, "Abrir", icono=_ICONO['abrir'],
+        self.accionAbrir = crear_accion(self, "Abrir", icono=_ICONO['open'],
             atajo=_ATAJO['abrir'],
             slot=self.ide.contenedor_principal.abrir_archivo)
         # Guardar
         self.accionGuardar = crear_accion(self, "Guardar",
-            icono=_ICONO['guardar'], atajo=_ATAJO['guardar'],
+            icono=_ICONO['save'], atajo=_ATAJO['guardar'],
             slot=self.ide.contenedor_principal.guardar_archivo)
         # Guardar como
         self.accionGuardarComo = crear_accion(self, "Guardar como",
@@ -130,19 +133,22 @@ class MenuArchivo(QObject):
         menu_archivo.addAction(self.accionSalir)
 
         # ToolButton's
-        self.tool_nuevo = QToolButton()
-        self.tool_nuevo.setIcon(QIcon(_ICONO['nuevo']))
-        self.tool_nuevo.setDefaultAction(self.accionNuevo)
+        self.tool_nuevo = create_button(self.ide, shortcut=_ATAJO['nuevo'],
+            action=self.accionNuevo, text=self.tr("Nuevo"))
+        self.tool_nuevo.setSizePolicy(QSizePolicy.MinimumExpanding,
+            QSizePolicy.Maximum)
 
-        self.tool_abrir = QToolButton()
-        self.tool_abrir.setIcon(QIcon(_ICONO['abrir']))
-        self.tool_abrir.setPopupMode(QToolButton.MenuButtonPopup)
-        self.tool_abrir.setDefaultAction(self.accionAbrir)
+        self.tool_abrir = create_button(self.ide, shortcut=_ATAJO['abrir'],
+            action=self.accionAbrir, text=self.tr("Abrir"))
+        self.tool_abrir.setSizePolicy(QSizePolicy.MinimumExpanding,
+            QSizePolicy.Maximum)
+        self.tool_abrir.setPopupMode(QToolButton.InstantPopup)
 
-        self.tool_guardar = QToolButton()
-        self.tool_guardar.setIcon(QIcon(_ICONO['guardar']))
-        self.tool_guardar.setDefaultAction(self.accionGuardar)
-        self.tool_guardar.setPopupMode(QToolButton.MenuButtonPopup)
+        self.tool_guardar = create_button(self.ide, shortcut=_ATAJO['guardar'],
+            action=self.accionGuardar, text=self.tr("Guardar"))
+        self.tool_guardar.setSizePolicy(QSizePolicy.MinimumExpanding,
+            QSizePolicy.Maximum)
+        self.tool_guardar.setPopupMode(QToolButton.InstantPopup)
         self.tool_guardar.setMenu(self.tool_menu_guardar())
 
         # Toolbar #

@@ -20,8 +20,7 @@
 import os
 
 from PyQt4.QtGui import (
-    QToolButton,
-    QIcon
+    QSizePolicy
     )
 
 # Módulos QtCore
@@ -31,7 +30,10 @@ from PyQt4.QtCore import QObject
 # Módulos EDIS
 from edis import recursos
 from edis.nucleo import configuraciones
-from edis.ui.widgets.creador_widget import crear_accion
+from edis.ui.widgets.creador_widget import (
+    crear_accion,
+    create_button
+    )
 
 _TUX = configuraciones.LINUX
 _ICONO = recursos.ICONOS
@@ -49,38 +51,35 @@ class MenuEjecucion(QObject):
         # Acciones #
         # Compilar
         self.accionCompilar = crear_accion(self, "Compilar",
-            icono=_ICONO['compilar'], atajo=_ATAJO['compilar'],
+            icono=_ICONO['build'],
             slot=self.ide.distribuidor.compilar)
         # Ejecutar
         self.accionEjecutar = crear_accion(self, "Ejecutar",
-            icono=_ICONO['ejecutar'], atajo=_ATAJO['ejecutar'],
-            slot=self.ide.distribuidor.ejecutar)
+            icono=_ICONO['run'], slot=self.ide.distribuidor.ejecutar)
         # Compilar y ejecutar
-        self.accionCompilarEjecutar = crear_accion(self, "Compilar y ejecutar",
-            icono=_ICONO['compilar-ejecutar'], atajo=_ATAJO['comp-ejec'])
-        self.accionFrenar = crear_accion(self, "Frenar programa",
-            icono=_ICONO['frenar'], slot=self.ide.distribuidor.frenar)
+        #self.accionCompilarEjecutar = crear_accion(self, "Compilar y ejecutar",
+            #icono=_ICONO['compilar-ejecutar'], atajo=_ATAJO['comp-ejec'])
+        #self.accionFrenar = crear_accion(self, "Frenar programa",
+            #icono=_ICONO['frenar'], slot=self.ide.distribuidor.frenar)
 
         # Agregar acciones al menú #
         menu_codigo.addAction(self.accionCompilar)
         menu_codigo.addAction(self.accionEjecutar)
-        menu_codigo.addAction(self.accionCompilarEjecutar)
+        #menu_codigo.addAction(self.accionCompilarEjecutar)
 
-        self.tool_compilar = QToolButton()
-        self.tool_compilar.setDefaultAction(self.accionCompilar)
-        self.tool_compilar.setIcon(QIcon(_ICONO['compilar']))
+        self.tool_compilar = create_button(self.ide, text=self.tr("Compilar"),
+            shortcut=_ATAJO['compilar'], action=self.accionCompilar)
+        self.tool_compilar.setSizePolicy(QSizePolicy.MinimumExpanding,
+            QSizePolicy.Maximum)
 
-        self.tool_ejecutar = QToolButton()
-        self.tool_ejecutar.setDefaultAction(self.accionEjecutar)
-        self.tool_ejecutar.setIcon(QIcon(_ICONO['ejecutar']))
+        self.tool_ejecutar = create_button(self.ide, text=self.tr("Ejecutar"),
+            shortcut=_ATAJO['ejecutar'], action=self.accionEjecutar)
+        self.tool_ejecutar.setSizePolicy(QSizePolicy.MinimumExpanding,
+            QSizePolicy.Maximum)
 
         self.items_toolbar = {
             "compilar-archivo": self.tool_compilar,
             "ejecutar-archivo": self.tool_ejecutar
-            #"compilar-archivo": self.accionCompilar,
-            #"ejecutar-archivo": self.accionEjecutar,
-            #"compilar-ejecutar-archivo": self.accionCompilarEjecutar,
-            #"frenar": self.accionFrenar
             }
 
     def metodo_ejecutar(self):

@@ -59,13 +59,6 @@ class WidgetCentral(QWidget):
         self.split_horizontal.insertWidget(0, self.lateral)
         self.emit(SIGNAL("lateral()"))
 
-    def agregar_buscador(self, buscador):
-        """ Agrega widget de búsqueda. """
-
-        self.buscador = buscador
-        self.buscador.hide()
-        self.split_principal.insertWidget(1, buscador)
-
     def agregar_contenedor_bottom(self, contenedor):
         """ Agrega widget de la salida del compilador. """
         self.contenedor_bottom = contenedor
