@@ -335,7 +335,7 @@ class __ContenedorMain(QSplitter):
         self.emit(SIGNAL("currentTabChanged(QString)"), nombre)
         self.emit(SIGNAL("abriendoArchivos(QStringList)"), nombres)
         self.emit(SIGNAL("logging(QString, QString)"),
-            editorW.iD, self.trUtf8("abierto"))
+            nombre, self.trUtf8("abierto"))
         self.tab.no_esta_abierto = True
 
     def abierto(self, archivo):
@@ -344,6 +344,7 @@ class __ContenedorMain(QSplitter):
         t = self.tab.abierto(archivo)
         if t is not False:
             return t
+        return False
 
     def mover_abierto(self, archivo):
         if self.tab.abierto(archivo) != -1:

@@ -125,7 +125,7 @@ class TabCentral(QTabWidget):
 
         for i in range(self.count()):
             if self.widget(i)._id == archivo:
-                return i
+                return self.widget(i)
         return False
 
     def mover_abierto(self, archivo):
@@ -134,7 +134,7 @@ class TabCentral(QTabWidget):
         """
 
         for i in range(self.count()):
-            if self.widget(i) == archivo:
+            if self.widget(i).iD == archivo:
                 self.setCurrentIndex(i)
                 return
 
