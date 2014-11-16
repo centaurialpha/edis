@@ -147,7 +147,6 @@ class ArbolDeSimbolos(QTreeWidget):
 
     def info_item(self, treeItem):
         pass
-        #self.emit(SIGNAL("infoSimbolo(QString)"), info)
 
     def ir_a_linea(self, item):
         if item.clicked:

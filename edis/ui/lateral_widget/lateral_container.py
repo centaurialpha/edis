@@ -106,6 +106,12 @@ class LateralContainer(QWidget):
         symbols = self.thread_symbols.parser.get_symbols()
         self.symbols_widget.actualizar_simbolos(symbols)
 
+    #def leaveEvent(self, e):
+        #self.hide()
+
+    #def enterEvent(self, e):
+        #self.show()
+
 
 class ThreadSimbolos(QThread):
 

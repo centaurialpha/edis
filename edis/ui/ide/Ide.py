@@ -58,7 +58,10 @@ from edis.ui.distribuidor import Distribuidor
 from edis.ui.contenedor_principal import contenedor_principal
 from edis.ui.contenedor_secundario import contenedor_secundario
 from edis.ui.lateral_widget import lateral_container
-from edis.ui.widgets import barra_de_estado
+from edis.ui.widgets import (
+    barra_de_estado,
+    toolbar_view
+    )
 from edis.ui.dialogos import dialogo_guardar_archivos
 
 
@@ -91,8 +94,10 @@ class IDE(QMainWindow):
         self.setCentralWidget(self.widget_Central)
         # ToolBar
         self.toolbar = ToolBar(self)
+        self.toolbar2 = toolbar_view.TopToolBar(self)
         self.toolbar.setToolTip(self.trUtf8("Mantén presionado y mueve"))
         self.addToolBar(Qt.LeftToolBarArea, self.toolbar)
+        self.addToolBar(Qt.TopToolBarArea, self.toolbar2)
 
         self.tray = actualizaciones.Actualizacion(self)
         self.tray.show()
@@ -283,6 +288,7 @@ class IDE(QMainWindow):
         """ Antes de cargar la interfáz de EDIS se comprueba si GCC está
         presente en el sistema. """
 
+        #FIXME: Change this!!!
         sistema = sys.platform
         execs = {'Win': True if not sistema else False}
         discos_win = findall(r'(\w:)\\',
