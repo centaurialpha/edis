@@ -119,7 +119,7 @@ class EjecutarWidget(QWidget):
         if not ensamblador['Ens']:
             parametros_gcc = ['-Wall', '-o']
             inicio = time.time()
-            self.proceso.start('g++', parametros_gcc + [self.ejecutable] +
+            self.proceso.start('gcc', parametros_gcc + [self.ejecutable] +
                 parametros_add + [self.nombre_archivo])
             fin = time.time()
             #FIXME: test!

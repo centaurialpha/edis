@@ -106,7 +106,14 @@ class SalidaWidget(QPlainTextEdit):
         cursor = self.textCursor()
         proceso = self._parent.proceso
         texto = proceso.readAllStandardError().data().decode('utf-8')
-        cursor.insertText(texto)
+
+        for l in texto.splitlines():
+            if l.find('warning') != -1:
+                cursor.insertText(l + '\n', self.formato_warning)
+            if l.find('error') != -1:
+                cursor.insertText(l + '\n', self.formato_error)
+            else:
+                cursor.insertText(l + '\n', self.formato_ok)
 
     def parsear_string(self, cadena):
         pass

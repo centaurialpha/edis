@@ -107,11 +107,11 @@ class TabGUI(QWidget):
         self.items_barra = {
             'separador': [QIcon(recursos.ICONOS['separador']),
                 'Agregar separador'],
-            'nuevo-archivo': [QIcon(recursos.ICONOS['nuevo']),
+            'nuevo-archivo': [QIcon(recursos.ICONOS['new']),
                 'Nuevo archivo'],
-            'abrir-archivo': [QIcon(recursos.ICONOS['abrir']),
+            'abrir-archivo': [QIcon(recursos.ICONOS['open']),
                 'Abrir archivo'],
-            'guardar-archivo': [QIcon(recursos.ICONOS['guardar']),
+            'guardar-archivo': [QIcon(recursos.ICONOS['save']),
                 'Guardar archivo'],
             'guardar-como': [QIcon(recursos.ICONOS['guardar-como']),
                 'Guardar como'],
@@ -147,14 +147,14 @@ class TabGUI(QWidget):
                 'Macro'],
             'linea': [QIcon(recursos.ICONOS['separador']),
                 'Separador'],
-            'compilar-archivo': [QIcon(recursos.ICONOS['compilar']),
+            'compilar-archivo': [QIcon(recursos.ICONOS['build']),
                 'Compilar'],
-            'ejecutar-archivo': [QIcon(recursos.ICONOS['ejecutar']),
+            'ejecutar-archivo': [QIcon(recursos.ICONOS['run']),
                 'Ejecutar'],
-            'compilar-ejecutar-archivo': [QIcon(
-                recursos.ICONOS['compilar-ejecutar']), 'Compilar y Ejecutar'],
-            'frenar': [QIcon(recursos.ICONOS['frenar']),
-                'Frenar']
+            #'compilar-ejecutar-archivo': [QIcon(
+                #recursos.ICONOS['compilar-ejecutar']), 'Compilar y Ejecutar'],
+            #'frenar': [QIcon(recursos.ICONOS['frenar']),
+                #'Frenar']
                 }
 
         [comboBox.addItem(self.items_barra[i][0], self.items_barra[i][1], i)
