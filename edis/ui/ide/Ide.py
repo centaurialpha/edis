@@ -186,6 +186,8 @@ class IDE(QMainWindow):
             widget_central.lateral.set_info_simbolo)
         self.connect(self.lateral.symbols_widget,
             SIGNAL("irALinea(int)"), self.distribuidor.ir_a_linea)
+        self.connect(self.contenedor_secundario.salida_.output,
+            SIGNAL("irALinea(int)"), self.distribuidor.ir_a_linea)
         self.connect(self.contenedor_principal, SIGNAL(
             "actualizarSimbolos(QString)"), self.lateral.actualizar_simbolos)
         self.connect(self.contenedor_principal, SIGNAL(

@@ -68,12 +68,8 @@ class EjecutarWidget(QWidget):
         self.pro = None
 
         # Conexión
-        self.proceso.readyReadStandardOutput.connect(
-            self.output.salida_estandar)
         self.proceso.readyReadStandardError.connect(
             self.output.parser_salida_stderr)
-        self.proceso.readyReadStandardError.connect(
-            self.output.datos_tabla)
         self.proceso.finished[int, QProcess.ExitStatus].connect(
             self.ejecucion_terminada)
         self.connect(self.proceso, SIGNAL("error(QProcess::ProcessError)"),
@@ -111,8 +107,7 @@ class EjecutarWidget(QWidget):
                 time.ctime()))
         self.output.moveCursor(QTextCursor.Down)
         self.output.moveCursor(QTextCursor.Down)
-        self.output.moveCursor(QTextCursor.Down)
-        self.output.textCursor().insertBlock()
+        #self.output.textCursor().insertBlock()
 
         # Comenzar proceso
         #FIXME: moverlo a un check temporal (?

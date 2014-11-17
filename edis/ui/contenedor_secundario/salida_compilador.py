@@ -23,7 +23,10 @@ from PyQt4.QtGui import QTextCharFormat
 from PyQt4.QtGui import QMenu
 
 # Módulos QtCore
-from PyQt4.QtCore import Qt
+from PyQt4.QtCore import (
+    Qt,
+    SIGNAL
+    )
 
 
 class SalidaWidget(QPlainTextEdit):
@@ -36,6 +39,7 @@ class SalidaWidget(QPlainTextEdit):
 
         # Formato para la salida estándar
         self.formato_ok = QTextCharFormat()
+        self.formato_ok.setAnchor(True)
         # Formato para la salida de error
         self.formato_error = QTextCharFormat()
         self.formato_error.setAnchor(True)
@@ -43,7 +47,8 @@ class SalidaWidget(QPlainTextEdit):
         self.formato_error.setUnderlineColor(Qt.red)
         self.formato_error.setUnderlineStyle(QTextCharFormat.DashDotLine)
         self.formato_error.setFontPointSize(10)
-        self.formato_error.setForeground(Qt.darkRed)
+        self.formato_error.setForeground(Qt.white)
+        self.formato_error.setBackground(Qt.red)
         # Formato para la salida de error (warnings)
         self.formato_warning = QTextCharFormat()
         self.formato_warning.setAnchor(True)
@@ -51,7 +56,7 @@ class SalidaWidget(QPlainTextEdit):
         self.formato_warning.setUnderlineColor(Qt.yellow)
         self.formato_warning.setUnderlineStyle(QTextCharFormat.DotLine)
         self.formato_warning.setFontPointSize(9)
-        self.formato_warning.setForeground(Qt.darkYellow)
+        self.formato_warning.setBackground(Qt.yellow)
 
         # Se carga el estilo
         self.cargar_estilo()
@@ -78,52 +83,39 @@ class SalidaWidget(QPlainTextEdit):
 
         menu.exec_(evento.globalPos())
 
-    def salida_estandar(self):
-        """ Muestra la salida estándar. """
+    def mousePressEvent(self, event):
+        QPlainTextEdit.mousePressEvent(self, event)
+        self.go_to_line(event)
 
-        cp = self._parent.proceso
-        text = cp.readAllStandardOutput().data()
-        self.textCursor().insertText(text, self.formato_ok)
+    def go_to_line(self, event):
+        text = self.cursorForPosition(event.pos()).block().text()
+        line = self.parse_error(text)
+        if line:
+            self.emit(SIGNAL("irALinea(int)"), int(line))
 
     def parser_salida_stderr(self):
         """ Parser de la salida stderr """
 
-        #FIXME: obtener n línea, tipo, error...
-        #self.errores = []
-        #codificacion = 'utf-8'
-        #cursor = self.textCursor()
-        #proceso = self._parent.proceso
-        #texto = proceso.readAllStandardError().data().decode(codificacion)
-        #lineas = texto.split('\n')
-        #for linea in lineas:
-            #for l in linea.split(':'):
-                #if l == ' error':
-                    #cursor.insertText(linea, self.formato_error)
-                    #cursor.insertText('\n')
-                #elif l == ' warning':
-                    #cursor.insertText(linea, self.formato_warning)
-                    #cursor.insertText('\n')
         cursor = self.textCursor()
         proceso = self._parent.proceso
         texto = proceso.readAllStandardError().data().decode('utf-8')
 
         for l in texto.splitlines():
+            cursor.insertBlock()
             if l.find('warning') != -1:
-                cursor.insertText(l + '\n', self.formato_warning)
-            if l.find('error') != -1:
-                cursor.insertText(l + '\n', self.formato_error)
+                cursor.insertText(l, self.formato_warning)
+            elif l.find('error') != -1:
+                cursor.insertText(l, self.formato_error)
             else:
-                cursor.insertText(l + '\n', self.formato_ok)
+                cursor.insertText(l, self.formato_ok)
 
-    def parsear_string(self, cadena):
-        pass
+    def parse_error(self, line):
+        """ Parse line and return the number line"""
 
-    def datos_tabla(self):
-        pass
-
-    def errores_advertencias(self, errores, warnings):
-        # TODO: mostrar cantidad de errores y línea
-        pass
+        for e, l in enumerate(line.split(':')):
+            if e == 1 and str(l).isdigit():
+                return l
+        return False
 
     def setFoco(self):
         self.setFocus()
