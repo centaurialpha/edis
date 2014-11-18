@@ -17,10 +17,15 @@
 # You should have received a copy of the GNU General Public License
 # along with EDIS.  If not, see <http://www.gnu.org/licenses/>.
 
+import re
+
 # Módulos QtGui
-from PyQt4.QtGui import QPlainTextEdit
-from PyQt4.QtGui import QTextCharFormat
-from PyQt4.QtGui import QMenu
+from PyQt4.QtGui import (
+    QPlainTextEdit,
+    QFont,
+    QTextCharFormat,
+    QMenu
+    )
 
 # Módulos QtCore
 from PyQt4.QtCore import (
@@ -39,24 +44,30 @@ class SalidaWidget(QPlainTextEdit):
 
         # Formato para la salida estándar
         self.formato_ok = QTextCharFormat()
-        self.formato_ok.setAnchor(True)
+        #self.formato_ok.setAnchor(True)
+        self.formato_ok.setFontPointSize(10)
+        # Shap
+        self.format_shap = QTextCharFormat()
+        self.format_shap.setFontWeight(QFont.Bold)
+        self.format_shap.setFontPointSize(16)
+        self.format_shap.setForeground(Qt.darkGreen)
         # Formato para la salida de error
+        self.format_line_error = QTextCharFormat()
+        self.format_line_error.setAnchor(True)
+        self.format_line_error.setUnderlineColor(Qt.red)
+        self.format_line_error.setUnderlineStyle(1)
         self.formato_error = QTextCharFormat()
+        self.formato_error.setFontFixedPitch(True)
+        self.formato_error.setToolTip(self.trUtf8("Click para ir a la línea"))
         self.formato_error.setAnchor(True)
-        self.formato_error.setFontUnderline(True)
-        self.formato_error.setUnderlineColor(Qt.red)
-        self.formato_error.setUnderlineStyle(QTextCharFormat.DashDotLine)
-        self.formato_error.setFontPointSize(10)
+        self.formato_error.setFontPointSize(9)
         self.formato_error.setForeground(Qt.white)
         self.formato_error.setBackground(Qt.red)
         # Formato para la salida de error (warnings)
         self.formato_warning = QTextCharFormat()
         self.formato_warning.setAnchor(True)
-        self.formato_warning.setFontUnderline(True)
-        self.formato_warning.setUnderlineColor(Qt.yellow)
-        self.formato_warning.setUnderlineStyle(QTextCharFormat.DotLine)
-        self.formato_warning.setFontPointSize(9)
         self.formato_warning.setBackground(Qt.yellow)
+        self.formato_warning.setFontPointSize(9)
 
         # Se carga el estilo
         self.cargar_estilo()
@@ -96,6 +107,7 @@ class SalidaWidget(QPlainTextEdit):
     def parser_salida_stderr(self):
         """ Parser de la salida stderr """
 
+        espacio = re.compile('^\s+')
         cursor = self.textCursor()
         proceso = self._parent.proceso
         texto = proceso.readAllStandardError().data().decode('utf-8')
@@ -106,8 +118,11 @@ class SalidaWidget(QPlainTextEdit):
                 cursor.insertText(l, self.formato_warning)
             elif l.find('error') != -1:
                 cursor.insertText(l, self.formato_error)
+            elif l.find('^') == -1:
+                if espacio.match(l):
+                    cursor.insertText(l, self.format_line_error)
             else:
-                cursor.insertText(l, self.formato_ok)
+                cursor.insertText(l, self.format_shap)
 
     def parse_error(self, line):
         """ Parse line and return the number line"""

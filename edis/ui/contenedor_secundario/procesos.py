@@ -107,7 +107,6 @@ class EjecutarWidget(QWidget):
                 time.ctime()))
         self.output.moveCursor(QTextCursor.Down)
         self.output.moveCursor(QTextCursor.Down)
-        #self.output.textCursor().insertBlock()
 
         # Comenzar proceso
         #FIXME: moverlo a un check temporal (?
