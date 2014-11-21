@@ -104,7 +104,7 @@ class Lateral(QWidget):
     def __init__(self, lateral):
         super(Lateral, self).__init__()
         layoutV = QVBoxLayout(self)
-        layoutV.setContentsMargins(5, 0, 0, 0)
+        layoutV.setContentsMargins(0, 0, 0, 0)
         layoutV.addWidget(lateral)
 
         self.label_info = QLabel(self.trUtf8(""))

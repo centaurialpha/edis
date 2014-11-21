@@ -97,7 +97,7 @@ class IDE(QMainWindow):
         self.toolbar2 = toolbar_view.TopToolBar(self)
         self.toolbar.setToolTip(self.trUtf8("Mantén presionado y mueve"))
         self.addToolBar(Qt.LeftToolBarArea, self.toolbar)
-        self.addToolBar(Qt.TopToolBarArea, self.toolbar2)
+        #self.addToolBar(Qt.TopToolBarArea, self.toolbar2)
 
         self.tray = actualizaciones.Actualizacion(self)
         self.tray.show()

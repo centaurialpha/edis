@@ -79,7 +79,7 @@ class ContenedorSecundario(QWidget):
         self.stack.addWidget(self.notas)
 
         self.logging = logging_widget.Logging(self)
-        self.stack.addWidget(self.logging)
+        #self.stack.addWidget(self.logging)
 
         self.boton_logging = QToolButton()
         self.boton_logging.setText(self.tr("Log"))
@@ -93,7 +93,7 @@ class ContenedorSecundario(QWidget):
             QIcon(self.style().standardIcon(QStyle.SP_DialogCloseButton)))
 
         layoutV.addWidget(self._toolbar)
-        self._toolbar.addWidget(self.boton_logging)
+        #self._toolbar.addWidget(self.boton_logging)
         self._toolbar.addWidget(self.botonSalida)
         self._toolbar.addWidget(self.botonNotas)
         self._toolbar.addWidget(boton_cerrar)

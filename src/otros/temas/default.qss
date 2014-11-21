@@ -1,10 +1,10 @@
-QToolBar::separator 
+/*QToolBar::separator
 {
     background: #b1b1b1;
     width: 1px;
     height: 1px;
 }
-
+*/
 QScrollBar:vertical
 {
     width: 13px;
@@ -32,7 +32,7 @@ QGroupBox
 	padding: 5px;
 }
 
-QGroupBox::title 
+QGroupBox::title
 {
     subcontrol-origin: margin;
     subcontrol-position: top center;
@@ -66,7 +66,7 @@ QPushButton:flat
     border.color: red;
 }
 
-QPushButton:hover 
+QPushButton:hover
 {
     background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
         stop: 0 gray, stop: 1.0 gray);
@@ -75,46 +75,48 @@ QPushButton:hover
 */
 
 ToolBar {
-    background: qlineargradient(x1: 0, y1: 0, x2: 1, y2: 0,
-        stop: 0 #202020, stop: 1.0 #707070);
-    border: 1px solid black;
-    border-radius: 2px;
-}
-
-ToolBar::handle {
+    background: #47484b;
+    min-width: 2em;
+    border-radius: 1px;
 }
 
 Button {
-    color: white;
+    color: #adafb0;
+    font-size: 12px;
 }
 
 Button:hover {
-    background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
-                                       stop: 0 #484848, stop: 1 #505050);
+    background-color: #38383b;
+    border-radius: 3px;
 }
 
-/*ComboSelector {
-    background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
-                                   stop: 0.3 #888, stop: 1 #333);
-    border: 1px solid black;
+Button:pressed {
+    background-color: #1f2021;
+}
+
+ComboSelector {
+    background-color: #47484b;
+    border: 0px solid gray;
     padding: 1px 18px 1px 20px;
     min-width: 6em;
-    color: white;
+    color: #adafb0;
 }
 
-QComboBox::down-arrow {
-    top: 2px;
-    right: 7px;
+ComboSelector:item:selected {
+    background: #38383b;
 }
+
 ComboSelector:hover {
-    background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
-        stop: 0 #808080, stop: 1.0 #474747);
+    background-color: #38383b;
+    border-radius: 2px;
 }
 
-ComboSelector::drop-down {
-    subcontrol-origin: padding;
-    subcontrol-position: top right;
-    width: 5px;
-    border-left-width: 1px;
+ComboSelector QAbstractItemView {
+    border: 2px solid darkgray;
+    selection-background-color: lightgray;
 }
-*/
+
+QStatusBar {
+    background: #ffffff;
+    border: 1px solid #dbdbdb;
+}
