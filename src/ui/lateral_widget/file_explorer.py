@@ -37,6 +37,7 @@ class Explorador(QWidget):
 
     def __init__(self, parent=None):
         super(Explorador, self).__init__()
+        self.setStyleSheet("background: #616266; color: #bfbfbf")
         vb = QVBoxLayout(self)
         vb.setContentsMargins(0, 0, 0, 0)
 

@@ -23,9 +23,8 @@ from PyQt4.QtGui import (
     QStandardItemModel,
     QStandardItem,
     QVBoxLayout,
-    QIcon,
     QAbstractItemView,
-    QListView
+    QListView,
     )
 from PyQt4.QtCore import (
     SIGNAL,
@@ -34,7 +33,6 @@ from PyQt4.QtCore import (
     Qt
     )
 
-from src import recursos
 from src.ui.contenedor_principal import contenedor_principal
 
 
@@ -42,6 +40,7 @@ class Navegador(QWidget):
 
     def __init__(self, parent=None):
         super(Navegador, self).__init__(parent)
+        self.setStyleSheet("background: #616266; color: #bfbfbf")
         self.parent = parent
         self.archivos = []
 
@@ -55,7 +54,6 @@ class Navegador(QWidget):
 
     @pyqtSlot(QModelIndex)
     def cambiar_tab(self, indice):
-
         self.emit(SIGNAL("cambioPes(int)"), indice.row())
 
     def cargar_archivos(self, archivos):
@@ -63,11 +61,6 @@ class Navegador(QWidget):
 
         for i in archivos:
             item = QStandardItem(i.split('/')[-1])
-            if str(i[-1]).startswith('h'):
-                item.setIcon(QIcon(recursos.ICONOS['cabecera']))
-            if str(i[-1]).startswith('c'):
-                item.setIcon(QIcon(recursos.ICONOS['c']))
-
             self.model.appendRow(item)
         self.lista.setModel(self.model)
 
@@ -84,6 +77,8 @@ class ListView(QListView):
     def __init__(self, parent):
         super(ListView, self).__init__()
         self.parent = parent
+        self.setStyleSheet(
+            "QListView::item:selected{border: 1px solid white}")
 
     def contextMenuEvent(self, evento):
         self.setContextMenuPolicy(Qt.CustomContextMenu)
@@ -92,3 +87,7 @@ class ListView(QListView):
         menu.addAction(accionC)
         accionC.triggered.connect(self.parent.borrar_item)
         menu.exec_(evento.globalPos())
+
+    def change_style(self, index):
+        self.setStyleSheet(
+            "QListView::item:selected{border: 1px solid white; color: #71afc9}")

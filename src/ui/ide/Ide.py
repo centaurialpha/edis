@@ -95,7 +95,6 @@ class IDE(QMainWindow):
         self.tog = self.toolbar.toggleViewAction()
         self.tog.setText(self.tr("Visible"))
         self.addToolBar(Qt.LeftToolBarArea, self.toolbar)
-        #self.addToolBar(Qt.TopToolBarArea, self.toolbar2)
 
         self.tray = actualizaciones.Actualizacion(self)
         self.tray.show()
@@ -173,15 +172,6 @@ class IDE(QMainWindow):
         widget_central.agregar_contenedor_bottom(self.contenedor_secundario)
         widget_central.agregar_contenedor_lateral(self.lateral)
 
-        self.connect(self.contenedor_principal, SIGNAL(
-            "logging(QString, QString)"),
-                self.contenedor_secundario.logging.add_log)
-        self.connect(self.contenedor_principal.tab, SIGNAL(
-            "logging(QString, QString)"),
-                self.contenedor_secundario.logging.add_log)
-        self.connect(self.lateral.symbols_widget,
-            SIGNAL("infoSimbolo(QString)"),
-            widget_central.lateral.set_info_simbolo)
         self.connect(self.lateral.symbols_widget,
             SIGNAL("irALinea(int)"), self.distribuidor.ir_a_linea)
         self.connect(self.contenedor_secundario.salida_.output,

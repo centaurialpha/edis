@@ -21,9 +21,7 @@
 # Módulos QtGui
 from PyQt4.QtGui import QWidget
 from PyQt4.QtGui import QSplitter
-from PyQt4.QtGui import QVBoxLayout
 from PyQt4.QtGui import QHBoxLayout
-from PyQt4.QtGui import QLabel
 
 # Módulos QtCore
 from PyQt4.QtCore import Qt
@@ -56,7 +54,7 @@ class WidgetCentral(QWidget):
         self.split_principal.insertWidget(0, contenedor)
 
     def agregar_contenedor_lateral(self, explorador):
-        self.lateral = Lateral(explorador)
+        self.lateral = explorador
         self.split_horizontal.insertWidget(0, self.lateral)
         self.emit(SIGNAL("lateral()"))
 
@@ -98,21 +96,3 @@ class WidgetCentral(QWidget):
         size_horizontal = [ancho[1], ancho[0]]
         self.split_principal.setSizes(size_principal)
         self.split_horizontal.setSizes(size_horizontal)
-
-
-class Lateral(QWidget):
-
-    def __init__(self, lateral):
-        super(Lateral, self).__init__()
-        self.setStyleSheet("background: #47484b; color: #bfbfbf")
-        layoutV = QVBoxLayout(self)
-        layoutV.setContentsMargins(0, 0, 0, 0)
-        layoutV.setSpacing(0)
-        layoutV.setMargin(0)
-        layoutV.addWidget(lateral)
-
-        self.label_info = QLabel(self.trUtf8(""))
-        layoutV.addWidget(self.label_info)
-
-    def set_info_simbolo(self, info):
-        self.label_info.setText(info)

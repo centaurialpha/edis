@@ -44,7 +44,7 @@ class ArbolDeSimbolos(QTreeWidget):
 
     def __init__(self):
         super(ArbolDeSimbolos, self).__init__()
-        self.setStyleSheet("background: #616266")
+        self.setStyleSheet("background: #616266; color: #bfbfbf")
         self.header().setHidden(True)
         self.setSelectionMode(self.SingleSelection)
         self.setAnimated(True)

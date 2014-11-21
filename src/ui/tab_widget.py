@@ -67,6 +67,9 @@ class TabCentral(QTabWidget):
         self.popup.show()
         self.popup.line.setFocus()
 
+    def current_tab_index(self):
+        self.emit(SIGNAL("currentTabIndex(int)"), self.currentTabIndex)
+
     @property
     def get_archivos_recientes(self):
         return self._recientes
