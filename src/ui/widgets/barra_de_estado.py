@@ -22,7 +22,7 @@ from PyQt4.QtGui import (
     QVBoxLayout,
     QHBoxLayout,
     QLabel,
-    QSizePolicy
+    QSizePolicy,
     )
 
 
@@ -33,50 +33,53 @@ from src.ui.widgets.creador_widget import create_button
 class BarraDeEstado(QStatusBar):
 
     def __init__(self, parent=None):
-        super(BarraDeEstado, self).__init__()
+        QStatusBar.__init__(self)
+
         self.edis = parent
 
         self.nombre_archivo = NombreArchivo()
         self.estado_cursor = WidgetLineaColumna()
         self.archivo_modificado = MensajeArchivoModificado()
 
-        widget_filename = QWidget()
-        widget_filename.setSizePolicy(QSizePolicy.Expanding,
-                                    QSizePolicy.Expanding)
-        box_filename = QHBoxLayout(widget_filename)
-        box_filename.addWidget(self.nombre_archivo)
+        self._widgets = [
+            self.nombre_archivo,
+            self.estado_cursor,
+            self.archivo_modificado,
+            ]
 
-        widget_modified = QWidget()
-        widget_modified.setSizePolicy(QSizePolicy.Expanding,
-                                    QSizePolicy.Ignored)
-        box_modified = QHBoxLayout(widget_modified)
-        box_modified.addWidget(self.archivo_modificado)
+        # Load UI
+        self.load_ui()
 
-        widget_cursor = QWidget()
-        widget_cursor.setSizePolicy(QSizePolicy.Expanding,
-                                    QSizePolicy.Expanding)
-        box_cursor = QHBoxLayout(widget_cursor)
-        box_cursor.addWidget(self.estado_cursor)
+    def load_ui(self):
+        """ Load the components of StatusBar """
 
-        widget_tools = QWidget()
-        self.tool_view_lateral = create_button(self,
+        # Container
+        container = QWidget()
+        layout = QHBoxLayout(container)
+        layout.setContentsMargins(0, 0, 0, 0)
+        layout.setSpacing(0)
+
+        tool_lateral = create_button(self,
             icon=recursos.ICONOS['lateral'], toggled=self._show_hide_lateral)
-        self.tool_view_lateral.setCheckable(True)
-
-        self.tool_view_lateral.setAutoRaise(True)
-        self.tool_view_output = create_button(self,
+        tool_lateral.setCheckable(True)
+        tool_output = create_button(self,
             icon=recursos.ICONOS['output'], toggled=self._show_hide_output)
-        self.tool_view_output.setCheckable(True)
-        self.tool_view_output.setAutoRaise(True)
+        tool_output.setCheckable(True)
 
-        box_tools = QHBoxLayout(widget_tools)
-        box_tools.addWidget(self.tool_view_lateral)
-        box_tools.addWidget(self.tool_view_output)
+        # Add the widgets to the container
+        for w in self._widgets:
+            widget = QWidget()
+            widget.setSizePolicy(QSizePolicy.Expanding,
+                                QSizePolicy.Expanding)
+            box = QHBoxLayout(widget)
+            box.setContentsMargins(0, 0, 0, 0)
+            box.addWidget(w)
+            layout.addWidget(widget)
 
-        self.addWidget(widget_filename, stretch=1)
-        self.addWidget(widget_cursor, stretch=1)
-        self.addWidget(widget_modified, stretch=1)
-        self.addWidget(widget_tools)
+        # Add the container to status bar
+        self.addWidget(container, stretch=1)
+        self.addWidget(tool_lateral)
+        self.addWidget(tool_output)
 
     def mostrar_mensaje(self, mensaje, tiempo=3000):
         self.showMessage(mensaje, tiempo)
@@ -92,6 +95,7 @@ class NombreArchivo(QLabel):
 
     def __init__(self):
         super(NombreArchivo, self).__init__()
+        self.setStyleSheet("color: gray")
 
     def cambiar_texto(self, archivo):
         self.setText(archivo)
@@ -101,6 +105,7 @@ class MensajeArchivoModificado(QLabel):
 
     def __init__(self):
         super(MensajeArchivoModificado, self).__init__()
+        self.setStyleSheet("color: gray")
         self.setText('')
 
     def modificado(self, modificado=False):
@@ -114,11 +119,12 @@ class WidgetLineaColumna(QWidget):
 
     def __init__(self):
         QWidget.__init__(self)
+        self.setStyleSheet("color: gray")
         vLayout = QVBoxLayout(self)
         vLayout.setContentsMargins(0, 0, 0, 0)
         hLayout = QHBoxLayout()
         self.texto = "Lin: %s/%s - Col: %s"
-        self.posicion_cursor = QLabel(self.trUtf8(self.texto % (0, 0, 0)))
+        self.posicion_cursor = QLabel(self.tr(self.texto % (0, 0, 0)))
 
         hLayout.addWidget(self.posicion_cursor)
         vLayout.addLayout(hLayout)

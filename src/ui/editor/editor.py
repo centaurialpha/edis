@@ -325,7 +325,7 @@ class Editor(QPlainTextEdit, tabitem.TabItem):
         seleccion = QTextEdit.ExtraSelection()
         #color = QColor(recursos.NUEVO_TEMA.get('linea-actual',
             #recursos.TEMA_EDITOR['linea-actual']))
-        color = QColor('lightblue').lighter(120)
+        color = QColor(240, 240, 240)
         #color.setAlpha(40)
         seleccion.format.setBackground(color)
         seleccion.format.setProperty(

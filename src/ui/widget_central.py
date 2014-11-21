@@ -42,6 +42,7 @@ class WidgetCentral(QWidget):
         layout_horizontal.setSpacing(0)
 
         self.split_horizontal = QSplitter(Qt.Horizontal)
+        self.split_horizontal.setObjectName('splith')
         self.split_principal = QSplitter(Qt.Vertical)
         self.layout = QHBoxLayout()
 
@@ -103,8 +104,11 @@ class Lateral(QWidget):
 
     def __init__(self, lateral):
         super(Lateral, self).__init__()
+        self.setStyleSheet("background: #47484b; color: #bfbfbf")
         layoutV = QVBoxLayout(self)
         layoutV.setContentsMargins(0, 0, 0, 0)
+        layoutV.setSpacing(0)
+        layoutV.setMargin(0)
         layoutV.addWidget(lateral)
 
         self.label_info = QLabel(self.trUtf8(""))

@@ -58,10 +58,7 @@ from src.ui.distribuidor import Distribuidor
 from src.ui.contenedor_principal import contenedor_principal
 from src.ui.contenedor_secundario import contenedor_secundario
 from src.ui.lateral_widget import lateral_container
-from src.ui.widgets import (
-    barra_de_estado,
-    toolbar_view
-    )
+from src.ui.widgets import barra_de_estado
 from src.ui.dialogos import dialogo_guardar_archivos
 
 
@@ -94,8 +91,9 @@ class IDE(QMainWindow):
         self.setCentralWidget(self.widget_Central)
         # ToolBar
         self.toolbar = ToolBar(self)
-        self.toolbar2 = toolbar_view.TopToolBar(self)
-        self.toolbar.setToolTip(self.trUtf8("Mantén presionado y mueve"))
+        self.toolbar.setToolButtonStyle(Qt.ToolButtonIconOnly)
+        self.tog = self.toolbar.toggleViewAction()
+        self.tog.setText(self.tr("Visible"))
         self.addToolBar(Qt.LeftToolBarArea, self.toolbar)
         #self.addToolBar(Qt.TopToolBarArea, self.toolbar2)
 

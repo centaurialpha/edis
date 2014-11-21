@@ -5,6 +5,11 @@
     height: 1px;
 }
 */
+
+QWidget {
+    border: 0px solid transparent;
+}
+
 QScrollBar:vertical
 {
     width: 13px;
@@ -39,15 +44,6 @@ QGroupBox::title
     padding: 5 10px;
 }
 
-/*SalidaWidget
-{
-    font-family: monospace;
-    font-size: 10px;
-    color: black;
-    background-color: white;
-    selection-color: white;
-    selection-background-color: #437DCD;
-}*/
 /*
 QPushButton
 {
@@ -81,7 +77,7 @@ ToolBar {
 }
 
 Button {
-    color: #adafb0;
+    color: #bfbfbf;
     font-size: 12px;
 }
 
@@ -108,7 +104,7 @@ ComboSelector:item:selected {
 
 ComboSelector:hover {
     background-color: #38383b;
-    border-radius: 2px;
+    border-radius: 0px;
 }
 
 ComboSelector QAbstractItemView {
@@ -119,4 +115,12 @@ ComboSelector QAbstractItemView {
 QStatusBar {
     background: #ffffff;
     border: 1px solid #dbdbdb;
+}
+
+
+QSplitter::handle:horizontal {
+    background-color: gray;
+    width: 1px;
+    border: 0px solid gray;
+    border-radius: 1px;
 }
