@@ -27,7 +27,7 @@ from PyQt4.QtGui import (
 # Módulos QtCore
 from PyQt4.QtCore import (
     QObject,
-    SIGNAL
+    SIGNAL,
     )
 
 # Módulos EDIS
@@ -137,21 +137,21 @@ class MenuArchivo(QObject):
         menu_archivo.addAction(self.accionSalir)
 
         # ToolButton's
-        self.tool_nuevo = create_button(self.ide, shortcut=_ATAJO['nuevo'],
-            action=self.accionNuevo, text=self.tr("Nuevo"))
+        self.tool_nuevo = create_button(self.ide, action=self.accionNuevo,
+                                        text=self.tr("Nuevo"))
         self.tool_nuevo.setSizePolicy(QSizePolicy.MinimumExpanding,
             QSizePolicy.Maximum)
 
-        self.tool_abrir = create_button(self.ide, shortcut=_ATAJO['abrir'],
-            action=self.accionAbrir, text=self.tr("Abrir"))
+        self.tool_abrir = create_button(self.ide, action=self.accionAbrir,
+                                        text=self.tr("Abrir"))
         self.tool_abrir.setSizePolicy(QSizePolicy.MinimumExpanding,
-            QSizePolicy.Maximum)
+                                    QSizePolicy.Maximum)
         self.tool_abrir.setPopupMode(QToolButton.InstantPopup)
 
-        self.tool_guardar = create_button(self.ide, shortcut=_ATAJO['guardar'],
-            action=self.accionGuardar, text=self.tr("Guardar"))
+        self.tool_guardar = create_button(self.ide, action=self.accionGuardar,
+                                        text=self.tr("Guardar"))
         self.tool_guardar.setSizePolicy(QSizePolicy.MinimumExpanding,
-            QSizePolicy.Maximum)
+                                        QSizePolicy.Maximum)
         self.tool_guardar.setPopupMode(QToolButton.InstantPopup)
         self.tool_guardar.setMenu(self.tool_menu_guardar())
 

@@ -11,7 +11,7 @@ QWidget {
 }
 
 QMenu {
-    background: #ffffff;
+    background: #eeeeee;
     border-radius: 2px;
 }
 
@@ -22,13 +22,12 @@ QMenu::item {
 }
 
 QMenu::item:selected {
-    border: 1px solid #71afc9;
     background: #dbdbdb;
 }
 
 
 QMenuBar {
-    background: #ffffff;
+    background: #eeeeee;
     color: gray;
 }
 QMenuBar::item {
@@ -121,9 +120,14 @@ ToolBar {
     border-radius: 1px;
 }
 
+ToolBar::separator {
+    width: 1px;
+    height: 1px;
+}
+
 Button {
     color: #bfbfbf;
-    font-size: 12px;
+    font-size: 11px;
     padding-right: 5px;
 }
 
@@ -159,7 +163,8 @@ ComboSelector QAbstractItemView {
 }
 
 QStatusBar {
-    background: #ffffff;
+    background: #eceff1;
+    border: 1px solid #dbdbdb;
 }
 
 
@@ -175,4 +180,12 @@ QSplitter::handle:horizontal {
     width: 1px;
     border: 0px solid gray;
     border-radius: 1px;
+}
+
+QDialog {
+    background: #eeeeee;
+}
+
+QTabWidget {
+    background: #eeeeee;
 }

@@ -144,6 +144,7 @@ class Highlighter(QSyntaxHighlighter):
         self.setCurrentBlockUserData(block_data)
 
         for expresion, nth, formato in self.reglas:
+            print(expresion)
             indice = expresion.indexIn(texto, 0)
 
             while indice >= 0:

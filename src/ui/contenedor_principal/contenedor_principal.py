@@ -36,7 +36,6 @@ from PyQt4.QtCore import Qt
 from src.helpers import manejador_de_archivo
 from src import recursos
 from src.ui import tab_widget
-from src.ui.widgets import pagina_de_bienvenida
 from src.ui.editor import (
     editor,
     highlighter_,
@@ -235,14 +234,6 @@ class __ContenedorMain(QSplitter):
             #if type(widget) is editor.Editor:
             if isinstance(widget, editor.Editor):
                 widget.actualizar_margen_linea()
-
-    def mostrar_pagina_de_bienvenida(self):
-        pag = pagina_de_bienvenida.PaginaDeBienvenida(parent=self)
-        self.agregar_tab(pag, False, self.trUtf8('EDIS'))
-        self.connect(pag, SIGNAL("nuevoArchivo()"),
-            lambda: self.emit(SIGNAL("nuevoArchivo()")))
-        self.connect(pag, SIGNAL("abrirArchivo()"),
-            lambda: self.emit(SIGNAL("abrirArchivo()")))
 
     def setFocus(self):
         w = self.devolver_widget_actual()

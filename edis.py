@@ -1,3 +1,4 @@
+#!/usr/bin/env python2
 # -*- coding: utf-8 -*-
 
 # <Archivo principal, para correr el programa se debe ejecutar este archivo.>

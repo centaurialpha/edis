@@ -63,16 +63,16 @@ FUENTE_MIN_TAM = 6
 INDENTACION = 4
 CHECK_INDENTACION = True
 CHECK_AUTOINDENTACION = True
-GUIA_INDENTACION = False
+GUIA_INDENTACION = True
 ###############################################################################
 # TABS Y ESPACIOS
 ###############################################################################
-MOSTRAR_TABS = True
+MOSTRAR_TABS = False
 MODO_ENVOLVER = False
 ###############################################################################
 # MINIMAPA
 ###############################################################################
-MINIMAPA = True
+MINIMAPA = False
 MINI_TAM = 0.17
 OPAC_MIN = 0.2
 OPAC_MAX = 0.9
@@ -97,78 +97,18 @@ BARRA_HERRAMIENTAS_ITEMS = [
     "nuevo-archivo",
     "abrir-archivo",
     "guardar-archivo",
-#    "separador",
-    "deshacer",
-    "rehacer",
-    "cortar",
-    "copiar",
-    "pegar",
-    "buscar",
-#    "separador",
+    "separador",
     "compilar-archivo",
     "ejecutar-archivo"
-    #"guardar-como",
-    #"guardar-todo",
-    #"separador",
-    #"deshacer",
-    #"rehacer",
-    #"cortar",
-    #"copiar",
-    #"pegar",
-    #"buscar",
-    #"separador",
-    #"acercar",
-    #"alejar",
-    #"separador",
-    #"indentar",
-    #"desindentar",
-    #"arriba",
-    #"abajo",
-    #"include",
-    #"macro",
-    #"linea",
-    #"separador",
-    #"compilar-archivo",
-    #"ejecutar-archivo",
-    #"compilar-ejecutar-archivo",
-    #"frenar",
-    #"separador"
     ]
 
 BARRA_HERRAMIENTAS_ORIGINAL = [
     "nuevo-archivo",
     "abrir-archivo",
     "guardar-archivo",
-#    "separador",
-    "deshacer",
-    "rehacer",
-    "cortar",
-    "copiar",
-    "pegar",
-    "buscar",
-#    "separador",
+    "separador",
     "compilar-archivo",
     "ejecutar-archivo"
-    #"guardar-como",
-    #"guardar-todo",
-    #"separador",
-    #"separador",
-    #"acercar",
-    #"alejar",
-    #"separador",
-    #"indentar",
-    #"desindentar",
-    #"arriba",
-    #"abajo",
-    #"include",
-    #"macro",
-    #"linea",
-    #"separador",
-    #"compilar-archivo",
-    #"ejecutar-archivo",
-    #"compilar-ejecutar-archivo",
-    #"frenar",
-    #"separador"
     ]
 
 COMILLAS = {

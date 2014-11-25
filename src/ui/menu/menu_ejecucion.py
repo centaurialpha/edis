@@ -46,7 +46,6 @@ class MenuEjecucion(QObject):
         super(MenuEjecucion, self).__init__()
 
         self.ide = ide
-        #self.comp = False
 
         # Acciones #
         # Compilar
@@ -56,16 +55,10 @@ class MenuEjecucion(QObject):
         # Ejecutar
         self.accionEjecutar = crear_accion(self, "Ejecutar",
             icono=_ICONO['run'], slot=self.ide.distribuidor.ejecutar)
-        # Compilar y ejecutar
-        #self.accionCompilarEjecutar = crear_accion(self, "Compilar y ejecutar",
-            #icono=_ICONO['compilar-ejecutar'], atajo=_ATAJO['comp-ejec'])
-        #self.accionFrenar = crear_accion(self, "Frenar programa",
-            #icono=_ICONO['frenar'], slot=self.ide.distribuidor.frenar)
 
         # Agregar acciones al menú #
         menu_codigo.addAction(self.accionCompilar)
         menu_codigo.addAction(self.accionEjecutar)
-        #menu_codigo.addAction(self.accionCompilarEjecutar)
 
         self.tool_compilar = create_button(self.ide, text=self.tr("Compilar"),
             shortcut=_ATAJO['compilar'], action=self.accionCompilar)
@@ -93,7 +86,6 @@ class MenuEjecucion(QObject):
         path_name = self.ide.contenedor_principal.guardar_archivo(editorW)
         if not path_name:
             return None
-        #self.comp = True
         salida = os.path.basename(path_name).split('.')[0]
         self.ide.contenedor_secundario.compilar_archivo(salida, path_name)
         self.ide.contenedor_secundario.ejecutar_archivo(self.comp)

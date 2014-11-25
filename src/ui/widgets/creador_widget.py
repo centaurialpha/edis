@@ -87,25 +87,31 @@ def crear_accion(parent, texto, icono=None, atajo=None, tip=None,
     return accion
 
 
-def create_button(parent, text=None, shortcut=None, icon=None,
-                    triggered=None, toggled=None, autoraise=True, action=None):
+def create_button(parent, text=None, shortcut=None, icon=None, triggered=None,
+                    text_beside=False, toggled=None, autoraise=True,
+                    action=None):
 
     """ Create a ToolButton """
 
     tbutton = Button(parent)
     if text is not None:
-        tbutton.setToolButtonStyle(Qt.ToolButtonTextUnderIcon)
+        tbutton.setText(text)
     if icon is not None:
         tbutton.setIcon(QIcon(icon))
     tbutton.setAutoRaise(autoraise)
-    if toggled is not None:
-        QObject.connect(tbutton, SIGNAL("toggled(bool)"), toggled)
     if triggered is not None:
         QObject.connect(tbutton, SIGNAL("clicked()"), triggered)
-    if shortcut is not None:
-        tbutton.setShortcut(shortcut)
+    if toggled is not None:
+        QObject.connect(tbutton, SIGNAL("toggled(bool)"), toggled)
+        tbutton.setCheckable(True)
     if action is not None:
         tbutton.setDefaultAction(action)
+    if shortcut is not None:
+        tbutton.setShortcut(shortcut)
+    if text_beside:
+        tbutton.setToolButtonStyle(Qt.ToolButtonTextBesideIcon)
+    else:
+        tbutton.setToolButtonStyle(Qt.ToolButtonTextUnderIcon)
     return tbutton
 
 

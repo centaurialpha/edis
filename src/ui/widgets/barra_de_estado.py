@@ -25,7 +25,6 @@ from PyQt4.QtGui import (
     QSizePolicy,
     )
 
-
 from src import recursos
 from src.ui.widgets.creador_widget import create_button
 
@@ -59,12 +58,12 @@ class BarraDeEstado(QStatusBar):
         layout.setContentsMargins(0, 0, 0, 0)
         layout.setSpacing(0)
 
-        tool_lateral = create_button(self,
-            icon=recursos.ICONOS['lateral'], toggled=self._show_hide_lateral)
-        tool_lateral.setCheckable(True)
-        tool_output = create_button(self,
-            icon=recursos.ICONOS['output'], toggled=self._show_hide_output)
-        tool_output.setCheckable(True)
+        tool_lateral = create_button(self, icon=recursos.ICONOS['lateral'],
+            text="Lateral", toggled=self._show_hide_lateral, text_beside=True)
+        tool_lateral.setStyleSheet("color: gray")
+        tool_output = create_button(self, icon=recursos.ICONOS['output'],
+            text="Output", toggled=self._show_hide_output, text_beside=True)
+        tool_output.setStyleSheet("color: gray")
 
         # Add the widgets to the container
         for w in self._widgets:

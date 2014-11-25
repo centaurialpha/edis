@@ -118,7 +118,7 @@ class MenuVer(QObject):
             self.ide.widget_Central.contenedor_principal.isVisible())
 
     def visibilidad_contenedor_secundario(self):
-        self.ide.widget_Central.mostrar_ocultar_widget_bottom()
+        self.ide.widget_Central.show_hide_output()
         self.ide._menu_ver.accionMostrarOcultarInput.setChecked(
             self.ide.widget_Central.contenedor_bottom.isVisible())
 

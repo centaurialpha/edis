@@ -57,7 +57,6 @@ class TabEditor(QWidget):
         super(TabEditor, self).__init__()
         vbox = QVBoxLayout(self)
         vbox.setContentsMargins(0, 0, 0, 0)
-
         self.tabs = QTabWidget()
         self.tabs.setTabPosition(3)
         self.configEditor = CaracteristicasEditor()

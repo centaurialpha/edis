@@ -263,15 +263,9 @@ class Editor(QPlainTextEdit, tabitem.TabItem):
             pintar.setPen(QColor(recursos.NUEVO_TEMA.get('margen-linea',
                 recursos.TEMA_EDITOR['margen-linea'])))
             offset = self.contentOffset()
-            #ancho = self.viewport().width() - (self.posicion_margen +
-                #offset.x())
-            #rect = QRect(self.posicion_margen + offset.x(), -1,
-                #ancho + 1, self.viewport().height() + 5)
             fondo = QColor(recursos.NUEVO_TEMA.get('fondo-margen',
                 recursos.TEMA_EDITOR['fondo-margen']))
             fondo.setAlpha(configuraciones.OPACIDAD_MARGEN)
-            #pintar.fillRect(rect, fondo)
-            #pintar.drawRect(rect)
             pintar.drawLine(self.posicion_margen + offset.x(), 0,
                 self.posicion_margen + offset.x(), self.viewport().height())
             pintar.end()
@@ -281,8 +275,8 @@ class Editor(QPlainTextEdit, tabitem.TabItem):
             offset = self.contentOffset()
             pintar = QPainter()
             pintar.begin(self.viewport())
-            color = QColor('gray')
-            brush = QBrush(color, 10)
+            color = QColor('lightgray')
+            brush = QBrush(color, 20)
             pintar.setBackground(brush)
             color.setAlpha(100)
             pintar.setPen(color)
@@ -379,8 +373,8 @@ class Editor(QPlainTextEdit, tabitem.TabItem):
             cursor.movePosition(QTextCursor.NextCharacter,
                                 QTextCursor.KeepAnchor)
 
-            formato.setForeground(QColor('white'))
-            formato.setBackground(QColor('blue'))
+            formato.setForeground(QColor('black'))
+            formato.setBackground(QColor('#00ff00'))
             izquierdo.format = formato
             izquierdo.cursor = cursor
 
@@ -388,8 +382,8 @@ class Editor(QPlainTextEdit, tabitem.TabItem):
             cursor.movePosition(QTextCursor.NextCharacter,
                                 QTextCursor.KeepAnchor)
 
-            formato.setForeground(QColor('white'))
-            formato.setBackground(QColor('red'))
+            formato.setForeground(QColor('black'))
+            formato.setBackground(QColor('#00ff00'))
             derecho.format = formato
             derecho.cursor = cursor
 
@@ -402,7 +396,7 @@ class Editor(QPlainTextEdit, tabitem.TabItem):
             cursor.movePosition(QTextCursor.NextCharacter,
                                 QTextCursor.KeepAnchor)
 
-            formato.setForeground(QColor('white'))
+            formato.setForeground(QColor('black'))
             formato.setBackground(QColor('red'))
             izquierdo.format = formato
             izquierdo.cursor = cursor
@@ -414,7 +408,7 @@ class Editor(QPlainTextEdit, tabitem.TabItem):
             cursor.movePosition(QTextCursor.NextCharacter,
                                 QTextCursor.KeepAnchor)
 
-            formato.setForeground(QColor('white'))
+            formato.setForeground(QColor('wblack'))
             formato.setBackground(QColor('green'))
             izquierdo.format = formato
             izquierdo.cursor = cursor

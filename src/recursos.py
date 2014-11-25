@@ -64,7 +64,7 @@ for icono in os.listdir(PATH_ICONOS):
 # Estilos de color - Editor
 TEMA_EDITOR = {
     "texto-editor": "000000",
-    "fondo-editor": "#ffffff",
+    "fondo-editor": "#f6f6f6",
     "fondo-seleccion-editor": "#111111",
     "seleccion-editor": "#5acd14",
     "salida-exitosa": "#5acd14",

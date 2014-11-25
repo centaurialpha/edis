@@ -47,7 +47,6 @@ class ECTab(QWidget):
     def __init__(self, parent):
         super(ECTab, self).__init__(parent)
         vbox = QVBoxLayout(self)
-
         self.tabs = QTabWidget()
         self.tabs.setTabPosition(3)
         self.configCompilacion = ConfiguracionCompilacion(self)

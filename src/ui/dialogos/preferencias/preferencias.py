@@ -1,20 +1,8 @@
 # -*- coding: utf-8 -*-
-
-# <Diálogo de configuraciones.>
-# Copyright (C) <2014>  <Gabriel Acosta>
-
-# EDIS is free software: you can redistribute it and/or modify
-# it under the terms of the GNU General Public License as published by
-# the Free Software Foundation, either version 3 of the License, or
-# (at your option) any later version.
-
-# EDIS is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU General Public License for more details.
-
-# You should have received a copy of the GNU General Public License
-# along with EDIS.  If not, see <http://www.gnu.org/licenses/>.
+# EDIS: Entorno de Desarrollo Integrado Simple para C/C++
+#
+# Copyright 2014 - Gabriel Acosta
+# License: GPLv3 (see http://www.gnu.org/licenses/gpl.html)
 
 from collections import OrderedDict
 
@@ -23,16 +11,19 @@ from PyQt4.QtGui import (
     QVBoxLayout,
     QHBoxLayout,
     QGridLayout,
-    QComboBox,
-    QPushButton,
-    QStackedWidget
+    QToolButton,
+    QIcon,
+    QToolBar,
+    QStackedWidget,
+    QPushButton
     )
 
 from PyQt4.QtCore import (
+    Qt,
     SIGNAL,
-    Qt
     )
 
+from src import recursos
 from src.ui.dialogos.preferencias import (
     preferencias_general,
     preferencias_editor,
@@ -41,13 +32,12 @@ from src.ui.dialogos.preferencias import (
     )
 
 
-class DialogoPreferencias(QDialog):
+class Preferencias(QDialog):
 
     def __init__(self, parent=None):
-        super(DialogoPreferencias, self).__init__(parent)
-        self.setWindowTitle(self.trUtf8("EDIS - Preferencias"))
+        QDialog.__init__(self, parent)
+        self.setWindowTitle(self.tr("Preferencias - EDIS"))
 
-        # Instancias de tabs
         self.general = preferencias_general.TabGeneral(self)
         self.editor = preferencias_editor.TabEditor()
         self.gui = preferencias_gui.TabGUI(self)
@@ -61,51 +51,77 @@ class DialogoPreferencias(QDialog):
             ('Compilador', self.compilacion)
             ])
 
-        # Cargar interfaz
-        self.cargar_gui()
+        self.load_ui()
 
         # Conexiones
-        self.connect(self.combo, SIGNAL("currentIndexChanged(int)"),
-            lambda: self.cambiar_widget(self.combo.currentIndex()))
-        self.connect(self.botonCancelar, SIGNAL("clicked()"), self.close)
-        self.connect(self.botonGuardar, SIGNAL("clicked()"), self._guardar)
+        self.connect(self.button_general, SIGNAL("clicked()"),
+                    lambda: self.cambiar_widget(0))
+        self.connect(self.button_editor, SIGNAL("clicked()"),
+                    lambda: self.cambiar_widget(1))
+        self.connect(self.button_gui, SIGNAL("clicked()"),
+                    lambda: self.cambiar_widget(2))
+        self.connect(self.button_compi, SIGNAL("clicked()"),
+                    lambda: self.cambiar_widget(3))
+        self.connect(self.btn_cancel, SIGNAL("clicked()"), self.close)
+        self.connect(self.btn_guardar, SIGNAL("clicked()"), self._guardar)
 
-    def cargar_gui(self):
-        """ Carga todos los widgets en el QDialog """
+    def load_ui(self):
+        box = QVBoxLayout(self)
+        box.setContentsMargins(0, 0, 0, 0)
+        box.setSpacing(0)
 
-        vLayout = QVBoxLayout(self)
-        vLayout.setContentsMargins(0, 0, 0, 0)
-        self.combo = QComboBox()
-        vLayout.addWidget(self.combo)
+        toolbar = QToolBar()
+        toolbar.setToolButtonStyle(Qt.ToolButtonIconOnly)
 
-        [self.combo.addItem(widget)
-            for widget in list(self.widgets.keys())]
+        self.button_general = QToolButton()
+
+        self.button_general.setIcon(QIcon(recursos.ICONOS['gtk-preferences']))
+        self.button_general.setText("General")
+        self.button_general.setToolButtonStyle(Qt.ToolButtonTextUnderIcon)
+        self.button_editor = QToolButton()
+        self.button_editor.setIcon(QIcon(recursos.ICONOS['edit']))
+        self.button_editor.setText("Editor")
+        self.button_editor.setToolButtonStyle(Qt.ToolButtonTextUnderIcon)
+        self.button_gui = QToolButton()
+        self.button_gui.setIcon(QIcon(recursos.ICONOS['gui']))
+        self.button_gui.setText("Interfaz")
+        self.button_gui.setToolButtonStyle(Qt.ToolButtonTextUnderIcon)
+        self.button_compi = QToolButton()
+        self.button_compi.setIcon(QIcon(recursos.ICONOS['build']))
+        self.button_compi.setText("Compilador")
+        self.button_compi.setToolButtonStyle(Qt.ToolButtonTextUnderIcon)
+
+        toolbar.addWidget(self.button_general)
+        toolbar.addWidget(self.button_editor)
+        toolbar.addWidget(self.button_gui)
+        toolbar.addWidget(self.button_compi)
+
+        box.addWidget(toolbar)
 
         self.stack = Stack()
-        vLayout.addWidget(self.stack)
+        box.addWidget(self.stack)
 
         [self.stack.addWidget(widget)
             for widget in list(self.widgets.values())]
 
-        hLayout = QHBoxLayout()
-        self.botonCancelar = QPushButton(self.trUtf8("Cancelar"))
-        self.botonGuardar = QPushButton(self.trUtf8("Guardar"))
-        layoutBotones = QGridLayout()
-        hLayout.addWidget(self.botonCancelar)
-        hLayout.addWidget(self.botonGuardar)
-        layoutBotones.addLayout(hLayout, 0, 0, Qt.AlignLeft)
-        vLayout.addLayout(layoutBotones)
+        box_buttons = QHBoxLayout()
+        self.btn_cancel = QPushButton(self.tr("Cancelar"))
+        self.btn_guardar = QPushButton(self.tr("Guardar"))
+        grid = QGridLayout()
+        grid.addLayout(box_buttons, 0, 0, Qt.AlignRight)
+        box_buttons.addWidget(self.btn_cancel)
+        box_buttons.addWidget(self.btn_guardar)
 
-    def cambiar_widget(self, indice):
+        box.addLayout(grid)
+
+    def cambiar_widget(self, index):
         if not self.isVisible():
             self.show()
-        self.stack.mostrar_widget(indice)
+        self.stack.mostrar_widget(index)
 
     def _guardar(self):
-        """ Recorrer cada widget y sus tabs para guardar las configuraciones """
-
         [self.stack.widget(i).guardar()
-            for i in range(self.combo.count())]
+            for i in range(4)]
         self.close()
 
 

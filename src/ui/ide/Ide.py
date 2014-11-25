@@ -94,7 +94,7 @@ class IDE(QMainWindow):
         self.toolbar.setToolButtonStyle(Qt.ToolButtonIconOnly)
         self.tog = self.toolbar.toggleViewAction()
         self.tog.setText(self.tr("Visible"))
-        self.addToolBar(Qt.LeftToolBarArea, self.toolbar)
+        self.addToolBar(Qt.RightToolBarArea, self.toolbar)
 
         self.tray = actualizaciones.Actualizacion(self)
         self.tray.show()
@@ -134,8 +134,6 @@ class IDE(QMainWindow):
         # Método para cargar items en las toolbar
         self.cargar_toolbar()
 
-        if configuraciones.PAGINA_BIENVENIDA:
-            self.contenedor_principal.mostrar_pagina_de_bienvenida()
         # Iniciar distribuidor despues de la interfáz
         #FIXME: arreglar !!
         self.distribuidor.ini_ide(self)
@@ -156,9 +154,6 @@ class IDE(QMainWindow):
         self.contenedor_secundario = \
             contenedor_secundario.ContenedorSecundario(self)
         self.lateral = lateral_container.LateralContainer(self)
-        self.connect(self.contenedor_principal,
-            SIGNAL("desactivarBienvenida()"),
-            self.desactivar_pagina_de_bienvenida)
         self.connect(self.contenedor_principal, SIGNAL(
             "currentTabChanged(QString)"), self.cambiar_titulo_de_ventana)
         self.connect(self.contenedor_principal, SIGNAL(
@@ -186,15 +181,6 @@ class IDE(QMainWindow):
         self.connect(self.lateral.file_explorer,
             SIGNAL("dobleClickArchivo(QString)"),
             lambda f: self.contenedor_principal.abrir_archivo(f))
-
-    def desactivar_pagina_de_bienvenida(self):
-        """ Desactiva la página de inicio al iniciar próxima sesión. """
-
-        configuraciones.PAGINA_BIENVENIDA = False
-        qconfig = QSettings(recursos.CONFIGURACION, QSettings.IniFormat)
-        qconfig.setValue('configuraciones/general/paginaBienvenida',
-            configuraciones.PAGINA_BIENVENIDA)
-        self.contenedor_principal.tab_actual.cerrar_tab()
 
     def cargar_toolbar(self):
         self.toolbar.clear()

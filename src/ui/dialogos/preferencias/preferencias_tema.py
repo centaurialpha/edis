@@ -26,7 +26,6 @@ class ConfiguracionTema(QWidget):
 
     def __init__(self, parent):
         super(ConfiguracionTema, self).__init__(parent)
-
         layoutV = QVBoxLayout(self)
 
         self.lista_temas = QListWidget()

@@ -48,7 +48,6 @@ class TabGUI(QWidget):
     def __init__(self, parent):
         super(TabGUI, self).__init__(parent)
         layoutV = QVBoxLayout(self)
-
         self.barra_herramientas = configuraciones.BARRA_HERRAMIENTAS_ITEMS
 
         # Grupos
