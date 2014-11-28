@@ -32,7 +32,7 @@ from PyQt4.QtGui import QMessageBox
 from PyQt4.QtCore import QObject
 
 # Módulos EDIS
-import src
+from src import ui
 from src import recursos
 #from src.ui.widgets import estilo
 from src.ui.dialogos import dialogo_acerca_de_ide
@@ -70,7 +70,7 @@ class MenuAcercade(QObject):
         estilo_de_codigo.triggered.connect(self.estilo_de_codigo)
 
     def reportar_bugs_(self):
-        webbrowser.open(src.__reportar_bug__)
+        webbrowser.open(ui.__reportar_bug__)
 
     def acerca_de_ide(self):
         self.acerca_de = dialogo_acerca_de_ide.AcercaDeIDE()

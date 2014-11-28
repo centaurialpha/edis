@@ -107,7 +107,7 @@ class AcercaDeSide(QWidget):
 'programación C, simple y ligero,<br>desarrollado completamente en '
 'Python y Qt (PyQt)<br>'))
         links_label = QLabel(
-            ('<b>Python:</b><a href="%s"><span style="color: #4dbee8;">%s'
+            ('<b>Python: </b><a href="%s"><span style="color: #4dbee8;">%s'
             '</span></a><br><b>Qt:</b> <a href="%s"><span style="color: '
             '#4dbee8;">%s</span></a><br><b>PyQt:</b> <a href="%s"><span style='
             '"color: #4dbee8;">%s</span></a>') %
@@ -120,11 +120,11 @@ class AcercaDeSide(QWidget):
         layout_vertical.addWidget(links_label)
 
         version_edis = QLabel(
-            ('<b>Version:</b> %s') % (ui.__version__))
+            ('<b>Version: </b> %s') % (ui.__version__))
         layout_vertical.addWidget(version_edis)
 
         link_codigo_fuente = QLabel(
-            ('<b>Codigo fuente:</b> <a href="%s"><span style=" '
+            ('<b>Codigo fuente: </b> <a href="%s"><span style=" '
             'color: #4dbee8;">%s</span></a>') %
             (ui.__codigo_fuente__, ui.__codigo_fuente__))
         layout_vertical.addWidget(link_codigo_fuente)
