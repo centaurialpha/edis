@@ -36,6 +36,7 @@ class Preferencias(QDialog):
 
     def __init__(self, parent=None):
         QDialog.__init__(self, parent)
+       # self.setStyleSheet("background: #dbdbdb")
         self.setWindowTitle(self.tr("Preferencias - EDIS"))
 
         self.general = preferencias_general.TabGeneral(self)
@@ -71,25 +72,14 @@ class Preferencias(QDialog):
         box.setSpacing(0)
 
         toolbar = QToolBar()
+        toolbar.setStyleSheet("background: #47484b")
         toolbar.setToolButtonStyle(Qt.ToolButtonIconOnly)
 
-        self.button_general = QToolButton()
-
-        self.button_general.setIcon(QIcon(recursos.ICONOS['preferencias']))
-        self.button_general.setText("General")
-        self.button_general.setToolButtonStyle(Qt.ToolButtonTextUnderIcon)
-        self.button_editor = QToolButton()
-        self.button_editor.setIcon(QIcon(recursos.ICONOS['edit']))
-        self.button_editor.setText("Editor")
-        self.button_editor.setToolButtonStyle(Qt.ToolButtonTextUnderIcon)
-        self.button_gui = QToolButton()
-        self.button_gui.setIcon(QIcon(recursos.ICONOS['gui']))
-        self.button_gui.setText("Interfaz")
-        self.button_gui.setToolButtonStyle(Qt.ToolButtonTextUnderIcon)
-        self.button_compi = QToolButton()
-        self.button_compi.setIcon(QIcon(recursos.ICONOS['build']))
-        self.button_compi.setText("Compilador")
-        self.button_compi.setToolButtonStyle(Qt.ToolButtonTextUnderIcon)
+        self.button_general = ToolButton("General",
+            recursos.ICONOS['preferencias'])
+        self.button_editor = ToolButton("Editor", recursos.ICONOS['edit'])
+        self.button_gui = ToolButton("Interfáz", recursos.ICONOS['gui'])
+        self.button_compi = ToolButton("Compilador", recursos.ICONOS['build'])
 
         toolbar.addWidget(self.button_general)
         toolbar.addWidget(self.button_editor)
@@ -135,3 +125,13 @@ class Stack(QStackedWidget):
 
     def mostrar_widget(self, indice):
         self.setCurrentIndex(indice)
+
+
+class ToolButton(QToolButton):
+
+    def __init__(self, texto, icono):
+        super(ToolButton, self).__init__()
+        self.setStyleSheet("color: #bfbfbf")
+        self.setText(self.trUtf8(texto))
+        self.setIcon(QIcon(icono))
+        self.setToolButtonStyle(Qt.ToolButtonTextUnderIcon)
