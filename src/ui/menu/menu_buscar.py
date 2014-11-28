@@ -42,7 +42,8 @@ class MenuBuscar(QObject):
 
         # Acciones #
         # Buscar
-        accionBuscar = crear_accion(self, "Buscar", icono=_ICONO['buscar'])
+        accionBuscar = crear_accion(self, "Buscar", icono=_ICONO['buscar'],
+            atajo=_ATAJO['buscar'], slot=self.buscar)
 
         # Ir a la línea
         accionIrALinea = crear_accion(self, "Ir a la línea...",
@@ -67,8 +68,4 @@ class MenuBuscar(QObject):
             acciones_.ir_a_la_linea(editor)
 
     def buscar(self):
-        if self.ide.buscador.isVisible():
-            self.ide.buscador.hide()
-        else:
-            self.ide.buscador.show()
-            self.ide.buscador.widget_buscar.line_edit.setFocus()
+        self.ide.contenedor_principal.tab.mostrar_popup()
