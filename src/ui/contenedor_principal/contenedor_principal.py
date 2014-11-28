@@ -108,7 +108,7 @@ class __ContenedorMain(QSplitter):
             if ext == 'c':
                 icono = recursos.ICONOS['c']
             elif ext == 'h':
-                icono = recursos.ICONOS['cabecera']
+                icono = recursos.ICONOS['h']
             else:
                 icono = False
 
