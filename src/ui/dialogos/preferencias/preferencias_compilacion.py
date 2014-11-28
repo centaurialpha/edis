@@ -15,6 +15,8 @@
 # You should have received a copy of the GNU General Public License
 # along with EDIS.  If not, see <http://www.gnu.org/licenses/>.
 
+import sys
+
 # Módulos QtGui
 from PyQt4.QtGui import QWidget
 from PyQt4.QtGui import QGroupBox
@@ -22,18 +24,15 @@ from PyQt4.QtGui import QVBoxLayout
 from PyQt4.QtGui import QHBoxLayout
 from PyQt4.QtGui import QCheckBox
 from PyQt4.QtGui import QComboBox
-#from PyQt4.QtGui import QLineEdit
+from PyQt4.QtGui import QMessageBox
 from PyQt4.QtGui import QSizePolicy
 from PyQt4.QtGui import QSpacerItem
-from PyQt4.QtGui import QFileDialog
 from PyQt4.QtGui import QTabWidget
-from PyQt4.QtGui import QLineEdit
 from PyQt4.QtGui import QRadioButton
 
 # Módulos QtCore
 from PyQt4.QtCore import (
     QSettings,
-    SIGNAL
     )
 
 # Módulos EDIS
@@ -130,38 +129,36 @@ class ConfiguracionEjecucion(QWidget):
     def __init__(self, parent):
         super(ConfiguracionEjecucion, self).__init__(parent)
 
-        layoutV = QVBoxLayout(self)
-        layout_radio = QVBoxLayout()
+        self.layoutV = QVBoxLayout(self)
+        self.check_terminal()
+
+        self.layoutV.addItem(QSpacerItem(0, 10, QSizePolicy.Expanding,
+            QSizePolicy.Expanding))
+
+    def check_terminal(self):
+        if sys.platform != 'linux2':
+            return
 
         grupoEjecucion = QGroupBox(
             self.trUtf8("Terminales disponibles:"))
-
+        layout_radio = QVBoxLayout()
         grillaE = QVBoxLayout(grupoEjecucion)
-
-        #Ejecución
         self.terminales_radio = []
         terminales = comprobar_terminales.comprobar()
         for terminal in terminales:
             self.terminales_radio.append(QRadioButton(terminal))
+
+        b = False
         for i in self.terminales_radio:
             layout_radio.addWidget(i)
             if i.text() == configuraciones.TERMINAL:
                 i.setChecked(True)
-
+                b = True
+        if not b:
+            QMessageBox.warning(self, self.tr("Advertencia!"), self.trUtf8(
+                "No se ha seleccionado una terminal para la ejecución!"))
         grillaE.addLayout(layout_radio)
-
-        layoutV.addWidget(grupoEjecucion)
-        layoutV.addItem(QSpacerItem(0, 10, QSizePolicy.Expanding,
-            QSizePolicy.Expanding))
-
-    def change_index(self, term):
-        self.line_terminales.setText(term)
-
-    def cargar_terminal(self):
-        path = QFileDialog.getOpenFileName(self,
-            self.trUtf8("Seleccione la terminal:"))
-        if path:
-            self.path_terminal.setText(path)
+        self.layoutV.addWidget(grupoEjecucion)
 
     def guardar(self):
         qconfig = QSettings(recursos.CONFIGURACION, QSettings.IniFormat)
