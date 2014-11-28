@@ -41,7 +41,7 @@ class MenuHerramientas(QObject):
         menu_herramientas.addAction(accionTitulo)
         # Insertar separador
         accionSeparador = crear_accion(self, "Insertar separador",
-            icono=_ICONO['separador'], slot=self.insertar_separador)
+            icono=_ICONO['separator'], slot=self.insertar_separador)
         menu_herramientas.addAction(accionSeparador)
         # Insertar include
         accionInclude = crear_accion(self, "Insertar '#include'",

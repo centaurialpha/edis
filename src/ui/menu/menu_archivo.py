@@ -80,22 +80,22 @@ class MenuArchivo(QObject):
             slot=self.ide.contenedor_principal.guardar_archivo_como)
         # Guardar todo
         self.accionGuardarTodo = crear_accion(self, "Guardar todo",
-            icono=_ICONO['guardar-todo'],
+            icono=_ICONO['save-all'],
             slot=self.ide.contenedor_principal.guardar_todo)
         # Imprimir
         self.accionImprimir = crear_accion(self, "Imprimir",
-            icono=_ICONO['imprimir'], atajo=_ATAJO['imprimir'],
+            icono=_ICONO['print'], atajo=_ATAJO['imprimir'],
             slot=self.ide.distribuidor.imprimir_documento)
         # Propiedades
         self.accion_propiedades = crear_accion(self, "Propiedades",
             slot=self.ide.distribuidor.file_property)
         # Exportar a PDF
         self.accionExportarComoPDF = crear_accion(self, "Exportar a PDF",
-            icono=_ICONO['exportar'],
+            icono=_ICONO['export'],
             slot=self.ide.distribuidor.exportar_como_pdf)
         # Cerrar
         self.accionCerrarTab = crear_accion(self, "Cerrar",
-            icono=_ICONO['cerrar'], atajo=_ATAJO['cerrar-tab'],
+            icono=_ICONO['close'], atajo=_ATAJO['cerrar-tab'],
             slot=self.ide.contenedor_principal.cerrar_tab)
         # Cerrar todo
         self.accionCerrarTodo = crear_accion(self, "Cerrar todo",
@@ -105,7 +105,7 @@ class MenuArchivo(QObject):
             "Cerrar todo excepto actual",
             slot=self.ide.contenedor_principal.cerrar_excepto_actual)
         # Salir
-        self.accionSalir = crear_accion(self, "Salir", icono=_ICONO['cerrar'],
+        self.accionSalir = crear_accion(self, "Salir", icono=_ICONO['exit'],
             slot=self.ide.close)
 
         # Agregar acciones #

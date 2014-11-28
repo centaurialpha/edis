@@ -54,10 +54,10 @@ class MenuAcercade(QObject):
         menu_acerca_de.addAction(reportarBugs)
         menu_acerca_de.addSeparator()
         acerca_ide = crear_accion(self, "Acerca de EDIS",
-            icono=_ICONO['acerca-de'], slot=self.acerca_de_ide)
+            icono=_ICONO['help'], slot=self.acerca_de_ide)
         menu_acerca_de.addAction(acerca_ide)
         acerca_qt = crear_accion(self, "Acerca de Qt",
-            icono=_ICONO['acerca-qt'], slot=self.acerca_de_qt)
+            icono=_ICONO['qt'], slot=self.acerca_de_qt)
         menu_acerca_de.addAction(acerca_qt)
         menu_acerca_de.addSeparator()
         estilo_de_codigo = menu_acerca_de.addAction(

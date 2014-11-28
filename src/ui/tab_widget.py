@@ -251,7 +251,7 @@ class BotonTab(QToolButton):
     def __init__(self):
         super(BotonTab, self).__init__()
         self.setAutoRaise(True)
-        self.setIcon(QIcon(recursos.ICONOS['tab']))
+        self.setIcon(QIcon(recursos.ICONOS['add']))
         self.setPopupMode(2)
         self.crear_menu()
 

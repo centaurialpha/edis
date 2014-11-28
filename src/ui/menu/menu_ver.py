@@ -37,7 +37,7 @@ class MenuVer(QObject):
         # Acciones #
         # Pantalla completa
         self.accionFullScreen = crear_accion(self, "Pantalla completa",
-            icono=_ICONO['pantalla-completa'], atajo=_ATAJO['fullscreen'],
+            icono=_ICONO['fullscreen'], atajo=_ATAJO['fullscreen'],
             slot=self.pantalla_completa)
         self.accionFullScreen.setCheckable(True)
         # Widget lateral
@@ -60,11 +60,11 @@ class MenuVer(QObject):
             slot=self.visibilidad_contenedor_secundario)
         # Acercar
         self.accionAcercar = crear_accion(self, "Acercar",
-            icono=_ICONO['acercar'], atajo=_ATAJO['zoom-mas'],
+            icono=_ICONO['zoom-in'], atajo=_ATAJO['zoom-mas'],
             slot=self._acercar)
         # Alejar
         self.accionAlejar = crear_accion(self, "Alejar",
-            icono=_ICONO['alejar'], atajo=_ATAJO['zoom-menos'],
+            icono=_ICONO['zoom-out'], atajo=_ATAJO['zoom-menos'],
             slot=self._alejar)
 
         # Agregar acciones al menú #

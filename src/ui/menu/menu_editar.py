@@ -56,41 +56,41 @@ class MenuEditar(QObject):
         # Acciones #
         # Deshacer
         self.accionDeshacer = crear_accion(self, "Deshacer",
-            icono=_ICONO['deshacer'], atajo=_ATAJO['deshacer'],
+            icono=_ICONO['undo'], atajo=_ATAJO['deshacer'],
             slot=self.ide.contenedor_principal.deshacer)
         # Rehacer
         self.accionRehacer = crear_accion(self, "Rehacer",
-            icono=_ICONO['rehacer'], atajo=_ATAJO['rehacer'],
+            icono=_ICONO['redo'], atajo=_ATAJO['rehacer'],
             slot=self.ide.contenedor_principal.rehacer)
         # Cortar
-        self.accionCortar = crear_accion(self, "Cortar", icono=_ICONO['cortar'],
+        self.accionCortar = crear_accion(self, "Cortar", icono=_ICONO['cut'],
             atajo=_ATAJO['cortar'], slot=self.ide.contenedor_principal.cortar)
         # Copiar
-        self.accionCopiar = crear_accion(self, "Copiar", icono=_ICONO['copiar'],
+        self.accionCopiar = crear_accion(self, "Copiar", icono=_ICONO['copy'],
             atajo=_ATAJO['copiar'], slot=self.ide.contenedor_principal.copiar)
         # Pegar
-        self.accionPegar = crear_accion(self, "Pegar", icono=_ICONO['pegar'],
+        self.accionPegar = crear_accion(self, "Pegar", icono=_ICONO['paste'],
             atajo=_ATAJO['pegar'], slot=self.ide.contenedor_principal.pegar)
         # Indentar más
         self.accionIndentar = crear_accion(self, "Indentar",
-            icono=_ICONO['indentar'], atajo=_ATAJO['indentar'],
+            icono=_ICONO['indent'], atajo=_ATAJO['indentar'],
             slot=self.ide.contenedor_principal.indentar_mas)
         # Indentar menos
         self.accionQuitarIndentacion = crear_accion(self, "Quitar indentación",
-            icono=_ICONO['quitar-indentacion'],
+            icono=_ICONO['unindent'],
             atajo=_ATAJO['quitar-indentacion'],
             slot=self.ide.contenedor_principal.indentar_menos)
         # Seleccionar todo
         self.accionSeleccionarTodo = crear_accion(self, "Seleccionar todo",
-            atajo=_ATAJO['seleccionar'],
+            atajo=_ATAJO['seleccionar'], icono=_ICONO['select-all'],
             slot=self.ide.contenedor_principal.seleccionar_todo)
         # Mover hacia arriba
         self.accionMoverArriba = crear_accion(self, "Mover hacia arriba",
-            icono=_ICONO['arriba'], atajo=_ATAJO['mover-arriba'],
+            icono=_ICONO['go-up'], atajo=_ATAJO['mover-arriba'],
             slot=self.mover_linea_hacia_arriba)
         # Mover hacia abajo
         self.accionMoverAbajo = crear_accion(self, "Mover hacia abajo",
-            icono=_ICONO['abajo'], atajo=_ATAJO['mover-abajo'],
+            icono=_ICONO['go-down'], atajo=_ATAJO['mover-abajo'],
             slot=self.mover_linea_hacia_abajo)
         # Convertir a mayúsculas
         self.accionConvertirMayusculas = crear_accion(self,
@@ -152,11 +152,11 @@ class MenuEditar(QObject):
 
         self.tool_deshacer = QToolButton()
         self.tool_deshacer.setDefaultAction(self.accionDeshacer)
-        self.tool_deshacer.setIcon(QIcon(_ICONO['deshacer']))
+        #self.tool_deshacer.setIcon(QIcon(_ICONO['undo']))
 
         self.tool_rehacer = QToolButton()
         self.tool_rehacer.setDefaultAction(self.accionRehacer)
-        self.tool_rehacer.setIcon(QIcon(_ICONO['rehacer']))
+        #self.tool_rehacer.setIcon(QIcon(_ICONO['re']))
 
         # Items de la barra de herramientas
         self.items_toolbar = {
