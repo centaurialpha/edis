@@ -75,7 +75,7 @@ class Preferencias(QDialog):
 
         self.button_general = QToolButton()
 
-        self.button_general.setIcon(QIcon(recursos.ICONOS['gtk-preferences']))
+        self.button_general.setIcon(QIcon(recursos.ICONOS['preferencias']))
         self.button_general.setText("General")
         self.button_general.setToolButtonStyle(Qt.ToolButtonTextUnderIcon)
         self.button_editor = QToolButton()

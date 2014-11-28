@@ -11,7 +11,8 @@ QWidget {
 }
 
 QMenu {
-    background: #eeeeee;
+    background: #47484b;
+    color: #bfbfbf;
     border-radius: 2px;
 }
 
@@ -22,7 +23,8 @@ QMenu::item {
 }
 
 QMenu::item:selected {
-    background: #dbdbdb;
+    background: gray;
+    border: 1px solid #9b9b9b;
 }
 
 

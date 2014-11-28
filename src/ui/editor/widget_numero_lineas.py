@@ -178,7 +178,6 @@ class NumeroDeLineaBar(QWidget):
         pintar = QPainter(self)
         fondo = QColor(recursos.NUEVO_TEMA.get('widget-num-lineas',
             recursos.TEMA_EDITOR['widget-num-linea']))
-        fondo.setAlpha(40)
         pintar.fillRect(self.rect(), QColor(fondo))
         bloque = self.editor.firstVisibleBlock()
         viewport_offset = self.editor.contentOffset()
@@ -192,24 +191,16 @@ class NumeroDeLineaBar(QWidget):
 
             if posicion.y() > fin_pagina:
                 break
-            # Errores
-            #FIXME
-            error = False
-            if (contar_linea - 1) in self.errores:
-                pintar.setPen(QColor(255, 0, 0))
-                fuente = pintar.font()
-                fuente.setItalic(True)
-                fuente.setUnderline(True)
-                pintar.setFont(fuente)
-                error = True
-            else:
-                pintar.setPen(QColor(recursos.NUEVO_TEMA.get('numero-linea',
-                    recursos.TEMA_EDITOR['numero-linea'])))
+
+            pintar.setPen(QColor(recursos.NUEVO_TEMA.get('numero-linea',
+                  recursos.TEMA_EDITOR['numero-linea'])))
 
             if bloque == bloque_actual:
                 self.negrita = True
+                pintar.setPen(QColor('#808080'))
                 fuente = pintar.font()
                 fuente.setBold(True)
+
                 pintar.setFont(fuente)
                 pintar.fillRect(
                     0, round(posicion.y()) + font_metrics.descent(),
@@ -229,12 +220,6 @@ class NumeroDeLineaBar(QWidget):
                 fuente = pintar.font()
                 fuente.setBold(False)
                 pintar.setFont(fuente)
-            if error:
-                f = pintar.font()
-                f.setItalic(False)
-                f.setUnderline(False)
-                pintar.setFont(f)
-
             bloque = bloque.next()
 
         self.linea_superior = contar_linea
@@ -242,7 +227,7 @@ class NumeroDeLineaBar(QWidget):
         # Código desplegable
         area = self.width() - 17
         color = QColor(Qt.gray)
-        brush = QBrush(color, Qt.Dense6Pattern)
+        brush = QBrush(color, Qt.NoBrush)
         pintar.fillRect(area, 0, self.foldArea, self.height(), brush)
         if self.foldArea != self.rightArrowIcon.width():
             poligono = QPolygonF()

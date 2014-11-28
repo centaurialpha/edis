@@ -198,7 +198,6 @@ class IDE(QMainWindow):
             else:
                 item = items.get(i, None)
                 if item is not None:
-                    #self.toolbar.addAction(item)
                     self.toolbar.addWidget(item)
 
     def cargar_status_tips(self, accion, texto):
@@ -208,8 +207,7 @@ class IDE(QMainWindow):
         self.barra_de_estado.nombre_archivo.cambiar_texto(archivo)
 
     def cambiar_titulo_de_ventana(self, titulo):
-        """ Cambia el título de la ventana cuando la pestaña cambia de nombre,
-        esta emite la señal de cambio. """
+        """ Cambia el título cuando la pestaña cambia de nombre """
 
         if titulo == ui.__nombre__:
             titulo = ""
@@ -312,4 +310,4 @@ class ToolBar(QToolBar):
         QToolBar.__init__(self, parent)
         self.setMovable(False)
         self.setToolButtonStyle(Qt.ToolButtonIconOnly)
-        self.setIconSize(QSize(40, 40))
+        self.setIconSize(QSize(30, 30))

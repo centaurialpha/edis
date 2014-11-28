@@ -76,7 +76,7 @@ class MenuArchivo(QObject):
             slot=self.ide.contenedor_principal.guardar_archivo)
         # Guardar como
         self.accionGuardarComo = crear_accion(self, "Guardar como",
-            icono=_ICONO['guardar-como'],
+            icono=_ICONO['save-as'],
             slot=self.ide.contenedor_principal.guardar_archivo_como)
         # Guardar todo
         self.accionGuardarTodo = crear_accion(self, "Guardar todo",
@@ -152,8 +152,8 @@ class MenuArchivo(QObject):
                                         text=self.tr("Guardar"))
         self.tool_guardar.setSizePolicy(QSizePolicy.MinimumExpanding,
                                         QSizePolicy.Maximum)
-        self.tool_guardar.setPopupMode(QToolButton.InstantPopup)
-        self.tool_guardar.setMenu(self.tool_menu_guardar())
+        #self.tool_guardar.setPopupMode(QToolButton.InstantPopup)
+        #self.tool_guardar.setMenu(self.tool_menu_guardar())
 
         # Toolbar #
         self.items_toolbar = {
