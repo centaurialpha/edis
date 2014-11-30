@@ -27,7 +27,7 @@ from src.ui import tab_widget
 from src.ui.editor import (
     editor,
     highlighter_,
-    acciones_
+    #acciones_
     )
 
 __instanciaContenedorMain = None
@@ -58,8 +58,8 @@ class __ContenedorMain(QSplitter):
             self.tab_actual_cambiado)
         self.connect(self.tab, SIGNAL("saveActualEditor()"),
             self.guardar_archivo)
-        self.connect(self.tab, SIGNAL("currentChanged(int)"),
-            self.tab_actual_cambiado)
+        #self.connect(self.tab, SIGNAL("currentChanged(int)"),
+            #self.tab_actual_cambiado)
         self.tab.boton.accionCrear.triggered.connect(
             lambda: self.agregar_editor(''))
         self.connect(self.tab,
@@ -103,22 +103,24 @@ class __ContenedorMain(QSplitter):
         indice = self.agregar_tab(editorWidget, icono, nombre_tab)
         self.tab.setTabToolTip(indice,
             QDir.toNativeSeparators(nombre_archivo))
-        self.connect(editorWidget, SIGNAL("modificationChanged(bool)"),
-            self.editor_es_modificado)
-        self.connect(editorWidget, SIGNAL("archivoGuardado(QPlainTextEdit)"),
+        self.connect(editorWidget, SIGNAL("archivo_guardado(PyQt_PyObject)"),
             self.editor_es_guardado)
         self.connect(editorWidget, SIGNAL("openDropFile(QString)"),
             self.abrir_archivo)
         self.emit(SIGNAL("fileOpened(QString)"), nombre_archivo)
-        self.connect(editorWidget, SIGNAL("cursorPositionChange(int, int)"),
+        self.connect(editorWidget, SIGNAL("cursorPositionChanged(int, int)"),
             self._posicion_del_cursor)
+        self.connect(editorWidget, SIGNAL("archivo_modificado(bool)"),
+            self.editor_es_modificado)
+        self.connect(editorWidget, SIGNAL("accion_undo(PyQt_PyObject)"),
+            self.editor_es_guardado)
 
         return editorWidget
 
     def _editor_keyPressEvent(self, evento):
         self.emit(SIGNAL("editorKeyPressEvent(QEvent)"), evento)
 
-    def editor_es_modificado(self, v=True):
+    def editor_es_modificado(self, v):
         self.tab.tab_es_modificado(v)
         self.parent.barra_de_estado.archivo_modificado.modificado(v)
 
@@ -229,7 +231,7 @@ class __ContenedorMain(QSplitter):
             w.setFocus()
 
     def _posicion_del_cursor(self, linea, columna):
-        self.emit(SIGNAL("cursorPositionChange(int, int)"), linea, columna)
+        self.emit(SIGNAL("cursorPositionChanged(int, int)"), linea, columna)
 
     def cerrar_tab(self):
         """ Se llama al método removeTab de QTabWidget. """
@@ -303,11 +305,12 @@ class __ContenedorMain(QSplitter):
                 contenido = manejador_de_archivo.leer_contenido_de_archivo(
                     nombre)
                 editorW = self.agregar_editor(nombre)
-                editorW.setPlainText(contenido.decode('utf-8'))
+                #editorW.setPlainText(contenido.decode('utf-8'))
+                editorW.texto = contenido
                 editorW.iD = nombre
 
                 # Reemplaza tabulaciones por espacios en blanco
-                editorW.tabulaciones_por_espacios_en_blanco()
+                #editorW.tabulaciones_por_espacios_en_blanco()
                 editorW.nuevo_archivo = False
             else:
                 self.mover_abierto(nombre)
@@ -339,6 +342,7 @@ class __ContenedorMain(QSplitter):
                 return False
 
         try:
+            #FIXME: Arreglar todo esto
             editorW.guardado_actualmente = True
 
             if editorW.nuevo_archivo or \
@@ -348,15 +352,15 @@ class __ContenedorMain(QSplitter):
             nombre = editorW._id
             #carpeta_de_archivo = manejador_de_archivo.devolver_carpeta(nombre)
             self.emit(SIGNAL("beforeFileSaved(QString)"), nombre)
-            acciones_.quitar_espacios_en_blanco(editorW)
-            contenido = editorW.devolver_texto()
+            #acciones_.quitar_espacios_en_blanco(editorW)
+            contenido = editorW.texto
             manejador_de_archivo.escribir_archivo(nombre, contenido)
             editorW.iD = nombre
 
             self.emit(SIGNAL("archivoGuardado(QString)"), self.tr(
                 "Guardado: %1").arg(nombre))
 
-            editorW._guardado()
+            editorW.guardado()
 
             return editorW._id
         except:
@@ -378,14 +382,14 @@ class __ContenedorMain(QSplitter):
             if not nombre:
                 return False
 
-            acciones_.quitar_espacios_en_blanco(editorW)
+            #acciones_.quitar_espacios_en_blanco(editorW)
             nombre = manejador_de_archivo.escribir_archivo(
-                nombre, editorW.devolver_texto())
+                nombre, editorW.texto)
             ext = manejador_de_archivo._nombreBase(nombre)[-1]
             if ext == 'c':
                 icono = recursos.ICONOS['c']
             else:
-                icono = recursos.ICONOS['cabecera']
+                icono = recursos.ICONOS['h']
             self.tab.setTabText(self.tab.currentIndex(),
                 manejador_de_archivo._nombreBase(nombre))
             self.tab.setTabIcon(self.tab.currentIndex(),
@@ -397,12 +401,11 @@ class __ContenedorMain(QSplitter):
                 self.tr("Guardado: %1").arg(nombre))
             self.emit(SIGNAL("guardadoList(QString)"),
                 editorW._id)
-            editorW._guardado()
+            editorW.guardado()
 
             return editorW._id
 
         except:
-            #pass
             editorW.guardado_actualmente = False
             self.tab.setTabText(self.tab.currentIndex(),
                 self.trUtf8("Nuevo archivo"))

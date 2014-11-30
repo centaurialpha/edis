@@ -163,7 +163,7 @@ class IDE(QMainWindow):
         self.connect(self.contenedor_principal, SIGNAL(
             "actualizarSimbolos(QString)"), self.lateral.actualizar_simbolos)
         self.connect(self.contenedor_principal, SIGNAL(
-            "cursorPositionChange(int, int)"), self._linea_columna)
+            "cursorPositionChanged(int, int)"), self._linea_columna)
         #FIXME: quitar función lambda
         self.connect(self.lateral.file_navigator, SIGNAL("cambioPes(int)"),
             lambda i: self.contenedor_principal.tab.setCurrentIndex(i))
@@ -210,9 +210,8 @@ class IDE(QMainWindow):
 
         editor = self.contenedor_principal.devolver_editor_actual()
         if editor is not None:
-            linea = editor.textCursor().blockNumber() + 1
-            columna = editor.textCursor().columnNumber()
-            total_lineas = editor.devolver_cantidad_de_lineas()
+            linea, columna = editor.devolver_posicion_del_cursor()
+            total_lineas = editor.lineas
             self.barra_de_estado.estado_cursor.actualizar_posicion_cursor(
                 linea, total_lineas, columna)
 
