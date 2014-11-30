@@ -8,6 +8,7 @@
 
 from PyQt4.QtGui import (
     QFontMetrics,
+    QColor,
     )
 
 from PyQt4.QtCore import (
@@ -26,6 +27,8 @@ class Base(QsciScintilla):
 
     def __init__(self):
         super(Base, self).__init__()
+
+        # Configuración de Qscintilla
         self.setCaretLineVisible(True)
         self.setIndentationsUseTabs(False)
         self.setAutoIndent(True)
@@ -118,3 +121,15 @@ class Base(QsciScintilla):
                 self.zoom_out()
             e.ignore()
         super(Base, self).wheelEvent(e)
+
+    def match_braces(self, match=None):
+        if match:
+            self.setBraceMatching(match)
+
+    def match_braces_color(self, fondo, fore):
+        self.setMatchedBraceBackgroundColor(QColor(fondo))
+        self.setMatchedBraceForegroundColor(QColor(fore))
+
+    def unmatch_braces_color(self, fondo, fore):
+        self.setUnmatchedBraceBackgroundColor(QColor(fondo))
+        self.setUnmatchedBraceForegroundColor(QColor(fore))

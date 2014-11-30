@@ -83,49 +83,55 @@ class PopupBusqueda(QWidget):
         e = self.tab.currentWidget()
         e.setFocus()
 
-    def buscar(self):
+    def buscar(self, palabra):
         e = self.tab.currentWidget()
-        e.buscar_match(unicode(self.line.text()), 0)
+        e.buscar(palabra)
+
+        #e.buscar_match(unicode(self.line.text()), 0)
 
     def buscar_anterior(self):
         e = self.tab.currentWidget()
-        e.buscar_match(unicode(self.line.text()), 1, True)
-        if self.total > 0 and self.indice > 1:
-            self.indice -= 1
-        elif self.total > 0:
-            self.indice = self.total
-            e.moveCursor(QTextCursor.End)
-            e.buscar_match(unicode(self.line.text()), 1, True)
-        self.line.contador_.actualizar(self.indice, self.total)
+        e.buscar()
+        #e = self.tab.currentWidget()
+        #e.buscar_match(unicode(self.line.text()), 1, True)
+        #if self.total > 0 and self.indice > 1:
+            #self.indice -= 1
+        #elif self.total > 0:
+            #self.indice = self.total
+            #e.moveCursor(QTextCursor.End)
+            #e.buscar_match(unicode(self.line.text()), 1, True)
+        #self.line.contador_.actualizar(self.indice, self.total)
 
     def buscar_siguiente(self):
         e = self.tab.currentWidget()
-        e.buscar_match(unicode(self.line.text()), 0, True)
-        if self.total > 0 and self.indice < self.total:
-            self.indice += 1
-        elif self.total > 0:
-            self.indice = 1
-        self.line.contador_.actualizar(self.indice, self.total)
+        e.buscar()
+        #e = self.tab.currentWidget()
+        #e.buscar_match(unicode(self.line.text()), 0, True)
+        #if self.total > 0 and self.indice < self.total:
+            #self.indice += 1
+        #elif self.total > 0:
+            #self.indice = 1
+        #self.line.contador_.actualizar(self.indice, self.total)
 
     def buscar_palabras(self, weditor):
         if type(weditor) is not Editor:
             return False
-        codigo = weditor.devolver_texto()
+        codigo = weditor.texto
         texto_buscado = unicode(self.line.text())
         busqueda = len(texto_buscado) > 0
         self.total = codigo.count(texto_buscado)
         if busqueda and self.total > 0:
-            cursor = weditor.textCursor()
-            cursor.movePosition(QTextCursor.WordLeft)
-            cursor.movePosition(QTextCursor.Start, QTextCursor.KeepAnchor)
-            codigo = unicode(cursor.selectedText())
+            #cursor = weditor.textCursor()
+            #cursor.movePosition(QTextCursor.WordLeft)
+            #cursor.movePosition(QTextCursor.Start, QTextCursor.KeepAnchor)
+            #codigo = unicode(cursor.selectedText())
             self.indice = codigo.count(texto_buscado) + 1
         else:
             self.indice = 0
             self.total = 0
         self.line.contador_.actualizar(self.indice, self.total, busqueda)
         if busqueda:
-            self.buscar()
+            self.buscar(texto_buscado)
 
     def keyPressEvent(self, evento):
         """ Evento de teclas """
