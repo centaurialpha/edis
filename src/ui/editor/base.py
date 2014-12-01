@@ -38,6 +38,7 @@ class Base(QsciScintilla):
 
         self.SendScintilla(QsciScintilla.SCI_SETCARETSTYLE,
                             QsciScintilla.CARETSTYLE_BLOCK)
+        self.SendScintilla(QsciScintilla.SCI_SETHSCROLLBAR, 0)
         # Folding
         self.setFolding(QsciScintilla.BoxedFoldStyle)
 

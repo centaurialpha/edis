@@ -112,15 +112,3 @@ class Editor(Base):
             self.nuevo_archivo = False
             self.texto_modificado = False
             self.setModified(self.texto_modificado)
-
-    def buscar(self, buscada, reg=False, cs=False, wo=False, wrap=False,
-                forward=True, linea=-1, indice=-1):
-        if self.hasSelectedText():
-            linea, indice, lto, ito = self.getSelection()
-            indice += 1
-        elif linea < 0 or indice < 0:
-            linea, indice = self.devolver_posicion_del_cursor()
-        f = self.findFirst(buscada, reg, cs, wo, wrap, forward, linea, indice)
-        if f:
-            #FIXME: incompleto
-            pass
