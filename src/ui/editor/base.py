@@ -1,4 +1,3 @@
-#!/usr/bin/env python2
 # -*- coding: utf-8 -*-
 # EDIS - Entorno de Desarrollo Integrado Simple para C/C++
 #
@@ -16,11 +15,11 @@ from PyQt4.QtCore import (
     )
 
 from PyQt4.Qsci import (
-    QsciScintilla,
-    QsciLexerCPP
+    QsciScintilla
     )
 
-from src.helpers import configuraciones
+#from src.helpers import configuraciones
+from src.ui.editor import lexer
 
 
 class Base(QsciScintilla):
@@ -37,9 +36,8 @@ class Base(QsciScintilla):
         self.__fuente = None
         self._id = ""
 
-        #FIXME: lexer
-        self.lexer = QsciLexerCPP()
-        self.setLexer(self.lexer)
+        # Lexer C/C++
+        self.__lexer = None
 
         self.cargar_signals()
 
@@ -121,6 +119,11 @@ class Base(QsciScintilla):
     def unmatch_braces_color(self, fondo, fore):
         self.setUnmatchedBraceBackgroundColor(QColor(fondo))
         self.setUnmatchedBraceForegroundColor(QColor(fore))
+
+    def set_lexer(self, ext):
+        if ext == 'cpp':
+            self.__lexer = lexer.LexerC(self)
+            self.setLexer(self.__lexer)
 
     def wheelEvent(self, e):
         if e.modifiers() == Qt.ControlModifier:

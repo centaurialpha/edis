@@ -1,4 +1,3 @@
-#!/usr/bin/env python2
 # -*- coding: utf-8 -*-
 # EDIS - Entorno de Desarrollo Integrado Simple para C/C++
 #
@@ -17,11 +16,23 @@ from PyQt4.QtCore import (
 
 from src import recursos
 from src.ui.editor.base import Base
-from src.helpers import configuraciones
+from src.helpers import (
+    configuraciones,
+    logger
+    )
+
+# Logger
+log = logger.edisLogger('editor')
 
 
 def crear_editor(nombre_archivo=''):
-    editor = Editor(nombre_archivo)
+    ext = nombre_archivo.split('.')[-1]
+    if not ext in recursos.EXTENSIONES:
+        editor = Editor(nombre_archivo, ext)
+        log.warning('Extensión no soportada')
+    else:
+        editor = Editor(nombre_archivo)
+
     return editor
 
 
@@ -32,12 +43,14 @@ class Editor(Base):
     _guardado = pyqtSignal(['PyQt_PyObject'], name='archivo_guardado')
     _undo = pyqtSignal(['PyQt_PyObject'], name='accion_undo')
 
-    def __init__(self, nombre_archivo):
+    def __init__(self, nombre_archivo, ext='cpp'):
         super(Editor, self).__init__()
         self.texto_modificado = False
         self.nuevo_archivo = True
         self.guardado_actualmente = False
 
+        # Lexer
+        self.set_lexer(ext)
         # Fuente
         self.cargar_fuente(QFont(configuraciones.FUENTE,
                             configuraciones.TAM_FUENTE))
