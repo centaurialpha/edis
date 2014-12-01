@@ -112,3 +112,6 @@ class Editor(Base):
             self.nuevo_archivo = False
             self.texto_modificado = False
             self.setModified(self.texto_modificado)
+
+    def busqueda(self, palabra):
+        print(palabra)

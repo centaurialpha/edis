@@ -83,9 +83,6 @@ class PopupBusqueda(QWidget):
         e = self.tab.currentWidget()
         e.setFocus()
 
-    def buscar(self, palabra):
-        pass
-
         #e.buscar_match(unicode(self.line.text()), 0)
 
     def buscar_anterior(self):
@@ -110,26 +107,39 @@ class PopupBusqueda(QWidget):
             #self.indice = 1
         #self.line.contador_.actualizar(self.indice, self.total)
 
-    def buscar_palabras(self, weditor):
-        if type(weditor) is not Editor:
-            return False
-        codigo = weditor.texto
-        texto_buscado = unicode(self.line.text())
+    #def buscar_palabras(self, weditor):
+        #if type(weditor) is not Editor:
+            #return False
+        #codigo = weditor.texto
+        #texto_buscado = unicode(self.line.text())
 
-        busqueda = len(texto_buscado) > 0
-        self.total = codigo.count(texto_buscado)
+        #busqueda = len(texto_buscado) > 0
+        #self.total = codigo.count(texto_buscado)
+        #if busqueda and self.total > 0:
+            ##cursor = weditor.textCursor()
+            ##cursor.movePosition(QTextCursor.WordLeft)
+            ##cursor.movePosition(QTextCursor.Start, QTextCursor.KeepAnchor)
+            ##codigo = unicode(cursor.selectedText())
+            #self.indice = codigo.count(texto_buscado)
+        #else:
+            #self.indice = 0
+            #self.total = 0
+        #self.line.contador_.actualizar(self.indice, self.total, busqueda)
+        #if busqueda:
+            #pass
+
+    def buscar(self, editor):
+        codigo = editor.texto
+        palabra_buscada = self.line.text()
+        busqueda = len(palabra_buscada) > 0
+        self.total = codigo.count(palabra_buscada)
         if busqueda and self.total > 0:
-            #cursor = weditor.textCursor()
-            #cursor.movePosition(QTextCursor.WordLeft)
-            #cursor.movePosition(QTextCursor.Start, QTextCursor.KeepAnchor)
-            #codigo = unicode(cursor.selectedText())
-            self.indice = codigo.count(texto_buscado)
+            self.indice = codigo.count(palabra_buscada)
         else:
             self.indice = 0
             self.total = 0
         self.line.contador_.actualizar(self.indice, self.total, busqueda)
-        if busqueda:
-            pass
+        editor.busqueda(palabra_buscada)
 
     def keyPressEvent(self, evento):
         """ Evento de teclas """
@@ -156,7 +166,8 @@ class Line(QLineEdit):
         super(Line, self).keyPressEvent(evento)
         if int(evento.key()) in range(32, 162) or \
         evento.key() == Qt.Key_Backspace:
-            self.parent.buscar_palabras(editor)
+            self.parent.buscar(editor)
+            #self.parent.buscar_palabras(editor)
 
 
 class Contador(QObject):
