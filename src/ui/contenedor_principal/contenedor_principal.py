@@ -53,7 +53,7 @@ class __ContenedorMain(QSplitter):
         self.addWidget(self.tab)
         self.setSizes([1, 1])
         self.setFixedSize(0, 450)
-        highlighter_.re_estilo(recursos.NUEVO_TEMA)
+        #highlighter_.re_estilo(recursos.NUEVO_TEMA)
         self.connect(self.tab, SIGNAL("currentChanged(int)"),
             self.tab_actual_cambiado)
         self.connect(self.tab, SIGNAL("saveActualEditor()"),

@@ -37,9 +37,6 @@ class Base(QsciScintilla):
         self.__fuente = None
         self._id = ""
 
-        # Márgen
-        #FIXME: márgen
-        self.__margen_de_linea(configuraciones.MARGEN)
         #FIXME: lexer
         self.lexer = QsciLexerCPP()
         self.setLexer(self.lexer)
@@ -86,10 +83,10 @@ class Base(QsciScintilla):
 
         return self.isModified()
 
-    def __margen_de_linea(self, margen=None):
-        #FIXME: color y posición
+    def margen_de_linea(self, margen, color):
         self.setEdgeMode(QsciScintilla.EdgeLine)
         self.setEdgeColumn(margen)
+        self.setEdgeColor(QColor(color))
 
     def zoom_in(self):
         self.zoomIn()
@@ -113,15 +110,6 @@ class Base(QsciScintilla):
             ancho = fmetrics.width(lineas)
             self.setMarginWidth(0, ancho)
 
-    def wheelEvent(self, e):
-        if e.modifiers() == Qt.ControlModifier:
-            if e.delta() > 0:
-                self.zoom_in()
-            elif e.delta() < 0:
-                self.zoom_out()
-            e.ignore()
-        super(Base, self).wheelEvent(e)
-
     def match_braces(self, match=None):
         if match:
             self.setBraceMatching(match)
@@ -133,3 +121,12 @@ class Base(QsciScintilla):
     def unmatch_braces_color(self, fondo, fore):
         self.setUnmatchedBraceBackgroundColor(QColor(fondo))
         self.setUnmatchedBraceForegroundColor(QColor(fore))
+
+    def wheelEvent(self, e):
+        if e.modifiers() == Qt.ControlModifier:
+            if e.delta() > 0:
+                self.zoom_in()
+            elif e.delta() < 0:
+                self.zoom_out()
+            e.ignore()
+        super(Base, self).wheelEvent(e)

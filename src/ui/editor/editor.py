@@ -15,12 +15,13 @@ from PyQt4.QtCore import (
     SIGNAL
     )
 
+from src import recursos
 from src.ui.editor.base import Base
 from src.helpers import configuraciones
 
 
 def crear_editor(nombre_archivo=''):
-    editor  = Editor(nombre_archivo)
+    editor = Editor(nombre_archivo)
     return editor
 
 
@@ -37,8 +38,20 @@ class Editor(Base):
         self.nuevo_archivo = True
         self.guardado_actualmente = False
 
+        # Fuente
         self.cargar_fuente(QFont(configuraciones.FUENTE,
                             configuraciones.TAM_FUENTE))
+
+        # Márgen
+        if configuraciones.MARGEN:
+            self.margen_de_linea(configuraciones.MARGEN_COLUMNA,
+                                    recursos.TEMA['margen'])
+        # Brace matching
+        self.match_braces(Base.SloppyBraceMatch)
+        self.match_braces_color(recursos.TEMA['brace-background'],
+                                recursos.TEMA['brace-foreground'])
+        self.unmatch_braces_color(recursos.TEMA['brace-unbackground'],
+                                    recursos.TEMA['brace-unforeground'])
 
         # Conexión de señales
         self.connect(self, SIGNAL("modificationChanged(bool)"),
@@ -78,3 +91,4 @@ class Editor(Base):
         f = self.findFirst(buscada, reg, cs, wo, wrap, forward, linea, indice)
         if f:
             #FIXME: incompleto
+            pass
