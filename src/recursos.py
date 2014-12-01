@@ -47,36 +47,14 @@ for icono in os.listdir(PATH_ICONOS):
     ICONOS[icono.split('.')[0]] = os.path.join(PATH_ICONOS, icono)
 
 
-# Estilos de color - Editor
-TEMA_EDITOR = {
-    "texto-editor": "000000",
-    "fondo-editor": "#f6f6f6",
-    "fondo-seleccion-editor": "#111111",
-    "seleccion-editor": "#5acd14",
-    "salida-exitosa": "#5acd14",
-    "salida-error": "red",
-    "fondo-input": "#1e1e1e",
-    "linea-actual": "red",
-    "widget-num-linea": "#cecece",
-    "fondo-margen": "#232323",
-    "opacidad": 15,
-    "numero-linea": "#acacac",
-    "num-seleccionado": "#bfbfbf",
-    "margen-linea": "lightblue",
-    "palabra": "darkblue",
-    "operador": "black",
-    "types": "darkblue",
-    "brace": "black",
-    "struct": "gray",
-    "cadena": "red",
-    "caracter": "red",
-    "include": "#228b22",
-    "comentario": "gray",
-    "numero": "#F8A032",
-    "pcoma": "black"
+# Tema editor
+TEMA = {
+    'brace-foreground': 'red',
+    'brace-background': '#b4eeb4',
+    'brace-unforeground': 'white',
+    'brace-unbackground': 'red',
+    'margen': 'lightblue'
     }
-
-NUEVO_TEMA = {}
 
 # Atajos de teclas
 ATAJOS = {

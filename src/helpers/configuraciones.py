@@ -20,8 +20,8 @@ from src import recursos
 ###############################################################################
 #                        MÁRGEN                                               #
 ###############################################################################
-MARGEN = 80
-MOSTRAR_MARGEN = True
+MARGEN = True
+MARGEN_COLUMNA = 80
 OPACIDAD_MARGEN = 0
 ###############################################################################
 #                   SISTEMA OPERATIVO                                         #
@@ -118,7 +118,7 @@ def cargar_configuraciones():
     qsettings = QSettings(recursos.CONFIGURACION, QSettings.IniFormat)
 
     global MARGEN
-    global MOSTRAR_MARGEN
+    global MARGEN_COLUMNA
     global OPACIDAD_MARGEN
     global FUENTE
     global TAM_FUENTE
@@ -140,9 +140,9 @@ def cargar_configuraciones():
     global BARRA_HERRAMIENTAS_ITEMS
     global TERMINAL
     #global ULTIMA_SESION
-    MARGEN = qsettings.value('configuraciones/editor/margenLinea', 80,
+    MARGEN_COLUMNA = qsettings.value('configuraciones/editor/margenLinea', 80,
                              type=int)
-    MOSTRAR_MARGEN = qsettings.value(
+    MARGEN = qsettings.value(
         'configuraciones/editor/mostrarMargen', True, type=bool)
     OPACIDAD_MARGEN = int(qsettings.value(
         'configuraciones/editor/opacidadMargen', 0, type=int))

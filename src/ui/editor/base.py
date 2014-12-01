@@ -1,4 +1,3 @@
-#!/usr/bin/env python2
 # -*- coding: utf-8 -*-
 # EDIS - Entorno de Desarrollo Integrado Simple para C/C++
 #
@@ -8,6 +7,7 @@
 
 from PyQt4.QtGui import (
     QFontMetrics,
+    QColor,
     )
 
 from PyQt4.QtCore import (
@@ -15,17 +15,19 @@ from PyQt4.QtCore import (
     )
 
 from PyQt4.Qsci import (
-    QsciScintilla,
-    QsciLexerCPP
+    QsciScintilla
     )
 
-from src.helpers import configuraciones
+#from src.helpers import configuraciones
+from src.ui.editor import lexer
 
 
 class Base(QsciScintilla):
 
     def __init__(self):
         super(Base, self).__init__()
+
+        # Configuración de Qscintilla
         self.setCaretLineVisible(True)
         self.setIndentationsUseTabs(False)
         self.setAutoIndent(True)
@@ -34,12 +36,8 @@ class Base(QsciScintilla):
         self.__fuente = None
         self._id = ""
 
-        # Márgen
-        #FIXME: márgen
-        self.__margen_de_linea(configuraciones.MARGEN)
-        #FIXME: lexer
-        self.lexer = QsciLexerCPP()
-        self.setLexer(self.lexer)
+        # Lexer C/C++
+        self.__lexer = None
 
         self.cargar_signals()
 
@@ -83,10 +81,10 @@ class Base(QsciScintilla):
 
         return self.isModified()
 
-    def __margen_de_linea(self, margen=None):
-        #FIXME: color y posición
+    def margen_de_linea(self, margen, color):
         self.setEdgeMode(QsciScintilla.EdgeLine)
         self.setEdgeColumn(margen)
+        self.setEdgeColor(QColor(color))
 
     def zoom_in(self):
         self.zoomIn()
@@ -109,6 +107,23 @@ class Base(QsciScintilla):
         if len(lineas) != 1:
             ancho = fmetrics.width(lineas)
             self.setMarginWidth(0, ancho)
+
+    def match_braces(self, match=None):
+        if match:
+            self.setBraceMatching(match)
+
+    def match_braces_color(self, fondo, fore):
+        self.setMatchedBraceBackgroundColor(QColor(fondo))
+        self.setMatchedBraceForegroundColor(QColor(fore))
+
+    def unmatch_braces_color(self, fondo, fore):
+        self.setUnmatchedBraceBackgroundColor(QColor(fondo))
+        self.setUnmatchedBraceForegroundColor(QColor(fore))
+
+    def set_lexer(self, ext):
+        if ext == 'cpp':
+            self.__lexer = lexer.LexerC(self)
+            self.setLexer(self.__lexer)
 
     def wheelEvent(self, e):
         if e.modifiers() == Qt.ControlModifier:
