@@ -6,7 +6,11 @@
 # License: GPLv3 (see http://www.gnu.org/licenses/gpl.html)
 
 from PyQt4.Qsci import QsciLexerCPP
-from PyQt4.QtGui import *
+from PyQt4.QtGui import (
+    QFont,
+    )
+
+from src.helpers import configuraciones
 
 
 class LexerC(QsciLexerCPP):
@@ -16,20 +20,15 @@ class LexerC(QsciLexerCPP):
         self.setStylePreprocessor(True)
         self.setHighlightHashQuotedStrings(True)
         self.lexer = Lexer()
-        #FIXME: fuente
+        self.setFont(self.lexer.fuente)
         #FIXME: tema
 
 
 class Lexer:
 
-    def __init__(self, lenguaje='cpp'):
-        self.__lenguaje = lenguaje
-
     @property
-    def lenguaje(self):
-        return self.__lenguaje
-
-    @lenguaje.setter
-    def lenguaje(self, leng):
-        if leng != 'cpp':
-            self.__lenguaje = None
+    def fuente(self):
+        fuente = QFont()
+        fuente.setFamily(configuraciones.FUENTE)
+        fuente.setPointSize(configuraciones.TAM_FUENTE)
+        return fuente

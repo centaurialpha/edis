@@ -34,8 +34,8 @@ if SISTEMA_OPERATIVO == 'win32':
     WINDOWS = True
     LINUX = False
 else:
-    FUENTE = 'Monospace'
-    TAM_FUENTE = 9
+    FUENTE = 'Terminus'
+    TAM_FUENTE = 13
     LINUX = True
     WINDOWS = False
 
@@ -51,7 +51,7 @@ FUENTE_MIN_TAM = 6
 INDENTACION = 4
 CHECK_INDENTACION = True
 CHECK_AUTOINDENTACION = True
-GUIA_INDENTACION = True
+GUIA_INDENTACION = False
 ###############################################################################
 # TABS Y ESPACIOS
 ###############################################################################
@@ -163,7 +163,7 @@ def cargar_configuraciones():
     CHECK_AUTOINDENTACION = qsettings.value('configuraciones/editor/autoInd',
                                             True, type=bool)
     MOSTRAR_TABS = qsettings.value(
-        'configuraciones/editor/tabs', True, type=bool)
+        'configuraciones/editor/tabs', False, type=bool)
     MODO_ENVOLVER = qsettings.value('configuraciones/editor/envolver',
                                     True, type=bool)
     SIDEBAR = qsettings.value('configuraciones/editor/sidebar', True,

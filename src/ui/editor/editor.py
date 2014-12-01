@@ -7,6 +7,7 @@
 
 from PyQt4.QtGui import (
     QFont,
+    QColor
     )
 
 from PyQt4.QtCore import (
@@ -32,11 +33,13 @@ def crear_editor(nombre_archivo=''):
         log.warning('Extensión no soportada')
     else:
         editor = Editor(nombre_archivo)
-
     return editor
 
 
 class Editor(Base):
+
+    # Estilo
+    _tema = recursos.TEMA
 
     # Señales
     _modificado = pyqtSignal(bool, name='archivo_modificado')
@@ -54,17 +57,33 @@ class Editor(Base):
         # Fuente
         self.cargar_fuente(QFont(configuraciones.FUENTE,
                             configuraciones.TAM_FUENTE))
+        self.setMarginsBackgroundColor(QColor(self._tema['sidebar-fondo']))
+        self.setMarginsForegroundColor(QColor(self._tema['sidebar-fore']))
+
+        # Línea actual, cursor
+        self.caret_line(self._tema['caret-background'],
+                        self._tema['caret-line'], self._tema['caret-opacidad'])
 
         # Márgen
         if configuraciones.MARGEN:
             self.margen_de_linea(configuraciones.MARGEN_COLUMNA,
-                                    recursos.TEMA['margen'])
+                                self._tema['margen'])
         # Brace matching
         self.match_braces(Base.SloppyBraceMatch)
-        self.match_braces_color(recursos.TEMA['brace-background'],
-                                recursos.TEMA['brace-foreground'])
-        self.unmatch_braces_color(recursos.TEMA['brace-unbackground'],
-                                    recursos.TEMA['brace-unforeground'])
+        self.match_braces_color(self._tema['brace-background'],
+                                self._tema['brace-foreground'])
+        self.unmatch_braces_color(self._tema['brace-unbackground'],
+                                    self._tema['brace-unforeground'])
+
+        # Extras
+        if configuraciones.GUIA_INDENTACION:
+            self.setIndentationGuides(True)
+            self.setIndentationGuidesBackgroundColor(QColor(
+                                                    self._tema['guia-fondo']))
+            self.setIndentationGuidesForegroundColor(QColor(
+                                                    self._tema['guia-fore']))
+        if configuraciones.MOSTRAR_TABS:
+            self.setWhitespaceVisibility(self.WsVisible)
 
         # Conexión de señales
         self.connect(self, SIGNAL("modificationChanged(bool)"),
