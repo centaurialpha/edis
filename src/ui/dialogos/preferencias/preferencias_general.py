@@ -70,15 +70,10 @@ class ConfiguracionGeneral(QWidget):
             self.trUtf8("Reestablecer configuraciones de EDIS:"))
 
         # Al iniciar EDIS
-        # Check página de inicio
         grillaAlInicio = QGridLayout(grupoAlInicio)
-        self.checkPaginaInicio = QCheckBox(
-            self.trUtf8("Mostrar página de inicio"))
         # Reabrir archivos de la última sesión
         self.checkUltimaSesion = QCheckBox(
             self.trUtf8("Cargar archivos desde la última sesión"))
-        grillaAlInicio.addWidget(self.checkPaginaInicio,
-            0, 0, alignment=Qt.AlignLeft)
         grillaAlInicio.addWidget(self.checkUltimaSesion,
             0, 1, alignment=Qt.AlignLeft)
 
@@ -111,7 +106,6 @@ class ConfiguracionGeneral(QWidget):
 
         # Configuraciones
         qconfig = QSettings(recursos.CONFIGURACION, QSettings.IniFormat)
-        self.checkPaginaInicio.setChecked(configuraciones.PAGINA_BIENVENIDA)
         self.checkAlCerrar.setChecked(configuraciones.CONFIRMAR_AL_CERRAR)
         self.checkUltimaSesion.setChecked(
             qconfig.value('configuraciones/general/cargarArchivos',
@@ -148,9 +142,6 @@ class ConfiguracionGeneral(QWidget):
         """ Guarda las configuraciones Generales. """
 
         qconfig = QSettings(recursos.CONFIGURACION, QSettings.IniFormat)
-        qconfig.setValue('configuraciones/general/paginaBienvenida',
-            self.checkPaginaInicio.isChecked())
-        configuraciones.PAGINA_BIENVENIDA = self.checkPaginaInicio.isChecked()
         qconfig.setValue('configuraciones/general/confirmacionCerrar',
             self.checkAlCerrar.isChecked())
         configuraciones.CONFIRMAR_AL_CERRAR = self.checkAlCerrar.isChecked()

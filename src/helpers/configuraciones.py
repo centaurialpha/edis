@@ -22,7 +22,6 @@ from src import recursos
 ###############################################################################
 MARGEN = True
 MARGEN_COLUMNA = 80
-OPACIDAD_MARGEN = 0
 ###############################################################################
 #                   SISTEMA OPERATIVO                                         #
 ###############################################################################
@@ -34,8 +33,8 @@ if SISTEMA_OPERATIVO == 'win32':
     WINDOWS = True
     LINUX = False
 else:
-    FUENTE = 'Terminus'
-    TAM_FUENTE = 13
+    FUENTE = 'Monospace'
+    TAM_FUENTE = 12
     LINUX = True
     WINDOWS = False
 
@@ -64,15 +63,12 @@ MINIMAPA = False
 MINI_TAM = 0.17
 OPAC_MIN = 0.2
 OPAC_MAX = 0.9
-POSS = 0
 MAX_RECIENTES = 5
 SIDEBAR = True
 
-PAGINA_BIENVENIDA = True
 CONFIRMAR_AL_CERRAR = True
 IDIOMAS = []
 IDIOMA = ""
-#ULTIMA_SESION = True
 PARAMETROS = ""
 TERMINAL = ""
 
@@ -119,7 +115,6 @@ def cargar_configuraciones():
 
     global MARGEN
     global MARGEN_COLUMNA
-    global OPACIDAD_MARGEN
     global FUENTE
     global TAM_FUENTE
     global INDENTACION
@@ -133,19 +128,15 @@ def cargar_configuraciones():
     global MINI_TAM
     global OPAC_MIN
     global OPAC_MAX
-    global PAGINA_BIENVENIDA
     global CONFIRMAR_AL_CERRAR
     global IDIOMA
     global PARAMETROS
     global BARRA_HERRAMIENTAS_ITEMS
     global TERMINAL
-    #global ULTIMA_SESION
     MARGEN_COLUMNA = qsettings.value('configuraciones/editor/margenLinea', 80,
                              type=int)
     MARGEN = qsettings.value(
         'configuraciones/editor/mostrarMargen', True, type=bool)
-    OPACIDAD_MARGEN = int(qsettings.value(
-        'configuraciones/editor/opacidadMargen', 0, type=int))
     fuente_f = qsettings.value(
         'configuraciones/editor/fuente', "", type='QString')
     if fuente_f:
@@ -177,8 +168,6 @@ def cargar_configuraciones():
                                      0.9, type=float))
     TERMINAL = qsettings.value('configuraciones/ejecucion/terminal', "",
         type='QString')
-    PAGINA_BIENVENIDA = qsettings.value(
-        'configuraciones/general/paginaBienvenida', True).toBool()
     CONFIRMAR_AL_CERRAR = qsettings.value(
         'configuraciones/general/confirmacionCerrar', True).toBool()
     IDIOMA = qsettings.value('configuraciones/general/idioma',

@@ -34,7 +34,7 @@ from src import recursos
 from src.helpers import configuraciones
 #from src.nucleo import manejador_de_archivo
 from src.ui.contenedor_principal import contenedor_principal
-from src.ui.dialogos.preferencias import creador_tema
+#from src.ui.dialogos.preferencias import creador_tema
 
 
 class TabEditor(QWidget):
@@ -48,10 +48,10 @@ class TabEditor(QWidget):
         self.tabs.setTabPosition(3)
         self.configEditor = CaracteristicasEditor()
         self.generalEditor = GeneralEditor()
-        self.creadorTema = creador_tema.CreadorDeTemaEditor(self)
+        #self.creadorTema = creador_tema.CreadorDeTemaEditor(self)
         self.tabs.addTab(self.configEditor, self.trUtf8("Características"))
         self.tabs.addTab(self.generalEditor, self.trUtf8("General"))
-        self.tabs.addTab(self.creadorTema, self.trUtf8("Creador de tema"))
+        #self.tabs.addTab(self.creadorTema, self.trUtf8("Creador de tema"))
 
         vbox.addWidget(self.tabs)
 
@@ -80,11 +80,6 @@ class CaracteristicasEditor(QWidget):
         # Check
         self.checkMargen = QCheckBox(self.trUtf8("Márgen: "))
         boxMargen.addWidget(self.checkMargen)
-        # Spin opacidad de fondo
-        self.spinOpacidadMargen = QSpinBox()
-        self.spinOpacidadMargen.setSuffix(self.trUtf8("% Opacidad"))
-        self.spinOpacidadMargen.setRange(0, 100)
-        boxMargen.addWidget(self.spinOpacidadMargen)
         # Slide márgen
         self.slideMargen = QSlider(Qt.Horizontal)
         self.slideMargen.setMaximum(200)
@@ -176,9 +171,8 @@ class CaracteristicasEditor(QWidget):
         grillaAutocompletado.addWidget(self.checkLlaves, 0, 2)
 
         # Configuraciones
-        self.checkMargen.setChecked(configuraciones.MOSTRAR_MARGEN)
-        self.spinOpacidadMargen.setValue(configuraciones.OPACIDAD_MARGEN)
-        self.slideMargen.setValue(configuraciones.MARGEN)
+        self.checkMargen.setChecked(configuraciones.MARGEN)
+        self.slideMargen.setValue(configuraciones.MARGEN_COLUMNA)
         self.sliderInd.setValue(configuraciones.INDENTACION)
         self.checkInd.setChecked(configuraciones.CHECK_INDENTACION)
         self.checkAutoInd.setChecked(configuraciones.CHECK_AUTOINDENTACION)
@@ -275,8 +269,6 @@ class CaracteristicasEditor(QWidget):
         configuraciones.MARGEN = self.slideMargen.value()
         qconfig.setValue('mostrarMargen', self.checkMargen.isChecked())
         configuraciones.MOSTRAR_MARGEN = self.checkMargen.isChecked()
-        configuraciones.OPACIDAD_MARGEN = self.spinOpacidadMargen.value()
-        qconfig.setValue('opacidadMargen', self.spinOpacidadMargen.value())
         qconfig.setValue('checkInd', self.checkInd.isChecked())
         configuraciones.CHECK_INDENTACION = self.checkInd.isChecked()
         qconfig.setValue('guiaInd', self.checkGuia.isChecked())

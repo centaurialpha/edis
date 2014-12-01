@@ -35,6 +35,7 @@ class CreadorDeTemaEditor(QWidget):
     def __init__(self, parent):
         super(CreadorDeTemaEditor, self).__init__()
         self.parent = parent
+        print(type)(parent)
         layoutM = QVBoxLayout(self)
         layoutH = QHBoxLayout()
         layoutH.setContentsMargins(0, 0, 0, 0)
