@@ -8,17 +8,18 @@
 from PyQt4.QtGui import (
     QFontMetrics,
     QColor,
+    #QFont
     )
 
 from PyQt4.QtCore import (
-    Qt
+    Qt,
     )
 
 from PyQt4.Qsci import (
     QsciScintilla
     )
 
-#from src.helpers import configuraciones
+from src.helpers import configuraciones
 from src.ui.editor import lexer
 
 
@@ -26,19 +27,22 @@ class Base(QsciScintilla):
 
     def __init__(self):
         super(Base, self).__init__()
-
         # Configuración de Qscintilla
         self.setCaretLineVisible(True)
         self.setIndentationsUseTabs(False)
+        #FIXME: indentación, guías
         self.setAutoIndent(True)
         self.setBackspaceUnindents(True)
+        self.__indentacion = configuraciones.INDENTACION
+        self.setIndentationWidth(self.__indentacion)
+
+        self.SendScintilla(QsciScintilla.SCI_SETCARETSTYLE,
+                            QsciScintilla.CARETSTYLE_BLOCK)
+        # Folding
+        self.setFolding(QsciScintilla.BoxedFoldStyle)
 
         self.__fuente = None
         self._id = ""
-
-        # Lexer C/C++
-        self.__lexer = None
-
         self.cargar_signals()
 
     def cargar_signals(self):
@@ -119,6 +123,12 @@ class Base(QsciScintilla):
     def unmatch_braces_color(self, fondo, fore):
         self.setUnmatchedBraceBackgroundColor(QColor(fondo))
         self.setUnmatchedBraceForegroundColor(QColor(fore))
+
+    def caret_line(self, fondo, fore, opacidad):
+        color = QColor(fondo)
+        color.setAlpha(opacidad)
+        self.setCaretForegroundColor(QColor(fore))
+        self.setCaretLineBackgroundColor(QColor(color))
 
     def set_lexer(self, ext):
         if ext == 'cpp':

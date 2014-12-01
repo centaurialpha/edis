@@ -46,16 +46,6 @@ ICONOS = {}
 for icono in os.listdir(PATH_ICONOS):
     ICONOS[icono.split('.')[0]] = os.path.join(PATH_ICONOS, icono)
 
-
-# Tema editor
-TEMA = {
-    'brace-foreground': 'red',
-    'brace-background': '#b4eeb4',
-    'brace-unforeground': 'white',
-    'brace-unbackground': 'red',
-    'margen': 'lightblue'
-    }
-
 # Atajos de teclas
 ATAJOS = {
     # Archivo
@@ -96,6 +86,22 @@ ATAJOS = {
     "buscar": QKeySequence(Qt.CTRL + Qt.Key_F),
     "buscar-archivos": QKeySequence(Qt.CTRL + Qt.Key_G),
     "ir": QKeySequence(Qt.CTRL + Qt.Key_J)
+    }
+
+# Tema editor
+TEMA = {
+    'brace-foreground': 'red',
+    'brace-background': '#b4eeb4',
+    'brace-unforeground': 'white',
+    'brace-unbackground': 'red',
+    'margen': 'lightblue',
+    'caret-background': 'gray',
+    'caret-line': 'gray',
+    'caret-opacidad': 40,
+    'guia-fondo': 'red',
+    'guia-fore': 'white',
+    'sidebar-fondo': '#cecece',
+    'sidebar-fore': '#acacac'
     }
 
 # Extensiones soportadas
