@@ -12,7 +12,8 @@ from PyQt4.QtGui import (
 
 from PyQt4.QtCore import (
     pyqtSignal,
-    SIGNAL
+    SIGNAL,
+    Qt
     )
 
 from src import recursos
@@ -51,6 +52,7 @@ class Editor(Base):
         self.texto_modificado = False
         self.nuevo_archivo = True
         self.guardado_actualmente = False
+        self._palabra_seleccionada = ""
 
         # Lexer
         self.set_lexer(ext)
@@ -113,5 +115,74 @@ class Editor(Base):
             self.texto_modificado = False
             self.setModified(self.texto_modificado)
 
-    def busqueda(self, palabra):
-        print(palabra)
+    def busqueda(self, palabra, re=False, cs=False, wo=False, wrap=True,
+                forward=True):
+        if self.hasSelectedText():
+            linea, indice, l, i = self.getSelection()
+            indice += 1
+        encontrada = self.findFirst(palabra, re, cs, wo, wrap)
+        if encontrada:
+            self.resaltar_palabra_seleccionada(palabra, cs=cs)
+            return self._get_find_index_result(palabra, cs, wo)
+        else:
+            return 0, 0
+
+    def _get_find_index_result(self, palabra, cs, wo):
+        texto = str(self.texto)
+        buscada = len(palabra) > 0
+        indice_actual = 0
+        texto = texto.lower()
+        search = str(palabra).lower()
+        total = texto.count(search)
+        if buscada and total > 0:
+            linea, indice, l, i = self.getSelection()
+            posicion = self.positionFromLineIndex(linea, indice)
+            indice_actual = texto[:posicion].count(search)
+            if indice_actual <= total:
+                indice = indice_actual
+            else:
+                indice = texto.count(search) + 1
+        else:
+            indice = 0
+            total = 0
+        return indice_actual + 1, total
+
+    def resaltar_palabra_seleccionada(self, palabra_buscada=None, cs=True,
+                                        reset=False):
+
+        self.SendScintilla(Base.SCI_SETINDICATORCURRENT, 0)
+        palabra = self._texto_bajo_el_cursor()
+        if palabra_buscada is not None:
+            palabra = palabra_buscada
+
+        if palabra != self._palabra_seleccionada and not reset:
+            self.SendScintilla(Base.SCI_INDICATORCLEARRANGE, 0,
+                                len(self.texto))
+            self._palabra_seleccionada = palabra
+            texto = str(self.texto)
+            search = self._palabra_seleccionada
+            if not cs:
+                search = str(search).lower()
+                texto = str(texto).lower()
+            indice = texto.find(search)
+            while indice != -1:
+                self.SendScintilla(Base.SCI_INDICATORFILLRANGE, indice,
+                                    len(self._palabra_seleccionada))
+                indice = texto.find(search, indice + 1)
+        elif ((palabra == self._palabra_seleccionada)
+            and (palabra_buscada is None)) or reset:
+                self.SendScintilla(Base.SCI_INDICATORCLEARRANGE, 0,
+                                    len(self.texto))
+                self._palabra_seleccionada = None
+
+    def _texto_bajo_el_cursor(self):
+        """ Texto seleccionado con el cursor """
+
+        linea, indice = self.getCursorPosition()  # Posición del cursor
+        palabra = self.wordAtLineIndex(linea, indice)  # Palabra en esa pos
+        return palabra
+
+    def mouseReleaseEvent(self, e):
+        super(Editor, self).mouseReleaseEvent(e)
+        if e.button() == Qt.LeftButton:
+            self.resaltar_palabra_seleccionada()
