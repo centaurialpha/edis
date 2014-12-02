@@ -91,11 +91,6 @@ class Base(QsciScintilla):
 
         return self.isModified()
 
-    def margen_de_linea(self, margen, color=None):
-        self.setEdgeMode(QsciScintilla.EdgeLine)
-        self.setEdgeColumn(margen)
-        #self.setEdgeColor(QColor(color))
-
     def zoom_in(self):
         self.zoomIn()
 

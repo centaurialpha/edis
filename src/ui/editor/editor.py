@@ -68,8 +68,8 @@ class Editor(Base):
 
         # Márgen
         if configuraciones.MARGEN:
-            self.margen_de_linea(configuraciones.MARGEN_COLUMNA,
-                                self._tema['margen'])
+            self._margen_de_linea(configuraciones.MARGEN_COLUMNA)
+
         # Brace matching
         self.match_braces(Base.SloppyBraceMatch)
         self.match_braces_color(self._tema['brace-background'],
@@ -77,21 +77,25 @@ class Editor(Base):
         self.unmatch_braces_color(self._tema['brace-unbackground'],
                                     self._tema['brace-unforeground'])
 
-        # Extras
-        if configuraciones.GUIA_INDENTACION:
-            self.setIndentationGuides(True)
-            self.setIndentationGuidesBackgroundColor(QColor(
-                                                    self._tema['guia-fondo']))
-            self.setIndentationGuidesForegroundColor(QColor(
-                                                    self._tema['guia-fore']))
-        if configuraciones.MOSTRAR_TABS:
-            self.setWhitespaceVisibility(self.WsVisible)
-
         # Conexión de señales
         self.connect(self, SIGNAL("modificationChanged(bool)"),
                     self.__modificado)
         self.connect(self, SIGNAL("textChanged()"),
                     self.__texto_cambiado)
+
+    def flags(self):
+        """ Extras para el editor """
+
+        if configuraciones.MOSTRAR_TABS:
+            self.setWhitespaceVisibility(self.WsVisible)
+        else:
+            self.setWhitespaceVisibility(self.WsInvisible)
+        self.setIndentationGuides(configuraciones.GUIA_INDENTACION)
+        if configuraciones.GUIA_INDENTACION:
+            self.setIndentationGuidesBackgroundColor(QColor(
+                                                    self._tema['guia-fondo']))
+            self.setIndentationGuidesForegroundColor(QColor(
+                                                    self._tema['guia-fore']))
 
     def devolver_posicion_del_cursor(self):
         """ Posición del cursor (línea, columna) """
@@ -114,6 +118,14 @@ class Editor(Base):
             self.nuevo_archivo = False
             self.texto_modificado = False
             self.setModified(self.texto_modificado)
+
+    def _margen_de_linea(self, margen=None):
+        if configuraciones.MARGEN:
+            self.setEdgeMode(Base.EdgeLine)
+            self.setEdgeColumn(margen)
+            self.setEdgeColor(QColor(self._tema['margen']))
+        else:
+            self.setEdgeMode(Base.EdgeNone)
 
     def busqueda(self, palabra, re=False, cs=False, wo=False, wrap=True,
                 forward=True):

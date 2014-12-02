@@ -27,7 +27,7 @@ from PyQt4.QtGui import QTabWidget
 # Módulos QtCore
 from PyQt4.QtCore import Qt
 from PyQt4.QtCore import SIGNAL
-from PyQt4.QtCore import QSettings, pyqtSignal
+from PyQt4.QtCore import QSettings
 
 # Módulos EDIS
 from src import recursos
@@ -62,8 +62,6 @@ class TabEditor(QWidget):
 
 class CaracteristicasEditor(QWidget):
     """ Clase Configuracion Editor """
-
-    signal = pyqtSignal(bool)
 
     def __init__(self):
         super(CaracteristicasEditor, self).__init__()
@@ -263,17 +261,20 @@ class CaracteristicasEditor(QWidget):
     def guardar(self):
         """ Guarda las configuraciones del Editor. """
 
-        #contenedor_principal_ = contenedor_principal.ContenedorMain()
+        #TODO: Completar esto!
+        editor = contenedor_principal.ContenedorMain().devolver_editor_actual()
         qconfig = QSettings(recursos.CONFIGURACION, QSettings.IniFormat)
-        #qconfig.beginGroup('configuraciones')
-        #qconfig.beginGroup('editor')
-        #qconfig.setValue('margenLinea', self.slideMargen.value())
-        #configuraciones.MARGEN = self.slideMargen.value()
-        print(self.checkMargen.isChecked())
-        configuraciones.MOSTRAR = self.checkMargen.isChecked()
+        configuraciones.MARGEN_COLUMNA = self.slideMargen.value()
+        qconfig.setValue('margenLinea', self.slideMargen.value())
+        configuraciones.MARGEN = self.checkMargen.isChecked()
         qconfig.setValue('configuraciones/editor/mostrarMargen',
                         self.checkMargen.isChecked())
-        self.signal.emit(self.checkMargen.isChecked())
+        configuraciones.GUIA_INDENTACION = self.checkGuia.isChecked()
+        qconfig.setValue('guiaInd', self.checkGuia.isChecked())
+        configuraciones.MOSTRAR_TABS = self.checkTabs.isChecked()
+        qconfig.setValue('tabs', self.checkTabs.isChecked())
+        editor.flags()
+        editor._margen_de_linea(configuraciones.MARGEN_COLUMNA)
         #qconfig.setValue('checkInd', self.checkInd.isChecked())
         #configuraciones.CHECK_INDENTACION = self.checkInd.isChecked()
         #qconfig.setValue('guiaInd', self.checkGuia.isChecked())
