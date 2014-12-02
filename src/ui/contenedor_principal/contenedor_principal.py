@@ -126,7 +126,7 @@ class __ContenedorMain(QSplitter):
 
     def editor_es_guardado(self, editorW=None):
         self.tab.tab_guardado(editorW)
-        self.emit(SIGNAL("actualizarSimbolos(QString)"), editorW.id)
+        self.emit(SIGNAL("actualizarSimbolos(QString)"), editorW._nombre)
 
     def check_tabs_sin_guardar(self):
         return self.tab.check_tabs_sin_guardar()
@@ -250,7 +250,7 @@ class __ContenedorMain(QSplitter):
     def tab_actual_cambiado(self, indice):
         if self.tab.widget(indice):
             self.emit(SIGNAL("currentTabChanged(QString)"),
-                self.tab.widget(indice).id)
+                self.tab.widget(indice)._nombre)
 
     def cambiar_nombre_de_tab(self, aidi, nuevoId):
         indice_tab = self.tab.esta_abierto(aidi)
@@ -260,7 +260,7 @@ class __ContenedorMain(QSplitter):
 
         nombre_de_tab = manejador_de_archivo._nombreBase(nuevoId)
         TAB.cambiar_nombre_de_tab(indice_tab, nombre_de_tab)
-        w.id = nuevoId
+        w._nombre = nuevoId
 
     def cambiar_indice_de_tab(self):
         Weditor = self.parent.contenedor_principal.devolver_editor_actual()
@@ -287,8 +287,8 @@ class __ContenedorMain(QSplitter):
             direc = os.path.expanduser("~")
             Weditor = self.devolver_editor_actual()
             # Para recordar la última carpeta
-            if Weditor is not None and Weditor.id:
-                direc = manejador_de_archivo.devolver_carpeta(Weditor.id)
+            if Weditor is not None and Weditor._nombre:
+                direc = manejador_de_archivo.devolver_carpeta(Weditor._nombre)
             nombres = list(QFileDialog.getOpenFileNames(self,
             self.trUtf8("Abrir archivo"), direc, extension))
 
@@ -307,7 +307,7 @@ class __ContenedorMain(QSplitter):
                 editorW = self.agregar_editor(nombre)
                 #editorW.setPlainText(contenido.decode('utf-8'))
                 editorW.texto = contenido
-                editorW.id = nombre
+                editorW._nombre = nombre
 
                 # Reemplaza tabulaciones por espacios en blanco
                 #editorW.tabulaciones_por_espacios_en_blanco()
@@ -346,7 +346,7 @@ class __ContenedorMain(QSplitter):
             editorW.guardado_actualmente = True
 
             if editorW.nuevo_archivo or \
-            not manejador_de_archivo.permiso_de_escritura(editorW.id):
+            not manejador_de_archivo.permiso_de_escritura(editorW._nombre):
                 return self.guardar_archivo_como()
 
             nombre = editorW._nombre
