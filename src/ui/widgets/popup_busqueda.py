@@ -74,6 +74,7 @@ class PopupBusqueda(QWidget):
             indice, total = editor.busqueda(self.palabra_buscada)
             self.line.contador_.actualizar(indice, total,
                                             len(self.palabra_buscada) > 0)
+            self.total = total
 
 
 class Line(QLineEdit):
@@ -91,6 +92,8 @@ class Line(QLineEdit):
             return
         if editor and evento.key() in (Qt.Key_Enter, Qt.Key_Return):
             self.parent.buscar(editor)
+            if self.parent.total == 0:
+                self.parent.ocultar()
             return
         super(Line, self).keyPressEvent(evento)
         if int(evento.key()) in range(32, 162) or \

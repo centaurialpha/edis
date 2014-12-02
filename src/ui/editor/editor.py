@@ -147,15 +147,15 @@ class Editor(Base):
             total = 0
         return indice_actual + 1, total
 
-    def resaltar_palabra_seleccionada(self, palabra_buscada=None, cs=True,
-                                        reset=False):
+    def resaltar_palabra_seleccionada(self, palabra_buscada=None, cs=True):
+        """ Resalta con un indicador la palabra seleccionada """
 
         self.SendScintilla(Base.SCI_SETINDICATORCURRENT, 0)
         palabra = self._texto_bajo_el_cursor()
         if palabra_buscada is not None:
             palabra = palabra_buscada
 
-        if palabra != self._palabra_seleccionada and not reset:
+        if palabra != self._palabra_seleccionada:
             self.SendScintilla(Base.SCI_INDICATORCLEARRANGE, 0,
                                 len(self.texto))
             self._palabra_seleccionada = palabra
@@ -169,11 +169,6 @@ class Editor(Base):
                 self.SendScintilla(Base.SCI_INDICATORFILLRANGE, indice,
                                     len(self._palabra_seleccionada))
                 indice = texto.find(search, indice + 1)
-        elif ((palabra == self._palabra_seleccionada)
-            and (palabra_buscada is None)) or reset:
-                self.SendScintilla(Base.SCI_INDICATORCLEARRANGE, 0,
-                                    len(self.texto))
-                self._palabra_seleccionada = None
 
     def _texto_bajo_el_cursor(self):
         """ Texto seleccionado con el cursor """
@@ -182,7 +177,17 @@ class Editor(Base):
         palabra = self.wordAtLineIndex(linea, indice)  # Palabra en esa pos
         return palabra
 
+    def borrar_seleccion(self):
+        """ Borra el indicador de las palabras """
+
+        self.SendScintilla(Base.SCI_INDICATORCLEARRANGE, 0, len(self.texto))
+
     def mouseReleaseEvent(self, e):
         super(Editor, self).mouseReleaseEvent(e)
         if e.button() == Qt.LeftButton:
             self.resaltar_palabra_seleccionada()
+
+    def keyPressEvent(self, e):
+        super(Editor, self).keyPressEvent(e)
+        if e.key() == Qt.Key_Escape:
+            self.borrar_seleccion()
