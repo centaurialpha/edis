@@ -11,7 +11,7 @@ from PyQt4.QtGui import QLCDNumber
 from PyQt4.QtGui import QSlider
 from PyQt4.QtGui import QGroupBox
 from PyQt4.QtGui import QGridLayout
-from PyQt4.QtGui import QLabel
+#from PyQt4.QtGui import QLabel
 from PyQt4.QtGui import QSpinBox
 from PyQt4.QtGui import QCheckBox
 from PyQt4.QtGui import QVBoxLayout
@@ -27,7 +27,7 @@ from PyQt4.QtGui import QTabWidget
 # Módulos QtCore
 from PyQt4.QtCore import Qt
 from PyQt4.QtCore import SIGNAL
-from PyQt4.QtCore import QSettings
+from PyQt4.QtCore import QSettings, pyqtSignal
 
 # Módulos EDIS
 from src import recursos
@@ -62,6 +62,8 @@ class TabEditor(QWidget):
 
 class CaracteristicasEditor(QWidget):
     """ Clase Configuracion Editor """
+
+    signal = pyqtSignal(bool)
 
     def __init__(self):
         super(CaracteristicasEditor, self).__init__()
@@ -261,75 +263,80 @@ class CaracteristicasEditor(QWidget):
     def guardar(self):
         """ Guarda las configuraciones del Editor. """
 
-        contenedor_principal_ = contenedor_principal.ContenedorMain()
+        #contenedor_principal_ = contenedor_principal.ContenedorMain()
         qconfig = QSettings(recursos.CONFIGURACION, QSettings.IniFormat)
-        qconfig.beginGroup('configuraciones')
-        qconfig.beginGroup('editor')
-        qconfig.setValue('margenLinea', self.slideMargen.value())
-        configuraciones.MARGEN = self.slideMargen.value()
-        qconfig.setValue('mostrarMargen', self.checkMargen.isChecked())
-        configuraciones.MOSTRAR_MARGEN = self.checkMargen.isChecked()
-        qconfig.setValue('checkInd', self.checkInd.isChecked())
-        configuraciones.CHECK_INDENTACION = self.checkInd.isChecked()
-        qconfig.setValue('guiaInd', self.checkGuia.isChecked())
-        configuraciones.GUIA_INDENTACION = self.checkGuia.isChecked()
-        qconfig.setValue('indentacion', self.sliderInd.value())
-        configuraciones.INDENTACION = self.sliderInd.value()
-        qconfig.setValue('autoInd', self.checkAutoInd.isChecked())
-        configuraciones.CHECK_AUTOINDENTACION = self.checkAutoInd.isChecked()
-        qconfig.setValue('tabs', self.checkTabs.isChecked())
-        configuraciones.MOSTRAR_TABS = self.checkTabs.isChecked()
-        qconfig.setValue('envolver', self.checkWrap.isChecked())
-        configuraciones.MODO_ENVOLVER = self.checkWrap.isChecked()
-        qconfig.setValue('sidebar', self.checkSideBar.isChecked())
-        configuraciones.SIDEBAR = self.checkSideBar.isChecked()
-        qconfig.setValue('configuraciones/editor/mini',
-            self.checkMini.isChecked())
-        configuraciones.MINIMAPA = self.checkMini.isChecked()
-        configuraciones.MINI_TAM = self.spinTamanio.value() / 100.0
-        qconfig.setValue('miniTam', configuraciones.MINI_TAM)
-        qconfig.setValue('opac_min', configuraciones.OPAC_MIN)
-        configuraciones.OPAC_MIN = self.spinMiniMin.value() / 100.0
-        qconfig.setValue('opac_max', configuraciones.OPAC_MAX)
-        configuraciones.OPAC_MAX = self.spinMiniMax.value() / 100.0
-        fuente = unicode(self.botonFuente.text().replace(' ', ''))
-        configuraciones.FUENTE = fuente.split(',')[0]
-        configuraciones.TAM_FUENTE = int(fuente.split(',')[1])
-        qconfig.setValue('fuente', configuraciones.FUENTE)
-        qconfig.setValue('fuenteTam', configuraciones.TAM_FUENTE)
-        qconfig.setValue('comillasS', self.checkComillasSimples.isChecked())
-        qconfig.setValue('comillasD', self.checkComillasDobles.isChecked())
-        qconfig.setValue('llaves', self.checkLlaves.isChecked())
-        qconfig.setValue('corchetes', self.checkCorchetes.isChecked())
-        qconfig.setValue('parentesis', self.checkParentesis.isChecked())
-        if self.checkComillasSimples.isChecked():
-            configuraciones.COMILLAS["'"] = "'"
-        elif ("'") in configuraciones.COMILLAS:
-            del configuraciones.COMILLAS["'"]
-        if self.checkComillasDobles.isChecked():
-            configuraciones.COMILLAS['"'] = '"'
-        elif ('"') in configuraciones.COMILLAS:
-            del configuraciones.COMILLAS['"']
-        if self.checkLlaves.isChecked():
-            configuraciones.BRACES['{'] = '}'
-        elif ("{") in configuraciones.BRACES:
-            del configuraciones.BRACES['{']
-        if self.checkCorchetes.isChecked():
-            configuraciones.BRACES['['] = ']'
-        elif ("[") in configuraciones.BRACES:
-            del configuraciones.BRACES["["]
-        if self.checkParentesis.isChecked():
-            configuraciones.BRACES['('] = ')'
-        elif ("(") in configuraciones.BRACES:
-            del configuraciones.BRACES['(']
-        contenedor_principal_.actualizar_margen_editor()
-        contenedor_principal_.resetear_flags_editor()
-        Weditor = contenedor_principal_.devolver_editor_actual()
-        if Weditor is not None:
-            Weditor._cargar_fuente(
-                configuraciones.FUENTE, configuraciones.TAM_FUENTE)
-        qconfig.endGroup()
-        qconfig.endGroup()
+        #qconfig.beginGroup('configuraciones')
+        #qconfig.beginGroup('editor')
+        #qconfig.setValue('margenLinea', self.slideMargen.value())
+        #configuraciones.MARGEN = self.slideMargen.value()
+        print(self.checkMargen.isChecked())
+        configuraciones.MOSTRAR = self.checkMargen.isChecked()
+        qconfig.setValue('configuraciones/editor/mostrarMargen',
+                        self.checkMargen.isChecked())
+        self.signal.emit(self.checkMargen.isChecked())
+        #qconfig.setValue('checkInd', self.checkInd.isChecked())
+        #configuraciones.CHECK_INDENTACION = self.checkInd.isChecked()
+        #qconfig.setValue('guiaInd', self.checkGuia.isChecked())
+        #configuraciones.GUIA_INDENTACION = self.checkGuia.isChecked()
+        #qconfig.setValue('indentacion', self.sliderInd.value())
+        #configuraciones.INDENTACION = self.sliderInd.value()
+        #qconfig.setValue('autoInd', self.checkAutoInd.isChecked())
+        #configuraciones.CHECK_AUTOINDENTACION = self.checkAutoInd.isChecked()
+        #qconfig.setValue('tabs', self.checkTabs.isChecked())
+        #configuraciones.MOSTRAR_TABS = self.checkTabs.isChecked()
+        #qconfig.setValue('envolver', self.checkWrap.isChecked())
+        #configuraciones.MODO_ENVOLVER = self.checkWrap.isChecked()
+        #qconfig.setValue('sidebar', self.checkSideBar.isChecked())
+        #configuraciones.SIDEBAR = self.checkSideBar.isChecked()
+        #qconfig.setValue('configuraciones/editor/mini',
+            #self.checkMini.isChecked())
+        #configuraciones.MINIMAPA = self.checkMini.isChecked()
+        #configuraciones.MINI_TAM = self.spinTamanio.value() / 100.0
+        #qconfig.setValue('miniTam', configuraciones.MINI_TAM)
+        #qconfig.setValue('opac_min', configuraciones.OPAC_MIN)
+        #configuraciones.OPAC_MIN = self.spinMiniMin.value() / 100.0
+        #qconfig.setValue('opac_max', configuraciones.OPAC_MAX)
+        #configuraciones.OPAC_MAX = self.spinMiniMax.value() / 100.0
+        #fuente = unicode(self.botonFuente.text().replace(' ', ''))
+        #configuraciones.FUENTE = fuente.split(',')[0]
+        #configuraciones.TAM_FUENTE = int(fuente.split(',')[1])
+        #qconfig.setValue('fuente', configuraciones.FUENTE)
+        #qconfig.setValue('fuenteTam', configuraciones.TAM_FUENTE)
+        #qconfig.setValue('comillasS', self.checkComillasSimples.isChecked())
+        #qconfig.setValue('comillasD', self.checkComillasDobles.isChecked())
+        #qconfig.setValue('llaves', self.checkLlaves.isChecked())
+        #qconfig.setValue('corchetes', self.checkCorchetes.isChecked())
+        #qconfig.setValue('parentesis', self.checkParentesis.isChecked())
+        #if self.checkComillasSimples.isChecked():
+            #configuraciones.COMILLAS["'"] = "'"
+        #elif ("'") in configuraciones.COMILLAS:
+            #del configuraciones.COMILLAS["'"]
+        #if self.checkComillasDobles.isChecked():
+            #configuraciones.COMILLAS['"'] = '"'
+        #elif ('"') in configuraciones.COMILLAS:
+            #del configuraciones.COMILLAS['"']
+        #if self.checkLlaves.isChecked():
+            #configuraciones.BRACES['{'] = '}'
+        #elif ("{") in configuraciones.BRACES:
+            #del configuraciones.BRACES['{']
+        #if self.checkCorchetes.isChecked():
+            #configuraciones.BRACES['['] = ']'
+        #elif ("[") in configuraciones.BRACES:
+            #del configuraciones.BRACES["["]
+        #if self.checkParentesis.isChecked():
+            #configuraciones.BRACES['('] = ')'
+        #elif ("(") in configuraciones.BRACES:
+            #del configuraciones.BRACES['(']
+        #TODO:
+        #contenedor_principal_.actualizar_margen_editor()
+        #contenedor_principal_.resetear_flags_editor()
+        #Weditor = contenedor_principal_.devolver_editor_actual()
+        #if Weditor is not None:
+            #weditor.margen_de_linea()
+            #Weditor._cargar_fuente(
+                #configuraciones.FUENTE, configuraciones.TAM_FUENTE)
+        #qconfig.endGroup()
+        #qconfig.endGroup()
 
 
 class GeneralEditor(QWidget):
