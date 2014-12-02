@@ -96,6 +96,10 @@ class Editor(Base):
                                                     self._tema['guia-fondo']))
             self.setIndentationGuidesForegroundColor(QColor(
                                                     self._tema['guia-fore']))
+        if configuraciones.MODO_ENVOLVER:
+            self.setWrapMode(self.WrapWord)
+        else:
+            self.setWrapMode(self.WrapNone)
 
     def devolver_posicion_del_cursor(self):
         """ Posición del cursor (línea, columna) """

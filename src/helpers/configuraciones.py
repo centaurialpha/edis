@@ -156,7 +156,7 @@ def cargar_configuraciones():
     MOSTRAR_TABS = qsettings.value(
         'configuraciones/editor/tabs', False, type=bool)
     MODO_ENVOLVER = qsettings.value('configuraciones/editor/envolver',
-                                    True, type=bool)
+                                    False, type=bool)
     SIDEBAR = qsettings.value('configuraciones/editor/sidebar', True,
                               type=bool)
     MINIMAPA = qsettings.value('configuraciones/editor/mini', True, type=bool)

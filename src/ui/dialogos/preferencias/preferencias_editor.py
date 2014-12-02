@@ -273,6 +273,8 @@ class CaracteristicasEditor(QWidget):
         qconfig.setValue('guiaInd', self.checkGuia.isChecked())
         configuraciones.MOSTRAR_TABS = self.checkTabs.isChecked()
         qconfig.setValue('tabs', self.checkTabs.isChecked())
+        configuraciones.MODO_ENVOLVER = self.checkWrap.isChecked()
+        qconfig.setValue('envolver', self.checkWrap.isChecked())
         editor.flags()
         editor._margen_de_linea(configuraciones.MARGEN_COLUMNA)
         #qconfig.setValue('checkInd', self.checkInd.isChecked())
