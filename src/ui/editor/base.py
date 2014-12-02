@@ -48,7 +48,7 @@ class Base(QsciScintilla):
         self.setFolding(QsciScintilla.BoxedFoldStyle)
 
         self.__fuente = None
-        self._id = ""
+        self._nombre = ""
         self.cargar_signals()
 
     def cargar_signals(self):
@@ -56,16 +56,15 @@ class Base(QsciScintilla):
 
         self.linesChanged.connect(self.actualizar_sidebar)
 
-    def get_id(self):
-        return self._id
+    @property
+    def nombre(self):
+        return self._nombre
 
-    def set_id(self, id_):
-        self._id = id_
-        if id_:
+    @nombre.setter
+    def nombre(self, _nombre):
+        self._nombre = _nombre
+        if _nombre:
             self.nuevo_archivo = False
-
-    iD = property(lambda self: self.get_id(), lambda self,
-        nombre: self.set_id(nombre))
 
     @property
     def texto(self):

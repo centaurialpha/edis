@@ -26,7 +26,7 @@ from src import recursos
 from src.ui import tab_widget
 from src.ui.editor import (
     editor,
-    highlighter_,
+    #highlighter_,
     #acciones_
     )
 
@@ -126,7 +126,7 @@ class __ContenedorMain(QSplitter):
 
     def editor_es_guardado(self, editorW=None):
         self.tab.tab_guardado(editorW)
-        self.emit(SIGNAL("actualizarSimbolos(QString)"), editorW.iD)
+        self.emit(SIGNAL("actualizarSimbolos(QString)"), editorW.id)
 
     def check_tabs_sin_guardar(self):
         return self.tab.check_tabs_sin_guardar()
@@ -141,7 +141,7 @@ class __ContenedorMain(QSplitter):
         for i in range(self.tab.count()):
             editorW = self.tab.widget(i)
             if isinstance(editorW, editor.Editor):
-                archivos.append(editorW._id.split('/')[-1])
+                archivos.append(editorW.id.split('/')[-1])
 
     def agregar_tab(self, widget, icono, nombre_tab, nAbierta=True):
         """ Se llama al método agregar_tab de la clase TabCentral
@@ -250,7 +250,7 @@ class __ContenedorMain(QSplitter):
     def tab_actual_cambiado(self, indice):
         if self.tab.widget(indice):
             self.emit(SIGNAL("currentTabChanged(QString)"),
-                self.tab.widget(indice)._id)
+                self.tab.widget(indice).id)
 
     def cambiar_nombre_de_tab(self, aidi, nuevoId):
         indice_tab = self.tab.esta_abierto(aidi)
@@ -260,7 +260,7 @@ class __ContenedorMain(QSplitter):
 
         nombre_de_tab = manejador_de_archivo._nombreBase(nuevoId)
         TAB.cambiar_nombre_de_tab(indice_tab, nombre_de_tab)
-        w.iD = nuevoId
+        w.id = nuevoId
 
     def cambiar_indice_de_tab(self):
         Weditor = self.parent.contenedor_principal.devolver_editor_actual()
@@ -287,8 +287,8 @@ class __ContenedorMain(QSplitter):
             direc = os.path.expanduser("~")
             Weditor = self.devolver_editor_actual()
             # Para recordar la última carpeta
-            if Weditor is not None and Weditor._id:
-                direc = manejador_de_archivo.devolver_carpeta(Weditor._id)
+            if Weditor is not None and Weditor.id:
+                direc = manejador_de_archivo.devolver_carpeta(Weditor.id)
             nombres = list(QFileDialog.getOpenFileNames(self,
             self.trUtf8("Abrir archivo"), direc, extension))
 
@@ -307,7 +307,7 @@ class __ContenedorMain(QSplitter):
                 editorW = self.agregar_editor(nombre)
                 #editorW.setPlainText(contenido.decode('utf-8'))
                 editorW.texto = contenido
-                editorW.iD = nombre
+                editorW.id = nombre
 
                 # Reemplaza tabulaciones por espacios en blanco
                 #editorW.tabulaciones_por_espacios_en_blanco()
@@ -346,23 +346,23 @@ class __ContenedorMain(QSplitter):
             editorW.guardado_actualmente = True
 
             if editorW.nuevo_archivo or \
-            not manejador_de_archivo.permiso_de_escritura(editorW._id):
+            not manejador_de_archivo.permiso_de_escritura(editorW.id):
                 return self.guardar_archivo_como()
 
-            nombre = editorW._id
+            nombre = editorW._nombre
             #carpeta_de_archivo = manejador_de_archivo.devolver_carpeta(nombre)
             self.emit(SIGNAL("beforeFileSaved(QString)"), nombre)
             #acciones_.quitar_espacios_en_blanco(editorW)
             contenido = editorW.texto
             manejador_de_archivo.escribir_archivo(nombre, contenido)
-            editorW.iD = nombre
+            editorW._nombre = nombre
 
             self.emit(SIGNAL("archivoGuardado(QString)"), self.tr(
                 "Guardado: %1").arg(nombre))
 
             editorW.guardado()
 
-            return editorW._id
+            return editorW._nombre
         except:
             editorW.guardado_actualmente = False
             return False
@@ -394,16 +394,16 @@ class __ContenedorMain(QSplitter):
                 manejador_de_archivo._nombreBase(nombre))
             self.tab.setTabIcon(self.tab.currentIndex(),
                 QIcon(icono))
-            editorW.iD = nombre
+            editorW._nombre = nombre
 
             # Señal de guardado para la barra de estado
             self.emit(SIGNAL("archivoGuardado(QString)"),
                 self.tr("Guardado: %1").arg(nombre))
             self.emit(SIGNAL("guardadoList(QString)"),
-                editorW._id)
+                editorW._nombre)
             editorW.guardado()
 
-            return editorW._id
+            return editorW._nombre
 
         except:
             editorW.guardado_actualmente = False
@@ -424,7 +424,7 @@ class __ContenedorMain(QSplitter):
             editorW = self.tab.widget(i)
 
             if isinstance(editorW, editor.Editor):
-                if editorW._id == nombre:
+                if editorW._nombre == nombre:
                     self.guardar_archivo(editorW)
 
     def resetear_flags_editor(self):

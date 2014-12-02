@@ -114,7 +114,7 @@ class TabCentral(QTabWidget):
         """ Comprueba si el tab = archivo. Devuelve el indice del tab. """
 
         for i in range(self.count()):
-            if self.widget(i)._id == archivo:
+            if self.widget(i)._nombre == archivo:
                 return self.widget(i)
         return False
 
@@ -124,7 +124,7 @@ class TabCentral(QTabWidget):
         """
 
         for i in range(self.count()):
-            if self.widget(i).iD == archivo:
+            if self.widget(i)._nombre == archivo:
                 self.setCurrentIndex(i)
                 return
 
@@ -149,8 +149,8 @@ class TabCentral(QTabWidget):
         archivos = []
         for i in range(self.count()):
             if isinstance(self.widget(i), editor.Editor) \
-            and self.widget(i)._id != '':
-                archivos.append([self.widget(i)._id,
+            and self.widget(i)._nombre != '':
+                archivos.append([self.widget(i)._nombre,
                                  self.widget(i).devolver_posicion_del_cursor()])
         return archivos
 
@@ -158,8 +158,8 @@ class TabCentral(QTabWidget):
         archivos = []
         for i in range(self.count()):
             if isinstance(self.widget(i), editor.Editor) and \
-                    self.widget(i)._id != '':
-                archivos.append(self.widget(i)._id)
+                    self.widget(i)._nombre != '':
+                archivos.append(self.widget(i)._nombre)
         return archivos
 
     def devolver_archivos_sin_guardar(self):
@@ -172,7 +172,7 @@ class TabCentral(QTabWidget):
             w = self.widget(i)
             if isinstance(w, editor.Editor) and w.texto_modificado:
                 #archivos.append(str(self.tabText(i)))
-                archivos.append(str(self.widget(i)._id))
+                archivos.append(str(self.widget(i)._nombre))
 
         return archivos
 
@@ -218,15 +218,15 @@ class TabCentral(QTabWidget):
                         return
                 elif respuesta == CANCELAR:
                     return
-            if type(w) is editor.Editor and w.iD:
-                self._agregar_reciente_al_ultimo(w._id)
+            if type(w) is editor.Editor and w._nombre:
+                self._agregar_reciente_al_ultimo(w._nombre)
             super(TabCentral, self).removeTab(indice)
             if self.currentWidget() is not None:
                 self.currentWidget().setFocus()
             else:
                 self.emit(SIGNAL("allTabsClosed()"))
             self.emit(SIGNAL("logging(QString, QString)"),
-                            w.iD, self.trUtf8("cerrado"))
+                            w._nombre, self.trUtf8("cerrado"))
             del w
             self.actualizar_widget_actual()
             self.emit(SIGNAL("archivoCerrado(int)"), indice)
