@@ -4,42 +4,30 @@
 # This file is part of EDIS
 # Copyright 2014 - Gabriel Acosta
 # License: GPLv3 (see http://www.gnu.org/licenses/gpl.html)
-"""
-Recursos
 
 """
-# Módulos Python
+Éste módulo tiene información acerca de los directorios necesarios para
+la aplicación.
+
+"""
+
 import os
-import sys
 
-# Módulos QtGui
 from PyQt4.QtGui import QKeySequence
 
-# Módulos QtCore
-from PyQt4.QtCore import QDir
 from PyQt4.QtCore import Qt
 
-# Carpetas
-HOME_PATH = unicode(QDir.toNativeSeparators(QDir.homePath()))
-SIDE_EJEC = os.path.realpath(sys.argv[0])
-PATH = os.path.abspath(os.path.dirname(__file__)).decode('utf-8')
-frozen = getattr(sys, 'frozen', '')
-if frozen in ('dll', 'console_exe', 'windows_exe'):
-    PATH = os.path.abspath(os.path.dirname(sys.executable))
-
+# Directorio home
+HOME = os.path.expanduser("~")
+# Directorio código fuente
+PATH = os.path.abspath(os.path.dirname(__file__))
+# Carpeta con las imágenes
 PATH_ICONOS = os.path.join(PATH, "images")
-HOME_EDIS = os.path.join(HOME_PATH, ".edis")
+# Carpeta que contiene archivos de configuración y logs
+HOME_EDIS = os.path.join(HOME, ".edis")
+# Archivo de configuración
 CONFIGURACION = os.path.join(HOME_EDIS, "config.ini")
-OTROS = (HOME_EDIS, 'otros')
 LOG = os.path.join(HOME_EDIS, 'edis.log')
-INSTALADOR = os.path.join(PATH, "nucleo", "mingw.exe")
-IDIOMAS = os.path.join(HOME_EDIS, "otros", "idiomas")
-TEMA_POR_DEFECTO = os.path.join(PATH, "otros", "temas", "default.qss")
-TEMAS_GUARDADOS = os.path.join(PATH, "otros", "temas", "editor")
-LICENCIA = os.path.join(PATH, "../", "COPYING")
-PAGINA_INICIO = os.path.join(PATH, "otros", "pagina_de_bienvenida")
-NOTIFICACION = os.path.join(PATH, "otros", "QtQML")
-
 
 # Iconos
 ICONOS = {}

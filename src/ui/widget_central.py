@@ -15,6 +15,9 @@ from PyQt4.QtCore import Qt
 from PyQt4.QtCore import SIGNAL
 
 
+from src.ui.edis_main import EDIS
+
+
 class WidgetCentral(QWidget):
     """ Clase contenedora de los widgets. """
 
@@ -33,6 +36,8 @@ class WidgetCentral(QWidget):
 
         layout_horizontal.addWidget(self.split_horizontal)
         layout_horizontal.addLayout(self.layout)
+
+        EDIS.cargar_componente("central", self)
 
     def agregar_contenedor_central(self, contenedor):
         """ Agrega widget principal. """
@@ -83,3 +88,5 @@ class WidgetCentral(QWidget):
         size_horizontal = [ancho[1], ancho[0]]
         self.split_principal.setSizes(size_principal)
         self.split_horizontal.setSizes(size_horizontal)
+
+central = WidgetCentral()

@@ -16,6 +16,7 @@ from PyQt4.QtGui import (
 
 from src import recursos
 from src.ui.widgets.creador_widget import create_button
+from src.ui.edis_main import EDIS
 
 
 class BarraDeEstado(QStatusBar):
@@ -37,6 +38,7 @@ class BarraDeEstado(QStatusBar):
 
         # Load UI
         self.load_ui()
+        EDIS.cargar_componente("barra_de_estado", self)
 
     def load_ui(self):
         """ Load the components of StatusBar """
@@ -120,3 +122,6 @@ class WidgetLineaColumna(QWidget):
     def actualizar_posicion_cursor(self, linea, total, columna):
         self.posicion_cursor.setText(self.tr(
                                     self.texto % (linea, total, columna)))
+
+
+barra_de_estado = BarraDeEstado()

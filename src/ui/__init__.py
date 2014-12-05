@@ -5,7 +5,6 @@
 # Copyright 2014 - Gabriel Acosta
 # License: GPLv3 (see http://www.gnu.org/licenses/gpl.html)
 
-
 __nombre__ = "EDIS"
 __codigo_fuente__ = "http://github.com/centaurialpha/edis"
 __version__ = "1.0-alpha"

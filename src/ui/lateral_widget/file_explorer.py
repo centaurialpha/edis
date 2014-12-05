@@ -16,7 +16,7 @@ from PyQt4.QtCore import (
     SIGNAL,
     QModelIndex,
     pyqtSlot,
-    QStringList,
+    #QStringList,
     QDir
     )
 
@@ -37,11 +37,11 @@ class Explorador(QWidget):
         self.model = QFileSystemModel(self.tree)
         home_path = QDir.toNativeSeparators(QDir.homePath())
         self.model.setRootPath(home_path)
-        filtro = QStringList("")
-        filtro << "*.c" << "*.h"  # Filtro
+        #filtro = QStringList("")
+        #filtro << "*.c" << "*.h"  # Filtro
         self.tree.setModel(self.model)
         self.tree.setRootIndex(QModelIndex(self.model.index(home_path)))
-        self.model.setNameFilters(filtro)
+        #self.model.setNameFilters(filtro)
         self.model.setNameFilterDisables(False)
 
         # Se ocultan algunas columnas (size, type, y date modified)

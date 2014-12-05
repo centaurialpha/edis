@@ -1,4 +1,4 @@
-#!/usr/bin/env python2
+#!/usr/bin/env python
 # -*- coding: utf-8 -*-
 # EDIS - Entorno de Desarrollo Integrado Simple para C/C++
 #
