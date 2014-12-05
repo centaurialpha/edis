@@ -8,4 +8,8 @@ EDIS-C | Entorno de Desarrollo Integrado Simple para C.
      :target: http://riverbankcomputing.co.uk/software/pyqt/intro
 .. image:: http://img.shields.io/badge/Licencia-GPLv3-red.svg
      :target: http://gplv3.fsf.org
-incomplete!!
+
+Se está reescribiendo el código fuente !!
+========================================
+* Será compatible con Python 3
+* Nuevo editor, basado en QsciScintilla
