@@ -7,14 +7,29 @@
 
 from PyQt4.QtGui import (
     QWidget,
-    QHBoxLayout,
-    QPlainTextEdit
+    QVBoxLayout,
+    QStackedLayout
     )
+
+from src.ui.editor import editor
 
 
 class EditorContainer(QWidget):
 
     def __init__(self, edis):
         QWidget.__init__(self, edis)
-        box = QHBoxLayout(self)
-        box.addWidget(QPlainTextEdit())
+        vbox = QVBoxLayout(self)
+        vbox.setContentsMargins(0, 0, 0, 0)
+        vbox.setSpacing(0)
+        #self.combo = combo_widget.ComboWidget(self)
+        #vbox.addWidget(self.combo)
+
+        self.stack = QStackedLayout()
+        vbox.addLayout(self.stack)
+
+    def agregar_editor(self, nombre=""):
+        if not nombre:
+            nombre = "Nuevo_archivo"
+        editor_widget = editor.crear_editor(nombre_archivo=nombre)
+        #self.combo.agregar_item(nombre)
+        self.stack.addWidget(editor_widget)

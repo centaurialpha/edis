@@ -21,7 +21,7 @@ from PyQt4.QtCore import (
 from src import recursos
 from src.helpers import configuraciones
 from src.ui.widgets.creador_widget import ComboSelector
-from src.ui.lateral_widget import (
+from src.ui.contenedores.lateral import (
     arbol_simbolos,
     file_explorer,
     file_navigator

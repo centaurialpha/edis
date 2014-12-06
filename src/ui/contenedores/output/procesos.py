@@ -33,7 +33,7 @@ from src.helpers import (
     configuraciones,
     manejador_de_archivo
     )
-from src.ui.contenedor_secundario import salida_compilador
+from src.ui.contenedores.output import salida_compilador
 from src.ui.dialogos.preferencias import preferencias_compilacion as pc
 
 _TUX = configuraciones.LINUX

@@ -14,10 +14,10 @@ from PyQt4.QtGui import QKeySequence
 # Módulos QtCore
 from PyQt4.QtCore import Qt
 
-from src.ui.contenedor_secundario import procesos
+from src.ui.contenedores.output import procesos
 
 
-class ContenedorSecundario(QWidget):
+class ContenedorOutput(QWidget):
 
     instancia = None
 

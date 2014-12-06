@@ -9,7 +9,7 @@
 
 # Módulos QtGui
 from PyQt4.QtGui import (
-    QMainWindow
+    QMainWindow,
     )
 
 # Módulos QtCore
@@ -17,8 +17,8 @@ from PyQt4.QtGui import (
 # Módulos EDIS
 from src import ui
 from src.ui.contenedores import principal
-from src.ui.lateral_widget import lateral_container
-from src.ui.contenedor_secundario import contenedor_secundario
+from src.ui.contenedores.lateral import lateral_container
+from src.ui.contenedores.output import contenedor_secundario
 
 
 class EDIS(QMainWindow):
@@ -29,18 +29,27 @@ class EDIS(QMainWindow):
 
     # Cada instancia de una clase  se guarda en éste diccionario
     __COMPONENTES = {}
+    __MENUBAR = {}  # Nombre de los menus
 
     def __init__(self):
         QMainWindow.__init__(self)
         self.setWindowTitle(ui.__nombre__)
         self.setMinimumSize(750, 500)
+        # Menú
+        EDIS.menu_bar(0, self.trUtf8("&Archivo"))
+        EDIS.menu_bar(1, self.trUtf8("&Editar"))
+        #EDIS.menu_bar(2, self.trUtf8("&Ver"))
+        #EDIS.menu_bar(3, self.trUtf8("&Buscar"))
+        #EDIS.menu_bar(4, self.trUtf8("&Herramientas"))
+        #EDIS.menu_bar(5, self.trUtf8("E&jecución"))
+        #EDIS.menu_bar(6, self.trUtf8("A&cerca de"))
+
+        menu = EDIS.componente("menu")
+        menu.cargar_menu(self)
         # Widget central
         self.central = EDIS.componente("central")
         self.cargar_contenedores(self.central)
         self.setCentralWidget(self.central)
-        # Barra de estado
-        self.barra_de_estado = EDIS.componente("barra_de_estado")
-        self.setStatusBar(self.barra_de_estado)
 
     @classmethod
     def cargar_componente(cls, nombre, instancia):
@@ -54,11 +63,26 @@ class EDIS(QMainWindow):
 
         return cls.__COMPONENTES.get(nombre, None)
 
+    @classmethod
+    def menu_bar(cls, clave, nombre):
+        """ Se guarda el nombre de cada menú """
+
+        cls.__MENUBAR[clave] = nombre
+
+    @classmethod
+    def get_menu(cls, clave):
+        """ Devuelve un diccionario con los menu """
+
+        return cls.__MENUBAR.get(clave, None)
+
     def cargar_contenedores(self, central):
+        """ Carga los 3 contenedores (editor, lateral y output """
+
         self.contenedor_editor = principal.EditorContainer(self)
-        self.contenedor_output = contenedor_secundario.ContenedorSecundario(self)
+        self.contenedor_output = contenedor_secundario.ContenedorOutput(self)
         self.contenedor_lateral = lateral_container.LateralContainer(self)
 
+        # Agrego los contenedores al widget central
         central.agregar_contenedor_lateral(self.contenedor_lateral)
         central.agregar_contenedor_editor(self.contenedor_editor)
         central.agregar_contenedor_output(self.contenedor_output)

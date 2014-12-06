@@ -7,7 +7,10 @@
 
 from PyQt4.QtGui import (
     QFont,
-    QColor
+    QColor,
+    QVBoxLayout,
+    QComboBox,
+    QWidget
     )
 
 from PyQt4.QtCore import (
@@ -28,13 +31,22 @@ log = logger.edisLogger('editor')
 
 
 def crear_editor(nombre_archivo=''):
-    ext = nombre_archivo.split('.')[-1]
-    if not ext in recursos.EXTENSIONES:
-        editor = Editor(nombre_archivo, ext)
-        log.warning('Extensión no soportada')
-    else:
-        editor = Editor(nombre_archivo)
+    #editor = Editor(nombre_archivo)
+    editor = Container(nombre_archivo)
+    log.debug('Creando editor')
     return editor
+
+
+class Container(QWidget):
+
+    def __init__(self, nombre_archivo):
+        super(Container, self).__init__()
+        vbox = QVBoxLayout(self)
+        vbox.setContentsMargins(0, 0, 0, 0)
+        combo = QComboBox()
+        editor = Editor(nombre_archivo)
+        vbox.addWidget(combo)
+        vbox.addWidget(editor)
 
 
 class Editor(Base):

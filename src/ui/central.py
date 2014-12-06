@@ -8,7 +8,8 @@
 from PyQt4.QtGui import (
     QWidget,
     QSplitter,
-    QHBoxLayout
+    QVBoxLayout,
+    QComboBox
     )
 
 from PyQt4.QtCore import Qt
@@ -21,8 +22,9 @@ class Central(QWidget):
     def __init__(self):
         QWidget.__init__(self)
 
-        box = QHBoxLayout(self)
+        box = QVBoxLayout(self)
         # Splitters
+
         self.splitter_principal = QSplitter(Qt.Vertical)
         self.splitter_secundario = QSplitter(Qt.Horizontal)
 
