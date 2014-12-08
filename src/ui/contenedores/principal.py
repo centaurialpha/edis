@@ -33,7 +33,6 @@ class EditorContainer(QWidget):
 
         # Stacked
         self.stack = QStackedWidget()
-        #self.stack.setStackingMode(QStackedLayout.StackAll)
         vbox.addWidget(self.stack)
 
         self.com = editor_widget.EditorWidget(self)
@@ -46,10 +45,6 @@ class EditorContainer(QWidget):
         if not nombre:
             nombre = "Nuevo_archivo"
         editor_widget = self.com.agregar_editor(nombre)
-        #print(editor_widget)
-        #self.stack.setCurrentIndex(self.stack.count() - 1)
-        #self.agregar_widget(editor_widget)
-        #return editor_widget
         return editor_widget
 
     def abrir_archivo(self, nombre=""):
@@ -57,7 +52,6 @@ class EditorContainer(QWidget):
         if not nombre:
             carpeta = os.path.expanduser("~")
             editor_widget = self.currentWidget()
-            print(editor_widget)
             if editor_widget and editor_widget.iD:
                 carpeta = self.__ultima_carpeta_visitada(editor_widget.iD)
             archivos = QFileDialog.getOpenFileNames(self,
@@ -76,12 +70,20 @@ class EditorContainer(QWidget):
         self.widget_actual.no_esta_abierto = True
 
     def __ultima_carpeta_visitada(self, path):
+        """ Devuelve la última carpeta a la que se accedió """
+
         return QFileInfo(path).absolutePath()
 
     def __archivo_abierto(self, archivo):
-        t = self.widget_actual.editores
-        for i in t:
-            if i.iD == archivo:
+        """
+        Retorna True si un archivo ya esta abierto,
+        False en caso contrario
+
+        """
+
+        editores = self.widget_actual.editores
+        for editor_widget in editores:
+            if editor_widget.iD == archivo:
                 return True
         return False
 

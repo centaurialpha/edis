@@ -72,6 +72,7 @@ class EditorWidget(QWidget):
         vbox.setContentsMargins(0, 0, 0, 0)
         vbox.setSpacing(0)
         self.no_esta_abierto = True
+        # Instancias de editores
         self.editores = []
 
         self.frame = Frame()
