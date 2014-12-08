@@ -26,17 +26,17 @@ class EditorContainer(QWidget):
         vbox = QVBoxLayout(self)
         vbox.setContentsMargins(0, 0, 0, 0)
         vbox.setSpacing(0)
-        #self.combo = combo_widget.ComboWidget(self)
-        #vbox.addWidget(self.combo)
 
+        # Stacked
         self.stack = QStackedLayout()
+        self.stack.setStackingMode(QStackedLayout.StackAll)
         vbox.addLayout(self.stack)
 
     def agregar_editor(self, nombre=""):
         if not nombre:
             nombre = "Nuevo_archivo"
         editor_widget = editor.crear_editor(nombre_archivo=nombre)
-        self.stack.addWidget(editor_widget)
+        self.agregar_widget(editor_widget)
         return editor_widget
 
     def abrir_archivo(self, nombre=""):
@@ -51,6 +51,15 @@ class EditorContainer(QWidget):
         nuevo_editor = self.agregar_editor(archivo)
         nuevo_editor.texto = contenido
 
+    def agregar_widget(self, widget):
+        """ Agrega @widget al stacked """
+
+        self.stack.addWidget(widget)
+
+    def eliminar_widget(self, widget):
+        """ Elimina el @widget del stacked """
+
+        self.stack.removeWidget(widget)
     def currentWidget(self):
         """ Widget actual """
 
