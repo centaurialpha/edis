@@ -66,12 +66,14 @@ class EditorContainer(QWidget):
         else:
             archivos = [nombre]
         for archivo in archivos:
-            if self.__archivo_abierto(archivo):
-                continue
-            contenido = manejador_de_archivo.leer_contenido_de_archivo(archivo)
-            nuevo_editor = self.agregar_editor(archivo)
-            nuevo_editor.texto = contenido
-            nuevo_editor.iD = archivo
+            if not self.__archivo_abierto(archivo):
+                self.widget_actual.no_esta_abierto = False
+                contenido = manejador_de_archivo.leer_contenido_de_archivo(
+                            archivo)
+                nuevo_editor = self.agregar_editor(archivo)
+                nuevo_editor.texto = contenido
+                nuevo_editor.iD = archivo
+        self.widget_actual.no_esta_abierto = True
 
     def __ultima_carpeta_visitada(self, path):
         return QFileInfo(path).absolutePath()

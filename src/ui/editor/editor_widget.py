@@ -71,7 +71,7 @@ class EditorWidget(QWidget):
         vbox = QVBoxLayout(self)
         vbox.setContentsMargins(0, 0, 0, 0)
         vbox.setSpacing(0)
-        self.abierto = True
+        self.no_esta_abierto = True
         self.editores = []
 
         self.frame = Frame()
@@ -105,7 +105,7 @@ class EditorWidget(QWidget):
     def _editor_modificado(self, valor=True):
         combo = self.frame.combo
         wid = self.stack.currentWidget()
-        if isinstance(wid, editor.Editor) and valor and self.abierto:
+        if isinstance(wid, editor.Editor) and valor and self.no_esta_abierto:
             combo.setItemText(combo.currentIndex(), '*' + combo.currentText())
         else:
             texto = combo.currentText().split('*')[-1]
