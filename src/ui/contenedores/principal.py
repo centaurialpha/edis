@@ -10,60 +10,94 @@ import os
 from PyQt4.QtGui import (
     QWidget,
     QVBoxLayout,
-    QStackedLayout,
+    QStackedWidget,
     QFileDialog
     )
 
+from PyQt4.QtCore import *
+
 from src.helpers import manejador_de_archivo
 from src import recursos
-from src.ui.editor import editor
+from src.ui.editor import editor, editor_widget
+from src.ui.edis_main import EDIS
 
 
 class EditorContainer(QWidget):
 
-    def __init__(self, edis):
+    def __init__(self, edis=None):
         QWidget.__init__(self, edis)
+        self.setAcceptDrops(True)
         vbox = QVBoxLayout(self)
         vbox.setContentsMargins(0, 0, 0, 0)
         vbox.setSpacing(0)
 
         # Stacked
-        self.stack = QStackedLayout()
-        self.stack.setStackingMode(QStackedLayout.StackAll)
-        vbox.addLayout(self.stack)
+        self.stack = QStackedWidget()
+        #self.stack.setStackingMode(QStackedLayout.StackAll)
+        vbox.addWidget(self.stack)
+
+        self.com = editor_widget.EditorWidget(self)
+        self.widget_actual = self.com
+        vbox.addWidget(self.com)
+
+        EDIS.cargar_componente("principal", self)
 
     def agregar_editor(self, nombre=""):
         if not nombre:
             nombre = "Nuevo_archivo"
-        editor_widget = editor.crear_editor(nombre_archivo=nombre)
-        self.agregar_widget(editor_widget)
+        editor_widget = self.com.agregar_editor(nombre)
+        #print(editor_widget)
+        #self.stack.setCurrentIndex(self.stack.count() - 1)
+        #self.agregar_widget(editor_widget)
+        #return editor_widget
         return editor_widget
 
     def abrir_archivo(self, nombre=""):
         #FIXME: Comprobar si el archivo ya está abierto
         if not nombre:
             carpeta = os.path.expanduser("~")
-            #FIXME: Abrir lista de archivos
-            archivo = QFileDialog.getOpenFileName(self,
+            editor_widget = self.currentWidget()
+            print(editor_widget)
+            if editor_widget and editor_widget.iD:
+                carpeta = self.__ultima_carpeta_visitada(editor_widget.iD)
+            archivos = QFileDialog.getOpenFileNames(self,
                             self.trUtf8("Abrir archivo"), carpeta,
                             recursos.EXTENSIONES)
-        contenido = manejador_de_archivo.leer_contenido_de_archivo(archivo)
-        nuevo_editor = self.agregar_editor(archivo)
-        nuevo_editor.texto = contenido
+        else:
+            archivos = [nombre]
+        for archivo in archivos:
+            if self.__archivo_abierto(archivo):
+                continue
+            contenido = manejador_de_archivo.leer_contenido_de_archivo(archivo)
+            nuevo_editor = self.agregar_editor(archivo)
+            nuevo_editor.texto = contenido
+            nuevo_editor.iD = archivo
+
+    def __ultima_carpeta_visitada(self, path):
+        return QFileInfo(path).absolutePath()
+
+    def __archivo_abierto(self, archivo):
+        t = self.widget_actual.editores
+        for i in t:
+            if i.iD == archivo:
+                return True
+        return False
 
     def agregar_widget(self, widget):
         """ Agrega @widget al stacked """
 
         self.stack.addWidget(widget)
+        self.stack.setCurrentWidget(widget)
 
     def eliminar_widget(self, widget):
         """ Elimina el @widget del stacked """
 
         self.stack.removeWidget(widget)
+
     def currentWidget(self):
         """ Widget actual """
 
-        return self.stack.currentWidget()
+        return self.widget_actual.currentWidget()
 
     def devolver_editor(self):
         """ Devuelve el Editor si el widget actual es una instancia de él,
@@ -79,3 +113,6 @@ class EditorContainer(QWidget):
 
     def guardar_archivo_como(self):
         pass
+
+
+principal = EditorContainer()

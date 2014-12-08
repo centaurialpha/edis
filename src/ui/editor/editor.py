@@ -75,10 +75,10 @@ class Editor(Base):
                                     self._tema['brace-unforeground'])
 
         # Conexión de señales
-        self.connect(self, SIGNAL("modificationChanged(bool)"),
-                    self.__modificado)
-        self.connect(self, SIGNAL("textChanged()"),
-                    self.__texto_cambiado)
+        #self.connect(self, SIGNAL("modificationChanged(bool)"),
+                    #self.__modificado)
+        #self.connect(self, SIGNAL("textChanged()"),
+                    #self.__texto_cambiado)
 
     def flags(self):
         """ Extras para el editor """
@@ -103,22 +103,22 @@ class Editor(Base):
 
         return self.getCursorPosition()
 
-    def __modificado(self, estado):
-        self._modificado.emit(estado)
+    #def __modificado(self, estado):
+        #self._modificado.emit(estado)
 
-    def __texto_cambiado(self):
-        #FIXME: hago lo mismo en guardado()
-        if not self.isUndoAvailable():
-            self._undo.emit(self)
-            self.nuevo_archivo = False
-            self.texto_modificado = False
+    #def __texto_cambiado(self):
+        ##FIXME: hago lo mismo en guardado()
+        #if not self.isUndoAvailable():
+            #self._undo.emit(self)
+            #self.nuevo_archivo = False
+            #self.texto_modificado = False
 
-    def guardado(self, v=False):
-        if not v:
-            self._guardado.emit(self)
-            self.nuevo_archivo = False
-            self.texto_modificado = False
-            self.setModified(self.texto_modificado)
+    #def guardado(self, v=False):
+        #if not v:
+            #self._guardado.emit(self)
+            #self.nuevo_archivo = False
+            #self.texto_modificado = False
+            #self.setModified(self.texto_modificado)
 
     def _margen_de_linea(self, margen=None):
         if configuraciones.MARGEN:

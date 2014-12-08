@@ -16,7 +16,7 @@ from PyQt4.QtGui import (
 
 # Módulos EDIS
 from src import ui
-from src.ui.contenedores import principal
+#from src.ui.contenedores import principal
 from src.ui.contenedores.lateral import lateral_container
 from src.ui.contenedores.output import contenedor_secundario
 from src.ui.menu.menu_archivo import MenuArchivo
@@ -85,7 +85,8 @@ class EDIS(QMainWindow):
     def cargar_contenedores(self, central):
         """ Carga los 3 contenedores (editor, lateral y output """
 
-        self.contenedor_editor = principal.EditorContainer(self)
+        principal = EDIS.componente("principal")
+        self.contenedor_editor = principal
         self.contenedor_output = contenedor_secundario.ContenedorOutput(self)
         self.contenedor_lateral = lateral_container.LateralContainer(self)
 

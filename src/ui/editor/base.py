@@ -19,14 +19,16 @@ from PyQt4.Qsci import (
     QsciScintilla
     )
 
+from src.ui import tabitem
 from src.helpers import configuraciones
 from src.ui.editor import lexer
 
 
-class Base(QsciScintilla):
+class Base(QsciScintilla, tabitem.TabItem):
 
     def __init__(self):
-        super(Base, self).__init__()
+        QsciScintilla.__init__(self)
+        tabitem.TabItem.__init__(self)
         # Configuración de Qscintilla
         self.setCaretLineVisible(True)
         self.setIndentationsUseTabs(False)
@@ -48,23 +50,12 @@ class Base(QsciScintilla):
         self.setFolding(QsciScintilla.BoxedFoldStyle)
 
         self.__fuente = None
-        self._nombre = ""
         self.cargar_signals()
 
     def cargar_signals(self):
         """ Carga señales del editor """
 
         self.linesChanged.connect(self.actualizar_sidebar)
-
-    @property
-    def nombre(self):
-        return self._nombre
-
-    @nombre.setter
-    def nombre(self, _nombre):
-        self._nombre = _nombre
-        if _nombre:
-            self.nuevo_archivo = False
 
     @property
     def texto(self):

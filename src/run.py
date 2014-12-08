@@ -13,8 +13,11 @@ from src.helpers import (
     )
 
 #lint:disable
-from src.ui import central
-from src.ui.widgets import barra_de_estado
+#from src.ui import central
+#from src.ui.contenedores import principal
+#from src.ui.widgets import barra_de_estado
+import src.ui.central
+import src.ui.contenedores.principal
 from src.ui.edis_main import EDIS
 #lint:enable
 
