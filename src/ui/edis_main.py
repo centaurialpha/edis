@@ -19,6 +19,10 @@ from src import ui
 from src.ui.contenedores import principal
 from src.ui.contenedores.lateral import lateral_container
 from src.ui.contenedores.output import contenedor_secundario
+from src.ui.menu.menu_archivo import MenuArchivo
+#lint:disable
+#from src.ui.menu import menu_archivo
+#lint:enable
 
 
 class EDIS(QMainWindow):
@@ -36,20 +40,23 @@ class EDIS(QMainWindow):
         self.setWindowTitle(ui.__nombre__)
         self.setMinimumSize(750, 500)
         # Menú
+        #FIXME: Modificar la creación de menú
         EDIS.menu_bar(0, self.trUtf8("&Archivo"))
         EDIS.menu_bar(1, self.trUtf8("&Editar"))
-        #EDIS.menu_bar(2, self.trUtf8("&Ver"))
-        #EDIS.menu_bar(3, self.trUtf8("&Buscar"))
-        #EDIS.menu_bar(4, self.trUtf8("&Herramientas"))
-        #EDIS.menu_bar(5, self.trUtf8("E&jecución"))
-        #EDIS.menu_bar(6, self.trUtf8("A&cerca de"))
+        EDIS.menu_bar(2, self.trUtf8("&Ver"))
+        EDIS.menu_bar(3, self.trUtf8("&Buscar"))
+        EDIS.menu_bar(4, self.trUtf8("&Herramientas"))
+        EDIS.menu_bar(5, self.trUtf8("E&jecución"))
+        EDIS.menu_bar(6, self.trUtf8("A&cerca de"))
 
-        menu = EDIS.componente("menu")
-        menu.cargar_menu(self)
         # Widget central
         self.central = EDIS.componente("central")
         self.cargar_contenedores(self.central)
         self.setCentralWidget(self.central)
+
+        menu = self.menuBar()
+        menu_archivo = menu.addMenu("&Archivo")
+        self.menu_archivo = MenuArchivo(menu_archivo, self)
 
     @classmethod
     def cargar_componente(cls, nombre, instancia):

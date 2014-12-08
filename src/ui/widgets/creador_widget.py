@@ -23,34 +23,6 @@ from PyQt4.QtCore import (
     )
 
 
-def crear_boton(parent, texto=None, atajo=None, icono=None, tip=None,
-                triggered=None, toggled=None):
-    """ Estructura:
-        @parent: parent
-        @texto: texto que se muestra en el botón
-        @atajo: shortcut de la acción
-        @icono: icono del botón
-        @tip: status tip
-        @triggered: señal
-    """
-    boton = QToolButton(parent)
-    if texto is not None:
-        boton.setText(texto)
-    if icono is not None:
-        boton.setIcon(QIcon(icono))
-    if texto is not None or tip is not None:
-        boton.setToolTip(texto if tip is None else tip)
-    if triggered is not None:
-        QObject.connect(boton, SIGNAL("clicked()"), triggered)
-    if toggled is not None:
-        QObject.connect(boton, SIGNAL("toggled(bool)"), toggled)
-        boton.setCheckable(True)
-    if atajo is not None:
-        boton.setShortcut(atajo)
-
-    return boton
-
-
 def get_icono_estandard(nombre):
     """ Se devuelve el ícono estándar del sistema. """
 

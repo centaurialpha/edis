@@ -14,7 +14,6 @@ from src.helpers import (
 
 #lint:disable
 from src.ui import central
-from src.ui.menu import menu
 from src.ui.widgets import barra_de_estado
 from src.ui.edis_main import EDIS
 #lint:enable
