@@ -16,6 +16,7 @@ from PyQt4.QtGui import (
     QWidget,
     QStackedLayout,
     QSizePolicy,
+    QMessageBox
     )
 
 from PyQt4.QtCore import (
@@ -65,6 +66,8 @@ class Frame(QFrame):
 
 class EditorWidget(QWidget):
 
+    guardar_editor_actual = pyqtSignal(name="Guardar_Editor_Actual")
+
     def __init__(self, parent=None):
         super(EditorWidget, self).__init__()
         self.parent = parent
@@ -108,6 +111,7 @@ class EditorWidget(QWidget):
         wid = self.stack.currentWidget()
         if isinstance(wid, editor.Editor) and valor and self.no_esta_abierto:
             combo.setItemText(combo.currentIndex(), '*' + combo.currentText())
+            wid.texto_modificado = True
         else:
             texto = combo.currentText().split('*')[-1]
             combo.setItemText(combo.currentIndex(), texto)
@@ -121,3 +125,32 @@ class EditorWidget(QWidget):
 
     def currentWidget(self):
         return self.stack.currentWidget()
+
+    def currentIndex(self):
+        return self.stack.currentIndex()
+
+    def removeWidget(self, widget):
+        self.stack.removeWidget(widget)
+
+    def cerrar(self):
+        indice = self.currentIndex()
+        if indice != -1:
+            SI = QMessageBox.Yes
+            NO = QMessageBox.No
+            CANCELAR = QMessageBox.Cancel
+            self.cambiar_widget(indice)
+            editor = self.currentWidget()
+            if editor.texto_modificado:
+                respuesta = QMessageBox.question(self, self.trUtf8(
+                                                "El archivo no está guardado"),
+                                                self.trUtf8("¿Guardar?"),
+                                                SI | NO | CANCELAR)
+                if respuesta == SI:
+                    self.guardar_editor_actual.emit()
+                    if editor.texto_modificado:
+                        return
+                elif respuesta == CANCELAR:
+                    return
+            self.removeWidget(editor)
+            #FIXME: Hacer métodos para ésto
+            self.frame.combo.removeItem(self.frame.combo.currentIndex())

@@ -40,6 +40,11 @@ class EditorContainer(QWidget):
         vbox.addWidget(self.com)
 
         EDIS.cargar_componente("principal", self)
+        self.instalar_signals()
+
+    def instalar_signals(self):
+        self.connect(self.widget_actual, SIGNAL("Guardar_Editor_Actual()"),
+                    self.guardar_archivo)
 
     def agregar_editor(self, nombre=""):
         if not nombre:
@@ -112,8 +117,11 @@ class EditorContainer(QWidget):
             return widget
         return None
 
+    def cerrar_archivo(self):
+        self.widget_actual.cerrar()
+
     def guardar_archivo(self):
-        pass
+        print("Guardando...")
 
     def guardar_archivo_como(self):
         pass

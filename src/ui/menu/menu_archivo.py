@@ -51,8 +51,13 @@ class MenuArchivo(QObject):
         {
         'nombre': 'Abrir',
         'conexion': self.ide.contenedor_editor.abrir_archivo
-        }
+            },
+        {
+        'nombre': 'Cerrar',
+        'conexion': self.ide.contenedor_editor.cerrar_archivo
+            }
         )
+
         for accion in ACCIONES:
             qaccion = crear_accion(self, accion['nombre'],
                                     slot=accion['conexion'])
