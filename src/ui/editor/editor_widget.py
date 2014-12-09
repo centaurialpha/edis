@@ -79,7 +79,7 @@ class EditorWidget(QWidget):
         self.editores = []
 
         self.frame = Frame()
-        self.frame.setEnabled(False)
+        self.frame.hide()
         vbox.addWidget(self.frame)
 
         self.stack = QStackedLayout()
@@ -91,7 +91,7 @@ class EditorWidget(QWidget):
                     self.cambiar_widget)
 
     def agregar_editor(self, nombre):
-        self.frame.setEnabled(True)
+        self.frame.show()
         editor_ = editor.crear_editor(nombre)
         self.editores.append(editor_)
         self.frame.agregar_item(nombre)
@@ -117,22 +117,49 @@ class EditorWidget(QWidget):
             combo.setItemText(combo.currentIndex(), texto)
 
     def cambiar_widget(self, indice):
+        """ Cambia el widget del stack """
+
         self.stack.setCurrentIndex(indice)
 
     def resizeEvent(self, e):
+        """
+        Éste método es llamado automáticamente por Qt cuando se
+        redimensiona el widget
+
+        """
+
         super(EditorWidget, self).resizeEvent(e)
         self.setFixedHeight(self.parent.height())
 
     def currentWidget(self):
+        """ Devuelve el widget actual """
+
         return self.stack.currentWidget()
 
     def currentIndex(self):
+        """ Devuelve el índice del widget actual """
+
         return self.stack.currentIndex()
 
+    def archivos_sin_guardar(self):
+        """ Retorna una lista con los archivos modificados """
+
+        archivos = list()
+        for indice in range(len(self.editores)):
+            editor = self.editores[indice]
+            if editor.texto_modificado:
+                archivos.append(editor.iD)
+        return archivos
+
     def removeWidget(self, widget):
+        """ Eliminar el widget del stack """
+
         self.stack.removeWidget(widget)
 
     def cerrar(self):
+        """ Elimina el widget actual del contenedor """
+
+        #FIXME: Usar logger
         indice = self.currentIndex()
         if indice != -1:
             SI = QMessageBox.Yes
@@ -151,6 +178,13 @@ class EditorWidget(QWidget):
                         return
                 elif respuesta == CANCELAR:
                     return
-            self.removeWidget(editor)
+            del self.editores[indice]  # Eliminar de la lista
+            self.removeWidget(editor)  # Eliminar del stack
             #FIXME: Hacer métodos para ésto
             self.frame.combo.removeItem(self.frame.combo.currentIndex())
+            # Ocultar frame
+            if self.currentIndex() == -1:
+                self.frame.hide()
+        # Foco al widget actual
+        if self.currentWidget() is not None:
+            self.currentWidget().setFocus()

@@ -126,5 +126,10 @@ class EditorContainer(QWidget):
     def guardar_archivo_como(self):
         pass
 
+    def guardar_todo(self):
+        pass
+
+    def archivos_sin_guardar(self):
+        return self.widget_actual.archivos_sin_guardar()
 
 principal = EditorContainer()

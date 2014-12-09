@@ -10,6 +10,7 @@
 # Módulos QtGui
 from PyQt4.QtGui import (
     QMainWindow,
+    QIcon
     )
 
 # Módulos QtCore
@@ -19,7 +20,7 @@ from src import ui
 #from src.ui.contenedores import principal
 from src.ui.contenedores.lateral import lateral_container
 from src.ui.contenedores.output import contenedor_secundario
-from src.ui.menu.menu_archivo import MenuArchivo
+#from src.ui.menu.menu_archivo import MenuArchivo
 #lint:disable
 #from src.ui.menu import menu_archivo
 #lint:enable
@@ -39,6 +40,8 @@ class EDIS(QMainWindow):
         QMainWindow.__init__(self)
         self.setWindowTitle(ui.__nombre__)
         self.setMinimumSize(750, 500)
+        # Maximizado
+        self.showMaximized()
         # Menú
         #FIXME: Modificar la creación de menú
         EDIS.menu_bar(0, self.trUtf8("&Archivo"))
@@ -54,9 +57,10 @@ class EDIS(QMainWindow):
         self.cargar_contenedores(self.central)
         self.setCentralWidget(self.central)
 
-        menu = self.menuBar()
-        menu_archivo = menu.addMenu("&Archivo")
-        self.menu_archivo = MenuArchivo(menu_archivo, self)
+        self.cargar_menu()
+        #menu = self.menuBar()
+        #menu_archivo = menu.addMenu("&Archivo")
+        #self.menu_archivo = MenuArchivo(menu_archivo, self)
 
     @classmethod
     def cargar_componente(cls, nombre, instancia):
@@ -82,8 +86,32 @@ class EDIS(QMainWindow):
 
         return cls.__MENUBAR.get(clave, None)
 
+    def cargar_menu(self):
+        #FIXME: Modificar para submenues
+        #FIXME: Separadores
+        menu_bar = self.menuBar()
+        menu_edis = self.componente("menu")
+        principal = self.componente("principal")
+        for i in range(7):
+            menu = menu_bar.addMenu(self.get_menu(i))
+            for accion in menu_edis.acciones:
+                if accion.seccion == i:
+                    qaccion = menu.addAction(accion.nombre)
+                    if accion.atajo:
+                        qaccion.setShortcut(accion.atajo)
+                    icono = accion.icono
+                    if icono:
+                        qaccion.setIcon(QIcon(icono))
+                    if accion.conexion:
+                        funcion = getattr(principal, accion.conexion, None)
+                        # Es una función ?
+                        if hasattr(funcion, '__call__'):
+                            qaccion.triggered.connect(funcion)
+                    if accion.separador:
+                        menu.addSeparator()
+
     def cargar_contenedores(self, central):
-        """ Carga los 3 contenedores (editor, lateral y output """
+        """ Carga los 3 contenedores (editor, lateral y output) """
 
         principal = EDIS.componente("principal")
         self.contenedor_editor = principal
@@ -91,6 +119,18 @@ class EDIS(QMainWindow):
         self.contenedor_lateral = lateral_container.LateralContainer(self)
 
         # Agrego los contenedores al widget central
-        central.agregar_contenedor_lateral(self.contenedor_lateral)
+        #central.agregar_contenedor_lateral(self.contenedor_lateral)
         central.agregar_contenedor_editor(self.contenedor_editor)
-        central.agregar_contenedor_output(self.contenedor_output)
+        #central.agregar_contenedor_output(self.contenedor_output)
+
+    def closeEvent(self, e):
+        """
+        Éste médoto es llamado automáticamente por Qt cuando se
+        cierra la aplicación
+
+        """
+
+        super(EDIS, self).closeEvent(e)
+        principal = EDIS.componente("principal")
+        archivos_sin_guardar = principal.archivos_sin_guardar()
+        print(archivos_sin_guardar)
