@@ -60,6 +60,13 @@ Rectangle {
 
     }
 
+    ParallelAnimation {
+        id: animacion
+        running: true
+        NumberAnimation { target: contenedorLista; property: "width"; from: 0; to: 350; duration: 300 }
+        NumberAnimation { target: contenedorLista; property: "height"; from: 0; to: 280; duration: 300 }
+        }
+
     function cargar_archivo(nombre){
         modeloEjemplo.append({"nombre": nombre})
     }
