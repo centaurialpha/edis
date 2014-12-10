@@ -147,11 +147,7 @@ class EditorContainer(QWidget):
         dialogo.show()
 
     def archivos_abiertos(self):
-        lista = []
-        archivos = self.widget_actual
-        for archivo in archivos.editores:
-            lista.append(archivo.iD)
-        return lista
+        return self.widget_actual.archivos_abiertos()
 
 
 principal = EditorContainer()

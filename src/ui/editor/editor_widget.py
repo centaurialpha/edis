@@ -153,6 +153,14 @@ class EditorWidget(QWidget):
                 archivos.append(editor.iD)
         return archivos
 
+    def archivos_abiertos(self):
+        """ Retorna una lista con los archivos abiertos """
+
+        archivos = list()
+        for archivo in self.editores:
+            archivos.append(archivo.iD)
+        return archivos
+
     def removeWidget(self, widget):
         """ Eliminar el widget del stack """
 
