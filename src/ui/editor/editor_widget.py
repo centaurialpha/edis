@@ -163,12 +163,17 @@ class EditorWidget(QWidget):
 
     def removeWidget(self, widget):
         """ Eliminar el widget del stack """
-
+        #FIXME: enviar widget al método cerrar
         self.stack.removeWidget(widget)
+
+    def cerrar_todo(self):
+        for editor in self.editores:
+            self.removeWidget(editor)
 
     def cerrar(self):
         """ Elimina el widget actual del contenedor """
 
+        #FIXME: Recibir el editor como parámetro (?
         #FIXME: Usar logger
         indice = self.currentIndex()
         if indice != -1:
@@ -190,11 +195,6 @@ class EditorWidget(QWidget):
                     return
             del self.editores[indice]  # Eliminar de la lista
             self.removeWidget(editor)  # Eliminar del stack
-            #FIXME: Hacer métodos para ésto
-            #self.frame.combo.removeItem(self.frame.combo.currentIndex())
-            # Ocultar frame
-            #if self.currentIndex() == -1:
-                #self.frame.hide()
         # Foco al widget actual
         if self.currentWidget() is not None:
             self.currentWidget().setFocus()

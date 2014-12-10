@@ -125,23 +125,47 @@ class EditorContainer(QWidget):
     def cerrar_archivo(self):
         self.widget_actual.cerrar()
 
+    def cerrar_todo(self):
+        self.widget_actual.cerrar_todo()
+
     def selector(self):
         selector_ = selector.Selector(self)
         selector_.show()
 
-    def guardar_archivo(self):
-        print("Guardando...")
+    def guardar_archivo(self, weditor=None):
+        #FIXME: Controlar con try-except
+        if not weditor:
+            weditor = self.devolver_editor()
+            if not weditor:
+                return False
 
-    def guardar_archivo_como(self):
-        pass
+        if weditor.nuevo_archivo:
+            return self.guardar_archivo_como(weditor)
+        nombre_archivo = weditor.iD
+        codigo_fuente = weditor.texto
+        manejador_de_archivo.escribir_archivo(nombre_archivo, codigo_fuente)
+        weditor.iD = nombre_archivo
+
+    def guardar_archivo_como(self, weditor):
+        #FIXME: Controlar con try-except
+        carpeta = os.path.expanduser("~")
+        nombre_archivo = QFileDialog.getSaveFileName(self,
+                self.trUtf8("Guardar archivo"), carpeta)
+        if not nombre_archivo:
+            return False
+        nombre_archivo = manejador_de_archivo.escribir_archivo(nombre_archivo,
+                weditor.texto)
+        weditor.iD = nombre_archivo
 
     def guardar_todo(self):
-        pass
+        for editor in self.widget_actual.editores:
+            self.guardar_archivo(editor)
 
     def archivos_sin_guardar(self):
         return self.widget_actual.archivos_sin_guardar()
 
     def busqueda_rapida(self):
+        #FIXME:
         dialogo = busqueda.PopupBusqueda(self.widget_actual,
                                         self.widget_actual.frame.combo)
         dialogo.show()
