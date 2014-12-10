@@ -14,16 +14,14 @@ from PyQt4.QtGui import (
     )
 
 # Módulos QtCore
+from PyQt4.QtCore import (
+    SIGNAL,
+    )
 
 # Módulos EDIS
 from src import ui
-#from src.ui.contenedores import principal
 from src.ui.contenedores.lateral import lateral_container
 from src.ui.contenedores.output import contenedor_secundario
-#from src.ui.menu.menu_archivo import MenuArchivo
-#lint:disable
-#from src.ui.menu import menu_archivo
-#lint:enable
 
 
 class EDIS(QMainWindow):
@@ -43,7 +41,6 @@ class EDIS(QMainWindow):
         # Maximizado
         self.showMaximized()
         # Menú
-        #FIXME: Modificar la creación de menú
         EDIS.menu_bar(0, self.trUtf8("&Archivo"))
         EDIS.menu_bar(1, self.trUtf8("&Editar"))
         EDIS.menu_bar(2, self.trUtf8("&Ver"))
@@ -51,16 +48,16 @@ class EDIS(QMainWindow):
         EDIS.menu_bar(4, self.trUtf8("&Herramientas"))
         EDIS.menu_bar(5, self.trUtf8("E&jecución"))
         EDIS.menu_bar(6, self.trUtf8("A&cerca de"))
+        self.cargar_menu()
+
+        # Barra de estado
+        self.barra_de_estado = EDIS.componente("barra_de_estado")
+        self.setStatusBar(self.barra_de_estado)
 
         # Widget central
         self.central = EDIS.componente("central")
         self.cargar_contenedores(self.central)
         self.setCentralWidget(self.central)
-
-        self.cargar_menu()
-        #menu = self.menuBar()
-        #menu_archivo = menu.addMenu("&Archivo")
-        #self.menu_archivo = MenuArchivo(menu_archivo, self)
 
     @classmethod
     def cargar_componente(cls, nombre, instancia):
@@ -122,6 +119,13 @@ class EDIS(QMainWindow):
         #central.agregar_contenedor_lateral(self.contenedor_lateral)
         central.agregar_contenedor_editor(self.contenedor_editor)
         #central.agregar_contenedor_output(self.contenedor_output)
+        self.connect(self.contenedor_editor,
+                    SIGNAL("archivo_cambiado(QString)"),
+                    self.__actualizar_estado)
+
+    def __actualizar_estado(self, archivo):
+        #FIXME: Hacer nuevo método para esto en barra de estado
+        self.barra_de_estado.nombre_archivo.cambiar_texto(archivo)
 
     def closeEvent(self, e):
         """
@@ -132,5 +136,4 @@ class EDIS(QMainWindow):
 
         super(EDIS, self).closeEvent(e)
         principal = EDIS.componente("principal")
-        archivos_sin_guardar = principal.archivos_sin_guardar()
-        print(archivos_sin_guardar)
+        archivos_sin_guardar = principal.archivos_sin_guardar()  #lint:ok

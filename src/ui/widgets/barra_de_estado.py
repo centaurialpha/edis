@@ -32,7 +32,7 @@ class BarraDeEstado(QStatusBar):
 
         self._widgets = [
             self.nombre_archivo,
-            self.estado_cursor,
+            #self.estado_cursor,
             self.archivo_modificado,
             ]
 

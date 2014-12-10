@@ -16,7 +16,8 @@ from PyQt4.QtGui import (
 
 from PyQt4.QtCore import (
     SIGNAL,
-    QFileInfo
+    QFileInfo,
+    pyqtSignal
     )
 
 from src.helpers import manejador_de_archivo
@@ -28,6 +29,8 @@ from src.ui.contenedores import selector
 
 
 class EditorContainer(QWidget):
+
+    archivo_cambiado = pyqtSignal(['QString'])
 
     def __init__(self, edis=None):
         QWidget.__init__(self, edis)
@@ -50,6 +53,14 @@ class EditorContainer(QWidget):
     def instalar_signals(self):
         self.connect(self.widget_actual, SIGNAL("Guardar_Editor_Actual()"),
                     self.guardar_archivo)
+        self.connect(self.widget_actual.stack, SIGNAL("currentChanged(int)"),
+                    self.cambiar_widget)
+
+    def cambiar_widget(self, indice):
+        """ Señal emitida cuando se cambia de editor """
+
+        nombre_archivo = self.widget_actual.stack.widget(indice).iD
+        self.archivo_cambiado.emit(nombre_archivo)
 
     def agregar_editor(self, nombre=""):
         if not nombre:
@@ -58,7 +69,6 @@ class EditorContainer(QWidget):
         return editor_widget
 
     def abrir_archivo(self, nombre=""):
-        #FIXME: Comprobar si el archivo ya está abierto
         if not nombre:
             carpeta = os.path.expanduser("~")
             editor_widget = self.currentWidget()
@@ -77,6 +87,8 @@ class EditorContainer(QWidget):
                 nuevo_editor = self.agregar_editor(archivo)
                 nuevo_editor.texto = contenido
                 nuevo_editor.iD = archivo
+                self.archivo_cambiado.emit(archivo)
+
         self.widget_actual.no_esta_abierto = True
 
     def __ultima_carpeta_visitada(self, path):
