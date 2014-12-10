@@ -14,14 +14,14 @@ from PyQt4.QtGui import (
     QLabel,
     QComboBox,
     QWidget,
-    QStackedLayout,
+    QStackedWidget,
     QSizePolicy,
-    QMessageBox
+    QMessageBox,
     )
 
 from PyQt4.QtCore import (
     SIGNAL,
-    pyqtSignal
+    pyqtSignal,
     )
 
 from src.ui.edis_main import EDIS
@@ -39,22 +39,22 @@ class Frame(QFrame):
         box.setSpacing(0)
 
         self.combo = QComboBox()
-        box.addWidget(self.combo)
+        #box.addWidget(self.combo)
 
         self.posicion_cursor = "Lin: %d / Col: %d"
         self.lbl_cursor = QLabel(self.posicion_cursor % (0, 0))
         self.lbl_cursor.setSizePolicy(QSizePolicy.Fixed, QSizePolicy.Fixed)
-        box.addWidget(self.lbl_cursor)
+        #box.addWidget(self.lbl_cursor)
 
         self.btn_cerrar = QPushButton(self.style().standardIcon(
                                         QStyle.SP_DialogCloseButton), '')
         self.btn_cerrar.setSizePolicy(QSizePolicy.Fixed, QSizePolicy.Fixed)
-        box.addWidget(self.btn_cerrar)
+        #box.addWidget(self.btn_cerrar)
 
         self.combo.currentIndexChanged[int].connect(self.current_changed)
 
-    def actualizar_linea_columna(self, linea, columna):
-        self.lbl_cursor.setText(self.posicion_cursor % (linea, columna))
+    #def actualizar_linea_columna(self, linea, columna):
+        #self.lbl_cursor.setText(self.posicion_cursor % (linea, columna))
 
     def agregar_item(self, texto):
         self.combo.addItem(texto)
@@ -75,46 +75,48 @@ class EditorWidget(QWidget):
         vbox.setContentsMargins(0, 0, 0, 0)
         vbox.setSpacing(0)
         self.no_esta_abierto = True
+
         # Instancias de editores
         self.editores = []
 
-        self.frame = Frame()
-        self.frame.hide()
-        vbox.addWidget(self.frame)
+        #self.frame = Frame()
+        #self.frame.hide()
+        #vbox.addWidget(self.frame)
 
-        self.stack = QStackedLayout()
-        vbox.addLayout(self.stack)
+        self.stack = QStackedWidget()
+        vbox.addWidget(self.stack)
 
         self.principal = EDIS.componente("principal")
 
-        self.connect(self.frame, SIGNAL("cambio_editor(int)"),
-                    self.cambiar_widget)
+        #self.connect(self.frame, SIGNAL("cambio_editor(int)"),
+                    #self.cambiar_widget)
 
     def agregar_editor(self, nombre):
-        self.frame.show()
+        #self.frame.show()
         editor_ = editor.crear_editor(nombre)
         self.editores.append(editor_)
-        self.frame.agregar_item(nombre)
-        self.connect(editor_, SIGNAL("cursorPositionChanged(int, int)"),
-                    self._actualizar_cursor)
+        #self.frame.agregar_item(nombre)
+        #self.connect(editor_, SIGNAL("cursorPositionChanged(int, int)"),
+                    #self._actualizar_cursor)
         self.connect(editor_, SIGNAL("modificationChanged(bool)"),
                     self._editor_modificado)
         self.stack.addWidget(editor_)
         self.stack.setCurrentWidget(editor_)
         return editor_
 
-    def _actualizar_cursor(self, linea, columna):
-        self.frame.actualizar_linea_columna(linea + 1, columna)
+    #def _actualizar_cursor(self, linea, columna):
+        #self.frame.actualizar_linea_columna(linea + 1, columna)
 
     def _editor_modificado(self, valor=True):
-        combo = self.frame.combo
-        wid = self.stack.currentWidget()
-        if isinstance(wid, editor.Editor) and valor and self.no_esta_abierto:
-            combo.setItemText(combo.currentIndex(), '*' + combo.currentText())
-            wid.texto_modificado = True
-        else:
-            texto = combo.currentText().split('*')[-1]
-            combo.setItemText(combo.currentIndex(), texto)
+        #combo = self.frame.combo
+        #wid = self.stack.currentWidget()
+        #if isinstance(wid, editor.Editor) and valor and self.no_esta_abierto:
+            #combo.setItemText(combo.currentIndex(), '*' + combo.currentText())
+            #wid.texto_modificado = True
+        #else:
+            #texto = combo.currentText().split('*')[-1]
+            #combo.setItemText(combo.currentIndex(), texto)
+        pass
 
     def cambiar_widget(self, indice):
         """ Cambia el widget del stack """
@@ -181,10 +183,10 @@ class EditorWidget(QWidget):
             del self.editores[indice]  # Eliminar de la lista
             self.removeWidget(editor)  # Eliminar del stack
             #FIXME: Hacer métodos para ésto
-            self.frame.combo.removeItem(self.frame.combo.currentIndex())
+            #self.frame.combo.removeItem(self.frame.combo.currentIndex())
             # Ocultar frame
-            if self.currentIndex() == -1:
-                self.frame.hide()
+            #if self.currentIndex() == -1:
+                #self.frame.hide()
         # Foco al widget actual
         if self.currentWidget() is not None:
             self.currentWidget().setFocus()

@@ -8,12 +8,6 @@
 """ Manejo de archivos """
 
 import os
-# lint:disable
-try:
-    import json
-except ImportError:
-    import simplejson as json
-# lint:enable
 
 from PyQt4.QtGui import QMessageBox
 
@@ -22,8 +16,6 @@ from PyQt4.QtCore import (
     QTextStream,
     QIODevice
     )
-
-from src import recursos
 
 
 def _nombreBase(nombre_de_archivo):
@@ -125,25 +117,3 @@ def archivo_existente(path, nombre_archivo=''):
     if nombre_archivo:
         path = os.path.join(path, nombre_archivo)
     return os.path.isfile(path)
-
-
-def guardar_tema_editor(nombre_archivo, tema):
-    archivo = open(nombre_archivo, mode='w')
-    json.dump(tema, archivo, indent=2)
-    archivo.close()
-
-
-def cargar_temas_editor():
-    archivos = os.listdir(recursos.TEMAS_GUARDADOS)
-    temas = {}
-    for tema in archivos:
-        if tema.endswith('.color'):
-            estructura = None
-            nombre_archivo = os.path.join(recursos.TEMAS_GUARDADOS, tema)
-            leer = open(nombre_archivo, 'r')
-            estructura = json.load(leer)
-            leer.close()
-            nombre = unicode(tema[:-6])
-            temas[nombre] = estructura
-
-    return temas

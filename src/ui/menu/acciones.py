@@ -43,8 +43,31 @@ ACCIONES = (
         'separador': True},
     {
         'seccion': 0,
+        'nombre': 'Imprimir',
+        'conexion': "imprimir_archivo"},
+    {
+        'seccion': 0,
+        'nombre': 'Propiedades',
+        'conexion': "propiedades_de_archivo",
+        'separador': True},
+    {
+        'seccion': 0,
         'nombre': 'Cerrar',
-        'conexion': 'cerrar_archivo', },
+        'conexion': 'cerrar_archivo',
+        'atajo': _ATAJO['cerrar-tab']},
+    {
+        'seccion': 0,
+        'nombre': 'Cerrar todo',
+        'conexion': 'cerrar_todo'},
+    {
+        'seccion': 0,
+        'nombre': 'Cerrar los demás',
+        'conexion': 'cerrar_lo_demas',
+        'separador': True},
+    {
+        'seccion': 0,
+        'nombre': 'Salir',
+        'conexion': 'salir'},
     {
         'seccion': 1,
         'nombre': 'Deshacer',
@@ -80,5 +103,36 @@ ACCIONES = (
         'seccion': 1,
         'nombre': 'Duplicar línea',
         'conexion': 'duplicar_linea',
-        'separador': True}
+        'separador': True},
+    {
+        'seccion': 1,
+        'nombre': 'Texto a minúsculas',
+        'conexion': "convertir_a_minusculas"},
+    {
+        'seccion': 1,
+        'nombre': 'Texto a mayúsculas',
+        'conexion': "convertir_a_mayusculas",
+        'separador': True},
+    {
+        'seccion': 1,
+        'nombre': 'Indentar',
+        'conexion': 'indentar'},
+    {
+        'seccion': 1,
+        'nombre': 'Remover indentación',
+        'conexion': 'remover_indentacion'},
+    {
+        'seccion': 1,
+        'nombre': 'Configuración',
+        'conexion': "configuracion_edis",
+        'separador': True},
+    {
+        'seccion': 2,
+        'nombre': 'Selector',
+        'conexion': 'selector',
+        'atajo': _ATAJO['selector']},
+    {
+        'seccion': 3,
+        'nombre': 'Buscar',
+        'conexion': 'busqueda_rapida'}
 )

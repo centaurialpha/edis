@@ -10,16 +10,21 @@ import os
 from PyQt4.QtGui import (
     QWidget,
     QVBoxLayout,
-    QStackedWidget,
-    QFileDialog
+    QStackedLayout,
+    QFileDialog,
     )
 
-from PyQt4.QtCore import *
+from PyQt4.QtCore import (
+    SIGNAL,
+    QFileInfo
+    )
 
 from src.helpers import manejador_de_archivo
 from src import recursos
 from src.ui.editor import editor, editor_widget
 from src.ui.edis_main import EDIS
+from src.ui.widgets import busqueda
+from src.ui.contenedores import selector
 
 
 class EditorContainer(QWidget):
@@ -32,8 +37,8 @@ class EditorContainer(QWidget):
         vbox.setSpacing(0)
 
         # Stacked
-        self.stack = QStackedWidget()
-        vbox.addWidget(self.stack)
+        self.stack = QStackedLayout()
+        vbox.addLayout(self.stack)
 
         self.com = editor_widget.EditorWidget(self)
         self.widget_actual = self.com
@@ -120,6 +125,10 @@ class EditorContainer(QWidget):
     def cerrar_archivo(self):
         self.widget_actual.cerrar()
 
+    def selector(self):
+        selector_ = selector.Selector(self)
+        selector_.show()
+
     def guardar_archivo(self):
         print("Guardando...")
 
@@ -131,5 +140,18 @@ class EditorContainer(QWidget):
 
     def archivos_sin_guardar(self):
         return self.widget_actual.archivos_sin_guardar()
+
+    def busqueda_rapida(self):
+        dialogo = busqueda.PopupBusqueda(self.widget_actual,
+                                        self.widget_actual.frame.combo)
+        dialogo.show()
+
+    def archivos_abiertos(self):
+        lista = []
+        archivos = self.widget_actual
+        for archivo in archivos.editores:
+            lista.append(archivo.iD)
+        return lista
+
 
 principal = EditorContainer()

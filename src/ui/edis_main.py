@@ -10,7 +10,7 @@
 # Módulos QtGui
 from PyQt4.QtGui import (
     QMainWindow,
-    QIcon
+    QIcon,
     )
 
 # Módulos QtCore

@@ -28,6 +28,8 @@ HOME_EDIS = os.path.join(HOME, ".edis")
 # Archivo de configuración
 CONFIGURACION = os.path.join(HOME_EDIS, "config.ini")
 LOG = os.path.join(HOME_EDIS, 'edis.log')
+# Selector
+SELECTOR_QML = os.path.join(PATH, "ui", "selector", "selector.qml")
 
 # Iconos
 ICONOS = {}
@@ -66,6 +68,7 @@ ATAJOS = {
     "ocultar-input": QKeySequence(Qt.Key_F7),
     "zoom-mas": QKeySequence(Qt.CTRL + Qt.Key_Plus),
     "zoom-menos": QKeySequence(Qt.CTRL + Qt.Key_Minus),
+    "selector": QKeySequence(Qt.CTRL + Qt.Key_M),
     # Código
     "compilar": QKeySequence(Qt.CTRL + Qt.Key_F5),
     "ejecutar": QKeySequence(Qt.CTRL + Qt.Key_F6),
