@@ -63,19 +63,19 @@ ATAJOS = {
     # Ver
     "fullscreen": QKeySequence(Qt.CTRL + Qt.Key_F11),
     "ocultar-todo": QKeySequence(Qt.Key_F11),
-    "ocultar-toolbar": QKeySequence(Qt.CTRL + Qt.Key_F12),
-    "ocultar-editor": QKeySequence(Qt.CTRL + Qt.Key_F1),
-    "ocultar-input": QKeySequence(Qt.Key_F7),
-    "zoom-mas": QKeySequence(Qt.CTRL + Qt.Key_Plus),
-    "zoom-menos": QKeySequence(Qt.CTRL + Qt.Key_Minus),
+    "mostrar-toolbar": QKeySequence(Qt.Key_F8),
+    "lateral": QKeySequence(Qt.Key_F6),
+    "mostrar-compilador": QKeySequence(Qt.Key_F7),
+    "acercar": QKeySequence(Qt.CTRL + Qt.Key_Plus),
+    "alejar": QKeySequence(Qt.CTRL + Qt.Key_Minus),
     "selector": QKeySequence(Qt.CTRL + Qt.Key_M),
     # Código
     "compilar": QKeySequence(Qt.CTRL + Qt.Key_F5),
     "ejecutar": QKeySequence(Qt.CTRL + Qt.Key_F6),
     "comp-ejec": QKeySequence(Qt.CTRL + Qt.Key_F10),
     # Buscar
-    "buscar": QKeySequence(Qt.CTRL + Qt.Key_F),
-    "buscar-archivos": QKeySequence(Qt.CTRL + Qt.Key_G),
+    "busqueda-rapida": QKeySequence(Qt.CTRL + Qt.Key_F),
+    "buscar": QKeySequence(Qt.CTRL + Qt.Key_H),
     "ir": QKeySequence(Qt.CTRL + Qt.Key_J)
     }
 

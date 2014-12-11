@@ -202,6 +202,46 @@ class EditorContainer(QWidget):
                                         self.widget_actual.frame.combo)
         dialogo.show()
 
+    def deshacer(self):
+        weditor = self.devolver_editor()
+        if weditor is not None:
+            weditor.deshacer()
+
+    def rehacer(self):
+        weditor = self.devolver_editor()
+        if weditor is not None:
+            weditor.rehacer()
+
+    def cortar(self):
+        weditor = self.devolver_editor()
+        if weditor is not None:
+            weditor.cortar()
+
+    def copiar(self):
+        weditor = self.devolver_editor()
+        if weditor is not None:
+            weditor.copiar()
+
+    def pegar(self):
+        weditor = self.devolver_editor()
+        if weditor is not None:
+            weditor.pegar()
+
+    def acercar(self):
+        weditor = self.devolver_editor()
+        if weditor is not None:
+            weditor.zoom_in()
+
+    def seleccionar_todo(self):
+        weditor = self.devolver_editor()
+        if weditor is not None:
+            weditor.seleccionar()
+
+    def alejar(self):
+        weditor = self.devolver_editor()
+        if weditor is not None:
+            weditor.zoom_out()
+
     def archivos_abiertos(self):
         return self.widget_actual.archivos_abiertos()
 

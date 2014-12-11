@@ -87,6 +87,24 @@ class Base(QsciScintilla, tabitem.TabItem):
     def zoom_out(self):
         self.zoomOut()
 
+    def deshacer(self):
+        self.undo()
+
+    def rehacer(self):
+        self.redo()
+
+    def cortar(self):
+        self.cut()
+
+    def copiar(self):
+        self.copy()
+
+    def pegar(self):
+        self.paste()
+
+    def seleccionar(self):
+        self.selectAll()
+
     def cargar_fuente(self, fuente):
         self.__fuente = fuente
         self.setFont(fuente)
