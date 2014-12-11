@@ -6,6 +6,7 @@
 # License: GPLv3 (see http://www.gnu.org/licenses/gpl.html)
 
 # Módulos Python
+import os
 
 # Módulos QtGui
 from PyQt4.QtGui import (
@@ -128,10 +129,26 @@ class EDIS(QMainWindow):
         self.connect(self.contenedor_editor,
                     SIGNAL("archivo_cambiado(QString)"),
                     self.__actualizar_estado)
+        self.connect(self.contenedor_editor.widget_actual,
+                    SIGNAL("todoCerrado()"),
+                    self.todo_cerrado)
+        self.connect(self.contenedor_editor,
+                    SIGNAL("archivo_cambiado(QString)"),
+                    self.__titulo_ventana)
 
     def __actualizar_estado(self, archivo):
         #FIXME: Hacer nuevo método para esto en barra de estado
         self.barra_de_estado.nombre_archivo.cambiar_texto(archivo)
+
+    def todo_cerrado(self):
+        self.setWindowTitle(ui.__nombre__)
+        self.__actualizar_estado("")
+
+    def __titulo_ventana(self, titulo):
+        """ Cambia el título de la ventana (nombre_archivo - EDIS) """
+
+        titulo = os.path.basename(titulo)
+        self.setWindowTitle(titulo + ' - ' + ui.__nombre__)
 
     def closeEvent(self, e):
         """

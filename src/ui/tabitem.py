@@ -9,7 +9,7 @@
 class TabItem(object):
 
     def __init__(self):
-        self._id = ""
+        self._id = "Nuevo_archivo"
 
     def get_id(self):
         return self._id

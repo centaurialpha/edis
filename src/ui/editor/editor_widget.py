@@ -67,6 +67,7 @@ class Frame(QFrame):
 class EditorWidget(QWidget):
 
     guardar_editor_actual = pyqtSignal(name="Guardar_Editor_Actual")
+    todo_cerrado = pyqtSignal(name="todoCerrado")
 
     def __init__(self, parent=None):
         super(EditorWidget, self).__init__()
@@ -213,3 +214,8 @@ class EditorWidget(QWidget):
         ## Foco al widget actual
         if self.currentWidget() is not None:
             self.currentWidget().setFocus()
+        else:
+            self.emitir()
+
+    def emitir(self):
+        self.todo_cerrado.emit()

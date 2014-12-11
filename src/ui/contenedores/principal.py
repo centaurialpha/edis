@@ -211,4 +211,5 @@ class EditorContainer(QWidget):
         dialogo = dialogo_log.DialogoLog(self)
         dialogo.show()
 
+
 principal = EditorContainer()

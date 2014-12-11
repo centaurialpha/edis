@@ -26,7 +26,7 @@ from src.helpers import (
 log = logger.edisLogger('editor')
 
 
-def crear_editor(nombre_archivo=''):
+def crear_editor(nombre_archivo):
     editor = Editor(nombre_archivo)
     log.debug('Creando editor')
     return editor

@@ -64,7 +64,7 @@ class Base(QsciScintilla, tabitem.TabItem):
         return self.text()
 
     @texto.setter
-    def texto(self, texto):
+    def texto(self, texto):  # lint:ok
         """ Setea el texto en el documento """
 
         self.setText(texto)
