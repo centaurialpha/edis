@@ -117,9 +117,11 @@ class EditorWidget(QWidget):
         #else:
             #texto = combo.currentText().split('*')[-1]
             #combo.setItemText(combo.currentIndex(), texto)
+        weditor = self.currentWidget()
         if valor and self.no_esta_abierto:
-            weditor = self.currentWidget()
             weditor.texto_modificado = True
+        else:
+            weditor.texto_modificado = False
 
     def cambiar_widget(self, indice):
         """ Cambia el widget del stack """
