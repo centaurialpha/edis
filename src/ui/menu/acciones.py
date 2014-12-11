@@ -109,7 +109,7 @@ ACCIONES = (
     {
         'seccion': 0,
         'nombre': 'Salir',
-        'conexion': 'salir'},
+        'conexion': 'edis.close'},
     {
         'seccion': 1,
         'nombre': 'Deshacer',

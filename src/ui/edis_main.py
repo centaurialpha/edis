@@ -107,7 +107,11 @@ class EDIS(QMainWindow):
                     if icono:
                         qaccion.setIcon(QIcon(icono))
                     if accion.conexion:
-                        funcion = getattr(principal, accion.conexion, None)
+                        if accion.conexion.split('.')[0] == 'edis':
+                            funcion = getattr(self,
+                                accion.conexion.split('.')[1], None)
+                        else:
+                            funcion = getattr(principal, accion.conexion, None)
                         # Es una función ?
                         if hasattr(funcion, '__call__'):
                             qaccion.triggered.connect(funcion)
