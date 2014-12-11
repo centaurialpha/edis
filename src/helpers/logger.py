@@ -11,16 +11,9 @@ from src import recursos
 
 class Logger(object):
 
-    __NIVELES = {
-        'debug': logging.DEBUG,
-        'info': logging.INFO,
-        'warning': logging.WARNING,
-        'error': logging.ERROR,
-        'critico': logging.CRITICAL
-        }
-
     __ARCHIVO = recursos.LOG
-    __FORMATO = '%(asctime)s %(levelname)s %(message)s'
+    __FORMATO = '%(levelname)s: %(asctime)s en:%' \
+                '(funcName)s(%(lineno)d) "%(message)s"'
 
     def __init__(self):
         self._hand = None
@@ -31,7 +24,7 @@ class Logger(object):
             self.crear_handler(Logger.__ARCHIVO, 'w', Logger.__FORMATO)
 
         logger = logging.getLogger(nombre)
-        logger.setLevel(Logger.__NIVELES['debug'])
+        logger.setLevel(logging.DEBUG)
         logger.addHandler(self._hand)
         return logger
 
@@ -40,5 +33,6 @@ class Logger(object):
         handler = logging.FileHandler(archivo, modo)
         handler.setFormatter(fmtr)
         self._hand = handler
+
 
 edisLogger = Logger()
