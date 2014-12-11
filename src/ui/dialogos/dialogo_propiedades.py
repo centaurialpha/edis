@@ -80,6 +80,10 @@ class FileProperty(QDialog):
         return spaces
 
     def get_modification(self, filename):
-        time = os.path.getmtime(filename)
-        format_time = datetime.fromtimestamp(time).strftime("%Y-%m-%d %H:%M")
-        return format_time
+        try:
+            time = os.path.getmtime(filename)
+            format_time = datetime.fromtimestamp(
+                                    time).strftime("%Y-%m-%d %H:%M")
+            return format_time
+        except:
+            return "-"
