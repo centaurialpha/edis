@@ -116,7 +116,9 @@ class EditorWidget(QWidget):
         #else:
             #texto = combo.currentText().split('*')[-1]
             #combo.setItemText(combo.currentIndex(), texto)
-        pass
+        if valor and self.no_esta_abierto:
+            weditor = self.currentWidget()
+            weditor.texto_modificado = True
 
     def cambiar_widget(self, indice):
         """ Cambia el widget del stack """
@@ -161,40 +163,47 @@ class EditorWidget(QWidget):
             archivos.append(archivo.iD)
         return archivos
 
-    def removeWidget(self, widget):
+    def cerrar(self):
         """ Eliminar el widget del stack """
-        #FIXME: enviar widget al método cerrar
-        self.stack.removeWidget(widget)
+
+        self.eliminarWidget(self.currentWidget(), self.currentIndex())
+
+    @property
+    def count(self):
+        """ Devuelve el número de widgets en el stack """
+
+        return self.stack.count()
 
     def cerrar_todo(self):
-        for editor in self.editores:
-            self.removeWidget(editor)
 
-    def cerrar(self):
+        for indice in range(self.count):
+            self.eliminarWidget(self.currentWidget(), 0)
+
+    def eliminarWidget(self, weditor, indice):
         """ Elimina el widget actual del contenedor """
 
-        #FIXME: Recibir el editor como parámetro (?
         #FIXME: Usar logger
-        indice = self.currentIndex()
+
         if indice != -1:
+            self.stack.setCurrentIndex(indice)
+
             SI = QMessageBox.Yes
             NO = QMessageBox.No
             CANCELAR = QMessageBox.Cancel
-            self.cambiar_widget(indice)
-            editor = self.currentWidget()
-            if editor.texto_modificado:
+
+            respuesta = NO
+            if weditor.texto_modificado:
                 respuesta = QMessageBox.question(self, self.trUtf8(
                                                 "El archivo no está guardado"),
                                                 self.trUtf8("¿Guardar?"),
                                                 SI | NO | CANCELAR)
                 if respuesta == SI:
                     self.guardar_editor_actual.emit()
-                    if editor.texto_modificado:
-                        return
                 elif respuesta == CANCELAR:
                     return
+            self.stack.removeWidget(weditor)  # Eliminar del stack
             del self.editores[indice]  # Eliminar de la lista
-            self.removeWidget(editor)  # Eliminar del stack
-        # Foco al widget actual
+
+        ## Foco al widget actual
         if self.currentWidget() is not None:
             self.currentWidget().setFocus()

@@ -62,8 +62,9 @@ class EditorContainer(QWidget):
     def cambiar_widget(self, indice):
         """ Señal emitida cuando se cambia de editor """
 
-        nombre_archivo = self.widget_actual.stack.widget(indice).iD
-        self.archivo_cambiado.emit(nombre_archivo)
+        weditor = self.devolver_editor()
+        if weditor is not None:
+            self.archivo_cambiado.emit(weditor.iD)
 
     def agregar_editor(self, nombre=""):
         if not nombre:
@@ -193,5 +194,6 @@ class EditorContainer(QWidget):
         if weditor is not None:
             dialogo = dialogo_propiedades.FileProperty(weditor, self)
             dialogo.show()
+
 
 principal = EditorContainer()
