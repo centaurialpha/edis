@@ -2,34 +2,35 @@ import QtQuick 1.1
 
 Rectangle {
     id: contenedor
-    width: 380
-    height: 380
-    color: "#cacaca"
-    border.color: "#1c1c1c"
+
+    width: 380; height: 380
+    color: "#cacaca"; border.color: "#1c1c1c"
     radius: 2
 
     signal abrirArchivo(int indice)
 
     Rectangle {
         id: contenedorLista
-        width: 350
-        height: 280
-        color: "#d5d5d5"
+
+        width: 350; height: 280
+        color: "#d5d5d5"; border.color: "#000000"
         anchors.horizontalCenter: contenedor.horizontalCenter
         y: 70
-        border.color: "#000000"
         radius: 2
         clip: true
+        property int duracion: 300
 
         ListView {
             id: lista
+
             anchors.fill: parent
             anchors.topMargin: 15
             model: modeloEjemplo
+            focus: true
+            clip: true
 
             delegate: Text {
                 x: 10
-
                 font.pointSize: 14
                 text: nombre
             }
@@ -39,9 +40,6 @@ Rectangle {
                 width: lista.width - 8
                 x: 4
             }
-
-            focus: true
-            clip: true
 
             Keys.onReturnPressed: {
                 var indice = lista.currentIndex
@@ -57,17 +55,25 @@ Rectangle {
         color: "gray"
         font.bold: true
         font.pointSize: 12
-        x: 10
-        y: 10
+        x: 10; y: 10
 
     }
 
     ParallelAnimation {
         id: animacion
+
         running: true
-        NumberAnimation { target: contenedorLista; property: "width"; from: 0; to: 350; duration: 300 }
-        NumberAnimation { target: contenedorLista; property: "height"; from: 0; to: 280; duration: 300 }
+        NumberAnimation {
+            target: contenedorLista; property: "width"
+            from: 0; to: contenedorLista.width
+            duration: contenedorLista.duracion
         }
+        NumberAnimation {
+            target: contenedorLista; property: "height"
+            from: 0; to: contenedorLista.height
+            duration: contenedorLista.duracion
+        }
+    }
 
     function cargar_archivo(nombre){
         modeloEjemplo.append({"nombre": nombre})
