@@ -152,6 +152,9 @@ class EditorContainer(QWidget):
     def cerrar_todo(self):
         self.widget_actual.cerrar_todo()
 
+    def cerrar_demas(self):
+        self.widget_actual.cerrar_demas()
+
     def selector(self):
         selector_ = selector.Selector(self)
         selector_.show()

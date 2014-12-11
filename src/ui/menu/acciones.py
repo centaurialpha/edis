@@ -29,6 +29,27 @@ ACCIONES = (
         'separador': True},
     {
         'seccion': 0,
+        'nombre': 'Cerrar',
+        'submenu': True,
+        'separador': True},
+    {
+        'seccion': 0,
+        'nombre': 'Cerrar actual',
+        'conexion': 'cerrar_archivo',
+        'atajo': _ATAJO['cerrar-tab'],
+        'submenu': 'Cerrar'},
+    {
+        'seccion': 0,
+        'nombre': 'Cerrar todo',
+        'conexion': 'cerrar_todo',
+        'submenu': 'Cerrar'},
+    {
+        'seccion': 0,
+        'nombre': 'Cerrar los demás',
+        'conexion': 'cerrar_demas',
+        'submenu': 'Cerrar'},
+    {
+        'seccion': 0,
         'nombre': 'Guardar',
         'conexion': "guardar_archivo",
         'atajo': _ATAJO['guardar']},
@@ -50,26 +71,6 @@ ACCIONES = (
         'nombre': 'Propiedades',
         'conexion': "propiedades_de_archivo",
         'separador': True},
-    {
-        'seccion': 0,
-        'nombre': 'Cerrar',
-        'submenu': True},
-    {
-        'seccion': 0,
-        'nombre': 'Cerrar actual',
-        'conexion': 'cerrar_archivo',
-        'atajo': _ATAJO['cerrar-tab'],
-        'submenu': 'Cerrar'},
-    {
-        'seccion': 0,
-        'nombre': 'Cerrar todo',
-        'conexion': 'cerrar_todo',
-        'submenu': 'Cerrar'},
-    {
-        'seccion': 0,
-        'nombre': 'Cerrar los demás',
-        'conexion': 'cerrar_lo_demas',
-        'submenu': 'Cerrar'},
     {
         'seccion': 0,
         'nombre': 'Salir',

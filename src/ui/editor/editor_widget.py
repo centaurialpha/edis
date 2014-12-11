@@ -159,8 +159,8 @@ class EditorWidget(QWidget):
         """ Retorna una lista con los archivos abiertos """
 
         archivos = list()
-        for archivo in self.editores:
-            archivos.append(archivo.iD)
+        for indice in range(self.count):
+            archivos.append(self.stack.widget(indice).iD)
         return archivos
 
     def cerrar(self):
@@ -178,6 +178,12 @@ class EditorWidget(QWidget):
 
         for indice in range(self.count):
             self.eliminarWidget(self.currentWidget(), 0)
+
+    def cerrar_demas(self):
+        self.stack.insertWidget(0, self.currentWidget())
+        for i in range(self.count):
+            if self.count > 1:
+                self.eliminarWidget(self.currentWidget(), 1)
 
     def eliminarWidget(self, weditor, indice):
         """ Elimina el widget actual del contenedor """
