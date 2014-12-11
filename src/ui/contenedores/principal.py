@@ -77,6 +77,7 @@ class EditorContainer(QWidget):
         if not nombre:
             nombre = "Nuevo_archivo"
         editor_widget = self.com.agregar_editor(nombre)
+        editor_widget.setFocus()
         return editor_widget
 
     def abrir_archivo(self, nombre=""):
