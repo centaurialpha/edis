@@ -141,5 +141,9 @@ ACCIONES = (
     {
         'seccion': 3,
         'nombre': 'Buscar',
-        'conexion': 'busqueda_rapida'}
+        'conexion': 'busqueda_rapida'},
+    {
+        'seccion': 6,
+        'nombre': 'Archivo log',
+        'conexion': 'archivo_log'},
 )

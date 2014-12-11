@@ -30,7 +30,8 @@ from src.ui.edis_main import EDIS
 from src.ui.widgets import busqueda
 from src.ui.contenedores import selector
 from src.ui.dialogos import (
-    dialogo_propiedades
+    dialogo_propiedades,
+    dialogo_log
     )
 
 # Logger
@@ -206,5 +207,8 @@ class EditorContainer(QWidget):
             dialogo = dialogo_propiedades.FileProperty(weditor, self)
             dialogo.show()
 
+    def archivo_log(self):
+        dialogo = dialogo_log.DialogoLog(self)
+        dialogo.show()
 
 principal = EditorContainer()
