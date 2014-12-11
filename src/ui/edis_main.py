@@ -40,7 +40,7 @@ class EDIS(QMainWindow):
         self.setMinimumSize(750, 500)
         # Maximizado
         self.showMaximized()
-        # Menú
+        # Secciones del menubar
         EDIS.menu_bar(0, self.trUtf8("&Archivo"))
         EDIS.menu_bar(1, self.trUtf8("&Editar"))
         EDIS.menu_bar(2, self.trUtf8("&Ver"))
@@ -49,11 +49,9 @@ class EDIS(QMainWindow):
         EDIS.menu_bar(5, self.trUtf8("E&jecución"))
         EDIS.menu_bar(6, self.trUtf8("A&cerca de"))
         self.cargar_menu()
-
         # Barra de estado
         self.barra_de_estado = EDIS.componente("barra_de_estado")
         self.setStatusBar(self.barra_de_estado)
-
         # Widget central
         self.central = EDIS.componente("central")
         self.cargar_contenedores(self.central)

@@ -56,6 +56,13 @@ class Selector(QDialog):
         principal.widget_actual.cambiar_widget(indice)
         self.hide()
 
+    def __current_indice(self):
+        principal = EDIS.componente("principal")
+        indice = principal.widget_actual.stack.currentIndex()
+        #FIXME: Mandar la señal
+        #self.emit(SIGNAL("currentIndice(int)"), indice)
+        self.root.item_actual(indice)
+
     def __cargar(self):
         principal = EDIS.componente("principal")
         archivos_abiertos_ = principal.archivos_abiertos()
@@ -63,3 +70,4 @@ class Selector(QDialog):
             #FIXME: modificar para güindous
             archivo = archivo.split('/')[-1]
             self.root.cargar_archivo(archivo)
+        self.__current_indice()

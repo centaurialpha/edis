@@ -25,8 +25,8 @@ Rectangle {
             id: lista
             anchors.fill: parent
             anchors.topMargin: 15
-            clip: true
             model: modeloEjemplo
+
             delegate: Text {
                 x: 10
 
@@ -39,7 +39,9 @@ Rectangle {
                 width: lista.width - 8
                 x: 4
             }
+
             focus: true
+            clip: true
 
             Keys.onReturnPressed: {
                 var indice = lista.currentIndex
@@ -69,5 +71,10 @@ Rectangle {
 
     function cargar_archivo(nombre){
         modeloEjemplo.append({"nombre": nombre})
+
+    }
+
+    function item_actual(indice){
+        lista.currentIndex = indice
     }
 }
