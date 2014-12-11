@@ -190,7 +190,8 @@ class EditorContainer(QWidget):
 
     def propiedades_de_archivo(self):
         weditor = self.devolver_editor()
-        dialogo = dialogo_propiedades.FileProperty(weditor, self)
-        dialogo.show()
+        if weditor is not None:
+            dialogo = dialogo_propiedades.FileProperty(weditor, self)
+            dialogo.show()
 
 principal = EditorContainer()
