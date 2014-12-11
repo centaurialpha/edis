@@ -24,8 +24,8 @@ from PyQt4.QtCore import (
 
 class PopupBusqueda(QDialog):
 
-    def __init__(self, editor, parent=None):
-        QDialog.__init__(self, parent)
+    def __init__(self, editor):
+        QDialog.__init__(self, editor)
         self.editor = editor
         self.layout = QHBoxLayout(self)
         self.layout.setContentsMargins(0, 0, 0, 0)
@@ -41,9 +41,9 @@ class PopupBusqueda(QDialog):
         self.connect(escape, SIGNAL("activated()"),
                     self.ocultar)
 
-        point = parent.rect().bottomRight()
-        global_point = parent.mapToGlobal(point)
-        self.move(global_point - QPoint(self.width() + 10, 0))
+        point = editor.rect().topRight()
+        global_point = editor.mapToGlobal(point)
+        self.move(global_point - QPoint(self.width() + 100, 0))
 
     def ocultar(self):
         self.hide()

@@ -198,8 +198,7 @@ class EditorContainer(QWidget):
 
     def busqueda_rapida(self):
         #FIXME:
-        dialogo = busqueda.PopupBusqueda(self.widget_actual,
-                                        self.widget_actual.frame.combo)
+        dialogo = busqueda.PopupBusqueda(self.widget_actual)
         dialogo.show()
 
     def deshacer(self):
