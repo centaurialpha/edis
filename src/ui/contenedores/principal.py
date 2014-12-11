@@ -26,6 +26,9 @@ from src.ui.editor import editor, editor_widget
 from src.ui.edis_main import EDIS
 from src.ui.widgets import busqueda
 from src.ui.contenedores import selector
+from src.ui.dialogos import (
+    dialogo_propiedades
+    )
 
 
 class EditorContainer(QWidget):
@@ -185,5 +188,9 @@ class EditorContainer(QWidget):
     def archivos_abiertos(self):
         return self.widget_actual.archivos_abiertos()
 
+    def propiedades_de_archivo(self):
+        weditor = self.devolver_editor()
+        dialogo = dialogo_propiedades.FileProperty(weditor, self)
+        dialogo.show()
 
 principal = EditorContainer()

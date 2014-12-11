@@ -27,12 +27,12 @@ class FileProperty(QDialog):
     def __init__(self, editor, parent=None):
         QDialog.__init__(self, parent, Qt.Dialog)
         self.setWindowTitle(self.trUtf8("Propiedades del archivo"))
-        filename = editor._id
+        filename = editor.iD
         vLayout = QVBoxLayout(self)
         vLayout.setContentsMargins(10, 15, 10, 10)
         vLayout.setSpacing(10)
 
-        lbl_title = QLabel(self.trUtf8("%1").arg(filename.split('/')[-1]))
+        lbl_title = QLabel(self.trUtf8("{0}").format(filename.split('/')[-1]))
         lbl_title.setStyleSheet("font-weight: bold; font-size: 24px;")
         vLayout.addWidget(lbl_title)
 
@@ -44,16 +44,15 @@ class FileProperty(QDialog):
         grid.addWidget(QLabel(self.trUtf8("<b>Ubicación:</b>")), 3, 0)
         grid.addWidget(QLabel(filename), 3, 1)
         grid.addWidget(QLabel(self.trUtf8("<b>Líneas de código:</b>")), 4, 0)
-        grid.addWidget(QLabel(self.tr("%1").arg(
-                        editor.devolver_cantidad_de_lineas() -
+        grid.addWidget(QLabel(self.tr("{0}").format(
+                        editor.lineas -
                         len(self.get_comment_spaces(editor)))), 4, 1)
         grid.addWidget(QLabel(
             self.trUtf8("<b>Espacios en blanco y comentarios:</b>")), 5, 0)
         grid.addWidget(QLabel(
-            self.tr("%1").arg(len(self.get_comment_spaces(editor)))), 5, 1)
+            self.tr("{0}").format(len(self.get_comment_spaces(editor)))), 5, 1)
         grid.addWidget(QLabel(self.trUtf8("<b>Total de líneas:</b>")), 6, 0)
-        grid.addWidget(QLabel(self.tr(
-                        unicode(editor.devolver_cantidad_de_lineas()))), 6, 1)
+        grid.addWidget(QLabel(str(editor.lineas)), 6, 1)
         grid.addWidget(QLabel(self.trUtf8("<b>Modificado:</b>")), 7, 0)
         grid.addWidget(QLabel(self.tr(self.get_modification(filename))), 7, 1)
         vLayout.addLayout(grid)
@@ -77,7 +76,7 @@ class FileProperty(QDialog):
 
     def get_comment_spaces(self, editor):
         spaces = re.findall('(^\n)|(^(\s+)?//)|(^( +)?($|\n))',
-                unicode(editor.devolver_texto()), re.M)
+                            editor.texto, re.M)
         return spaces
 
     def get_modification(self, filename):
