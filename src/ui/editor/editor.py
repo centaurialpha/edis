@@ -202,3 +202,7 @@ class Editor(Base):
         super(Editor, self).keyPressEvent(e)
         if e.key() == Qt.Key_Escape:
             self.borrar_seleccion()
+
+    def guardado(self):
+        self.nuevo_archivo = False
+        self.texto_modificado = False

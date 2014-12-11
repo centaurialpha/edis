@@ -174,6 +174,7 @@ class EditorContainer(QWidget):
         codigo_fuente = weditor.texto
         manejador_de_archivo.escribir_archivo(nombre_archivo, codigo_fuente)
         weditor.iD = nombre_archivo
+        weditor.guardado()
 
     def guardar_archivo_como(self, weditor):
         #FIXME: Controlar con try-except
@@ -185,6 +186,7 @@ class EditorContainer(QWidget):
         nombre_archivo = manejador_de_archivo.escribir_archivo(nombre_archivo,
                 weditor.texto)
         weditor.iD = nombre_archivo
+        weditor.guardado()
 
     def guardar_todo(self):
         for editor in self.widget_actual.editores:
