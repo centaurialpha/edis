@@ -82,7 +82,7 @@ class EDIS(QMainWindow):
         return cls.__MENUBAR.get(clave, None)
 
     def cargar_menu(self):
-        #FIXME: Modificar para submenues
+        #FIXME: Mejorar
         #FIXME: Separadores
         menu_bar = self.menuBar()
         menu_edis = self.componente("menu")
@@ -90,8 +90,16 @@ class EDIS(QMainWindow):
         for i in range(7):
             menu = menu_bar.addMenu(self.get_menu(i))
             for accion in menu_edis.acciones:
-                if accion.seccion == i:
-                    qaccion = menu.addAction(accion.nombre)
+                seccion = accion.seccion
+                submenu = accion.submenu
+                if seccion == i:
+                    if submenu:
+                        if isinstance(submenu, bool):
+                            smenu = menu.addMenu(accion.nombre)
+                        else:
+                            qaccion = smenu.addAction(accion.nombre)
+                    else:
+                        qaccion = menu.addAction(accion.nombre)
                     if accion.atajo:
                         qaccion.setShortcut(accion.atajo)
                     icono = accion.icono
@@ -134,4 +142,4 @@ class EDIS(QMainWindow):
 
         super(EDIS, self).closeEvent(e)
         principal = EDIS.componente("principal")
-        archivos_sin_guardar = principal.archivos_sin_guardar()  #lint:ok
+        archivos_sin_guardar = principal.archivos_sin_guardar()  # lint:ok

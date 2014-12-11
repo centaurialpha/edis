@@ -53,17 +53,23 @@ ACCIONES = (
     {
         'seccion': 0,
         'nombre': 'Cerrar',
+        'submenu': True},
+    {
+        'seccion': 0,
+        'nombre': 'Cerrar actual',
         'conexion': 'cerrar_archivo',
-        'atajo': _ATAJO['cerrar-tab']},
+        'atajo': _ATAJO['cerrar-tab'],
+        'submenu': 'Cerrar'},
     {
         'seccion': 0,
         'nombre': 'Cerrar todo',
-        'conexion': 'cerrar_todo'},
+        'conexion': 'cerrar_todo',
+        'submenu': 'Cerrar'},
     {
         'seccion': 0,
         'nombre': 'Cerrar los demás',
         'conexion': 'cerrar_lo_demas',
-        'separador': True},
+        'submenu': 'Cerrar'},
     {
         'seccion': 0,
         'nombre': 'Salir',

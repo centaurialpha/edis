@@ -26,8 +26,10 @@ class Menu(QObject):
             icono = accion.get("icono", None)
             seccion = accion.get("seccion")
             separador = accion.get("separador", False)
+            submenu = accion.get("submenu", False)
             qaccion = Accion(nombre, conexion, seccion, icono, atajo)
             qaccion.separador = separador
+            qaccion.submenu = submenu
             self.acciones.append(qaccion)
 
         EDIS.cargar_componente("menu", self)
@@ -44,6 +46,6 @@ class Accion(object):
         self.icono = icono
         self.atajo = atajo
         self.separador = False
-
+        self.submenu = False
 
 menu = Menu()
