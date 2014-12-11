@@ -158,8 +158,9 @@ class EditorContainer(QWidget):
         self.widget_actual.cerrar_demas()
 
     def selector(self):
-        selector_ = selector.Selector(self)
-        selector_.show()
+        if self.currentWidget() is not None:
+            selector_ = selector.Selector(self)
+            selector_.show()
 
     def guardar_archivo(self, weditor=None):
         #FIXME: Controlar con try-except
