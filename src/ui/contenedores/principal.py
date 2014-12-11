@@ -50,9 +50,11 @@ class EditorContainer(QWidget):
         vbox.setSpacing(0)
 
         # Stacked
+        #FIXME: Es necesario?
         self.stack = QStackedLayout()
         vbox.addLayout(self.stack)
 
+        #FIXME: essto también?
         self.com = editor_widget.EditorWidget(self)
         self.widget_actual = self.com
         vbox.addWidget(self.com)
@@ -193,8 +195,17 @@ class EditorContainer(QWidget):
         for editor in self.widget_actual.editores:
             self.guardar_archivo(editor)
 
+    def guardar_seleccionado(self, archivo):
+        #FIXME: Mejorar esto
+        for i in range(self.widget_actual.count):
+            if self.widget_actual.stack.widget(i).iD == archivo:
+                self.guardar_archivo(self.widget_actual.stack.widget(i))
+
     def archivos_sin_guardar(self):
         return self.widget_actual.archivos_sin_guardar()
+
+    def check_archivos_sin_guardar(self):
+        return self.widget_actual.check_archivos_sin_guardar()
 
     def busqueda_rapida(self):
         #FIXME:

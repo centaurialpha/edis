@@ -23,6 +23,7 @@ from PyQt4.QtCore import (
 from src import ui
 from src.ui.contenedores.lateral import lateral_container
 from src.ui.contenedores.output import contenedor_secundario
+from src.ui.dialogos import dialogo_guardar_archivos
 
 
 class EDIS(QMainWindow):
@@ -161,6 +162,11 @@ class EDIS(QMainWindow):
 
         """
 
-        super(EDIS, self).closeEvent(e)
         principal = EDIS.componente("principal")
-        archivos_sin_guardar = principal.archivos_sin_guardar()  # lint:ok
+        if principal.check_archivos_sin_guardar():
+            archivos_sin_guardar = principal.archivos_sin_guardar()  # lint:ok
+            dialogo = dialogo_guardar_archivos.Dialogo(
+                archivos_sin_guardar, principal)
+            dialogo.exec_()
+            if dialogo.ignorado():
+                e.ignore()

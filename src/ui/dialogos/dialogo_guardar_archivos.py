@@ -23,14 +23,13 @@ from PyQt4.QtCore import (
     Qt
     )
 
-from src.ui.contenedor_principal import contenedor_principal
-
 
 class Dialogo(QDialog):
 
-    def __init__(self, archivos):
-        super(Dialogo, self).__init__()
+    def __init__(self, archivos, principal):
+        super(Dialogo, self).__init__(principal)
         self.setWindowTitle(self.tr("Archivos sin guardar!"))
+        self.principal = principal
         self.evento_ignorado = False
 
         linea = QFrame()
@@ -91,5 +90,5 @@ class Dialogo(QDialog):
         archivos_seleccionados = self.lista.selectedItems()
         for archivo in archivos_seleccionados:
             nombre = archivo.text()
-            contenedor_principal.ContenedorMain().guardar_seleccionado(nombre)
+            self.principal.guardar_seleccionado(nombre)
         self.close()

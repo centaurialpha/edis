@@ -158,6 +158,12 @@ class EditorWidget(QWidget):
                 archivos.append(editor.iD)
         return archivos
 
+    def check_archivos_sin_guardar(self):
+        valor = False
+        for i in range(self.count):
+                valor = valor or self.stack.widget(i).texto_modificado
+        return valor
+
     def archivos_abiertos(self):
         """ Retorna una lista con los archivos abiertos """
 
