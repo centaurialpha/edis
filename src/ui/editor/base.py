@@ -42,9 +42,7 @@ class Base(QsciScintilla, tabitem.TabItem):
                             QsciScintilla.CARETSTYLE_BLOCK)
         self.SendScintilla(QsciScintilla.SCI_SETHSCROLLBAR, 0)
         # Indicador
-        self.SendScintilla(QsciScintilla.SCI_INDICSETSTYLE, 0,
-                            QsciScintilla.INDIC_ROUNDBOX)
-        self.SendScintilla(QsciScintilla.SCI_INDICSETFORE, 0, 0x0000ff)
+        self.indicador = self.indicatorDefine(QsciScintilla.INDIC_CONTAINER, 9)
 
         # Folding
         self.setFolding(QsciScintilla.BoxedFoldStyle)
@@ -143,6 +141,9 @@ class Base(QsciScintilla, tabitem.TabItem):
         if ext == 'cpp':
             self.__lexer = lexer.LexerC(self)
             self.setLexer(self.__lexer)
+
+    def borrarIndicadores(self, indicador):
+        self.clearIndicatorRange(0, 0, self.lineas, 0, indicador)
 
     def wheelEvent(self, e):
         if e.modifiers() == Qt.ControlModifier:
