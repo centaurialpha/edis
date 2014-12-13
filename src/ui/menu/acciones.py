@@ -233,6 +233,10 @@ ACCIONES = (
         'atajo': _ATAJO['buscar']},
     {
         'seccion': 6,
+        'nombre': 'Reportar bug!',
+        'conexion': 'edis.reportar_bug'},
+    {
+        'seccion': 6,
         'nombre': 'Archivo log',
         'conexion': 'archivo_log'},
 )
