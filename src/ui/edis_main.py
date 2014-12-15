@@ -7,6 +7,7 @@
 
 # Módulos Python
 import os
+import webbrowser
 
 # Módulos QtGui
 from PyQt4.QtGui import (
@@ -166,6 +167,9 @@ class EDIS(QMainWindow):
             self.setWindowTitle('*' + titulo_actual)
         else:
             self.setWindowTitle(titulo_actual.split('*')[-1])
+
+    def reportar_bug(self):
+        webbrowser.open_new(ui.__reportar_bug__)
 
     def closeEvent(self, e):
         """
