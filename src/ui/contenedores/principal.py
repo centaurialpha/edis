@@ -67,6 +67,11 @@ class EditorContainer(QWidget):
                     self.guardar_archivo)
         self.connect(self.widget_actual.stack, SIGNAL("currentChanged(int)"),
                     self.cambiar_widget)
+        self.connect(self.widget_actual, SIGNAL("archivo_modificado(bool)"),
+                    self._archivo_modificado)
+
+    def _archivo_modificado(self, valor):
+        self.emit(SIGNAL("archivo_modificado(bool)"), valor)
 
     def cambiar_widget(self, indice):
         """ Señal emitida cuando se cambia de editor """

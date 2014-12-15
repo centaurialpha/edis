@@ -140,6 +140,9 @@ class EDIS(QMainWindow):
         self.connect(self.contenedor_editor,
                     SIGNAL("archivo_cambiado(QString)"),
                     self.__titulo_ventana)
+        self.connect(self.contenedor_editor,
+                    SIGNAL("archivo_modificado(bool)"),
+                    self.__titulo_modificado)
 
     def __actualizar_estado(self, archivo):
         #FIXME: Hacer nuevo método para esto en barra de estado
@@ -154,6 +157,15 @@ class EDIS(QMainWindow):
 
         titulo = os.path.basename(titulo)
         self.setWindowTitle(titulo + ' - ' + ui.__nombre__)
+
+    def __titulo_modificado(self, valor):
+        """ Agrega (*) al título cuando el archivo es modificado """
+
+        titulo_actual = self.windowTitle()
+        if valor and not titulo_actual.startswith('*'):
+            self.setWindowTitle('*' + titulo_actual)
+        else:
+            self.setWindowTitle(titulo_actual.split('*')[-1])
 
     def closeEvent(self, e):
         """
