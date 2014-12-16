@@ -46,7 +46,7 @@ class EditorContainer(QWidget):
         QWidget.__init__(self, edis)
         self.setAcceptDrops(True)
         vbox = QVBoxLayout(self)
-        vbox.setContentsMargins(0, 0, 0, 0)
+        vbox.setContentsMargins(0, 0, 0, 30)
         vbox.setSpacing(0)
 
         # Stacked

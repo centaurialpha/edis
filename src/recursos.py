@@ -30,6 +30,8 @@ CONFIGURACION = os.path.join(HOME_EDIS, "config.ini")
 LOG = os.path.join(HOME_EDIS, 'edis.log')
 # Selector
 SELECTOR_QML = os.path.join(PATH, "ui", "selector", "selector.qml")
+# ESTILO
+ESTILO = os.path.join(PATH, "extras", "temas", "default.qss")
 
 # Iconos
 ICONOS = {}

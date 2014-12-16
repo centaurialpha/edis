@@ -45,7 +45,7 @@ class Base(QsciScintilla, tabitem.TabItem):
         self.indicador = self.indicatorDefine(QsciScintilla.INDIC_CONTAINER, 9)
 
         # Folding
-        self.setFolding(QsciScintilla.BoxedFoldStyle)
+        self.setFolding(QsciScintilla.BoxedTreeFoldStyle)
 
         self.__fuente = None
         self.cargar_signals()
@@ -141,6 +141,7 @@ class Base(QsciScintilla, tabitem.TabItem):
         if ext == 'cpp':
             self.__lexer = lexer.LexerC(self)
             self.setLexer(self.__lexer)
+            self.__lexer.setFoldCompact(False)
 
     def borrarIndicadores(self, indicador):
         self.clearIndicatorRange(0, 0, self.lineas, 0, indicador)

@@ -49,12 +49,15 @@ ACCIONES = (
         'seccion': 0,
         'nombre': 'Nuevo',
         'conexion': "agregar_editor",
-        'atajo': _ATAJO['nuevo']},
+        'atajo': _ATAJO['nuevo'],
+        #'icono': _ICONO['document-new']},
+            },
     {
         'seccion': 0,
         'nombre': 'Abrir',
         'conexion': "abrir_archivo",
         'atajo': _ATAJO['abrir'],
+        'icono': _ICONO['folder-open'],
         'separador': True},
     {
         'seccion': 0,

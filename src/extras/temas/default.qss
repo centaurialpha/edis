@@ -1,0 +1,40 @@
+QToolBar {
+    //background: #333333;
+    border: 1px solid gray;
+}
+
+QMenu {
+    background: #47484b;
+    color: #bfbfbf;
+    border-radius: 2px;
+}
+
+QMenu::item {
+    font-size: 12px;
+    padding: 1px 10px 2px 20px;
+    border: 1px solid transparent;
+}
+
+QMenu::item:selected {
+    background: gray;
+    border: 1px solid #9b9b9b;
+}
+
+
+QMenuBar {
+    background: #eeeeee;
+    color: gray;
+}
+QMenuBar::item {
+    spacing: 3px;
+    padding: 1px 4px;
+    border-radius: 4px;
+}
+
+QMenuBar::item:selected {
+    background: #dbdbdb;
+}
+
+QMenuBar::item:pressed {
+    background: #c7c7c7;
+}

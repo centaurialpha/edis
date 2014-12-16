@@ -77,22 +77,9 @@ SYMBOLS = True
 FILE_EXPLORER = True
 FILE_NAVIGATOR = True
 
-BARRA_HERRAMIENTAS_ITEMS = [
-    "nuevo-archivo",
-    "abrir-archivo",
-    "guardar-archivo",
-    "separador",
-    "compilar-archivo",
-    "ejecutar-archivo"
-    ]
-
-BARRA_HERRAMIENTAS_ORIGINAL = [
-    "nuevo-archivo",
-    "abrir-archivo",
-    "guardar-archivo",
-    "separador",
-    "compilar-archivo",
-    "ejecutar-archivo"
+ITEMS_TOOLBAR = [
+    'Nuevo',
+    'Abrir'
     ]
 
 COMILLAS = {
@@ -131,7 +118,6 @@ def cargar_configuraciones():
     global CONFIRMAR_AL_CERRAR
     global IDIOMA
     global PARAMETROS
-    global BARRA_HERRAMIENTAS_ITEMS
     global TERMINAL
     MARGEN_COLUMNA = qsettings.value('configuraciones/editor/margenLinea', 80,
                              type=int)
@@ -174,10 +160,6 @@ def cargar_configuraciones():
                              '', type='QString')
     PARAMETROS = qsettings.value('configuraciones/compilacion',
                                  defaultValue='', type='QString')
-    items_barra = [str(i.toString()) for i in qsettings.value(
-        'configuraciones/gui/barra', []).toList()]
-    if items_barra:
-        BARRA_HERRAMIENTAS_ITEMS = items_barra
     comillas_simples = qsettings.value('configuraciones/editor/comillasS',
                                        True, type=bool)
 

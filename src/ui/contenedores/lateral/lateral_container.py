@@ -35,8 +35,8 @@ from src.ectags.ctags import (
 class LateralContainer(QWidget):
     icon = {
         'symbol': recursos.ICONOS['struct'],
-        'navigator': recursos.ICONOS['navegador'],
-        'explorer': recursos.ICONOS['explorador']
+        'navigator': recursos.ICONOS['folder-open'],
+        'explorer': recursos.ICONOS['folder-open']
         }
 
     def __init__(self, parent):

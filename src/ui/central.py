@@ -9,7 +9,6 @@ from PyQt4.QtGui import (
     QWidget,
     QSplitter,
     QVBoxLayout,
-    QComboBox
     )
 
 from PyQt4.QtCore import Qt
@@ -23,8 +22,11 @@ class Central(QWidget):
         QWidget.__init__(self)
 
         box = QVBoxLayout(self)
+        box.setContentsMargins(0, 0, 0, 0)
         # Splitters
 
+        #TODO: Arreglar todo, no funciona!
+        #FIXME: Dividir la interfáz en 3 áreas (lateral, output y ediitor)
         self.splitter_principal = QSplitter(Qt.Vertical)
         self.splitter_secundario = QSplitter(Qt.Horizontal)
 
@@ -53,10 +55,10 @@ class Central(QWidget):
     def showEvent(self, e):
         super(Central, self).showEvent(e)
         self.splitter_secundario.insertWidget(1, self.splitter_principal)
-        tamaño_principal = [self.height(), self.height() / 3]
-        tamaño_secundario = [self.width() / 5, self.width()]
-        self.splitter_principal.setSizes(tamaño_principal)
-        self.splitter_secundario.setSizes(tamaño_secundario)
+        #tamaño_principal = [self.height(), self.height() / 3]
+        #tamaño_secundario = [self.width() / 5, self.width()]
+        #self.splitter_principal.setSizes(tamaño_principal)
+        #self.splitter_secundario.setSizes(tamaño_secundario)
 
 
 central = Central()

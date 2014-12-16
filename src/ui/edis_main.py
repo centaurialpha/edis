@@ -13,15 +13,19 @@ import webbrowser
 from PyQt4.QtGui import (
     QMainWindow,
     QIcon,
+    QToolBar,
     )
 
 # Módulos QtCore
 from PyQt4.QtCore import (
     SIGNAL,
+    Qt,
+    QSize
     )
 
 # Módulos EDIS
 from src import ui
+from src.helpers import configuraciones
 from src.ui.contenedores.lateral import lateral_container
 from src.ui.contenedores.output import contenedor_secundario
 from src.ui.dialogos import dialogo_guardar_archivos
@@ -51,6 +55,10 @@ class EDIS(QMainWindow):
         EDIS.menu_bar(4, self.trUtf8("&Herramientas"))
         EDIS.menu_bar(5, self.trUtf8("E&jecución"))
         EDIS.menu_bar(6, self.trUtf8("A&cerca de"))
+        # Toolbar
+        self.toolbar = QToolBar(self)
+        self.toolbar.setIconSize(QSize(40, 40))
+        self.addToolBar(Qt.RightToolBarArea, self.toolbar)
         self.cargar_menu()
         # Barra de estado
         self.barra_de_estado = EDIS.componente("barra_de_estado")
@@ -103,6 +111,8 @@ class EDIS(QMainWindow):
                             qaccion = smenu.addAction(accion.nombre)
                     else:
                         qaccion = menu.addAction(accion.nombre)
+                    if accion.nombre in configuraciones.ITEMS_TOOLBAR:
+                        self.toolbar.addAction(qaccion)
                     if accion.atajo:
                         qaccion.setShortcut(accion.atajo)
                     icono = accion.icono

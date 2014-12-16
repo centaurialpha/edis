@@ -7,6 +7,7 @@
 
 import sys
 
+from src import recursos
 from src.helpers import (
     #configuraciones,
     logger
@@ -29,6 +30,10 @@ log = logger.edisLogger('edis.run')
 def correr_interfaz(app):
     log.debug('Iniciando...')
     edis = EDIS()
+    # Aplicar estilo
+    with open(recursos.ESTILO) as tema:
+        estilo = tema.read()
+    app.setStyleSheet(estilo)
     edis.show()
     sys.exit(app.exec_())
     #sys.exit(app.exec_())
