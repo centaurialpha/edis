@@ -3,7 +3,7 @@ QWidget {
 }
 
 QToolBar#toolbar {
-    background: #5d5f60;
+    background: #373737;
     spacing: 7px;
     padding: 7px;
 }
@@ -35,7 +35,7 @@ QScrollBar::sub-page:horizontal{
 }
 
 QSplitter::handle {
-    background: #bdbdbd;
+    background: #444;
     border: 0px solid transparent;
     height: 3px;
 }
@@ -120,4 +120,11 @@ QMenu::separator {
     height: 1px;
     margin-left: 10px;
     margin-right: 10px;
+}
+
+QTreeWidget,
+QWidget#explorador,
+QWidget#navegador {
+    background: #373737;
+    color: #85878c;
 }

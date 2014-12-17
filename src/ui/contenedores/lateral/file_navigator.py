@@ -29,10 +29,9 @@ class Navegador(QWidget):
 
     def __init__(self, parent=None):
         super(Navegador, self).__init__(parent)
-        self.setStyleSheet("background: #616266; color: #bfbfbf")
+        self.setObjectName("navegador")
         self.parent = parent
         self.archivos = []
-
         vbox = QVBoxLayout(self)
         vbox.setContentsMargins(0, 0, 0, 0)
         self.lista = ListView(self)

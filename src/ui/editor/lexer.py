@@ -8,27 +8,39 @@
 from PyQt4.Qsci import QsciLexerCPP
 from PyQt4.QtGui import (
     QFont,
+    QColor
     )
 
 from src.helpers import configuraciones
+from src import recursos
 
 
 class LexerC(QsciLexerCPP):
 
-    def __init__(self, parent):
-        QsciLexerCPP.__init__(self, parent)
-        self.setStylePreprocessor(True)
+    def __init__(self, *args, **kwargs):
+        super(LexerC, self).__init__(*args, **kwargs)
+        # Configuración
+        self.setStylePreprocessor(False)
+        self.setFoldComments(True)
+        self.setFoldPreprocessor(True)
         self.setHighlightHashQuotedStrings(True)
-        self.lexer = Lexer()
-        self.setFont(self.lexer.fuente)
-        #FIXME: tema
 
+        self.fuente = QFont(configuraciones.FUENTE, configuraciones.TAM_FUENTE)
+        self.setFont(self.fuente)
 
-class Lexer:
+        self.__cargar_highlighter()
 
-    @property
-    def fuente(self):
-        fuente = QFont()
-        fuente.setFamily(configuraciones.FUENTE)
-        fuente.setPointSize(configuraciones.TAM_FUENTE)
-        return fuente
+    def __cargar_highlighter(self):
+        self.setDefaultPaper(QColor(recursos.TEMA['FondoEditor']))
+        self.setPaper(QColor(42, 42, 42))
+        self.setColor(QColor(241, 241, 241))
+
+        tipos = dir(LexerC)
+        for tipo in tipos:
+            if tipo in recursos.TEMA:
+                atr = getattr(self, tipo)
+                self.setColor(QColor(recursos.TEMA[tipo]), atr)
+
+        fuente = self.font(LexerC.Keyword)
+        fuente.setBold(True)
+        self.setFont(fuente, LexerC.Keyword)

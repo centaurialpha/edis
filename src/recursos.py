@@ -83,18 +83,35 @@ ATAJOS = {
 
 # Tema editor
 TEMA = {
+    'FondoEditor': '#2a2a2a',
+    'Color': '#F1F1F1',
+    'Keyword': '#009bbf',
+    'KeywordSet2': '#009bbf',
+    'Comment': 'gray',
+    'CommentLine': 'gray',
+    'Number': 'yellow',
+    'DoubleQuotedString': '#00ba2a',
+    'SingleQuotedString': '#00ba2a',
+    'PreProcessor': '#ae81fe',
+    'PreProcessorComment': 'orange',
+    'Operator': 'white',
+    'RawString': 'orange',
+    'UUID': 'orange',
+    'HashQuotedString ': 'blue',
     'brace-foreground': 'red',
-    'brace-background': '#b4eeb4',
+    'brace-background': 'orange',
     'brace-unforeground': 'white',
     'brace-unbackground': 'red',
-    'margen': 'lightblue',
+    'margen': '#4d4d4d',
     'caret-background': 'gray',
-    'caret-line': 'gray',
-    'caret-opacidad': 40,
+    'caret-line': '#687073',
+    'caret-opacidad': 20,
     'guia-fondo': 'red',
     'guia-fore': 'white',
-    'sidebar-fondo': '#cecece',
-    'sidebar-fore': '#acacac'
+    'sidebar-fondo': '#2a2a2a',
+    'sidebar-fore': '#85878c',
+    'foldFore': '#333',
+    'foldBack': '#333'
     }
 
 # Extensiones soportadas
