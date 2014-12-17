@@ -1,5 +1,11 @@
+QWidget {
+    border: 0px solid transparent;
+}
+
 QToolBar#toolbar {
     background: #5d5f60;
+    spacing: 7px;
+    padding: 7px;
 }
 
 QScrollBar:vertical {
@@ -36,4 +42,21 @@ QSplitter::handle {
 
 QSplitter::handle:hover {
     background: gray;
+}
+
+QComboBox#combo_selector {
+    background-color: #47484b;
+    border: 0px solid gray;
+    padding: 0px 18px 0px 20px;
+    min-width: 6em;
+    color: #adafb0;
+}
+
+QComboBox#combo_selector:hover {
+    background-color: #38383b;
+    border-radius: 0px;
+}
+
+QComboBox:item:selected {
+    background: #38383b;
 }
