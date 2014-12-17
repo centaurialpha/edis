@@ -110,6 +110,7 @@ class ThreadSimbolos(QThread):
 
     def run(self, archivo):
         tag = self.ctags.start_ctags(archivo)
+        tag = tag.decode()
         self.parser.parser_tag(tag)
 
 
