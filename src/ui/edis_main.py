@@ -190,6 +190,12 @@ class EDIS(QMainWindow):
         else:
             self.contenedor_output.show()
 
+    def mostrar_ocultar_lateral(self):
+        if self.contenedor_lateral.isVisible():
+            self.contenedor_lateral.hide()
+        else:
+            self.contenedor_lateral.show()
+
     def closeEvent(self, e):
         """
         Éste médoto es llamado automáticamente por Qt cuando se

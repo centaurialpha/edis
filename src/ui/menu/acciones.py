@@ -195,7 +195,7 @@ ACCIONES = (
     {
         'seccion': 2,
         'nombre': 'Mostrar lateral',
-        'conexion': 'mostrar_panel_lateral',
+        'conexion': 'edis.mostrar_ocultar_lateral',
         'atajo': _ATAJO['lateral']},
     {
         'seccion': 2,
