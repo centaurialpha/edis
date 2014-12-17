@@ -43,6 +43,7 @@ log = logger.edisLogger("contenedores.principal")
 class EditorContainer(QWidget):
 
     archivo_cambiado = pyqtSignal(['QString'])
+    posicion_cursor = pyqtSignal(int, int, int)
 
     def __init__(self, edis=None):
         QWidget.__init__(self, edis)
@@ -80,6 +81,7 @@ class EditorContainer(QWidget):
         weditor = editor.crear_editor(nombre)
         self.agregar_widget(weditor)
         weditor.modificationChanged[bool].connect(self.stack.editor_modificado)
+        weditor.cursorPositionChanged[int, int].connect(self.actualizar_cursor)
         weditor.setFocus()
         return weditor
 
@@ -266,6 +268,11 @@ class EditorContainer(QWidget):
     def archivo_log(self):
         dialogo = dialogo_log.DialogoLog(self)
         dialogo.show()
+
+    def actualizar_cursor(self, linea, columna):
+        weditor = self.devolver_editor()
+        lineas = weditor.lineas
+        self.posicion_cursor.emit(linea + 1, columna + 1, lineas)
 
 
 principal = EditorContainer()

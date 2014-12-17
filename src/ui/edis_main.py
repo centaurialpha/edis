@@ -157,10 +157,19 @@ class EDIS(QMainWindow):
         self.connect(self.contenedor_editor,
                     SIGNAL("archivo_modificado(bool)"),
                     self.__titulo_modificado)
+        self.connect(self.contenedor_editor,
+                    SIGNAL("posicion_cursor(int, int, int)"),
+                    self.__actualizar_cursor)
+
+    def __actualizar_cursor(self, linea, columna, lineas):
+        #FIXME:
+        self.barra_de_estado.cursor_widget.actualizar_cursor(
+            linea, columna, lineas)
 
     def __actualizar_estado(self, archivo):
-        #FIXME: Hacer nuevo método para esto en barra de estado
-        self.barra_de_estado.nombre_archivo.cambiar_texto(archivo)
+        #FIXME: Arreglar esto
+        #self.barra_de_estado.nombre_archivo.cambiar_texto(archivo)
+        pass
 
     def todo_cerrado(self):
         self.setWindowTitle(ui.__nombre__)
