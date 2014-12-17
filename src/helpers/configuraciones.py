@@ -79,7 +79,12 @@ FILE_NAVIGATOR = True
 
 ITEMS_TOOLBAR = [
     'Nuevo',
-    'Abrir'
+    'Abrir',
+    'Guardar',
+    'separador',
+    'Compilar',
+    'Ejecutar',
+    'Terminar'
     ]
 
 COMILLAS = {

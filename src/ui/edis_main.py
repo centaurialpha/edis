@@ -57,7 +57,9 @@ class EDIS(QMainWindow):
         EDIS.menu_bar(6, self.trUtf8("A&cerca de"))
         # Toolbar
         self.toolbar = QToolBar(self)
-        self.toolbar.setIconSize(QSize(40, 40))
+        self.toolbar.setMovable(False)
+        self.toolbar.setObjectName("toolbar")
+        self.toolbar.setIconSize(QSize(28, 28))
         self.addToolBar(Qt.RightToolBarArea, self.toolbar)
         self.cargar_menu()
         # Barra de estado
@@ -139,14 +141,15 @@ class EDIS(QMainWindow):
         self.contenedor_lateral = lateral_container.LateralContainer(self)
 
         # Agrego los contenedores al widget central
-        #central.agregar_contenedor_lateral(self.contenedor_lateral)
+        central.agregar_contenedor_lateral(self.contenedor_lateral)
         central.agregar_contenedor_editor(self.contenedor_editor)
-        #central.agregar_contenedor_output(self.contenedor_output)
+        central.agregar_contenedor_output(self.contenedor_output)
+
         self.connect(self.contenedor_editor,
                     SIGNAL("archivo_cambiado(QString)"),
                     self.__actualizar_estado)
-        self.connect(self.contenedor_editor.widget_actual,
-                    SIGNAL("todoCerrado()"),
+        self.connect(self.contenedor_editor.stack,
+                    SIGNAL("todo_cerrado()"),
                     self.todo_cerrado)
         self.connect(self.contenedor_editor,
                     SIGNAL("archivo_cambiado(QString)"),

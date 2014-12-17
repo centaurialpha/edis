@@ -10,7 +10,6 @@ import os
 from PyQt4.QtGui import (
     QWidget,
     QVBoxLayout,
-    QStackedLayout,
     QFileDialog,
     )
 
@@ -25,7 +24,10 @@ from src.helpers import (
     logger
     )
 from src import recursos
-from src.ui.editor import editor, editor_widget
+from src.ui.editor import (
+    editor,
+    stack
+    )
 from src.ui.edis_main import EDIS
 from src.ui.widgets import busqueda
 from src.ui.contenedores import selector
@@ -46,36 +48,28 @@ class EditorContainer(QWidget):
         QWidget.__init__(self, edis)
         self.setAcceptDrops(True)
         vbox = QVBoxLayout(self)
-        vbox.setContentsMargins(0, 0, 0, 30)
+        vbox.setContentsMargins(0, 0, 0, 0)
         vbox.setSpacing(0)
 
-        # Stacked
-        #FIXME: Es necesario?
-        self.stack = QStackedLayout()
-        vbox.addLayout(self.stack)
+        self.stack = stack.StackWidget(self)
+        vbox.addWidget(self.stack)
 
-        #FIXME: essto también?
-        self.com = editor_widget.EditorWidget(self)
-        self.widget_actual = self.com
-        vbox.addWidget(self.com)
-
-        EDIS.cargar_componente("principal", self)
         self.instalar_signals()
+        EDIS.cargar_componente("principal", self)
 
     def instalar_signals(self):
-        self.connect(self.widget_actual, SIGNAL("Guardar_Editor_Actual()"),
+        self.connect(self.stack, SIGNAL("Guardar_Editor_Actual()"),
                     self.guardar_archivo)
-        self.connect(self.widget_actual.stack, SIGNAL("currentChanged(int)"),
-                    self.cambiar_widget)
-        self.connect(self.widget_actual, SIGNAL("archivo_modificado(bool)"),
-                    self._archivo_modificado)
+        #self.connect(self.widget_actual.stack, SIGNAL("currentChanged(int)"),
+                    #self.cambiar_widget)
+        #self.connect(self.widget_actual, SIGNAL("archivo_modificado(bool)"),
+                    #self._archivo_modificado)
 
     def _archivo_modificado(self, valor):
         self.emit(SIGNAL("archivo_modificado(bool)"), valor)
 
     def cambiar_widget(self, indice):
-        """ Señal emitida cuando se cambia de editor """
-
+        self.stack.cambiar_widget(indice)
         weditor = self.devolver_editor()
         if weditor is not None:
             self.archivo_cambiado.emit(weditor.iD)
@@ -83,14 +77,16 @@ class EditorContainer(QWidget):
     def agregar_editor(self, nombre=""):
         if not nombre:
             nombre = "Nuevo_archivo"
-        editor_widget = self.com.agregar_editor(nombre)
-        editor_widget.setFocus()
-        return editor_widget
+        weditor = editor.crear_editor(nombre)
+        self.agregar_widget(weditor)
+        weditor.modificationChanged[bool].connect(self.stack.editor_modificado)
+        weditor.setFocus()
+        return weditor
 
     def abrir_archivo(self, nombre=""):
         if not nombre:
             carpeta = os.path.expanduser("~")
-            editor_widget = self.currentWidget()
+            editor_widget = self.widget_actual()
             if editor_widget and editor_widget.iD:
                 carpeta = self.__ultima_carpeta_visitada(editor_widget.iD)
             archivos = QFileDialog.getOpenFileNames(self,
@@ -100,7 +96,7 @@ class EditorContainer(QWidget):
             archivos = [nombre]
         for archivo in archivos:
             if not self.__archivo_abierto(archivo):
-                self.widget_actual.no_esta_abierto = False
+                self.stack.no_esta_abierto = False
                 contenido = manejador_de_archivo.leer_contenido_de_archivo(
                             archivo)
                 nuevo_editor = self.agregar_editor(archivo)
@@ -108,7 +104,7 @@ class EditorContainer(QWidget):
                 nuevo_editor.iD = archivo
                 self.archivo_cambiado.emit(archivo)
 
-        self.widget_actual.no_esta_abierto = True
+        self.stack.no_esta_abierto = True
 
     def __ultima_carpeta_visitada(self, path):
         """ Devuelve la última carpeta a la que se accedió """
@@ -122,7 +118,7 @@ class EditorContainer(QWidget):
 
         """
 
-        editores = self.widget_actual.editores
+        editores = self.stack.editores
         for editor_widget in editores:
             if editor_widget.iD == archivo:
                 log.warning(
@@ -133,39 +129,41 @@ class EditorContainer(QWidget):
     def agregar_widget(self, widget):
         """ Agrega @widget al stacked """
 
-        self.stack.addWidget(widget)
-        self.stack.setCurrentWidget(widget)
+        self.stack.agregar_widget(widget)
 
     def eliminar_widget(self, widget):
         """ Elimina el @widget del stacked """
 
         self.stack.removeWidget(widget)
 
-    def currentWidget(self):
+    def widget_actual(self):
         """ Widget actual """
 
-        return self.widget_actual.currentWidget()
+        return self.stack.widget_actual
+
+    def indice_actual(self):
+        return self.stack.indice_actual
 
     def devolver_editor(self):
         """ Devuelve el Editor si el widget actual es una instancia de él,
         de lo contrario devuelve None. """
 
-        widget = self.currentWidget()
+        widget = self.widget_actual()
         if isinstance(widget, editor.Editor):
             return widget
         return None
 
     def cerrar_archivo(self):
-        self.widget_actual.cerrar()
+        self.stack.cerrar()
 
     def cerrar_todo(self):
-        self.widget_actual.cerrar_todo()
+        self.stack.cerrar_todo()
 
     def cerrar_demas(self):
-        self.widget_actual.cerrar_demas()
+        self.stack.cerrar_demas()
 
     def selector(self):
-        if self.currentWidget() is not None:
+        if self.devolver_editor() is not None:
             selector_ = selector.Selector(self)
             selector_.show()
 
@@ -197,20 +195,19 @@ class EditorContainer(QWidget):
         weditor.guardado()
 
     def guardar_todo(self):
-        for editor in self.widget_actual.editores:
+        for editor in self.stack.editores:
             self.guardar_archivo(editor)
 
     def guardar_seleccionado(self, archivo):
-        #FIXME: Mejorar esto
-        for i in range(self.widget_actual.count):
-            if self.widget_actual.stack.widget(i).iD == archivo:
-                self.guardar_archivo(self.widget_actual.stack.widget(i))
+        for i in range(self.stack.contar):
+            if self.stack.editor(i).iD == archivo:
+                self.guardar_archivo(self.stack.editor(i))
 
     def archivos_sin_guardar(self):
-        return self.widget_actual.archivos_sin_guardar()
+        return self.stack.archivos_sin_guardar()
 
     def check_archivos_sin_guardar(self):
-        return self.widget_actual.check_archivos_sin_guardar()
+        return self.stack.check_archivos_sin_guardar()
 
     def busqueda_rapida(self):
         #FIXME:
@@ -258,7 +255,7 @@ class EditorContainer(QWidget):
             weditor.zoom_out()
 
     def archivos_abiertos(self):
-        return self.widget_actual.archivos_abiertos()
+        return self.stack.archivos_abiertos()
 
     def propiedades_de_archivo(self):
         weditor = self.devolver_editor()

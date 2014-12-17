@@ -50,8 +50,7 @@ ACCIONES = (
         'nombre': 'Nuevo',
         'conexion': "agregar_editor",
         'atajo': _ATAJO['nuevo'],
-        #'icono': _ICONO['document-new']},
-            },
+        'icono': _ICONO['new']},
     {
         'seccion': 0,
         'nombre': 'Abrir',
@@ -84,7 +83,8 @@ ACCIONES = (
         'seccion': 0,
         'nombre': 'Guardar',
         'conexion': "guardar_archivo",
-        'atajo': _ATAJO['guardar']},
+        'atajo': _ATAJO['guardar'],
+        'icono': _ICONO['save']},
     {
         'seccion': 0,
         'nombre': 'Guardar como',
@@ -234,6 +234,21 @@ ACCIONES = (
         'nombre': 'Buscar',
         'conexion': 'buscar',
         'atajo': _ATAJO['buscar']},
+    {
+        'seccion': 5,
+        'nombre': 'Compilar',
+        'conexion': 'compilar_codigo_fuente',
+        'icono': _ICONO['build']},
+    {
+        'seccion': 5,
+        'nombre': 'Ejecutar',
+        'conexion': 'ejecutar_programa',
+        'icono': _ICONO['run']},
+    {
+        'seccion': 5,
+        'nombre': 'Terminar',
+        'conexion': 'terminar_programa',
+        'icono': _ICONO['stop']},
     {
         'seccion': 6,
         'nombre': 'Reportar bug!',
