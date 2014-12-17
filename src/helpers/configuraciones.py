@@ -84,7 +84,8 @@ ITEMS_TOOLBAR = [
     'separador',
     'Compilar',
     'Ejecutar',
-    'Terminar'
+    'Terminar',
+    'separador'
     ]
 
 COMILLAS = {

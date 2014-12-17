@@ -140,7 +140,7 @@ class EDIS(QMainWindow):
         for i, accion in enumerate(list(items_toolbar.items())):
             if accion[0] in configuraciones.ITEMS_TOOLBAR:
                 self.toolbar.addAction(accion[1])
-                if configuraciones.ITEMS_TOOLBAR[i] == 'separador':
+                if configuraciones.ITEMS_TOOLBAR[i + 1] == 'separador':
                     self.toolbar.addSeparator()
 
     def cargar_contenedores(self, central):
