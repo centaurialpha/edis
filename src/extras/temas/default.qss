@@ -60,3 +60,17 @@ QComboBox#combo_selector:hover {
 QComboBox:item:selected {
     background: #38383b;
 }
+
+QToolButton:hover {
+    background-color: #38383b;
+    border: 1px solid gray;
+    border-radius: 2px;
+}
+
+QToolTip {
+    border: 1px solid gray;
+    padding: 2px;
+    border-radius: 2px;
+    color: black;
+    opacity: 210;
+}
