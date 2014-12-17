@@ -32,6 +32,7 @@ class PosicionCursorWidget(QLabel):
 
     def __init__(self):
         super(PosicionCursorWidget, self).__init__()
+        self.setStyleSheet("font: 10pt;")
         self.linea_columna = "Línea: %s, Columna: %s -- %s líneas"
         self.setText(self.tr(self.linea_columna % (0, 0, 0)))
 
@@ -43,6 +44,7 @@ class UpTimeWidget(QLabel):
 
     def __init__(self):
         super(UpTimeWidget, self).__init__()
+        self.setStyleSheet("font: 10pt;")
         # Inicio
         self.tiempo = 0
 

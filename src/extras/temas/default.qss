@@ -74,3 +74,8 @@ QToolTip {
     color: black;
     opacity: 210;
 }
+
+QStatusBar {
+    background: #FFFFFF;
+    border: 1px solid gray;
+}
