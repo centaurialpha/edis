@@ -76,6 +76,41 @@ QToolTip {
 }
 
 QStatusBar {
-    background: #FFFFFF;
+    background: #F4F4F4;
     border: 1px solid gray;
+
+}
+
+QMenuBar {
+    background-color: #F4F4F4;
+}
+
+QMenuBar::item {
+    background: transparent;
+}
+
+QMenuBar::item:selected {
+    background: #bdbdbd;
+    border-radius: 3px;
+}
+
+QMenuBar::item:pressed {
+    background: #999;
+}
+
+QMenu {
+    background-color: #47484b;
+    color: #bfbfbf;
+    border-radius: 2px;
+}
+
+QMenu::item {
+    font-size: 13px;
+    border: 1px solid transparent;
+    padding: 1px 10px 2px 20px;
+}
+
+QMenu::item:selected {
+    background: gray;
+    border: 1px solid #9b9b9b;
 }
