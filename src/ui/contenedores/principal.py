@@ -289,5 +289,9 @@ class EditorContainer(QWidget):
         output = edis.contenedor_output
         output.ejecutar()
 
+    def terminar_programa(self):
+        edis = EDIS.componente("edis")
+        edis.contenedor_output.terminar_programa()
+
 
 principal = EditorContainer()

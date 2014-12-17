@@ -175,4 +175,4 @@ class EjecutarWidget(QWidget):
     def terminar_proceso(self):
         """ Termina el proceso """
 
-        pass
+        self.proceso_ejecucion.kill()

@@ -44,5 +44,5 @@ class ContenedorOutput(QWidget):
         #FIXME: revisar!
         self.salida_.correr_programa()
 
-    def frenar(self):
+    def terminar_programa(self):
         self.salida_.terminar_proceso()
