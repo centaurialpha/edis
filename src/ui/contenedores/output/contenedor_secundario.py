@@ -19,13 +19,6 @@ from src.ui.contenedores.output import procesos
 
 class ContenedorOutput(QWidget):
 
-    instancia = None
-
-    def __new__(clase, *args, **kargs):
-        if clase.instancia is None:
-            clase.instancia = QWidget.__new__(clase, *args, **kargs)
-        return clase.instancia
-
     def __init__(self, parent=None):
         QWidget.__init__(self, parent)
 
@@ -49,8 +42,7 @@ class ContenedorOutput(QWidget):
 
     def ejecutar(self):
         #FIXME: revisar!
-        if self.salida_.compilado:
-            self.salida_.correr_programa()
+        self.salida_.correr_programa()
 
     def frenar(self):
         self.salida_.terminar_proceso()

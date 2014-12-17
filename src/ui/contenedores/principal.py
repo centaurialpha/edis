@@ -274,5 +274,20 @@ class EditorContainer(QWidget):
         lineas = weditor.lineas
         self.posicion_cursor.emit(linea + 1, columna + 1, lineas)
 
+    def compilar_codigo_fuente(self):
+        edis = EDIS.componente("edis")
+        output = edis.contenedor_output
+        weditor = self.devolver_editor()
+        if weditor is not None:
+            self.guardar_archivo(weditor)
+            output.compilar(weditor.iD)
+
+    def ejecutar_programa(self):
+        """ Ejecuta el programa objeto """
+
+        edis = EDIS.componente("edis")
+        output = edis.contenedor_output
+        output.ejecutar()
+
 
 principal = EditorContainer()

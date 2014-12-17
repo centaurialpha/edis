@@ -71,6 +71,8 @@ class EDIS(QMainWindow):
         self.cargar_contenedores(self.central)
         self.setCentralWidget(self.central)
 
+        EDIS.cargar_componente("edis", self)
+
     @classmethod
     def cargar_componente(cls, nombre, instancia):
         """ Se guarda el nombre y la instancia de una clase """
