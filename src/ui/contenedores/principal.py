@@ -69,6 +69,9 @@ class EditorContainer(QWidget):
     def _archivo_modificado(self, valor):
         self.emit(SIGNAL("archivo_modificado(bool)"), valor)
 
+    def __archivo_guardado(self, weditor):
+        self.emit(SIGNAL("actualizarSimbolos(QString)"), weditor.iD)
+
     def cambiar_widget(self, indice):
         self.stack.cambiar_widget(indice)
         weditor = self.devolver_editor()
@@ -82,6 +85,7 @@ class EditorContainer(QWidget):
         self.agregar_widget(weditor)
         weditor.modificationChanged[bool].connect(self.stack.editor_modificado)
         weditor.cursorPositionChanged[int, int].connect(self.actualizar_cursor)
+        weditor.archivo_guardado.connect(self.__archivo_guardado)
         weditor.setFocus()
         return weditor
 
