@@ -200,7 +200,7 @@ ACCIONES = (
     {
         'seccion': 2,
         'nombre': 'Mostrar compilador',
-        'conexion': 'mostrar_salida_del_compilador',
+        'conexion': 'edis.mostrar_ocultar_output',
         'atajo': _ATAJO['mostrar-compilador']},
     {
         'seccion': 2,

@@ -47,6 +47,7 @@ class Central(QWidget):
         """ Agrega el contenedor de la salida del compilador """
 
         self.output = contenedor
+        self.output.hide()
         self.splitter_principal.addWidget(contenedor)
 
     def showEvent(self, e):

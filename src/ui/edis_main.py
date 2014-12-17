@@ -184,6 +184,12 @@ class EDIS(QMainWindow):
     def reportar_bug(self):
         webbrowser.open_new(ui.__reportar_bug__)
 
+    def mostrar_ocultar_output(self):
+        if self.contenedor_output.isVisible():
+            self.contenedor_output.hide()
+        else:
+            self.contenedor_output.show()
+
     def closeEvent(self, e):
         """
         Éste médoto es llamado automáticamente por Qt cuando se
