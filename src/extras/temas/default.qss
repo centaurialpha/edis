@@ -27,3 +27,13 @@ QScrollBar::sub-page:horizontal{
     background: #cacaca;
     border: none;
 }
+
+QSplitter::handle {
+    background: #bdbdbd;
+    border: 0px solid transparent;
+    height: 3px;
+}
+
+QSplitter::handle:hover {
+    background: gray;
+}
