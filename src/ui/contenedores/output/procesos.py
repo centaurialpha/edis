@@ -52,17 +52,18 @@ class EjecutarWidget(QWidget):
         layoutV.addWidget(self.output)
         self.setLayout(layoutV)
 
-        # Proceso
-        self.proceso = QProcess(self)
-        self.pro = None
+        # Procesos
+        self.proceso_compilacion = QProcess(self)
+        self.proceso_ejecucion = QProcess(self)
 
         # Conexión
-        self.proceso.readyReadStandardError.connect(
+        self.proceso_compilacion.readyReadStandardError.connect(
             self.output.parser_salida_stderr)
-        self.proceso.finished[int, QProcess.ExitStatus].connect(
+        self.proceso_compilacion.finished[int, QProcess.ExitStatus].connect(
             self.ejecucion_terminada)
-        self.connect(self.proceso, SIGNAL("error(QProcess::ProcessError)"),
-            self.ejecucion_error)
+        self.connect(self.proceso_compilacion,
+                    SIGNAL("error(QProcess::ProcessError)"),
+                    self.ejecucion_error)
 
     def correr_compilacion(self, nombre_archivo=''):
         """ Se corre el comando gcc para la compilación """
@@ -79,7 +80,7 @@ class EjecutarWidget(QWidget):
         # Para generar el ejecutable en la carpeta del fuente
         directorio_archivo = manejador_de_archivo.devolver_carpeta(
             self.nombre_archivo)
-        self.proceso.setWorkingDirectory(directorio_archivo)
+        self.proceso_compilacion.setWorkingDirectory(directorio_archivo)
 
         # Parámetros adicionales
         parametros_add = list(str(configuraciones.PARAMETROS).split())
@@ -102,14 +103,15 @@ class EjecutarWidget(QWidget):
         if not ensamblador['Ens']:
             parametros_gcc = ['-Wall', '-o']
             inicio = time.time()
-            self.proceso.start('gcc', parametros_gcc + [self.ejecutable] +
-                parametros_add + [self.nombre_archivo])
+            self.proceso_compilacion.start('gcc',
+                                        parametros_gcc + [self.ejecutable] +
+                                        parametros_add + [self.nombre_archivo])
             fin = time.time()
             #FIXME: test!
             self.tiempo = fin - inicio
         else:
             parametros_gcc = ['-Wall']
-            self.proceso.start('gcc', parametros_gcc +
+            self.proceso_compilacion.start('gcc', parametros_gcc +
                 parametros_add + [self.nombre_archivo])
         #FIXME: revisar!
         self.compilado = True
@@ -142,7 +144,7 @@ class EjecutarWidget(QWidget):
         self.output.moveCursor(QTextCursor.Down)
 
     def ejecucion_error(self, error):
-        self.proceso.kill()
+        self.proceso_compilacion.kill()
         formato = QTextCharFormat()
         formato.setAnchor(True)
         formato.setForeground(Qt.red)
@@ -157,19 +159,20 @@ class EjecutarWidget(QWidget):
         """ Se encarga de correr el programa objeto generado """
 
         direc = manejador_de_archivo.devolver_carpeta(self.nombre_archivo)
+        self.proceso_ejecucion.setWorkingDirectory(direc)
 
         if _TUX:
             terminal = configuraciones.TERMINAL
             bash = '%s -e "bash -c ./%s;read n"' % (terminal, self.ejecutable)
-            self.pro = Popen(bash, stdout=PIPE, stderr=PIPE, shell=True,
-                cwd=direc)
+            # Run !
+            self.proceso_ejecucion.start(bash)
         else:
-            self.pro = Popen(direc + '/' + self.ejecutable,
-                creationflags=CREATE_NEW_CONSOLE)
+            #FIXME: güindous!
+            pass
+            #self.pro = Popen(direc + '/' + self.ejecutable,
+                #creationflags=CREATE_NEW_CONSOLE)
 
     def terminar_proceso(self):
         """ Termina el proceso """
 
-        if not self.pro:
-            return
-        self.pro.terminate()
+        pass
