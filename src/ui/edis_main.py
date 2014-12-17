@@ -8,6 +8,7 @@
 # Módulos Python
 import os
 import webbrowser
+from collections import OrderedDict
 
 # Módulos QtGui
 from PyQt4.QtGui import (
@@ -97,6 +98,7 @@ class EDIS(QMainWindow):
     def cargar_menu(self):
         #FIXME: Mejorar
         #FIXME: Separadores
+        items_toolbar = OrderedDict()
         menu_bar = self.menuBar()
         menu_edis = self.componente("menu")
         principal = self.componente("principal")
@@ -114,7 +116,7 @@ class EDIS(QMainWindow):
                     else:
                         qaccion = menu.addAction(accion.nombre)
                     if accion.nombre in configuraciones.ITEMS_TOOLBAR:
-                        self.toolbar.addAction(qaccion)
+                        items_toolbar[accion.nombre] = qaccion
                     if accion.atajo:
                         qaccion.setShortcut(accion.atajo)
                     icono = accion.icono
@@ -131,6 +133,15 @@ class EDIS(QMainWindow):
                             qaccion.triggered.connect(funcion)
                     if accion.separador:
                         menu.addSeparator()
+
+        self.__cargar_toolbar(items_toolbar)
+
+    def __cargar_toolbar(self, items_toolbar):
+        for i, accion in enumerate(list(items_toolbar.items())):
+            if accion[0] in configuraciones.ITEMS_TOOLBAR:
+                self.toolbar.addAction(accion[1])
+                if configuraciones.ITEMS_TOOLBAR[i] == 'separador':
+                    self.toolbar.addSeparator()
 
     def cargar_contenedores(self, central):
         """ Carga los 3 contenedores (editor, lateral y output) """
