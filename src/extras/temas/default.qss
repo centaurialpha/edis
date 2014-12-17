@@ -114,3 +114,10 @@ QMenu::item:selected {
     background: gray;
     border: 1px solid #9b9b9b;
 }
+
+QMenu::separator {
+    background: gray;
+    height: 1px;
+    margin-left: 10px;
+    margin-right: 10px;
+}
