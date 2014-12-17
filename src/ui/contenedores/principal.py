@@ -44,6 +44,8 @@ class EditorContainer(QWidget):
 
     archivo_cambiado = pyqtSignal(['QString'])
     posicion_cursor = pyqtSignal(int, int, int)
+    archivo_modificado = pyqtSignal(bool)
+    actualizar_simbolos = pyqtSignal(['QString'], name="actualizarSimbolos")
 
     def __init__(self, edis=None):
         QWidget.__init__(self, edis)
@@ -67,10 +69,10 @@ class EditorContainer(QWidget):
                     #self._archivo_modificado)
 
     def _archivo_modificado(self, valor):
-        self.emit(SIGNAL("archivo_modificado(bool)"), valor)
+        self.archivo_modificado.emit(valor)
 
     def __archivo_guardado(self, weditor):
-        self.emit(SIGNAL("actualizarSimbolos(QString)"), weditor.iD)
+        self.actualizar_simbolos.emit(weditor.iD)
 
     def cambiar_widget(self, indice):
         self.stack.cambiar_widget(indice)
