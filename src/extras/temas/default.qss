@@ -130,3 +130,15 @@ QWidget#navegador {
     background: #41403b;
     color: #85878c;
 }
+
+QDialog {
+    background-color: #383733;
+}
+
+QLabel {
+    color: #F1F1F1;
+}
+
+QLabel#status_label {
+    color: #383733;
+    }
