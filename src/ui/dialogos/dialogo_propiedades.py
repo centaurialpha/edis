@@ -13,7 +13,8 @@ from PyQt4.QtGui import (
     QDialog,
     QVBoxLayout,
     QGridLayout,
-    QLabel
+    QLabel,
+    QPushButton
     )
 
 from PyQt4.QtCore import (
@@ -55,7 +56,13 @@ class FileProperty(QDialog):
         grid.addWidget(QLabel(str(editor.lineas)), 6, 1)
         grid.addWidget(QLabel(self.trUtf8("<b>Modificado:</b>")), 7, 0)
         grid.addWidget(QLabel(self.tr(self.get_modification(filename))), 7, 1)
+
+        btn_aceptar = QPushButton(self.tr("Aceptar"))
+        grid.addWidget(btn_aceptar, 8, 1, Qt.AlignRight)
+
         vLayout.addLayout(grid)
+
+        btn_aceptar.clicked.connect(self.close)
 
     def get_type(self, filename):
         try:

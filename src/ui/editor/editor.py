@@ -21,6 +21,7 @@ from PyQt4.QtCore import (
 
 from src import recursos
 from src.ui.editor.base import Base
+from src.ui.editor.minimapa import MiniMapa
 from src.helpers import (
     configuraciones,
     logger
@@ -78,6 +79,13 @@ class Editor(Base):
         self.guardado_actualmente = False
         self._palabra_seleccionada = ""
 
+        # Minimapa
+        #FIXME:
+        self.minimapa = MiniMapa(self)
+        self.connect(self, SIGNAL("selectionChanged()"),
+                    self.minimapa.area)
+        #self.cargar_minimapa()
+
         # Thread ocurrencias
         self.hilo_ocurrencias = ThreadBusqueda()
         self.connect(self.hilo_ocurrencias,
@@ -124,6 +132,20 @@ class Editor(Base):
         else:
             self.setWrapMode(self.WrapNone)
 
+    def set_id(self, id_):
+        super(Editor, self).set_id(id_)
+        self.minimapa.codigo(self.texto)
+
+    #def cargar_minimapa(self):
+
+        #if self.minimapa:
+            #self.minimapa.codigo(self.texto)
+
+    @property
+    def altura_lineas(self):
+        linea, i = self.devolver_posicion_del_cursor()
+        return self.textHeight(linea)
+
     def devolver_posicion_del_cursor(self):
         """ Posición del cursor (línea, columna) """
 
@@ -163,6 +185,10 @@ class Editor(Base):
         super(Editor, self).keyPressEvent(e)
         if e.key() == Qt.Key_Escape:
             self.borrarIndicadores(self.indicador)
+
+    def resizeEvent(self, e):
+        super(Editor, self).resizeEvent(e)
+        self.minimapa.redimensionar()
 
     def guardado(self):
         self._guardado.emit(self)

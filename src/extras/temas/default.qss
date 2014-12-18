@@ -141,4 +141,19 @@ QLabel {
 
 QLabel#status_label {
     color: #383733;
-    }
+}
+
+QPushButton {
+    background: #bbbbbb;
+    border-radius: 3px;
+    min-width: 90px;
+    min-height: 30px;
+}
+
+QPushButton:hover {
+    background: #aaaaaa;
+}
+
+QPushButton:pressed {
+    background: #777;
+}

@@ -76,9 +76,11 @@ class StackWidget(QStackedWidget):
             respuesta = NO
             if weditor.texto_modificado:
                 respuesta = QMessageBox.question(self, self.trUtf8(
-                                                "El archivo no está guardado"),
-                                                self.trUtf8("¿Guardar?"),
-                                                SI | NO | CANCELAR)
+                                                "Archivo no guardado"),
+                                                self.trUtf8("El archivo "
+                                                "<b>%s</b> no se ha guardado"
+                                            "<br>¿ Guardar ?") % weditor.iD,
+                                            SI | NO | CANCELAR)
                 if respuesta == CANCELAR:
                     return
                 elif respuesta == SI:

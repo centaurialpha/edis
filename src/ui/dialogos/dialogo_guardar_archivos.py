@@ -9,7 +9,6 @@ from PyQt4.QtGui import (
     QDialog,
     QVBoxLayout,
     QHBoxLayout,
-    QFrame,
     QListWidget,
     QPushButton,
     QAbstractItemView,
@@ -32,35 +31,31 @@ class Dialogo(QDialog):
         self.principal = principal
         self.evento_ignorado = False
 
-        linea = QFrame()
-        linea.setFrameStyle(QFrame.VLine | QFrame.Sunken)
-
-        vLayout = QVBoxLayout()
-        label = QLabel(self.tr("Algunos archivos no se han guardado,\n"
-                        "selecciona los que deseas guardar:"))
+        vLayout = QVBoxLayout(self)
+        label = QLabel(self.tr("Algunos archivos no se han guardado, "
+                        "selecciona los que \ndeseas guardar:"))
         vLayout.addWidget(label)
+        hLayout = QHBoxLayout()
+
         self.lista = QListWidget()
         [self.lista.addItem(item) for item in archivos]
         self.lista.setSelectionMode(QAbstractItemView.ExtendedSelection)
-        vLayout.addWidget(self.lista)
+        hLayout.addWidget(self.lista)
 
         layoutBotones = QVBoxLayout()
-        botonTodo = QPushButton(self.tr("Seleccionar todo"))
-        botonNinguno = QPushButton(self.tr("Seleccionar ninguno"))
+        botonTodo = QPushButton(self.tr("Todo"))
+        botonNinguno = QPushButton(self.tr("Ninguno"))
         botonGuardar = QPushButton(self.tr("Guardar"))
         botonCancelar = QPushButton(self.tr("Cancelar"))
         botonNoGuardar = QPushButton(self.tr("No guardar"))
         layoutBotones.addWidget(botonTodo)
         layoutBotones.addWidget(botonNinguno)
         layoutBotones.addWidget(botonGuardar)
-        layoutBotones.addWidget(botonCancelar)
         layoutBotones.addWidget(botonNoGuardar)
+        layoutBotones.addWidget(botonCancelar)
 
-        layout = QHBoxLayout()
-        layout.addLayout(vLayout)
-        layout.addWidget(linea)
-        layout.addLayout(layoutBotones)
-        self.setLayout(layout)
+        hLayout.addLayout(layoutBotones)
+        vLayout.addLayout(hLayout)
 
         self.tecla_escape = QShortcut(QKeySequence(Qt.Key_Escape), self)
 
