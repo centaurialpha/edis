@@ -8,20 +8,25 @@
 # Módulos Python
 import os
 import webbrowser
+from collections import OrderedDict
 
 # Módulos QtGui
 from PyQt4.QtGui import (
     QMainWindow,
     QIcon,
+    QToolBar,
     )
 
 # Módulos QtCore
 from PyQt4.QtCore import (
     SIGNAL,
+    Qt,
+    QSize
     )
 
 # Módulos EDIS
 from src import ui
+from src.helpers import configuraciones
 from src.ui.contenedores.lateral import lateral_container
 from src.ui.contenedores.output import contenedor_secundario
 from src.ui.dialogos import dialogo_guardar_archivos
@@ -51,6 +56,12 @@ class EDIS(QMainWindow):
         EDIS.menu_bar(4, self.trUtf8("&Herramientas"))
         EDIS.menu_bar(5, self.trUtf8("E&jecución"))
         EDIS.menu_bar(6, self.trUtf8("A&cerca de"))
+        # Toolbar
+        self.toolbar = QToolBar(self)
+        self.toolbar.setMovable(False)
+        self.toolbar.setObjectName("toolbar")
+        self.toolbar.setIconSize(QSize(28, 28))
+        self.addToolBar(Qt.RightToolBarArea, self.toolbar)
         self.cargar_menu()
         # Barra de estado
         self.barra_de_estado = EDIS.componente("barra_de_estado")
@@ -59,6 +70,8 @@ class EDIS(QMainWindow):
         self.central = EDIS.componente("central")
         self.cargar_contenedores(self.central)
         self.setCentralWidget(self.central)
+
+        EDIS.cargar_componente("edis", self)
 
     @classmethod
     def cargar_componente(cls, nombre, instancia):
@@ -87,6 +100,7 @@ class EDIS(QMainWindow):
     def cargar_menu(self):
         #FIXME: Mejorar
         #FIXME: Separadores
+        items_toolbar = OrderedDict()
         menu_bar = self.menuBar()
         menu_edis = self.componente("menu")
         principal = self.componente("principal")
@@ -103,6 +117,8 @@ class EDIS(QMainWindow):
                             qaccion = smenu.addAction(accion.nombre)
                     else:
                         qaccion = menu.addAction(accion.nombre)
+                    if accion.nombre in configuraciones.ITEMS_TOOLBAR:
+                        items_toolbar[accion.nombre] = qaccion
                     if accion.atajo:
                         qaccion.setShortcut(accion.atajo)
                     icono = accion.icono
@@ -120,6 +136,15 @@ class EDIS(QMainWindow):
                     if accion.separador:
                         menu.addSeparator()
 
+        self.__cargar_toolbar(items_toolbar)
+
+    def __cargar_toolbar(self, items_toolbar):
+        for i, accion in enumerate(list(items_toolbar.items())):
+            if accion[0] in configuraciones.ITEMS_TOOLBAR:
+                self.toolbar.addAction(accion[1])
+                if configuraciones.ITEMS_TOOLBAR[i + 1] == 'separador':
+                    self.toolbar.addSeparator()
+
     def cargar_contenedores(self, central):
         """ Carga los 3 contenedores (editor, lateral y output) """
 
@@ -129,22 +154,41 @@ class EDIS(QMainWindow):
         self.contenedor_lateral = lateral_container.LateralContainer(self)
 
         # Agrego los contenedores al widget central
-        #central.agregar_contenedor_lateral(self.contenedor_lateral)
+        central.agregar_contenedor_lateral(self.contenedor_lateral)
         central.agregar_contenedor_editor(self.contenedor_editor)
-        #central.agregar_contenedor_output(self.contenedor_output)
+        central.agregar_contenedor_output(self.contenedor_output)
+
         self.connect(self.contenedor_editor,
                     SIGNAL("archivo_cambiado(QString)"),
                     self.__actualizar_estado)
-        self.connect(self.contenedor_editor.widget_actual,
-                    SIGNAL("todoCerrado()"),
+        self.connect(self.contenedor_editor.stack,
+                    SIGNAL("todo_cerrado()"),
                     self.todo_cerrado)
         self.connect(self.contenedor_editor,
                     SIGNAL("archivo_cambiado(QString)"),
                     self.__titulo_ventana)
+        self.connect(self.contenedor_editor,
+                    SIGNAL("archivo_modificado(bool)"),
+                    self.__titulo_modificado)
+        self.connect(self.contenedor_editor,
+                    SIGNAL("posicion_cursor(int, int, int)"),
+                    self.__actualizar_cursor)
+        self.connect(self.contenedor_editor,
+                    SIGNAL("archivo_cambiado(QString)"),
+                    self.contenedor_lateral.actualizar_simbolos)
+        self.connect(self.contenedor_editor,
+                    SIGNAL("actualizarSimbolos(QString)"),
+                    self.contenedor_lateral.actualizar_simbolos)
+
+    def __actualizar_cursor(self, linea, columna, lineas):
+        #FIXME:
+        self.barra_de_estado.cursor_widget.actualizar_cursor(
+            linea, columna, lineas)
 
     def __actualizar_estado(self, archivo):
-        #FIXME: Hacer nuevo método para esto en barra de estado
-        self.barra_de_estado.nombre_archivo.cambiar_texto(archivo)
+        #FIXME: Arreglar esto
+        #self.barra_de_estado.nombre_archivo.cambiar_texto(archivo)
+        pass
 
     def todo_cerrado(self):
         self.setWindowTitle(ui.__nombre__)
@@ -156,8 +200,29 @@ class EDIS(QMainWindow):
         titulo = os.path.basename(titulo)
         self.setWindowTitle(titulo + ' - ' + ui.__nombre__)
 
+    def __titulo_modificado(self, valor):
+        """ Agrega (*) al título cuando el archivo es modificado """
+
+        titulo_actual = self.windowTitle()
+        if valor and not titulo_actual.startswith('*'):
+            self.setWindowTitle('*' + titulo_actual)
+        else:
+            self.setWindowTitle(titulo_actual.split('*')[-1])
+
     def reportar_bug(self):
         webbrowser.open_new(ui.__reportar_bug__)
+
+    def mostrar_ocultar_output(self):
+        if self.contenedor_output.isVisible():
+            self.contenedor_output.hide()
+        else:
+            self.contenedor_output.show()
+
+    def mostrar_ocultar_lateral(self):
+        if self.contenedor_lateral.isVisible():
+            self.contenedor_lateral.hide()
+        else:
+            self.contenedor_lateral.show()
 
     def closeEvent(self, e):
         """

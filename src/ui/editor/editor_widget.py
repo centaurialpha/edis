@@ -122,6 +122,7 @@ class EditorWidget(QWidget):
             weditor.texto_modificado = True
         else:
             weditor.texto_modificado = False
+        self.emit(SIGNAL("archivo_modificado(bool)"), valor)
 
     def cambiar_widget(self, indice):
         """ Cambia el widget del stack """

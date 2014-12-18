@@ -97,7 +97,7 @@ class SalidaWidget(QPlainTextEdit):
 
         espacio = re.compile('^\s+')
         cursor = self.textCursor()
-        proceso = self._parent.proceso
+        proceso = self._parent.proceso_compilacion
         texto = proceso.readAllStandardError().data().decode('utf-8')
 
         for l in texto.splitlines():

@@ -7,121 +7,70 @@
 
 from PyQt4.QtGui import (
     QStatusBar,
-    QWidget,
-    QVBoxLayout,
-    QHBoxLayout,
-    QLabel,
-    QSizePolicy,
+    #QWidget,
+    QLabel
     )
 
-from src import recursos
-from src.ui.widgets.creador_widget import create_button
+from PyQt4.QtCore import QTimer
+
 from src.ui.edis_main import EDIS
 
 
 class BarraDeEstado(QStatusBar):
 
     def __init__(self, parent=None):
-        QStatusBar.__init__(self)
+        super(BarraDeEstado, self).__init__()
+        self.cursor_widget = PosicionCursorWidget()
+        self.uptime_widget = UpTimeWidget()
+        self.addPermanentWidget(self.cursor_widget)
+        self.addPermanentWidget(self.uptime_widget)
 
-        self.edis = parent
-
-        self.nombre_archivo = NombreArchivo()
-        self.estado_cursor = WidgetLineaColumna()
-        self.archivo_modificado = MensajeArchivoModificado()
-
-        self._widgets = [
-            self.nombre_archivo,
-            #self.estado_cursor,
-            self.archivo_modificado,
-            ]
-
-        # Load UI
-        self.load_ui()
         EDIS.cargar_componente("barra_de_estado", self)
 
-    def load_ui(self):
-        """ Load the components of StatusBar """
 
-        # Container
-        container = QWidget()
-        layout = QHBoxLayout(container)
-        layout.setContentsMargins(0, 0, 0, 0)
-        layout.setSpacing(0)
-
-        tool_lateral = create_button(self, icon=recursos.ICONOS['lateral'],
-            text="Lateral", toggled=self._show_hide_lateral, text_beside=True)
-        tool_lateral.setStyleSheet("color: gray")
-        tool_output = create_button(self, icon=recursos.ICONOS['output'],
-            text="Output", toggled=self._show_hide_output, text_beside=True)
-        tool_output.setStyleSheet("color: gray")
-
-        # Add the widgets to the container
-        for w in self._widgets:
-            widget = QWidget()
-            widget.setSizePolicy(QSizePolicy.Expanding,
-                                QSizePolicy.Expanding)
-            box = QHBoxLayout(widget)
-            box.setContentsMargins(0, 0, 0, 0)
-            box.addWidget(w)
-            layout.addWidget(widget)
-
-        # Add the container to status bar
-        self.addWidget(container, stretch=1)
-        self.addWidget(tool_lateral)
-        self.addWidget(tool_output)
-
-    def mostrar_mensaje(self, mensaje, tiempo=3000):
-        self.showMessage(mensaje, tiempo)
-
-    def _show_hide_lateral(self):
-        self.edis.widget_Central.show_hide_lateral()
-
-    def _show_hide_output(self):
-        self.edis.widget_Central.show_hide_output()
-
-
-class NombreArchivo(QLabel):
+class PosicionCursorWidget(QLabel):
 
     def __init__(self):
-        super(NombreArchivo, self).__init__()
-        self.setStyleSheet("color: gray")
+        super(PosicionCursorWidget, self).__init__()
+        self.setStyleSheet("font: 10pt;")
+        self.linea_columna = "Línea: %s, Columna: %s -- %s líneas"
+        self.setText(self.tr(self.linea_columna % (0, 0, 0)))
 
-    def cambiar_texto(self, archivo):
-        self.setText(archivo)
+    def actualizar_cursor(self, linea, columna, lineas):
+        self.setText(self.linea_columna % (linea, columna, lineas))
 
 
-class MensajeArchivoModificado(QLabel):
+class UpTimeWidget(QLabel):
 
     def __init__(self):
-        super(MensajeArchivoModificado, self).__init__()
-        self.setStyleSheet("color: gray")
-        self.setText('')
+        super(UpTimeWidget, self).__init__()
+        self.setStyleSheet("font: 10pt;")
+        # Inicio
+        self.tiempo = 0
 
-    def modificado(self, modificado=False):
-        if modificado:
-            self.setText(self.tr('Modificado'))
+        self.lbl_tiempo = "Tiempo: %smin"
+        self.setText(self.tr(self.lbl_tiempo % (0)))
+
+        # Timer
+        self.timer = QTimer()
+        self.timer.setInterval(60000)
+        self.timer.timeout.connect(self.actualizar_tiempo)
+        self.timer.start()
+
+    def actualizar_tiempo(self):
+        """ Actualiza el label cada 60 segundos """
+
+        self.tiempo += 1
+        if self.tiempo == 60:
+            tiempo = "1hr"
+        elif self.tiempo > 60:
+            horas = int(str(self.tiempo / 60).split('.')[0])
+            hora = str(horas) + "hs"
+            minutos = str(self.tiempo - (horas * 60)) + "min"
+            tiempo = hora + minutos
         else:
-            self.setText('')
-
-
-class WidgetLineaColumna(QWidget):
-
-    def __init__(self):
-        QWidget.__init__(self)
-        self.setStyleSheet("color: gray")
-        vLayout = QVBoxLayout(self)
-        vLayout.setContentsMargins(0, 0, 0, 0)
-        hLayout = QHBoxLayout()
-        self.texto = "Lin: %s/%s - Col: %s"
-        self.posicion_cursor = QLabel(self.tr(self.texto % (0, 0, 0)))
-
-        hLayout.addWidget(self.posicion_cursor)
-        vLayout.addLayout(hLayout)
-
-    def actualizar_posicion_cursor(self, linea, total, columna):
-        self.posicion_cursor.setText(self.tr(
-                                    self.texto % (linea, total, columna)))
+            tiempo = str(self.tiempo) + "min"
+        self.setText(self.tr("Tiempo: %s" % tiempo))
 
 
 barra_de_estado = BarraDeEstado()

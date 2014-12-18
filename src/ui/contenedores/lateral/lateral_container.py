@@ -35,8 +35,8 @@ from src.ectags.ctags import (
 class LateralContainer(QWidget):
     icon = {
         'symbol': recursos.ICONOS['struct'],
-        'navigator': recursos.ICONOS['navegador'],
-        'explorer': recursos.ICONOS['explorador']
+        'navigator': recursos.ICONOS['folder-open'],
+        'explorer': recursos.ICONOS['folder-open']
         }
 
     def __init__(self, parent):
@@ -74,8 +74,9 @@ class LateralContainer(QWidget):
         vbox.setSpacing(0)
 
         self.combo_selector = ComboSelector()
+        self.combo_selector.setObjectName("combo_selector")
         self.combo_selector.setStyleSheet(
-            "QComboBox::drop-down{image: url(%s); top: -2px;}"
+            "QComboBox::drop-down{image: url(%s); top: 0px;}"
             % recursos.ICONOS['down'])
         vbox.addWidget(self.combo_selector)
 
@@ -109,6 +110,7 @@ class ThreadSimbolos(QThread):
 
     def run(self, archivo):
         tag = self.ctags.start_ctags(archivo)
+        tag = tag.decode()
         self.parser.parser_tag(tag)
 
 

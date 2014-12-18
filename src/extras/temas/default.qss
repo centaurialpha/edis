@@ -1,0 +1,131 @@
+QWidget {
+    border: 0px solid transparent;
+}
+
+QToolBar#toolbar {
+    background: #373737;
+    spacing: 7px;
+    padding: 7px;
+}
+
+QScrollBar:vertical {
+    background: gray;
+    width: 10px;
+    border-left-width: 2px;
+    border-style-solid;
+    border-left-color: #bbbbbb;
+}
+
+QScrollBar::handle:vertical {
+    border: 1px solid gray;
+    border-radius: 4px;
+    background: #adadad;
+    min-height: 50px;
+}
+
+QScrollBar::add-line:vertical,
+QScrollBar::sub-line:vertical,
+QScrollBar::add-page:vertical,
+QScrollBar::sub-page:vertical,
+QScrollBar::add-line:horizontal,
+QScrollBar::sub-line:horizontal,
+QScrollBar::add-page:horizontal,
+QScrollBar::sub-page:horizontal{
+    background: #cacaca;
+    border: none;
+}
+
+QSplitter::handle {
+    background: #444;
+    border: 0px solid transparent;
+    height: 3px;
+}
+
+QSplitter::handle:hover {
+    background: gray;
+}
+
+QComboBox#combo_selector {
+    background-color: #47484b;
+    border: 0px solid gray;
+    padding: 0px 18px 0px 20px;
+    min-width: 6em;
+    color: #adafb0;
+}
+
+QComboBox#combo_selector:hover {
+    background-color: #38383b;
+    border-radius: 0px;
+}
+
+QComboBox:item:selected {
+    background: #38383b;
+}
+
+QToolButton:hover {
+    background-color: #38383b;
+    border: 1px solid gray;
+    border-radius: 2px;
+}
+
+QToolTip {
+    border: 1px solid gray;
+    padding: 2px;
+    border-radius: 2px;
+    color: black;
+    opacity: 210;
+}
+
+QStatusBar {
+    background: #F4F4F4;
+    border: 1px solid gray;
+
+}
+
+QMenuBar {
+    background-color: #F4F4F4;
+}
+
+QMenuBar::item {
+    background: transparent;
+}
+
+QMenuBar::item:selected {
+    background: #bdbdbd;
+    border-radius: 3px;
+}
+
+QMenuBar::item:pressed {
+    background: #999;
+}
+
+QMenu {
+    background-color: #47484b;
+    color: #bfbfbf;
+    border-radius: 2px;
+}
+
+QMenu::item {
+    font-size: 13px;
+    border: 1px solid transparent;
+    padding: 1px 10px 2px 20px;
+}
+
+QMenu::item:selected {
+    background: gray;
+    border: 1px solid #9b9b9b;
+}
+
+QMenu::separator {
+    background: gray;
+    height: 1px;
+    margin-left: 10px;
+    margin-right: 10px;
+}
+
+QTreeWidget,
+QWidget#explorador,
+QWidget#navegador {
+    background: #373737;
+    color: #85878c;
+}

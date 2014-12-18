@@ -19,6 +19,7 @@ from PyQt4.Qsci import (
     QsciScintilla
     )
 
+from src import recursos
 from src.ui import tabitem
 from src.helpers import configuraciones
 from src.ui.editor import lexer
@@ -43,9 +44,14 @@ class Base(QsciScintilla, tabitem.TabItem):
         self.SendScintilla(QsciScintilla.SCI_SETHSCROLLBAR, 0)
         # Indicador
         self.indicador = self.indicatorDefine(QsciScintilla.INDIC_CONTAINER, 9)
+        #FIXME: enviar parámetros
+        self.colorIndicador()
+        self.alphaIndicador()
 
         # Folding
-        self.setFolding(QsciScintilla.BoxedFoldStyle)
+        self.setFolding(QsciScintilla.BoxedTreeFoldStyle)
+        self.colorFoldMargen(recursos.TEMA['foldFore'],
+                            recursos.TEMA['foldBack'])
 
         self.__fuente = None
         self.cargar_signals()
@@ -141,9 +147,21 @@ class Base(QsciScintilla, tabitem.TabItem):
         if ext == 'cpp':
             self.__lexer = lexer.LexerC(self)
             self.setLexer(self.__lexer)
+            self.__lexer.setFoldCompact(False)
+
+    def colorIndicador(self):
+        self.SendScintilla(QsciScintilla.SCI_INDICSETFORE,
+                            self.indicador, 0x0000ff)
+
+    def alphaIndicador(self):
+        self.SendScintilla(QsciScintilla.SCI_INDICSETALPHA,
+                            self.indicador, 100)
 
     def borrarIndicadores(self, indicador):
         self.clearIndicatorRange(0, 0, self.lineas, 0, indicador)
+
+    def colorFoldMargen(self, fore, fondo):
+        self.setFoldMarginColors(QColor(fore), QColor(fondo))
 
     def wheelEvent(self, e):
         if e.modifiers() == Qt.ControlModifier:

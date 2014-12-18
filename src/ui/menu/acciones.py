@@ -49,12 +49,14 @@ ACCIONES = (
         'seccion': 0,
         'nombre': 'Nuevo',
         'conexion': "agregar_editor",
-        'atajo': _ATAJO['nuevo']},
+        'atajo': _ATAJO['nuevo'],
+        'icono': _ICONO['new']},
     {
         'seccion': 0,
         'nombre': 'Abrir',
         'conexion': "abrir_archivo",
         'atajo': _ATAJO['abrir'],
+        'icono': _ICONO['folder-open'],
         'separador': True},
     {
         'seccion': 0,
@@ -81,7 +83,8 @@ ACCIONES = (
         'seccion': 0,
         'nombre': 'Guardar',
         'conexion': "guardar_archivo",
-        'atajo': _ATAJO['guardar']},
+        'atajo': _ATAJO['guardar'],
+        'icono': _ICONO['save']},
     {
         'seccion': 0,
         'nombre': 'Guardar como',
@@ -192,12 +195,12 @@ ACCIONES = (
     {
         'seccion': 2,
         'nombre': 'Mostrar lateral',
-        'conexion': 'mostrar_panel_lateral',
+        'conexion': 'edis.mostrar_ocultar_lateral',
         'atajo': _ATAJO['lateral']},
     {
         'seccion': 2,
         'nombre': 'Mostrar compilador',
-        'conexion': 'mostrar_salida_del_compilador',
+        'conexion': 'edis.mostrar_ocultar_output',
         'atajo': _ATAJO['mostrar-compilador']},
     {
         'seccion': 2,
@@ -231,6 +234,21 @@ ACCIONES = (
         'nombre': 'Buscar',
         'conexion': 'buscar',
         'atajo': _ATAJO['buscar']},
+    {
+        'seccion': 5,
+        'nombre': 'Compilar',
+        'conexion': 'compilar_codigo_fuente',
+        'icono': _ICONO['build']},
+    {
+        'seccion': 5,
+        'nombre': 'Ejecutar',
+        'conexion': 'ejecutar_programa',
+        'icono': _ICONO['run']},
+    {
+        'seccion': 5,
+        'nombre': 'Terminar',
+        'conexion': 'terminar_programa',
+        'icono': _ICONO['stop']},
     {
         'seccion': 6,
         'nombre': 'Reportar bug!',

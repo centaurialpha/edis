@@ -53,12 +53,12 @@ class Selector(QDialog):
 
     def __abrir_archivo(self, indice):
         principal = EDIS.componente("principal")
-        principal.widget_actual.cambiar_widget(indice)
+        principal.cambiar_widget(indice)
         self.hide()
 
     def __current_indice(self):
         principal = EDIS.componente("principal")
-        indice = principal.widget_actual.stack.currentIndex()
+        indice = principal.indice_actual()
         #FIXME: Mandar la señal
         #self.emit(SIGNAL("currentIndice(int)"), indice)
         self.root.item_actual(indice)

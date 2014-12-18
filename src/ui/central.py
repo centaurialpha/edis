@@ -9,7 +9,6 @@ from PyQt4.QtGui import (
     QWidget,
     QSplitter,
     QVBoxLayout,
-    QComboBox
     )
 
 from PyQt4.QtCore import Qt
@@ -23,13 +22,13 @@ class Central(QWidget):
         QWidget.__init__(self)
 
         box = QVBoxLayout(self)
-        # Splitters
+        box.setContentsMargins(0, 0, 0, 0)
 
+        # Splitters
         self.splitter_principal = QSplitter(Qt.Vertical)
         self.splitter_secundario = QSplitter(Qt.Horizontal)
 
         box.addWidget(self.splitter_secundario)
-        #box.addLayout(box)
         EDIS.cargar_componente("central", self)
 
     def agregar_contenedor_editor(self, contenedor):
@@ -48,15 +47,14 @@ class Central(QWidget):
         """ Agrega el contenedor de la salida del compilador """
 
         self.output = contenedor
+        self.output.hide()
         self.splitter_principal.addWidget(contenedor)
 
     def showEvent(self, e):
         super(Central, self).showEvent(e)
         self.splitter_secundario.insertWidget(1, self.splitter_principal)
-        tamaño_principal = [self.height(), self.height() / 3]
-        tamaño_secundario = [self.width() / 5, self.width()]
-        self.splitter_principal.setSizes(tamaño_principal)
-        self.splitter_secundario.setSizes(tamaño_secundario)
+        self.splitter_principal.setSizes([900, 300])
+        self.splitter_secundario.setSizes([self.width() / 4, self.width()])
 
 
 central = Central()

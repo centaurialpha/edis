@@ -165,5 +165,6 @@ class Editor(Base):
             self.borrarIndicadores(self.indicador)
 
     def guardado(self):
+        self._guardado.emit(self)
         self.nuevo_archivo = False
         self.texto_modificado = False
