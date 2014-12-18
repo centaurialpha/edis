@@ -30,6 +30,10 @@ class MiniMapa(QPlainTextEdit):
         # Configuración QPlainTextEdit
         self.setReadOnly(True)
         self.setMouseTracking(True)
+        self.setCenterOnScroll(True)
+        self.viewport().setCursor(Qt.PointingHandCursor)
+        self.setTextInteractionFlags(Qt.NoTextInteraction)
+        self.setVerticalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
 
         self.editor = editor
         self.setStyleSheet("background: transparent; color: white")
@@ -109,7 +113,7 @@ class Deslizador(QFrame):
         self.efecto = QGraphicsOpacityEffect()
         self.setGraphicsEffect(self.efecto)
         self.efecto.setOpacity(0.4)
-        self.setStyleSheet("background: blue")
+        self.setStyleSheet("background: gray")
         self.setMouseTracking(True)
         self.setCursor(Qt.OpenHandCursor)
         self.presionado = False
@@ -145,7 +149,7 @@ class Deslizador(QFrame):
             if y < self.scroll_margen[0]:
                 self.minimapa.verticalScrollBar().setSliderPosition(
                     self.minimapa.verticalScrollBar().sliderPosition() - 2)
-            elif y < self.scroll_margen[1]:
+            elif y > self.scroll_margen[1]:
                 self.minimapa.verticalScrollBar().setSliderPosition(
                     self.minimapa.verticalScrollBar().sliderPosition() + 2)
             self.move(0, y)
