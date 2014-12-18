@@ -44,8 +44,12 @@ class MiniMapa(QPlainTextEdit):
         # Efecto y animación
         self.efecto = QGraphicsOpacityEffect()
         self.setGraphicsEffect(self.efecto)
-        self.efecto.setOpacity(0.07)
+        self.efecto.setOpacity(0.20)
         self.animacion = QPropertyAnimation(self.efecto, "opacity")
+
+    def actualizar_codigo(self):
+        texto = self.editor.texto
+        self.setPlainText(texto)
 
     def codigo(self, codigo):
         self.setPlainText(codigo)
@@ -94,14 +98,14 @@ class MiniMapa(QPlainTextEdit):
 
     def enterEvent(self, e):
         self.animacion.setDuration(400)
-        self.animacion.setStartValue(0.07)
-        self.animacion.setEndValue(0.30)
+        self.animacion.setStartValue(0.20)
+        self.animacion.setEndValue(0.40)
         self.animacion.start()
 
     def leaveEvent(self, e):
         self.animacion.setDuration(400)
-        self.animacion.setStartValue(0.30)
-        self.animacion.setEndValue(0.07)
+        self.animacion.setStartValue(0.40)
+        self.animacion.setEndValue(0.20)
         self.animacion.start()
 
 
