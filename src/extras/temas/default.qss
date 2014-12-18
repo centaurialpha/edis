@@ -3,7 +3,8 @@ QWidget {
 }
 
 QToolBar#toolbar {
-    background: #373737;
+    background: qlineargradient(x1: 1, y1: 0, x2: 0, y2: 0,
+                                       stop: 0 #5a584f, stop: 1 #41403b);
     spacing: 7px;
     padding: 7px;
 }
@@ -46,15 +47,15 @@ QSplitter::handle:hover {
 }
 
 QComboBox#combo_selector {
-    background-color: #47484b;
+    background-color: #33322e;
     border: 0px solid gray;
-    padding: 0px 18px 0px 20px;
+    padding: 5px 18px 5px 20px;
     min-width: 6em;
     color: #adafb0;
 }
 
 QComboBox#combo_selector:hover {
-    background-color: #38383b;
+    background-color: #3b3a35;
     border-radius: 0px;
 }
 
@@ -126,6 +127,18 @@ QMenu::separator {
 QTreeWidget,
 QWidget#explorador,
 QWidget#navegador {
-    background: #373737;
+    background: #41403b;
     color: #85878c;
 }
+
+QDialog {
+    background-color: #383733;
+}
+
+QLabel {
+    color: #F1F1F1;
+}
+
+QLabel#status_label {
+    color: #383733;
+    }
