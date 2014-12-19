@@ -12,7 +12,8 @@ from PyQt4.QtGui import (
     QPlainTextEdit,
     QFrame,
     QFontMetrics,
-    QGraphicsOpacityEffect
+    QGraphicsOpacityEffect,
+    QTextOption
     )
 
 from PyQt4.QtCore import (
@@ -33,7 +34,9 @@ class MiniMapa(QPlainTextEdit):
         self.setCenterOnScroll(True)
         self.viewport().setCursor(Qt.PointingHandCursor)
         self.setTextInteractionFlags(Qt.NoTextInteraction)
+        self.setHorizontalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
         self.setVerticalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
+        self.setWordWrapMode(QTextOption.NoWrap)
 
         self.editor = editor
         self.setStyleSheet("background: transparent; color: white")
@@ -49,6 +52,8 @@ class MiniMapa(QPlainTextEdit):
 
     def actualizar_codigo(self):
         texto = self.editor.texto
+        #FIXME: usar indentación desde configuración
+        texto = texto.replace('\t', ' ' * 4)  # Reemplaza tabs por espacios
         self.setPlainText(texto)
 
     def codigo(self, codigo):
