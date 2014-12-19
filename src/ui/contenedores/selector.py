@@ -30,7 +30,7 @@ class Selector(QDialog):
                 Qt.Dialog | Qt.FramelessWindowHint)
         # Configuración
         self.setModal(True)
-        self.setStyleSheet("background:transparent;")
+        #self.setStyleSheet("background:transparent;")
 
         box = QVBoxLayout(self)
         box.setContentsMargins(0, 0, 1, 1)
