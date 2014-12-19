@@ -83,7 +83,7 @@ ATAJOS = {
 
 # Tema editor
 TEMA = {
-    'FondoEditor': '#2a2a2a',
+    'FondoEditor': '#212121',
     'Color': '#F1F1F1',
     'Keyword': '#009bbf',
     'KeywordSet2': '#009bbf',
@@ -108,10 +108,10 @@ TEMA = {
     'caret-opacidad': 20,
     'guia-fondo': 'red',
     'guia-fore': 'white',
-    'sidebar-fondo': '#2a2a2a',
+    'sidebar-fondo': '#212121',
     'sidebar-fore': '#85878c',
-    'foldFore': '#333',
-    'foldBack': '#333'
+    'foldFore': '#242424',
+    'foldBack': '#242424'
     }
 
 # Extensiones soportadas

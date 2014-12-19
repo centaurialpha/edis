@@ -32,7 +32,7 @@ class LexerC(QsciLexerCPP):
 
     def __cargar_highlighter(self):
         self.setDefaultPaper(QColor(recursos.TEMA['FondoEditor']))
-        self.setPaper(QColor(42, 42, 42))
+        self.setPaper(QColor(33, 33, 33))
         self.setColor(QColor(241, 241, 241))
 
         tipos = dir(LexerC)

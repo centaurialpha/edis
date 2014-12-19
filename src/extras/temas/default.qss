@@ -169,3 +169,10 @@ QPlainTextEdit#output {
     background: #41403b;
     color: #dedede;
 }
+
+QLineEdit {
+    background: #41403b;
+    border: 1px solid gray;
+    border-radius: 3px;
+    color: #dedede;
+}
