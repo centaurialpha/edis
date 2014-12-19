@@ -189,8 +189,7 @@ class EDIS(QMainWindow):
 
     def __actualizar_estado(self, archivo):
         #FIXME: Arreglar esto
-        #self.barra_de_estado.nombre_archivo.cambiar_texto(archivo)
-        pass
+        self.barra_de_estado.path_archivo(archivo)
 
     def todo_cerrado(self):
         self.setWindowTitle(ui.__nombre__)

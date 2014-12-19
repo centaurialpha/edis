@@ -24,6 +24,7 @@ class BarraDeEstado(QStatusBar):
         # Widgets
         self.cursor_widget = PosicionCursorWidget()
         self.uptime_widget = UpTimeWidget()
+        self.lbl_archivo = QLabel(self.tr(""))
         # Contenedor
         contenedor = QWidget()
         box = QHBoxLayout(contenedor)
@@ -32,9 +33,13 @@ class BarraDeEstado(QStatusBar):
         box.addWidget(self.uptime_widget)
 
         # Agregar contenedor al status bar
+        self.addWidget(self.lbl_archivo)
         self.addPermanentWidget(contenedor)
 
         EDIS.cargar_componente("barra_de_estado", self)
+
+    def path_archivo(self, path):
+        self.lbl_archivo.setText(path)
 
 
 class PosicionCursorWidget(QLabel):
