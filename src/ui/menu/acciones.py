@@ -206,7 +206,7 @@ ACCIONES = (
     {
         'seccion': 2,
         'nombre': 'Pantalla completa',
-        'conexion': 'pantalla_completa',
+        'conexion': 'edis.mostrar_pantalla_completa',
         'atajo': _ATAJO['fullscreen']},
     {
         'seccion': 2,

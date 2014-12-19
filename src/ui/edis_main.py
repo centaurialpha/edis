@@ -231,6 +231,12 @@ class EDIS(QMainWindow):
         else:
             self.toolbar.show()
 
+    def mostrar_pantalla_completa(self):
+        if self.isFullScreen():
+            self.showNormal()
+        else:
+            self.showFullScreen()
+
     def closeEvent(self, e):
         """
         Éste médoto es llamado automáticamente por Qt cuando se
