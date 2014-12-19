@@ -140,6 +140,7 @@ class EDIS(QMainWindow):
         self.__cargar_toolbar(items_toolbar)
 
     def __cargar_toolbar(self, items_toolbar):
+        #FIXME: Arreglar esto
         for i, accion in enumerate(list(items_toolbar.items())):
             if accion[0] in configuraciones.ITEMS_TOOLBAR:
                 self.toolbar.addAction(accion[1])

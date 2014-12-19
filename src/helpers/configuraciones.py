@@ -17,14 +17,9 @@ from PyQt4.QtCore import QSettings
 
 from src import recursos
 
-###############################################################################
-#                        MÁRGEN                                               #
-###############################################################################
 MARGEN = True
 MARGEN_COLUMNA = 80
-###############################################################################
-#                   SISTEMA OPERATIVO                                         #
-###############################################################################
+
 SISTEMA_OPERATIVO = sys.platform
 
 if SISTEMA_OPERATIVO == 'win32':
@@ -38,27 +33,17 @@ else:
     LINUX = True
     WINDOWS = False
 
-###############################################################################
-# FUENTE
-###############################################################################
 FUENTE_MAX_TAM = 80
 FUENTE_MIN_TAM = 6
 
-###############################################################################
-# INDENTACION
-###############################################################################
 INDENTACION = 4
 CHECK_INDENTACION = True
 CHECK_AUTOINDENTACION = True
 GUIA_INDENTACION = False
-###############################################################################
-# TABS Y ESPACIOS
-###############################################################################
+
 MOSTRAR_TABS = False
 MODO_ENVOLVER = False
-###############################################################################
-# MINIMAPA
-###############################################################################
+
 MINIMAPA = False
 MINI_TAM = 0.17
 OPAC_MIN = 0.2
@@ -77,11 +62,18 @@ SYMBOLS = True
 FILE_EXPLORER = True
 FILE_NAVIGATOR = True
 
+#FIXME: arreglar esto
 ITEMS_TOOLBAR = [
     'Nuevo',
     'Abrir',
     'Guardar',
     'separador',
+    'Deshacer',
+    'separador',
+    'Rehacer',
+    'separador',
+    'Indentar',
+    'Remover indentación',
     'Compilar',
     'Ejecutar',
     'Terminar',

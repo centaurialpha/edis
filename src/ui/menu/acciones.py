@@ -117,12 +117,14 @@ ACCIONES = (
         'seccion': 1,
         'nombre': 'Deshacer',
         'conexion': 'deshacer',
-        'atajo': _ATAJO['deshacer']},
+        'atajo': _ATAJO['deshacer'],
+        'icono': _ICONO['undo']},
     {
         'seccion': 1,
         'nombre': 'Rehacer',
         'conexion': 'rehacer',
         'atajo': _ATAJO['rehacer'],
+        'icono': _ICONO['redo'],
         'separador': True},
     {
         'seccion': 1,
@@ -139,6 +141,7 @@ ACCIONES = (
         'nombre': 'Pegar',
         'conexion': 'pegar',
         'atajo': _ATAJO['pegar'],
+        'icono': _ICONO['paste'],
         'separador': True},
     {
         'seccion': 1,
@@ -164,7 +167,8 @@ ACCIONES = (
     {
         'seccion': 1,
         'nombre': 'Texto a mayúsculas',
-        'conexion': "convertir_a_mayusculas"},
+        'conexion': "convertir_a_mayusculas",
+        'icono': _ICONO['upper']},
     {
         'seccion': 1,
         'nombre': 'Convertir a título',
@@ -175,12 +179,24 @@ ACCIONES = (
         'seccion': 1,
         'nombre': 'Indentar',
         'conexion': 'indentar',
-        'atajo': _ATAJO['indentar']},
+        'atajo': _ATAJO['indentar'],
+        'icono': _ICONO['indent']},
     {
         'seccion': 1,
         'nombre': 'Remover indentación',
         'conexion': 'remover_indentacion',
         'atajo': _ATAJO['quitar-indentacion'],
+        'icono': _ICONO['unindent']},
+    {
+        'seccion': 1,
+        'nombre': 'Mover hacia arriba',
+        'conexion': 'mover_hacia_arriba',
+        'icono': _ICONO['arrow-up']},
+    {
+        'seccion': 1,
+        'nombre': 'Mover hacia abajo',
+        'conexion': 'mover_hacia_abajo',
+        'icono': _ICONO['arrow-down'],
         'separador': True},
     {
         'seccion': 1,
