@@ -76,7 +76,7 @@ class LateralContainer(QWidget):
         self.combo_selector = ComboSelector()
         self.combo_selector.setObjectName("combo_selector")
         self.combo_selector.setStyleSheet(
-            "QComboBox::drop-down{image: url(%s); top: 0px;}"
+            "QComboBox::drop-down{image: url(%s); top: 2px;}"
             % recursos.ICONOS['down'])
         vbox.addWidget(self.combo_selector)
 
