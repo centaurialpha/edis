@@ -94,7 +94,7 @@ QMenuBar::item {
     background: transparent;
     padding: 2px 3px 2px 3px;
     border-radius: 3px;
-    color: #F4F4F4;
+    color: #dedede;
 }
 
 QMenuBar::item:selected {
@@ -109,7 +109,7 @@ QMenuBar::item:pressed {
 
 QMenu {
     background-color: #41403b;
-    color: #F4F4F4;
+    color: #dedede;
     border: 1px solid gray;
     border-radius: 4px;
 }
@@ -136,7 +136,7 @@ QTreeWidget,
 QWidget#explorador,
 QWidget#navegador {
     background: #41403b;
-    color: #85878c;
+    color: #dedede;
 }
 
 QDialog {
@@ -144,11 +144,11 @@ QDialog {
 }
 
 QLabel {
-    color: #F1F1F1;
+    color: #dedede;
 }
 
 QLabel#status_label {
-    color: #F4F4F4;
+    color: #dedede;
 }
 
 QPushButton {
@@ -164,4 +164,9 @@ QPushButton:hover {
 
 QPushButton:pressed {
     background: #777;
+}
+
+QPlainTextEdit#output {
+    background: #41403b;
+    color: #dedede;
 }
