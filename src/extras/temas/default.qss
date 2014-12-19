@@ -14,17 +14,16 @@ QToolBar#toolbar {
 }
 
 QScrollBar:vertical {
-    background: gray;
-    width: 10px;
-    border-left-width: 2px;
+    background: transparent;
+    width: 12px;
+    border-left-width: 0px;
     border-style-solid;
-    border-left-color: #bbbbbb;
+    border-left-color: transparent;
 }
 
 QScrollBar::handle:vertical {
-    border: 1px solid gray;
     border-radius: 4px;
-    background: #adadad;
+    background: #383733;
     min-height: 50px;
 }
 
@@ -36,7 +35,7 @@ QScrollBar::add-line:horizontal,
 QScrollBar::sub-line:horizontal,
 QScrollBar::add-page:horizontal,
 QScrollBar::sub-page:horizontal{
-    background: #cacaca;
+    background: #5e5d56;
     border: none;
 }
 
