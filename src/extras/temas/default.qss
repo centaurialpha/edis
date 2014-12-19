@@ -2,6 +2,10 @@ QWidget {
     border: 0px solid transparent;
 }
 
+QMainWindow {
+    background-color: #383733;
+}
+
 QToolBar#toolbar {
     background: qlineargradient(x1: 1, y1: 0, x2: 0, y2: 0,
                                        stop: 0 #5a584f, stop: 1 #41403b);
@@ -78,22 +82,25 @@ QToolTip {
 }
 
 QStatusBar {
-    background: #F4F4F4;
+    background: #383733;
     border: 1px solid gray;
-
 }
 
 QMenuBar {
-    background-color: #F4F4F4;
+    background-color: #383733;
 }
 
 QMenuBar::item {
     background: transparent;
+    padding: 2px 3px 2px 3px;
+    border-radius: 3px;
+    color: #F4F4F4;
 }
 
 QMenuBar::item:selected {
     background: #bdbdbd;
     border-radius: 3px;
+    color: #333;
 }
 
 QMenuBar::item:pressed {
@@ -140,7 +147,7 @@ QLabel {
 }
 
 QLabel#status_label {
-    color: #383733;
+    color: #F4F4F4;
 }
 
 QPushButton {

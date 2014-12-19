@@ -57,10 +57,11 @@ class EDIS(QMainWindow):
         EDIS.menu_bar(5, self.trUtf8("E&jecución"))
         EDIS.menu_bar(6, self.trUtf8("A&cerca de"))
         # Toolbar
+        #FIXME: Visibilidad
         self.toolbar = QToolBar(self)
         self.toolbar.setMovable(False)
         self.toolbar.setObjectName("toolbar")
-        self.toolbar.setIconSize(QSize(28, 28))
+        self.toolbar.setIconSize(QSize(22, 22))
         self.addToolBar(Qt.RightToolBarArea, self.toolbar)
         self.cargar_menu()
         # Barra de estado
