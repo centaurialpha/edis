@@ -225,6 +225,12 @@ class EDIS(QMainWindow):
         else:
             self.contenedor_lateral.show()
 
+    def mostrar_ocultar_toolbar(self):
+        if self.toolbar.isVisible():
+            self.toolbar.hide()
+        else:
+            self.toolbar.show()
+
     def closeEvent(self, e):
         """
         Éste médoto es llamado automáticamente por Qt cuando se

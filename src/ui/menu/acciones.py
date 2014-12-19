@@ -221,7 +221,7 @@ ACCIONES = (
     {
         'seccion': 2,
         'nombre': 'Mostrar toolbar',
-        'conexion': 'mostrar_toolbar',
+        'conexion': 'edis.mostrar_ocultar_toolbar',
         'atajo': _ATAJO['mostrar-toolbar'],
         'separador': True},
     {
