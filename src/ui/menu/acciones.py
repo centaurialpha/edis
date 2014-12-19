@@ -226,6 +226,17 @@ ACCIONES = (
         'separador': True},
     {
         'seccion': 2,
+        'nombre': 'Mostrar tabs y espacios en blanco',
+        'conexion': 'mostrar_tabs_espacios_blancos',
+        'checkable': True},
+    {
+        'seccion': 2,
+        'nombre': 'Mostrar guías',
+        'conexion': 'mostrar_guias',
+        'checkable': True,
+        'separador': True},
+    {
+        'seccion': 2,
         'nombre': 'Selector',
         'conexion': 'selector',
         'atajo': _ATAJO['selector'],

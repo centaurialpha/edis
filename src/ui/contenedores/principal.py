@@ -16,12 +16,13 @@ from PyQt4.QtGui import (
 from PyQt4.QtCore import (
     SIGNAL,
     QFileInfo,
-    pyqtSignal
+    pyqtSignal,
     )
 
 from src.helpers import (
     manejador_de_archivo,
-    logger
+    logger,
+    configuraciones
     )
 from src import recursos
 from src.ui.editor import (
@@ -246,6 +247,21 @@ class EditorContainer(QWidget):
         weditor = self.devolver_editor()
         if weditor is not None:
             weditor.pegar()
+
+    def mostrar_tabs_espacios_blancos(self):
+        #FIXME:
+        accion = EDIS.accion("Mostrar tabs y espacios en blanco")
+        configuraciones.MOSTRAR_TABS = accion.isChecked()
+        weditor = self.devolver_editor()
+        if weditor is not None:
+            weditor.flags()
+
+    def mostrar_guias(self):
+        accion = EDIS.accion("Mostrar guías")
+        configuraciones.GUIA_INDENTACION = accion.isChecked()
+        weditor = self.devolver_editor()
+        if weditor is not None:
+            weditor.flags()
 
     def acercar(self):
         weditor = self.devolver_editor()

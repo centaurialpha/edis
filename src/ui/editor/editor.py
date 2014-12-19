@@ -78,7 +78,7 @@ class Editor(Base):
         self.nuevo_archivo = True
         self.guardado_actualmente = False
         self._palabra_seleccionada = ""
-
+        self.flags()
         # Minimapa
         #FIXME:
         self.minimapa = MiniMapa(self)

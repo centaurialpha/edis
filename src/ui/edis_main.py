@@ -41,6 +41,7 @@ class EDIS(QMainWindow):
     # Cada instancia de una clase  se guarda en éste diccionario
     __COMPONENTES = {}
     __MENUBAR = {}  # Nombre de los menus
+    __ACCIONES = {}
 
     def __init__(self):
         QMainWindow.__init__(self)
@@ -98,6 +99,10 @@ class EDIS(QMainWindow):
 
         return cls.__MENUBAR.get(clave, None)
 
+    @classmethod
+    def accion(cls, nombre):
+        return cls.__ACCIONES.get(nombre, None)
+
     def cargar_menu(self):
         #FIXME: Mejorar
         #FIXME: Separadores
@@ -125,6 +130,8 @@ class EDIS(QMainWindow):
                     icono = accion.icono
                     if icono:
                         qaccion.setIcon(QIcon(icono))
+                    if accion.checkable:
+                        qaccion.setCheckable(True)
                     if accion.conexion:
                         if accion.conexion.split('.')[0] == 'edis':
                             funcion = getattr(self,
@@ -136,6 +143,7 @@ class EDIS(QMainWindow):
                             qaccion.triggered.connect(funcion)
                     if accion.separador:
                         menu.addSeparator()
+                    EDIS.__ACCIONES[accion.nombre] = qaccion
 
         self.__cargar_toolbar(items_toolbar)
 
