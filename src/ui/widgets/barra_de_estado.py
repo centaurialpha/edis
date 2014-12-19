@@ -7,7 +7,8 @@
 
 from PyQt4.QtGui import (
     QStatusBar,
-    #QWidget,
+    QWidget,
+    QHBoxLayout,
     QLabel
     )
 
@@ -20,10 +21,18 @@ class BarraDeEstado(QStatusBar):
 
     def __init__(self, parent=None):
         super(BarraDeEstado, self).__init__()
+        # Widgets
         self.cursor_widget = PosicionCursorWidget()
         self.uptime_widget = UpTimeWidget()
-        self.addPermanentWidget(self.cursor_widget)
-        self.addPermanentWidget(self.uptime_widget)
+        # Contenedor
+        contenedor = QWidget()
+        box = QHBoxLayout(contenedor)
+        box.setContentsMargins(0, 0, 10, 0)
+        box.addWidget(self.cursor_widget)
+        box.addWidget(self.uptime_widget)
+
+        # Agregar contenedor al status bar
+        self.addPermanentWidget(contenedor)
 
         EDIS.cargar_componente("barra_de_estado", self)
 
