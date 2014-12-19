@@ -19,6 +19,7 @@ class StackWidget(QStackedWidget):
 
     todo_cerrado = pyqtSignal()
     guardar_editor_actual = pyqtSignal(name="Guardar_Editor_Actual")
+    archivo_modificado = pyqtSignal(bool)
 
     def __init__(self, parent=None):
         super(StackWidget, self).__init__()
@@ -36,6 +37,7 @@ class StackWidget(QStackedWidget):
             weditor.texto_modificado = True
         else:
             weditor.texto_modificado = False
+        self.archivo_modificado.emit(valor)
 
     def cerrar(self):
         self.eliminar_widget(self.widget_actual, self.indice_actual)
