@@ -37,8 +37,10 @@ class DialogoProyecto(QDialog):
 
         widget_ubicacion = QWidget()
         hbox = QHBoxLayout(widget_ubicacion)
+        hbox.setMargin(0)
         self.line_ubicacion = QLineEdit()
         btn_ubicacion = QPushButton("...")
+        btn_ubicacion.setStyleSheet("min-width: 25px; min-height: 10")
         hbox.addWidget(self.line_ubicacion)
         hbox.addWidget(btn_ubicacion)
 
