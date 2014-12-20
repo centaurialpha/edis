@@ -34,7 +34,8 @@ from src.ui.widgets import busqueda
 from src.ui.contenedores import selector
 from src.ui.dialogos import (
     dialogo_propiedades,
-    dialogo_log
+    dialogo_log,
+    dialogo_proyecto
     )
 
 # Logger
@@ -314,6 +315,10 @@ class EditorContainer(QWidget):
     def terminar_programa(self):
         edis = EDIS.componente("edis")
         edis.contenedor_output.terminar_programa()
+
+    def proyecto_nuevo(self):
+        dialogo = dialogo_proyecto.DialogoProyecto(self)
+        dialogo.show()
 
 
 principal = EditorContainer()

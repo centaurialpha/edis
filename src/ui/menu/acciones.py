@@ -48,9 +48,19 @@ ACCIONES = (
     {
         'seccion': 0,
         'nombre': 'Nuevo',
-        'conexion': "agregar_editor",
+        'submenu': True},
+    {
+        'seccion': 0,
+        'nombre': 'Nuevo archivo',
+        'conexion': 'agregar_editor',
         'atajo': _ATAJO['nuevo'],
-        'icono': _ICONO['new']},
+        'icono': _ICONO['new'],
+        'submenu': 'Nuevo archivo'},
+    {
+        'seccion': 0,
+        'nombre': 'Proyecto nuevo',
+        'conexion': 'proyecto_nuevo',
+        'submenu': 'Nuevo'},
     {
         'seccion': 0,
         'nombre': 'Abrir',
@@ -283,5 +293,14 @@ ACCIONES = (
     {
         'seccion': 6,
         'nombre': 'Archivo log',
-        'conexion': 'archivo_log'},
+        'conexion': 'archivo_log',
+        'separador': True},
+    {
+        'seccion': 6,
+        'nombre': 'Acerca de EDIS',
+        'conexion': 'edis.acerca_de_edis'},
+    {
+        'seccion': 6,
+        'nombre': 'Acerca de Qt',
+        'conexion': 'edis.acerca_de_qt'},
 )

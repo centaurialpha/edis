@@ -5,86 +5,89 @@
 # Copyright 2014 - Gabriel Acosta
 # License: GPLv3 (see http://www.gnu.org/licenses/gpl.html)
 
-import os
-
 from PyQt4.QtGui import (
     QDialog,
     QVBoxLayout,
+    QFormLayout,
     QHBoxLayout,
-    QLabel,
     QLineEdit,
     QPushButton,
-    QFileDialog,
-    QSpacerItem,
-    QSizePolicy,
-    QToolButton
+    QWidget,
+    QFileDialog
     )
 
-from PyQt4.QtCore import (
-    SIGNAL,
-    Qt,
-    QSize
-    )
-
-from edis_c.ui.widgets import creador_widget
+from PyQt4.QtCore import pyqtSignal
 
 
 class DialogoProyecto(QDialog):
 
+    proyecto_listo = pyqtSignal(dict)
+
     def __init__(self, parent=None):
-        QDialog.__init__(self)
-        self.setWindowTitle(self.trUtf8("EDIS - Proyecto nuevo"))
-        boxV = QVBoxLayout(self)
+        QDialog.__init__(self, parent)
+        self.setWindowTitle(self.tr("Proyecto nuevo"))
+        self.resize(500, 100)
+        contenedor = QVBoxLayout(self)
+        contenedor.setContentsMargins(5, 5, 5, 5)
+        form = QFormLayout()
 
-        boxH = QHBoxLayout()
-        boxH.addWidget(QLabel(self.trUtf8("Nombre del proyecto:")))
-        self.lineNombre = QLineEdit()
-        boxH.addWidget(self.lineNombre)
+        self.line_nombre = QLineEdit()
+        self.line_nombre.setText("ProyectoNuevo")
+        form.addRow(self.tr("Nombre:"), self.line_nombre)
 
-        boxHH = QHBoxLayout()
-        boxHH.addWidget(QLabel(self.trUtf8("Seleccione la carpeta:")))
-        self.lineExaminar = QLineEdit()
-        self.botonLimpiar = QToolButton(self)
-        self.botonLimpiar.setAutoRaise(True)
-        self.botonLimpiar.setIcon(
-            creador_widget.get_icono_estandard("TitleBarCloseButton"))
-        layoutLine = QHBoxLayout(self.lineNombre)
-        layoutLine.addWidget(self.botonLimpiar, 2, Qt.AlignRight)
-        self.lineExaminar.setReadOnly(True)
-        boxHH.addWidget(self.lineExaminar)
-        self.botonExaminar = QPushButton(self.trUtf8("..."))
-        self.botonExaminar.setMaximumSize(QSize(25, 25))
-        boxHH.addWidget(self.botonExaminar)
+        widget_ubicacion = QWidget()
+        hbox = QHBoxLayout(widget_ubicacion)
+        self.line_ubicacion = QLineEdit()
+        btn_ubicacion = QPushButton("...")
+        hbox.addWidget(self.line_ubicacion)
+        hbox.addWidget(btn_ubicacion)
 
-        boxBotones = QHBoxLayout()
-        self.botonAceptar = QPushButton(self.trUtf8("Aceptar"))
-        self.botonCancelar = QPushButton(self.trUtf8("Cancelar"))
-        boxBotones.addWidget(self.botonCancelar)
-        boxBotones.addWidget(self.botonAceptar)
+        form.addRow(self.tr("Ubicación:"), widget_ubicacion)
 
-        boxBotones.addItem(QSpacerItem(0, 10, QSizePolicy.Expanding,
-            QSizePolicy.Expanding))
-        boxV.addLayout(boxH)
-        boxV.addLayout(boxHH)
-        boxV.addLayout(boxBotones)
+        contenedor.addLayout(form)
+        contenedor.addStretch(1)
 
-        self.connect(self.botonExaminar, SIGNAL("clicked()"),
-            self.seleccionar_carpeta)
-        self.connect(self.botonCancelar, SIGNAL("clicked()"),
-            self.close)
-        self.connect(self.botonAceptar, SIGNAL("clicked()"),
-            self.crear_proyecto)
+        box_botones = QHBoxLayout()
+        box_botones.addStretch(1)
+        self.btn_aceptar = QPushButton(self.tr("Aceptar"))
+        self.btn_aceptar.setDisabled(True)
+        box_botones.addWidget(self.btn_aceptar)
+        btn_cancelar = QPushButton(self.tr("Cancelar"))
+        box_botones.addWidget(btn_cancelar)
 
-    def seleccionar_carpeta(self):
-        self.lineExaminar.setText(QFileDialog.getExistingDirectory(
-            self, self.trUtf8("Selecciona la carpeta")))
+        contenedor.addLayout(box_botones)
 
-    def crear_proyecto(self):
-        nombre = self.lineNombre.text()
-        carpeta = os.path.join(unicode(self.lineExaminar.text()),
-            unicode(nombre))
-        if not carpeta:
+        # Conexiones
+        btn_ubicacion.clicked.connect(self._seleccionar_carpeta)
+        btn_cancelar.clicked.connect(self.close)
+        self.line_nombre.textChanged.connect(self._validar)
+        self.btn_aceptar.clicked.connect(self._enviar_datos)
+
+        self._validar()
+
+    def _seleccionar_carpeta(self):
+        carpeta = QFileDialog.getExistingDirectory(self,
+            self.tr("Selecciona la carpeta"))
+        if carpeta:
+            self.line_ubicacion.setText(carpeta)
+        self._validar()
+
+    def _validar(self):
+        self.nombre_proyecto = self.line_nombre.text()
+        self.ubicacion_proyecto = self.line_ubicacion.text()
+        if not self.ubicacion_proyecto:
+            self.btn_aceptar.setDisabled(True)
             return
-        if not os.path.exists(carpeta):
-            os.makedirs(carpeta)
+        elif not self.nombre_proyecto:
+            self.btn_aceptar.setDisabled(True)
+            return
+        self.btn_aceptar.setDisabled(False)
+
+    def _enviar_datos(self):
+        datos = {
+            'nombre': self.nombre_proyecto,
+            'ubicacion': self.ubicacion_proyecto
+            }
         self.close()
+        # Se emite la señal con los datos del proyecto
+        self.proyecto_listo.emit(datos)

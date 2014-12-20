@@ -64,7 +64,7 @@ FILE_NAVIGATOR = True
 
 #FIXME: arreglar esto
 ITEMS_TOOLBAR = [
-    'Nuevo',
+    'Nuevo archivo',
     'Abrir',
     'Guardar',
     'separador',

@@ -15,6 +15,7 @@ from PyQt4.QtGui import (
     QMainWindow,
     QIcon,
     QToolBar,
+    QMessageBox
     )
 
 # Módulos QtCore
@@ -119,6 +120,7 @@ class EDIS(QMainWindow):
                     if submenu:
                         if isinstance(submenu, bool):
                             smenu = menu.addMenu(accion.nombre)
+                            continue
                         else:
                             qaccion = smenu.addAction(accion.nombre)
                     else:
@@ -244,6 +246,13 @@ class EDIS(QMainWindow):
             self.showNormal()
         else:
             self.showFullScreen()
+
+    def acerca_de_qt(self):
+        QMessageBox.aboutQt(self)
+
+    def acerca_de_edis(self):
+        #FIXME: completar
+        pass
 
     def closeEvent(self, e):
         """
