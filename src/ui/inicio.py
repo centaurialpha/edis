@@ -17,9 +17,16 @@ from PyQt4.QtGui import (
     QListWidget,
     QDialog,
     QPixmap,
-    QIcon
+    QIcon,
+    QCheckBox,
+    QShortcut,
+    QKeySequence
     )
-from PyQt4.QtCore import Qt
+
+from PyQt4.QtCore import (
+    Qt,
+    QSettings
+    )
 
 from src.ui.edis_main import EDIS
 from src import recursos
@@ -32,7 +39,7 @@ class Inicio(QDialog):
     def __init__(self, parent=None):
         super(Inicio, self).__init__(parent, Qt.Dialog)
         contenedor = QVBoxLayout(self)
-        self.setMinimumWidth(500)
+        self.setMinimumWidth(520)
         hbox = QHBoxLayout()
         hbox.setContentsMargins(0, 0, 0, 0)
         lbl_titulo = QLabel(self.tr("Bienvenido a EDIS..."))
@@ -61,6 +68,7 @@ class Inicio(QDialog):
         contenedor.addWidget(QLabel("<b>Archivos en la última sesión:</b>"))
 
         lista_archivos = QListWidget()
+        lista_archivos.setStyleSheet("background: #383733; color: #dedede")
         #FIXME: debería agregar los proyectos recientes y no los archivos
         recientes = configuraciones.RECIENTES
         if recientes is not None:
@@ -83,7 +91,11 @@ class Inicio(QDialog):
         btn_nuevo.setIcon(QIcon(recursos.ICONOS['new-small']))
         btn_edis = QPushButton(self.tr("Edis web"))
         btn_edis.setIcon(QIcon(recursos.ICONOS['web']))
+        self.check = QCheckBox(self.tr("Mostrar en la próxima sesión"))
+        self.check.setChecked(configuraciones.INICIO)
+        self.check.setStyleSheet("color: #dedede")
         box_botones.addWidget(btn_edis)
+        box_botones.addWidget(self.check)
         box_botones.addStretch(1)
         box_botones.addWidget(btn_abrir)
         box_botones.addWidget(btn_nuevo)
@@ -95,6 +107,9 @@ class Inicio(QDialog):
         btn_edis.clicked.connect(self._open_web)
         btn_abrir.clicked.connect(self._abrir)
         btn_nuevo.clicked.connect(self._nuevo)
+
+        escape = QShortcut(QKeySequence(Qt.Key_Escape), self)
+        escape.activated.connect(self.close)
 
     def _open_web(self):
         webbrowser.open_new(ui.__codigo_fuente__)
@@ -108,6 +123,16 @@ class Inicio(QDialog):
         principal = EDIS.componente("principal")
         principal.agregar_editor()
         self.close()
+
+    def _cambiar_check(self):
+        config = QSettings(recursos.CONFIGURACION, QSettings.IniFormat)
+        configuraciones.INICIO = self.check.isChecked()
+        config.setValue('configuraciones/general/inicio',
+                        self.check.isChecked())
+
+    def closeEvent(self, e):
+        super(Inicio, self).closeEvent(e)
+        self._cambiar_check()
 
 
 inicio = Inicio()

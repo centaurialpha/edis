@@ -93,8 +93,9 @@ BRACES = {
 
 RECIENTES = []
 
+INICIO = True
 
-###############################################################################
+
 def cargar_configuraciones():
     """ Se lee y se carga el archivo de configuracion .ini """
 
@@ -120,6 +121,7 @@ def cargar_configuraciones():
     global PARAMETROS
     global TERMINAL
     global RECIENTES
+    global INICIO
 
     MARGEN_COLUMNA = qsettings.value('configuraciones/editor/margenLinea', 80,
                              type=int)
@@ -157,30 +159,32 @@ def cargar_configuraciones():
     TERMINAL = qsettings.value('configuraciones/ejecucion/terminal', "",
         type='QString')
     CONFIRMAR_AL_CERRAR = qsettings.value(
-        'configuraciones/general/confirmacionCerrar', True).toBool()
+        'configuraciones/general/confirmacionCerrar', True)
     IDIOMA = qsettings.value('configuraciones/general/idioma',
                              '', type='QString')
     PARAMETROS = qsettings.value('configuraciones/compilacion',
                                  defaultValue='', type='QString')
+    INICIO = qsettings.value('configuraciones/general/inicio',
+                            True, type=bool)
     comillas_simples = qsettings.value('configuraciones/editor/comillasS',
                                        True, type=bool)
 
     if not comillas_simples:
         del COMILLAS["'"]
     comillas_dobles = qsettings.value('configuraciones/editor/comillasD',
-                                      True).toBool()
+                                      True)
     if not comillas_dobles:
         del COMILLAS['"']
     llaves = qsettings.value('configuraciones/editor/llaves',
-                             True).toBool()
+                             True)
     if not llaves:
         del BRACES['{']
     corchetes = qsettings.value('configuraciones/editor/corchetes',
-                                True).toBool()
+                                True)
     if not corchetes:
         del BRACES['[']
     parentesis = qsettings.value('configuraciones/editor/parentesis',
-                                 True).toBool()
+                                 True)
     if not parentesis:
         del BRACES['(']
 

@@ -132,7 +132,6 @@ QMenu::separator {
 }
 
 QTreeWidget,
-QListWidget,
 QWidget#explorador,
 QWidget#navegador {
     background: #41403b;

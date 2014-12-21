@@ -29,10 +29,11 @@ log = logger.edisLogger('edis.run')
 
 
 def correr_interfaz(app):
-    #FIXME:
+    #FIXME: Ordenar
     config = QSettings(recursos.CONFIGURACION, QSettings.IniFormat)
     log.debug('Iniciando...')
     recientes = config.value('recientes', [])
+    configuraciones.cargar_configuraciones()
     configuraciones.RECIENTES = recientes
     import src.ui.inicio  # lint:ok
     edis = EDIS()
