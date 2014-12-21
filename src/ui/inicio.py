@@ -16,7 +16,8 @@ from PyQt4.QtGui import (
     QPushButton,
     QListWidget,
     QDialog,
-    QPixmap
+    QPixmap,
+    QIcon
     )
 from PyQt4.QtCore import Qt
 
@@ -77,8 +78,11 @@ class Inicio(QDialog):
         box_botones = QHBoxLayout()
 
         btn_abrir = QPushButton(self.tr("Abrir"))
+        btn_abrir.setIcon(QIcon(recursos.ICONOS['open-small']))
         btn_nuevo = QPushButton(self.tr("Nuevo"))
+        btn_nuevo.setIcon(QIcon(recursos.ICONOS['new-small']))
         btn_edis = QPushButton(self.tr("Edis web"))
+        btn_edis.setIcon(QIcon(recursos.ICONOS['web']))
         box_botones.addWidget(btn_edis)
         box_botones.addStretch(1)
         box_botones.addWidget(btn_abrir)
