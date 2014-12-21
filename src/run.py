@@ -9,7 +9,7 @@ import sys
 
 from src import recursos
 from src.helpers import (
-    #configuraciones,
+    configuraciones,
     logger
     )
 
@@ -23,12 +23,18 @@ import src.ui.menu.menu
 from src.ui.edis_main import EDIS
 #lint:enable
 
+from PyQt4.QtCore import QSettings
 # Logger
 log = logger.edisLogger('edis.run')
 
 
 def correr_interfaz(app):
+    #FIXME:
+    config = QSettings(recursos.CONFIGURACION, QSettings.IniFormat)
     log.debug('Iniciando...')
+    recientes = config.value('recientes', [])
+    configuraciones.RECIENTES = recientes
+    import src.ui.inicio  # lint:ok
     edis = EDIS()
     # Aplicar estilo
     with open(recursos.ESTILO) as tema:

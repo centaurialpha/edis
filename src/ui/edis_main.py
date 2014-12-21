@@ -22,10 +22,12 @@ from PyQt4.QtGui import (
 from PyQt4.QtCore import (
     SIGNAL,
     Qt,
-    QSize
+    QSize,
+    QSettings
     )
 
 # Módulos EDIS
+from src import recursos
 from src import ui
 from src.helpers import configuraciones
 from src.ui.contenedores.lateral import lateral_container
@@ -75,6 +77,8 @@ class EDIS(QMainWindow):
         self.setCentralWidget(self.central)
 
         EDIS.cargar_componente("edis", self)
+
+        self.mostrar_inicio()
 
     @classmethod
     def cargar_componente(cls, nombre, instancia):
@@ -269,3 +273,11 @@ class EDIS(QMainWindow):
             dialogo.exec_()
             if dialogo.ignorado():
                 e.ignore()
+        #FIXME: guardar configuraciones
+        archivos_recientes = principal.recientes
+        qconfig = QSettings(recursos.CONFIGURACION, QSettings.IniFormat)
+        qconfig.setValue('recientes', archivos_recientes)
+
+    def mostrar_inicio(self):
+        dialogo = EDIS.componente("inicio")
+        dialogo.show()

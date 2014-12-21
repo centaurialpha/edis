@@ -91,6 +91,8 @@ BRACES = {
     '(': ')'
     }
 
+RECIENTES = []
+
 
 ###############################################################################
 def cargar_configuraciones():
@@ -117,6 +119,8 @@ def cargar_configuraciones():
     global IDIOMA
     global PARAMETROS
     global TERMINAL
+    global RECIENTES
+
     MARGEN_COLUMNA = qsettings.value('configuraciones/editor/margenLinea', 80,
                              type=int)
     MARGEN = qsettings.value(
@@ -179,3 +183,6 @@ def cargar_configuraciones():
                                  True).toBool()
     if not parentesis:
         del BRACES['(']
+
+    RECIENTES = qsettings.value('configuraciones/editor/recientes',
+                                [], type=list)
