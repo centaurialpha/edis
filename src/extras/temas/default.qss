@@ -13,6 +13,12 @@ QToolBar#toolbar {
     padding: 7px;
 }
 
+QToolBar#preferencias {
+    background: #41403b;
+    spacing: 7px;
+    padding: 7px;
+}
+
 QScrollBar:vertical {
     background: transparent;
     width: 12px;
@@ -131,9 +137,9 @@ QMenu::separator {
     margin-right: 10px;
 }
 
-QTreeWidget,
-QWidget#explorador,
-QWidget#navegador {
+QListView,
+QTreeView,
+QTreeWidget {
     background: #41403b;
     color: #dedede;
 }
@@ -153,8 +159,12 @@ QLabel#status_label {
 QPushButton {
     background: #bbbbbb;
     border-radius: 3px;
-    min-width: 90px;
+    min-width: 100px;
     min-height: 30px;
+}
+
+QPushButton#custom {
+    min-width: 200px;
 }
 
 QPushButton:hover {
@@ -175,4 +185,32 @@ QLineEdit {
     border: 1px solid gray;
     border-radius: 3px;
     color: #dedede;
+}
+
+QCheckBox {
+    color: #dedede;
+}
+
+QGroupBox {
+    color: #dedede;
+    padding: 0px 0px 0px 15px;
+}
+
+QTabBar {
+    background-color: #383733;
+}
+
+QTabBar::tab {
+    color: #dedede;
+    padding: 4px 8px;
+    border: 1px solid #222;
+    background: #33322e;
+    border-radius: 5px;
+}
+
+QTabWidget::pane {
+    border-style: solid;
+    border-width: 1px;
+    background-color: #383733;
+    position: absolute;
 }

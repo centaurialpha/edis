@@ -123,8 +123,8 @@ class Editor(Base):
             self.setWhitespaceVisibility(self.WsVisible)
         else:
             self.setWhitespaceVisibility(self.WsInvisible)
-        self.setIndentationGuides(configuraciones.GUIA_INDENTACION)
-        if configuraciones.GUIA_INDENTACION:
+        self.setIndentationGuides(configuraciones.GUIAS)
+        if configuraciones.GUIAS:
             self.setIndentationGuidesBackgroundColor(QColor(
                                                     self._tema['guia-fondo']))
             self.setIndentationGuidesForegroundColor(QColor(

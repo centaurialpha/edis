@@ -78,7 +78,8 @@ class EDIS(QMainWindow):
 
         EDIS.cargar_componente("edis", self)
 
-        self.mostrar_inicio()
+        if configuraciones.INICIO:
+            self.mostrar_inicio()
 
     @classmethod
     def cargar_componente(cls, nombre, instancia):
@@ -136,6 +137,7 @@ class EDIS(QMainWindow):
                     icono = accion.icono
                     if icono:
                         qaccion.setIcon(QIcon(icono))
+                    #FIXME: Checked en visibilidad
                     if accion.checkable:
                         qaccion.setCheckable(True)
                     if accion.conexion:
@@ -184,6 +186,12 @@ class EDIS(QMainWindow):
                     SIGNAL("archivo_cambiado(QString)"),
                     self.__titulo_ventana)
         self.connect(self.contenedor_editor,
+                    SIGNAL("archivo_abierto(QString)"),
+                    self.contenedor_lateral.file_navigator.agregar)
+        self.connect(self.contenedor_editor,
+                    SIGNAL("archivo_cerrado(int)"),
+                    self.contenedor_lateral.file_navigator.eliminar)
+        self.connect(self.contenedor_editor,
                     SIGNAL("archivo_modificado(bool)"),
                     self.__titulo_modificado)
         self.connect(self.contenedor_editor,
@@ -195,6 +203,9 @@ class EDIS(QMainWindow):
         self.connect(self.contenedor_editor,
                     SIGNAL("actualizarSimbolos(QString)"),
                     self.contenedor_lateral.actualizar_simbolos)
+        self.connect(self.contenedor_lateral.file_explorer,
+                    SIGNAL("abriendoArchivo(QString)"),
+                    self.contenedor_editor.abrir_archivo)
 
     def __actualizar_cursor(self, linea, columna, lineas):
         #FIXME:

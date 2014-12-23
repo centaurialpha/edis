@@ -20,6 +20,7 @@ class StackWidget(QStackedWidget):
     todo_cerrado = pyqtSignal()
     guardar_editor_actual = pyqtSignal(name="Guardar_Editor_Actual")
     archivo_modificado = pyqtSignal(bool)
+    archivo_cerrado = pyqtSignal(int)
 
     def __init__(self, parent=None):
         super(StackWidget, self).__init__()
@@ -89,7 +90,7 @@ class StackWidget(QStackedWidget):
                     self.guardar_editor_actual.emit()
             self.removeWidget(weditor)  # Se elimina del stack
             del self.editores[indice]  # Se elimina de la lista
-
+            self.archivo_cerrado.emit(indice)
             # Foco al widget actual
             if self.widget_actual is not None:
                 self.widget_actual.setFocus()

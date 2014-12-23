@@ -127,8 +127,7 @@ class Inicio(QDialog):
     def _cambiar_check(self):
         config = QSettings(recursos.CONFIGURACION, QSettings.IniFormat)
         configuraciones.INICIO = self.check.isChecked()
-        config.setValue('configuraciones/general/inicio',
-                        self.check.isChecked())
+        config.setValue('general/inicio', self.check.isChecked())
 
     def closeEvent(self, e):
         super(Inicio, self).closeEvent(e)

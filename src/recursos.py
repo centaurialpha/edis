@@ -46,6 +46,8 @@ ATAJOS = {
     "guardar": QKeySequence(Qt.CTRL + Qt.Key_S),
     "cerrar-tab": QKeySequence(Qt.CTRL + Qt.Key_W),
     "imprimir": QKeySequence(Qt.CTRL + Qt.Key_P),
+    "propiedades": QKeySequence(Qt.CTRL + Qt.SHIFT + Qt.Key_P),
+    "salir": QKeySequence(Qt.CTRL + Qt.Key_Q),
     # Editar
     "deshacer": QKeySequence(Qt.CTRL + Qt.Key_Z),
     "rehacer": QKeySequence(Qt.CTRL + Qt.Key_Y),
@@ -62,6 +64,7 @@ ATAJOS = {
     "titulo": QKeySequence(Qt.CTRL + Qt.Key_T),
     "eliminar": QKeySequence(Qt.CTRL + Qt.SHIFT + Qt.Key_X),
     "duplicar": QKeySequence(Qt.ALT + Qt.Key_D),
+    "preferencias": QKeySequence(Qt.CTRL + Qt.ALT + Qt.Key_P),
     # Ver
     "fullscreen": QKeySequence(Qt.CTRL + Qt.Key_F11),
     "ocultar-todo": QKeySequence(Qt.Key_F11),

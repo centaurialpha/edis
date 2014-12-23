@@ -35,6 +35,7 @@ def correr_interfaz(app):
     recientes = config.value('recientes', [])
     configuraciones.cargar_configuraciones()
     configuraciones.RECIENTES = recientes
+    import src.ui.dialogos.preferencias.preferencias  # lint:ok
     import src.ui.inicio  # lint:ok
     edis = EDIS()
     # Aplicar estilo

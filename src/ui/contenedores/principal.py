@@ -45,9 +45,11 @@ log = logger.edisLogger("contenedores.principal")
 class EditorContainer(QWidget):
 
     archivo_cambiado = pyqtSignal(['QString'])
+    archivo_abierto = pyqtSignal(['QString'])
     posicion_cursor = pyqtSignal(int, int, int)
     archivo_modificado = pyqtSignal(bool)
     actualizar_simbolos = pyqtSignal(['QString'], name="actualizarSimbolos")
+    archivo_cerrado = pyqtSignal(int)
 
     def __init__(self, edis=None):
         QWidget.__init__(self, edis)
@@ -71,6 +73,11 @@ class EditorContainer(QWidget):
                     #self.cambiar_widget)
         self.connect(self.stack, SIGNAL("archivo_modificado(bool)"),
                     self._archivo_modificado)
+        self.connect(self.stack, SIGNAL("archivo_cerrado(int)"),
+                    self._archivo_cerrado)
+
+    def _archivo_cerrado(self, indice):
+        self.archivo_cerrado.emit(indice)
 
     def _archivo_modificado(self, valor):
         self.archivo_modificado.emit(valor)
@@ -117,6 +124,7 @@ class EditorContainer(QWidget):
                 nuevo_editor.texto = contenido
                 nuevo_editor.iD = archivo
                 self.archivo_cambiado.emit(archivo)
+                self.archivo_abierto.emit(archivo)
 
         self.stack.no_esta_abierto = True
 
@@ -330,6 +338,11 @@ class EditorContainer(QWidget):
 
     def proyecto_nuevo(self):
         dialogo = dialogo_proyecto.DialogoProyecto(self)
+        dialogo.show()
+
+    def configuracion_edis(self):
+        dialogo = EDIS.componente("preferencias")
+        configuraciones.cargar_configuraciones()
         dialogo.show()
 
 

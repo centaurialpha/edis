@@ -113,6 +113,7 @@ ACCIONES = (
         'seccion': 0,
         'nombre': 'Propiedades',
         'conexion': "propiedades_de_archivo",
+        'atajo': _ATAJO['propiedades'],
         'separador': True},
     {
         'seccion': 0,
@@ -122,7 +123,8 @@ ACCIONES = (
     {
         'seccion': 0,
         'nombre': 'Salir',
-        'conexion': 'edis.close'},
+        'conexion': 'edis.close',
+        'atajo': _ATAJO['salir']},
     {
         'seccion': 1,
         'nombre': 'Deshacer',
@@ -201,17 +203,20 @@ ACCIONES = (
         'seccion': 1,
         'nombre': 'Mover hacia arriba',
         'conexion': 'mover_hacia_arriba',
+        'atajo': _ATAJO['mover-arriba'],
         'icono': _ICONO['arrow-up']},
     {
         'seccion': 1,
         'nombre': 'Mover hacia abajo',
         'conexion': 'mover_hacia_abajo',
+        'atajo': _ATAJO['mover-abajo'],
         'icono': _ICONO['arrow-down'],
         'separador': True},
     {
         'seccion': 1,
         'nombre': 'Configuración',
         'conexion': "configuracion_edis",
+        'atajo': _ATAJO['preferencias'],
         'separador': True},
     {
         'seccion': 2,
@@ -222,11 +227,13 @@ ACCIONES = (
         'seccion': 2,
         'nombre': 'Mostrar lateral',
         'conexion': 'edis.mostrar_ocultar_lateral',
+        'checkable': True,
         'atajo': _ATAJO['lateral']},
     {
         'seccion': 2,
         'nombre': 'Mostrar compilador',
         'conexion': 'edis.mostrar_ocultar_output',
+        'checkable': True,
         'atajo': _ATAJO['mostrar-compilador']},
     {
         'seccion': 2,
