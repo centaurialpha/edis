@@ -192,6 +192,9 @@ class EDIS(QMainWindow):
                     SIGNAL("archivo_cerrado(int)"),
                     self.contenedor_lateral.file_navigator.eliminar)
         self.connect(self.contenedor_editor,
+                    SIGNAL("cambiar_item(int)"),
+                    self.contenedor_lateral.file_navigator.cambiar_foco)
+        self.connect(self.contenedor_editor,
                     SIGNAL("archivo_modificado(bool)"),
                     self.__titulo_modificado)
         self.connect(self.contenedor_editor,

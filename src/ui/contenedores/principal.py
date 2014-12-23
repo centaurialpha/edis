@@ -50,6 +50,7 @@ class EditorContainer(QWidget):
     archivo_modificado = pyqtSignal(bool)
     actualizar_simbolos = pyqtSignal(['QString'], name="actualizarSimbolos")
     archivo_cerrado = pyqtSignal(int)
+    cambiar_item = pyqtSignal(int)
 
     def __init__(self, edis=None):
         QWidget.__init__(self, edis)
@@ -90,6 +91,7 @@ class EditorContainer(QWidget):
         weditor = self.devolver_editor()
         if weditor is not None:
             self.archivo_cambiado.emit(weditor.iD)
+            self.cambiar_item.emit(indice)
 
     def agregar_editor(self, nombre=""):
         if not nombre:

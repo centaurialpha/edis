@@ -20,3 +20,6 @@ class Navegador(QListWidget):
 
     def eliminar(self, indice):
         self.takeItem(indice)
+
+    def cambiar_foco(self, indice):
+        self.setCurrentRow(indice)

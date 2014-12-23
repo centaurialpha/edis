@@ -144,6 +144,15 @@ QTreeWidget {
     color: #dedede;
 }
 
+QListWidget::item:selected {
+    border: 1px solid #dedede;
+}
+
+QListWidget::item:selected:!active {
+    background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
+                                stop: 0 #ABAFE5, stop: 1 #8588B2);
+}
+
 QDialog {
     background-color: #383733;
 }
