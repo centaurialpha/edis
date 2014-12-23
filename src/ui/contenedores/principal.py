@@ -85,6 +85,7 @@ class EditorContainer(QWidget):
 
     def __archivo_guardado(self, weditor):
         self.actualizar_simbolos.emit(weditor.iD)
+        self.archivo_modificado.emit(False)
 
     def cambiar_widget(self, indice):
         self.stack.cambiar_widget(indice)
