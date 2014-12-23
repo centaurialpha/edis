@@ -209,6 +209,9 @@ class EDIS(QMainWindow):
         self.connect(self.contenedor_lateral.file_explorer,
                     SIGNAL("abriendoArchivo(QString)"),
                     self.contenedor_editor.abrir_archivo)
+        self.connect(self.contenedor_lateral.file_navigator,
+                    SIGNAL("cambiar_editor(int)"),
+                    self.contenedor_editor.cambiar_widget)
 
     def __actualizar_cursor(self, linea, columna, lineas):
         #FIXME:
