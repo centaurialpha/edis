@@ -11,12 +11,15 @@ from PyQt4.QtGui import (
     QWidget,
     QVBoxLayout,
     QStackedWidget,
-    QIcon
+    QIcon,
+    QShortcut,
+    QKeySequence
     )
 
 from PyQt4.QtCore import (
     SIGNAL,
-    QThread
+    QThread,
+    Qt
     )
 from src import recursos
 from src.helpers import configuraciones
@@ -65,8 +68,19 @@ class LateralContainer(QWidget):
 
         self.load_ui()
 
+        tecla = Qt.Key_1
+        for i in range(3):
+            atajo = QShortcut(QKeySequence(Qt.ALT + tecla), self)
+            setattr(atajo, 'indice', i)
+            tecla += 1
+            atajo.activated.connect(self.cambiar_item)
+
         self.connect(self.combo_selector, SIGNAL("currentIndexChanged(int)"),
             lambda: self.change_widget(self.combo_selector.currentIndex()))
+
+    def cambiar_item(self):
+        sender = self.sender()
+        self.combo_selector.setCurrentIndex(sender.indice)
 
     def load_ui(self):
         vbox = QVBoxLayout(self)
