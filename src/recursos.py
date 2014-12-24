@@ -32,7 +32,7 @@ LOG = os.path.join(HOME_EDIS, 'edis.log')
 SELECTOR_QML = os.path.join(PATH, "ui", "selector", "selector.qml")
 # ESTILO
 ESTILO = os.path.join(PATH, "extras", "temas", "default.qss")
-
+IDIOMA = os.path.join(PATH, "extras", "idiomas")
 # Iconos
 ICONOS = {}
 for icono in os.listdir(PATH_ICONOS):

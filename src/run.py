@@ -23,7 +23,12 @@ import src.ui.menu.menu
 from src.ui.edis_main import EDIS
 #lint:enable
 
-from PyQt4.QtCore import QSettings
+from PyQt4.QtCore import (
+    QSettings,
+    QLocale,
+    QTranslator,
+    QLibraryInfo
+    )
 # Logger
 log = logger.edisLogger('edis.run')
 
@@ -37,6 +42,13 @@ def correr_interfaz(app):
     configuraciones.RECIENTES = recientes
     import src.ui.dialogos.preferencias.preferencias  # lint:ok
     import src.ui.inicio  # lint:ok
+
+    # Traductor
+    local = QLocale.system().name()
+    qtraductor = QTranslator()
+    qtraductor.load("qt_" + local, QLibraryInfo.location(
+                    QLibraryInfo.TranslationsPath))
+
     edis = EDIS()
     # Aplicar estilo
     with open(recursos.ESTILO) as tema:

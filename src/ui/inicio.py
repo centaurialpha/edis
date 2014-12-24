@@ -38,8 +38,9 @@ class Inicio(QDialog):
 
     def __init__(self, parent=None):
         super(Inicio, self).__init__(parent, Qt.Dialog)
+        self.setWindowTitle("Welcome to EDIS !")
         contenedor = QVBoxLayout(self)
-        self.setMinimumWidth(520)
+        self.setMinimumWidth(570)
         hbox = QHBoxLayout()
         hbox.setContentsMargins(0, 0, 0, 0)
         lbl_titulo = QLabel(self.tr("Bienvenido a EDIS..."))
@@ -60,7 +61,7 @@ class Inicio(QDialog):
         contenedor.addLayout(hbox)
         contenedor.addWidget(frame)
 
-        lbl_texto = QLabel(self.tr("Acá alguna descripción"))
+        lbl_texto = QLabel(self.tr(ui.__descripcion__))
         lbl_texto.setWordWrap(True)
         lbl_texto.setFont(QFont("Consolas", 10))
         contenedor.addWidget(lbl_texto)
