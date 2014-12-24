@@ -60,7 +60,7 @@ QComboBox#combo_selector {
     border: 0px solid gray;
     padding: 5px 18px 5px 20px;
     min-width: 6em;
-    color: #adafb0;
+    color: #dedede;
 }
 
 QComboBox#combo_selector:hover {
@@ -69,7 +69,8 @@ QComboBox#combo_selector:hover {
 }
 
 QComboBox:item:selected {
-    background: #38383b;
+    background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
+                                stop: 0 #6a6a6a, stop: 1 #858585);
 }
 
 QToolButton:hover {
@@ -126,7 +127,7 @@ QMenu::item {
 }
 
 QMenu::item:selected {
-    background: gray;
+    background: #6a6a6a;
     /*border: 1px solid #9b9b9b;*/
 }
 
@@ -156,7 +157,7 @@ QTreeView::item:selected {
 
 QListWidget::item:selected:!active {
     background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
-                                stop: 0 #ABAFE5, stop: 1 #8588B2);
+                                stop: 0 #6a6a6a, stop: 1 #858585);
 }
 
 QDialog {
