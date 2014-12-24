@@ -144,7 +144,13 @@ QTreeWidget {
     color: #dedede;
 }
 
-QListWidget::item:selected {
+QTreeWidget::item:selected:!active {
+    background: none;
+}
+
+QTreeWidget::item:selected,
+QListWidget::item:selected,
+QTreeView::item:selected {
     border: 1px solid #dedede;
 }
 
