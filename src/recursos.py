@@ -33,6 +33,8 @@ SELECTOR_QML = os.path.join(PATH, "ui", "selector", "selector.qml")
 # ESTILO
 ESTILO = os.path.join(PATH, "extras", "temas", "default.qss")
 IDIOMA = os.path.join(PATH, "extras", "idiomas")
+# Ctags
+CTAGS = os.path.join(PATH, 'ectags', 'ctags.exe')
 # Iconos
 ICONOS = {}
 for icono in os.listdir(PATH_ICONOS):

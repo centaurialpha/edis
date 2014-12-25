@@ -5,6 +5,9 @@
 # Copyright 2014 - Gabriel Acosta
 # License: GPLv3 (see http://www.gnu.org/licenses/gpl.html)
 
+import os
+import json
+
 from PyQt4.QtGui import (
     QDialog,
     QVBoxLayout,
@@ -13,15 +16,23 @@ from PyQt4.QtGui import (
     QLineEdit,
     QPushButton,
     QWidget,
-    QFileDialog
+    QFileDialog,
+    #QMessageBox,
     )
 
-from PyQt4.QtCore import pyqtSignal
+from PyQt4.QtCore import (
+    QThread
+    )
+
+from src.helpers import logger
+#from src.ui.edis_main import EDIS
+log = logger.edisLogger("creador_proyecto")
+
+
+#TODO: Esto todavía está incompleto
 
 
 class DialogoProyecto(QDialog):
-
-    proyecto_listo = pyqtSignal(dict)
 
     def __init__(self, parent=None):
         QDialog.__init__(self, parent)
@@ -30,6 +41,10 @@ class DialogoProyecto(QDialog):
         contenedor = QVBoxLayout(self)
         contenedor.setContentsMargins(5, 5, 5, 5)
         form = QFormLayout()
+
+        # Thread
+        self.creador_proyecto = CreadorProyectoThread()
+        self.creador_proyecto.finished.connect(self._finalizar_thread)
 
         self.line_nombre = QLineEdit()
         self.line_nombre.setText("ProyectoNuevo")
@@ -75,7 +90,7 @@ class DialogoProyecto(QDialog):
         self._validar()
 
     def _validar(self):
-        self.nombre_proyecto = self.line_nombre.text()
+        self.nombre_proyecto = self.line_nombre.text().replace(' ', '_')
         self.ubicacion_proyecto = self.line_ubicacion.text()
         if not self.ubicacion_proyecto:
             self.btn_aceptar.setDisabled(True)
@@ -90,6 +105,33 @@ class DialogoProyecto(QDialog):
             'nombre': self.nombre_proyecto,
             'ubicacion': self.ubicacion_proyecto
             }
-        self.close()
-        # Se emite la señal con los datos del proyecto
-        self.proyecto_listo.emit(datos)
+        self.creador_proyecto.crear(datos)
+
+    def _finalizar_thread(self):
+        pass
+
+
+class CreadorProyectoThread(QThread):
+
+    def __init__(self):
+        QThread.__init__(self)
+        self.error = False
+
+    def run(self):
+        try:
+            # Se crea el directorio
+            carpeta_proyecto = os.path.join(self._datos['ubicacion'],
+                                            self._datos['nombre'])
+            os.mkdir(carpeta_proyecto)
+            # Se crea el archivo .epf (Edis Project File)
+            archivo_epf = self._datos['nombre'] + '.epf'
+            with open(os.path.join(carpeta_proyecto,
+                        archivo_epf.lower()), mode='w') as archivo:
+                json.dump(self._datos, archivo, indent=4)
+        except Exception as error:
+            self.error = error
+
+    def crear(self, proyecto):
+        self._datos = proyecto
+        # Run !
+        self.start()
