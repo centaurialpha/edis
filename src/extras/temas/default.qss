@@ -118,16 +118,18 @@ QMenu {
     color: #dedede;
     border: 1px solid gray;
     border-radius: 4px;
+    padding: 4px 10px 10px 10px;
 }
 
 QMenu::item {
-    font-size: 13px;
+ /*   font-size: 13px;*/
     border: 1px solid transparent;
-    padding: 1px 10px 2px 20px;
+    padding: 2px 25px 2px 20px;
 }
 
 QMenu::item:selected {
     background: #6a6a6a;
+    border-radius: 2px;
     /*border: 1px solid #9b9b9b;*/
 }
 
