@@ -118,7 +118,7 @@ QMenu {
     color: #dedede;
     border: 1px solid gray;
     border-radius: 4px;
-    padding: 14px 10px 10px 10px;
+    padding: 4px 10px 10px 10px;
 }
 
 QMenu::item {
