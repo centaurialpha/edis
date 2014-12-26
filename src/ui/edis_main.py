@@ -6,6 +6,7 @@
 # License: GPLv3 (see http://www.gnu.org/licenses/gpl.html)
 
 # Módulos Python
+from subprocess import Popen, PIPE
 import os
 import webbrowser
 from collections import OrderedDict
@@ -298,3 +299,20 @@ class EDIS(QMainWindow):
     def mostrar_inicio(self):
         dialogo = EDIS.componente("inicio")
         dialogo.show()
+
+    def comprobar_compilador(self):
+        #FIXME: hacer un módulo para esto
+        proceso = Popen('gcc --help', stdout=PIPE, stderr=PIPE, shell=True)
+        if proceso.wait() != 0:
+            flags = QMessageBox.Yes
+            flags |= QMessageBox.No
+            r = QMessageBox.warning(self,
+                                    self.tr("No se encontro el compilador"),
+                                    self.tr("Desea instalarlo?"), flags)
+            if r == QMessageBox.Yes:
+                self._descargar_compilador()
+            elif r == QMessageBox.No:
+                return False
+
+    def _descargar_compilador(self):
+        webbrowser.open_new(ui.__gcc__)

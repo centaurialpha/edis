@@ -19,3 +19,5 @@ __pyqt__ = "http://www.riverbankcomputing.co.uk/software/pyqt/intro"
 __reportar_bug__ = "http://github.com/centaurialpha/edis/issues"
 __actualizar__ = \
     "https://raw.githubusercontent.com/centaurialpha/edis/master/version"
+__gcc__ = \
+    "http://sourceforge.net/projects/mingw/files/Installer/mingw-get-setup.exe"

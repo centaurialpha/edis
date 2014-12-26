@@ -42,7 +42,7 @@ class ContenedorOutput(QWidget):
 
     def ejecutar(self):
         #FIXME: revisar!
-        self.salida_.correr_programa()
+        self.salida_.correr_programa(self.nombre_archivo)
 
     def terminar_programa(self):
         self.salida_.terminar_proceso()
