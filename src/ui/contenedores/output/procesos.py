@@ -70,8 +70,8 @@ class EjecutarWidget(QWidget):
     def correr_compilacion(self, nombre_archivo=''):
         """ Se corre el comando gcc para la compilación """
 
-        self.output.textCursor().insertBlock()
         # Ejecutable
+        self.output.setCurrentCharFormat(self.output.formato_ok)
         directorio = QDir.fromNativeSeparators(nombre_archivo)
         self.ejecutable = directorio.split('/')[-1].split('.')[0]
 
@@ -85,6 +85,7 @@ class EjecutarWidget(QWidget):
 
         self.output.moveCursor(QTextCursor.Down)
         self.output.moveCursor(QTextCursor.Down)
+
         parametros_gcc = ['-Wall', '-o']
         self.proceso_compilacion.start('gcc', parametros_gcc +
                                         [self.ejecutable] + [nombre_archivo])
@@ -127,8 +128,8 @@ class EjecutarWidget(QWidget):
 
         """
 
-        self.output.textCursor().insertBlock()
         formato = QTextCharFormat()
+        formato.setAnchor(True)
         formato.setForeground(QBrush(QColor('red')))
         self.output.textCursor().insertText(
             self.tr("Ha ocurrido un error: Quizás el compilador "
