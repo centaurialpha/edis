@@ -105,7 +105,7 @@ class EjecutarWidget(QWidget):
         formato_tiempo = QTextCharFormat()
         formato_tiempo.setForeground(QBrush(QColor("#007c00")))
         formato_tiempo.setFontPointSize(9)
-        self.output.textCursor().insertText('\n\n')
+        self.output.textCursor().insertText('\n')
 
         if exitStatus == QProcess.NormalExit and codigoError == 0:
             formato.setForeground(QBrush(QColor('#007c00')))

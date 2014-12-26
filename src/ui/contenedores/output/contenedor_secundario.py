@@ -21,7 +21,7 @@ class ContenedorOutput(QWidget):
 
     def __init__(self, parent=None):
         QWidget.__init__(self, parent)
-
+        self.setMinimumHeight(175)
         box = QVBoxLayout(self)
         box.setContentsMargins(0, 0, 0, 0)
         box.setSpacing(0)
