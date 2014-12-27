@@ -20,7 +20,7 @@ class LexerC(QsciLexerCPP):
     def __init__(self, *args, **kwargs):
         super(LexerC, self).__init__(*args, **kwargs)
         # Configuración
-        self.setStylePreprocessor(False)
+        self.setStylePreprocessor(True)
         self.setFoldComments(True)
         self.setFoldPreprocessor(True)
         self.setHighlightHashQuotedStrings(True)
@@ -32,7 +32,7 @@ class LexerC(QsciLexerCPP):
 
     def __cargar_highlighter(self):
         self.setDefaultPaper(QColor(recursos.TEMA['FondoEditor']))
-        self.setPaper(QColor(33, 33, 33))
+        self.setPaper(QColor(18, 18, 18))
         self.setColor(QColor(241, 241, 241))
 
         tipos = dir(LexerC)
@@ -42,5 +42,5 @@ class LexerC(QsciLexerCPP):
                 self.setColor(QColor(recursos.TEMA[tipo]), atr)
 
         fuente = self.font(LexerC.Keyword)
-        fuente.setBold(True)
+        fuente.setBold(False)
         self.setFont(fuente, LexerC.Keyword)
