@@ -225,6 +225,7 @@ class EditorContainer(QWidget):
         nombre_archivo = manejador_de_archivo.escribir_archivo(nombre_archivo,
                 weditor.texto)
         weditor.iD = nombre_archivo
+        self.archivo_cambiado.emit(nombre_archivo)
         weditor.guardado()
 
     def guardar_todo(self):
