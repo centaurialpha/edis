@@ -56,7 +56,8 @@ QSplitter::handle:hover {
 }
 
 QComboBox#combo_selector {
-    background-color: #33322e;
+    background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
+                                       stop: 0 #5a584f, stop: 1 #41403b);
     border: 0px solid gray;
     padding: 5px 18px 5px 20px;
     min-width: 6em;
@@ -64,13 +65,13 @@ QComboBox#combo_selector {
 }
 
 QComboBox#combo_selector:hover {
-    background-color: #3b3a35;
+    background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
+                                       stop: 0 #615f55, stop: 1 #474641);
     border-radius: 0px;
 }
 
-QComboBox:item:selected {
-    background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
-                                stop: 0 #6a6a6a, stop: 1 #858585);
+QComboBox#combo_selector:item:selected {
+    background: gray;
 }
 
 QToolButton:hover {
@@ -143,7 +144,7 @@ QMenu::separator {
 QListView,
 QTreeView,
 QTreeWidget {
-    background: #41403b;
+    background: #474641;
     color: #dedede;
 }
 
@@ -194,7 +195,7 @@ QPushButton:pressed {
 }
 
 QPlainTextEdit#output {
-    background: #41403b;
+    background: #474641;
     color: #dedede;
 }
 
