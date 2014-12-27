@@ -16,12 +16,13 @@ from PyQt4.QtGui import (
 from PyQt4.QtCore import (
     SIGNAL,
     QFileInfo,
-    pyqtSignal
+    pyqtSignal,
     )
 
 from src.helpers import (
     manejador_de_archivo,
-    logger
+    logger,
+    configuraciones
     )
 from src import recursos
 from src.ui.editor import (
@@ -33,7 +34,8 @@ from src.ui.widgets import busqueda
 from src.ui.contenedores import selector
 from src.ui.dialogos import (
     dialogo_propiedades,
-    dialogo_log
+    dialogo_log,
+    dialogo_proyecto
     )
 
 # Logger
@@ -43,9 +45,12 @@ log = logger.edisLogger("contenedores.principal")
 class EditorContainer(QWidget):
 
     archivo_cambiado = pyqtSignal(['QString'])
+    archivo_abierto = pyqtSignal(['QString'])
     posicion_cursor = pyqtSignal(int, int, int)
     archivo_modificado = pyqtSignal(bool)
     actualizar_simbolos = pyqtSignal(['QString'], name="actualizarSimbolos")
+    archivo_cerrado = pyqtSignal(int)
+    cambiar_item = pyqtSignal(int)
 
     def __init__(self, edis=None):
         QWidget.__init__(self, edis)
@@ -53,6 +58,8 @@ class EditorContainer(QWidget):
         vbox = QVBoxLayout(self)
         vbox.setContentsMargins(0, 0, 0, 0)
         vbox.setSpacing(0)
+
+        self._recientes = list()
 
         self.stack = stack.StackWidget(self)
         vbox.addWidget(self.stack)
@@ -65,20 +72,27 @@ class EditorContainer(QWidget):
                     self.guardar_archivo)
         #self.connect(self.widget_actual.stack, SIGNAL("currentChanged(int)"),
                     #self.cambiar_widget)
-        #self.connect(self.widget_actual, SIGNAL("archivo_modificado(bool)"),
-                    #self._archivo_modificado)
+        self.connect(self.stack, SIGNAL("archivo_modificado(bool)"),
+                    self._archivo_modificado)
+        self.connect(self.stack, SIGNAL("archivo_cerrado(int)"),
+                    self._archivo_cerrado)
+
+    def _archivo_cerrado(self, indice):
+        self.archivo_cerrado.emit(indice)
 
     def _archivo_modificado(self, valor):
         self.archivo_modificado.emit(valor)
 
     def __archivo_guardado(self, weditor):
         self.actualizar_simbolos.emit(weditor.iD)
+        self.archivo_modificado.emit(False)
 
     def cambiar_widget(self, indice):
         self.stack.cambiar_widget(indice)
         weditor = self.devolver_editor()
         if weditor is not None:
             self.archivo_cambiado.emit(weditor.iD)
+            self.cambiar_item.emit(indice)
 
     def agregar_editor(self, nombre=""):
         if not nombre:
@@ -89,6 +103,8 @@ class EditorContainer(QWidget):
         weditor.cursorPositionChanged[int, int].connect(self.actualizar_cursor)
         weditor.archivo_guardado.connect(self.__archivo_guardado)
         weditor.setFocus()
+        if nombre != 'Nuevo_archivo':
+            self.agregar_a_recientes(nombre)
         return weditor
 
     def abrir_archivo(self, nombre=""):
@@ -111,6 +127,7 @@ class EditorContainer(QWidget):
                 nuevo_editor.texto = contenido
                 nuevo_editor.iD = archivo
                 self.archivo_cambiado.emit(archivo)
+                self.archivo_abierto.emit(archivo)
 
         self.stack.no_esta_abierto = True
 
@@ -133,6 +150,14 @@ class EditorContainer(QWidget):
                     "El archivo %s ya esta abierto", archivo)
                 return True
         return False
+
+    def agregar_a_recientes(self, nombre):
+        #FIXME: completar
+        self._recientes.append(nombre)
+
+    @property
+    def recientes(self):
+        return self._recientes
 
     def agregar_widget(self, widget):
         """ Agrega @widget al stacked """
@@ -200,6 +225,7 @@ class EditorContainer(QWidget):
         nombre_archivo = manejador_de_archivo.escribir_archivo(nombre_archivo,
                 weditor.texto)
         weditor.iD = nombre_archivo
+        self.archivo_cambiado.emit(nombre_archivo)
         weditor.guardado()
 
     def guardar_todo(self):
@@ -219,7 +245,7 @@ class EditorContainer(QWidget):
 
     def busqueda_rapida(self):
         #FIXME:
-        dialogo = busqueda.PopupBusqueda(self.widget_actual)
+        dialogo = busqueda.PopupBusqueda(self.devolver_editor())
         dialogo.show()
 
     def deshacer(self):
@@ -246,6 +272,21 @@ class EditorContainer(QWidget):
         weditor = self.devolver_editor()
         if weditor is not None:
             weditor.pegar()
+
+    def mostrar_tabs_espacios_blancos(self):
+        #FIXME:
+        accion = EDIS.accion("Mostrar tabs y espacios en blanco")
+        configuraciones.MOSTRAR_TABS = accion.isChecked()
+        weditor = self.devolver_editor()
+        if weditor is not None:
+            weditor.flags()
+
+    def mostrar_guias(self):
+        accion = EDIS.accion("Mostrar guías")
+        configuraciones.GUIA_INDENTACION = accion.isChecked()
+        weditor = self.devolver_editor()
+        if weditor is not None:
+            weditor.flags()
 
     def acercar(self):
         weditor = self.devolver_editor()
@@ -298,6 +339,15 @@ class EditorContainer(QWidget):
     def terminar_programa(self):
         edis = EDIS.componente("edis")
         edis.contenedor_output.terminar_programa()
+
+    def proyecto_nuevo(self):
+        dialogo = dialogo_proyecto.DialogoProyecto(self)
+        dialogo.show()
+
+    def configuracion_edis(self):
+        dialogo = EDIS.componente("preferencias")
+        configuraciones.cargar_configuraciones()
+        dialogo.show()
 
 
 principal = EditorContainer()

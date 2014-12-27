@@ -78,12 +78,14 @@ class Editor(Base):
         self.nuevo_archivo = True
         self.guardado_actualmente = False
         self._palabra_seleccionada = ""
-
+        self.flags()
         # Minimapa
         #FIXME:
         self.minimapa = MiniMapa(self)
         self.connect(self, SIGNAL("selectionChanged()"),
                     self.minimapa.area)
+        self.connect(self, SIGNAL("textChanged()"),
+                    self.minimapa.actualizar_codigo)
         #self.cargar_minimapa()
 
         # Thread ocurrencias
@@ -121,8 +123,8 @@ class Editor(Base):
             self.setWhitespaceVisibility(self.WsVisible)
         else:
             self.setWhitespaceVisibility(self.WsInvisible)
-        self.setIndentationGuides(configuraciones.GUIA_INDENTACION)
-        if configuraciones.GUIA_INDENTACION:
+        self.setIndentationGuides(configuraciones.GUIAS)
+        if configuraciones.GUIAS:
             self.setIndentationGuidesBackgroundColor(QColor(
                                                     self._tema['guia-fondo']))
             self.setIndentationGuidesForegroundColor(QColor(
@@ -132,9 +134,9 @@ class Editor(Base):
         else:
             self.setWrapMode(self.WrapNone)
 
-    def set_id(self, id_):
-        super(Editor, self).set_id(id_)
-        self.minimapa.codigo(self.texto)
+    #def set_id(self, id_):
+        #super(Editor, self).set_id(id_)
+        #self.minimapa.codigo(self.texto)
 
     #def cargar_minimapa(self):
 

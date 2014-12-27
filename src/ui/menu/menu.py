@@ -11,6 +11,8 @@ from PyQt4.QtCore import QObject
 from src.ui.menu import acciones
 from src.ui.edis_main import EDIS
 
+#FIXME: Se podría mejorar
+
 
 class Menu(QObject):
 
@@ -27,9 +29,11 @@ class Menu(QObject):
             seccion = accion.get("seccion")
             separador = accion.get("separador", False)
             submenu = accion.get("submenu", False)
+            checkable = accion.get("checkable", False)
             qaccion = Accion(nombre, conexion, seccion, icono, atajo)
             qaccion.separador = separador
             qaccion.submenu = submenu
+            qaccion.checkable = checkable
             self.acciones.append(qaccion)
 
         EDIS.cargar_componente("menu", self)
@@ -47,5 +51,6 @@ class Accion(object):
         self.atajo = atajo
         self.separador = False
         self.submenu = False
+        self.checkable = False
 
 menu = Menu()

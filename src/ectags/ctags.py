@@ -5,14 +5,16 @@
 # Copyright 2014 - Gabriel Acosta
 # License: GPLv3 (see http://www.gnu.org/licenses/gpl.html)
 
-
+import sys
 from subprocess import Popen, PIPE
-
+from src import recursos
 """
 COMMAND = ctags -n --sort=foldcase --fields=fiKmnsSzt --language-force=C++ -f
 
 
 """
+
+LINUX = True if sys.platform != 'win32' else False
 
 
 def get_ctags():
@@ -35,8 +37,10 @@ class CTags:
     def start_ctags(self, filename):
         """ Run the command ctags """
 
-        cmd = ["ctags", "-n", "--sort=foldcase", "--fields=fimKnsSzt",
-                "--language-force=C++", "-f", "-", filename]
+        comando_ctags = ['ctags'] if LINUX else [recursos.CTAGS]
+        parametros_ctags = ['-n', '--sort=foldcase', '--fields=fimKnsSzt',
+                            '--language-force=C++', '-f', '-']
+        cmd = comando_ctags + parametros_ctags + [filename]
         process = Popen(cmd, 0, stdout=PIPE, stderr=PIPE, shell=False)
         tag = process.communicate()[0]
 

@@ -21,7 +21,7 @@ class ContenedorOutput(QWidget):
 
     def __init__(self, parent=None):
         QWidget.__init__(self, parent)
-
+        self.setMinimumHeight(175)
         box = QVBoxLayout(self)
         box.setContentsMargins(0, 0, 0, 0)
         box.setSpacing(0)
@@ -42,7 +42,7 @@ class ContenedorOutput(QWidget):
 
     def ejecutar(self):
         #FIXME: revisar!
-        self.salida_.correr_programa()
+        self.salida_.correr_programa(self.nombre_archivo)
 
     def terminar_programa(self):
         self.salida_.terminar_proceso()

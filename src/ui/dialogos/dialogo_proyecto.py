@@ -6,85 +6,132 @@
 # License: GPLv3 (see http://www.gnu.org/licenses/gpl.html)
 
 import os
+import json
 
 from PyQt4.QtGui import (
     QDialog,
     QVBoxLayout,
+    QFormLayout,
     QHBoxLayout,
-    QLabel,
     QLineEdit,
     QPushButton,
+    QWidget,
     QFileDialog,
-    QSpacerItem,
-    QSizePolicy,
-    QToolButton
+    #QMessageBox,
     )
 
 from PyQt4.QtCore import (
-    SIGNAL,
-    Qt,
-    QSize
+    QThread
     )
 
-from edis_c.ui.widgets import creador_widget
+from src.helpers import logger
+#from src.ui.edis_main import EDIS
+log = logger.edisLogger("creador_proyecto")
+
+
+#TODO: Esto todavía está incompleto
 
 
 class DialogoProyecto(QDialog):
 
     def __init__(self, parent=None):
-        QDialog.__init__(self)
-        self.setWindowTitle(self.trUtf8("EDIS - Proyecto nuevo"))
-        boxV = QVBoxLayout(self)
+        QDialog.__init__(self, parent)
+        self.setWindowTitle(self.tr("Proyecto nuevo"))
+        self.resize(500, 100)
+        contenedor = QVBoxLayout(self)
+        contenedor.setContentsMargins(5, 5, 5, 5)
+        form = QFormLayout()
 
-        boxH = QHBoxLayout()
-        boxH.addWidget(QLabel(self.trUtf8("Nombre del proyecto:")))
-        self.lineNombre = QLineEdit()
-        boxH.addWidget(self.lineNombre)
+        # Thread
+        self.creador_proyecto = CreadorProyectoThread()
+        self.creador_proyecto.finished.connect(self._finalizar_thread)
 
-        boxHH = QHBoxLayout()
-        boxHH.addWidget(QLabel(self.trUtf8("Seleccione la carpeta:")))
-        self.lineExaminar = QLineEdit()
-        self.botonLimpiar = QToolButton(self)
-        self.botonLimpiar.setAutoRaise(True)
-        self.botonLimpiar.setIcon(
-            creador_widget.get_icono_estandard("TitleBarCloseButton"))
-        layoutLine = QHBoxLayout(self.lineNombre)
-        layoutLine.addWidget(self.botonLimpiar, 2, Qt.AlignRight)
-        self.lineExaminar.setReadOnly(True)
-        boxHH.addWidget(self.lineExaminar)
-        self.botonExaminar = QPushButton(self.trUtf8("..."))
-        self.botonExaminar.setMaximumSize(QSize(25, 25))
-        boxHH.addWidget(self.botonExaminar)
+        self.line_nombre = QLineEdit()
+        self.line_nombre.setText("ProyectoNuevo")
+        form.addRow(self.tr("Nombre:"), self.line_nombre)
 
-        boxBotones = QHBoxLayout()
-        self.botonAceptar = QPushButton(self.trUtf8("Aceptar"))
-        self.botonCancelar = QPushButton(self.trUtf8("Cancelar"))
-        boxBotones.addWidget(self.botonCancelar)
-        boxBotones.addWidget(self.botonAceptar)
+        widget_ubicacion = QWidget()
+        hbox = QHBoxLayout(widget_ubicacion)
+        hbox.setMargin(0)
+        self.line_ubicacion = QLineEdit()
+        btn_ubicacion = QPushButton("...")
+        btn_ubicacion.setStyleSheet("min-width: 25px; min-height: 10")
+        hbox.addWidget(self.line_ubicacion)
+        hbox.addWidget(btn_ubicacion)
 
-        boxBotones.addItem(QSpacerItem(0, 10, QSizePolicy.Expanding,
-            QSizePolicy.Expanding))
-        boxV.addLayout(boxH)
-        boxV.addLayout(boxHH)
-        boxV.addLayout(boxBotones)
+        form.addRow(self.tr("Ubicación:"), widget_ubicacion)
 
-        self.connect(self.botonExaminar, SIGNAL("clicked()"),
-            self.seleccionar_carpeta)
-        self.connect(self.botonCancelar, SIGNAL("clicked()"),
-            self.close)
-        self.connect(self.botonAceptar, SIGNAL("clicked()"),
-            self.crear_proyecto)
+        contenedor.addLayout(form)
+        contenedor.addStretch(1)
 
-    def seleccionar_carpeta(self):
-        self.lineExaminar.setText(QFileDialog.getExistingDirectory(
-            self, self.trUtf8("Selecciona la carpeta")))
+        box_botones = QHBoxLayout()
+        box_botones.addStretch(1)
+        self.btn_aceptar = QPushButton(self.tr("Aceptar"))
+        self.btn_aceptar.setDisabled(True)
+        box_botones.addWidget(self.btn_aceptar)
+        btn_cancelar = QPushButton(self.tr("Cancelar"))
+        box_botones.addWidget(btn_cancelar)
 
-    def crear_proyecto(self):
-        nombre = self.lineNombre.text()
-        carpeta = os.path.join(unicode(self.lineExaminar.text()),
-            unicode(nombre))
-        if not carpeta:
+        contenedor.addLayout(box_botones)
+
+        # Conexiones
+        btn_ubicacion.clicked.connect(self._seleccionar_carpeta)
+        btn_cancelar.clicked.connect(self.close)
+        self.line_nombre.textChanged.connect(self._validar)
+        self.btn_aceptar.clicked.connect(self._enviar_datos)
+
+        self._validar()
+
+    def _seleccionar_carpeta(self):
+        carpeta = QFileDialog.getExistingDirectory(self,
+            self.tr("Selecciona la carpeta"))
+        if carpeta:
+            self.line_ubicacion.setText(carpeta)
+        self._validar()
+
+    def _validar(self):
+        self.nombre_proyecto = self.line_nombre.text().replace(' ', '_')
+        self.ubicacion_proyecto = self.line_ubicacion.text()
+        if not self.ubicacion_proyecto:
+            self.btn_aceptar.setDisabled(True)
             return
-        if not os.path.exists(carpeta):
-            os.makedirs(carpeta)
-        self.close()
+        elif not self.nombre_proyecto:
+            self.btn_aceptar.setDisabled(True)
+            return
+        self.btn_aceptar.setDisabled(False)
+
+    def _enviar_datos(self):
+        datos = {
+            'nombre': self.nombre_proyecto,
+            'ubicacion': self.ubicacion_proyecto
+            }
+        self.creador_proyecto.crear(datos)
+
+    def _finalizar_thread(self):
+        pass
+
+
+class CreadorProyectoThread(QThread):
+
+    def __init__(self):
+        QThread.__init__(self)
+        self.error = False
+
+    def run(self):
+        try:
+            # Se crea el directorio
+            carpeta_proyecto = os.path.join(self._datos['ubicacion'],
+                                            self._datos['nombre'])
+            os.mkdir(carpeta_proyecto)
+            # Se crea el archivo .epf (Edis Project File)
+            archivo_epf = self._datos['nombre'] + '.epf'
+            with open(os.path.join(carpeta_proyecto,
+                        archivo_epf.lower()), mode='w') as archivo:
+                json.dump(self._datos, archivo, indent=4)
+        except Exception as error:
+            self.error = error
+
+    def crear(self, proyecto):
+        self._datos = proyecto
+        # Run !
+        self.start()

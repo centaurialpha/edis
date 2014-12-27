@@ -32,7 +32,9 @@ LOG = os.path.join(HOME_EDIS, 'edis.log')
 SELECTOR_QML = os.path.join(PATH, "ui", "selector", "selector.qml")
 # ESTILO
 ESTILO = os.path.join(PATH, "extras", "temas", "default.qss")
-
+IDIOMA = os.path.join(PATH, "extras", "idiomas")
+# Ctags
+CTAGS = os.path.join(PATH, 'ectags', 'ctags.exe')
 # Iconos
 ICONOS = {}
 for icono in os.listdir(PATH_ICONOS):
@@ -46,6 +48,8 @@ ATAJOS = {
     "guardar": QKeySequence(Qt.CTRL + Qt.Key_S),
     "cerrar-tab": QKeySequence(Qt.CTRL + Qt.Key_W),
     "imprimir": QKeySequence(Qt.CTRL + Qt.Key_P),
+    "propiedades": QKeySequence(Qt.CTRL + Qt.SHIFT + Qt.Key_P),
+    "salir": QKeySequence(Qt.CTRL + Qt.Key_Q),
     # Editar
     "deshacer": QKeySequence(Qt.CTRL + Qt.Key_Z),
     "rehacer": QKeySequence(Qt.CTRL + Qt.Key_Y),
@@ -62,6 +66,7 @@ ATAJOS = {
     "titulo": QKeySequence(Qt.CTRL + Qt.Key_T),
     "eliminar": QKeySequence(Qt.CTRL + Qt.SHIFT + Qt.Key_X),
     "duplicar": QKeySequence(Qt.ALT + Qt.Key_D),
+    "preferencias": QKeySequence(Qt.CTRL + Qt.ALT + Qt.Key_P),
     # Ver
     "fullscreen": QKeySequence(Qt.CTRL + Qt.Key_F11),
     "ocultar-todo": QKeySequence(Qt.Key_F11),
@@ -83,16 +88,16 @@ ATAJOS = {
 
 # Tema editor
 TEMA = {
-    'FondoEditor': '#2a2a2a',
+    'FondoEditor': '#121212',
     'Color': '#F1F1F1',
-    'Keyword': '#009bbf',
+    'Keyword': '#87afd7',
     'KeywordSet2': '#009bbf',
-    'Comment': 'gray',
-    'CommentLine': 'gray',
-    'Number': 'yellow',
-    'DoubleQuotedString': '#00ba2a',
-    'SingleQuotedString': '#00ba2a',
-    'PreProcessor': '#ae81fe',
+    'Comment': '#af5f5f',
+    'CommentLine': '#af5f5f',
+    'Number': '#d7d75f',
+    'DoubleQuotedString': '#5e7366',
+    'SingleQuotedString': '#5e7366',
+    'PreProcessor': '#87afd7',
     'PreProcessorComment': 'orange',
     'Operator': 'white',
     'RawString': 'orange',
@@ -108,10 +113,10 @@ TEMA = {
     'caret-opacidad': 20,
     'guia-fondo': 'red',
     'guia-fore': 'white',
-    'sidebar-fondo': '#2a2a2a',
+    'sidebar-fondo': '#212121',
     'sidebar-fore': '#85878c',
-    'foldFore': '#333',
-    'foldBack': '#333'
+    'foldFore': '#242424',
+    'foldBack': '#242424'
     }
 
 # Extensiones soportadas

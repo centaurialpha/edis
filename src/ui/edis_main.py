@@ -6,6 +6,7 @@
 # License: GPLv3 (see http://www.gnu.org/licenses/gpl.html)
 
 # Módulos Python
+from subprocess import Popen, PIPE
 import os
 import webbrowser
 from collections import OrderedDict
@@ -15,16 +16,19 @@ from PyQt4.QtGui import (
     QMainWindow,
     QIcon,
     QToolBar,
+    QMessageBox
     )
 
 # Módulos QtCore
 from PyQt4.QtCore import (
     SIGNAL,
     Qt,
-    QSize
+    QSize,
+    QSettings
     )
 
 # Módulos EDIS
+from src import recursos
 from src import ui
 from src.helpers import configuraciones
 from src.ui.contenedores.lateral import lateral_container
@@ -41,6 +45,7 @@ class EDIS(QMainWindow):
     # Cada instancia de una clase  se guarda en éste diccionario
     __COMPONENTES = {}
     __MENUBAR = {}  # Nombre de los menus
+    __ACCIONES = {}
 
     def __init__(self):
         QMainWindow.__init__(self)
@@ -57,10 +62,11 @@ class EDIS(QMainWindow):
         EDIS.menu_bar(5, self.trUtf8("E&jecución"))
         EDIS.menu_bar(6, self.trUtf8("A&cerca de"))
         # Toolbar
+        #FIXME: Visibilidad
         self.toolbar = QToolBar(self)
         self.toolbar.setMovable(False)
         self.toolbar.setObjectName("toolbar")
-        self.toolbar.setIconSize(QSize(28, 28))
+        self.toolbar.setIconSize(QSize(22, 22))
         self.addToolBar(Qt.RightToolBarArea, self.toolbar)
         self.cargar_menu()
         # Barra de estado
@@ -72,6 +78,9 @@ class EDIS(QMainWindow):
         self.setCentralWidget(self.central)
 
         EDIS.cargar_componente("edis", self)
+
+        if configuraciones.INICIO:
+            self.mostrar_inicio()
 
     @classmethod
     def cargar_componente(cls, nombre, instancia):
@@ -97,6 +106,10 @@ class EDIS(QMainWindow):
 
         return cls.__MENUBAR.get(clave, None)
 
+    @classmethod
+    def accion(cls, nombre):
+        return cls.__ACCIONES.get(nombre, None)
+
     def cargar_menu(self):
         #FIXME: Mejorar
         #FIXME: Separadores
@@ -113,6 +126,7 @@ class EDIS(QMainWindow):
                     if submenu:
                         if isinstance(submenu, bool):
                             smenu = menu.addMenu(accion.nombre)
+                            continue
                         else:
                             qaccion = smenu.addAction(accion.nombre)
                     else:
@@ -124,6 +138,9 @@ class EDIS(QMainWindow):
                     icono = accion.icono
                     if icono:
                         qaccion.setIcon(QIcon(icono))
+                    #FIXME: Checked en visibilidad
+                    if accion.checkable:
+                        qaccion.setCheckable(True)
                     if accion.conexion:
                         if accion.conexion.split('.')[0] == 'edis':
                             funcion = getattr(self,
@@ -135,10 +152,12 @@ class EDIS(QMainWindow):
                             qaccion.triggered.connect(funcion)
                     if accion.separador:
                         menu.addSeparator()
+                    EDIS.__ACCIONES[accion.nombre] = qaccion
 
         self.__cargar_toolbar(items_toolbar)
 
     def __cargar_toolbar(self, items_toolbar):
+        #FIXME: Arreglar esto
         for i, accion in enumerate(list(items_toolbar.items())):
             if accion[0] in configuraciones.ITEMS_TOOLBAR:
                 self.toolbar.addAction(accion[1])
@@ -168,6 +187,15 @@ class EDIS(QMainWindow):
                     SIGNAL("archivo_cambiado(QString)"),
                     self.__titulo_ventana)
         self.connect(self.contenedor_editor,
+                    SIGNAL("archivo_abierto(QString)"),
+                    self.contenedor_lateral.file_navigator.agregar)
+        self.connect(self.contenedor_editor,
+                    SIGNAL("archivo_cerrado(int)"),
+                    self.contenedor_lateral.file_navigator.eliminar)
+        self.connect(self.contenedor_editor,
+                    SIGNAL("cambiar_item(int)"),
+                    self.contenedor_lateral.file_navigator.cambiar_foco)
+        self.connect(self.contenedor_editor,
                     SIGNAL("archivo_modificado(bool)"),
                     self.__titulo_modificado)
         self.connect(self.contenedor_editor,
@@ -179,6 +207,12 @@ class EDIS(QMainWindow):
         self.connect(self.contenedor_editor,
                     SIGNAL("actualizarSimbolos(QString)"),
                     self.contenedor_lateral.actualizar_simbolos)
+        self.connect(self.contenedor_lateral.file_explorer,
+                    SIGNAL("abriendoArchivo(QString)"),
+                    self.contenedor_editor.abrir_archivo)
+        self.connect(self.contenedor_lateral.file_navigator,
+                    SIGNAL("cambiar_editor(int)"),
+                    self.contenedor_editor.cambiar_widget)
 
     def __actualizar_cursor(self, linea, columna, lineas):
         #FIXME:
@@ -187,8 +221,7 @@ class EDIS(QMainWindow):
 
     def __actualizar_estado(self, archivo):
         #FIXME: Arreglar esto
-        #self.barra_de_estado.nombre_archivo.cambiar_texto(archivo)
-        pass
+        self.barra_de_estado.path_archivo(archivo)
 
     def todo_cerrado(self):
         self.setWindowTitle(ui.__nombre__)
@@ -224,6 +257,25 @@ class EDIS(QMainWindow):
         else:
             self.contenedor_lateral.show()
 
+    def mostrar_ocultar_toolbar(self):
+        if self.toolbar.isVisible():
+            self.toolbar.hide()
+        else:
+            self.toolbar.show()
+
+    def mostrar_pantalla_completa(self):
+        if self.isFullScreen():
+            self.showNormal()
+        else:
+            self.showFullScreen()
+
+    def acerca_de_qt(self):
+        QMessageBox.aboutQt(self)
+
+    def acerca_de_edis(self):
+        #FIXME: completar
+        pass
+
     def closeEvent(self, e):
         """
         Éste médoto es llamado automáticamente por Qt cuando se
@@ -239,3 +291,28 @@ class EDIS(QMainWindow):
             dialogo.exec_()
             if dialogo.ignorado():
                 e.ignore()
+        #FIXME: guardar configuraciones
+        archivos_recientes = principal.recientes
+        qconfig = QSettings(recursos.CONFIGURACION, QSettings.IniFormat)
+        qconfig.setValue('recientes', archivos_recientes)
+
+    def mostrar_inicio(self):
+        dialogo = EDIS.componente("inicio")
+        dialogo.show()
+
+    def comprobar_compilador(self):
+        #FIXME: hacer un módulo para esto
+        proceso = Popen('gcc --help', stdout=PIPE, stderr=PIPE, shell=True)
+        if proceso.wait() != 0:
+            flags = QMessageBox.Yes
+            flags |= QMessageBox.No
+            r = QMessageBox.warning(self,
+                                    self.tr("No se encontro el compilador"),
+                                    self.tr("Desea instalarlo?"), flags)
+            if r == QMessageBox.Yes:
+                self._descargar_compilador()
+            elif r == QMessageBox.No:
+                return False
+
+    def _descargar_compilador(self):
+        webbrowser.open_new(ui.__gcc__)

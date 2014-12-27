@@ -1,13 +1,46 @@
-EDIS-C | Entorno de Desarrollo Integrado Simple para C.
-=========================================================
+EDIS 
+====
 .. image:: https://img.shields.io/badge/Python-3-blue.svg?style=flat-square
      :target: https://python.org 
 .. image:: https://img.shields.io/badge/PyQt-4-green.svg?style=flat-square
      :target: http://riverbankcomputing.co.uk/software/pyqt/intro 
 .. image:: https://img.shields.io/badge/Licencia-GPLv3-red.svg?style=flat-square
      :target: http://gplv3.fsf.org
+.. image:: https://img.shields.io/badge/build-passing-green.svg?style=flat-square
 
-Se está reescribiendo el código fuente !!
-========================================
-* Será compatible con Python 3
-* Nuevo editor, basado en QsciScintilla
+What is this?
+-------------
+**Edis** es un Entorno de Desarrollo Integrado (IDE) simple y ligero, está programado en Python y Qt. Edis se basa en la 
+simplicidad: *write, build and run!*.
+
+.. image:: ./src/images/edis_screenshot.png
+
+Awesome features
+----------------
+* **Syntax highlighter**
+* **Code folding**
+* **Minimap**
+* **Highlighting words**
+* **File selector**
+* **Tree symbols**
+
+Platforms
+---------
+* GNU/Linux
+* Windows
+
+Dependencies
+------------
+Estas dependencias son necesarias para ejecutar Edis desde el código fuente.
+
+* `Python <https://python.org>`_ 3.x
+* `PyQt4 <http://www.riverbankcomputing.co.uk/software/pyqt/intro>`_ >= 4.8
+* `QScintilla2 <http://www.riverbankcomputing.com/software/qscintilla/intro>`_
+
+Run Edis
+--------
+::
+
+     git clone https://github.com/centaurialpha/edis.git
+     cd edis
+     ./edis.py

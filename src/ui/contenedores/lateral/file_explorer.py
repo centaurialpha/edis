@@ -6,57 +6,46 @@
 # License: GPLv3 (see http://www.gnu.org/licenses/gpl.html)
 
 from PyQt4.QtGui import (
-    QWidget,
-    QVBoxLayout,
     QTreeView,
     QFileSystemModel,
     )
 
 from PyQt4.QtCore import (
-    SIGNAL,
     QModelIndex,
-    pyqtSlot,
-    #QStringList,
+    pyqtSignal,
     QDir
     )
 
 
-class Explorador(QWidget):
-    """ Explorador de archivos basado en QFileSystemModel """
+class Explorador(QTreeView):
+
+    abriendoArchivo = pyqtSignal(['QString'])
 
     def __init__(self, parent=None):
         super(Explorador, self).__init__()
-        self.setObjectName("explorador")
-        vb = QVBoxLayout(self)
-        vb.setContentsMargins(0, 0, 0, 0)
+        # Configuración
+        self.header().setHidden(True)
+        self.setAnimated(True)
 
-        self.tree = QTreeView()
-        self.tree.header().setHidden(True)
-        self.tree.setAnimated(True)
+        # Modelo
+        self.modelo = QFileSystemModel(self)
+        path = QDir.toNativeSeparators(QDir.homePath())
+        self.modelo.setRootPath(path)
+        self.setModel(self.modelo)
+        self.modelo.setNameFilters(["*.c", "*.h", "*.s"])
+        self.setRootIndex(QModelIndex(self.modelo.index(path)))
+        self.modelo.setNameFilterDisables(False)
 
-        self.model = QFileSystemModel(self.tree)
-        home_path = QDir.toNativeSeparators(QDir.homePath())
-        self.model.setRootPath(home_path)
-        #filtro = QStringList("")
-        #filtro << "*.c" << "*.h"  # Filtro
-        self.tree.setModel(self.model)
-        self.tree.setRootIndex(QModelIndex(self.model.index(home_path)))
-        #self.model.setNameFilters(filtro)
-        self.model.setNameFilterDisables(False)
+        # Se ocultan algunas columnas
+        self.hideColumn(1)
+        self.hideColumn(2)
+        self.hideColumn(3)
 
-        # Se ocultan algunas columnas (size, type, y date modified)
-        self.tree.hideColumn(1)
-        self.tree.hideColumn(2)
-        self.tree.hideColumn(3)
+        # Conexion
+        self.doubleClicked.connect(self._abrir_archivo)
 
-        vb.addWidget(self.tree)
-
-        # Conexión a slot
-        self.tree.doubleClicked.connect(self.doble_click)
-
-    @pyqtSlot(QModelIndex)
-    def doble_click(self, i):
-        ind = self.model.index(i.row(), 0, i.parent())
-        archivo = self.model.filePath(ind)
-        # Señal emitida -> ruta completa del archivo
-        self.emit(SIGNAL("dobleClickArchivo(QString)"), archivo)
+    def _abrir_archivo(self, i):
+        if not self.modelo.isDir(i):
+            indice = self.modelo.index(i.row(), 0, i.parent())
+            archivo = self.modelo.filePath(indice)
+            self.abriendoArchivo.emit(archivo)

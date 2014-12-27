@@ -31,12 +31,12 @@ class Base(QsciScintilla, tabitem.TabItem):
         QsciScintilla.__init__(self)
         tabitem.TabItem.__init__(self)
         # Configuración de Qscintilla
-        self.setCaretLineVisible(True)
+        self.setCaretLineVisible(configuraciones.MARGEN)
         self.setIndentationsUseTabs(False)
         #FIXME: indentación, guías
         self.setAutoIndent(True)
         self.setBackspaceUnindents(True)
-        self.__indentacion = configuraciones.INDENTACION
+        self.__indentacion = configuraciones.INDENTACION_ANCHO
         self.setIndentationWidth(self.__indentacion)
 
         self.SendScintilla(QsciScintilla.SCI_SETCARETSTYLE,

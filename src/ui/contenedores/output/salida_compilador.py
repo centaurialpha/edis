@@ -27,9 +27,9 @@ class SalidaWidget(QPlainTextEdit):
 
     def __init__(self, parent):
         QPlainTextEdit.__init__(self, parent)
+        self.setObjectName("output")
         self._parent = parent
         self.setReadOnly(True)
-
         # Formato para la salida estándar
         self.formato_ok = QTextCharFormat()
         #self.formato_ok.setAnchor(True)
@@ -58,7 +58,7 @@ class SalidaWidget(QPlainTextEdit):
         self.formato_warning.setFontPointSize(9)
 
         # Se carga el estilo
-        self.cargar_estilo()
+        #self.cargar_estilo()
 
     def cargar_estilo(self):
         """ Carga estilo de color de QPlainTextEdit """

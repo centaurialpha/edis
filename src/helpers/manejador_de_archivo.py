@@ -18,37 +18,6 @@ from PyQt4.QtCore import (
     )
 
 
-def _nombreBase(nombre_de_archivo):
-    """ Se retorna el nombre del archivo con la extensión, sin la ruta """
-
-    if nombre_de_archivo.endswith(os.path.sep):
-        nombre_de_archivo = nombre_de_archivo[:-1]
-
-    return os.path.basename(nombre_de_archivo)
-
-
-def nombre_de_archivo(nombre_de_archivo):
-    """ Devuelve el nombre de un archivo, sin extensión. """
-    modulo = os.path.basename(nombre_de_archivo)
-    return (os.path.splitext(modulo)[0])
-
-
-def devolver_carpeta(nombre_de_archivo):
-    return os.path.dirname(nombre_de_archivo)
-
-
-def archivos_desde_carpeta(carpeta, extension):
-    """ Devuelve una lista con todos los archivos de @carpeta con extensión
-    @extension. """
-
-    try:
-        archivo_extension = os.listdir(carpeta)
-    except:
-        archivo_extension = []
-    archivo_extension = [f for f in archivo_extension if f.endswith(extension)]
-    return archivo_extension
-
-
 def leer_contenido_de_archivo(archivo):
     """ Intenta abrir y leer el contenido del archivo, lo retorna en caso de
     éxito, de lo contrario se retora un string vacío  """
@@ -97,23 +66,3 @@ def escribir_archivo(nombre_de_archivo, contenido):
         pass
 
     return os.path.abspath(nombre_de_archivo)
-
-
-def permiso_de_escritura(archivo):
-    """ Retorna True si el archivo tiene permisos de escritura o False
-    en caso contrario. """
-
-    return os.access(archivo, os.W_OK)
-
-
-def crear_path(*args):
-    return os.path.join(*args)
-
-
-def archivo_existente(path, nombre_archivo=''):
-    """ Devuelve True si el archivo se encuentra en @path y False en caso
-    contrario. """
-
-    if nombre_archivo:
-        path = os.path.join(path, nombre_archivo)
-    return os.path.isfile(path)

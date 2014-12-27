@@ -6,76 +6,33 @@
 # License: GPLv3 (see http://www.gnu.org/licenses/gpl.html)
 
 from PyQt4.QtGui import (
-    QWidget,
-    QAction,
-    QMenu,
-    QStandardItemModel,
-    QStandardItem,
-    QVBoxLayout,
-    QAbstractItemView,
-    QListView,
+    QListWidget,
     )
+
 from PyQt4.QtCore import (
     SIGNAL,
-    QModelIndex,
-    pyqtSlot,
-    Qt
+    pyqtSignal
     )
 
-from src.ui.contenedor_principal import contenedor_principal
 
+class Navegador(QListWidget):
 
-class Navegador(QWidget):
+    cambiar_editor = pyqtSignal(int)
 
-    def __init__(self, parent=None):
-        super(Navegador, self).__init__(parent)
-        self.setObjectName("navegador")
-        self.parent = parent
-        self.archivos = []
-        vbox = QVBoxLayout(self)
-        vbox.setContentsMargins(0, 0, 0, 0)
-        self.lista = ListView(self)
-        self.lista.setEditTriggers(QAbstractItemView.NoEditTriggers)
-        self.model = QStandardItemModel(self.lista)
-        vbox.addWidget(self.lista)
-        self.lista.clicked.connect(self.cambiar_tab)
+    def __init__(self):
+        super(Navegador, self).__init__()
+        self.connect(self, SIGNAL("clicked(QModelIndex)"),
+                    self._cambiar_editor)
 
-    @pyqtSlot(QModelIndex)
-    def cambiar_tab(self, indice):
-        self.emit(SIGNAL("cambioPes(int)"), indice.row())
+    def agregar(self, archivo):
+        self.addItem(archivo)
 
-    def cargar_archivos(self, archivos):
-        archivos = list(archivos)
+    def eliminar(self, indice):
+        self.takeItem(indice)
 
-        for i in archivos:
-            item = QStandardItem(i.split('/')[-1])
-            self.model.appendRow(item)
-        self.lista.setModel(self.model)
+    def cambiar_foco(self, indice):
+        self.setCurrentRow(indice)
 
-    def borrar_item(self, item):
-
-        self.model.removeRow(item)
-
-    def get_archivos(self):
-        return contenedor_principal.ContenedorMain().get_archivos()
-
-
-class ListView(QListView):
-
-    def __init__(self, parent):
-        super(ListView, self).__init__()
-        self.parent = parent
-        self.setStyleSheet(
-            "QListView::item:selected{border: 1px solid white}")
-
-    def contextMenuEvent(self, evento):
-        self.setContextMenuPolicy(Qt.CustomContextMenu)
-        menu = QMenu(self)
-        accionC = QAction('Cerrar', self)
-        menu.addAction(accionC)
-        accionC.triggered.connect(self.parent.borrar_item)
-        menu.exec_(evento.globalPos())
-
-    def change_style(self, index):
-        self.setStyleSheet(
-            "QListView::item:selected{border: 1px solid white; color: #71afc9}")
+    def _cambiar_editor(self):
+        indice = self.row(self.currentItem())
+        self.cambiar_editor.emit(indice)

@@ -10,7 +10,8 @@ from PyQt4.QtGui import (
     QShortcut,
     QKeySequence,
     QHBoxLayout,
-    QLineEdit
+    QLineEdit,
+    QLabel
     )
 
 from PyQt4.QtCore import (
@@ -18,7 +19,8 @@ from PyQt4.QtCore import (
     QSize,
     QPropertyAnimation,
     SIGNAL,
-    QPoint
+    QPoint,
+    QObject
     )
 
 
@@ -27,10 +29,13 @@ class PopupBusqueda(QDialog):
     def __init__(self, editor):
         QDialog.__init__(self, editor)
         self.editor = editor
+        self.total = 0
+        self.indice = 0
         self.layout = QHBoxLayout(self)
         self.layout.setContentsMargins(0, 0, 0, 0)
 
-        self.line = QLineEdit(self)
+        self.line = QLine(self)
+        self.line.contador.actualizar(self.indice, self.total)
         self.line.setMinimumWidth(200)
         self.layout.addWidget(self.line)
 
@@ -47,7 +52,10 @@ class PopupBusqueda(QDialog):
 
     def ocultar(self):
         self.hide()
-        self.editor.stack.currentWidget().setFocus()
+        self.editor.setFocus()
+
+    def buscar(self, weditor):
+        pass
 
     def showEvent(self, e):
         super(PopupBusqueda, self).showEvent(e)
@@ -62,3 +70,44 @@ class PopupBusqueda(QDialog):
         anim.setDuration(500)
         anim.start()
         self.line.setFocus()
+
+    def keyPressEvent(self, e):
+        super(PopupBusqueda, self).keyPressEvent(e)
+        if e.key() == Qt.Key_Return:
+            self.close()
+
+
+class QLine(QLineEdit):
+
+    def __init__(self, popup):
+        super(QLine, self).__init__(popup)
+        self.popup = popup
+        self.contador = Contador(self)
+
+    def keyPressEvent(self, e):
+        editor = self.popup.editor
+        if editor is None:
+            super(QLine, self).keyPressEvent(e)
+            return
+        if editor and e.key() in (Qt.Key_Enter, Qt.Key_Return):
+            pass
+        super(QLine, self).keyPressEvent(e)
+        if int(e.key()) in range(32, 162) or e.key() == Qt.Key_Backspace:
+            self.popup.buscar(editor)
+
+
+class Contador(QObject):
+
+    def __init__(self, qline):
+        super(Contador, self).__init__()
+        self.qline = qline
+        box = QHBoxLayout(qline)
+        box.setMargin(0)
+        qline.setLayout(box)
+        box.addStretch()
+        self.contador = QLabel(qline)
+        box.addWidget(self.contador)
+
+    def actualizar(self, indice, total, buscada=False):
+        texto = self.tr("{0}/{0}").format(indice).format(total)
+        self.contador.setText(texto)

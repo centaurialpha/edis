@@ -48,9 +48,19 @@ ACCIONES = (
     {
         'seccion': 0,
         'nombre': 'Nuevo',
-        'conexion': "agregar_editor",
+        'submenu': True},
+    {
+        'seccion': 0,
+        'nombre': 'Nuevo archivo',
+        'conexion': 'agregar_editor',
         'atajo': _ATAJO['nuevo'],
-        'icono': _ICONO['new']},
+        'icono': _ICONO['new'],
+        'submenu': 'Nuevo archivo'},
+    {
+        'seccion': 0,
+        'nombre': 'Proyecto nuevo',
+        'conexion': 'proyecto_nuevo',
+        'submenu': 'Nuevo'},
     {
         'seccion': 0,
         'nombre': 'Abrir',
@@ -103,6 +113,7 @@ ACCIONES = (
         'seccion': 0,
         'nombre': 'Propiedades',
         'conexion': "propiedades_de_archivo",
+        'atajo': _ATAJO['propiedades'],
         'separador': True},
     {
         'seccion': 0,
@@ -112,17 +123,20 @@ ACCIONES = (
     {
         'seccion': 0,
         'nombre': 'Salir',
-        'conexion': 'edis.close'},
+        'conexion': 'edis.close',
+        'atajo': _ATAJO['salir']},
     {
         'seccion': 1,
         'nombre': 'Deshacer',
         'conexion': 'deshacer',
-        'atajo': _ATAJO['deshacer']},
+        'atajo': _ATAJO['deshacer'],
+        'icono': _ICONO['undo']},
     {
         'seccion': 1,
         'nombre': 'Rehacer',
         'conexion': 'rehacer',
         'atajo': _ATAJO['rehacer'],
+        'icono': _ICONO['redo'],
         'separador': True},
     {
         'seccion': 1,
@@ -139,6 +153,7 @@ ACCIONES = (
         'nombre': 'Pegar',
         'conexion': 'pegar',
         'atajo': _ATAJO['pegar'],
+        'icono': _ICONO['paste'],
         'separador': True},
     {
         'seccion': 1,
@@ -164,7 +179,8 @@ ACCIONES = (
     {
         'seccion': 1,
         'nombre': 'Texto a mayúsculas',
-        'conexion': "convertir_a_mayusculas"},
+        'conexion': "convertir_a_mayusculas",
+        'icono': _ICONO['upper']},
     {
         'seccion': 1,
         'nombre': 'Convertir a título',
@@ -175,38 +191,66 @@ ACCIONES = (
         'seccion': 1,
         'nombre': 'Indentar',
         'conexion': 'indentar',
-        'atajo': _ATAJO['indentar']},
+        'atajo': _ATAJO['indentar'],
+        'icono': _ICONO['indent']},
     {
         'seccion': 1,
         'nombre': 'Remover indentación',
         'conexion': 'remover_indentacion',
         'atajo': _ATAJO['quitar-indentacion'],
+        'icono': _ICONO['unindent']},
+    {
+        'seccion': 1,
+        'nombre': 'Mover hacia arriba',
+        'conexion': 'mover_hacia_arriba',
+        'atajo': _ATAJO['mover-arriba'],
+        'icono': _ICONO['arrow-up']},
+    {
+        'seccion': 1,
+        'nombre': 'Mover hacia abajo',
+        'conexion': 'mover_hacia_abajo',
+        'atajo': _ATAJO['mover-abajo'],
+        'icono': _ICONO['arrow-down'],
         'separador': True},
     {
         'seccion': 1,
         'nombre': 'Configuración',
         'conexion': "configuracion_edis",
+        'atajo': _ATAJO['preferencias'],
         'separador': True},
     {
         'seccion': 2,
         'nombre': 'Pantalla completa',
-        'conexion': 'pantalla_completa',
+        'conexion': 'edis.mostrar_pantalla_completa',
         'atajo': _ATAJO['fullscreen']},
     {
         'seccion': 2,
         'nombre': 'Mostrar lateral',
         'conexion': 'edis.mostrar_ocultar_lateral',
+        'checkable': True,
         'atajo': _ATAJO['lateral']},
     {
         'seccion': 2,
         'nombre': 'Mostrar compilador',
         'conexion': 'edis.mostrar_ocultar_output',
+        'checkable': True,
         'atajo': _ATAJO['mostrar-compilador']},
     {
         'seccion': 2,
         'nombre': 'Mostrar toolbar',
-        'conexion': 'mostrar_toolbar',
+        'conexion': 'edis.mostrar_ocultar_toolbar',
         'atajo': _ATAJO['mostrar-toolbar'],
+        'separador': True},
+    {
+        'seccion': 2,
+        'nombre': 'Mostrar tabs y espacios en blanco',
+        'conexion': 'mostrar_tabs_espacios_blancos',
+        'checkable': True},
+    {
+        'seccion': 2,
+        'nombre': 'Mostrar guías',
+        'conexion': 'mostrar_guias',
+        'checkable': True,
         'separador': True},
     {
         'seccion': 2,
@@ -256,5 +300,14 @@ ACCIONES = (
     {
         'seccion': 6,
         'nombre': 'Archivo log',
-        'conexion': 'archivo_log'},
+        'conexion': 'archivo_log',
+        'separador': True},
+    {
+        'seccion': 6,
+        'nombre': 'Acerca de EDIS',
+        'conexion': 'edis.acerca_de_edis'},
+    {
+        'seccion': 6,
+        'nombre': 'Acerca de Qt',
+        'conexion': 'edis.acerca_de_qt'},
 )

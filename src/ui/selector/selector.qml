@@ -4,8 +4,7 @@ Rectangle {
     id: contenedor
 
     width: 380; height: 380
-    color: "#cacaca"; border.color: "#1c1c1c"
-    radius: 2
+    color: "#41403b";
 
     signal abrirArchivo(int indice)
 
@@ -13,7 +12,7 @@ Rectangle {
         id: contenedorLista
 
         width: 350; height: 280
-        color: "#d5d5d5"; border.color: "#000000"
+        color: "#5a584f"; border.color: "gray"
         anchors.horizontalCenter: contenedor.horizontalCenter
         y: 70
         radius: 2
@@ -30,12 +29,14 @@ Rectangle {
             clip: true
 
             delegate: Text {
+                color: "#dedede"
                 x: 10
                 font.pointSize: 14
                 text: nombre
             }
             highlight: Rectangle {
                 color: "#b9b9b9"
+                opacity: 0.2
                 radius: 2
                 width: lista.width - 8
                 x: 4
@@ -52,7 +53,7 @@ Rectangle {
 
     Text {
         text: "Archivos abiertos"
-        color: "gray"
+        color: "#dedede"
         font.bold: true
         font.pointSize: 12
         x: 10; y: 10

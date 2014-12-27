@@ -9,7 +9,7 @@ import sys
 
 from src import recursos
 from src.helpers import (
-    #configuraciones,
+    configuraciones,
     logger
     )
 
@@ -23,18 +23,39 @@ import src.ui.menu.menu
 from src.ui.edis_main import EDIS
 #lint:enable
 
+from PyQt4.QtCore import (
+    QSettings,
+    QLocale,
+    QTranslator,
+    QLibraryInfo
+    )
 # Logger
 log = logger.edisLogger('edis.run')
 
 
 def correr_interfaz(app):
+    #FIXME: Ordenar
+    config = QSettings(recursos.CONFIGURACION, QSettings.IniFormat)
     log.debug('Iniciando...')
+    recientes = config.value('recientes', [])
+    configuraciones.cargar_configuraciones()
+    configuraciones.RECIENTES = recientes
+    import src.ui.dialogos.preferencias.preferencias  # lint:ok
+    import src.ui.inicio  # lint:ok
+
+    # Traductor
+    local = QLocale.system().name()
+    qtraductor = QTranslator()
+    qtraductor.load("qt_" + local, QLibraryInfo.location(
+                    QLibraryInfo.TranslationsPath))
+
     edis = EDIS()
     # Aplicar estilo
     with open(recursos.ESTILO) as tema:
         estilo = tema.read()
     app.setStyleSheet(estilo)
     edis.show()
+    edis.comprobar_compilador()
     sys.exit(app.exec_())
     #sys.exit(app.exec_())
     #DEBUG('Corriendo interfaz')

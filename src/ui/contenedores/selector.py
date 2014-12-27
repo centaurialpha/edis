@@ -14,7 +14,8 @@ from PyQt4.QtCore import (
     #pyqtSignal,
     QUrl,
     SIGNAL,
-    Qt
+    Qt,
+    QDir
     )
 
 from PyQt4.QtDeclarative import QDeclarativeView
@@ -30,14 +31,15 @@ class Selector(QDialog):
                 Qt.Dialog | Qt.FramelessWindowHint)
         # Configuración
         self.setModal(True)
-        self.setStyleSheet("background:transparent;")
 
         box = QVBoxLayout(self)
         box.setContentsMargins(0, 0, 1, 1)
         box.setSpacing(0)
         # Interfáz QML
         view = QDeclarativeView()
-        view.setSource(QUrl(self.__get_qml()))
+        path = QDir.fromNativeSeparators(self.__get_qml())
+        view.setSource(QUrl.fromLocalFile(path))
+
         view.setResizeMode(QDeclarativeView.SizeRootObjectToView)
         box.addWidget(view)
 
