@@ -15,35 +15,12 @@ simplicidad: write, build and run!.
 
 .. image:: ./screenshots/edis_screenshot.png
 
-Features
---------
+Awesome features
+----------------
 
-Syntax highlighter
-
-.. image:: ./screenshots/highlighter.png
-
-Brace matching
-
-.. image:: ./screenshots/brace_matching.png
-
-Code folding
-
-.. image:: ./screenshots/code_folding.png
-
-Minimap
-
-.. image:: ./screenshots/minimap.png
-
-Tree symbols
-
-.. image:: ./screenshots/symbols.png
-
-Highlighting words
-
-.. image:: ./screenshots/highlighting_words.png
-
-File selector
-
-.. image:: ./screenshots/file_selector.png
-
-y más !
+* **Syntax highlighter**
+* **Code folding**
+* **Minimap**
+* **Highlighting words**
+* **File selector**
+* **Tree symbols**
