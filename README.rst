@@ -13,7 +13,7 @@ What is this?
 Edis es un Entorno de Desarrollo Integrado (IDE) simple y ligero, está programado en Python y Qt. Edis se basa en la 
 simplicidad: write, build and run!.
 
-.. image:: ./screenshots/edis_screenshot.png
+.. image:: ./src/images/edis_screenshot.png
 
 Features
 --------
