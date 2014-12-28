@@ -59,7 +59,7 @@ class StackWidget(QStackedWidget):
         for indice in range(editores):
             editor = self.editores[indice]
             if editor.texto_modificado:
-                archivos.append(editor.iD)
+                archivos.append(editor.nombre)
         return archivos
 
     def check_archivos_sin_guardar(self):
@@ -82,7 +82,7 @@ class StackWidget(QStackedWidget):
                                                 "Archivo no guardado"),
                                                 self.trUtf8("El archivo "
                                                 "<b>%s</b> no se ha guardado"
-                                            "<br>¿ Guardar ?") % weditor.iD,
+                                            "<br>¿ Guardar ?") % weditor.nombre,
                                             SI | NO | CANCELAR)
                 if respuesta == CANCELAR:
                     return
@@ -100,7 +100,7 @@ class StackWidget(QStackedWidget):
     def archivos_abiertos(self):
         archivos = list()
         for indice in range(self.contar):
-            archivos.append(self.editor(indice).iD)
+            archivos.append(self.editor(indice).nombre)
         return archivos
 
     def cambiar_widget(self, indice):

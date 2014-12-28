@@ -84,14 +84,14 @@ class EditorContainer(QWidget):
         self.archivo_modificado.emit(valor)
 
     def __archivo_guardado(self, weditor):
-        self.actualizar_simbolos.emit(weditor.iD)
+        self.actualizar_simbolos.emit(weditor.nombre)
         self.archivo_modificado.emit(False)
 
     def cambiar_widget(self, indice):
         self.stack.cambiar_widget(indice)
         weditor = self.devolver_editor()
         if weditor is not None:
-            self.archivo_cambiado.emit(weditor.iD)
+            self.archivo_cambiado.emit(weditor.nombre)
             self.cambiar_item.emit(indice)
 
     def agregar_editor(self, nombre=""):
@@ -111,8 +111,8 @@ class EditorContainer(QWidget):
         if not nombre:
             carpeta = os.path.expanduser("~")
             editor_widget = self.widget_actual()
-            if editor_widget and editor_widget.iD:
-                carpeta = self.__ultima_carpeta_visitada(editor_widget.iD)
+            if editor_widget and editor_widget.nombre:
+                carpeta = self.__ultima_carpeta_visitada(editor_widget.nombre)
             archivos = QFileDialog.getOpenFileNames(self,
                             self.trUtf8("Abrir archivo"), carpeta,
                             recursos.EXTENSIONES)
@@ -125,7 +125,7 @@ class EditorContainer(QWidget):
                             archivo)
                 nuevo_editor = self.agregar_editor(archivo)
                 nuevo_editor.texto = contenido
-                nuevo_editor.iD = archivo
+                nuevo_editor.nombre = archivo
                 self.archivo_cambiado.emit(archivo)
                 self.archivo_abierto.emit(archivo)
 
@@ -145,7 +145,7 @@ class EditorContainer(QWidget):
 
         editores = self.stack.editores
         for editor_widget in editores:
-            if editor_widget.iD == archivo:
+            if editor_widget.nombre == archivo:
                 log.warning(
                     "El archivo %s ya esta abierto", archivo)
                 return True
@@ -209,10 +209,10 @@ class EditorContainer(QWidget):
 
         if weditor.nuevo_archivo:
             return self.guardar_archivo_como(weditor)
-        nombre_archivo = weditor.iD
+        nombre_archivo = weditor.nombre
         codigo_fuente = weditor.texto
         manejador_de_archivo.escribir_archivo(nombre_archivo, codigo_fuente)
-        weditor.iD = nombre_archivo
+        weditor.nombre = nombre_archivo
         weditor.guardado()
 
     def guardar_archivo_como(self, weditor):
@@ -224,7 +224,7 @@ class EditorContainer(QWidget):
             return False
         nombre_archivo = manejador_de_archivo.escribir_archivo(nombre_archivo,
                 weditor.texto)
-        weditor.iD = nombre_archivo
+        weditor.nombre = nombre_archivo
         self.archivo_cambiado.emit(nombre_archivo)
         weditor.guardado()
 
@@ -234,7 +234,7 @@ class EditorContainer(QWidget):
 
     def guardar_seleccionado(self, archivo):
         for i in range(self.stack.contar):
-            if self.stack.editor(i).iD == archivo:
+            if self.stack.editor(i).nombre == archivo:
                 self.guardar_archivo(self.stack.editor(i))
 
     def archivos_sin_guardar(self):
@@ -327,7 +327,7 @@ class EditorContainer(QWidget):
         weditor = self.devolver_editor()
         if weditor is not None:
             self.guardar_archivo(weditor)
-            output.compilar(weditor.iD)
+            output.compilar(weditor.nombre)
 
     def ejecutar_programa(self):
         """ Ejecuta el programa objeto """

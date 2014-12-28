@@ -74,6 +74,7 @@ class Editor(Base):
 
     def __init__(self, nombre_archivo, ext='cpp'):
         super(Editor, self).__init__()
+        self.__nombre = ""
         self.texto_modificado = False
         self.nuevo_archivo = True
         self.guardado_actualmente = False
@@ -115,6 +116,14 @@ class Editor(Base):
                                 self._tema['brace-foreground'])
         self.unmatch_braces_color(self._tema['brace-unbackground'],
                                     self._tema['brace-unforeground'])
+
+    @property
+    def nombre(self):
+        return self.__nombre
+
+    @nombre.setter
+    def nombre(self, nuevo_nombre):
+        self.__nombre = nuevo_nombre
 
     def flags(self):
         """ Extras para el editor """
