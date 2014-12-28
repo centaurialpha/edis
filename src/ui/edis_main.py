@@ -177,6 +177,7 @@ class EDIS(QMainWindow):
         central.agregar_contenedor_editor(self.contenedor_editor)
         central.agregar_contenedor_output(self.contenedor_output)
 
+        #FIXME: Modularizar esto
         self.connect(self.contenedor_editor,
                     SIGNAL("archivo_cambiado(QString)"),
                     self.__actualizar_estado)

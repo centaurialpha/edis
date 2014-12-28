@@ -76,7 +76,7 @@ class Editor(Base):
         super(Editor, self).__init__()
         self.__nombre = ""
         self.texto_modificado = False
-        self.nuevo_archivo = True
+        self.es_nuevo = True
         self.guardado_actualmente = False
         self._palabra_seleccionada = ""
         self.flags()
@@ -124,6 +124,8 @@ class Editor(Base):
     @nombre.setter
     def nombre(self, nuevo_nombre):
         self.__nombre = nuevo_nombre
+        if nuevo_nombre:
+            self.es_nuevo = False
 
     def flags(self):
         """ Extras para el editor """
@@ -203,5 +205,5 @@ class Editor(Base):
 
     def guardado(self):
         self._guardado.emit(self)
-        self.nuevo_archivo = False
+        self.es_nuevo = False
         self.texto_modificado = False

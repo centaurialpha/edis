@@ -207,7 +207,7 @@ class EditorContainer(QWidget):
             if not weditor:
                 return False
 
-        if weditor.nuevo_archivo:
+        if weditor.es_nuevo:
             return self.guardar_archivo_como(weditor)
         nombre_archivo = weditor.nombre
         codigo_fuente = weditor.texto
