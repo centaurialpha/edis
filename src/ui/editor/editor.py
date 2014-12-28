@@ -145,15 +145,6 @@ class Editor(Base):
         else:
             self.setWrapMode(self.WrapNone)
 
-    #def set_id(self, id_):
-        #super(Editor, self).set_id(id_)
-        #self.minimapa.codigo(self.texto)
-
-    #def cargar_minimapa(self):
-
-        #if self.minimapa:
-            #self.minimapa.codigo(self.texto)
-
     @property
     def altura_lineas(self):
         linea, i = self.devolver_posicion_del_cursor()

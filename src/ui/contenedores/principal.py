@@ -70,8 +70,6 @@ class EditorContainer(QWidget):
     def instalar_signals(self):
         self.connect(self.stack, SIGNAL("Guardar_Editor_Actual()"),
                     self.guardar_archivo)
-        #self.connect(self.widget_actual.stack, SIGNAL("currentChanged(int)"),
-                    #self.cambiar_widget)
         self.connect(self.stack, SIGNAL("archivo_modificado(bool)"),
                     self._archivo_modificado)
         self.connect(self.stack, SIGNAL("archivo_cerrado(int)"),
@@ -79,6 +77,7 @@ class EditorContainer(QWidget):
 
     def _archivo_cerrado(self, indice):
         self.archivo_cerrado.emit(indice)
+        self.cambiar_widget(indice)
 
     def _archivo_modificado(self, valor):
         self.archivo_modificado.emit(valor)
@@ -105,6 +104,7 @@ class EditorContainer(QWidget):
         weditor.setFocus()
         if nombre != 'Nuevo_archivo':
             self.agregar_a_recientes(nombre)
+        self.archivo_cambiado.emit(weditor.nombre)
         return weditor
 
     def abrir_archivo(self, nombre=""):
