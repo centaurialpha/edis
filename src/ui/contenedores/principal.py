@@ -104,7 +104,7 @@ class EditorContainer(QWidget):
         weditor.setFocus()
         if nombre != 'Nuevo_archivo':
             self.agregar_a_recientes(nombre)
-        self.archivo_cambiado.emit(weditor.nombre)
+        self.archivo_cambiado.emit(nombre)
         return weditor
 
     def abrir_archivo(self, nombre=""):
