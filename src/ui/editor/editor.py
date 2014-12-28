@@ -74,8 +74,9 @@ class Editor(Base):
 
     def __init__(self, nombre_archivo, ext='cpp'):
         super(Editor, self).__init__()
+        self.__nombre = ""
         self.texto_modificado = False
-        self.nuevo_archivo = True
+        self.es_nuevo = True
         self.guardado_actualmente = False
         self._palabra_seleccionada = ""
         self.flags()
@@ -116,6 +117,16 @@ class Editor(Base):
         self.unmatch_braces_color(self._tema['brace-unbackground'],
                                     self._tema['brace-unforeground'])
 
+    @property
+    def nombre(self):
+        return self.__nombre
+
+    @nombre.setter
+    def nombre(self, nuevo_nombre):
+        self.__nombre = nuevo_nombre
+        if nuevo_nombre:
+            self.es_nuevo = False
+
     def flags(self):
         """ Extras para el editor """
 
@@ -133,15 +144,6 @@ class Editor(Base):
             self.setWrapMode(self.WrapWord)
         else:
             self.setWrapMode(self.WrapNone)
-
-    #def set_id(self, id_):
-        #super(Editor, self).set_id(id_)
-        #self.minimapa.codigo(self.texto)
-
-    #def cargar_minimapa(self):
-
-        #if self.minimapa:
-            #self.minimapa.codigo(self.texto)
 
     @property
     def altura_lineas(self):
@@ -194,5 +196,5 @@ class Editor(Base):
 
     def guardado(self):
         self._guardado.emit(self)
-        self.nuevo_archivo = False
+        self.es_nuevo = False
         self.texto_modificado = False

@@ -20,16 +20,14 @@ from PyQt4.Qsci import (
     )
 
 from src import recursos
-from src.ui import tabitem
 from src.helpers import configuraciones
 from src.ui.editor import lexer
 
 
-class Base(QsciScintilla, tabitem.TabItem):
+class Base(QsciScintilla):
 
     def __init__(self):
         QsciScintilla.__init__(self)
-        tabitem.TabItem.__init__(self)
         # Configuración de Qscintilla
         self.setCaretLineVisible(configuraciones.MARGEN)
         self.setIndentationsUseTabs(False)
