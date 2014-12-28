@@ -102,19 +102,12 @@ class EjecutarWidget(QWidget):
         formato = QTextCharFormat()
         formato.setAnchor(True)
         formato.setFontPointSize(11)
-        formato_tiempo = QTextCharFormat()
-        formato_tiempo.setForeground(QBrush(QColor("#007c00")))
-        formato_tiempo.setFontPointSize(9)
         self.output.textCursor().insertText('\n')
 
         if exitStatus == QProcess.NormalExit and codigoError == 0:
-            formato.setForeground(QBrush(QColor('#007c00')))
+            formato.setForeground(QBrush(QColor('#00a600')))
             self.output.textCursor().insertText(
                 self.trUtf8("¡COMPILACIÓN EXITOSA! "), formato)
-            self.output.textCursor().insertText(
-                self.tr("(tiempo total: %.4f segundos)") %
-                            self.tiempo, formato_tiempo)
-
         else:
             formato.setForeground(QBrush(QColor('red')))
             self.output.textCursor().insertText(
