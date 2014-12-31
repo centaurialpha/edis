@@ -347,7 +347,10 @@ class EditorContainer(QWidget):
     def imprimir_documento(self):
         weditor = self.devolver_editor()
         if weditor is not None:
-            nombre = weditor.nombre.replace('.c', '.pdf')
+            # Extensión
+            ext = weditor.nombre.split('.')[-1]
+            # Se reemplaza la extensión por 'pdf'
+            nombre = weditor.nombre.replace(ext, 'pdf')
             documento = QTextDocument(weditor.texto)
             printer = QsciPrinter()
             printer.setPageSize(QsciPrinter.A4)
