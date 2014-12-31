@@ -222,12 +222,14 @@ class Editor(Base):
             linea_desde, indice_desde, \
             linea_hasta, indice_hasta = self.getSelection()
 
-            # Iterar todas las líneas
+            # Iterar todas las líneas seleccionadas
+            self.SendScintilla(Base.SCI_BEGINUNDOACTION)
             for linea in range(linea_desde, linea_hasta + 1):
                 self.insertAt(Editor._comentario, linea, 0)
         else:
             linea = self.devolver_posicion_del_cursor()[0]
             self.insertAt(Editor._comentario, linea, 0)
+            self.SendScintilla(Base.SCI_ENDUNDOACTION)
 
     def descomentar(self):
         if self.hasSelectedText():
@@ -239,6 +241,9 @@ class Editor(Base):
                 if not self.text(linea).startswith(Editor._comentario):
                     continue
                 self.removeSelectedText()
+
+    def a_titulo(self):
+        pass
 
     def guardado(self):
         self.checker.run_cppcheck(self.nombre)
