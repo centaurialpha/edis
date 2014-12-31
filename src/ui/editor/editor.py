@@ -74,6 +74,8 @@ class Editor(Base):
     _guardado = pyqtSignal(['PyQt_PyObject'], name='archivo_guardado')
     _undo = pyqtSignal(['PyQt_PyObject'], name='accion_undo')
 
+    _comentario = "//"
+
     def __init__(self, nombre_archivo, ext='cpp'):
         super(Editor, self).__init__()
         self.__nombre = ""
@@ -220,13 +222,23 @@ class Editor(Base):
             linea_desde, indice_desde, \
             linea_hasta, indice_hasta = self.getSelection()
 
-            self.insertAt('/* ', linea_desde, 0)
-            for linea in range(linea_desde + 1, linea_hasta + 1):
-                self.insertAt(' * ', linea, 0)
-            self.insertAt(' */', linea_hasta + 1, 0)
+            # Iterar todas las líneas
+            for linea in range(linea_desde, linea_hasta + 1):
+                self.insertAt(Editor._comentario, linea, 0)
         else:
             linea = self.devolver_posicion_del_cursor()[0]
-            self.insertAt('//', linea, 0)
+            self.insertAt(Editor._comentario, linea, 0)
+
+    def descomentar(self):
+        if self.hasSelectedText():
+            linea_desde, indice_desde, \
+            linea_hasta, indice_hasta = self.getSelection()
+
+            for linea in range(linea_desde, linea_hasta + 1):
+                self.setSelection(linea, 0, linea, 2)
+                if not self.text(linea).startswith(Editor._comentario):
+                    continue
+                self.removeSelectedText()
 
     def guardado(self):
         self.checker.run_cppcheck(self.nombre)

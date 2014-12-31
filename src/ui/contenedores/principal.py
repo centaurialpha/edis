@@ -366,6 +366,11 @@ class EditorContainer(QWidget):
         if weditor is not None:
             weditor.comentar()
 
+    def descomentar_documento(self):
+        weditor = self.devolver_editor()
+        if weditor is not None:
+            weditor.descomentar()
+
     def proyecto_nuevo(self):
         dialogo = dialogo_proyecto.DialogoProyecto(self)
         dialogo.show()
