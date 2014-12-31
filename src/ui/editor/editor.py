@@ -215,6 +215,19 @@ class Editor(Base):
             QToolTip.showText(self.mapToGlobal(posicion), mensaje, self)
         super(Editor, self).mouseMoveEvent(e)
 
+    def comentar(self):
+        if self.hasSelectedText():
+            linea_desde, indice_desde, \
+            linea_hasta, indice_hasta = self.getSelection()
+
+            self.insertAt('/* ', linea_desde, 0)
+            for linea in range(linea_desde + 1, linea_hasta + 1):
+                self.insertAt(' * ', linea, 0)
+            self.insertAt(' */', linea_hasta + 1, 0)
+        else:
+            linea = self.devolver_posicion_del_cursor()[0]
+            self.insertAt('//', linea, 0)
+
     def guardado(self):
         self.checker.run_cppcheck(self.nombre)
         self._guardado.emit(self)

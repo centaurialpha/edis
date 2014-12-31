@@ -183,6 +183,10 @@ ACCIONES = (
         'icono': _ICONO['upper']},
     {
         'seccion': 1,
+        'nombre': 'Comentar',
+        'conexion': 'comentar_documento'},
+    {
+        'seccion': 1,
         'nombre': 'Convertir a título',
         'conexion': 'convertir_a_titulo',
         'atajo': _ATAJO['titulo'],
