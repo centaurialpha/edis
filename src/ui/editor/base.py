@@ -40,8 +40,14 @@ class Base(QsciScintilla):
         self.SendScintilla(QsciScintilla.SCI_SETCARETSTYLE,
                             QsciScintilla.CARETSTYLE_BLOCK)
         self.SendScintilla(QsciScintilla.SCI_SETHSCROLLBAR, 0)
-        # Indicador
+        # Indicadores
         self.indicador = self.indicatorDefine(QsciScintilla.INDIC_CONTAINER, 9)
+        self.indicador_error = self.indicatorDefine(QsciScintilla.INDIC_DOTS, 0)
+        self.indicador_warning = self.indicatorDefine(QsciScintilla.INDIC_DOTS,
+            1)
+        self.SendScintilla(QsciScintilla.SCI_INDICSETFORE, 0, QColor('red'))
+        self.SendScintilla(QsciScintilla.SCI_INDICSETFORE, 1, QColor('yellow'))
+
         #FIXME: enviar parámetros
         self.colorIndicador()
         self.alphaIndicador()

@@ -55,7 +55,7 @@ def correr_interfaz(app):
         estilo = tema.read()
     app.setStyleSheet(estilo)
     edis.show()
-    edis.comprobar_compilador()
+    edis.detectar_dependencias()
     sys.exit(app.exec_())
     #sys.exit(app.exec_())
     #DEBUG('Corriendo interfaz')

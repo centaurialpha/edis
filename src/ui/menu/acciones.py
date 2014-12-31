@@ -107,7 +107,7 @@ ACCIONES = (
     {
         'seccion': 0,
         'nombre': 'Imprimir',
-        'conexion': "imprimir_archivo",
+        'conexion': "imprimir_documento",
         'atajo': _ATAJO['imprimir']},
     {
         'seccion': 0,
