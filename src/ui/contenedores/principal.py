@@ -7,10 +7,14 @@
 
 import os
 
+from PyQt4.Qsci import QsciPrinter
+
 from PyQt4.QtGui import (
     QWidget,
     QVBoxLayout,
     QFileDialog,
+    QPrintPreviewDialog,
+    QTextDocument
     )
 
 from PyQt4.QtCore import (
@@ -339,6 +343,23 @@ class EditorContainer(QWidget):
     def terminar_programa(self):
         edis = EDIS.componente("edis")
         edis.contenedor_output.terminar_programa()
+
+    def imprimir_documento(self):
+        weditor = self.devolver_editor()
+        if weditor is not None:
+            # Extensión
+            ext = weditor.nombre.split('.')[-1]
+            # Se reemplaza la extensión por 'pdf'
+            nombre = weditor.nombre.replace(ext, 'pdf')
+            documento = QTextDocument(weditor.texto)
+            printer = QsciPrinter()
+            printer.setPageSize(QsciPrinter.A4)
+            printer.setOutputFileName(nombre)
+            printer.setDocName(nombre)
+
+            dialogo = QPrintPreviewDialog(printer)
+            dialogo.paintRequested.connect(documento.print_)
+            dialogo.exec_()
 
     def proyecto_nuevo(self):
         dialogo = dialogo_proyecto.DialogoProyecto(self)

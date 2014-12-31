@@ -30,10 +30,16 @@ from PyQt4.QtCore import (
 # Módulos EDIS
 from src import recursos
 from src import ui
-from src.helpers import configuraciones
+from src.helpers import (
+    configuraciones,
+    dependencias
+    )
 from src.ui.contenedores.lateral import lateral_container
 from src.ui.contenedores.output import contenedor_secundario
-from src.ui.dialogos import dialogo_guardar_archivos
+from src.ui.dialogos import (
+    dialogo_guardar_archivos,
+    dialogo_dependencias
+    )
 
 
 class EDIS(QMainWindow):
@@ -301,8 +307,15 @@ class EDIS(QMainWindow):
         dialogo = EDIS.componente("inicio")
         dialogo.show()
 
+    def detectar_dependencias(self):
+        #FIXME: Mejorar
+        ok, ejec = dependencias.detectar()
+        if not ok:
+            dialogo = dialogo_dependencias.DialogoDependencias(ejec, self)
+            dialogo.show()
+
     def comprobar_compilador(self):
-        #FIXME: hacer un módulo para esto
+        #TODO: Quitar esto
         proceso = Popen('gcc --help', stdout=PIPE, stderr=PIPE, shell=True)
         if proceso.wait() != 0:
             flags = QMessageBox.Yes
@@ -316,4 +329,5 @@ class EDIS(QMainWindow):
                 return False
 
     def _descargar_compilador(self):
+        #FIXME:
         webbrowser.open_new(ui.__gcc__)

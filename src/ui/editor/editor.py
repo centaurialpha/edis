@@ -10,6 +10,7 @@ import re
 from PyQt4.QtGui import (
     QFont,
     QColor,
+    QToolTip
     )
 
 from PyQt4.QtCore import (
@@ -22,6 +23,7 @@ from PyQt4.QtCore import (
 from src import recursos
 from src.ui.editor.base import Base
 from src.ui.editor.minimapa import MiniMapa
+from src.ui.editor import checker
 from src.helpers import (
     configuraciones,
     logger
@@ -78,22 +80,22 @@ class Editor(Base):
         self.texto_modificado = False
         self.es_nuevo = True
         self.guardado_actualmente = False
-        self._palabra_seleccionada = ""
+        # Flags
         self.flags()
         # Minimapa
-        #FIXME:
         self.minimapa = MiniMapa(self)
         self.connect(self, SIGNAL("selectionChanged()"),
                     self.minimapa.area)
         self.connect(self, SIGNAL("textChanged()"),
                     self.minimapa.actualizar_codigo)
-        #self.cargar_minimapa()
-
         # Thread ocurrencias
         self.hilo_ocurrencias = ThreadBusqueda()
         self.connect(self.hilo_ocurrencias,
                     SIGNAL("ocurrenciasThread(PyQt_PyObject)"),
                     self.marcar_palabras)
+        # Analizador de errores
+        self.checker = checker.Checker(self)
+        self.checker.errores.connect(self._marcar_errores)
         # Lexer
         self.set_lexer(ext)
         # Fuente
@@ -156,6 +158,7 @@ class Editor(Base):
         return self.getCursorPosition()
 
     def _margen_de_linea(self, margen=None):
+        #FIXME: Mejorar
         if configuraciones.MARGEN:
             self.setEdgeMode(Base.EdgeLine)
             self.setEdgeColumn(margen)
@@ -168,9 +171,19 @@ class Editor(Base):
         for p in palabras:
             self.fillIndicatorRange(p[0], p[1], p[0], p[2], self.indicador)
 
-    def busqueda(self, palabra, re=False, cs=False, wo=False, wrap=True,
-                forward=True):
-        pass
+    def _marcar_errores(self, errores):
+        self.borrarIndicadores(self.indicador_error)
+        self.borrarIndicadores(self.indicador_warning)
+        for error in list(errores.items()):
+            linea = error[0]
+            if error[1][0] == 'error':
+                self.fillIndicatorRange(linea, 0, linea,
+                                        self.lineLength(linea),
+                                        self.indicador_error)
+            if error[1][0] == 'style':
+                self.fillIndicatorRange(linea, 0, linea,
+                                        self.lineLength(linea),
+                                        self.indicador_warning)
 
     def _texto_bajo_el_cursor(self):
         """ Texto seleccionado con el cursor """
@@ -194,7 +207,16 @@ class Editor(Base):
         super(Editor, self).resizeEvent(e)
         self.minimapa.redimensionar()
 
+    def mouseMoveEvent(self, e):
+        posicion = e.pos()
+        linea = self.lineAt(posicion)
+        mensaje = self.checker.tooltip(linea)
+        if mensaje:
+            QToolTip.showText(self.mapToGlobal(posicion), mensaje, self)
+        super(Editor, self).mouseMoveEvent(e)
+
     def guardado(self):
+        self.checker.run_cppcheck(self.nombre)
         self._guardado.emit(self)
         self.es_nuevo = False
         self.texto_modificado = False
