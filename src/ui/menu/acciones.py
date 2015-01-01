@@ -228,13 +228,13 @@ ACCIONES = (
     {
         'seccion': 1,
         'nombre': 'Mover hacia arriba',
-        'conexion': 'mover_hacia_arriba',
+        'conexion': 'mover_linea_arriba',
         'atajo': _ATAJO['mover-arriba'],
         'icono': _ICONO['arrow-up']},
     {
         'seccion': 1,
         'nombre': 'Mover hacia abajo',
-        'conexion': 'mover_hacia_abajo',
+        'conexion': 'mover_linea_abajo',
         'atajo': _ATAJO['mover-abajo'],
         'icono': _ICONO['arrow-down'],
         'separador': True},

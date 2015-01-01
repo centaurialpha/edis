@@ -288,6 +288,12 @@ class Editor(Base):
         for linea in range(desde, hasta + 1):
             self.unindent(linea)
 
+    def mover_linea_abajo(self):
+        self.send("sci_moveselectedlinesdown")
+
+    def mover_linea_arriba(self):
+        self.send("sci_moveselectedlinesup")
+
     def guardado(self):
         self.checker.run_cppcheck(self.nombre)
         self._guardado.emit(self)

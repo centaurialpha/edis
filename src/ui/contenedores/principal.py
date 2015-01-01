@@ -396,6 +396,16 @@ class EditorContainer(QWidget):
         if weditor is not None:
             weditor.eliminar_linea()
 
+    def mover_linea_abajo(self):
+        weditor = self.devolver_editor()
+        if weditor is not None:
+            weditor.mover_linea_abajo()
+
+    def mover_linea_arriba(self):
+        weditor = self.devolver_editor()
+        if weditor is not None:
+            weditor.mover_linea_arriba()
+
     def proyecto_nuevo(self):
         dialogo = dialogo_proyecto.DialogoProyecto(self)
         dialogo.show()
