@@ -23,7 +23,6 @@ class DialogoLog(QDialog):
         box = QVBoxLayout(self)
         box.setContentsMargins(0, 0, 0, 0)
         self.visualizador = QPlainTextEdit()
-        print(dir(self.visualizador))
         self.visualizador.setReadOnly(True)
         box.addWidget(self.visualizador)
         self.leer_archivo(recursos.LOG)

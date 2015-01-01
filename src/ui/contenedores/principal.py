@@ -371,6 +371,21 @@ class EditorContainer(QWidget):
         if weditor is not None:
             weditor.descomentar()
 
+    def indentar(self):
+        weditor = self.devolver_editor()
+        if weditor is not None:
+            weditor.indentar()
+
+    def remover_indentacion(self):
+        weditor = self.devolver_editor()
+        if weditor is not None:
+            weditor.quitar_indentacion()
+
+    def convertir_a_titulo(self):
+        weditor = self.devolver_editor()
+        if weditor is not None:
+            weditor.a_titulo()
+
     def proyecto_nuevo(self):
         dialogo = dialogo_proyecto.DialogoProyecto(self)
         dialogo.show()

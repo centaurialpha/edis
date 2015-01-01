@@ -21,36 +21,38 @@ from PyQt4.Qsci import (
 
 from src import recursos
 from src.helpers import configuraciones
-from src.ui.editor import lexer
 
 
 class Base(QsciScintilla):
+
+    """ Esta clase reimplementa métodos de QsciScintilla y configura atributos.
+
+    La clase Editor está basada en ésta clase.
+
+    """
 
     def __init__(self):
         QsciScintilla.__init__(self)
         # Configuración de Qscintilla
         self.setCaretLineVisible(configuraciones.MARGEN)
         self.setIndentationsUseTabs(False)
-        #FIXME: indentación, guías
         self.setAutoIndent(True)
         self.setBackspaceUnindents(True)
-        self.__indentacion = configuraciones.INDENTACION_ANCHO
-        self.setIndentationWidth(self.__indentacion)
-
-        self.SendScintilla(QsciScintilla.SCI_SETCARETSTYLE,
-                            QsciScintilla.CARETSTYLE_BLOCK)
-        self.SendScintilla(QsciScintilla.SCI_SETHSCROLLBAR, 0)
+        # Cursor
+        self.send("sci_setcaretstyle", "caretstyle_block")
+        # Scrollbar
+        self.send("sci_sethscrollbar", 0)
         # Indicadores
-        self.indicador = self.indicatorDefine(QsciScintilla.INDIC_CONTAINER, 9)
-        self.indicador_error = self.indicatorDefine(QsciScintilla.INDIC_DOTS, 0)
-        self.indicador_warning = self.indicatorDefine(QsciScintilla.INDIC_DOTS,
-            1)
-        self.SendScintilla(QsciScintilla.SCI_INDICSETFORE, 0, QColor('red'))
-        self.SendScintilla(QsciScintilla.SCI_INDICSETFORE, 1, QColor('yellow'))
-
-        #FIXME: enviar parámetros
-        self.colorIndicador()
-        self.alphaIndicador()
+        self.indicador = 0
+        self.indicador_warning = 1
+        self.indicador_error = 2
+        self.send("sci_indicsetstyle", self.indicador, "indic_container")
+        self.send("sci_indicsetalpha", self.indicador, 100)
+        self.send("sci_indicsetfore", self.indicador, 0x0000ff)
+        self.send("sci_indicsetstyle", self.indicador_warning, "indic_dots")
+        self.send("sci_indicsetfore", self.indicador_warning, QColor('yellow'))
+        self.send("sci_indicsetstyle", self.indicador_error, "indic_dots")
+        self.send("sci_indicsetfore", self.indicador_error, 0x0000ff)
 
         # Folding
         self.setFolding(QsciScintilla.BoxedTreeFoldStyle)
@@ -58,10 +60,6 @@ class Base(QsciScintilla):
                             recursos.TEMA['foldBack'])
 
         self.__fuente = None
-        self.cargar_signals()
-
-    def cargar_signals(self):
-        """ Carga señales del editor """
 
         self.linesChanged.connect(self.actualizar_sidebar)
 
@@ -90,28 +88,28 @@ class Base(QsciScintilla):
         return self.isModified()
 
     def zoom_in(self):
-        self.zoomIn()
+        self.send("zoomin")
 
     def zoom_out(self):
-        self.zoomOut()
+        self.send("zoomout")
 
     def deshacer(self):
-        self.undo()
+        self.send("undo")
 
     def rehacer(self):
-        self.redo()
+        self.send("redo")
 
     def cortar(self):
-        self.cut()
+        self.send("cut")
 
     def copiar(self):
-        self.copy()
+        self.send("copy")
 
     def pegar(self):
-        self.paste()
+        self.send("paste")
 
     def seleccionar(self):
-        self.selectAll()
+        self.send("selectall")
 
     def cargar_fuente(self, fuente):
         self.__fuente = fuente
@@ -147,21 +145,24 @@ class Base(QsciScintilla):
         self.setCaretForegroundColor(QColor(fore))
         self.setCaretLineBackgroundColor(QColor(color))
 
-    def set_lexer(self, ext):
-        if ext == 'cpp':
-            self.__lexer = lexer.LexerC(self)
-            self.setLexer(self.__lexer)
-            self.__lexer.setFoldCompact(False)
+    def send(self, *args):
+        """
+        Éste método es una reimplementación de SendScintilla.
 
-    def colorIndicador(self):
-        self.SendScintilla(QsciScintilla.SCI_INDICSETFORE,
-                            self.indicador, 0x0000ff)
+        Argumento *args:
+        args es una tupla, cada elemento es un argumento que será enviado
+        como mensaje a QsciSintilla.
 
-    def alphaIndicador(self):
-        self.SendScintilla(QsciScintilla.SCI_INDICSETALPHA,
-                            self.indicador, 100)
+        """
+
+        return self.SendScintilla(*[
+            getattr(self, arg.upper()) if isinstance(arg, str)
+            else arg
+            for arg in args])
 
     def borrarIndicadores(self, indicador):
+        """ Elimina todos los indicadores @indicador """
+
         self.clearIndicatorRange(0, 0, self.lineas, 0, indicador)
 
     def colorFoldMargen(self, fore, fondo):

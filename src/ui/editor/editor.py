@@ -23,7 +23,10 @@ from PyQt4.QtCore import (
 from src import recursos
 from src.ui.editor.base import Base
 from src.ui.editor.minimapa import MiniMapa
-from src.ui.editor import checker
+from src.ui.editor import (
+    checker,
+    lexer
+    )
 from src.helpers import (
     configuraciones,
     logger
@@ -34,7 +37,8 @@ log = logger.edisLogger('editor')
 
 
 def crear_editor(nombre_archivo):
-    editor = Editor(nombre_archivo)
+    extension = nombre_archivo.split('.')[-1]
+    editor = Editor(nombre_archivo, extension)
     log.debug('Se creó un nuevo editor: %s', nombre_archivo)
     return editor
 
@@ -76,7 +80,7 @@ class Editor(Base):
 
     _comentario = "//"
 
-    def __init__(self, nombre_archivo, ext='cpp'):
+    def __init__(self, nombre_archivo, ext=''):
         super(Editor, self).__init__()
         self.__nombre = ""
         self.texto_modificado = False
@@ -84,6 +88,12 @@ class Editor(Base):
         self.guardado_actualmente = False
         # Flags
         self.flags()
+        # Lexer
+        self._lexer = None
+        self.cargar_lexer(ext)
+        # Indentación
+        self._indentacion = configuraciones.INDENTACION_ANCHO
+        self.send("sci_settabwidth", self._indentacion)
         # Minimapa
         self.minimapa = MiniMapa(self)
         self.connect(self, SIGNAL("selectionChanged()"),
@@ -98,8 +108,6 @@ class Editor(Base):
         # Analizador de errores
         self.checker = checker.Checker(self)
         self.checker.errores.connect(self._marcar_errores)
-        # Lexer
-        self.set_lexer(ext)
         # Fuente
         self.cargar_fuente(QFont(configuraciones.FUENTE,
                             configuraciones.TAM_FUENTE))
@@ -109,7 +117,6 @@ class Editor(Base):
         # Línea actual, cursor
         self.caret_line(self._tema['caret-background'],
                         self._tema['caret-line'], self._tema['caret-opacidad'])
-
         # Márgen
         if configuraciones.MARGEN:
             self._margen_de_linea(configuraciones.MARGEN_COLUMNA)
@@ -121,12 +128,20 @@ class Editor(Base):
         self.unmatch_braces_color(self._tema['brace-unbackground'],
                                     self._tema['brace-unforeground'])
 
+    def cargar_lexer(self, extension):
+        if extension in ['c', 'cpp']:
+            self._lexer = lexer.LexerC(self)
+            self._lexer.setFoldCompact(False)
+            self.setLexer(self._lexer)
+        else:
+            log.warning("Lexer no compatible con archivos %s" % extension)
+
     @property
     def nombre(self):
         return self.__nombre
 
     @nombre.setter
-    def nombre(self, nuevo_nombre):
+    def nombre(self, nuevo_nombre):  # lint:ok
         self.__nombre = nuevo_nombre
         if nuevo_nombre:
             self.es_nuevo = False
@@ -160,7 +175,6 @@ class Editor(Base):
         return self.getCursorPosition()
 
     def _margen_de_linea(self, margen=None):
-        #FIXME: Mejorar
         if configuraciones.MARGEN:
             self.setEdgeMode(Base.EdgeLine)
             self.setEdgeColumn(margen)
@@ -223,13 +237,13 @@ class Editor(Base):
             linea_hasta, indice_hasta = self.getSelection()
 
             # Iterar todas las líneas seleccionadas
-            self.SendScintilla(Base.SCI_BEGINUNDOACTION)
+            self.send("beginundoaction")
             for linea in range(linea_desde, linea_hasta + 1):
                 self.insertAt(Editor._comentario, linea, 0)
         else:
             linea = self.devolver_posicion_del_cursor()[0]
             self.insertAt(Editor._comentario, linea, 0)
-            self.SendScintilla(Base.SCI_ENDUNDOACTION)
+            self.send("endundoaction")
 
     def descomentar(self):
         if self.hasSelectedText():
@@ -243,7 +257,21 @@ class Editor(Base):
                 self.removeSelectedText()
 
     def a_titulo(self):
-        pass
+        self.send("sci_beginundoaction")
+        if self.hasSelectedText():
+            texto = self.selectedText().title()
+        self.replaceSelectedText(texto)
+        self.send("sci_endundoaction")
+
+    def indentar(self):
+        desde, _, hasta, _ = self.getSelection()
+        for linea in range(desde, hasta + 1):
+            self.indent(linea)
+
+    def quitar_indentacion(self):
+        desde, _, hasta, _ = self.getSelection()
+        for linea in range(desde, hasta + 1):
+            self.unindent(linea)
 
     def guardado(self):
         self.checker.run_cppcheck(self.nombre)
