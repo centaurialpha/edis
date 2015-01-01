@@ -386,6 +386,16 @@ class EditorContainer(QWidget):
         if weditor is not None:
             weditor.a_titulo()
 
+    def duplicar_linea(self):
+        weditor = self.devolver_editor()
+        if weditor is not None:
+            weditor.duplicar_linea()
+
+    def eliminar_linea(self):
+        weditor = self.devolver_editor()
+        if weditor is not None:
+            weditor.eliminar_linea()
+
     def proyecto_nuevo(self):
         dialogo = dialogo_proyecto.DialogoProyecto(self)
         dialogo.show()

@@ -263,6 +263,21 @@ class Editor(Base):
         self.replaceSelectedText(texto)
         self.send("sci_endundoaction")
 
+    def duplicar_linea(self):
+        self.send("sci_lineduplicate")
+
+    def eliminar_linea(self):
+        if self.hasSelectedText():
+            self.send("sci_beginundoaction")
+            desde, desde_indice, hasta, _ = self.getSelection()
+            self.setCursorPosition(desde, desde_indice)
+            while desde != hasta:
+                self.send("sci_linedelete")
+                desde += 1
+            self.send("sci_endundoaction")
+        else:
+            self.send("sci_linedelete")
+
     def indentar(self):
         desde, _, hasta, _ = self.getSelection()
         for linea in range(desde, hasta + 1):
