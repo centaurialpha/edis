@@ -34,7 +34,7 @@ from src.ui.editor import (
     stack
     )
 from src.ui.edis_main import EDIS
-from src.ui.widgets import busqueda
+from src.ui.widgets import popup_busqueda
 from src.ui.contenedores import selector
 from src.ui.dialogos import (
     dialogo_propiedades,
@@ -249,7 +249,7 @@ class EditorContainer(QWidget):
 
     def busqueda_rapida(self):
         #FIXME:
-        dialogo = busqueda.PopupBusqueda(self.devolver_editor())
+        dialogo = popup_busqueda.PopupBusqueda(self.devolver_editor())
         dialogo.show()
 
     def deshacer(self):
