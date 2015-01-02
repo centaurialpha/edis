@@ -37,7 +37,10 @@ log = logger.edisLogger('editor')
 
 
 def crear_editor(nombre_archivo):
-    extension = nombre_archivo.split('.')[-1]
+    if nombre_archivo.find('.') != -1:
+        extension = nombre_archivo.split('.')[-1]
+    else:
+        extension = 'c'  # Extensión reconocida por el Lexer
     editor = Editor(nombre_archivo, extension)
     log.debug('Se creó un nuevo editor: %s', nombre_archivo)
     return editor
