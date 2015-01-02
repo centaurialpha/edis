@@ -55,7 +55,12 @@ class PopupBusqueda(QDialog):
         self.editor.setFocus()
 
     def buscar(self, weditor):
-        pass
+        #FIXME: Completar
+        palabra = self.line.text()
+        codigo = weditor.texto
+        self.total = codigo.count(palabra)
+        weditor.buscar(palabra)
+        self.line.contador.actualizar(self.indice, self.total)
 
     def showEvent(self, e):
         super(PopupBusqueda, self).showEvent(e)
@@ -99,7 +104,8 @@ class QLine(QLineEdit):
 class Contador(QObject):
 
     def __init__(self, qline):
-        super(Contador, self).__init__()
+        QObject.__init__(self)
+        self.indice_total = "%s/%s"
         self.qline = qline
         box = QHBoxLayout(qline)
         box.setMargin(0)
@@ -107,7 +113,7 @@ class Contador(QObject):
         box.addStretch()
         self.contador = QLabel(qline)
         box.addWidget(self.contador)
+        self.contador.setText(self.indice_total % (0, 0))
 
     def actualizar(self, indice, total, buscada=False):
-        texto = self.tr("{0}/{0}").format(indice).format(total)
-        self.contador.setText(texto)
+        self.contador.setText(self.indice_total % (indice, total))

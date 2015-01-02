@@ -204,6 +204,20 @@ class Editor(Base):
                                         self.lineLength(linea),
                                         self.indicador_warning)
 
+    def buscar(self, palabra, re=False, cs=False, wo=False, wrap=False):
+        """ Buscar la primera aparición de @palabra,
+        si se encuentra se selecciona.
+
+        @palabra: palabra buscada.
+        @re: expresión regular en lugar de una cadena simple.
+        @cs: case sensitive
+        @wo: busca toda la palabra, si es falso cualquier texto coincidente
+        @wrap: envoltura
+        """
+
+        #FIXME: Completar
+        self.findFirst(palabra, re, cs, wo, wrap, True, 0, 0, True)
+
     def _texto_bajo_el_cursor(self):
         """ Texto seleccionado con el cursor """
 
