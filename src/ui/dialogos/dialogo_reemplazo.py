@@ -16,6 +16,8 @@ from PyQt4.QtGui import (
     QPushButton
     )
 
+from src.ui.edis_main import IDE
+
 
 class DialogoReemplazo(QDialog):
 
@@ -48,3 +50,10 @@ class DialogoReemplazo(QDialog):
 
         box.addLayout(grilla)
         box.addLayout(box_botones)
+
+    def _reemplazar(self):
+        pass
+
+    @property
+    def palabra_buscada(self):
+        return self.linea_busqueda.text()
