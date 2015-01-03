@@ -223,6 +223,20 @@ class Editor(Base):
             linea, indice = -1, -1
         self.findFirst(palabra, re, cs, wo, wrap, forward, linea, indice)
 
+    def reemplazar(self, reemplazar, reemplazo, todo=False):
+        """ Reemplaza una o varias ocurrencias de @reemplazar por @reemplazo """
+
+        #FIXME: posición del cursor
+        self.send("sci_beginundoaction")
+        if self.hasSelectedText():
+            self.replaceSelectedText(reemplazo)
+        while todo:
+            ok = self.findNext()
+            if not ok:
+                break
+            self.replace(reemplazo)
+        self.send("sci_endundoaction")
+
     def _texto_bajo_el_cursor(self):
         """ Texto seleccionado con el cursor """
 

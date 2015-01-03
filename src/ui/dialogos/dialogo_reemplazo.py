@@ -16,7 +16,7 @@ from PyQt4.QtGui import (
     QPushButton
     )
 
-from src.ui.edis_main import IDE
+from src.ui.edis_main import EDIS
 
 
 class DialogoReemplazo(QDialog):
@@ -35,8 +35,10 @@ class DialogoReemplazo(QDialog):
         self.linea_reemplazo = QLineEdit()
         grilla.addWidget(self.linea_reemplazo, 1, 1)
         self.check_cs = QCheckBox(self.tr("Respetar Case Sensitive"))
+        self.check_cs.setChecked(True)
         grilla.addWidget(self.check_cs, 2, 0)
         self.check_wo = QCheckBox(self.tr("Buscar palabra completa"))
+        self.check_wo.setChecked(True)
         grilla.addWidget(self.check_wo, 2, 1)
 
         box_botones = QHBoxLayout()
@@ -51,9 +53,39 @@ class DialogoReemplazo(QDialog):
         box.addLayout(grilla)
         box.addLayout(box_botones)
 
+        btn_reemplazar.clicked.connect(self._reemplazar)
+        btn_buscar.clicked.connect(self._buscar)
+        btn_reemplazar_todo.clicked.connect(self._reemplazar_todo)
+
     def _reemplazar(self):
-        pass
+        principal = EDIS.componente("principal")
+        weditor = principal.devolver_editor()
+        weditor.reemplazar(self.palabra_buscada, self.palabra_reemplazo)
+        weditor.buscar(self.palabra_buscada, cs=self.cs, wo=self.wo)
+
+    def _reemplazar_todo(self):
+        principal = EDIS.componente("principal")
+        weditor = principal.devolver_editor()
+        weditor.buscar(self.palabra_buscada, cs=self.cs, wo=self.wo)
+        weditor.reemplazar(self.palabra_buscada, self.palabra_reemplazo, True)
+
+    def _buscar(self):
+        principal = EDIS.componente("principal")
+        weditor = principal.devolver_editor()
+        weditor.buscar(self.palabra_buscada)
+
+    @property
+    def cs(self):
+        return self.check_cs.isChecked()
+
+    @property
+    def wo(self):
+        return self.check_wo.isChecked()
 
     @property
     def palabra_buscada(self):
         return self.linea_busqueda.text()
+
+    @property
+    def palabra_reemplazo(self):
+        return self.linea_reemplazo.text()
