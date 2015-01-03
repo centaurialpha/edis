@@ -39,7 +39,8 @@ from src.ui.contenedores import selector
 from src.ui.dialogos import (
     dialogo_propiedades,
     dialogo_log,
-    dialogo_proyecto
+    dialogo_proyecto,
+    dialogo_reemplazo
     )
 
 # Logger
@@ -247,9 +248,13 @@ class EditorContainer(QWidget):
     def check_archivos_sin_guardar(self):
         return self.stack.check_archivos_sin_guardar()
 
-    def busqueda_rapida(self):
+    def busqueda(self):
         #FIXME:
         dialogo = popup_busqueda.PopupBusqueda(self.devolver_editor())
+        dialogo.show()
+
+    def reemplazar(self):
+        dialogo = dialogo_reemplazo.DialogoReemplazo(self)
         dialogo.show()
 
     def deshacer(self):

@@ -296,13 +296,13 @@ ACCIONES = (
         'atajo': _ATAJO['alejar']},
     {
         'seccion': 3,
-        'nombre': 'Búsqueda rápida',
-        'conexion': 'busqueda_rapida',
+        'nombre': 'Buscar',
+        'conexion': 'busqueda',
         'atajo': _ATAJO['busqueda-rapida']},
     {
         'seccion': 3,
-        'nombre': 'Buscar',
-        'conexion': 'buscar',
+        'nombre': 'Reemplazar',
+        'conexion': 'reemplazar',
         'atajo': _ATAJO['buscar']},
     {
         'seccion': 5,

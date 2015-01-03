@@ -178,7 +178,7 @@ QLabel#status_label {
 QPushButton {
     background: #bbbbbb;
     border-radius: 3px;
-    min-width: 100px;
+    min-width: 120px;
     min-height: 30px;
 }
 
