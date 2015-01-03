@@ -70,19 +70,29 @@ class PopupBusqueda(QDialog):
         # Conexiones
         btn_cerrar.clicked.connect(self.close)
         self.linea.returnPressed.connect(self.buscar)
+        btn_siguiente.clicked.connect(self.buscar_siguiente)
+        btn_anterior.clicked.connect(self.buscar_anterior)
 
     @property
     def texto(self):
         return self.linea.text()
 
-    def buscar(self, weditor=None):
-        #FIXME: Completar
-        if weditor is None:
-            weditor = self.editor
-        palabra = self.texto
-        codigo = weditor.texto
-        self.total = codigo.count(palabra)
-        weditor.buscar(palabra)
+    def buscar(self, forward=True, wrap=False):
+        weditor = self.editor
+        palabra = self.texto  # Palabra buscada
+        codigo = weditor.texto  # Código fuente
+        cs = self.check_cs.isChecked()
+        wo = self.check_wo.isChecked()
+        self.total = codigo.count(palabra)  # Ocurrencias en el código
+        weditor.buscar(palabra, cs=cs, wo=wo, wrap=wrap, forward=forward)
+        self.linea.contador.actualizar(self.total)
+
+    def buscar_siguiente(self):
+        self.buscar(wrap=True)
+        self.linea.contador.actualizar(self.total)
+
+    def buscar_anterior(self):
+        self.buscar(forward=False, wrap=False)
         self.linea.contador.actualizar(self.total)
 
     def showEvent(self, e):
@@ -113,12 +123,11 @@ class Linea(QLineEdit):
             super(Linea, self).keyPressEvent(e)
             return
         if weditor and e.key() in (Qt.Key_Enter, Qt.Key_Return):
-            #FIXME: Buscar siguiente
-            pass
+            self.popup.buscar_siguiente()
         super(Linea, self).keyPressEvent(e)
         # Iterar en todas las teclas
         if int(e.key()) in range(32, 162) or e.key() == Qt.Key_Backspace:
-            self.popup.buscar(weditor)
+            self.popup.buscar()
 
 
 class Contador(QObject):
@@ -136,7 +145,8 @@ class Contador(QObject):
         self._contador.setText(self._total % 0)
 
     def actualizar(self, total):
-        self._contador.setText(self._total % total)
+        texto = "%s" % total
+        self._contador.setText(texto)
         if total == 0:
             self._linea.setStyleSheet(
                 "background-color: #e73e3e; border-radius: 3px;")
