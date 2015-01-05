@@ -9,13 +9,19 @@ import os
 import sys
 from distutils.core import setup
 
-PYQT = ('PyQt4', 'http://riverbankcomputing.co.uk/software/pyqt/intro')
-try:
-    __import__(PYQT[0])
-except ImportError:
-    print("El módulo %s no está instalado.\n%s para más info." %
-            (PYQT[0], PYQT[1]))
-    sys.exit(1)
+MODULOS = [
+    ('PyQt4', 'http://riverbankcomputing.co.uk/software/pyqt/intro'),
+    ('PyQt4.Qsci', 'http://riverbankcomputing.co.uk/software/qscintilla/intro')
+    ]
+
+for nombre_modulo, link in MODULOS:
+    try:
+        desde = 'PyQt4' if nombre_modulo == 'PyQt4.Qsci' else ''
+        __import__(nombre_modulo, fromlist=desde)
+    except ImportError:
+        print("El módulo %s no está instalado.\n%s para más info." %
+                (nombre_modulo, link))
+        sys.exit(1)
 
 from src import ui
 
