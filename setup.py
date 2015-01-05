@@ -5,10 +5,17 @@
 # Copyright 2014-2015 - Gabriel Acosta
 # License: GPLv3 (see http://www.gnu.org/licenses/gpl.html)
 
-#FIXME: Dependencias
-
 import os
+import sys
 from distutils.core import setup
+
+PYQT = ('PyQt4', 'http://riverbankcomputing.co.uk/software/pyqt/intro')
+try:
+    __import__(PYQT[0])
+except ImportError:
+    print("El módulo %s no está instalado.\n%s para más info." %
+            (PYQT[0], PYQT[1]))
+    sys.exit(1)
 
 from src import ui
 
