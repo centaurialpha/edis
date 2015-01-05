@@ -37,6 +37,12 @@ Estas dependencias son necesarias para ejecutar Edis desde el código fuente.
 * `PyQt4 <http://www.riverbankcomputing.co.uk/software/pyqt/intro>`_ >= 4.8
 * `QScintilla2 <http://www.riverbankcomputing.com/software/qscintilla/intro>`_
 
+Install
+-------
+::
+
+   python setup.py install
+
 Run Edis
 --------
 ::
