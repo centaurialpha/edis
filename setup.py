@@ -16,7 +16,9 @@ def _paquetes():
     for e in os.listdir(os.getcwd()):
         if os.path.isdir(e) and not e.startswith('.'):
             for f in os.walk(e):
-                paquetes.append(f[0])
+                if f[0].split('/')[-1].startswith('__pycache__'):
+                    sin_pycache = '/'.join(f[0].split('/')[:-1])
+                    paquetes.append(sin_pycache)
     return paquetes
 
 setup(
