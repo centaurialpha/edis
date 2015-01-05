@@ -22,6 +22,9 @@ log = logger.edisLogger('checker')
 
 class Checker(QThread):
 
+    # Mensajes
+    indice_invalido = "Array '%s' accessed at index %d, which is out of bounds."
+
     # Señales
     errores = pyqtSignal(dict)
 
@@ -41,13 +44,21 @@ class Checker(QThread):
 
     def _parsear(self, salida):
         for l in salida.splitlines():
-            l = str(l).split(',')
+            l = str(l).split(';')
             linea = int(l[0].split('"')[-1]) - 1
             tipo = l[1]
-            mensaje = l[2].replace('\\', '')
+            m = self._parsear_mensaje(l[2])
+            mensaje = l[2].replace('\\', '').split('.')[0]
             if not linea in self._errores:
-                self._errores[linea] = (tipo, mensaje)
+                self._errores[linea] = (tipo, m)
         self.errores.emit(self._errores)
+
+    def _parsear_mensaje(self, m):
+        # Limpieza
+        mensaje = m.replace('\\', '').split('.')[0]
+        variable = mensaje.split('\'')[1]
+        nuevo_mensaje = "Array: %s, se intenta acceder a una posición inválida." % variable
+        return nuevo_mensaje
 
     def _restart(self):
         self._errores.clear()
@@ -64,7 +75,7 @@ class Checker(QThread):
         self._archivo = archivo
         self._cppcheck = ['cppcheck']
         self._parametros = ['--enable=warning,unusedFunction,style,portability,'
-                            'performance', '--template="{line},{severity},'
+                            'performance', '--template="{line};{severity};'
                             '{message}"', '--language=c']
         self._restart()
         self.start()
