@@ -5,6 +5,8 @@
 # Copyright 2014-2015 - Gabriel Acosta
 # License: GPLv3 (see http://www.gnu.org/licenses/gpl.html)
 
+#FIXME: Dependencias
+
 import os
 from distutils.core import setup
 
