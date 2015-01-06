@@ -79,7 +79,7 @@ setup(
     author_email=ui.__email_autor__,
     url=ui.__codigo_fuente__,
     package_data={
-        'src': ['ui/images/*']
+        'src': ['images/*', 'extras/temas/*']
         },
     packages=paquetes,
     scripts=['edis'],
