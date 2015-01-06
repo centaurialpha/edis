@@ -21,6 +21,7 @@ Awesome features
 * **Code folding**
 * **Minimap**
 * **Highlighting words**
+* **Errors checker**
 * **File selector**
 * **Tree symbols**
 
@@ -47,7 +48,7 @@ Install
 -------
 ::
 
-   python setup.py install
+   sudo python setup.py install
 
 Run Edis
 --------
