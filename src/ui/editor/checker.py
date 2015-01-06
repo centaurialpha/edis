@@ -19,11 +19,10 @@ from src.helpers import logger
 
 log = logger.edisLogger('checker')
 
+#TODO: Cambiar mensajes a español
+
 
 class Checker(QThread):
-
-    # Mensajes
-    indice_invalido = "Array '%s' accessed at index %d, which is out of bounds."
 
     # Señales
     errores = pyqtSignal(dict)
@@ -47,18 +46,10 @@ class Checker(QThread):
             l = str(l).split(';')
             linea = int(l[0].split('"')[-1]) - 1
             tipo = l[1]
-            m = self._parsear_mensaje(l[2])
             mensaje = l[2].replace('\\', '').split('.')[0]
             if not linea in self._errores:
-                self._errores[linea] = (tipo, m)
+                self._errores[linea] = (tipo, mensaje)
         self.errores.emit(self._errores)
-
-    def _parsear_mensaje(self, m):
-        # Limpieza
-        mensaje = m.replace('\\', '').split('.')[0]
-        variable = mensaje.split('\'')[1]
-        nuevo_mensaje = "Array: %s, se intenta acceder a una posición inválida." % variable
-        return nuevo_mensaje
 
     def _restart(self):
         self._errores.clear()
