@@ -56,4 +56,4 @@ Run Edis
 
      git clone https://github.com/centaurialpha/edis.git
      cd edis
-     ./edis.py
+     ./edis
