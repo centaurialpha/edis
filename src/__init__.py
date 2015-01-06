@@ -5,17 +5,17 @@
 # Copyright 2014-2015 - Gabriel Acosta
 # License: GPLv3 (see http://www.gnu.org/licenses/gpl.html)
 
-import os
-import sys
-from PyQt4.QtGui import QApplication
+#import os
+#import sys
+#from PyQt4.QtGui import QApplication
 
-from . import recursos
+#from . import recursos
 
 
-def edis():
-    if not os.path.isdir(recursos.HOME_EDIS):
-        os.mkdir(recursos.HOME_EDIS)
+#def edis():
+    #if not os.path.isdir(recursos.HOME_EDIS):
+        #os.mkdir(recursos.HOME_EDIS)
 
-    app = QApplication(sys.argv)
-    from . import run
-    run.correr_interfaz(app)
+    #app = QApplication(sys.argv)
+    #from . import run
+    #run.correr_interfaz(app)

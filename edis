@@ -6,8 +6,17 @@
 # Copyright 2014-2015 - Gabriel Acosta
 # License: GPLv3 (see http://www.gnu.org/licenses/gpl.html)
 
-import src
+import sys
+import os
+
+from src import recursos
 
 
 if __name__ == "__main__":
-    src.edis()
+    if not os.path.isdir(recursos.HOME_EDIS):
+        os.mkdir(recursos.HOME_EDIS)
+
+    from PyQt4.QtGui import QApplication
+    app = QApplication(sys.argv)
+    from src import run
+    run.correr_interfaz(app)

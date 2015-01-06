@@ -11,6 +11,8 @@ para los lenguajes de programación C/C++ desarrollado completamente en Python.
 <br>
 """
 __nombre__ = "EDIS"
+__autor__ = "Gabriel Acosta"
+__email_autor__ = "acostadariogabriel@gmail.com"
 __codigo_fuente__ = "http://github.com/centaurialpha/edis"
 __version__ = "1.0-alpha"
 __python__ = "https://www.python.org/"
