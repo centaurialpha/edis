@@ -15,7 +15,6 @@ DIR_INSTALACION = "@ INSTALLED_BASE_DIR @"
 # Se obtiene el nombre reemplazado si existe
 if os.path.exists(DIR_INSTALACION):
     proyecto = DIR_INSTALACION
-    sys._INSTALLED_BASE_DIR = DIR_INSTALACION
 else:
     proyecto = os.path.abspath(os.path.dirname(os.path.dirname(
                                             os.path.realpath(sys.argv[0]))))

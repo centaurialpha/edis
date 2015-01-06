@@ -46,15 +46,15 @@ class LateralContainer(QWidget):
         super(LateralContainer, self).__init__()
         self.thread_symbols = ThreadSimbolos()
         self.symbols_widget = None
-        if configuraciones.SYMBOLS:
+        if configuraciones.SIMBOLOS:
             self.symbols_widget = arbol_simbolos.ArbolDeSimbolos()
 
         self.file_explorer = None
-        if configuraciones.FILE_EXPLORER:
+        if configuraciones.EXPLORADOR:
             self.file_explorer = file_explorer.Explorador()
 
         self.file_navigator = None
-        if configuraciones.FILE_NAVIGATOR:
+        if configuraciones.NAVEGADOR:
             self.file_navigator = file_navigator.Navegador()
 
         self.lateral_widgets = OrderedDict([

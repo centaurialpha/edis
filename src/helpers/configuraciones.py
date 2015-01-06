@@ -41,9 +41,9 @@ MOSTRAR_TABS = False
 MODO_ENVOLVER = False
 
 # Lateral widgets
-SYMBOLS = True
-FILE_EXPLORER = True
-FILE_NAVIGATOR = True
+SIMBOLOS = True
+NAVEGADOR = True
+EXPLORADOR = True
 
 #FIXME: arreglar esto
 ITEMS_TOOLBAR = [
@@ -85,6 +85,7 @@ def cargar_configuraciones():
     global MODO_ENVOLVER
     global RECIENTES
     global INICIO
+    global SIMBOLOS
 
     MARGEN = qsettings.value('editor/margen', True, type=bool)
     MARGEN_COLUMNA = qsettings.value('editor/margen_ancho', 80, type=int)
@@ -101,3 +102,4 @@ def cargar_configuraciones():
     MODO_ENVOLVER = qsettings.value('editor/envolver', False, type=bool)
     INICIO = qsettings.value('general/inicio', True, type=bool)
     RECIENTES = qsettings.value('editor/recientes', [])
+    SIMBOLOS = qsettings.value('gui/simbolos', True, type=bool)
