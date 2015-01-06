@@ -37,7 +37,7 @@ from src.ui.dialogos.preferencias import (
 class Preferencias(QDialog):
 
     def __init__(self, parent=None):
-        QDialog.__init__(self, parent, Qt.Dialog | Qt.FramelessWindowHint)
+        QDialog.__init__(self, parent, Qt.Dialog)
         self.setWindowTitle(self.tr("Preferencias - EDIS"))
         self.setMinimumSize(700, 500)
         self.general = preferencias_general.ConfiguracionGeneral(self)
@@ -94,14 +94,14 @@ class Preferencias(QDialog):
 
         box.addWidget(toolbar)
 
-        self.stack = Stack()
+        self.stack = QStackedWidget()
         box.addWidget(self.stack)
 
         [self.stack.addWidget(widget)
             for widget in list(self.widgets.values())]
 
         box_buttons = QHBoxLayout()
-        box_buttons.setMargin(5)
+        box_buttons.setMargin(10)
         box_buttons.setSpacing(10)
         box_buttons.addStretch(1)
         self.btn_cancel = QPushButton(self.tr("Cancelar"))
@@ -114,24 +114,12 @@ class Preferencias(QDialog):
     def cambiar_widget(self, index):
         if not self.isVisible():
             self.show()
-        self.stack.mostrar_widget(index)
+        self.stack.setCurrentIndex(index)
 
     def _guardar(self):
         [self.stack.widget(i).guardar()
             for i in range(self.stack.count())]
         self.close()
-
-
-class Stack(QStackedWidget):
-
-    def __init__(self):
-        super(Stack, self).__init__()
-
-    def setCurrentIndex(self, indice):
-        QStackedWidget.setCurrentIndex(self, indice)
-
-    def mostrar_widget(self, indice):
-        self.setCurrentIndex(indice)
 
 
 class ToolButton(QToolButton):
