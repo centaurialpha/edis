@@ -17,10 +17,9 @@ from PyQt4.QtCore import QSettings
 
 from src import recursos
 
-MARGEN = True
-MARGEN_COLUMNA = 80
-
 SISTEMA_OPERATIVO = sys.platform
+LINUX = False
+WINDOWS = False
 
 if SISTEMA_OPERATIVO == 'win32':
     FUENTE = 'Courier'
@@ -32,6 +31,9 @@ else:
     TAM_FUENTE = 12
     LINUX = True
     WINDOWS = False
+
+MARGEN = True
+MARGEN_COLUMNA = 80
 
 INDENTACION = True
 INDENTACION_ANCHO = 4
