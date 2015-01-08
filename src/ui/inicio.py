@@ -30,7 +30,7 @@ from PyQt4.QtCore import (
 
 from src.ui.edis_main import EDIS
 from src import recursos
-from src.helpers import configuraciones
+from src.helpers import configuracion
 from src import ui
 
 
@@ -39,6 +39,7 @@ class Inicio(QDialog):
     def __init__(self, parent=None):
         super(Inicio, self).__init__(parent, Qt.Dialog)
         self.setWindowTitle("Welcome to EDIS !")
+        self.esettings = configuracion.ESettings()
         contenedor = QVBoxLayout(self)
         self.setMinimumWidth(570)
         hbox = QHBoxLayout()
@@ -71,7 +72,7 @@ class Inicio(QDialog):
         lista_archivos = QListWidget()
         lista_archivos.setStyleSheet("background: #383733; color: #dedede")
         #FIXME: debería agregar los proyectos recientes y no los archivos
-        recientes = configuraciones.RECIENTES
+        recientes = configuracion.RECIENTES
         if recientes is not None:
             for reciente in recientes:
                 lista_archivos.addItem(reciente)
@@ -93,7 +94,7 @@ class Inicio(QDialog):
         btn_edis = QPushButton(self.tr("Edis web"))
         btn_edis.setIcon(QIcon(recursos.ICONOS['web']))
         self.check = QCheckBox(self.tr("Mostrar en la próxima sesión"))
-        self.check.setChecked(configuraciones.INICIO)
+        self.check.setChecked(self.esettings.get('general/inicio'))
         self.check.setStyleSheet("color: #dedede")
         box_botones.addWidget(btn_edis)
         box_botones.addWidget(self.check)
@@ -127,7 +128,7 @@ class Inicio(QDialog):
 
     def _cambiar_check(self):
         config = QSettings(recursos.CONFIGURACION, QSettings.IniFormat)
-        configuraciones.INICIO = self.check.isChecked()
+        self.esettings.set('general/inicio', self.check.isChecked())
         config.setValue('general/inicio', self.check.isChecked())
 
     def closeEvent(self, e):

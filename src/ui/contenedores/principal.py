@@ -26,7 +26,7 @@ from PyQt4.QtCore import (
 from src.helpers import (
     manejador_de_archivo,
     logger,
-    configuraciones
+    configuracion
     )
 from src import recursos
 from src.ui.editor import (
@@ -284,15 +284,16 @@ class EditorContainer(QWidget):
 
     def mostrar_tabs_espacios_blancos(self):
         #FIXME:
-        accion = EDIS.accion("Mostrar tabs y espacios en blanco")
-        configuraciones.MOSTRAR_TABS = accion.isChecked()
+        #accion = EDIS.accion("Mostrar tabs y espacios en blanco")
+        #configuraciones.MOSTRAR_TABS = accion.isChecked()
         weditor = self.devolver_editor()
         if weditor is not None:
             weditor.flags()
 
     def mostrar_guias(self):
-        accion = EDIS.accion("Mostrar guías")
-        configuraciones.GUIA_INDENTACION = accion.isChecked()
+        #FIXME:
+        #accion = EDIS.accion("Mostrar guías")
+        #configuraciones.GUIA_INDENTACION = accion.isChecked()
         weditor = self.devolver_editor()
         if weditor is not None:
             weditor.flags()
@@ -417,7 +418,7 @@ class EditorContainer(QWidget):
 
     def configuracion_edis(self):
         dialogo = EDIS.componente("preferencias")
-        configuraciones.cargar_configuraciones()
+        #configuraciones.cargar_configuraciones()
         dialogo.show()
 
 

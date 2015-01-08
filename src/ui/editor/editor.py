@@ -28,8 +28,8 @@ from src.ui.editor import (
     lexer
     )
 from src.helpers import (
-    configuraciones,
-    logger
+    configuracion,
+    logger,
     )
 
 # Logger
@@ -85,17 +85,19 @@ class Editor(Base):
 
     def __init__(self, nombre_archivo, ext=''):
         super(Editor, self).__init__()
+        self.esettings = configuracion.ESettings()
         self.__nombre = ""
         self.texto_modificado = False
         self.es_nuevo = True
         self.guardado_actualmente = False
+        self.esettings = configuracion.ESettings()
         # Flags
         self.flags()
         # Lexer
         self._lexer = None
         self.cargar_lexer(ext)
         # Indentación
-        self._indentacion = configuraciones.INDENTACION_ANCHO
+        self._indentacion = self.esettings.get('editor/indentacionAncho')
         self.send("sci_settabwidth", self._indentacion)
         # Minimapa
         self.minimapa = MiniMapa(self)
@@ -112,8 +114,8 @@ class Editor(Base):
         self.checker = checker.Checker(self)
         self.checker.errores.connect(self._marcar_errores)
         # Fuente
-        self.cargar_fuente(QFont(configuraciones.FUENTE,
-                            configuraciones.TAM_FUENTE))
+        self.cargar_fuente(QFont(configuracion.FUENTE,
+                            configuracion.TAM_FUENTE))
         self.setMarginsBackgroundColor(QColor(self._tema['sidebar-fondo']))
         self.setMarginsForegroundColor(QColor(self._tema['sidebar-fore']))
 
@@ -121,8 +123,9 @@ class Editor(Base):
         self.caret_line(self._tema['caret-background'],
                         self._tema['caret-line'], self._tema['caret-opacidad'])
         # Márgen
-        if configuraciones.MARGEN:
-            self._margen_de_linea(configuraciones.MARGEN_COLUMNA)
+        if self.esettings.get('editor/margen'):
+            self._margen_de_linea(self.esettings.get('editor/margenAncho'))
+            #self._margen_de_linea(configuraciones.MARGEN_COLUMNA)
 
         # Brace matching
         self.match_braces(Base.SloppyBraceMatch)
@@ -152,17 +155,17 @@ class Editor(Base):
     def flags(self):
         """ Extras para el editor """
 
-        if configuraciones.MOSTRAR_TABS:
+        if self.esettings.get('editor/mostrarTabs'):
             self.setWhitespaceVisibility(self.WsVisible)
         else:
             self.setWhitespaceVisibility(self.WsInvisible)
-        self.setIndentationGuides(configuraciones.GUIAS)
-        if configuraciones.GUIAS:
+        self.setIndentationGuides(self.esettings.get('editor/guias'))
+        if self.esettings.get('editor/guias'):
             self.setIndentationGuidesBackgroundColor(QColor(
                                                     self._tema['guia-fondo']))
             self.setIndentationGuidesForegroundColor(QColor(
                                                     self._tema['guia-fore']))
-        if configuraciones.MODO_ENVOLVER:
+        if self.esettings.get('editor/modoWrap'):
             self.setWrapMode(self.WrapWord)
         else:
             self.setWrapMode(self.WrapNone)
@@ -178,7 +181,7 @@ class Editor(Base):
         return self.getCursorPosition()
 
     def _margen_de_linea(self, margen=None):
-        if configuraciones.MARGEN:
+        if self.esettings.get('editor/margen'):
             self.setEdgeMode(Base.EdgeLine)
             self.setEdgeColumn(margen)
             self.setEdgeColor(QColor(self._tema['margen']))

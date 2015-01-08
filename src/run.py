@@ -9,7 +9,7 @@ import sys
 
 from src import recursos
 from src.helpers import (
-    configuraciones,
+    configuracion,
     logger
     )
 
@@ -37,12 +37,12 @@ def correr_interfaz(app):
     #FIXME: Ordenar
     config = QSettings(recursos.CONFIGURACION, QSettings.IniFormat)
     log.debug('Iniciando...')
-    recientes = config.value('recientes', [])
-    configuraciones.cargar_configuraciones()
-    configuraciones.RECIENTES = recientes
+    #recientes = config.value('recientes', [])
+    #configuraciones.cargar_configuraciones()
+    configuracion.ESettings().cargar()
+    #configuracion.RECIENTES = recientes
     import src.ui.dialogos.preferencias.preferencias  # lint:ok
     import src.ui.inicio  # lint:ok
-
     # Traductor
     local = QLocale.system().name()
     qtraductor = QTranslator()

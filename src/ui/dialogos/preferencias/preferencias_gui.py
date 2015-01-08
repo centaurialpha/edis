@@ -28,16 +28,18 @@ from PyQt4.QtGui import (
 #from PyQt4.QtGui import QListWidget
 
 ## Módulos QtCore
-from PyQt4.QtCore import (
-    QSettings
-    )
+#from PyQt4.QtCore import (
+    #QSettings
+    #)
 #from PyQt4.QtCore import QSettings
 ##from PyQt4.QtCore import QString
 #from PyQt4.QtCore import QSize
 
 ## Módulos EDIS
-from src import recursos
-from src.helpers import configuraciones
+#from src import recursos
+#from src.helpers import configuraciones
+from src.helpers.configuracion import ESettings
+from src.ui.contenedores.lateral import lateral_container
 #from edis.interfaz import distribuidor
 
 
@@ -52,21 +54,34 @@ class ConfiguracionGUI(QWidget):
         box = QVBoxLayout(grupo_lateral)
         box.setContentsMargins(0, 0, 0, 0)
         self.check_simbolos = QCheckBox(self.tr("Árbol de símbolos"))
-        self.check_simbolos.setChecked(configuraciones.SIMBOLOS)
+        self.check_simbolos.setChecked(ESettings.get('gui/simbolos'))
         box.addWidget(self.check_simbolos)
         self.check_navegador = QCheckBox(self.tr("Navegador"))
-        self.check_navegador.setChecked(configuraciones.NAVEGADOR)
+        self.check_navegador.setChecked(ESettings.get('gui/navegador'))
         box.addWidget(self.check_navegador)
         self.check_explorador = QCheckBox(self.tr("Explorador"))
-        self.check_explorador.setChecked(configuraciones.EXPLORADOR)
+        self.check_explorador.setChecked(ESettings.get('gui/explorador'))
         box.addWidget(self.check_explorador)
 
         contenedor.addWidget(grupo_lateral)
 
     def guardar(self):
         """ Guarda las configuraciones de la GUI. """
-        config = QSettings(recursos.CONFIGURACION, QSettings.IniFormat)
-        configuraciones.SIMBOLOS = self.check_simbolos.isChecked()
-        config.setValue('gui/simbolos', configuraciones.SIMBOLOS)
-        if configuraciones.SIMBOLOS:
-            pass
+
+        ESettings.set('gui/simbolos', self.check_simbolos.isChecked())
+        ESettings.set('gui/navegador', self.check_navegador.isChecked())
+        ESettings.set('gui/explorador', self.check_explorador.isChecked())
+        contenedor_lateral = lateral_container.ContenedorLateral()
+        if self.check_simbolos.isChecked():
+            contenedor_lateral.agregar_arbol_de_simbolos()
+        else:
+            contenedor_lateral.eliminar_arbol_de_simbolos()
+        if self.check_navegador.isChecked():
+            contenedor_lateral.agregar_navegador()
+        else:
+            contenedor_lateral.eliminar_navegador()
+        if self.check_explorador.isChecked():
+            contenedor_lateral.agregar_explorador()
+        else:
+            contenedor_lateral.eliminar_explorador()
+        contenedor_lateral.actualizar()

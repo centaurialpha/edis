@@ -11,7 +11,7 @@ from PyQt4.QtGui import (
     QColor
     )
 
-from src.helpers import configuraciones
+from src.helpers import configuracion
 from src import recursos
 
 
@@ -25,7 +25,7 @@ class LexerC(QsciLexerCPP):
         self.setFoldPreprocessor(True)
         self.setHighlightHashQuotedStrings(True)
 
-        self.fuente = QFont(configuraciones.FUENTE, configuraciones.TAM_FUENTE)
+        self.fuente = QFont(configuracion.FUENTE, configuracion.TAM_FUENTE)
         self.setFont(self.fuente)
 
         self.__cargar_highlighter()

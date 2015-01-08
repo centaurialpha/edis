@@ -20,7 +20,7 @@ from PyQt4.Qsci import (
     )
 
 from src import recursos
-from src.helpers import configuraciones
+from src.helpers import configuracion
 
 
 class Base(QsciScintilla):
@@ -34,7 +34,8 @@ class Base(QsciScintilla):
     def __init__(self):
         QsciScintilla.__init__(self)
         # Configuración de Qscintilla
-        self.setCaretLineVisible(configuraciones.MARGEN)
+        self.esettings = configuracion.ESettings()
+        self.setCaretLineVisible(self.esettings.get('editor/margen'))
         self.setIndentationsUseTabs(False)
         self.setAutoIndent(True)
         self.setBackspaceUnindents(True)

@@ -29,10 +29,7 @@ from PyQt4.QtCore import (
 
 # Módulos EDIS
 from src import recursos
-from src.helpers import (
-    configuraciones,
-    #manejador_de_archivo
-    )
+from src.helpers.configuracion import ESettings
 
 
 class ConfiguracionGeneral(QWidget):
@@ -46,7 +43,7 @@ class ConfiguracionGeneral(QWidget):
         grupo_inicio = QGroupBox(self.tr("Al inicio:"))
         box = QHBoxLayout(grupo_inicio)
         self.check_inicio = QCheckBox(self.tr("Mostrar ventana de inicio"))
-        self.check_inicio.setChecked(configuraciones.INICIO)
+        self.check_inicio.setChecked(ESettings.get('general/inicio'))
         box.addWidget(self.check_inicio)
 
         # Al salir
@@ -73,7 +70,7 @@ class ConfiguracionGeneral(QWidget):
         """ Guarda las configuraciones Generales. """
 
         config = QSettings(recursos.CONFIGURACION, QSettings.IniFormat)
-        configuraciones.INICIO = self.check_inicio.isChecked()
+        ESettings.set('general/inicio', self.check_inicio.isChecked())
         config.setValue('general/inicio', self.check_inicio.isChecked())
 
     def _reestablecer(self):

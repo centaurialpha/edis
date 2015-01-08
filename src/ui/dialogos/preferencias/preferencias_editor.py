@@ -28,7 +28,7 @@ from PyQt4.QtCore import (
 
 # Módulos EDIS
 from src import recursos
-from src.helpers import configuraciones
+from src.helpers import configuracion
 
 
 class TabEditor(QWidget):
@@ -57,15 +57,15 @@ class CaracteristicasEditor(QWidget):
     def __init__(self):
         super(CaracteristicasEditor, self).__init__()
         contenedor = QVBoxLayout(self)
-
+        self.esettings = configuracion.ESettings()
         # Márgen de línea
         grupo_margen = QGroupBox(self.tr("Márgen:"))
         box = QGridLayout(grupo_margen)
         self.check_margen = QCheckBox(self.tr("Mostrar"))
         box.addWidget(self.check_margen, 0, 0)
-        slider_margen = QSlider(Qt.Horizontal)
-        slider_margen.setMaximum(180)
-        box.addWidget(slider_margen, 0, 1)
+        self.slider_margen = QSlider(Qt.Horizontal)
+        self.slider_margen.setMaximum(180)
+        box.addWidget(self.slider_margen, 0, 1)
         lcd_margen = QLCDNumber()
         lcd_margen.setStyleSheet("color: #dedede")
         lcd_margen.setSegmentStyle(lcd_margen.Flat)
@@ -101,22 +101,24 @@ class CaracteristicasEditor(QWidget):
         contenedor.addWidget(grupo_fuente)
 
         # Conexiones
-        slider_margen.valueChanged[int].connect(lcd_margen.display)
+        self.slider_margen.valueChanged[int].connect(lcd_margen.display)
         slider_indentacion.valueChanged[int].connect(lcd_indentacion.display)
         self.btn_fuente.clicked.connect(self._seleccionar_fuente)
 
         # Configuraciones
         # Márgen
-        self.check_margen.setChecked(configuraciones.MARGEN)
-        slider_margen.setValue(configuraciones.MARGEN_COLUMNA)
+        self.check_margen.setChecked(self.esettings.get('editor/margen'))
+        self.slider_margen.setValue(self.esettings.get('editor/margenAncho'))
         # Indentación
-        self.check_indentacion.setChecked(configuraciones.INDENTACION)
-        slider_indentacion.setValue(configuraciones.INDENTACION_ANCHO)
-        self.check_guia.setChecked(configuraciones.GUIAS)
+        self.check_indentacion.setChecked(self.esettings.get(
+                                         'editor/indentacion'))
+        slider_indentacion.setValue(self.esettings.get(
+                                   'editor/indentacionAncho'))
+        self.check_guia.setChecked(self.esettings.get('editor/guias'))
 
     def _cargar_fuente(self):
-        fuente = configuraciones.FUENTE
-        size = str(configuraciones.TAM_FUENTE)
+        fuente = configuracion.FUENTE
+        size = str(configuracion.TAM_FUENTE)
         texto = fuente + ', ' + size
         self.btn_fuente.setText(texto)
 
@@ -125,14 +127,17 @@ class CaracteristicasEditor(QWidget):
         if ok:
             fuente = seleccion.family()
             size = str(seleccion.pointSize())
-            configuraciones.FUENTE = fuente
-            configuraciones.TAM_FUENTE = int(size)
+            configuracion.FUENTE = fuente
+            configuracion.TAM_FUENTE = int(size)
             self.btn_fuente.setText(fuente + ', ' + size)
 
     def guardar(self):
         """ Guarda las configuraciones del Editor. """
 
         config = QSettings(recursos.CONFIGURACION, QSettings.IniFormat)
-        configuraciones.FUENTE = self.btn_fuente.text().split(',')[0]
+        configuracion.FUENTE = self.btn_fuente.text().split(',')[0]
         config.setValue('configuraciones/editor/fuente',
-                        configuraciones.FUENTE)
+                        configuracion.FUENTE)
+        self.esettings.set('editor/margenAncho', self.slider_margen.value())
+        config.setValue('editor/margenAncho',
+                        self.esettings.get('editor/margenAncho'))

@@ -34,12 +34,10 @@ from PyQt4.QtCore import (
 # Módulos EDIS
 #from edis import recursos
 from src.helpers import (
-    configuraciones,
+    configuracion,
     manejador_de_archivo
     )
 from src.ui.contenedores.output import salida_compilador
-
-_TUX = configuraciones.LINUX
 
 
 class EjecutarWidget(QWidget):
@@ -134,9 +132,9 @@ class EjecutarWidget(QWidget):
         direc = os.path.dirname(archivo)
         self.proceso_ejecucion.setWorkingDirectory(direc)
 
-        if _TUX:
+        if configuracion.LINUX:
             #FIXME: Terminal
-            terminal = configuraciones.TERMINAL
+            terminal = configuracion.TERMINAL
             bash = '%s -e "bash -c ./%s;read n"' % (terminal, self.ejecutable)
             # Run !
             self.proceso_ejecucion.start(bash)
