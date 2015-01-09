@@ -34,6 +34,7 @@ from src.helpers import (
     configuracion,
     dependencias
     )
+from src.helpers.configuracion import ESettings
 from src.ui.contenedores.lateral import lateral_container
 from src.ui.contenedores.output import contenedor_secundario
 from src.ui.dialogos import (
@@ -84,9 +85,9 @@ class EDIS(QMainWindow):
         self.setCentralWidget(self.central)
 
         EDIS.cargar_componente("edis", self)
-        #self.esettings = configuracion.ESettings()
-        #if self.esettings.get('general/inicio'):
-            #self.mostrar_inicio()
+
+        if ESettings.get('general/inicio'):
+            self.mostrar_inicio()
 
     @classmethod
     def cargar_componente(cls, nombre, instancia):

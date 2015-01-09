@@ -55,6 +55,8 @@ configuracion = {
     'editor/guias': True,
     'editor/mostrarTabs': False,
     'editor/modoWrap': False,
+    'editor/fuente': "",
+    'editor/fuenteTam': 0,
     'general/inicio': True,
     }
 
@@ -72,8 +74,10 @@ class ESettings(object):
 
         qconfig = QSettings(recursos.CONFIGURACION, QSettings.IniFormat)
         for clave, valor in list(configuracion.items()):
-            configuracion[clave] = qconfig.value(clave, valor,
-                type=eval(str(type(valor)).split("'")[1]))
+            tipo = eval(str(type(valor)).split("'")[1])
+            if tipo == str:
+                tipo = 'QString'
+            configuracion[clave] = qconfig.value(clave, valor, type=tipo)
 
     @staticmethod
     def get(valor):

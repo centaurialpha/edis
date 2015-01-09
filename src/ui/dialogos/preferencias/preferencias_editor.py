@@ -21,14 +21,13 @@ from PyQt4.QtGui import (
     )
 
 # Módulos QtCore
-from PyQt4.QtCore import (
-    Qt,
-    QSettings
-    )
+from PyQt4.QtCore import Qt
 
 # Módulos EDIS
-from src import recursos
-from src.helpers import configuracion
+#from src import recursos
+from src.helpers.configuracion import ESettings
+#from src.helpers import configuracion
+from src.ui.edis_main import EDIS
 
 
 class TabEditor(QWidget):
@@ -57,7 +56,7 @@ class CaracteristicasEditor(QWidget):
     def __init__(self):
         super(CaracteristicasEditor, self).__init__()
         contenedor = QVBoxLayout(self)
-        self.esettings = configuracion.ESettings()
+
         # Márgen de línea
         grupo_margen = QGroupBox(self.tr("Márgen:"))
         box = QGridLayout(grupo_margen)
@@ -107,18 +106,18 @@ class CaracteristicasEditor(QWidget):
 
         # Configuraciones
         # Márgen
-        self.check_margen.setChecked(self.esettings.get('editor/margen'))
-        self.slider_margen.setValue(self.esettings.get('editor/margenAncho'))
+        self.check_margen.setChecked(ESettings.get('editor/margen'))
+        self.slider_margen.setValue(ESettings.get('editor/margenAncho'))
         # Indentación
-        self.check_indentacion.setChecked(self.esettings.get(
+        self.check_indentacion.setChecked(ESettings.get(
                                          'editor/indentacion'))
-        slider_indentacion.setValue(self.esettings.get(
+        slider_indentacion.setValue(ESettings.get(
                                    'editor/indentacionAncho'))
-        self.check_guia.setChecked(self.esettings.get('editor/guias'))
+        self.check_guia.setChecked(ESettings.get('editor/guias'))
 
     def _cargar_fuente(self):
-        fuente = configuracion.FUENTE
-        size = str(configuracion.TAM_FUENTE)
+        fuente = ESettings.get('editor/fuente')
+        size = str(ESettings.get('editor/fuenteTam'))
         texto = fuente + ', ' + size
         self.btn_fuente.setText(texto)
 
@@ -127,17 +126,18 @@ class CaracteristicasEditor(QWidget):
         if ok:
             fuente = seleccion.family()
             size = str(seleccion.pointSize())
-            configuracion.FUENTE = fuente
-            configuracion.TAM_FUENTE = int(size)
+            ESettings.set('editor/fuente', fuente)
+            ESettings.set('editor/fuenteTam,', int(size))
             self.btn_fuente.setText(fuente + ', ' + size)
 
     def guardar(self):
         """ Guarda las configuraciones del Editor. """
 
-        config = QSettings(recursos.CONFIGURACION, QSettings.IniFormat)
-        configuracion.FUENTE = self.btn_fuente.text().split(',')[0]
-        config.setValue('configuraciones/editor/fuente',
-                        configuracion.FUENTE)
-        self.esettings.set('editor/margenAncho', self.slider_margen.value())
-        config.setValue('editor/margenAncho',
-                        self.esettings.get('editor/margenAncho'))
+        fuente, fuente_tam = self.btn_fuente.text().split(',')
+        ESettings.set('editor/fuente', fuente)
+        ESettings.set('editor/fuenteTam,', int(fuente_tam))
+        ESettings.set('editor/margenAncho', self.slider_margen.value())
+        ESettings
+        principal = EDIS.componente("principal")
+        weditor = principal.devolver_editor()
+        weditor.cargar_fuente(fuente, int(fuente_tam))

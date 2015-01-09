@@ -8,7 +8,7 @@
 from PyQt4.QtGui import (
     QFontMetrics,
     QColor,
-    #QFont
+    QFont
     )
 
 from PyQt4.QtCore import (
@@ -20,7 +20,7 @@ from PyQt4.Qsci import (
     )
 
 from src import recursos
-from src.helpers import configuracion
+from src.helpers.configuracion import ESettings
 
 
 class Base(QsciScintilla):
@@ -34,8 +34,7 @@ class Base(QsciScintilla):
     def __init__(self):
         QsciScintilla.__init__(self)
         # Configuración de Qscintilla
-        self.esettings = configuracion.ESettings()
-        self.setCaretLineVisible(self.esettings.get('editor/margen'))
+        self.setCaretLineVisible(ESettings.get('editor/margen'))
         self.setIndentationsUseTabs(False)
         self.setAutoIndent(True)
         self.setBackspaceUnindents(True)
@@ -112,11 +111,13 @@ class Base(QsciScintilla):
     def seleccionar(self):
         self.send("selectall")
 
-    def cargar_fuente(self, fuente):
-        self.__fuente = fuente
-        self.setFont(fuente)
-        self.setMarginsFont(fuente)
+    def cargar_fuente(self, fuente, tam):
+        #FIXME
+        self.__fuente = QFont(fuente, tam)
+        #self.setFont(self.__fuente)
+        self.setMarginsFont(self.__fuente)
         self.setMarginLineNumbers(0, True)
+        self._lexer.setFont(self.__fuente)
 
     def actualizar_sidebar(self):
         """ Ajusta el ancho del sidebar """
