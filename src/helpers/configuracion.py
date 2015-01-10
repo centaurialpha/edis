@@ -52,7 +52,7 @@ configuracion = {
     'editor/margenAncho': 80,
     'editor/indentacion': True,
     'editor/indentacionAncho': 4,
-    'editor/guias': True,
+    'editor/guias': False,
     'editor/mostrarTabs': False,
     'editor/modoWrap': False,
     'editor/fuente': "",

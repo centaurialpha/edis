@@ -8,7 +8,6 @@
 from PyQt4.QtGui import (
     QFontMetrics,
     QColor,
-    QFont
     )
 
 from PyQt4.QtCore import (
@@ -59,7 +58,7 @@ class Base(QsciScintilla):
         self.colorFoldMargen(recursos.TEMA['foldFore'],
                             recursos.TEMA['foldBack'])
 
-        self.__fuente = None
+        self._fuente = None
 
         self.linesChanged.connect(self.actualizar_sidebar)
 
@@ -111,18 +110,10 @@ class Base(QsciScintilla):
     def seleccionar(self):
         self.send("selectall")
 
-    def cargar_fuente(self, fuente, tam):
-        #FIXME
-        self.__fuente = QFont(fuente, tam)
-        #self.setFont(self.__fuente)
-        self.setMarginsFont(self.__fuente)
-        self.setMarginLineNumbers(0, True)
-        self._lexer.setFont(self.__fuente)
-
     def actualizar_sidebar(self):
         """ Ajusta el ancho del sidebar """
 
-        fmetrics = QFontMetrics(self.__fuente)
+        fmetrics = QFontMetrics(self._fuente)
         lineas = str(self.lineas) + '00'
 
         if len(lineas) != 1:

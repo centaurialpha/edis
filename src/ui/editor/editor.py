@@ -9,7 +9,8 @@ import re
 
 from PyQt4.QtGui import (
     QColor,
-    QToolTip
+    QToolTip,
+    QFont
     )
 
 from PyQt4.QtCore import (
@@ -129,6 +130,14 @@ class Editor(Base):
                                 self._tema['brace-foreground'])
         self.unmatch_braces_color(self._tema['brace-unbackground'],
                                     self._tema['brace-unforeground'])
+
+    def cargar_fuente(self, fuente, tam):
+        self._fuente = QFont(fuente, tam)
+        if self._lexer is None:
+            self.setFont(self._fuente)
+        else:
+            self._lexer.setFont(self._fuente)
+        self.setMarginsFont(self._fuente)
 
     def cargar_lexer(self, extension):
         if extension in ['c', 'cpp']:

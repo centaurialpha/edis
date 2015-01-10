@@ -7,11 +7,11 @@
 
 from PyQt4.Qsci import QsciLexerCPP
 from PyQt4.QtGui import (
-    QFont,
+    #QFont,
     QColor
     )
 
-from src.helpers.configuracion import ESettings
+#from src.helpers.configuracion import ESettings
 from src import recursos
 
 
@@ -24,11 +24,6 @@ class LexerC(QsciLexerCPP):
         self.setFoldComments(True)
         self.setFoldPreprocessor(True)
         self.setHighlightHashQuotedStrings(True)
-
-        self.fuente = QFont(ESettings.get('editor/fuente'),
-                            ESettings.get('editor/fuenteTam'))
-        self.setFont(self.fuente)
-
         self.__cargar_highlighter()
 
     def __cargar_highlighter(self):
@@ -41,7 +36,3 @@ class LexerC(QsciLexerCPP):
             if tipo in recursos.TEMA:
                 atr = getattr(self, tipo)
                 self.setColor(QColor(recursos.TEMA[tipo]), atr)
-
-        fuente = self.font(LexerC.Keyword)
-        fuente.setBold(False)
-        self.setFont(fuente, LexerC.Keyword)

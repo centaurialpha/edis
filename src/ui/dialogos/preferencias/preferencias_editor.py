@@ -26,7 +26,7 @@ from PyQt4.QtCore import Qt
 # Módulos EDIS
 #from src import recursos
 from src.helpers.configuracion import ESettings
-#from src.helpers import configuracion
+from src.helpers import configuracion
 from src.ui.edis_main import EDIS
 
 
@@ -117,6 +117,8 @@ class CaracteristicasEditor(QWidget):
 
     def _cargar_fuente(self):
         fuente = ESettings.get('editor/fuente')
+        if not fuente:
+            fuente = configuracion.FUENTE
         size = str(ESettings.get('editor/fuenteTam'))
         texto = fuente + ', ' + size
         self.btn_fuente.setText(texto)
@@ -140,4 +142,5 @@ class CaracteristicasEditor(QWidget):
         ESettings
         principal = EDIS.componente("principal")
         weditor = principal.devolver_editor()
+        #FIXME: Arreglar la carga de fuente, editor-lexer
         weditor.cargar_fuente(fuente, int(fuente_tam))
