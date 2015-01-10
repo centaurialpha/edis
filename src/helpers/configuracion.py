@@ -23,7 +23,7 @@ if sys.platform == 'linux':
     TERMINAL = ''
 elif sys.platform == 'win32':
     WINDOWS = True
-    FUENTE = 'Currier'
+    FUENTE = 'Courier'
     TAM_FUENTE = 10
 
 ITEMS_TOOLBAR = [
@@ -80,6 +80,8 @@ class ESettings(object):
             if tipo == str:
                 tipo = 'QString'
             configuracion[clave] = qconfig.value(clave, valor, type=tipo)
+        if not configuracion['editor/fuente']:
+            configuracion['editor/fuente'] = FUENTE
 
     @staticmethod
     def get(valor):
