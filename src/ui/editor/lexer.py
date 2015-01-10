@@ -6,12 +6,8 @@
 # License: GPLv3 (see http://www.gnu.org/licenses/gpl.html)
 
 from PyQt4.Qsci import QsciLexerCPP
-from PyQt4.QtGui import (
-    #QFont,
-    QColor
-    )
+from PyQt4.QtGui import QColor
 
-#from src.helpers.configuracion import ESettings
 from src import recursos
 
 
@@ -28,8 +24,8 @@ class LexerC(QsciLexerCPP):
 
     def __cargar_highlighter(self):
         self.setDefaultPaper(QColor(recursos.TEMA['FondoEditor']))
-        self.setPaper(QColor(18, 18, 18))
-        self.setColor(QColor(241, 241, 241))
+        self.setPaper(self.defaultPaper(0))
+        self.setColor(QColor(recursos.TEMA['Color']))
 
         tipos = dir(LexerC)
         for tipo in tipos:

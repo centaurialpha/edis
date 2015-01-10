@@ -88,7 +88,7 @@ ATAJOS = {
 # Tema editor
 TEMA = {
     'FondoEditor': '#121212',
-    'Color': '#F1F1F1',
+    'Color': '#c2c2c2',
     'Keyword': '#87afd7',
     'KeywordSet2': '#009bbf',
     'Comment': '#af5f5f',
