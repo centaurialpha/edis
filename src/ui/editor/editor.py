@@ -323,13 +323,21 @@ class Editor(Base):
             self.send("sci_linedelete")
 
     def indentar(self):
-        desde, _, hasta, _ = self.getSelection()
-        for linea in range(desde, hasta + 1):
+        if self.hasSelectedText():
+            desde, _, hasta, _ = self.getSelection()
+            for linea in range(desde, hasta + 1):
+                self.indent(linea)
+        else:
+            linea, _ = self.devolver_posicion_del_cursor()
             self.indent(linea)
 
     def quitar_indentacion(self):
-        desde, _, hasta, _ = self.getSelection()
-        for linea in range(desde, hasta + 1):
+        if self.hasSelectedText():
+            desde, _, hasta, _ = self.getSelection()
+            for linea in range(desde, hasta + 1):
+                self.unindent(linea)
+        else:
+            linea, _ = self.devolver_posicion_del_cursor()
             self.unindent(linea)
 
     def mover_linea_abajo(self):
