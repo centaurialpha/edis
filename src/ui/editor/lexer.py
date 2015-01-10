@@ -19,7 +19,7 @@ class LexerC(QsciLexerCPP):
         self.setStylePreprocessor(True)
         self.setFoldComments(True)
         self.setFoldPreprocessor(True)
-        self.setHighlightHashQuotedStrings(True)
+
         self.__cargar_highlighter()
 
     def __cargar_highlighter(self):
@@ -32,3 +32,13 @@ class LexerC(QsciLexerCPP):
             if tipo in recursos.TEMA:
                 atr = getattr(self, tipo)
                 self.setColor(QColor(recursos.TEMA[tipo]), atr)
+
+    def keywords(self, clave):
+        super(LexerC, self).keywords(clave)
+        if clave == 1:
+            return ('auto break case const continue default do else enum'
+                    'extern for goto if return sizeof struct switch typedef'
+                    'union while')
+        elif clave == 2:
+            return ('char double float int long register short signed static'
+                    'unsigned void volatile')
