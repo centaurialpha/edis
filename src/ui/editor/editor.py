@@ -324,18 +324,22 @@ class Editor(Base):
 
     def indentar(self):
         if self.hasSelectedText():
+            self.send("sci_beginundoaction")
             desde, _, hasta, _ = self.getSelection()
             for linea in range(desde, hasta + 1):
                 self.indent(linea)
+            self.send("sci_endundoaction")
         else:
             linea, _ = self.devolver_posicion_del_cursor()
             self.indent(linea)
 
     def quitar_indentacion(self):
         if self.hasSelectedText():
+            self.send("sci_beginundoaction")
             desde, _, hasta, _ = self.getSelection()
             for linea in range(desde, hasta + 1):
                 self.unindent(linea)
+            self.send("sci_endundoaction")
         else:
             linea, _ = self.devolver_posicion_del_cursor()
             self.unindent(linea)
