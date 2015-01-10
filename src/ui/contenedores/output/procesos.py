@@ -10,7 +10,6 @@ import time
 import sys
 import os
 from subprocess import Popen
-from subprocess import PIPE
 if sys.platform == 'win32':
     from subprocess import CREATE_NEW_CONSOLE
 
@@ -26,21 +25,19 @@ from PyQt4.QtGui import QBrush
 # Módulos QtCore
 from PyQt4.QtCore import (
     QProcess,
-    SIGNAL,
-    Qt,
     QDir
     )
 
 # Módulos EDIS
 #from edis import recursos
-from src.helpers import (
-    configuracion,
-    manejador_de_archivo
-    )
+from src.helpers import configuracion
 from src.ui.contenedores.output import salida_compilador
 
 
 class EjecutarWidget(QWidget):
+
+    _script = '%s -e "bash -c ./%s;echo;echo;echo;echo -n Presione \<Enter\> '\
+    'para salir.;read I"'
 
     def __init__(self):
         super(EjecutarWidget, self).__init__()
@@ -134,10 +131,11 @@ class EjecutarWidget(QWidget):
 
         if configuracion.LINUX:
             #FIXME: Terminal
-            terminal = configuracion.TERMINAL
-            bash = '%s -e "bash -c ./%s;read n"' % (terminal, self.ejecutable)
+            ##terminal = configuracion.TERMINAL
+            terminal = "terminator"
+            proceso = self._script % (terminal, self.ejecutable)
             # Run !
-            self.proceso_ejecucion.start(bash)
+            self.proceso_ejecucion.start(proceso)
         else:
             #FIXME: Usar QProcess
             Popen([os.path.join(direc, self.ejecutable)],
