@@ -87,28 +87,28 @@ class Base(QsciScintilla):
         return self.isModified()
 
     def zoom_in(self):
-        self.send("zoomin")
+        self.send("sci_zoomin")
 
     def zoom_out(self):
-        self.send("zoomout")
+        self.send("sci_zoomout")
 
     def deshacer(self):
-        self.send("undo")
+        self.send("sci_undo")
 
     def rehacer(self):
-        self.send("redo")
+        self.send("sci_redo")
 
     def cortar(self):
-        self.send("cut")
+        self.send("sci_cut")
 
     def copiar(self):
-        self.send("copy")
+        self.send("sci_copy")
 
     def pegar(self):
-        self.send("paste")
+        self.send("sci_paste")
 
     def seleccionar(self):
-        self.send("selectall")
+        self.send("sci_selectall")
 
     def actualizar_sidebar(self):
         """ Ajusta el ancho del sidebar """
