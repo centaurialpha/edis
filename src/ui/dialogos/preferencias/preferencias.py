@@ -30,8 +30,10 @@ from src.ui.dialogos.preferencias import (
     preferencias_general,
     preferencias_editor,
     preferencias_gui,
-    #preferencias_compilacion
+    preferencias_ejecucion
     )
+
+#FIXME: Ejecución, compilación
 
 
 class Preferencias(QDialog):
@@ -43,14 +45,14 @@ class Preferencias(QDialog):
         self.general = preferencias_general.ConfiguracionGeneral(self)
         self.editor = preferencias_editor.TabEditor()
         self.gui = preferencias_gui.ConfiguracionGUI(self)
-        #self.compilacion = preferencias_compilacion.ECTab(self)
+        self._ejecucion = preferencias_ejecucion.ConfiguracionEjecucion(self)
 
         # valor: texto en combo, clave: instancia de widgets
         self.widgets = OrderedDict([
             ('General', self.general),
             ('Editor', self.editor),
-            ('GUI', self.gui)])
-            #('Compilador', self.compilacion)
+            ('GUI', self.gui),
+            ('Ejecucion', self._ejecucion)])
             #])
 
         self.load_ui()
@@ -62,8 +64,8 @@ class Preferencias(QDialog):
                     lambda: self.cambiar_widget(1))
         self.connect(self.button_gui, SIGNAL("clicked()"),
                     lambda: self.cambiar_widget(2))
-        #self.connect(self.button_compi, SIGNAL("clicked()"),
-                    #lambda: self.cambiar_widget(3))
+        self.connect(self.button_compi, SIGNAL("clicked()"),
+                    lambda: self.cambiar_widget(3))
         self.connect(self.btn_cancel, SIGNAL("clicked()"), self.close)
         self.connect(self.btn_guardar, SIGNAL("clicked()"), self._guardar)
 
@@ -85,12 +87,12 @@ class Preferencias(QDialog):
         self.button_editor = ToolButton("Editor",
                                         recursos.ICONOS['edit'])
         self.button_gui = ToolButton("Interfáz", recursos.ICONOS['gui'])
-        #self.button_compi = ToolButton("Compilador", recursos.ICONOS['build'])
+        self.button_compi = ToolButton("Ejecución", recursos.ICONOS['build'])
 
         toolbar.addWidget(self.button_general)
         toolbar.addWidget(self.button_editor)
         toolbar.addWidget(self.button_gui)
-        #toolbar.addWidget(self.button_compi)
+        toolbar.addWidget(self.button_compi)
 
         box.addWidget(toolbar)
 

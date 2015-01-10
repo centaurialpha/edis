@@ -20,6 +20,7 @@ if sys.platform == 'linux':
     LINUX = True
     FUENTE = 'Monospace'
     TAM_FUENTE = 12
+    TERMINAL = ''
 elif sys.platform == 'win32':
     WINDOWS = True
     FUENTE = 'Currier'
@@ -58,6 +59,7 @@ configuracion = {
     'editor/fuente': "",
     'editor/fuenteTam': 0,
     'general/inicio': True,
+    'terminal': ''
     }
 
 #FIXME:
