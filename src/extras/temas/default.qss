@@ -167,10 +167,6 @@ QDialog {
     background-color: #383733;
 }
 
-QLabel {
-    color: #dedede;
-}
-
 QLabel#status_label {
     color: #dedede;
 }
@@ -206,6 +202,8 @@ QLineEdit {
     color: #dedede;
 }
 
+QLabel,
+QRadioButton,
 QCheckBox {
     color: #dedede;
 }
