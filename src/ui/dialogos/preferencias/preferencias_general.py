@@ -48,6 +48,8 @@ class ConfiguracionGeneral(QWidget):
         box.addWidget(self.check_al_cerrar)
         self.check_dimensiones = QCheckBox(self.tr(
             "Guardar posición y tamaño de la ventana"))
+        self.check_dimensiones.setChecked(
+            ESettings.get('ventana/guardarDimensiones'))
         box.addWidget(self.check_dimensiones)
 
         # Reestablecer
@@ -82,3 +84,5 @@ class ConfiguracionGeneral(QWidget):
         """ Guarda las configuraciones Generales. """
 
         ESettings.set('general/inicio', self.check_inicio.isChecked())
+        ESettings.set('ventana/guardarDimensiones',
+                      self.check_dimensiones.isChecked())

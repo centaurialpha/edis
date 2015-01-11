@@ -47,6 +47,7 @@ ITEMS_TOOLBAR = [
 # configuracion[clave_QSettings] = valor_QSettings
 configuracion = {
     'ventana/dimensiones': (),
+    'ventana/guardarDimensiones': True,
     'gui/simbolos': True,
     'gui/explorador': True,
     'gui/navegador': True,

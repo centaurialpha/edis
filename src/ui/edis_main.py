@@ -288,11 +288,11 @@ class EDIS(QMainWindow):
             dialogo.exec_()
             if dialogo.ignorado():
                 e.ignore()
-        dimensiones = self.geometry()
-        dimensiones = (dimensiones.x(), dimensiones.y(), dimensiones.width(),
-                        dimensiones.height())
-        #FIXME: guardar configuraciones
-        ESettings.set('ventana/dimensiones', dimensiones)
+        if ESettings.get('ventana/guardarDimensiones'):
+            dimensiones = self.geometry()
+            dimensiones = (dimensiones.x(), dimensiones.y(),
+                            dimensiones.width(), dimensiones.height())
+            ESettings.set('ventana/dimensiones', dimensiones)
 
     def mostrar_inicio(self):
         dialogo = EDIS.componente("inicio")
