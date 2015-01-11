@@ -21,7 +21,7 @@ class Ctags(object):
     def run_ctags(self, archivo):
         info_ctags = list()
 
-        comando = ['ctags']
+        comando = self.path_ejecutable()
         parametros = ['--excmd=number', '-f -', '--fields=fimKsSzt', archivo]
 
         try:
@@ -57,3 +57,4 @@ class Ctags(object):
         if exe is None:
             #FIXME: think this!
             pass
+        return [exe]
