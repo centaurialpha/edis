@@ -28,6 +28,7 @@ from src.ectags.ctags import (
     CTags,
     Parser
     )
+from src.ectags import ectags
 
 instancia = None
 
@@ -45,8 +46,9 @@ class _ContenedorLateral(QWidget):
     def __init__(self, parent=None):
         super(_ContenedorLateral, self).__init__()
         #FIXME: Cambiar esto
-        self.ctags = CTags()
+        #self.ctags = CTags()
         self.parser = Parser()
+        self.ctags = ectags.Ctags()
         self._edis = parent
         box = QVBoxLayout(self)
         box.setContentsMargins(0, 0, 0, 0)
@@ -147,9 +149,8 @@ class _ContenedorLateral(QWidget):
         self.stack.setCurrentIndex(indice)
 
     def actualizar_simbolos(self, archivo):
-        #FIXME: Crear thread para parsear los tags
-        tag = self.ctags.start_ctags(archivo)
-        tag = tag.decode()
-        self.parser.parser_tag(tag)
-        simbolos = self.parser.get_symbols()
+        if archivo == 'Nuevo_archivo':
+            return
+        tag = self.ctags.run_ctags(archivo)
+        simbolos = self.ctags.parser(tag)
         self._arbol_simbolos.actualizar_simbolos(simbolos)

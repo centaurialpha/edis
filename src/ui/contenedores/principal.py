@@ -108,7 +108,7 @@ class EditorContainer(QWidget):
         weditor.setFocus()
         if nombre != 'Nuevo_archivo':
             self.agregar_a_recientes(nombre)
-        self.archivo_cambiado.emit(nombre)
+        #self.archivo_cambiado.emit(nombre)
         return weditor
 
     def abrir_archivo(self, nombre=""):
@@ -410,6 +410,11 @@ class EditorContainer(QWidget):
         weditor = self.devolver_editor()
         if weditor is not None:
             weditor.mover_linea_arriba()
+
+    def ir_a_linea(self, linea):
+        weditor = self.devolver_editor()
+        if weditor is not None:
+            weditor.setCursorPosition(linea, 0)
 
     def proyecto_nuevo(self):
         dialogo = dialogo_proyecto.DialogoProyecto(self)
