@@ -92,3 +92,7 @@ class ESettings(object):
         qconfig = QSettings(recursos.CONFIGURACION, QSettings.IniFormat)
         configuracion[clave] = valor
         qconfig.setValue(clave, valor)
+
+    @staticmethod
+    def borrar():
+        QSettings(recursos.CONFIGURACION, QSettings.IniFormat).clear()

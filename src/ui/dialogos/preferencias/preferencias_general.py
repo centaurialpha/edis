@@ -10,7 +10,6 @@ from PyQt4.QtGui import (
     QWidget,
     QVBoxLayout,
     QHBoxLayout,
-    QGridLayout,
     QGroupBox,
     QCheckBox,
     QPushButton,
@@ -66,13 +65,6 @@ class ConfiguracionGeneral(QWidget):
                             QSizePolicy.Expanding))
         btn_reestablecer.clicked.connect(self._reestablecer)
 
-    def guardar(self):
-        """ Guarda las configuraciones Generales. """
-
-        config = QSettings(recursos.CONFIGURACION, QSettings.IniFormat)
-        ESettings.set('general/inicio', self.check_inicio.isChecked())
-        config.setValue('general/inicio', self.check_inicio.isChecked())
-
     def _reestablecer(self):
         bands = QMessageBox.Cancel
         bands |= QMessageBox.Yes
@@ -83,6 +75,10 @@ class ConfiguracionGeneral(QWidget):
         if resultado == QMessageBox.Cancel:
             return
         elif resultado == QMessageBox.Yes:
-            config = QSettings(recursos.CONFIGURACION, QSettings.IniFormat)
-            config.clear()
+            ESettings.borrar()
             self.parent.close()
+
+    def guardar(self):
+        """ Guarda las configuraciones Generales. """
+
+        ESettings.set('general/inicio', self.check_inicio.isChecked())
