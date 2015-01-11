@@ -279,8 +279,7 @@ class Editor(Base):
 
     def comentar(self):
         if self.hasSelectedText():
-            linea_desde, indice_desde, \
-            linea_hasta, indice_hasta = self.getSelection()
+            linea_desde, _, linea_hasta, _ = self.getSelection()
 
             # Iterar todas las líneas seleccionadas
             self.send("beginundoaction")
@@ -293,8 +292,7 @@ class Editor(Base):
 
     def descomentar(self):
         if self.hasSelectedText():
-            linea_desde, indice_desde, \
-            linea_hasta, indice_hasta = self.getSelection()
+            linea_desde, _, linea_hasta, _ = self.getSelection()
 
             for linea in range(linea_desde, linea_hasta + 1):
                 self.setSelection(linea, 0, linea, 2)
