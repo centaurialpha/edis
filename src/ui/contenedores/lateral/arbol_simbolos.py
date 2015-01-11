@@ -89,6 +89,7 @@ class ArbolDeSimbolos(QTreeWidget):
             for m in simbolos['member']:
                 nombre = m['nombre'] + ' [' + m['padre'] + ']'
                 miembro = Item(miembros, [nombre])
+                miembro.setIcon(0, QIcon(self.iconos['miembro']))
                 linea = m['linea']
                 miembro.linea = linea
 
