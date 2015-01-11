@@ -58,8 +58,9 @@ class EDIS(QMainWindow):
         QMainWindow.__init__(self)
         self.setWindowTitle(ui.__nombre__)
         self.setMinimumSize(750, 500)
-        # Maximizado
-        self.showMaximized()
+        # Se cargan las dimensiones de la ventana
+        x, y, ancho, alto = ESettings.get('ventana/dimensiones')
+        self.setGeometry(x, y, ancho, alto)
         # Secciones del menubar
         EDIS.menu_bar(0, self.trUtf8("&Archivo"))
         EDIS.menu_bar(1, self.trUtf8("&Editar"))
@@ -287,10 +288,11 @@ class EDIS(QMainWindow):
             dialogo.exec_()
             if dialogo.ignorado():
                 e.ignore()
+        dimensiones = self.geometry()
+        dimensiones = (dimensiones.x(), dimensiones.y(), dimensiones.width(),
+                        dimensiones.height())
         #FIXME: guardar configuraciones
-        archivos_recientes = principal.recientes
-        qconfig = QSettings(recursos.CONFIGURACION, QSettings.IniFormat)
-        qconfig.setValue('recientes', archivos_recientes)
+        ESettings.set('ventana/dimensiones', dimensiones)
 
     def mostrar_inicio(self):
         dialogo = EDIS.componente("inicio")
