@@ -293,12 +293,13 @@ class Editor(Base):
     def descomentar(self):
         if self.hasSelectedText():
             linea_desde, _, linea_hasta, _ = self.getSelection()
-
+            self.send("sci_beginundoaction")
             for linea in range(linea_desde, linea_hasta + 1):
                 self.setSelection(linea, 0, linea, 2)
                 if not self.text(linea).startswith(Editor._comentario):
                     continue
                 self.removeSelectedText()
+            self.send("sci_endundoaction")
 
     def a_titulo(self):
         self.send("sci_beginundoaction")
