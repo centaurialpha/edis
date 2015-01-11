@@ -282,13 +282,13 @@ class Editor(Base):
             linea_desde, _, linea_hasta, _ = self.getSelection()
 
             # Iterar todas las líneas seleccionadas
-            self.send("beginundoaction")
+            self.send("sci_beginundoaction")
             for linea in range(linea_desde, linea_hasta + 1):
                 self.insertAt(Editor._comentario, linea, 0)
+            self.send("sci_endundoaction")
         else:
             linea = self.devolver_posicion_del_cursor()[0]
             self.insertAt(Editor._comentario, linea, 0)
-            self.send("endundoaction")
 
     def descomentar(self):
         if self.hasSelectedText():
