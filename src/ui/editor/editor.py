@@ -262,6 +262,8 @@ class Editor(Base):
         super(Editor, self).keyPressEvent(e)
         if e.key() == Qt.Key_Escape:
             self.borrarIndicadores(self.indicador)
+        if e.key() in (Qt.Key_BraceLeft, Qt.Key_BracketLeft, Qt.Key_ParenLeft):
+            self._completar_brace(e)
 
     def resizeEvent(self, e):
         super(Editor, self).resizeEvent(e)
@@ -349,6 +351,14 @@ class Editor(Base):
 
     def mover_linea_arriba(self):
         self.send("sci_moveselectedlinesup")
+
+    def _completar_brace(self, e):
+        #FIXME: Evitar duplicar brace
+        braces = {'{': '}', '(': ')', '[': ']'}
+        brace = e.text()
+        complementario = braces.get(brace)
+        linea, indice = self.devolver_posicion_del_cursor()
+        self.insertAt(complementario, linea, indice + 1)
 
     def guardado(self):
         self.checker.run_cppcheck(self.nombre)
