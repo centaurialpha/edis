@@ -45,6 +45,8 @@ class ConfiguracionGeneral(QWidget):
         grupo_salir = QGroupBox(self.tr("Al salir:"))
         box = QVBoxLayout(grupo_salir)
         self.check_al_cerrar = QCheckBox(self.tr("Confirmar al cerrar"))
+        self.check_al_cerrar.setChecked(
+            ESettings.get('general/confirmarSalida'))
         box.addWidget(self.check_al_cerrar)
         self.check_dimensiones = QCheckBox(self.tr(
             "Guardar posición y tamaño de la ventana"))
@@ -86,3 +88,5 @@ class ConfiguracionGeneral(QWidget):
         ESettings.set('general/inicio', self.check_inicio.isChecked())
         ESettings.set('ventana/guardarDimensiones',
                       self.check_dimensiones.isChecked())
+        ESettings.set('general/confirmarSalida',
+                      self.check_al_cerrar.isChecked())

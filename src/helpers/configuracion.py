@@ -48,6 +48,7 @@ ITEMS_TOOLBAR = [
 configuracion = {
     'ventana/dimensiones': (),
     'ventana/guardarDimensiones': True,
+    'general/confirmarSalida': True,
     'gui/simbolos': True,
     'gui/explorador': True,
     'gui/navegador': True,

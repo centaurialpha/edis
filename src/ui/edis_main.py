@@ -281,8 +281,10 @@ class EDIS(QMainWindow):
         """
 
         principal = EDIS.componente("principal")
-        if principal.check_archivos_sin_guardar():
-            archivos_sin_guardar = principal.archivos_sin_guardar()  # lint:ok
+        if principal.check_archivos_sin_guardar() and \
+            ESettings.get('general/confirmarSalida'):
+
+            archivos_sin_guardar = principal.archivos_sin_guardar()
             dialogo = dialogo_guardar_archivos.Dialogo(
                 archivos_sin_guardar, principal)
             dialogo.exec_()
