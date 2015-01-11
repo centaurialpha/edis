@@ -143,4 +143,5 @@ class CaracteristicasEditor(QWidget):
         principal = EDIS.componente("principal")
         weditor = principal.devolver_editor()
         #FIXME: Arreglar la carga de fuente, editor-lexer
-        weditor.cargar_fuente(fuente, int(fuente_tam))
+        if weditor is not None:
+            weditor.cargar_fuente(fuente, int(fuente_tam))
