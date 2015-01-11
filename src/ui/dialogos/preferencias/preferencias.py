@@ -79,7 +79,6 @@ class Preferencias(QDialog):
         toolbar = QToolBar()
         toolbar.setIconSize(QSize(40, 40))
         toolbar.setObjectName("preferencias")
-        #toolbar.setStyleSheet("background: #47484b")
         toolbar.setToolButtonStyle(Qt.ToolButtonIconOnly)
 
         self.button_general = ToolButton("General",
@@ -112,6 +111,10 @@ class Preferencias(QDialog):
         box_buttons.addWidget(self.btn_guardar)
 
         box.addLayout(box_buttons)
+
+    def mostrar(self):
+        self.stack.setCurrentIndex(0)
+        self.show()
 
     def cambiar_widget(self, index):
         if not self.isVisible():

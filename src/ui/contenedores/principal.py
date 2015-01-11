@@ -26,7 +26,6 @@ from PyQt4.QtCore import (
 from src.helpers import (
     manejador_de_archivo,
     logger,
-    configuracion
     )
 from src import recursos
 from src.ui.editor import (
@@ -418,8 +417,7 @@ class EditorContainer(QWidget):
 
     def configuracion_edis(self):
         dialogo = EDIS.componente("preferencias")
-        #configuraciones.cargar_configuraciones()
-        dialogo.show()
+        dialogo.mostrar()
 
 
 principal = EditorContainer()
