@@ -210,8 +210,14 @@ QCheckBox {
 
 QGroupBox {
     color: #dedede;
-    padding: 0px 0px 0px 15px;
+    margin-top: 20px;
+    padding: 5px;
 }
+
+QGroupBox::title {
+    subcontrol-origin: margin;
+    padding: 10px;
+    }
 
 QTabBar {
     background-color: #383733;

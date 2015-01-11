@@ -24,10 +24,6 @@ from src.ui.contenedores.lateral import (
     arbol_simbolos,
     explorador
     )
-from src.ectags.ctags import (
-    CTags,
-    Parser
-    )
 from src.ectags import ectags
 
 instancia = None
@@ -45,9 +41,6 @@ class _ContenedorLateral(QWidget):
 
     def __init__(self, parent=None):
         super(_ContenedorLateral, self).__init__()
-        #FIXME: Cambiar esto
-        #self.ctags = CTags()
-        self.parser = Parser()
         self.ctags = ectags.Ctags()
         self._edis = parent
         box = QVBoxLayout(self)

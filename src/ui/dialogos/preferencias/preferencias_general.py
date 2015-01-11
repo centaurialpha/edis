@@ -6,26 +6,22 @@
 # License: GPLv3 (see http://www.gnu.org/licenses/gpl.html)
 
 # Módulos QtGui
-from PyQt4.QtGui import QWidget
-from PyQt4.QtGui import QVBoxLayout
-from PyQt4.QtGui import QHBoxLayout
-#from PyQt4.QtGui import QGridLayout
-from PyQt4.QtGui import QGroupBox
-#from PyQt4.QtGui import QLabel
-from PyQt4.QtGui import QCheckBox
-#from PyQt4.QtGui import QSpinBox
-#from PyQt4.QtGui import QComboBox
-from PyQt4.QtGui import QPushButton
-#from PyQt4.QtGui import QTabWidget
-from PyQt4.QtGui import QMessageBox
-#from PyQt4.QtGui import QSpacerItem
-#from PyQt4.QtGui import QSizePolicy
+from PyQt4.QtGui import (
+    QWidget,
+    QVBoxLayout,
+    QHBoxLayout,
+    QGridLayout,
+    QGroupBox,
+    QCheckBox,
+    QPushButton,
+    QMessageBox,
+    QSizePolicy,
+    QSpacerItem
+    )
 
 # Módulos QtCore
 #from PyQt4.QtCore import Qt
-from PyQt4.QtCore import (
-    QSettings
-    )
+from PyQt4.QtCore import QSettings
 
 # Módulos EDIS
 from src import recursos
@@ -41,16 +37,19 @@ class ConfiguracionGeneral(QWidget):
 
         # Inicio
         grupo_inicio = QGroupBox(self.tr("Al inicio:"))
-        box = QHBoxLayout(grupo_inicio)
+        box = QVBoxLayout(grupo_inicio)
         self.check_inicio = QCheckBox(self.tr("Mostrar ventana de inicio"))
         self.check_inicio.setChecked(ESettings.get('general/inicio'))
         box.addWidget(self.check_inicio)
 
         # Al salir
         grupo_salir = QGroupBox(self.tr("Al salir:"))
-        box = QHBoxLayout(grupo_salir)
+        box = QVBoxLayout(grupo_salir)
         self.check_al_cerrar = QCheckBox(self.tr("Confirmar al cerrar"))
         box.addWidget(self.check_al_cerrar)
+        self.check_dimensiones = QCheckBox(self.tr(
+            "Guardar posición y tamaño de la ventana"))
+        box.addWidget(self.check_dimensiones)
 
         # Reestablecer
         grupo_reestablecer = QGroupBox(self.tr("Reestablecer:"))
@@ -63,7 +62,8 @@ class ConfiguracionGeneral(QWidget):
         contenedor.addWidget(grupo_inicio)
         contenedor.addWidget(grupo_salir)
         contenedor.addWidget(grupo_reestablecer)
-
+        contenedor.addItem(QSpacerItem(0, 10, QSizePolicy.Expanding,
+                            QSizePolicy.Expanding))
         btn_reestablecer.clicked.connect(self._reestablecer)
 
     def guardar(self):
