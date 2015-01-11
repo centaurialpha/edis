@@ -57,7 +57,7 @@ class ArbolDeSimbolos(QTreeWidget):
             variables = Item(self, [self.tr('Variables')])
             variables.clickeable = False
             for v in simbolos['variable']:
-                variable = Item(variables, [v['nombre']])
+                variable = Item(variables, [v.get('nombre')])
                 linea = v['linea']
                 variable.linea = linea
                 variable.setIcon(0, QIcon(self.iconos['global']))
@@ -67,7 +67,7 @@ class ArbolDeSimbolos(QTreeWidget):
             funciones = Item(self, [self.tr('Funciones')])
             funciones.clickeable = False
             for f in simbolos['function']:
-                funcion = Item(funciones, [f['nombre']])
+                funcion = Item(funciones, [f.get('nombre')])
                 linea = f['linea']
                 funcion.linea = linea
                 funcion.setIcon(0, QIcon(self.iconos['funcion']))
@@ -77,7 +77,7 @@ class ArbolDeSimbolos(QTreeWidget):
             structs = Item(self, [self.tr('Estructuras')])
             structs.clickeable = False
             for s in simbolos['struct']:
-                struct = Item(structs, [s['nombre']])
+                struct = Item(structs, [s.get('nombre')])
                 linea = s['linea']
                 struct.linea = linea
                 struct.setIcon(0, QIcon(self.iconos['struct']))
