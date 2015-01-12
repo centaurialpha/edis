@@ -19,13 +19,18 @@ from PyQt4.QtCore import (
     QThread,
     SIGNAL
     )
+from PyQt4.Qsci import (
+    QsciScintilla,
+    QsciAPIs
+    )
 
 from src import recursos
 from src.ui.editor.base import Base
 from src.ui.editor.minimapa import MiniMapa
 from src.ui.editor import (
     checker,
-    lexer
+    lexer,
+    keywords
     )
 from src.helpers import logger
 from src.helpers.configuracion import ESettings
@@ -92,6 +97,14 @@ class Editor(Base):
         # Lexer
         self._lexer = None
         self.cargar_lexer(ext)
+        # Autocompletado
+        #FIXME:
+        api = QsciAPIs(self._lexer)
+        for palabra in keywords.keywords:
+            api.add(palabra)
+        api.prepare()
+        self.setAutoCompletionThreshold(1)
+        self.setAutoCompletionSource(QsciScintilla.AcsAPIs)
         # Indentación
         self._indentacion = ESettings.get('editor/indentacionAncho')
         self.send("sci_settabwidth", self._indentacion)
