@@ -59,8 +59,11 @@ class EDIS(QMainWindow):
         self.setWindowTitle(ui.__nombre__)
         self.setMinimumSize(750, 500)
         # Se cargan las dimensiones de la ventana
-        x, y, ancho, alto = ESettings.get('ventana/dimensiones')
-        self.setGeometry(x, y, ancho, alto)
+        if not ESettings.get('ventana/dimensiones'):
+            self.showMaximized()
+        else:
+            x, y, ancho, alto = ESettings.get('ventana/dimensiones')
+            self.setGeometry(x, y, ancho, alto)
         # Secciones del menubar
         EDIS.menu_bar(0, self.trUtf8("&Archivo"))
         EDIS.menu_bar(1, self.trUtf8("&Editar"))
