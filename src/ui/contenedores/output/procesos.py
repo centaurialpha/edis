@@ -61,6 +61,21 @@ class EjecutarWidget(QWidget):
             self.ejecucion_terminada)
         self.proceso_compilacion.error[QProcess.ProcessError].connect(
             self._error_compilacion)
+        self.proceso_ejecucion.error[QProcess.ProcessError].connect(
+            self._error_de_ejecucion)
+
+    def _error_de_ejecucion(self, e):
+        """ Éste método es ejecutado cuando la ejecución falla """
+
+        formato = QTextCharFormat()
+        formato.setAnchor(True)
+        formato.setFontPointSize(12)
+        formato.setForeground(QColor('white'))
+        formato.setBackground(QColor('red'))
+        self.output.setCurrentCharFormat(formato)
+        self.output.setPlainText(self.tr(
+                                "Ha ocurrido un error en la ejecución. "
+                                "Código de error %s" % e))
 
     def correr_compilacion(self, nombre_archivo=''):
         """ Se corre el comando gcc para la compilación """
@@ -136,7 +151,8 @@ class EjecutarWidget(QWidget):
                                     self.tr("No se ha configurado una terminal"
                                     " para ejecutar el binario."))
                 return
-            proceso = self._script % (terminal, self.ejecutable)
+            proceso = 'xterm -T "%s" -e /usr/bin/cb_console_runner "%s"' \
+                    % (self.ejecutable, os.path.join(direc, self.ejecutable))
             # Run !
             self.proceso_ejecucion.start(proceso)
         else:
