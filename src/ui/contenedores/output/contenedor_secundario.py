@@ -26,6 +26,8 @@ class ContenedorOutput(QWidget):
         box.setContentsMargins(0, 0, 0, 0)
         box.setSpacing(0)
 
+        self.nombre_archivo = None
+
         self.salida_ = procesos.EjecutarWidget()
         box.addWidget(self.salida_)
 
@@ -41,7 +43,8 @@ class ContenedorOutput(QWidget):
         self.salida_.output.setFoco()
 
     def ejecutar(self):
-        #FIXME: revisar!
+        if self.nombre_archivo is None:
+            return
         self.salida_.correr_programa(self.nombre_archivo)
 
     def terminar_programa(self):
