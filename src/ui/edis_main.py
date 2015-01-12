@@ -24,11 +24,9 @@ from PyQt4.QtCore import (
     SIGNAL,
     Qt,
     QSize,
-    QSettings
     )
 
 # Módulos EDIS
-from src import recursos
 from src import ui
 from src.helpers import (
     configuracion,
@@ -327,3 +325,8 @@ class EDIS(QMainWindow):
     def _descargar_compilador(self):
         #FIXME:
         webbrowser.open_new(ui.__gcc__)
+
+    def configuracion_edis(self):
+        from src.ui.dialogos.preferencias import preferencias
+        dialogo = preferencias.Preferencias(self)
+        dialogo.show()

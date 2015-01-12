@@ -420,9 +420,5 @@ class EditorContainer(QWidget):
         dialogo = dialogo_proyecto.DialogoProyecto(self)
         dialogo.show()
 
-    def configuracion_edis(self):
-        dialogo = EDIS.componente("preferencias")
-        dialogo.mostrar()
-
 
 principal = EditorContainer()

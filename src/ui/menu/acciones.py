@@ -241,7 +241,7 @@ ACCIONES = (
     {
         'seccion': 1,
         'nombre': 'Configuración',
-        'conexion': "configuracion_edis",
+        'conexion': "edis.configuracion_edis",
         'atajo': _ATAJO['preferencias'],
         'separador': True},
     {

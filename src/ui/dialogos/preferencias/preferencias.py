@@ -135,6 +135,3 @@ class ToolButton(QToolButton):
         self.setText(self.trUtf8(texto))
         self.setIcon(QIcon(icono))
         self.setToolButtonStyle(Qt.ToolButtonTextUnderIcon)
-
-
-preferencias = Preferencias()
