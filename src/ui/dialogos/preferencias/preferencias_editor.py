@@ -161,6 +161,7 @@ class CaracteristicasEditor(QWidget):
         ESettings.set('editor/fuente', fuente)
         ESettings.set('editor/fuenteTam,', int(fuente_tam))
         ESettings.set('editor/margenAncho', self.slider_margen.value())
+        ESettings.set('editor/guias', self.check_guia.isChecked())
         for ntipo, radio in enumerate(self.radio_cursor):
             if radio.isChecked():
                 tipo = ntipo
@@ -169,3 +170,4 @@ class CaracteristicasEditor(QWidget):
         weditor = principal.devolver_editor()
         if weditor is not None:
             weditor.cargar_fuente(fuente, int(fuente_tam))
+            weditor.flags()

@@ -276,7 +276,8 @@ class Editor(Base):
         if e.key() == Qt.Key_Escape:
             self.borrarIndicadores(self.indicador)
         if e.key() in (Qt.Key_BraceLeft, Qt.Key_BracketLeft, Qt.Key_ParenLeft):
-            self._completar_brace(e)
+            #self._completar_brace(e)
+            pass
 
     def resizeEvent(self, e):
         super(Editor, self).resizeEvent(e)
