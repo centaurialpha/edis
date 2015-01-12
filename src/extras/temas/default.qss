@@ -13,6 +13,13 @@ QToolBar#toolbar {
     padding: 7px;
 }
 
+QToolBar#selector {
+    background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
+                                       stop: 0 #5a584f, stop: 1 #41403b);
+    padding: 4px;
+    border-left: 1px solid gray;
+    }
+
 QToolBar#preferencias {
     background: #41403b;
     spacing: 7px;

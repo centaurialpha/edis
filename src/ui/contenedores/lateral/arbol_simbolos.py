@@ -99,6 +99,10 @@ class ArbolDeSimbolos(QTreeWidget):
         if item.clickeable:
             self._ir_a_linea.emit(int(item.linea) - 1)
 
+    def closeEvent(self, e):
+        super(ArbolDeSimbolos, self).closeEvent(e)
+        #FIXME: emitir señal de cerrado para hacer dock
+
 
 class Item(QTreeWidgetItem):
 

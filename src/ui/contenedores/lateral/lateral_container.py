@@ -11,11 +11,15 @@
 from PyQt4.QtGui import (
     QWidget,
     QVBoxLayout,
+    QHBoxLayout,
     QComboBox,
-    QStackedWidget
+    QStackedWidget,
+    QToolButton,
+    QToolBar,
+    QIcon
     )
 
-from PyQt4.QtCore import SIGNAL
+from PyQt4.QtCore import SIGNAL, QSize
 
 from src import recursos
 from src.helpers.configuracion import ESettings
@@ -47,13 +51,25 @@ class _ContenedorLateral(QWidget):
         box.setContentsMargins(0, 0, 0, 0)
         box.setSpacing(0)
 
+        hbox = QHBoxLayout()
         # Combo selector
         self.combo_selector = QComboBox()
         self.combo_selector.setObjectName("combo_selector")
         self.combo_selector.setStyleSheet(
             "QComboBox::drop-down{image: url(%s); top: 5px;}"
             % recursos.ICONOS['down'])
-        box.addWidget(self.combo_selector)
+        hbox.addWidget(self.combo_selector, stretch=1)
+        # Toolbar
+        toolbar = QToolBar()
+        toolbar.setObjectName("selector")
+        toolbar.setIconSize(QSize(20, 20))
+        tool_undock = QToolButton()
+        tool_undock.setToolTip(self.tr("Undock widget"))
+        tool_undock.setIcon(QIcon(recursos.ICONOS['undock']))
+        toolbar.addWidget(tool_undock)
+        hbox.addWidget(toolbar)
+
+        box.addLayout(hbox)
 
         # Stacked
         self.stack = QStackedWidget()
@@ -72,9 +88,10 @@ class _ContenedorLateral(QWidget):
 
         self.actualizar()
 
-        # Conexión del combo selector
+        # Conexiónes
         self.combo_selector.currentIndexChanged[int].connect(
             lambda: self._cambiar_widget(self.combo_selector.currentIndex()))
+        tool_undock.clicked.connect(self._undock)
 
     def actualizar(self):
         central = self._edis.central
@@ -140,6 +157,19 @@ class _ContenedorLateral(QWidget):
 
     def _cambiar_widget(self, indice):
         self.stack.setCurrentIndex(indice)
+
+    def _undock(self):
+        indice = self.stack.currentIndex()
+        widget = self.stack.widget(indice)
+        titulo_widget = self.combo_selector.itemText(indice)
+        self.combo_selector.removeItem(indice)
+        widget.setParent(None)
+        widget.setWindowTitle(titulo_widget)
+        widget.resize(400, 400)
+        widget.show()
+
+    def _dock(self):
+        pass
 
     def actualizar_simbolos(self, archivo):
         if archivo == 'Nuevo_archivo':
