@@ -2,16 +2,12 @@
 # EDIS - Entorno de Desarrollo Integrado Simple para C/C++
 #
 # This file is part of EDIS
-# Copyright 2014 - Gabriel Acosta
+# Copyright 2014-2015 - Gabriel Acosta
 # License: GPLv3 (see http://www.gnu.org/licenses/gpl.html)
 
 from PyQt4.Qsci import QsciLexerCPP
-from PyQt4.QtGui import (
-    QFont,
-    QColor
-    )
+from PyQt4.QtGui import QColor
 
-from src.helpers import configuraciones
 from src import recursos
 
 
@@ -23,17 +19,13 @@ class LexerC(QsciLexerCPP):
         self.setStylePreprocessor(True)
         self.setFoldComments(True)
         self.setFoldPreprocessor(True)
-        self.setHighlightHashQuotedStrings(True)
-
-        self.fuente = QFont(configuraciones.FUENTE, configuraciones.TAM_FUENTE)
-        self.setFont(self.fuente)
 
         self.__cargar_highlighter()
 
     def __cargar_highlighter(self):
         self.setDefaultPaper(QColor(recursos.TEMA['FondoEditor']))
-        self.setPaper(QColor(18, 18, 18))
-        self.setColor(QColor(241, 241, 241))
+        self.setPaper(self.defaultPaper(0))
+        self.setColor(QColor(recursos.TEMA['Color']))
 
         tipos = dir(LexerC)
         for tipo in tipos:
@@ -41,6 +33,12 @@ class LexerC(QsciLexerCPP):
                 atr = getattr(self, tipo)
                 self.setColor(QColor(recursos.TEMA[tipo]), atr)
 
-        fuente = self.font(LexerC.Keyword)
-        fuente.setBold(False)
-        self.setFont(fuente, LexerC.Keyword)
+    def keywords(self, clave):
+        super(LexerC, self).keywords(clave)
+        if clave == 1:
+            return ('auto break case const continue default do else enum'
+                    'extern for goto if return sizeof struct switch typedef'
+                    'union while')
+        elif clave == 2:
+            return ('char double float int long register short signed static'
+                    'unsigned void volatile')

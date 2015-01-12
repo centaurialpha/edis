@@ -2,7 +2,7 @@
 # EDIS - Entorno de Desarrollo Integrado Simple para C/C++
 #
 # This file is part of EDIS
-# Copyright 2014 - Gabriel Acosta
+# Copyright 2014-2015 - Gabriel Acosta
 # License: GPLv3 (see http://www.gnu.org/licenses/gpl.html)
 
 from PyQt4.QtGui import (
@@ -14,13 +14,17 @@ from PyQt4.QtGui import (
     )
 
 from PyQt4.QtCore import (
-    SIGNAL
+    SIGNAL,
+    pyqtSignal
     )
 
 from src import recursos
 
 
 class ArbolDeSimbolos(QTreeWidget):
+
+    _ir_a_linea = pyqtSignal(int, name='irALinea')
+
     iconos = {
         'clase': recursos.ICONOS['class'],
         'funcion': recursos.ICONOS['funcion'],
@@ -42,10 +46,6 @@ class ArbolDeSimbolos(QTreeWidget):
         self.header().setResizeMode(0, QHeaderView.ResizeToContents)
 
         self.connect(self, SIGNAL("itemClicked(QTreeWidgetItem *, int)"),
-            self.info_item)
-        self.connect(self, SIGNAL("itemActivated(QTreeWidgetItem *, int)"),
-            self.info_item)
-        self.connect(self, SIGNAL("itemClicked(QTreeWidgetItem *, int)"),
             self.ir_a_linea)
         self.connect(self, SIGNAL("itemActivated(QTreeWidgetItem *, int)"),
             self.ir_a_linea)
@@ -53,107 +53,56 @@ class ArbolDeSimbolos(QTreeWidget):
     def actualizar_simbolos(self, simbolos):
         self.clear()
 
-        if 'globals' in simbolos:
-            globalss = Item(self, [self.tr("Variables")])
-            globalss.clicked = False
-            globalss.setIcon(0, QIcon(self.iconos['global']))
-            for v in list(simbolos['globals'].keys()):
-                variable = Item(globalss, [v])
-                variable.line = simbolos['globals'][v]
+        if 'variable' in simbolos:
+            variables = Item(self, [self.tr('Variables')])
+            variables.clickeable = False
+            for v in simbolos['variable']:
+                variable = Item(variables, [v.get('nombre')])
+                linea = v['linea']
+                variable.linea = linea
                 variable.setIcon(0, QIcon(self.iconos['global']))
-            globalss.setExpanded(True)
+            variables.setExpanded(True)
 
-        if 'classes' in simbolos:
-            classs = Item(self, [self.tr("Clases")])
-            classs.clicked = False
-            classs.setIcon(0, QIcon(self.iconos['clase']))
-            for c in list(simbolos['classes'].keys()):
-                clase = Item(classs, [c])
-                clase.line = simbolos['classes'][c][0]
-                clase.setIcon(0, QIcon(self.iconos['clase']))
-                if simbolos['classes'][c][1]['attributes']:
-                    att = Item(clase, [self.tr("Atributos")])
-                    att.clicked = False
-                    att.setIcon(0, QIcon(self.iconos['miembro']))
-                    for at in simbolos['classes'][c][1]['attributes']:
-                        atr = Item(att, [at])
-                        atr.line = simbolos['classes'][c][1]['attributes'][at]
-                        atr.setIcon(0, QIcon(self.iconos['miembro']))
-                    att.setExpanded(True)
-                if simbolos['classes'][c][2]['methods']:
-                    mett = Item(clase, [self.trUtf8("Métodos")])
-                    mett.clicked = False
-                    mett.setIcon(0, QIcon(self.iconos['funcion']))
-                    for m in simbolos['classes'][c][2]['methods']:
-                        met = Item(mett, [m])
-                        met.line = simbolos['classes'][c][2]['methods'][m]
-                        met.setIcon(0, QIcon(self.iconos['funcion']))
-                    mett.setExpanded(True)
-                    clase.setExpanded(True)
-                classs.setExpanded(True)
+        if 'function' in simbolos:
+            funciones = Item(self, [self.tr('Funciones')])
+            funciones.clickeable = False
+            for f in simbolos['function']:
+                funcion = Item(funciones, [f.get('nombre')])
+                linea = f['linea']
+                funcion.linea = linea
+                funcion.setIcon(0, QIcon(self.iconos['funcion']))
+            funciones.setExpanded(True)
 
-        if 'structs' in simbolos:
-            structs = Item(self, [self.tr("Estructuras")])
-            structs.clicked = False
-            structs.setIcon(0, QIcon(self.iconos['struct']))
-            for s in list(simbolos['structs'].keys()):
-                struct = Item(structs, [s])
-                struct.line = simbolos['structs'][s][0]
+        if 'struct' in simbolos:
+            structs = Item(self, [self.tr('Estructuras')])
+            structs.clickeable = False
+            for s in simbolos['struct']:
+                struct = Item(structs, [s.get('nombre')])
+                linea = s['linea']
+                struct.linea = linea
                 struct.setIcon(0, QIcon(self.iconos['struct']))
-                for m in simbolos['structs'][s][1]['members']:
-                    member = Item(struct, [m])
-                    member.line = simbolos['structs'][s][1]['members'][m]
-                    member.setIcon(0, QIcon(self.iconos['miembro']))
-                struct.setExpanded(True)
             structs.setExpanded(True)
-        if 'functions' in simbolos:
-            functions = Item(self, [self.tr("Funciones")])
-            functions.clicked = False
-            functions.setIcon(0, QIcon(self.iconos['funcion']))
-            for f in list(simbolos['functions'].keys()):
-                function = Item(functions, [f])
-                function.line = simbolos['functions'][f]
-                function.setIcon(0, QIcon(self.iconos['funcion']))
-            functions.setExpanded(True)
 
-        if 'enums' in simbolos:
-            enums = Item(self, [self.tr("Enums")])
-            enums.clicked = False
-            enums.setIcon(0, QIcon(self.iconos['enums']))
-            for e in list(simbolos['enums'].keys()):
-                enum = Item(enums, [e])
-                enum.line = simbolos['enums'][e][0]
-                enum.setIcon(0, QIcon(self.iconos['enums']))
-                for enu in simbolos['enums'][e][1]['enumerators']:
-                    enumerator = Item(enum, [enu])
-                    enumerator.line = \
-                                    simbolos['enums'][e][1]['enumerators'][enu]
-                    enumerator.setIcon(0, QIcon(self.iconos['enumerator']))
-                enum.setExpanded(True)
-            enums.setExpanded(True)
+        if 'member' in simbolos:
+            miembros = Item(self, [self.tr('Miembros')])
+            miembros.clickeable = False
+            for m in simbolos['member']:
+                nombre = m['nombre'] + ' [' + m['padre'] + ']'
+                miembro = Item(miembros, [nombre])
+                miembro.setIcon(0, QIcon(self.iconos['miembro']))
+                linea = m['linea']
+                miembro.linea = linea
 
-    def tooltip(self, dato):
-        pass
-
-    def info_item(self, treeItem):
-        pass
+            miembros.setExpanded(True)
 
     def ir_a_linea(self, item):
-        if item.clicked:
-            self.emit(SIGNAL("irALinea(int)"), int(item.line))
+        if item.clickeable:
+            self._ir_a_linea.emit(int(item.linea) - 1)
 
 
 class Item(QTreeWidgetItem):
 
-    def __init__(self, parent, name):
-        QTreeWidgetItem.__init__(self, parent, name)
-        self.__line = None
-        self.clicked = True
-
-    def set_line(self, line):
-        self.__line = line
-
-    def get_line(self):
-        return self.__line
-
-    line = property(get_line, set_line)
+    def __init__(self, parent, nombre):
+        QTreeWidgetItem.__init__(self, parent, nombre)
+        self.linea = None
+        self.clickeable = True

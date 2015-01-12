@@ -1,0 +1,42 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+# EDIS - Entorno de Desarrollo Integrado Simple para C/C++
+#
+# This file is part of EDIS
+# Copyright 2014-2015 - Gabriel Acosta
+# License: GPLv3 (see http://www.gnu.org/licenses/gpl.html)
+
+import sys
+import os
+
+# Esto es reemplazado en tiempo de instalación
+DIR_INSTALACION = "@ INSTALLED_BASE_DIR @"
+
+# Se obtiene el nombre reemplazado si existe
+if os.path.exists(DIR_INSTALACION):
+    proyecto = DIR_INSTALACION
+else:
+    proyecto = os.path.abspath(os.path.dirname(os.path.dirname(
+                                            os.path.realpath(sys.argv[0]))))
+
+
+if proyecto not in sys.path:
+    sys.path.insert(0, proyecto)
+
+
+def main():
+    from src import recursos
+
+    # Si no existe la carpeta de configuraciones se crea
+    if not os.path.isdir(recursos.HOME_EDIS):
+        os.mkdir(recursos.HOME_EDIS)
+
+    from PyQt4.QtGui import QApplication
+
+    app = QApplication(sys.argv)
+    from src import run
+    run.correr_interfaz(app)
+
+
+if __name__ == "__main__":
+    main()

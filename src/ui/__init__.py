@@ -2,7 +2,7 @@
 # EDIS - Entorno de Desarrollo Integrado Simple para C/C++
 #
 # This file is part of EDIS
-# Copyright 2014 - Gabriel Acosta
+# Copyright 2014-2015 - Gabriel Acosta
 # License: GPLv3 (see http://www.gnu.org/licenses/gpl.html)
 
 __descripcion__ = """
@@ -11,6 +11,8 @@ para los lenguajes de programación C/C++ desarrollado completamente en Python.
 <br>
 """
 __nombre__ = "EDIS"
+__autor__ = "Gabriel Acosta"
+__email_autor__ = "acostadariogabriel@gmail.com"
 __codigo_fuente__ = "http://github.com/centaurialpha/edis"
 __version__ = "1.0-alpha"
 __python__ = "https://www.python.org/"

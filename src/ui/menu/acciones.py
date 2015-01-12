@@ -2,7 +2,7 @@
 # EDIS - Entorno de Desarrollo Integrado Simple para C/C++
 #
 # This file is part of EDIS
-# Copyright 2014 - Gabriel Acosta
+# Copyright 2014-2015 - Gabriel Acosta
 # License: GPLv3 (see http://www.gnu.org/licenses/gpl.html)
 
 from src import recursos
@@ -163,60 +163,78 @@ ACCIONES = (
         'separador': True},
     {
         'seccion': 1,
-        'nombre': 'Eliminar línea',
-        'conexion': 'eliminar_linea',
-        'atajo': _ATAJO['eliminar']},
-    {
-        'seccion': 1,
-        'nombre': 'Duplicar línea',
-        'conexion': 'duplicar_linea',
-        'atajo': _ATAJO['duplicar'],
-        'separador': True},
-    {
-        'seccion': 1,
-        'nombre': 'Texto a minúsculas',
-        'conexion': "convertir_a_minusculas"},
-    {
-        'seccion': 1,
-        'nombre': 'Texto a mayúsculas',
-        'conexion': "convertir_a_mayusculas",
-        'icono': _ICONO['upper']},
-    {
-        'seccion': 1,
-        'nombre': 'Comentar',
-        'conexion': 'comentar_documento'},
-    {
-        'seccion': 1,
-        'nombre': 'Descomentar',
-        'conexion': 'descomentar_documento'},
-    {
-        'seccion': 1,
-        'nombre': 'Convertir a título',
-        'conexion': 'convertir_a_titulo',
-        'atajo': _ATAJO['titulo'],
-        'separador': True},
+        'nombre': 'Línea',
+        'submenu': True},
     {
         'seccion': 1,
         'nombre': 'Indentar',
         'conexion': 'indentar',
         'atajo': _ATAJO['indentar'],
-        'icono': _ICONO['indent']},
+        'icono': _ICONO['indent'],
+        'submenu': 'Línea'},
     {
         'seccion': 1,
         'nombre': 'Remover indentación',
         'conexion': 'remover_indentacion',
         'atajo': _ATAJO['quitar-indentacion'],
-        'icono': _ICONO['unindent']},
+        'icono': _ICONO['unindent'],
+        'submenu': 'Línea'},
+    {
+        'seccion': 1,
+        'nombre': 'Duplicar línea',
+        'conexion': 'duplicar_linea',
+        'atajo': _ATAJO['duplicar'],
+        'submenu': 'Línea'},
+    {
+        'seccion': 1,
+        'nombre': 'Eliminar línea',
+        'conexion': 'eliminar_linea',
+        'atajo': _ATAJO['eliminar'],
+        'submenu': 'Línea'},
+    {
+        'seccion': 1,
+        'nombre': 'Convertir texto',
+        'submenu': True},
+    {
+        'seccion': 1,
+        'nombre': 'A minúsculas',
+        'conexion': "convertir_a_minusculas",
+        'submenu': 'Convertir texto'},
+    {
+        'seccion': 1,
+        'nombre': 'A mayúsculas',
+        'conexion': "convertir_a_mayusculas",
+        'submenu': 'Convertir texto'},
+    {
+        'seccion': 1,
+        'nombre': 'Convertir a título',
+        'conexion': 'convertir_a_titulo',
+        'submenu': 'Convertir texto'},
+    {
+        'seccion': 1,
+        'nombre': 'Comentario',
+        'submenu': True},
+    {
+        'seccion': 1,
+        'nombre': 'Comentar',
+        'conexion': 'comentar_documento',
+        'submenu': 'Comentario'},
+    {
+        'seccion': 1,
+        'nombre': 'Descomentar',
+        'conexion': 'descomentar_documento',
+        'submenu': 'Comentario',
+        'separador': True},
     {
         'seccion': 1,
         'nombre': 'Mover hacia arriba',
-        'conexion': 'mover_hacia_arriba',
+        'conexion': 'mover_linea_arriba',
         'atajo': _ATAJO['mover-arriba'],
         'icono': _ICONO['arrow-up']},
     {
         'seccion': 1,
         'nombre': 'Mover hacia abajo',
-        'conexion': 'mover_hacia_abajo',
+        'conexion': 'mover_linea_abajo',
         'atajo': _ATAJO['mover-abajo'],
         'icono': _ICONO['arrow-down'],
         'separador': True},
@@ -278,13 +296,13 @@ ACCIONES = (
         'atajo': _ATAJO['alejar']},
     {
         'seccion': 3,
-        'nombre': 'Búsqueda rápida',
-        'conexion': 'busqueda_rapida',
+        'nombre': 'Buscar',
+        'conexion': 'busqueda',
         'atajo': _ATAJO['busqueda-rapida']},
     {
         'seccion': 3,
-        'nombre': 'Buscar',
-        'conexion': 'buscar',
+        'nombre': 'Reemplazar',
+        'conexion': 'reemplazar',
         'atajo': _ATAJO['buscar']},
     {
         'seccion': 5,

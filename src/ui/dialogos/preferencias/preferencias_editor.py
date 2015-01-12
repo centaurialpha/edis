@@ -2,7 +2,7 @@
 # EDIS - Entorno de Desarrollo Integrado Simple para C/C++
 #
 # This file is part of EDIS
-# Copyright 2014 - Gabriel Acosta
+# Copyright 2014-2015 - Gabriel Acosta
 # License: GPLv3 (see http://www.gnu.org/licenses/gpl.html)
 
 # Módulos QtGui
@@ -21,14 +21,13 @@ from PyQt4.QtGui import (
     )
 
 # Módulos QtCore
-from PyQt4.QtCore import (
-    Qt,
-    QSettings
-    )
+from PyQt4.QtCore import Qt
 
 # Módulos EDIS
-from src import recursos
-from src.helpers import configuraciones
+#from src import recursos
+from src.helpers.configuracion import ESettings
+from src.helpers import configuracion
+from src.ui.edis_main import EDIS
 
 
 class TabEditor(QWidget):
@@ -63,9 +62,9 @@ class CaracteristicasEditor(QWidget):
         box = QGridLayout(grupo_margen)
         self.check_margen = QCheckBox(self.tr("Mostrar"))
         box.addWidget(self.check_margen, 0, 0)
-        slider_margen = QSlider(Qt.Horizontal)
-        slider_margen.setMaximum(180)
-        box.addWidget(slider_margen, 0, 1)
+        self.slider_margen = QSlider(Qt.Horizontal)
+        self.slider_margen.setMaximum(180)
+        box.addWidget(self.slider_margen, 0, 1)
         lcd_margen = QLCDNumber()
         lcd_margen.setStyleSheet("color: #dedede")
         lcd_margen.setSegmentStyle(lcd_margen.Flat)
@@ -101,22 +100,26 @@ class CaracteristicasEditor(QWidget):
         contenedor.addWidget(grupo_fuente)
 
         # Conexiones
-        slider_margen.valueChanged[int].connect(lcd_margen.display)
+        self.slider_margen.valueChanged[int].connect(lcd_margen.display)
         slider_indentacion.valueChanged[int].connect(lcd_indentacion.display)
         self.btn_fuente.clicked.connect(self._seleccionar_fuente)
 
         # Configuraciones
         # Márgen
-        self.check_margen.setChecked(configuraciones.MARGEN)
-        slider_margen.setValue(configuraciones.MARGEN_COLUMNA)
+        self.check_margen.setChecked(ESettings.get('editor/margen'))
+        self.slider_margen.setValue(ESettings.get('editor/margenAncho'))
         # Indentación
-        self.check_indentacion.setChecked(configuraciones.INDENTACION)
-        slider_indentacion.setValue(configuraciones.INDENTACION_ANCHO)
-        self.check_guia.setChecked(configuraciones.GUIAS)
+        self.check_indentacion.setChecked(ESettings.get(
+                                         'editor/indentacion'))
+        slider_indentacion.setValue(ESettings.get(
+                                   'editor/indentacionAncho'))
+        self.check_guia.setChecked(ESettings.get('editor/guias'))
 
     def _cargar_fuente(self):
-        fuente = configuraciones.FUENTE
-        size = str(configuraciones.TAM_FUENTE)
+        fuente = ESettings.get('editor/fuente')
+        if not fuente:
+            fuente = configuracion.FUENTE
+        size = str(ESettings.get('editor/fuenteTam'))
         texto = fuente + ', ' + size
         self.btn_fuente.setText(texto)
 
@@ -125,14 +128,20 @@ class CaracteristicasEditor(QWidget):
         if ok:
             fuente = seleccion.family()
             size = str(seleccion.pointSize())
-            configuraciones.FUENTE = fuente
-            configuraciones.TAM_FUENTE = int(size)
+            ESettings.set('editor/fuente', fuente)
+            ESettings.set('editor/fuenteTam,', int(size))
             self.btn_fuente.setText(fuente + ', ' + size)
 
     def guardar(self):
         """ Guarda las configuraciones del Editor. """
 
-        config = QSettings(recursos.CONFIGURACION, QSettings.IniFormat)
-        configuraciones.FUENTE = self.btn_fuente.text().split(',')[0]
-        config.setValue('configuraciones/editor/fuente',
-                        configuraciones.FUENTE)
+        fuente, fuente_tam = self.btn_fuente.text().split(',')
+        ESettings.set('editor/fuente', fuente)
+        ESettings.set('editor/fuenteTam,', int(fuente_tam))
+        ESettings.set('editor/margenAncho', self.slider_margen.value())
+        ESettings
+        principal = EDIS.componente("principal")
+        weditor = principal.devolver_editor()
+        #FIXME: Arreglar la carga de fuente, editor-lexer
+        if weditor is not None:
+            weditor.cargar_fuente(fuente, int(fuente_tam))

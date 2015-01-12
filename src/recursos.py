@@ -2,7 +2,7 @@
 # EDIS - Entorno de Desarrollo Integrado Simple para C/C++
 #
 # This file is part of EDIS
-# Copyright 2014 - Gabriel Acosta
+# Copyright 2014-2015 - Gabriel Acosta
 # License: GPLv3 (see http://www.gnu.org/licenses/gpl.html)
 
 """
@@ -20,9 +20,7 @@ from PyQt4.QtCore import Qt
 # Directorio home
 HOME = os.path.expanduser("~")
 # Directorio código fuente
-PATH = os.path.abspath(os.path.dirname(__file__))
-# Carpeta con las imágenes
-PATH_ICONOS = os.path.join(PATH, "images")
+PATH = os.path.relpath(os.path.dirname(__file__))
 # Carpeta que contiene archivos de configuración y logs
 HOME_EDIS = os.path.join(HOME, ".edis")
 # Archivo de configuración
@@ -37,8 +35,9 @@ IDIOMA = os.path.join(PATH, "extras", "idiomas")
 CTAGS = os.path.join(PATH, 'ectags', 'ctags.exe')
 # Iconos
 ICONOS = {}
-for icono in os.listdir(PATH_ICONOS):
-    ICONOS[icono.split('.')[0]] = os.path.join(PATH_ICONOS, icono)
+for icono in os.listdir(os.path.join(PATH, "images")):
+    ICONOS[icono.split('.')[0]] = os.path.join(os.path.join(
+                                                PATH, "images", icono))
 
 # Atajos de teclas
 ATAJOS = {
@@ -89,9 +88,9 @@ ATAJOS = {
 # Tema editor
 TEMA = {
     'FondoEditor': '#121212',
-    'Color': '#F1F1F1',
+    'Color': '#c2c2c2',
     'Keyword': '#87afd7',
-    'KeywordSet2': '#009bbf',
+    'KeywordSet2': '#87afd7',
     'Comment': '#af5f5f',
     'CommentLine': '#af5f5f',
     'Number': '#d7d75f',
@@ -103,8 +102,8 @@ TEMA = {
     'RawString': 'orange',
     'UUID': 'orange',
     'HashQuotedString ': 'blue',
-    'brace-foreground': 'red',
-    'brace-background': 'orange',
+    'brace-foreground': 'white',
+    'brace-background': '#044888',
     'brace-unforeground': 'white',
     'brace-unbackground': 'red',
     'margen': '#4d4d4d',

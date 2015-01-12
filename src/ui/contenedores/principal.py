@@ -2,7 +2,7 @@
 # EDIS - Entorno de Desarrollo Integrado Simple para C/C++
 #
 # This file is part of EDIS
-# Copyright 2014 - Gabriel Acosta
+# Copyright 2014-2015 - Gabriel Acosta
 # License: GPLv3 (see http://www.gnu.org/licenses/gpl.html)
 
 import os
@@ -26,7 +26,6 @@ from PyQt4.QtCore import (
 from src.helpers import (
     manejador_de_archivo,
     logger,
-    configuraciones
     )
 from src import recursos
 from src.ui.editor import (
@@ -34,12 +33,13 @@ from src.ui.editor import (
     stack
     )
 from src.ui.edis_main import EDIS
-from src.ui.widgets import busqueda
+from src.ui.widgets import popup_busqueda
 from src.ui.contenedores import selector
 from src.ui.dialogos import (
     dialogo_propiedades,
     dialogo_log,
-    dialogo_proyecto
+    dialogo_proyecto,
+    dialogo_reemplazo
     )
 
 # Logger
@@ -108,7 +108,7 @@ class EditorContainer(QWidget):
         weditor.setFocus()
         if nombre != 'Nuevo_archivo':
             self.agregar_a_recientes(nombre)
-        self.archivo_cambiado.emit(nombre)
+        #self.archivo_cambiado.emit(nombre)
         return weditor
 
     def abrir_archivo(self, nombre=""):
@@ -247,9 +247,13 @@ class EditorContainer(QWidget):
     def check_archivos_sin_guardar(self):
         return self.stack.check_archivos_sin_guardar()
 
-    def busqueda_rapida(self):
+    def busqueda(self):
         #FIXME:
-        dialogo = busqueda.PopupBusqueda(self.devolver_editor())
+        dialogo = popup_busqueda.PopupBusqueda(self.devolver_editor())
+        dialogo.show()
+
+    def reemplazar(self):
+        dialogo = dialogo_reemplazo.DialogoReemplazo(self)
         dialogo.show()
 
     def deshacer(self):
@@ -279,15 +283,16 @@ class EditorContainer(QWidget):
 
     def mostrar_tabs_espacios_blancos(self):
         #FIXME:
-        accion = EDIS.accion("Mostrar tabs y espacios en blanco")
-        configuraciones.MOSTRAR_TABS = accion.isChecked()
+        #accion = EDIS.accion("Mostrar tabs y espacios en blanco")
+        #configuraciones.MOSTRAR_TABS = accion.isChecked()
         weditor = self.devolver_editor()
         if weditor is not None:
             weditor.flags()
 
     def mostrar_guias(self):
-        accion = EDIS.accion("Mostrar guías")
-        configuraciones.GUIA_INDENTACION = accion.isChecked()
+        #FIXME:
+        #accion = EDIS.accion("Mostrar guías")
+        #configuraciones.GUIA_INDENTACION = accion.isChecked()
         weditor = self.devolver_editor()
         if weditor is not None:
             weditor.flags()
@@ -371,14 +376,53 @@ class EditorContainer(QWidget):
         if weditor is not None:
             weditor.descomentar()
 
+    def indentar(self):
+        weditor = self.devolver_editor()
+        if weditor is not None:
+            weditor.indentar()
+
+    def remover_indentacion(self):
+        weditor = self.devolver_editor()
+        if weditor is not None:
+            weditor.quitar_indentacion()
+
+    def convertir_a_titulo(self):
+        weditor = self.devolver_editor()
+        if weditor is not None:
+            weditor.a_titulo()
+
+    def duplicar_linea(self):
+        weditor = self.devolver_editor()
+        if weditor is not None:
+            weditor.duplicar_linea()
+
+    def eliminar_linea(self):
+        weditor = self.devolver_editor()
+        if weditor is not None:
+            weditor.eliminar_linea()
+
+    def mover_linea_abajo(self):
+        weditor = self.devolver_editor()
+        if weditor is not None:
+            weditor.mover_linea_abajo()
+
+    def mover_linea_arriba(self):
+        weditor = self.devolver_editor()
+        if weditor is not None:
+            weditor.mover_linea_arriba()
+
+    def ir_a_linea(self, linea):
+        weditor = self.devolver_editor()
+        if weditor is not None:
+            weditor.setCursorPosition(linea, 0)
+
     def proyecto_nuevo(self):
         dialogo = dialogo_proyecto.DialogoProyecto(self)
         dialogo.show()
 
     def configuracion_edis(self):
         dialogo = EDIS.componente("preferencias")
-        configuraciones.cargar_configuraciones()
-        dialogo.show()
+        dialogo.mostrar()
 
 
 principal = EditorContainer()

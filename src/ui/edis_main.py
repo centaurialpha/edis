@@ -2,7 +2,7 @@
 # EDIS - Entorno de Desarrollo Integrado Simple para C/C++
 #
 # This file is part of EDIS
-# Copyright 2014 - Gabriel Acosta
+# Copyright 2014-2015 - Gabriel Acosta
 # License: GPLv3 (see http://www.gnu.org/licenses/gpl.html)
 
 # Módulos Python
@@ -31,9 +31,10 @@ from PyQt4.QtCore import (
 from src import recursos
 from src import ui
 from src.helpers import (
-    configuraciones,
+    configuracion,
     dependencias
     )
+from src.helpers.configuracion import ESettings
 from src.ui.contenedores.lateral import lateral_container
 from src.ui.contenedores.output import contenedor_secundario
 from src.ui.dialogos import (
@@ -57,8 +58,9 @@ class EDIS(QMainWindow):
         QMainWindow.__init__(self)
         self.setWindowTitle(ui.__nombre__)
         self.setMinimumSize(750, 500)
-        # Maximizado
-        self.showMaximized()
+        # Se cargan las dimensiones de la ventana
+        x, y, ancho, alto = ESettings.get('ventana/dimensiones')
+        self.setGeometry(x, y, ancho, alto)
         # Secciones del menubar
         EDIS.menu_bar(0, self.trUtf8("&Archivo"))
         EDIS.menu_bar(1, self.trUtf8("&Editar"))
@@ -85,7 +87,7 @@ class EDIS(QMainWindow):
 
         EDIS.cargar_componente("edis", self)
 
-        if configuraciones.INICIO:
+        if ESettings.get('general/inicio'):
             self.mostrar_inicio()
 
     @classmethod
@@ -137,7 +139,7 @@ class EDIS(QMainWindow):
                             qaccion = smenu.addAction(accion.nombre)
                     else:
                         qaccion = menu.addAction(accion.nombre)
-                    if accion.nombre in configuraciones.ITEMS_TOOLBAR:
+                    if accion.nombre in configuracion.ITEMS_TOOLBAR:
                         items_toolbar[accion.nombre] = qaccion
                     if accion.atajo:
                         qaccion.setShortcut(accion.atajo)
@@ -165,9 +167,9 @@ class EDIS(QMainWindow):
     def __cargar_toolbar(self, items_toolbar):
         #FIXME: Arreglar esto
         for i, accion in enumerate(list(items_toolbar.items())):
-            if accion[0] in configuraciones.ITEMS_TOOLBAR:
+            if accion[0] in configuracion.ITEMS_TOOLBAR:
                 self.toolbar.addAction(accion[1])
-                if configuraciones.ITEMS_TOOLBAR[i + 1] == 'separador':
+                if configuracion.ITEMS_TOOLBAR[i + 1] == 'separador':
                     self.toolbar.addSeparator()
 
     def cargar_contenedores(self, central):
@@ -176,7 +178,7 @@ class EDIS(QMainWindow):
         principal = EDIS.componente("principal")
         self.contenedor_editor = principal
         self.contenedor_output = contenedor_secundario.ContenedorOutput(self)
-        self.contenedor_lateral = lateral_container.LateralContainer(self)
+        self.contenedor_lateral = lateral_container.ContenedorLateral(self)
 
         # Agrego los contenedores al widget central
         central.agregar_contenedor_lateral(self.contenedor_lateral)
@@ -194,15 +196,6 @@ class EDIS(QMainWindow):
                     SIGNAL("archivo_cambiado(QString)"),
                     self.__titulo_ventana)
         self.connect(self.contenedor_editor,
-                    SIGNAL("archivo_abierto(QString)"),
-                    self.contenedor_lateral.file_navigator.agregar)
-        self.connect(self.contenedor_editor,
-                    SIGNAL("archivo_cerrado(int)"),
-                    self.contenedor_lateral.file_navigator.eliminar)
-        self.connect(self.contenedor_editor,
-                    SIGNAL("cambiar_item(int)"),
-                    self.contenedor_lateral.file_navigator.cambiar_foco)
-        self.connect(self.contenedor_editor,
                     SIGNAL("archivo_modificado(bool)"),
                     self.__titulo_modificado)
         self.connect(self.contenedor_editor,
@@ -214,12 +207,9 @@ class EDIS(QMainWindow):
         self.connect(self.contenedor_editor,
                     SIGNAL("actualizarSimbolos(QString)"),
                     self.contenedor_lateral.actualizar_simbolos)
-        self.connect(self.contenedor_lateral.file_explorer,
-                    SIGNAL("abriendoArchivo(QString)"),
-                    self.contenedor_editor.abrir_archivo)
-        self.connect(self.contenedor_lateral.file_navigator,
-                    SIGNAL("cambiar_editor(int)"),
-                    self.contenedor_editor.cambiar_widget)
+        self.connect(self.contenedor_lateral._arbol_simbolos,
+                    SIGNAL("irALinea(int)"),
+                    self.contenedor_editor.ir_a_linea)
 
     def __actualizar_cursor(self, linea, columna, lineas):
         #FIXME:
@@ -291,17 +281,20 @@ class EDIS(QMainWindow):
         """
 
         principal = EDIS.componente("principal")
-        if principal.check_archivos_sin_guardar():
-            archivos_sin_guardar = principal.archivos_sin_guardar()  # lint:ok
+        if principal.check_archivos_sin_guardar() and \
+            ESettings.get('general/confirmarSalida'):
+
+            archivos_sin_guardar = principal.archivos_sin_guardar()
             dialogo = dialogo_guardar_archivos.Dialogo(
                 archivos_sin_guardar, principal)
             dialogo.exec_()
             if dialogo.ignorado():
                 e.ignore()
-        #FIXME: guardar configuraciones
-        archivos_recientes = principal.recientes
-        qconfig = QSettings(recursos.CONFIGURACION, QSettings.IniFormat)
-        qconfig.setValue('recientes', archivos_recientes)
+        if ESettings.get('ventana/guardarDimensiones'):
+            dimensiones = self.geometry()
+            dimensiones = (dimensiones.x(), dimensiones.y(),
+                            dimensiones.width(), dimensiones.height())
+            ESettings.set('ventana/dimensiones', dimensiones)
 
     def mostrar_inicio(self):
         dialogo = EDIS.componente("inicio")

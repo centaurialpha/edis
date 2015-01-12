@@ -167,10 +167,6 @@ QDialog {
     background-color: #383733;
 }
 
-QLabel {
-    color: #dedede;
-}
-
 QLabel#status_label {
     color: #dedede;
 }
@@ -178,7 +174,7 @@ QLabel#status_label {
 QPushButton {
     background: #bbbbbb;
     border-radius: 3px;
-    min-width: 100px;
+    min-width: 120px;
     min-height: 30px;
 }
 
@@ -206,14 +202,22 @@ QLineEdit {
     color: #dedede;
 }
 
+QLabel,
+QRadioButton,
 QCheckBox {
     color: #dedede;
 }
 
 QGroupBox {
     color: #dedede;
-    padding: 0px 0px 0px 15px;
+    margin-top: 20px;
+    padding: 5px;
 }
+
+QGroupBox::title {
+    subcontrol-origin: margin;
+    padding: 10px;
+    }
 
 QTabBar {
     background-color: #383733;

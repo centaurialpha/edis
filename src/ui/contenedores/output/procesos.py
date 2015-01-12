@@ -2,7 +2,7 @@
 # EDIS - Entorno de Desarrollo Integrado Simple para C/C++
 #
 # This file is part of EDIS
-# Copyright 2014 - Gabriel Acosta
+# Copyright 2014-2015 - Gabriel Acosta
 # License: GPLv3 (see http://www.gnu.org/licenses/gpl.html)
 
 # Módulos Python
@@ -10,7 +10,6 @@ import time
 import sys
 import os
 from subprocess import Popen
-from subprocess import PIPE
 if sys.platform == 'win32':
     from subprocess import CREATE_NEW_CONSOLE
 
@@ -21,28 +20,24 @@ from PyQt4.QtGui import QTextCharFormat
 from PyQt4.QtGui import QTextCursor
 from PyQt4.QtGui import QColor
 from PyQt4.QtGui import QBrush
-#from PyQt4.QtGui import QFont
+from PyQt4.QtGui import QMessageBox
 
 # Módulos QtCore
 from PyQt4.QtCore import (
     QProcess,
-    SIGNAL,
-    Qt,
     QDir
     )
 
 # Módulos EDIS
 #from edis import recursos
-from src.helpers import (
-    configuraciones,
-    manejador_de_archivo
-    )
+from src.helpers import configuracion
 from src.ui.contenedores.output import salida_compilador
-
-_TUX = configuraciones.LINUX
 
 
 class EjecutarWidget(QWidget):
+
+    _script = '%s -e "bash -c ./%s;echo;echo;echo;echo -n Presione \<Enter\> '\
+    'para salir.;read I"'
 
     def __init__(self):
         super(EjecutarWidget, self).__init__()
@@ -129,17 +124,21 @@ class EjecutarWidget(QWidget):
                     "no está presente"), formato)
 
     def correr_programa(self, archivo):
-        """ Se encarga de correr el programa objeto generado """
+        """ Ejecuta el binario generado por el compilador """
 
         direc = os.path.dirname(archivo)
         self.proceso_ejecucion.setWorkingDirectory(direc)
 
-        if _TUX:
-            #FIXME: Terminal
-            terminal = configuraciones.TERMINAL
-            bash = '%s -e "bash -c ./%s;read n"' % (terminal, self.ejecutable)
+        if configuracion.LINUX:
+            terminal = configuracion.ESettings.get('terminal')
+            if not terminal:
+                QMessageBox.warning(self, self.tr("Advertencia"),
+                                    self.tr("No se ha configurado una terminal"
+                                    " para ejecutar el binario."))
+                return
+            proceso = self._script % (terminal, self.ejecutable)
             # Run !
-            self.proceso_ejecucion.start(bash)
+            self.proceso_ejecucion.start(proceso)
         else:
             #FIXME: Usar QProcess
             Popen([os.path.join(direc, self.ejecutable)],

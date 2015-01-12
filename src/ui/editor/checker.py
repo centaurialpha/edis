@@ -2,7 +2,7 @@
 # EDIS - Entorno de Desarrollo Integrado Simple para C/C++
 #
 # This file is part of EDIS
-# Copyright 2014 - Gabriel Acosta
+# Copyright 2014-2015 - Gabriel Acosta
 # License: GPLv3 (see http://www.gnu.org/licenses/gpl.html)
 
 # Checker usa la herramienta 'cppcheck' (http://cppcheck.sourceforge.net/)
@@ -18,6 +18,8 @@ from PyQt4.QtCore import (
 from src.helpers import logger
 
 log = logger.edisLogger('checker')
+
+#TODO: Cambiar mensajes a español
 
 
 class Checker(QThread):
@@ -36,15 +38,15 @@ class Checker(QThread):
                             stdout=PIPE, stderr=PIPE, shell=False)
             salida = proceso.communicate()[1]
             self._parsear(salida)
-        except:
-            log.error("cppcheck no está instalado")
+        except Exception as error:
+            log.error("Ha ocurrido un error: %s" % error)
 
     def _parsear(self, salida):
         for l in salida.splitlines():
-            l = str(l).split(',')
+            l = str(l).split(';')
             linea = int(l[0].split('"')[-1]) - 1
             tipo = l[1]
-            mensaje = l[2].replace('\\', '')
+            mensaje = l[2].replace('\\', '').split('.')[0]
             if not linea in self._errores:
                 self._errores[linea] = (tipo, mensaje)
         self.errores.emit(self._errores)
@@ -63,7 +65,8 @@ class Checker(QThread):
     def run_cppcheck(self, archivo):
         self._archivo = archivo
         self._cppcheck = ['cppcheck']
-        self._parametros = ['--template="{line},{severity},{message}"',
-                            '--enable=style']
+        self._parametros = ['--enable=warning,unusedFunction,style,portability,'
+                            'performance', '--template="{line};{severity};'
+                            '{message}"', '--language=c']
         self._restart()
         self.start()

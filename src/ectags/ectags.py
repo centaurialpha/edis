@@ -2,27 +2,59 @@
 # EDIS - Entorno de Desarrollo Integrado Simple para C/C++
 #
 # This file is part of EDIS
-# Copyright 2014 - Gabriel Acosta
+# Copyright 2014-2015 - Gabriel Acosta
 # License: GPLv3 (see http://www.gnu.org/licenses/gpl.html)
 
-# Test pyctags
+import sys
+from subprocess import Popen, PIPE
 
-from pyctags import exuberant_ctags
+from src.helpers import logger
 
-from pyctags.harvesters import (
-    kind_harvester
-    )
-
-
-def generate_tag_file(filename):
-    ctags = exuberant_ctags(files=[filename])
-    tag_file = ctags.generate_object(
-        generator_options={'--fields': 'fimKnsSzt', '-F': None})
-    #harvester = kind_harvester()
-    #harvester.process_tag_list(tag_file.tags)
-    #kinds = harvester.get_data()
-
-    print(kinds)
+log = logger.edisLogger('ctags')
 
 
-generate_tag_file('/home/gabo/prueba.c')
+class Ctags(object):
+
+    def __init__(self):
+        pass
+
+    def run_ctags(self, archivo):
+        info_ctags = list()
+
+        comando = self.path_ejecutable()
+        parametros = ['--excmd=number', '-f -', '--fields=fimKsSzt', archivo]
+
+        try:
+            proceso = Popen(comando + parametros, stdout=PIPE)
+            salida = proceso.communicate()[0]
+            for linea in salida.splitlines():
+                info = linea.decode('utf-8').split('\t')
+                info[2] = info[2].replace(';"', '')
+                info[3] = info[3].replace('kind:', '')
+                info_ctags.append(info)
+        except Exception as error:
+            log.error("Error al ejecutar ctags.", error.args)
+        return info_ctags
+
+    def parser(self, salida):
+        simbolos = {}
+
+        for item in salida:
+            nombre = item[0]
+            linea = item[2]
+            tipo = item[3]
+            padre = ''
+            if tipo == 'member':
+                padre = item[4].split(':')[-1]
+            if not tipo in simbolos:
+                simbolos[tipo] = []
+            simbolos[tipo].append(
+                {'nombre': nombre, 'linea': linea, 'padre': padre})
+        return simbolos
+
+    def path_ejecutable(self):
+        exe = 'ctags' if sys.platform == 'linux' else None
+        if exe is None:
+            #FIXME: think this!
+            pass
+        return [exe]

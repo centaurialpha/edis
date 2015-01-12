@@ -2,7 +2,7 @@
 # EDIS - Entorno de Desarrollo Integrado Simple para C/C++
 #
 # This file is part of EDIS
-# Copyright 2014 - Gabriel Acosta
+# Copyright 2014-2015 - Gabriel Acosta
 # License: GPLv3 (see http://www.gnu.org/licenses/gpl.html)
 
 """
@@ -17,10 +17,9 @@ from PyQt4.QtCore import QSettings
 
 from src import recursos
 
-MARGEN = True
-MARGEN_COLUMNA = 80
-
 SISTEMA_OPERATIVO = sys.platform
+LINUX = False
+WINDOWS = False
 
 if SISTEMA_OPERATIVO == 'win32':
     FUENTE = 'Courier'
@@ -33,6 +32,9 @@ else:
     LINUX = True
     WINDOWS = False
 
+MARGEN = True
+MARGEN_COLUMNA = 80
+
 INDENTACION = True
 INDENTACION_ANCHO = 4
 GUIAS = False
@@ -41,9 +43,9 @@ MOSTRAR_TABS = False
 MODO_ENVOLVER = False
 
 # Lateral widgets
-SYMBOLS = True
-FILE_EXPLORER = True
-FILE_NAVIGATOR = True
+SIMBOLOS = True
+NAVEGADOR = True
+EXPLORADOR = True
 
 #FIXME: arreglar esto
 ITEMS_TOOLBAR = [
@@ -85,6 +87,7 @@ def cargar_configuraciones():
     global MODO_ENVOLVER
     global RECIENTES
     global INICIO
+    global SIMBOLOS
 
     MARGEN = qsettings.value('editor/margen', True, type=bool)
     MARGEN_COLUMNA = qsettings.value('editor/margen_ancho', 80, type=int)
@@ -101,3 +104,4 @@ def cargar_configuraciones():
     MODO_ENVOLVER = qsettings.value('editor/envolver', False, type=bool)
     INICIO = qsettings.value('general/inicio', True, type=bool)
     RECIENTES = qsettings.value('editor/recientes', [])
+    SIMBOLOS = qsettings.value('gui/simbolos', True, type=bool)
