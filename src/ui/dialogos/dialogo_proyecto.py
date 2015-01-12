@@ -17,7 +17,7 @@ from PyQt4.QtGui import (
     QPushButton,
     QWidget,
     QFileDialog,
-    #QMessageBox,
+    QMessageBox,
     )
 
 from PyQt4.QtCore import (
@@ -25,7 +25,7 @@ from PyQt4.QtCore import (
     )
 
 from src.helpers import logger
-#from src.ui.edis_main import EDIS
+from src.ui.edis_main import EDIS
 log = logger.edisLogger("creador_proyecto")
 
 
@@ -108,7 +108,17 @@ class DialogoProyecto(QDialog):
         self.creador_proyecto.crear(datos)
 
     def _finalizar_thread(self):
-        pass
+        if not self.creador_proyecto.error:
+            principal = EDIS.componente('principal')
+            principal.abrir_archivo(os.path.join(
+                                    self.ubicacion_proyecto,
+                                    self.nombre_proyecto, 'main.c'))
+            self.close()
+            #FIXME:
+        else:
+            QMessageBox.critical(self, self.tr("Errror"),
+                            self.tr("Error al crear el proyecto\n\n%s") %
+                            self.creador_proyecto.error)
 
 
 class CreadorProyectoThread(QThread):
@@ -128,6 +138,8 @@ class CreadorProyectoThread(QThread):
             with open(os.path.join(carpeta_proyecto,
                         archivo_epf.lower()), mode='w') as archivo:
                 json.dump(self._datos, archivo, indent=4)
+            # Archivo main.c
+            open(os.path.join(carpeta_proyecto, 'main.c'), 'w').close()
         except Exception as error:
             self.error = error
 
