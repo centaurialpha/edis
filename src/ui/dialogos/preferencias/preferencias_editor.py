@@ -17,7 +17,10 @@ from PyQt4.QtGui import (
     QSlider,
     QLCDNumber,
     QPushButton,
-    QFontDialog
+    QFontDialog,
+    QSpacerItem,
+    QSizePolicy,
+    QRadioButton
     )
 
 # Módulos QtCore
@@ -95,9 +98,28 @@ class CaracteristicasEditor(QWidget):
         box.addWidget(self.btn_fuente)
         box.addStretch(1)
 
+        # Cursor
+        grupo_cursor = QGroupBox(self.tr("Tipo de cursor:"))
+        box = QVBoxLayout(grupo_cursor)
+        tipos_cursor = [
+            self.tr('Invisible'),
+            self.tr('Línea'),
+            self.tr('Bloque')
+            ]
+        self.radio_cursor = []
+        [self.radio_cursor.append(QRadioButton(cursor))
+            for cursor in tipos_cursor]
+        for ntipo, radiob in enumerate(self.radio_cursor):
+            box.addWidget(radiob)
+            if ntipo == ESettings.get('editor/tipoCursor'):
+                radiob.setChecked(True)
+
         contenedor.addWidget(grupo_margen)
         contenedor.addWidget(grupo_indentacion)
         contenedor.addWidget(grupo_fuente)
+        contenedor.addWidget(grupo_cursor)
+        contenedor.addItem(QSpacerItem(0, 10, QSizePolicy.Expanding,
+                            QSizePolicy.Expanding))
 
         # Conexiones
         self.slider_margen.valueChanged[int].connect(lcd_margen.display)
@@ -139,9 +161,11 @@ class CaracteristicasEditor(QWidget):
         ESettings.set('editor/fuente', fuente)
         ESettings.set('editor/fuenteTam,', int(fuente_tam))
         ESettings.set('editor/margenAncho', self.slider_margen.value())
-        ESettings
+        for ntipo, radio in enumerate(self.radio_cursor):
+            if radio.isChecked():
+                tipo = ntipo
+        ESettings.set('editor/tipoCursor', tipo)
         principal = EDIS.componente("principal")
         weditor = principal.devolver_editor()
-        #FIXME: Arreglar la carga de fuente, editor-lexer
         if weditor is not None:
             weditor.cargar_fuente(fuente, int(fuente_tam))

@@ -38,13 +38,14 @@ class Base(QsciScintilla):
         self.setAutoIndent(True)
         self.setBackspaceUnindents(True)
         # Cursor
-        self.send("sci_setcaretstyle", "caretstyle_block")
+        self.send("sci_setcaretstyle", ESettings.get('editor/tipoCursor'))
         # Scrollbar
         self.send("sci_sethscrollbar", 0)
         # Indicadores
         self.indicador = 0
         self.indicador_warning = 1
         self.indicador_error = 2
+        # Estilo de indicadores
         self.send("sci_indicsetstyle", self.indicador, "indic_container")
         self.send("sci_indicsetalpha", self.indicador, 100)
         self.send("sci_indicsetfore", self.indicador, 0x0000ff)
