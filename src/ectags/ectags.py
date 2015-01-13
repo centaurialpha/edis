@@ -8,6 +8,7 @@
 import sys
 from subprocess import Popen, PIPE
 
+from src import recursos
 from src.helpers import logger
 
 log = logger.edisLogger('ctags')
@@ -53,7 +54,7 @@ class Ctags(object):
         return simbolos
 
     def path_ejecutable(self):
-        exe = 'ctags' if sys.platform == 'linux' else None
+        exe = 'ctags' if sys.platform == 'linux' else recursos.CTAGS
         if exe is None:
             #FIXME: think this!
             pass
