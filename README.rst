@@ -24,6 +24,7 @@ Awesome features
 * **Errors checker**
 * **File selector**
 * **Tree symbols**
+* **Auto-completion of keywords**
 
 Platforms
 ---------
