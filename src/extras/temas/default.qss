@@ -16,7 +16,7 @@ QToolBar#toolbar {
 QToolBar#selector {
     background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
                                        stop: 0 #5a584f, stop: 1 #41403b);
-    padding: 4px;
+    padding: 2px;
     border-left: 1px solid gray;
     }
 
