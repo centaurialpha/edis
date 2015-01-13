@@ -23,6 +23,7 @@ from PyQt4.QtCore import SIGNAL, QSize
 
 from src import recursos
 from src.helpers.configuracion import ESettings
+from src.helpers import configuracion
 from src.ui.contenedores.lateral import (
     navegador,
     arbol_simbolos,
@@ -62,7 +63,10 @@ class _ContenedorLateral(QWidget):
         # Toolbar
         toolbar = QToolBar()
         toolbar.setObjectName("selector")
-        toolbar.setIconSize(QSize(20, 20))
+        if configuracion.WINDOWS:
+            toolbar.setIconSize(QSize(15, 15))
+        else:
+            toolbar.setIconSize(QSize(22, 22))
         tool_undock = QToolButton()
         tool_undock.setToolTip(self.tr("Undock widget"))
         tool_undock.setIcon(QIcon(recursos.ICONOS['undock']))

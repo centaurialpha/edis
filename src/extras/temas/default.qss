@@ -16,7 +16,6 @@ QToolBar#toolbar {
 QToolBar#selector {
     background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
                                        stop: 0 #5a584f, stop: 1 #41403b);
-    padding: 2px;
     border-left: 1px solid gray;
     }
 
@@ -66,7 +65,7 @@ QComboBox#combo_selector {
     background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
                                        stop: 0 #5a584f, stop: 1 #41403b);
     border: 0px solid gray;
-    padding: 5px 18px 5px 20px;
+    padding: 3px 18px 3px 20px;
     min-width: 6em;
     color: #dedede;
 }
