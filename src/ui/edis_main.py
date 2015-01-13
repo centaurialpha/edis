@@ -303,10 +303,11 @@ class EDIS(QMainWindow):
 
     def detectar_dependencias(self):
         #FIXME: Mejorar
-        ok, ejec = dependencias.detectar()
-        if not ok:
-            dialogo = dialogo_dependencias.DialogoDependencias(ejec, self)
-            dialogo.show()
+        pass
+        #ok, ejec = dependencias.detectar()
+        #if not ok:
+            #dialogo = dialogo_dependencias.DialogoDependencias(ejec, self)
+            #dialogo.show()
 
     def comprobar_compilador(self):
         #TODO: Quitar esto
