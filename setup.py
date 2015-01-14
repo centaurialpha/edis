@@ -49,7 +49,7 @@ class CustomInstall(install):
                 f.write(contenido)
 
     def finalize_options(self):
-        """ Después de la instación """
+        """ Después de la instalación """
 
         install.finalize_options(self)
         data_dir = os.path.join(self.prefix, "share",
