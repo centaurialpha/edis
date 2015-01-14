@@ -78,10 +78,21 @@ setup(
     author=ui.__autor__,
     author_email=ui.__email_autor__,
     url=ui.__codigo_fuente__,
+    license='GPL v3',
+    long_description=open('README.rst').read(),
     package_data={
         'src': ['images/*', 'extras/temas/*', 'ui/selector/*']
         },
     packages=paquetes,
     scripts=['edis'],
-    cmdclass={'install': CustomInstall}
+    classifiers=[
+        'Development Status :: 4 - Beta',
+        'Environment :: X11 Applications',
+        'License :: OSI Approved :: GNU General Public License v3 (GPLv3)',
+        'Operating System :: OS Independent',
+        'Programming Language :: Python :: 3',
+        'Topic :: Text Editors :: Integrated Development Environments (IDE)',
+        'Topic :: Utilities'
+        ],
+    cmdclass={'install': CustomInstall},
     )
