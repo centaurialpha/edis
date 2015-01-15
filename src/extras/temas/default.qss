@@ -39,6 +39,11 @@ QScrollBar::handle:vertical {
     min-height: 50px;
 }
 
+QScrollBar::handle:vertical:hover,
+QScrollBar::handle:horizontal:hover {
+    background: #42413c;
+    }
+
 QScrollBar::add-line:vertical,
 QScrollBar::sub-line:vertical,
 QScrollBar::add-page:vertical,
