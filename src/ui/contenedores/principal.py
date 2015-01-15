@@ -420,5 +420,16 @@ class EditorContainer(QWidget):
         dialogo = dialogo_proyecto.DialogoProyecto(self)
         dialogo.show()
 
+    def dragEnterEvent(self, evento):
+        data = evento.mimeData()
+        if data.hasText():
+            # Se acepta el evento de arrastrado
+            evento.accept()
+
+    def dropEvent(self, evento):
+        data = evento.mimeData()
+        archivo = data.urls()[0].toLocalFile()
+        self.abrir_archivo(archivo)
+
 
 principal = EditorContainer()
