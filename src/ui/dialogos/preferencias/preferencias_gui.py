@@ -11,7 +11,9 @@ from PyQt4.QtGui import (
     QVBoxLayout,
     #QHBoxLayout,
     QGroupBox,
-    QCheckBox
+    QCheckBox,
+    QSpacerItem,
+    QSizePolicy
     )
 #from PyQt4.QtGui import QStyleFactory
 #from PyQt4.QtGui import QVBoxLayout
@@ -52,7 +54,6 @@ class ConfiguracionGUI(QWidget):
         # Widgets laterales
         grupo_lateral = QGroupBox(self.tr("Widgets laterales:"))
         box = QVBoxLayout(grupo_lateral)
-        box.setContentsMargins(0, 0, 0, 0)
         self.check_simbolos = QCheckBox(self.tr("Árbol de símbolos"))
         self.check_simbolos.setChecked(ESettings.get('gui/simbolos'))
         box.addWidget(self.check_simbolos)
@@ -62,8 +63,10 @@ class ConfiguracionGUI(QWidget):
         self.check_explorador = QCheckBox(self.tr("Explorador"))
         self.check_explorador.setChecked(ESettings.get('gui/explorador'))
         box.addWidget(self.check_explorador)
-
         contenedor.addWidget(grupo_lateral)
+
+        contenedor.addItem(QSpacerItem(0, 10, QSizePolicy.Expanding,
+                            QSizePolicy.Expanding))
 
     def guardar(self):
         """ Guarda las configuraciones de la GUI. """
