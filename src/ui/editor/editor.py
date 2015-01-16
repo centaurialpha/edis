@@ -83,6 +83,7 @@ class Editor(Base):
     _modificado = pyqtSignal(bool, name='archivo_modificado')
     _guardado = pyqtSignal(['PyQt_PyObject'], name='archivo_guardado')
     _undo = pyqtSignal(['PyQt_PyObject'], name='accion_undo')
+    _drop = pyqtSignal(['PyQt_PyObject'], name='dropSignal')
 
     _comentario = "//"
 
@@ -378,3 +379,6 @@ class Editor(Base):
         self._guardado.emit(self)
         self.es_nuevo = False
         self.texto_modificado = False
+
+    def dropEvent(self, evento):
+        self._drop.emit(evento)

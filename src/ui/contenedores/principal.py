@@ -105,6 +105,7 @@ class EditorContainer(QWidget):
         weditor.modificationChanged[bool].connect(self.stack.editor_modificado)
         weditor.cursorPositionChanged[int, int].connect(self.actualizar_cursor)
         weditor.archivo_guardado.connect(self.__archivo_guardado)
+        weditor.dropSignal.connect(self._drop_editor)
         weditor.setFocus()
         if nombre != 'Nuevo_archivo':
             self.agregar_a_recientes(nombre)
@@ -427,6 +428,12 @@ class EditorContainer(QWidget):
             evento.accept()
 
     def dropEvent(self, evento):
+        self._drop_event(evento)
+
+    def _drop_editor(self, evento):
+        self._drop_event(evento)
+
+    def _drop_event(self, evento):
         data = evento.mimeData()
         archivo = data.urls()[0].toLocalFile()
         self.abrir_archivo(archivo)
