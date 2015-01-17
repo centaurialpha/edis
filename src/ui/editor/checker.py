@@ -21,6 +21,12 @@ log = logger.edisLogger('checker')
 
 #TODO: Cambiar mensajes a español
 
+# ID
+UV = "unusedVariable"
+URV = "unreadVariable"
+UF = "unusedFunction"
+AIOOB = "arrayIndexOutOfBounds"
+
 
 class Checker(QThread):
 
@@ -46,7 +52,21 @@ class Checker(QThread):
             l = str(l).split(';')
             linea = int(l[0].split('"')[-1]) - 1
             tipo = l[1]
-            mensaje = l[2].replace('\\', '').split('.')[0]
+            mensaje = l[2]
+            _id = l[-1].split('\"')[0]
+            if _id == UV:
+                variable = mensaje.split(':')[-1].strip()
+                mensaje = Checker.variable_sin_usar(variable)
+            if _id == UF:
+                funcion = mensaje.split('\\\'')[1]
+                mensaje = Checker.funcion_sin_usar(funcion)
+            if _id == URV:
+                variable = mensaje.split('\\\'')[1]
+                mensaje = Checker.variable_asignada_sin_usar(variable)
+            if _id == AIOOB:
+                array = mensaje.split('\\\'')[1]
+                indice = mensaje.split()[5]
+                mensaje = Checker.indice_fuera_de_rango(array, indice)
             if not linea in self._errores:
                 self._errores[linea] = (tipo, mensaje)
         self.errores.emit(self._errores)
@@ -67,6 +87,24 @@ class Checker(QThread):
         self._cppcheck = ['cppcheck']
         self._parametros = ['--enable=warning,unusedFunction,style,portability,'
                             'performance', '--template="{line};{severity};'
-                            '{message}"', '--language=c']
+                            '{message};{id}"', '--language=c']
         self._restart()
         self.start()
+
+    @staticmethod
+    def variable_sin_usar(variable):
+        return "Variable sin usar: %s" % variable
+
+    @staticmethod
+    def variable_asignada_sin_usar(variable):
+        mensaje = "Variable '%s', se le asigna un valor que nunca se utiliza."
+        return mensaje % variable
+
+    @staticmethod
+    def funcion_sin_usar(funcion):
+        return "La función '%s' no se utiliza nunca." % funcion
+
+    @staticmethod
+    def indice_fuera_de_rango(array, indice):
+        mensaje = "Array: '%s'. indice %s fuera de rango."
+        return mensaje % (array, indice)
