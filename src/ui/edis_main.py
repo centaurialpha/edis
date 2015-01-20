@@ -135,6 +135,7 @@ class EDIS(QMainWindow):
                     if submenu:
                         if isinstance(submenu, bool):
                             smenu = menu.addMenu(accion.nombre)
+                            EDIS.__ACCIONES[accion.nombre] = smenu
                             continue
                         else:
                             qaccion = smenu.addAction(accion.nombre)

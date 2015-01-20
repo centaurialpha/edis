@@ -14,35 +14,7 @@ _ICONO = recursos.ICONOS
 # a una acción (QAction). La clave 'seccion' toma valores 0-6 y representa
 # a un menu en particular.
 
-"""
-Archivo                Editar                Ver
-------------------------------------------------------------------
-Nuevo                  Deshacer              Pantalla completa
-Abrir                  Rehacer               Mostrar lateral
-Cerrar                 Cortar                Mostrar output
-    | Cerrar actual    Copiar                Mostrar toolbar
-    | Cerrar todo      Pegar                 Espacios en blancos
-    | Cerrar demás     Eliminar línea        Guías
-Guardar                Duplicar línea        Modo wrap
-Guardar como           A mayúsculas          Acercar
-Guardar todo           A minúsculas          Alejar
-Imprimir               A título
-Propiedades            Mover hacia arriba
-Exportar               Mover hacia abajo
-Salir                  Indentar
-                       Remover indentación
-                       Comentar
-                       Descomentar
-                       Configuración
 
-Herramientas           Proyecto              Ayuda
--------------------------------------------------------------------
-Insertar título        Compilar              Archivo de log
-Insertar separador     Ejecutar              Reportar bug
-Insertar include                             Acerca de EDIS
-Insertar macro                               Acerca de Qt
-
-"""
 #FIXME: Agregar tr, trUtf8 o translate para la traducción
 ACCIONES = (
     {
@@ -66,7 +38,11 @@ ACCIONES = (
         'nombre': 'Abrir',
         'conexion': "abrir_archivo",
         'atajo': _ATAJO['abrir'],
-        'icono': _ICONO['folder-open'],
+        'icono': _ICONO['folder-open']},
+    {
+        'seccion': 0,
+        'nombre': 'Abrir reciente',
+        'submenu': True,
         'separador': True},
     {
         'seccion': 0,

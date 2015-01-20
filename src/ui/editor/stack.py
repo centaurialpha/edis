@@ -21,11 +21,13 @@ class StackWidget(QStackedWidget):
     guardar_editor_actual = pyqtSignal(name="Guardar_Editor_Actual")
     archivo_modificado = pyqtSignal(bool)
     archivo_cerrado = pyqtSignal(int)
+    archivo_reciente = pyqtSignal(['QStringList'])
 
     def __init__(self, parent=None):
         super(StackWidget, self).__init__()
         self.no_esta_abierto = True
         self.editores = []
+        self._recientes = []
 
     def agregar_widget(self, widget):
         stack = self.addWidget(widget)
@@ -52,6 +54,11 @@ class StackWidget(QStackedWidget):
         for indice in range(self.contar):
             if self.contar > 1:
                 self.eliminar_widget(self.widget_actual, 1)
+
+    def _agregar_a_recientes(self, archivo):
+        if not archivo in self._recientes:
+            self._recientes.append(archivo)
+            self.archivo_reciente.emit(self._recientes)
 
     def archivos_sin_guardar(self):
         archivos = list()
@@ -88,6 +95,7 @@ class StackWidget(QStackedWidget):
                     return
                 elif respuesta == SI:
                     self.guardar_editor_actual.emit()
+            self._agregar_a_recientes(weditor.nombre)
             self.removeWidget(weditor)  # Se elimina del stack
             del self.editores[indice]  # Se elimina de la lista
             self.archivo_cerrado.emit(indice)

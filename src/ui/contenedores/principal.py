@@ -63,8 +63,6 @@ class EditorContainer(QWidget):
         vbox.setContentsMargins(0, 0, 0, 0)
         vbox.setSpacing(0)
 
-        self._recientes = list()
-
         self.stack = stack.StackWidget(self)
         vbox.addWidget(self.stack)
 
@@ -78,6 +76,19 @@ class EditorContainer(QWidget):
                     self._archivo_modificado)
         self.connect(self.stack, SIGNAL("archivo_cerrado(int)"),
                     self._archivo_cerrado)
+        self.connect(self.stack, SIGNAL("archivo_reciente(QStringList)"),
+                    self.actualizar_recientes)
+
+    def actualizar_recientes(self, recientes):
+        edis = EDIS.componente('edis')
+        menu = edis.accion('Abrir reciente')
+        self.connect(menu, SIGNAL("triggered(QAction*)"), self._abrir_reciente)
+        menu.clear()
+        for archivo in recientes:
+            menu.addAction(archivo)
+
+    def _abrir_reciente(self, accion):
+        self.abrir_archivo(accion.text())
 
     def _archivo_cerrado(self, indice):
         self.archivo_cerrado.emit(indice)
@@ -107,9 +118,6 @@ class EditorContainer(QWidget):
         weditor.archivo_guardado.connect(self.__archivo_guardado)
         weditor.dropSignal.connect(self._drop_editor)
         weditor.setFocus()
-        if nombre != 'Nuevo_archivo':
-            self.agregar_a_recientes(nombre)
-        #self.archivo_cambiado.emit(nombre)
         return weditor
 
     def abrir_archivo(self, nombre=""):
@@ -155,14 +163,6 @@ class EditorContainer(QWidget):
                     "El archivo %s ya esta abierto", archivo)
                 return True
         return False
-
-    def agregar_a_recientes(self, nombre):
-        #FIXME: completar
-        self._recientes.append(nombre)
-
-    @property
-    def recientes(self):
-        return self._recientes
 
     def agregar_widget(self, widget):
         """ Agrega @widget al stacked """
