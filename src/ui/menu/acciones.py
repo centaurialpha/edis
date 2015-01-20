@@ -19,20 +19,15 @@ _ICONO = recursos.ICONOS
 ACCIONES = (
     {
         'seccion': 0,
-        'nombre': 'Nuevo',
-        'submenu': True},
-    {
-        'seccion': 0,
         'nombre': 'Nuevo archivo',
         'conexion': 'agregar_editor',
         'atajo': _ATAJO['nuevo'],
-        'icono': _ICONO['new'],
-        'submenu': 'Nuevo archivo'},
+        'icono': _ICONO['new']},
     {
         'seccion': 0,
-        'nombre': 'Proyecto nuevo',
+        'nombre': 'Nuevo proyecto',
         'conexion': 'proyecto_nuevo',
-        'submenu': 'Nuevo'},
+        'separador': True},
     {
         'seccion': 0,
         'nombre': 'Abrir',
@@ -46,25 +41,18 @@ ACCIONES = (
         'separador': True},
     {
         'seccion': 0,
-        'nombre': 'Cerrar',
-        'submenu': True,
-        'separador': True},
-    {
-        'seccion': 0,
         'nombre': 'Cerrar actual',
         'conexion': 'cerrar_archivo',
-        'atajo': _ATAJO['cerrar-tab'],
-        'submenu': 'Cerrar'},
+        'atajo': _ATAJO['cerrar-tab']},
     {
         'seccion': 0,
         'nombre': 'Cerrar todo',
-        'conexion': 'cerrar_todo',
-        'submenu': 'Cerrar'},
+        'conexion': 'cerrar_todo'},
     {
         'seccion': 0,
         'nombre': 'Cerrar los demás',
         'conexion': 'cerrar_demas',
-        'submenu': 'Cerrar'},
+        'separador': True},
     {
         'seccion': 0,
         'nombre': 'Guardar',

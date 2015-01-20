@@ -136,6 +136,8 @@ class EDIS(QMainWindow):
                         if isinstance(submenu, bool):
                             smenu = menu.addMenu(accion.nombre)
                             EDIS.__ACCIONES[accion.nombre] = smenu
+                            if accion.nombre == 'Abrir reciente':
+                                menu.addSeparator()
                             continue
                         else:
                             qaccion = smenu.addAction(accion.nombre)
