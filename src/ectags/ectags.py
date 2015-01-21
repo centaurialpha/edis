@@ -35,13 +35,16 @@ class Ctags(object):
         parametros = ['--excmd=number', '-f -', '--fields=fimKsSzt', archivo]
 
         try:
+            #FIXME:
             if configuracion.WINDOWS:
                 # Flags para ocultar cmd
                 si = STARTUPINFO()
                 si.dwFlags |= STARTF_USESHOWWINDOW
                 si.wShowWindow = SW_HIDE
-
-            proceso = Popen(comando + parametros, stdout=PIPE, startupinfo=si)
+                proceso = Popen(comando + parametros, stdout=PIPE,
+                                startupinfo=si)
+            else:
+                proceso = Popen(comando + parametros, stdout=PIPE)
             salida = proceso.communicate()[0]
             for linea in salida.splitlines():
                 info = linea.decode('utf-8').split('\t')

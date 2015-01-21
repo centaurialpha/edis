@@ -49,14 +49,20 @@ class Checker(QThread):
 
     def run(self):
         try:
+            #FIXME:
             if configuracion.WINDOWS:
                 # Flags para ocultar cmd
                 si = STARTUPINFO()
                 si.dwFlags |= STARTF_USESHOWWINDOW
                 si.wShowWindow = SW_HIDE
-            proceso = Popen(self._cppcheck + self._parametros + [self._archivo],
-                            stdout=PIPE, stderr=PIPE, shell=False,
-                            startupinfo=si)
+                proceso = Popen(self._cppcheck + self._parametros +
+                                [self._archivo], stdout=PIPE, stderr=PIPE,
+                                shell=False)
+            else:
+                proceso = Popen(self._cppcheck + self._parametros +
+                                [self._archivo], stdout=PIPE, stderr=PIPE,
+                                shell=False, startupinfo=si)
+
             salida = proceso.communicate()[1]
             self._parsear(salida)
         except Exception as error:
