@@ -417,6 +417,11 @@ class EditorContainer(QWidget):
         if weditor is not None:
             weditor.setCursorPosition(linea, 0)
 
+    def plegar_desplegar(self):
+        weditor = self.devolver_editor()
+        if weditor is not None:
+            weditor.foldAll()
+
     def proyecto_nuevo(self):
         dialogo = dialogo_proyecto.DialogoProyecto(self)
         dialogo.show()

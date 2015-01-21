@@ -172,6 +172,11 @@ ACCIONES = (
         'separador': True},
     {
         'seccion': 1,
+        'nombre': 'Plegar/desplegar todo',
+        'conexion': 'plegar_desplegar',
+        'separador': True},
+    {
+        'seccion': 1,
         'nombre': 'Mover hacia arriba',
         'conexion': 'mover_linea_arriba',
         'atajo': _ATAJO['mover-arriba'],
