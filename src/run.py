@@ -7,6 +7,13 @@
 
 import sys
 
+from PyQt4.QtGui import QIcon
+
+from PyQt4.QtCore import (
+    QLocale,
+    QTranslator,
+    QLibraryInfo
+    )
 from src import recursos
 from src.helpers import (
     configuracion,
@@ -20,12 +27,6 @@ import src.ui.contenedores.principal
 import src.ui.menu.menu
 #lint:enable
 from src.ui.edis_main import EDIS
-
-from PyQt4.QtCore import (
-    QLocale,
-    QTranslator,
-    QLibraryInfo
-    )
 
 # Logger
 log = logger.edisLogger('edis.run')
@@ -42,6 +43,7 @@ def correr_interfaz(app):
                     QLibraryInfo.TranslationsPath))
 
     edis = EDIS()
+    app.setWindowIcon(QIcon(recursos.ICONOS['icon']))
     # Aplicar estilo
     with open(recursos.ESTILO) as tema:
         estilo = tema.read()
