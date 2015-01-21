@@ -61,7 +61,7 @@ class Checker(QThread):
             else:
                 proceso = Popen(self._cppcheck + self._parametros +
                                 [self._archivo], stdout=PIPE, stderr=PIPE,
-                                shell=False, startupinfo=si)
+                                shell=False)
 
             salida = proceso.communicate()[1]
             self._parsear(salida)

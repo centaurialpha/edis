@@ -115,14 +115,13 @@ class EjecutarWidget(QWidget):
         self.output.textCursor().insertText('\n')
 
         if exitStatus == QProcess.NormalExit and codigoError == 0:
-            formato.setForeground(QBrush(QColor('#00a600')))
+            formato.setForeground(QBrush(QColor('#0197fd')))
             self.output.textCursor().insertText(
                 self.trUtf8("¡COMPILACIÓN EXITOSA! "), formato)
         else:
             formato.setForeground(QBrush(QColor('red')))
             self.output.textCursor().insertText(
                 self.tr("¡LA COMPILACIÓN HA FALLADO!"), formato)
-        self.output.moveCursor(QTextCursor.Down)
 
     def _error_compilacion(self, error):
         """

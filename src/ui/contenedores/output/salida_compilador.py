@@ -12,7 +12,8 @@ from PyQt4.QtGui import (
     QPlainTextEdit,
     QFont,
     QTextCharFormat,
-    QMenu
+    QMenu,
+    QColor
     )
 
 # Módulos QtCore
@@ -38,35 +39,19 @@ class SalidaWidget(QPlainTextEdit):
         self.format_shap = QTextCharFormat()
         self.format_shap.setFontWeight(QFont.Bold)
         self.format_shap.setFontPointSize(16)
-        self.format_shap.setForeground(Qt.darkGreen)
         # Formato para la salida de error
         self.format_line_error = QTextCharFormat()
         self.format_line_error.setAnchor(True)
         self.format_line_error.setUnderlineColor(Qt.red)
         self.format_line_error.setUnderlineStyle(1)
         self.formato_error = QTextCharFormat()
-        self.formato_error.setFontFixedPitch(True)
+        self.formato_error.setForeground(QColor('#c31515'))
         self.formato_error.setToolTip(self.trUtf8("Click para ir a la línea"))
         self.formato_error.setAnchor(True)
-        self.formato_error.setFontPointSize(9)
-        self.formato_error.setForeground(Qt.white)
-        self.formato_error.setBackground(Qt.red)
         # Formato para la salida de error (warnings)
         self.formato_warning = QTextCharFormat()
         self.formato_warning.setAnchor(True)
-        self.formato_warning.setBackground(Qt.yellow)
-        self.formato_warning.setFontPointSize(9)
-
-        # Se carga el estilo
-        #self.cargar_estilo()
-
-    def cargar_estilo(self):
-        """ Carga estilo de color de QPlainTextEdit """
-
-        tema = 'QPlainTextEdit {color: #333; background-color: #f6f6f6;}' \
-        'selection-color: #FFFFFF; selection-background-color: #009B00;'
-
-        self.setStyleSheet(tema)
+        self.formato_warning.setForeground(QColor('#b9c315'))
 
     def contextMenuEvent(self, evento):
         """ Context menú """
