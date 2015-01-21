@@ -426,8 +426,9 @@ class EditorContainer(QWidget):
     def ir_a_linea_dialogo(self):
         weditor = self.devolver_editor()
         if weditor is not None:
+            maximo = weditor.lineas
             linea, ok = QInputDialog.getInt(self, self.tr("Ir a línea"),
-                                         self.tr("Línea:"))
+                                         self.tr("Línea:"), min=1, max=maximo)
             if ok:
                 weditor.setCursorPosition(linea - 1, 0)
 
