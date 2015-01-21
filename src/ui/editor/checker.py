@@ -7,7 +7,13 @@
 
 # Checker usa la herramienta 'cppcheck' (http://cppcheck.sourceforge.net/)
 
-
+import sys
+if sys.platform == 'win32':
+    from subprocess import (
+        STARTUPINFO,
+        SW_HIDE,
+        STARTF_USESHOWWINDOW
+        )
 from subprocess import Popen, PIPE
 
 from PyQt4.QtCore import (
@@ -15,7 +21,10 @@ from PyQt4.QtCore import (
     pyqtSignal
     )
 
-from src.helpers import logger
+from src.helpers import (
+    logger,
+    configuracion
+    )
 
 log = logger.edisLogger('checker')
 
@@ -40,8 +49,14 @@ class Checker(QThread):
 
     def run(self):
         try:
+            if configuracion.WINDOWS:
+                # Flags para ocultar cmd
+                si = STARTUPINFO()
+                si.dwFlags |= STARTF_USESHOWWINDOW
+                si.wShowWindow = SW_HIDE
             proceso = Popen(self._cppcheck + self._parametros + [self._archivo],
-                            stdout=PIPE, stderr=PIPE, shell=False)
+                            stdout=PIPE, stderr=PIPE, shell=False,
+                            startupinfo=si)
             salida = proceso.communicate()[1]
             self._parsear(salida)
         except Exception as error:
