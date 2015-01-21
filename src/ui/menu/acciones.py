@@ -253,7 +253,12 @@ ACCIONES = (
         'seccion': 3,
         'nombre': 'Reemplazar',
         'conexion': 'reemplazar',
-        'atajo': _ATAJO['buscar']},
+        'atajo': _ATAJO['buscar'],
+        'separador': True},
+    {
+        'seccion': 3,
+        'nombre': 'Ir a línea',
+        'conexion': 'ir_a_linea_dialogo'},
     {
         'seccion': 5,
         'nombre': 'Compilar',

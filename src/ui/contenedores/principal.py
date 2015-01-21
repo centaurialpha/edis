@@ -14,7 +14,8 @@ from PyQt4.QtGui import (
     QVBoxLayout,
     QFileDialog,
     QPrintPreviewDialog,
-    QTextDocument
+    QTextDocument,
+    QInputDialog
     )
 
 from PyQt4.QtCore import (
@@ -421,6 +422,14 @@ class EditorContainer(QWidget):
         weditor = self.devolver_editor()
         if weditor is not None:
             weditor.foldAll()
+
+    def ir_a_linea_dialogo(self):
+        weditor = self.devolver_editor()
+        if weditor is not None:
+            linea, ok = QInputDialog.getInt(self, self.tr("Ir a línea"),
+                                         self.tr("Línea:"))
+            if ok:
+                weditor.setCursorPosition(linea - 1, 0)
 
     def proyecto_nuevo(self):
         dialogo = dialogo_proyecto.DialogoProyecto(self)
