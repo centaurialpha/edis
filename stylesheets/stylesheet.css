@@ -150,7 +150,7 @@ img {
   margin: 10px 0 10px 0;
   border: 1px solid #ebebeb;
 
-  box-shadow: 0 0 5px #ebebeb;
+  box-shadow: 0 0 5px #232323;
   -webkit-box-shadow: 0 0 5px #ebebeb;
   -moz-box-shadow: 0 0 5px #ebebeb;
   -o-box-shadow: 0 0 5px #ebebeb;
@@ -279,7 +279,7 @@ Full-Width Styles
 
 .inner {
   position: relative;
-  max-width: 640px;
+  max-width:800px;
   padding: 20px 10px;
   margin: 0 auto;
 }
@@ -292,7 +292,7 @@ Full-Width Styles
   z-index: 10;
   padding: 10px 50px 10px 10px;
   color: #fff;
-  background: url('../images/blacktocat.png') #0090ff no-repeat 95% 50%;
+  background: url('../images/blacktocat.png') #595959 no-repeat 95% 50%;
   font-weight: 700;
   box-shadow: 0 0 10px rgba(0,0,0,.5);
   border-bottom-left-radius: 2px;
@@ -323,6 +323,13 @@ Full-Width Styles
 #imagen {
     width: 300px;
     height: 100px;
+}
+
+#imagen2 {
+    width: 300px;
+    height: 100px;
+    right: -350;
+    top: -179;
 }
 
 #project_tagline {
@@ -373,13 +380,22 @@ Full-Width Styles
 }
 
 #main_content_wrap {
-  background: #f2f2f2;
+  float: left;
+  background: #d1d1d1;
   border-top: 1px solid #111;
   border-bottom: 1px solid #111;
 }
 
 #main_content {
   padding-top: 40px;
+}
+
+#contenedor {
+    float: left;
+}
+
+#contenedor2 {
+    float: right;
 }
 
 #footer_wrap {
