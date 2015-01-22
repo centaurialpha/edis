@@ -109,7 +109,14 @@ p {
 }
 
 footer p {
+  float: left;
   color: #f2f2f2;
+  margin-top: 40px;
+}
+
+#footer {
+    float: right;
+    margin-top: 0px;
 }
 
 a {
@@ -401,10 +408,8 @@ Full-Width Styles
 }
 
 #footer_wrap {
-  background: #212121;
+  float: left;
 }
-
-
 
 /*******************************************************************************
 Small Device Styles
