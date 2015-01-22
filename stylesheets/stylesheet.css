@@ -411,11 +411,17 @@ Full-Width Styles
   float: left;
   background: #ebebeb;
   border-top: 5px solid #222;
-  border-bottom: 5px solid #222;
+  border-bottom: 0px solid #222;
 }
 
 #main_content {
   padding-top: 40px;
+}
+
+#secundary_content {
+    float: inherit;
+    background: #ebebeb;
+    border-bottom: 5px solid #222;
 }
 
 #contenedor {
