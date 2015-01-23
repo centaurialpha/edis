@@ -233,8 +233,8 @@ QTabBar::tab {
     border-radius: 5px;
 }
 
-QTabBar::tab:right {
-    border-left: 1px solid gray;
+QTabBar::tab:top {
+    border-bottom: 1px solid gray;
 }
 
 QTabBar::tab:top:hover {
