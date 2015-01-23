@@ -162,6 +162,8 @@ class EjecutarWidget(QWidget):
     def limpiar(self, archivo):
         """ Elimina el binario generado por la compilación """
 
+        if archivo is None:
+            return
         binario = archivo.split('.')[0]
         if configuracion.WINDOWS:
             binario = binario + '.exe'
