@@ -79,7 +79,8 @@ class Line(QLineEdit):
     def actualizar(self, total):
         if total == 0:
             self.setStyleSheet(
-                'background-color: #e73e3e; border-radius: 3px')
+                'background-color: %s; border-radius: 3px' %
+                recursos.TEMA['error'])
         else:
             self.setStyleSheet('color: #dedede')
 

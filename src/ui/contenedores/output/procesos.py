@@ -14,13 +14,15 @@ if sys.platform == 'win32':
     from subprocess import CREATE_NEW_CONSOLE
 
 # Módulos QtGui
-from PyQt4.QtGui import QVBoxLayout
-from PyQt4.QtGui import QWidget
-from PyQt4.QtGui import QTextCharFormat
-from PyQt4.QtGui import QTextCursor
-from PyQt4.QtGui import QColor
-from PyQt4.QtGui import QBrush
-from PyQt4.QtGui import QMessageBox
+from PyQt4.QtGui import (
+    QVBoxLayout,
+    QWidget,
+    QTextCharFormat,
+    QTextCursor,
+    QColor,
+    QBrush,
+    QMessageBox
+    )
 
 # Módulos QtCore
 from PyQt4.QtCore import (
@@ -29,7 +31,7 @@ from PyQt4.QtCore import (
     )
 
 # Módulos EDIS
-#from edis import recursos
+from src import recursos
 from src.helpers import configuracion
 from src.ui.contenedores.output import salida_compilador
 
@@ -62,20 +64,24 @@ class EjecutarWidget(QWidget):
         self.proceso_compilacion.error[QProcess.ProcessError].connect(
             self._error_compilacion)
         self.proceso_ejecucion.error[QProcess.ProcessError].connect(
-            self._error_de_ejecucion)
+            self._ejecucion_terminada)
 
-    def _error_de_ejecucion(self, e):
-        """ Éste método es ejecutado cuando la ejecución falla """
+    def _ejecucion_terminada(self, codigo_error):
+        """ Éste método es ejecutado cuando la ejecución es frenada por el
+        usuario o algún otro error. """
 
         formato = QTextCharFormat()
         formato.setAnchor(True)
         formato.setFontPointSize(12)
-        formato.setForeground(QColor('white'))
-        formato.setBackground(QColor('red'))
+        formato.setForeground(QColor(recursos.TEMA['error']))
+        #formato.setBackground(QColor('red'))
         self.output.setCurrentCharFormat(formato)
-        self.output.setPlainText(self.tr(
-                                "Ha ocurrido un error en la ejecución. "
-                                "Código de error %s" % e))
+        if codigo_error == 1:
+            self.output.setPlainText(self.tr("El proceso ha sido frenado."))
+        else:
+            self.output.setPlainText(self.tr(
+                                    "Ha ocurrido un error en la ejecución. "
+                                    "Código de error: %s" % codigo_error))
 
     def correr_compilacion(self, nombre_archivo=''):
         """ Se corre el comando gcc para la compilación """

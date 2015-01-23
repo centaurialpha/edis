@@ -115,7 +115,8 @@ TEMA = {
     'sidebar-fondo': '#212121',
     'sidebar-fore': '#85878c',
     'foldFore': '#242424',
-    'foldBack': '#242424'
+    'foldBack': '#242424',
+    'error': '#e73e3e'
     }
 
 # Extensiones soportadas
