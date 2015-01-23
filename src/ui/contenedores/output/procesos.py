@@ -163,6 +163,8 @@ class EjecutarWidget(QWidget):
         """ Elimina el binario generado por la compilación """
 
         binario = archivo.split('.')[0]
+        if configuracion.WINDOWS:
+            binario = binario + '.exe'
         os.remove(binario)
 
     def terminar_proceso(self):
