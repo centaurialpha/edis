@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# EDIS - Entorno de Desarrollo Integrado Simple para C/C++
+# EDIS - a simple cross-platform IDE for C
 #
 # This file is part of EDIS
 # Copyright 2014-2015 - Gabriel Acosta
