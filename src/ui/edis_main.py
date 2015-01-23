@@ -37,7 +37,8 @@ from src.ui.contenedores.lateral import lateral_container
 from src.ui.contenedores.output import contenedor_secundario
 from src.ui.dialogos import (
     dialogo_guardar_archivos,
-    dialogo_dependencias
+    dialogo_dependencias,
+    acerca_de
     )
 
 
@@ -274,8 +275,8 @@ class EDIS(QMainWindow):
         QMessageBox.aboutQt(self)
 
     def acerca_de_edis(self):
-        #FIXME: completar
-        pass
+        dialogo = acerca_de.AcercaDe(self)
+        dialogo.show()
 
     def closeEvent(self, e):
         """
