@@ -47,6 +47,11 @@ class ContenedorOutput(QWidget):
             return
         self.salida_.correr_programa(self.nombre_archivo)
 
+    def compilar_ejecutar(self, archivo):
+        self.show()
+        self.nombre_archivo = archivo
+        self.salida_.compilar_ejecutar(self.nombre_archivo)
+
     def limpiar(self):
         self.salida_.limpiar(self.nombre_archivo)
 

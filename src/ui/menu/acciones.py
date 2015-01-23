@@ -271,6 +271,11 @@ ACCIONES = (
         'icono': _ICONO['run']},
     {
         'seccion': 5,
+        'nombre': 'Compilar y ejecutar',
+        'conexion': 'compilar_ejecutar',
+        'separador': True},
+    {
+        'seccion': 5,
         'nombre': 'Terminar',
         'conexion': 'terminar_programa',
         'icono': _ICONO['stop'],

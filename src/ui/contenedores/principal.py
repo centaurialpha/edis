@@ -347,6 +347,14 @@ class EditorContainer(QWidget):
         output = edis.contenedor_output
         output.ejecutar()
 
+    def compilar_ejecutar(self):
+        edis = EDIS.componente("edis")
+        output = edis.contenedor_output
+        weditor = self.devolver_editor()
+        if weditor is not None:
+            self.guardar_archivo(weditor)
+            output.compilar_ejecutar(weditor.nombre)
+
     def limpiar_construccion(self):
         edis = EDIS.componente("edis")
         output = edis.contenedor_output
