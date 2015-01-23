@@ -48,18 +48,36 @@ class CustomInstall(install):
             with open(script_path, 'w') as f:
                 f.write(contenido)
 
+            src_desktop = self.distribution.get_name() + '.desktop'
+            if not os.path.exists(self._custom_apps_dir):
+                os.makedirs(self._custom_apps_dir)
+            dst_desktop = os.path.join(self._custom_apps_dir, src_desktop)
+
+            with open(src_desktop, 'r') as f:
+                contenido = f.read()
+            icono = os.path.join(self._custom_data_dir, 'src', 'images',
+                                'icon.png')
+            contenido = contenido.replace('@ INSTALLED_ICON @', icono)
+            with open(dst_desktop, 'w') as f:
+                f.write(contenido)
+
     def finalize_options(self):
         """ Después de la instalación """
 
         install.finalize_options(self)
         data_dir = os.path.join(self.prefix, "share",
                                self.distribution.get_name())
+        apps_dir = os.path.join(self.prefix, "share", "applications")
+
         if self.root is None:
             build_dir = data_dir
         else:
             build_dir = os.path.join(self.root, data_dir[1:])
+            apps_dir = os.path.join(self.root, apps_dir[1:])
+
         self.install_lib = build_dir
         self._custom_data_dir = data_dir
+        self._custom_apps_dir = apps_dir
 
 
 # Se compila la lista de paquetes

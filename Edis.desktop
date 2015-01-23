@@ -1,0 +1,10 @@
+[Desktop Entry]
+Version=1.0
+Type=Application
+Name=Edis
+GenericName=Edis
+Comment=a simple cross-platfor IDE for C 
+Icon=@ INSTALLED_ICON @
+Exec=edis
+Terminal=false
+Categories=Application;IDE;TextEditor
