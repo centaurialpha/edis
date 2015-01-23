@@ -224,12 +224,21 @@ QTabBar {
     background-color: #383733;
 }
 
+
 QTabBar::tab {
     color: #dedede;
     padding: 4px 8px;
     border: 1px solid #222;
     background: #33322e;
     border-radius: 5px;
+}
+
+QTabBar::tab:right {
+    border-left: 1px solid gray;
+}
+
+QTabBar::tab:top:hover {
+    border-bottom: 2px solid gray;
 }
 
 QTabWidget::pane {
