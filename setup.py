@@ -22,7 +22,7 @@ for nombre_modulo, link in MODULOS:
         __import__(nombre_modulo, fromlist=desde)
     except ImportError:
         print("El módulo %s no está instalado.\n%s para más info." %
-                (nombre_modulo, link))
+              (nombre_modulo, link))
         sys.exit(1)
 
 from src import ui
@@ -44,11 +44,13 @@ class CustomInstall(install):
             with open(script_path, 'r') as f:
                 contenido = f.read()
             contenido = contenido.replace('@ INSTALLED_BASE_DIR @',
-                                      self._custom_data_dir)
+                                          self._custom_data_dir)
             with open(script_path, 'w') as f:
                 f.write(contenido)
 
             src_desktop = self.distribution.get_name() + '.desktop'
+            src_desktop = src_desktop.lower()
+
             if not os.path.exists(self._custom_apps_dir):
                 os.makedirs(self._custom_apps_dir)
             dst_desktop = os.path.join(self._custom_apps_dir, src_desktop)
@@ -56,7 +58,7 @@ class CustomInstall(install):
             with open(src_desktop, 'r') as f:
                 contenido = f.read()
             icono = os.path.join(self._custom_data_dir, 'src', 'images',
-                                'icon.png')
+                                 'icon.png')
             contenido = contenido.replace('@ INSTALLED_ICON @', icono)
             with open(dst_desktop, 'w') as f:
                 f.write(contenido)
@@ -66,7 +68,7 @@ class CustomInstall(install):
 
         install.finalize_options(self)
         data_dir = os.path.join(self.prefix, "share",
-                               self.distribution.get_name())
+                                self.distribution.get_name())
         apps_dir = os.path.join(self.prefix, "share", "applications")
 
         if self.root is None:
@@ -84,7 +86,7 @@ class CustomInstall(install):
 paquetes = []
 for dir_path, dir_names, filenames in os.walk('src'):
     if not '__pycache__' in dir_path.split('/')[-1] and \
-        '__init__.py' in filenames:
+            '__init__.py' in filenames:
         paquete = dir_path.replace('/', '.')
         paquetes.append(paquete)
 
