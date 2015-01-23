@@ -86,4 +86,4 @@ class ReportarBugTab(QWidget):
         box.addItem(QSpacerItem(1, 0, QSizePolicy.Expanding,
                     QSizePolicy.Expanding))
 
-        lbl_link_issues.activatedLink.connect(lambda l: webbrowser.open(l))
+        lbl_link_issues.linkActivated.connect(lambda l: webbrowser.open(l))
