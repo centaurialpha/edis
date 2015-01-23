@@ -8,3 +8,4 @@ Icon=@ INSTALLED_ICON @
 Exec=edis
 Terminal=false
 Categories=Application;IDE;TextEditor
+Name[en_US]=edis.desktop
