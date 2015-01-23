@@ -99,6 +99,7 @@ class EjecutarWidget(QWidget):
         parametros_gcc = ['-Wall', '-o']
         self.proceso_compilacion.start('gcc', parametros_gcc +
                                         [self.ejecutable] + [nombre_archivo])
+        self.proceso_compilacion.waitForFinished()
 
     def ejecucion_terminada(self, codigoError, exitStatus):
         """
