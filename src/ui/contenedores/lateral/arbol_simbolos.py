@@ -51,6 +51,9 @@ class ArbolDeSimbolos(QTreeWidget):
             self.ir_a_linea)
 
     def actualizar_simbolos(self, simbolos):
+        if simbolos is None:
+            QTreeWidgetItem(self, [self.tr('ctags no está instalado.')])
+            return
         self.clear()
 
         if 'variable' in simbolos:

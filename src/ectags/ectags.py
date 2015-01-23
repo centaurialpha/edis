@@ -20,9 +20,6 @@ from src.helpers import (
     )
 
 
-log = logger.edisLogger('ctags')
-
-
 class Ctags(object):
 
     def __init__(self):
@@ -34,28 +31,32 @@ class Ctags(object):
         comando = self.path_ejecutable()
         parametros = ['--excmd=number', '-f -', '--fields=fimKsSzt', archivo]
 
-        try:
-            #FIXME:
-            if configuracion.WINDOWS:
-                # Flags para ocultar cmd
-                si = STARTUPINFO()
-                si.dwFlags |= STARTF_USESHOWWINDOW
-                si.wShowWindow = SW_HIDE
-                proceso = Popen(comando + parametros, stdout=PIPE,
-                                startupinfo=si)
-            else:
+        if configuracion.WINDOWS:
+            # Flags para ocultar cmd
+            si = STARTUPINFO()
+            si.dwFlags |= STARTF_USESHOWWINDOW
+            si.wShowWindow = SW_HIDE
+            proceso = Popen(comando + parametros, stdout=PIPE,
+                            startupinfo=si)
+        else:
+            try:
                 proceso = Popen(comando + parametros, stdout=PIPE)
+            except Exception as e:
+                #FIXME: logger
+                print(e.args)
+                proceso = None
+        if proceso is not None:
             salida = proceso.communicate()[0]
             for linea in salida.splitlines():
                 info = linea.decode('utf-8').split('\t')
                 info[2] = info[2].replace(';"', '')
                 info[3] = info[3].replace('kind:', '')
                 info_ctags.append(info)
-        except Exception as error:
-            log.error("Error al ejecutar ctags.", error.args)
-        return info_ctags
+            return info_ctags
 
     def parser(self, salida):
+        if salida is None:
+            return
         simbolos = {}
 
         for item in salida:
