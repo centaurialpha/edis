@@ -159,6 +159,12 @@ class EjecutarWidget(QWidget):
             Popen([os.path.join(direc, self.ejecutable)],
                     creationflags=CREATE_NEW_CONSOLE)
 
+    def limpiar(self, archivo):
+        """ Elimina el binario generado por la compilación """
+
+        binario = archivo.split('.')[0]
+        os.remove(binario)
+
     def terminar_proceso(self):
         """ Termina el proceso """
 

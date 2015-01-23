@@ -273,7 +273,12 @@ ACCIONES = (
         'seccion': 5,
         'nombre': 'Terminar',
         'conexion': 'terminar_programa',
-        'icono': _ICONO['stop']},
+        'icono': _ICONO['stop'],
+        'separador': True},
+    {
+        'seccion': 5,
+        'nombre': 'Limpiar construcción',
+        'conexion': 'limpiar_construccion'},
     {
         'seccion': 6,
         'nombre': 'Reportar bug!',
