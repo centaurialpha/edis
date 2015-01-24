@@ -53,7 +53,7 @@ configuracion = {
     'gui/explorador': True,
     'gui/navegador': True,
     'editor/margen': True,
-    'editor/tipoCursor': 0,
+    'editor/tipoCursor': 2,  # 0: invisilbe; 1: línea; 2: bloque
     'editor/margenAncho': 80,
     'editor/indentacion': True,
     'editor/indentacionAncho': 4,
