@@ -85,7 +85,7 @@ class CustomInstall(install):
 # Se compila la lista de paquetes
 paquetes = []
 for dir_path, dir_names, filenames in os.walk('src'):
-    if not '__pycache__' in dir_path.split('/')[-1] and \
+    if '__pycache__' not in dir_path.split('/')[-1] and \
             '__init__.py' in filenames:
         paquete = dir_path.replace('/', '.')
         paquetes.append(paquete)
