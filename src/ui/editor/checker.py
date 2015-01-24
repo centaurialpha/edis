@@ -22,11 +22,8 @@ from PyQt4.QtCore import (
     )
 
 from src.helpers import (
-    logger,
     configuracion
     )
-
-log = logger.edisLogger('checker')
 
 #TODO: Cambiar mensajes a español
 
@@ -65,8 +62,8 @@ class Checker(QThread):
 
             salida = proceso.communicate()[1]
             self._parsear(salida)
-        except Exception as error:
-            log.error("Ha ocurrido un error: %s" % error)
+        except Exception:
+            pass
 
     def _parsear(self, salida):
         for l in salida.splitlines():

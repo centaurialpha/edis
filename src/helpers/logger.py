@@ -8,31 +8,27 @@
 import logging
 from src import recursos
 
+FORMATO_LOG = "%(asctime)s %(name)10s %(levelname)10s %(message)10s"
+FORMATO_TIEMPO = "%y-%m-%d %H:%M:%S"
+ARCHIVO_LOG = recursos.LOG
+
 
 class Logger(object):
 
-    __ARCHIVO = recursos.LOG
-    __FORMATO = '%(levelname)s: %(asctime)s en:%' \
-                '(funcName)s(%(lineno)d) "%(message)s"'
-
     def __init__(self):
-        self._hand = None
+        self.handler = None
         logging.basicConfig()
 
-    def __call__(self, nombre):
-        if not self._hand:
-            self.crear_handler(Logger.__ARCHIVO, 'w', Logger.__FORMATO)
-
+    def get_logger(self, nombre):
+        if self.handler is None:
+            handler = logging.FileHandler(ARCHIVO_LOG, mode='w')
+            formato = logging.Formatter(fmt=FORMATO_LOG, datefmt=FORMATO_TIEMPO)
+            handler.setFormatter(formato)
+            self.handler = handler
         logger = logging.getLogger(nombre)
         logger.setLevel(logging.DEBUG)
-        logger.addHandler(self._hand)
+        logger.addHandler(self.handler)
         return logger
 
-    def crear_handler(self, archivo, modo, formato):
-        fmtr = logging.Formatter(formato)
-        handler = logging.FileHandler(archivo, modo)
-        handler.setFormatter(fmtr)
-        self._hand = handler
 
-
-edisLogger = Logger()
+edis_logger = Logger()

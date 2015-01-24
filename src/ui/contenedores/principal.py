@@ -26,7 +26,6 @@ from PyQt4.QtCore import (
 
 from src.helpers import (
     manejador_de_archivo,
-    logger,
     )
 from src import recursos
 from src.ui.editor import (
@@ -42,9 +41,6 @@ from src.ui.dialogos import (
     dialogo_proyecto,
     dialogo_reemplazo
     )
-
-# Logger
-log = logger.edisLogger("contenedores.principal")
 
 
 class EditorContainer(QWidget):
@@ -160,8 +156,6 @@ class EditorContainer(QWidget):
         editores = self.stack.editores
         for editor_widget in editores:
             if editor_widget.nombre == archivo:
-                log.warning(
-                    "El archivo %s ya esta abierto", archivo)
                 return True
         return False
 

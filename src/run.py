@@ -17,7 +17,6 @@ from PyQt4.QtCore import (
 from src import recursos
 from src.helpers import (
     configuracion,
-    logger
     )
 
 #lint:disable
@@ -28,12 +27,8 @@ import src.ui.menu.menu
 #lint:enable
 from src.ui.edis_main import EDIS
 
-# Logger
-log = logger.edisLogger('edis.run')
-
 
 def correr_interfaz(app):
-    log.debug('Iniciando...')
     configuracion.ESettings().cargar()
     import src.ui.inicio  # lint:ok
     # Traductor
@@ -49,5 +44,4 @@ def correr_interfaz(app):
         estilo = tema.read()
     app.setStyleSheet(estilo)
     edis.show()
-    #edis.detectar_dependencias()
     sys.exit(app.exec_())

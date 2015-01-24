@@ -32,11 +32,7 @@ from src.ui.editor import (
     lexer,
     keywords
     )
-from src.helpers import logger
 from src.helpers.configuracion import ESettings
-
-# Logger
-log = logger.edisLogger('editor')
 
 
 def crear_editor(nombre_archivo):
@@ -45,7 +41,6 @@ def crear_editor(nombre_archivo):
     else:
         extension = 'c'  # Extensión reconocida por el Lexer
     editor = Editor(nombre_archivo, extension)
-    log.debug('Se creó un nuevo editor: %s', nombre_archivo)
     return editor
 
 
@@ -159,7 +154,8 @@ class Editor(Base):
             self._lexer.setFoldCompact(False)
             self.setLexer(self._lexer)
         else:
-            log.warning("Lexer no compatible con archivos %s" % extension)
+            #FIXME:
+            pass
 
     @property
     def nombre(self):

@@ -24,10 +24,7 @@ from PyQt4.QtCore import (
     QThread
     )
 
-from src.helpers import logger
 from src.ui.edis_main import EDIS
-log = logger.edisLogger("creador_proyecto")
-
 
 #TODO: Esto todavía está incompleto
 
