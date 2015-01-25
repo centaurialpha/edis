@@ -233,11 +233,11 @@ QTabBar::tab {
     border-radius: 5px;
 }
 
-QTabBar::tab:top {
+QTabBar::tab:top:hover {
     border-bottom: 1px solid gray;
 }
 
-QTabBar::tab:top:hover {
+QTabBar::tab:top:selected {
     border-bottom: 2px solid gray;
 }
 
