@@ -37,8 +37,6 @@ class Base(QsciScintilla):
         self.setIndentationsUseTabs(False)
         self.setAutoIndent(True)
         self.setBackspaceUnindents(True)
-        # Cursor
-        self.send("sci_setcaretstyle", ESettings.get('editor/tipoCursor'))
         # Scrollbar
         self.send("sci_sethscrollbar", 0)
         # Indicadores

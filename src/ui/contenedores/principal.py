@@ -283,7 +283,7 @@ class EditorContainer(QWidget):
         #configuraciones.MOSTRAR_TABS = accion.isChecked()
         weditor = self.devolver_editor()
         if weditor is not None:
-            weditor.flags()
+            weditor.actualizar()
 
     def mostrar_guias(self):
         #FIXME:
@@ -291,7 +291,7 @@ class EditorContainer(QWidget):
         #configuraciones.GUIA_INDENTACION = accion.isChecked()
         weditor = self.devolver_editor()
         if weditor is not None:
-            weditor.flags()
+            weditor.actualizar()
 
     def acercar(self):
         weditor = self.devolver_editor()

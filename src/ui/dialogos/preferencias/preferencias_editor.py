@@ -78,9 +78,9 @@ class CaracteristicasEditor(QWidget):
         box = QGridLayout(grupo_indentacion)
         self.check_indentacion = QCheckBox(self.tr("Activar"))
         box.addWidget(self.check_indentacion, 0, 0)
-        slider_indentacion = QSlider(Qt.Horizontal)
-        slider_indentacion.setMaximum(20)
-        box.addWidget(slider_indentacion, 0, 1)
+        self.slider_indentacion = QSlider(Qt.Horizontal)
+        self.slider_indentacion.setMaximum(20)
+        box.addWidget(self.slider_indentacion, 0, 1)
         lcd_indentacion = QLCDNumber()
         lcd_indentacion.setStyleSheet("color: #dedede")
         lcd_indentacion.setSegmentStyle(lcd_indentacion.Flat)
@@ -123,7 +123,7 @@ class CaracteristicasEditor(QWidget):
 
         # Conexiones
         self.slider_margen.valueChanged[int].connect(lcd_margen.display)
-        slider_indentacion.valueChanged[int].connect(lcd_indentacion.display)
+        self.slider_indentacion.valueChanged[int].connect(lcd_indentacion.display)
         self.btn_fuente.clicked.connect(self._seleccionar_fuente)
 
         # Configuraciones
@@ -133,7 +133,7 @@ class CaracteristicasEditor(QWidget):
         # Indentación
         self.check_indentacion.setChecked(ESettings.get(
                                          'editor/indentacion'))
-        slider_indentacion.setValue(ESettings.get(
+        self.slider_indentacion.setValue(ESettings.get(
                                    'editor/indentacionAncho'))
         self.check_guia.setChecked(ESettings.get('editor/guias'))
 
@@ -160,8 +160,11 @@ class CaracteristicasEditor(QWidget):
         fuente, fuente_tam = self.btn_fuente.text().split(',')
         ESettings.set('editor/fuente', fuente)
         ESettings.set('editor/fuenteTam,', int(fuente_tam))
+        ESettings.set('editor/margen', self.check_margen.isChecked())
         ESettings.set('editor/margenAncho', self.slider_margen.value())
         ESettings.set('editor/guias', self.check_guia.isChecked())
+        ESettings.set('editor/indentacionAncho',
+                    self.slider_indentacion.value())
         for ntipo, radio in enumerate(self.radio_cursor):
             if radio.isChecked():
                 tipo = ntipo
@@ -170,4 +173,6 @@ class CaracteristicasEditor(QWidget):
         weditor = principal.devolver_editor()
         if weditor is not None:
             weditor.cargar_fuente(fuente, int(fuente_tam))
-            weditor.flags()
+            weditor.actualizar()
+            weditor.actualizar_margen()
+            weditor.actualizar_indentacion()

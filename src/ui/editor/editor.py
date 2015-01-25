@@ -88,8 +88,8 @@ class Editor(Base):
         self.texto_modificado = False
         self.es_nuevo = True
         self.guardado_actualmente = False
-        # Flags
-        self.flags()
+        # Actualiza flags (espacios en blanco, cursor, sidebar, etc)
+        self.actualizar()
         # Lexer
         self._lexer = None
         self.cargar_lexer(ext)
@@ -130,8 +130,7 @@ class Editor(Base):
                         self._tema['caret-line'], self._tema['caret-opacidad'])
         # Márgen
         if ESettings.get('editor/margen'):
-            self._margen_de_linea(ESettings.get('editor/margenAncho'))
-            #self._margen_de_linea(configuraciones.MARGEN_COLUMNA)
+            self.actualizar_margen()
 
         # Brace matching
         self.match_braces(Base.SloppyBraceMatch)
@@ -167,8 +166,8 @@ class Editor(Base):
         if nuevo_nombre:
             self.es_nuevo = False
 
-    def flags(self):
-        """ Extras para el editor """
+    def actualizar(self):
+        """ Actualiza las opciones del editor """
 
         if ESettings.get('editor/mostrarTabs'):
             self.setWhitespaceVisibility(self.WsVisible)
@@ -184,6 +183,7 @@ class Editor(Base):
             self.setWrapMode(self.WrapWord)
         else:
             self.setWrapMode(self.WrapNone)
+        self.send("sci_setcaretstyle", ESettings.get('editor/tipoCursor'))
 
     @property
     def altura_lineas(self):
@@ -195,13 +195,21 @@ class Editor(Base):
 
         return self.getCursorPosition()
 
-    def _margen_de_linea(self, margen=None):
+    def actualizar_margen(self):
+        """ Actualiza el ancho del márgen de línea """
+
         if ESettings.get('editor/margen'):
             self.setEdgeMode(Base.EdgeLine)
-            self.setEdgeColumn(margen)
+            ancho = ESettings.get('editor/margenAncho')
+            self.setEdgeColumn(ancho)
             self.setEdgeColor(QColor(self._tema['margen']))
         else:
             self.setEdgeMode(Base.EdgeNone)
+
+    def actualizar_indentacion(self):
+        ancho = ESettings.get('editor/indentacionAncho')
+        self.send("sci_settabwidth", ancho)
+        self._indentacion = ancho
 
     def marcar_palabras(self, palabras):
         self.borrarIndicadores(self.indicador)
