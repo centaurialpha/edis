@@ -12,6 +12,7 @@ la aplicación.
 """
 
 import os
+import sys
 
 from PyQt4.QtGui import QKeySequence
 
@@ -20,7 +21,10 @@ from PyQt4.QtCore import Qt
 # Directorio home
 HOME = os.path.expanduser("~")
 # Directorio código fuente
-PATH = os.path.relpath(os.path.dirname(__file__))
+if getattr(sys, 'frozen', ''):
+    PATH = os.path.realpath(os.path.dirname(sys.argv[0]))
+else:
+    PATH = os.path.realpath(os.path.dirname(__file__))
 # Carpeta que contiene archivos de configuración y logs
 HOME_EDIS = os.path.join(HOME, ".edis")
 # Archivo de configuración
