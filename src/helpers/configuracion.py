@@ -46,7 +46,8 @@ ITEMS_TOOLBAR = [
 # Configuracion por defecto
 # configuracion[clave_QSettings] = valor_QSettings
 configuracion = {
-    'ventana/dimensiones': (),
+    'ventana/dimensiones': 0,
+    'ventana/posicion': 0,
     'ventana/guardarDimensiones': True,
     'general/confirmarSalida': True,
     'gui/simbolos': True,
@@ -83,7 +84,12 @@ class ESettings(object):
             tipo = eval(str(type(valor)).split("'")[1])
             if tipo == str:
                 tipo = 'QString'
-            configuracion[clave] = qconfig.value(clave, valor, type=tipo)
+            elif clave == 'ventana/dimensiones':
+                configuracion[clave] = qconfig.value(clave, valor)
+            elif clave == 'ventana/posicion':
+                configuracion[clave] = qconfig.value(clave, valor)
+            else:
+                configuracion[clave] = qconfig.value(clave, valor, type=tipo)
         if not configuracion['editor/fuente']:
             configuracion['editor/fuente'] = FUENTE
 
