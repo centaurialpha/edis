@@ -25,7 +25,7 @@ from PyQt4.QtCore import (
     )
 
 from src.ui.edis_main import EDIS
-from src import recursos
+from src import paths
 from src.ui.dialogos.preferencias import (
     preferencias_general,
     preferencias_editor,
@@ -82,11 +82,11 @@ class Preferencias(QDialog):
         toolbar.setToolButtonStyle(Qt.ToolButtonIconOnly)
 
         self.button_general = ToolButton("General",
-                                        recursos.ICONOS['general'])
+                                        paths.ICONOS['general'])
         self.button_editor = ToolButton("Editor",
-                                        recursos.ICONOS['edit'])
-        self.button_gui = ToolButton("Interfáz", recursos.ICONOS['gui'])
-        self.button_compi = ToolButton("Ejecución", recursos.ICONOS['build'])
+                                        paths.ICONOS['edit'])
+        self.button_gui = ToolButton("Interfáz", paths.ICONOS['gui'])
+        self.button_compi = ToolButton("Ejecución", paths.ICONOS['build'])
 
         toolbar.addWidget(self.button_general)
         toolbar.addWidget(self.button_editor)

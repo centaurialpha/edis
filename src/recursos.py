@@ -11,37 +11,10 @@ la aplicación.
 
 """
 
-import os
-import sys
-
 from PyQt4.QtGui import QKeySequence
 
 from PyQt4.QtCore import Qt
 
-# Directorio home
-HOME = os.path.expanduser("~")
-# Directorio código fuente
-if getattr(sys, 'frozen', ''):
-    PATH = os.path.realpath(os.path.dirname(sys.argv[0]))
-else:
-    PATH = os.path.realpath(os.path.dirname(__file__))
-# Carpeta que contiene archivos de configuración y logs
-HOME_EDIS = os.path.join(HOME, ".edis")
-# Archivo de configuración
-CONFIGURACION = os.path.join(HOME_EDIS, "config.ini")
-LOG = os.path.join(HOME_EDIS, 'edis.log')
-# Selector
-SELECTOR_QML = os.path.join(PATH, "ui", "selector", "selector.qml")
-# ESTILO
-ESTILO = os.path.join(PATH, "extras", "temas", "default.qss")
-IDIOMA = os.path.join(PATH, "extras", "idiomas")
-# Ctags
-CTAGS = os.path.join(PATH, 'ectags', 'ctags.exe')
-# Iconos
-ICONOS = {}
-for icono in os.listdir(os.path.join(PATH, "images")):
-    ICONOS[icono.split('.')[0]] = os.path.join(os.path.join(
-                                                PATH, "images", icono))
 
 # Atajos de teclas
 ATAJOS = {
@@ -122,6 +95,3 @@ TEMA = {
     'foldBack': '#242424',
     'error': '#e73e3e'
     }
-
-# Extensiones soportadas
-EXTENSIONES = " Archivos C/C++(*.cpp *.c);;ASM(*.s);;HEADERS(*.h);;(*.*)"

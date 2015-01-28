@@ -22,7 +22,7 @@ from PyQt4.QtGui import (
 
 from PyQt4.QtCore import Qt
 
-from src import recursos
+from src import paths
 from src import ui
 
 
@@ -33,7 +33,7 @@ class AcercaDe(QDialog):
         self.setWindowTitle(self.tr("Acerca de EDIS"))
         box = QVBoxLayout(self)
         label_logo = QLabel()
-        label_logo.setPixmap(QPixmap(recursos.ICONOS['icon']))
+        label_logo.setPixmap(QPixmap(paths.ICONOS['icon']))
         label_titulo = QLabel(self.tr("<h1>EDIS</h1>\n<i>Simple Integrated "
                             "Development Environment</i>"))
         box_logo = QHBoxLayout()
@@ -67,7 +67,7 @@ class AboutTab(QWidget):
         lbl_sc = QLabel(self.tr("Código fuente: <a href='%s'><span style="
                         "'color: #dedede;'>%s</span></a>" %
                         (ui.__codigo_fuente__, ui.__codigo_fuente__)))
-        logo = QPixmap(recursos.ICONOS['icon'])
+        logo = QPixmap(paths.ICONOS['icon'])
         label_logo = QLabel()
         label_logo.setAlignment(Qt.AlignCenter)
         label_logo.setPixmap(logo)

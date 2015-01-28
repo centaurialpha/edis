@@ -27,7 +27,6 @@ from PyQt4.QtCore import (
 from src.helpers import (
     manejador_de_archivo,
     )
-from src import recursos
 from src.ui.editor import (
     editor,
     stack
@@ -118,14 +117,14 @@ class EditorContainer(QWidget):
         return weditor
 
     def abrir_archivo(self, nombre=""):
+        filtro = "Archivos C/C++(*.cpp *.c);;ASM(*.s);;HEADERS(*.h);;(*.*)"
         if not nombre:
             carpeta = os.path.expanduser("~")
             editor_widget = self.widget_actual()
             if editor_widget and editor_widget.nombre:
                 carpeta = self.__ultima_carpeta_visitada(editor_widget.nombre)
             archivos = QFileDialog.getOpenFileNames(self,
-                            self.trUtf8("Abrir archivo"), carpeta,
-                            recursos.EXTENSIONES)
+                            self.trUtf8("Abrir archivo"), carpeta, filtro)
         else:
             archivos = [nombre]
         for archivo in archivos:

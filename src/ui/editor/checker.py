@@ -62,8 +62,8 @@ class Checker(QThread):
 
             salida = proceso.communicate()[1]
             self._parsear(salida)
-        except Exception:
-            pass
+        except Exception as e:
+            print(e.args)
 
     def _parsear(self, salida):
         for l in salida.splitlines():
@@ -102,7 +102,10 @@ class Checker(QThread):
 
     def run_cppcheck(self, archivo):
         self._archivo = archivo
-        self._cppcheck = ['cppcheck']
+        if configuracion.LINUX:
+            self._cppcheck = ['cppcheck']
+        else:
+            self._cppcheck = ['src/tools/cppcheck.exe']
         self._parametros = ['--enable=warning,unusedFunction,style,portability,'
                             'performance', '--template="{line};{severity};'
                             '{message};{id}"', '--language=c']

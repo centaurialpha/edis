@@ -9,7 +9,7 @@ import sys
 
 from PyQt4.QtCore import QSettings
 
-from src import recursos
+from src import paths
 
 
 LINUX = False
@@ -79,7 +79,7 @@ class ESettings(object):
         QSettings.value(clave, valor, type=tipo)
         """
 
-        qconfig = QSettings(recursos.CONFIGURACION, QSettings.IniFormat)
+        qconfig = QSettings(paths.CONFIGURACION, QSettings.IniFormat)
         for clave, valor in list(configuracion.items()):
             tipo = eval(str(type(valor)).split("'")[1])
             if tipo == str:
@@ -99,10 +99,10 @@ class ESettings(object):
 
     @staticmethod
     def set(clave, valor):
-        qconfig = QSettings(recursos.CONFIGURACION, QSettings.IniFormat)
+        qconfig = QSettings(paths.CONFIGURACION, QSettings.IniFormat)
         configuracion[clave] = valor
         qconfig.setValue(clave, valor)
 
     @staticmethod
     def borrar():
-        QSettings(recursos.CONFIGURACION, QSettings.IniFormat).clear()
+        QSettings(paths.CONFIGURACION, QSettings.IniFormat).clear()

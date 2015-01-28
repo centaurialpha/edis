@@ -6,6 +6,7 @@
 # License: GPLv3 (see http://www.gnu.org/licenses/gpl.html)
 
 import sys
+import os
 from subprocess import Popen, PIPE
 if sys.platform == 'win32':
     from subprocess import (
@@ -13,9 +14,9 @@ if sys.platform == 'win32':
         SW_HIDE,
         STARTF_USESHOWWINDOW
         )
-from src import recursos
+from src import paths
 from src.helpers import (
-    logger,
+    #logger,
     configuracion
     )
 
@@ -73,8 +74,9 @@ class Ctags(object):
         return simbolos
 
     def path_ejecutable(self):
-        exe = 'ctags' if sys.platform == 'linux' else recursos.CTAGS
-        if exe is None:
-            #FIXME: think this!
-            pass
+        exe = ''
+        if sys.platform == 'linux':
+            exe = 'ctags'
+        else:
+            exe = os.path.join(paths.PATH, "ectags", "ctags.exe")
         return [exe]

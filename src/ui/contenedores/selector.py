@@ -5,13 +5,14 @@
 # Copyright 2014-2015 - Gabriel Acosta
 # License: GPLv3 (see http://www.gnu.org/licenses/gpl.html)
 
+import os
+
 from PyQt4.QtGui import (
     QDialog,
     QVBoxLayout,
     )
 
 from PyQt4.QtCore import (
-    #pyqtSignal,
     QUrl,
     SIGNAL,
     Qt,
@@ -20,7 +21,7 @@ from PyQt4.QtCore import (
 
 from PyQt4.QtDeclarative import QDeclarativeView
 
-from src import recursos
+from src import paths
 from src.ui.edis_main import EDIS
 
 
@@ -37,7 +38,8 @@ class Selector(QDialog):
         box.setSpacing(0)
         # Interfáz QML
         view = QDeclarativeView()
-        path = QDir.fromNativeSeparators(self.__get_qml())
+        qml = os.path.join(paths.PATH, "ui", "selector", "selector.qml")
+        path = QDir.fromNativeSeparators(qml)
         view.setSource(QUrl.fromLocalFile(path))
 
         view.setResizeMode(QDeclarativeView.SizeRootObjectToView)
@@ -49,10 +51,6 @@ class Selector(QDialog):
         self.connect(self.root, SIGNAL("abrirArchivo(int)"),
                     self.__abrir_archivo)
 
-    @staticmethod
-    def __get_qml():
-        return recursos.SELECTOR_QML
-
     def __abrir_archivo(self, indice):
         principal = EDIS.componente("principal")
         principal.cambiar_widget(indice)
@@ -61,15 +59,12 @@ class Selector(QDialog):
     def __current_indice(self):
         principal = EDIS.componente("principal")
         indice = principal.indice_actual()
-        #FIXME: Mandar la señal
-        #self.emit(SIGNAL("currentIndice(int)"), indice)
         self.root.item_actual(indice)
 
     def __cargar(self):
         principal = EDIS.componente("principal")
         archivos_abiertos_ = principal.archivos_abiertos()
         for archivo in archivos_abiertos_:
-            #FIXME: modificar para güindous
             archivo = archivo.split('/')[-1]
             self.root.cargar_archivo(archivo)
         self.__current_indice()

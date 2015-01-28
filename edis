@@ -25,11 +25,11 @@ if proyecto not in sys.path:
 
 
 def main():
-    from src import recursos
+    from src import paths
 
     # Si no existe la carpeta de configuraciones se crea
-    if not os.path.isdir(recursos.HOME_EDIS):
-        os.mkdir(recursos.HOME_EDIS)
+    if not os.path.isdir(paths.HOME):
+        os.mkdir(paths.HOME)
 
     from PyQt4.QtGui import QApplication
 

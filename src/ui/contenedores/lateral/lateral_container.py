@@ -21,7 +21,7 @@ from PyQt4.QtGui import (
 
 from PyQt4.QtCore import SIGNAL, QSize
 
-from src import recursos
+from src import paths
 from src.helpers.configuracion import ESettings
 from src.helpers import configuracion
 from src.ui.contenedores.lateral import (
@@ -58,7 +58,7 @@ class _ContenedorLateral(QWidget):
         self.combo_selector.setObjectName("combo_selector")
         self.combo_selector.setStyleSheet(
             "QComboBox::drop-down{image: url(%s); top: 5px;}"
-            % recursos.ICONOS['down'])
+            % paths.ICONOS['down'])
         hbox.addWidget(self.combo_selector, stretch=1)
         # Toolbar
         toolbar = QToolBar()
@@ -69,7 +69,7 @@ class _ContenedorLateral(QWidget):
             toolbar.setIconSize(QSize(22, 22))
         tool_undock = QToolButton()
         tool_undock.setToolTip(self.tr("Undock widget"))
-        tool_undock.setIcon(QIcon(recursos.ICONOS['undock']))
+        tool_undock.setIcon(QIcon(paths.ICONOS['undock']))
         toolbar.addWidget(tool_undock)
         hbox.addWidget(toolbar)
 

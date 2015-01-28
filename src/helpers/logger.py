@@ -6,11 +6,11 @@
 # License: GPLv3 (see http://www.gnu.org/licenses/gpl.html)
 
 import logging
-from src import recursos
+from src import paths
 
 FORMATO_LOG = "%(asctime)s %(name)10s %(levelname)10s %(message)10s"
 FORMATO_TIEMPO = "%y-%m-%d %H:%M:%S"
-ARCHIVO_LOG = recursos.LOG
+ARCHIVO_LOG = paths.LOG
 
 
 class Logger(object):

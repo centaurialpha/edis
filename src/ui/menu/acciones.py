@@ -5,10 +5,13 @@
 # Copyright 2014-2015 - Gabriel Acosta
 # License: GPLv3 (see http://www.gnu.org/licenses/gpl.html)
 
-from src import recursos
+from src import (
+    paths,
+    recursos
+    )
 
 _ATAJO = recursos.ATAJOS
-_ICONO = recursos.ICONOS
+_ICONO = paths.ICONOS
 
 # ACCIONES es una tupla de diccionarios, cada diccionario representa
 # a una acción (QAction). La clave 'seccion' toma valores 0-6 y representa

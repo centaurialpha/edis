@@ -18,7 +18,7 @@ from PyQt4.QtCore import (
     pyqtSignal
     )
 
-from src import recursos
+from src import paths
 
 
 class ArbolDeSimbolos(QTreeWidget):
@@ -26,13 +26,13 @@ class ArbolDeSimbolos(QTreeWidget):
     _ir_a_linea = pyqtSignal(int, name='irALinea')
 
     iconos = {
-        'clase': recursos.ICONOS['class'],
-        'funcion': recursos.ICONOS['funcion'],
-        'struct': recursos.ICONOS['struct'],
-        'miembro': recursos.ICONOS['miembro'],
-        'global': recursos.ICONOS['variable'],
-        'enumerator': recursos.ICONOS['enumerator'],
-        'enums': recursos.ICONOS['enums']
+        'clase': paths.ICONOS['class'],
+        'funcion': paths.ICONOS['funcion'],
+        'struct': paths.ICONOS['struct'],
+        'miembro': paths.ICONOS['miembro'],
+        'global': paths.ICONOS['variable'],
+        'enumerator': paths.ICONOS['enumerator'],
+        'enums': paths.ICONOS['enums']
         }
 
     def __init__(self):

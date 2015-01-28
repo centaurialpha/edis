@@ -31,7 +31,7 @@ from PyQt4.QtCore import (
     )
 
 # Módulos EDIS
-from src import recursos
+from src import paths
 from src.helpers import configuracion
 from src.ui.contenedores.output import salida_compilador
 
@@ -73,7 +73,7 @@ class EjecutarWidget(QWidget):
         formato = QTextCharFormat()
         formato.setAnchor(True)
         formato.setFontPointSize(12)
-        formato.setForeground(QColor(recursos.TEMA['error']))
+        formato.setForeground(QColor(paths.TEMA['error']))
         #formato.setBackground(QColor('red'))
         self.output.setCurrentCharFormat(formato)
         if codigo_error == 1:

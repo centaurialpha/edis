@@ -6,6 +6,7 @@
 # License: GPLv3 (see http://www.gnu.org/licenses/gpl.html)
 
 import sys
+import os
 
 from PyQt4.QtGui import QIcon
 
@@ -14,7 +15,7 @@ from PyQt4.QtCore import (
     QTranslator,
     QLibraryInfo
     )
-from src import recursos
+from src import paths
 from src.helpers import (
     configuracion,
     )
@@ -38,9 +39,10 @@ def correr_interfaz(app):
                     QLibraryInfo.TranslationsPath))
 
     edis = EDIS()
-    app.setWindowIcon(QIcon(recursos.ICONOS['icon']))
+    app.setWindowIcon(QIcon(paths.ICONOS['icon']))
     # Aplicar estilo
-    with open(recursos.ESTILO) as tema:
+    with open(os.path.join(paths.PATH,
+            "extras", "temas", "default.qss")) as tema:
         estilo = tema.read()
     app.setStyleSheet(estilo)
     edis.show()
