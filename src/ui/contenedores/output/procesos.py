@@ -16,7 +16,6 @@ if sys.platform == 'win32':
 from PyQt4.QtGui import (
     QVBoxLayout,
     QWidget,
-    QTextCharFormat,
     QColor,
     QMessageBox
     )
@@ -30,7 +29,6 @@ from PyQt4.QtCore import (
     )
 
 # Módulos EDIS
-from src import paths
 from src.helpers import configuracion
 from src.ui.contenedores.output import salida
 
@@ -73,18 +71,16 @@ class EjecutarWidget(QWidget):
         """ Éste método es ejecutado cuando la ejecución es frenada por el
         usuario o algún otro error. """
 
-        formato = QTextCharFormat()
-        formato.setAnchor(True)
-        formato.setFontPointSize(12)
-        formato.setForeground(QColor(paths.TEMA['error']))
-        #formato.setBackground(QColor('red'))
-        self.output.setCurrentCharFormat(formato)
+        self.output.clear()
         if codigo_error == 1:
-            self.output.setPlainText(self.tr("El proceso ha sido frenado."))
+            error1 = salida.Item(self.tr("El proceso ha sido frenado"))
+            error1.setForeground(Qt.blue)
+            self.output.addItem(error1)
         else:
-            self.output.setPlainText(self.tr(
-                                    "Ha ocurrido un error en la ejecución. "
+            error = salida.Item(self.tr("Ha ocurrido un error en la ejecución. "
                                     "Código de error: %s" % codigo_error))
+            error.setForeground(Qt.red)
+            self.output.addItem(error)
 
     def correr_compilacion(self, nombre_archivo=''):
         """ Se corre el comando gcc para la compilación """
@@ -101,10 +97,9 @@ class EjecutarWidget(QWidget):
         item = salida.Item(self.tr(
                             "Compilando archivo: %s ( %s )" %
                             (directorio.split('/')[-1], nombre_archivo)))
-        item.clickeable = False
         self.output.addItem(item)
 
-        clang = 'clangs'
+        clang = 'clang'
         parametros_clang = ['-Wall', '-o']
         self.proceso_compilacion.start(clang, parametros_clang +
                                         [self.ejecutable] + [nombre_archivo])
@@ -120,12 +115,10 @@ class EjecutarWidget(QWidget):
 
         if exitStatus == QProcess.NormalExit and codigoError == 0:
             item_ok = salida.Item(self.tr("¡COMPILACIÓN EXITOSA!"))
-            item_ok.clickeable = False
             item_ok.setForeground(QColor("#0046cc"))
             self.output.addItem(item_ok)
         else:
             item_error = salida.Item(self.tr("¡LA COMPILACIÓN HA FALLADO!"))
-            item_error.clickeable = False
             item_error.setForeground(Qt.red)
             self.output.addItem(item_error)
 
@@ -139,7 +132,6 @@ class EjecutarWidget(QWidget):
         texto = salida.Item(self.tr("Ha ocurrido un error: quizás el compilador"
                             " no está instalado."))
         texto.setForeground(Qt.red)
-        texto.clickeable = False
         self.output.addItem(texto)
 
     def correr_programa(self, archivo):

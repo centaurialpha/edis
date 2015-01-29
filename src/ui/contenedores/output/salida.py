@@ -31,10 +31,12 @@ class SalidaCompilador(QListWidget):
             if linea.find(': warning') != -1:
                 warning = Item(linea, self)
                 warning.setForeground(QColor("#d4d443"))
+                warning.clickeable = True
                 self.addItem(warning)
             elif linea.find(': error') != -1:
                 error = Item(linea, self)
                 error.setForeground(QColor("#e73e3e"))
+                error.clickeable = True
                 self.addItem(error)
             elif linea.find('^') != -1:
                 shap = Item(linea, self)
@@ -42,7 +44,6 @@ class SalidaCompilador(QListWidget):
                 self.addItem(shap)
             else:
                 normal = Item(linea, self)
-                normal.clickeable = False
                 self.addItem(normal)
 
     def _ir_a_linea(self, item):
@@ -58,4 +59,4 @@ class Item(QListWidgetItem):
         fuente = self.font()
         fuente.setPointSize(10)
         self.setFont(fuente)
-        self.clickeable = True
+        self.clickeable = False
