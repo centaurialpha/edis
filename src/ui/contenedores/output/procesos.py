@@ -18,7 +18,6 @@ from PyQt4.QtGui import (
     QWidget,
     QTextCharFormat,
     QColor,
-    QBrush,
     QMessageBox
     )
 
@@ -105,7 +104,7 @@ class EjecutarWidget(QWidget):
         item.clickeable = False
         self.output.addItem(item)
 
-        clang = 'clang'
+        clang = 'clangs'
         parametros_clang = ['-Wall', '-o']
         self.proceso_compilacion.start(clang, parametros_clang +
                                         [self.ejecutable] + [nombre_archivo])
@@ -137,13 +136,11 @@ class EjecutarWidget(QWidget):
 
         """
 
-        #FIXME
-        formato = QTextCharFormat()
-        formato.setAnchor(True)
-        formato.setForeground(QBrush(QColor('red')))
-        self.output.textCursor().insertText(
-            self.tr("Ha ocurrido un error: Quizás el compilador "
-                    "no está presente"), formato)
+        texto = salida.Item(self.tr("Ha ocurrido un error: quizás el compilador"
+                            " no está instalado."))
+        texto.setForeground(Qt.red)
+        texto.clickeable = False
+        self.output.addItem(texto)
 
     def correr_programa(self, archivo):
         """ Ejecuta el binario generado por el compilador """
