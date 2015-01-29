@@ -218,6 +218,9 @@ class EDIS(QMainWindow):
         self.connect(self.contenedor_lateral._arbol_simbolos,
                     SIGNAL("irALinea(int)"),
                     self.contenedor_editor.ir_a_linea)
+        self.connect(self.contenedor_output.salida_.output,
+                    SIGNAL("ir_a_linea(int)"),
+                    self.contenedor_editor.ir_a_linea)
 
     def __actualizar_cursor(self, linea, columna, lineas):
         #FIXME:

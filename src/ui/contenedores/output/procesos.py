@@ -18,22 +18,25 @@ from PyQt4.QtGui import (
     QVBoxLayout,
     QWidget,
     QTextCharFormat,
-    QTextCursor,
+    #QTextCursor,
     QColor,
     QBrush,
-    QMessageBox
+    QMessageBox,
+    QListWidgetItem
     )
 
 # Módulos QtCore
 from PyQt4.QtCore import (
     QProcess,
-    QDir
+    QDir,
+    Qt,
+    SIGNAL
     )
 
 # Módulos EDIS
 from src import paths
 from src.helpers import configuracion
-from src.ui.contenedores.output import salida_compilador
+from src.ui.contenedores.output import salida
 
 
 class EjecutarWidget(QWidget):
@@ -48,7 +51,7 @@ class EjecutarWidget(QWidget):
         layoutV = QVBoxLayout(self)
         layoutV.setContentsMargins(0, 0, 0, 0)
         layoutV.setSpacing(0)
-        self.output = salida_compilador.SalidaWidget(self)
+        self.output = salida.SalidaCompilador(self)
         layoutV.addWidget(self.output)
         self.setLayout(layoutV)
 
@@ -57,14 +60,18 @@ class EjecutarWidget(QWidget):
         self.proceso_ejecucion = QProcess(self)
 
         # Conexión
+        self.output.ir_a_linea.connect(self._emitir_ir_a_linea)
         self.proceso_compilacion.readyReadStandardError.connect(
-            self.output.parser_salida_stderr)
+            self.output.parsear_salida_stderr)
         self.proceso_compilacion.finished[int, QProcess.ExitStatus].connect(
             self.ejecucion_terminada)
         self.proceso_compilacion.error[QProcess.ProcessError].connect(
             self._error_compilacion)
         self.proceso_ejecucion.error[QProcess.ProcessError].connect(
             self._ejecucion_terminada)
+
+    def _emitir_ir_a_linea(self, linea):
+        self.emit(SIGNAL("ir_a_linea(int)"), linea)
 
     def _ejecucion_terminada(self, codigo_error):
         """ Éste método es ejecutado cuando la ejecución es frenada por el
@@ -87,7 +94,6 @@ class EjecutarWidget(QWidget):
         """ Se corre el comando gcc para la compilación """
 
         # Ejecutable
-        self.output.setCurrentCharFormat(self.output.formato_ok)
         directorio = QDir.fromNativeSeparators(nombre_archivo)
         self.ejecutable = directorio.split('/')[-1].split('.')[0]
 
@@ -95,15 +101,14 @@ class EjecutarWidget(QWidget):
         directorio_ejecutable = os.path.dirname(directorio)
         self.proceso_compilacion.setWorkingDirectory(directorio_ejecutable)
 
-        self.output.setPlainText(
-            "Compilando archivo: %s\nDirectorio: %s ( %s )\n" %
-            (directorio.split('/')[-1], nombre_archivo, time.ctime()))
+        self.output.clear()
+        self.output.addItem(self.tr(
+                            "Compilando archivo: %s ( %s )" %
+                            (directorio.split('/')[-1], nombre_archivo)))
 
-        self.output.moveCursor(QTextCursor.Down)
-        self.output.moveCursor(QTextCursor.Down)
-
-        parametros_gcc = ['-Wall', '-o']
-        self.proceso_compilacion.start('gcc', parametros_gcc +
+        clang = 'clang'
+        parametros_clang = ['-Wall', '-o']
+        self.proceso_compilacion.start(clang, parametros_clang +
                                         [self.ejecutable] + [nombre_archivo])
         self.proceso_compilacion.waitForFinished()
 
@@ -115,20 +120,14 @@ class EjecutarWidget(QWidget):
 
         """
 
-        # Formato para el texto
-        formato = QTextCharFormat()
-        formato.setAnchor(True)
-        formato.setFontPointSize(11)
-        self.output.textCursor().insertText('\n')
-
         if exitStatus == QProcess.NormalExit and codigoError == 0:
-            formato.setForeground(QBrush(QColor('#0197fd')))
-            self.output.textCursor().insertText(
-                self.trUtf8("¡COMPILACIÓN EXITOSA! "), formato)
+            item_ok = QListWidgetItem(self.tr("¡COMPILACIÓN EXITOSA!"))
+            item_ok.setForeground(Qt.darkBlue)
+            self.output.addItem(item_ok)
         else:
-            formato.setForeground(QBrush(QColor('red')))
-            self.output.textCursor().insertText(
-                self.tr("¡LA COMPILACIÓN HA FALLADO!"), formato)
+            item_error = QListWidgetItem(self.tr("¡LA COMPILACIÓN HA FALLADO!"))
+            item_error.setForeground(Qt.red)
+            self.output.addItem(item_error)
 
     def _error_compilacion(self, error):
         """

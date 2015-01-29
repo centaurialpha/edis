@@ -80,22 +80,23 @@ class SalidaWidget(QPlainTextEdit):
     def parser_salida_stderr(self):
         """ Parser de la salida stderr """
 
-        espacio = re.compile('^\s+')
+        #espacio = re.compile('^\s+')
         cursor = self.textCursor()
         proceso = self._parent.proceso_compilacion
         texto = proceso.readAllStandardError().data().decode('utf-8')
 
         for l in texto.splitlines():
-            cursor.insertBlock()
+            print(l)
+            #cursor.insertBlock()
             if l.find('warning') != -1:
                 cursor.insertText(l, self.formato_warning)
-            elif l.find('error') != -1:
-                cursor.insertText(l, self.formato_error)
-            elif l.find('^') == -1:
-                if espacio.match(l):
-                    cursor.insertText(l, self.format_line_error)
-            else:
-                cursor.insertText(l, self.format_shap)
+            #elif l.find('error') != -1:
+                #cursor.insertText(l, self.formato_error)
+            #elif l.find('^') == -1:
+                #if espacio.match(l):
+                    #cursor.insertText(l, self.format_line_error)
+            #else:
+                #cursor.insertText(l, self.format_shap)
 
     def parse_error(self, line):
         """ Parse line and return the number line"""

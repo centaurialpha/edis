@@ -40,7 +40,7 @@ class ContenedorOutput(QWidget):
         self.show()
         self.nombre_archivo = path
         self.salida_.correr_compilacion(self.nombre_archivo)
-        self.salida_.output.setFoco()
+        #self.salida_.output.setFoco()
 
     def ejecutar(self):
         if self.nombre_archivo is None:
