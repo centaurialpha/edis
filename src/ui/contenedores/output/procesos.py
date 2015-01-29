@@ -6,7 +6,6 @@
 # License: GPLv3 (see http://www.gnu.org/licenses/gpl.html)
 
 # Módulos Python
-import time
 import sys
 import os
 from subprocess import Popen
@@ -18,11 +17,9 @@ from PyQt4.QtGui import (
     QVBoxLayout,
     QWidget,
     QTextCharFormat,
-    #QTextCursor,
     QColor,
     QBrush,
-    QMessageBox,
-    QListWidgetItem
+    QMessageBox
     )
 
 # Módulos QtCore
@@ -121,11 +118,13 @@ class EjecutarWidget(QWidget):
         """
 
         if exitStatus == QProcess.NormalExit and codigoError == 0:
-            item_ok = QListWidgetItem(self.tr("¡COMPILACIÓN EXITOSA!"))
-            item_ok.setForeground(Qt.darkBlue)
+            item_ok = salida.Item(self.tr("¡COMPILACIÓN EXITOSA!"))
+            item_ok.clickeable = False
+            item_ok.setForeground(QColor("#0046cc"))
             self.output.addItem(item_ok)
         else:
-            item_error = QListWidgetItem(self.tr("¡LA COMPILACIÓN HA FALLADO!"))
+            item_error = salida.Item(self.tr("¡LA COMPILACIÓN HA FALLADO!"))
+            item_error.clickeable = False
             item_error.setForeground(Qt.red)
             self.output.addItem(item_error)
 
@@ -136,6 +135,7 @@ class EjecutarWidget(QWidget):
 
         """
 
+        #FIXME
         formato = QTextCharFormat()
         formato.setAnchor(True)
         formato.setForeground(QBrush(QColor('red')))

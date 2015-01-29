@@ -7,7 +7,8 @@
 
 from PyQt4.QtGui import (
     QListWidget,
-    QListWidgetItem
+    QListWidgetItem,
+    QColor
     )
 
 from PyQt4.QtCore import pyqtSignal
@@ -19,6 +20,7 @@ class SalidaCompilador(QListWidget):
 
     def __init__(self, parent):
         QListWidget.__init__(self, parent)
+        self.setObjectName("salida_compilador")
         self._parent = parent
         self.itemClicked.connect(self._ir_a_linea)
 
@@ -27,22 +29,25 @@ class SalidaCompilador(QListWidget):
         texto = proceso.readAllStandardError().data().decode('utf-8')
         for linea in texto.splitlines():
             if linea.find(': warning') != -1:
-                #FIXME: formato
                 warning = Item(linea, self)
-                warning.clickeable = True
+                warning.setForeground(QColor("#d4d443"))
                 self.addItem(warning)
             elif linea.find(': error') != -1:
-                #FIXME: formato
                 error = Item(linea, self)
-                error.clickeable = True
+                error.setForeground(QColor("#e73e3e"))
                 self.addItem(error)
+            elif linea.find('^') != -1:
+                shap = Item(linea, self)
+                shap.setForeground(QColor("#00b34b"))
+                self.addItem(shap)
             else:
                 normal = Item(linea, self)
+                normal.clickeable = False
                 self.addItem(normal)
 
     def _ir_a_linea(self, item):
         if item.clickeable:
-            linea = int(item.text().split(':')[1])
+            linea = int(item.text().split(':')[1]) - 1
             self.ir_a_linea.emit(linea)
 
 
@@ -50,4 +55,7 @@ class Item(QListWidgetItem):
 
     def __init__(self, texto, parent=None):
         QListWidgetItem.__init__(self, texto, parent)
-        self.clickeable = False
+        fuente = self.font()
+        fuente.setPointSize(10)
+        self.setFont(fuente)
+        self.clickeable = True
