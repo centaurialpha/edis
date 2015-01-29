@@ -99,9 +99,11 @@ class EjecutarWidget(QWidget):
         self.proceso_compilacion.setWorkingDirectory(directorio_ejecutable)
 
         self.output.clear()
-        self.output.addItem(self.tr(
+        item = salida.Item(self.tr(
                             "Compilando archivo: %s ( %s )" %
                             (directorio.split('/')[-1], nombre_archivo)))
+        item.clickeable = False
+        self.output.addItem(item)
 
         clang = 'clang'
         parametros_clang = ['-Wall', '-o']
