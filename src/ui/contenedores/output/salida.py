@@ -48,8 +48,16 @@ class SalidaCompilador(QListWidget):
 
     def _ir_a_linea(self, item):
         if item.clickeable:
-            linea = int(item.text().split(':')[1]) - 1
+            linea = self._parsear_linea(item)
             self.ir_a_linea.emit(linea)
+
+    def _parsear_linea(self, item):
+        data = item.text()
+        for l in data.split(':'):
+            if l.isdigit():
+                linea = int(l)
+                break  # El segundo item es el número de columna
+        return linea - 1
 
 
 class Item(QListWidgetItem):
