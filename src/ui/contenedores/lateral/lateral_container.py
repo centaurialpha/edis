@@ -56,9 +56,6 @@ class _ContenedorLateral(QWidget):
         # Combo selector
         self.combo_selector = QComboBox()
         self.combo_selector.setObjectName("combo_selector")
-        self.combo_selector.setStyleSheet(
-            "QComboBox::drop-down{image: url(%s); top: 5px;}"
-            % paths.ICONOS['down'])
         hbox.addWidget(self.combo_selector, stretch=1)
         # Toolbar
         toolbar = QToolBar()

@@ -85,6 +85,10 @@ QComboBox#combo_selector:item:selected {
     background: gray;
 }
 
+QComboBox#combo_selector::drop-down {
+    image: url(none);
+}
+
 QToolTip {
     border: 1px solid gray;
     padding: 2px;
