@@ -21,6 +21,7 @@ class Navegador(QListWidget):
 
     def __init__(self):
         super(Navegador, self).__init__()
+        self.setMaximumHeight(200)
         self.connect(self, SIGNAL("clicked(QModelIndex)"),
                     self._cambiar_editor)
 

@@ -30,14 +30,14 @@ from PyQt4.QtCore import (
 from src import ui
 from src.helpers import (
     configuracion,
-    dependencias
+    #dependencias
     )
 from src.helpers.configuracion import ESettings
 from src.ui.contenedores.lateral import lateral_container
 from src.ui.contenedores.output import contenedor_secundario
 from src.ui.dialogos import (
     dialogo_guardar_archivos,
-    dialogo_dependencias,
+    #dialogo_dependencias,
     acerca_de
     )
 
@@ -215,7 +215,7 @@ class EDIS(QMainWindow):
         self.connect(self.contenedor_editor,
                     SIGNAL("actualizarSimbolos(QString)"),
                     self.contenedor_lateral.actualizar_simbolos)
-        self.connect(self.contenedor_lateral._arbol_simbolos,
+        self.connect(self.contenedor_lateral.stack._arbol_simbolos,
                     SIGNAL("irALinea(int)"),
                     self.contenedor_editor.ir_a_linea)
         self.connect(self.contenedor_output.salida_.output,

@@ -62,6 +62,10 @@ QSplitter::handle {
     height: 3px;
 }
 
+QSplitter#split_lateral::handle {
+    background: #595959;
+}
+QSplitter#split_lateral::handle:hover,
 QSplitter::handle:hover {
     background: gray;
 }
