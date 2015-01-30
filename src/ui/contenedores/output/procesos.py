@@ -17,7 +17,8 @@ from PyQt4.QtGui import (
     QVBoxLayout,
     QWidget,
     QColor,
-    QMessageBox
+    QMessageBox,
+    QItemSelectionModel
     )
 
 # Módulos QtCore
@@ -121,6 +122,8 @@ class EjecutarWidget(QWidget):
             item_error = salida.Item(self.tr("¡LA COMPILACIÓN HA FALLADO!"))
             item_error.setForeground(Qt.red)
             self.output.addItem(item_error)
+        count = self.output.count()
+        self.output.setCurrentRow(count - 1, QItemSelectionModel.NoUpdate)
 
     def _error_compilacion(self, error):
         """
