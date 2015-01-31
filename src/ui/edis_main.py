@@ -353,7 +353,7 @@ class EDIS(QMainWindow):
 
     def acerca_de_edis(self):
         dialogo = acerca_de.AcercaDe(self)
-        dialogo.show()
+        dialogo.exec_()
 
     def closeEvent(self, e):
         """
