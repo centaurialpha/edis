@@ -6,11 +6,28 @@ QMainWindow {
     background-color: #383733;
 }
 
+QMainWindow::separator {
+    background: #444;
+    border: 0px solid transparent;
+    height: 3px;
+}
+
+QMainWindow::separator:hover {
+    background: gray;
+}
+
 QToolBar#toolbar {
     background: qlineargradient(x1: 1, y1: 0, x2: 0, y2: 0,
                                        stop: 0 #5a584f, stop: 1 #41403b);
     spacing: 7px;
     padding: 7px;
+}
+
+QToolBar#dock_toolbar {
+    background: qlineargradient(x1: 0, y1: 0, x2: 1, y2: 0,
+                                       stop: 0 #5a584f, stop: 1 #41403b);
+    spacing: 5px;
+    padding: 5px;
 }
 
 QToolBar#selector {
@@ -23,6 +40,20 @@ QToolBar#preferencias {
     background: #41403b;
     spacing: 7px;
     padding: 7px;
+}
+
+QToolButton#dock_button {
+    color: #dedede;
+}
+
+QToolButton#dock_button:checked {
+    background: #41403b;
+    border-radius: 2px;
+}
+
+QToolButton#dock_button:hover {
+    background: #595851;
+    border-radius: 2px;
 }
 
 QScrollBar:vertical {

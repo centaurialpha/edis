@@ -8,6 +8,7 @@
 from PyQt4.QtGui import (
     QTreeView,
     QFileSystemModel,
+    QDockWidget
     )
 
 from PyQt4.QtCore import (
@@ -17,32 +18,34 @@ from PyQt4.QtCore import (
     )
 
 
-class Explorador(QTreeView):
+class Explorador(QDockWidget):
 
     abriendoArchivo = pyqtSignal(['QString'])
 
     def __init__(self, parent=None):
         super(Explorador, self).__init__()
-        # Configuración
-        self.header().setHidden(True)
-        self.setAnimated(True)
+        self.setWindowTitle("Explorador")
+        self.explorador = QTreeView()
+        self.setWidget(self.explorador)
+        self.explorador.header().setHidden(True)
+        self.explorador.setAnimated(True)
 
         # Modelo
-        self.modelo = QFileSystemModel(self)
+        self.modelo = QFileSystemModel(self.explorador)
         path = QDir.toNativeSeparators(QDir.homePath())
         self.modelo.setRootPath(path)
-        self.setModel(self.modelo)
+        self.explorador.setModel(self.modelo)
         self.modelo.setNameFilters(["*.c", "*.h", "*.s"])
-        self.setRootIndex(QModelIndex(self.modelo.index(path)))
+        self.explorador.setRootIndex(QModelIndex(self.modelo.index(path)))
         self.modelo.setNameFilterDisables(False)
 
         # Se ocultan algunas columnas
-        self.hideColumn(1)
-        self.hideColumn(2)
-        self.hideColumn(3)
+        self.explorador.hideColumn(1)
+        self.explorador.hideColumn(2)
+        self.explorador.hideColumn(3)
 
         # Conexion
-        self.doubleClicked.connect(self._abrir_archivo)
+        self.explorador.doubleClicked.connect(self._abrir_archivo)
 
     def _abrir_archivo(self, i):
         if not self.modelo.isDir(i):

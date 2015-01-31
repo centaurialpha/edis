@@ -10,7 +10,8 @@ from PyQt4.QtGui import (
     QTreeWidgetItem,
     QAbstractItemView,
     QHeaderView,
-    QIcon
+    QIcon,
+    QDockWidget
     )
 
 from PyQt4.QtCore import (
@@ -21,7 +22,7 @@ from PyQt4.QtCore import (
 from src import paths
 
 
-class ArbolDeSimbolos(QTreeWidget):
+class ArbolDeSimbolos(QDockWidget):
 
     _ir_a_linea = pyqtSignal(int, name='irALinea')
 
@@ -36,28 +37,32 @@ class ArbolDeSimbolos(QTreeWidget):
         }
 
     def __init__(self):
-        super(ArbolDeSimbolos, self).__init__()
-        self.setObjectName("simbolos")
-        self.header().setHidden(True)
-        self.setSelectionMode(self.SingleSelection)
-        self.setAnimated(True)
-        self.header().setStretchLastSection(False)
-        self.header().setHorizontalScrollMode(QAbstractItemView.ScrollPerPixel)
-        self.header().setResizeMode(0, QHeaderView.ResizeToContents)
+        QDockWidget.__init__(self)
+        self.tree = QTreeWidget(self)
+        self.setWidget(self.tree)
+        self.tree.setObjectName("simbolos")
+        self.tree.header().setHidden(True)
+        self.tree.setSelectionMode(self.tree.SingleSelection)
+        self.tree.setAnimated(True)
+        #self.tree.header().setStretchLastSection(False)
+        #self.tree.header().setHorizontalScrollMode(
+            #QAbstractItemView.ScrollPerPixel)
+        #self.tree.header().setResizeMode(0, QHeaderView.ResizeToContents)
 
-        self.connect(self, SIGNAL("itemClicked(QTreeWidgetItem *, int)"),
+        self.tree.connect(self.tree, SIGNAL("itemClicked(QTreeWidgetItem *, int)"),
             self.ir_a_linea)
-        self.connect(self, SIGNAL("itemActivated(QTreeWidgetItem *, int)"),
+        self.tree.connect(self.tree, SIGNAL("itemActivated(QTreeWidgetItem *, int)"),
             self.ir_a_linea)
 
     def actualizar_simbolos(self, simbolos):
         if simbolos is None:
-            QTreeWidgetItem(self, [self.tr('ctags no está instalado.')])
+            QTreeWidgetItem(self.tree, [self.tr('ctags no está instalado.')])
             return
-        self.clear()
+
+        self.tree.clear()
 
         if 'variable' in simbolos:
-            variables = Item(self, [self.tr('Variables')])
+            variables = Item(self.tree, [self.tr('Variables')])
             variables.clickeable = False
             for v in simbolos['variable']:
                 variable = Item(variables, [v.get('nombre')])
@@ -67,7 +72,7 @@ class ArbolDeSimbolos(QTreeWidget):
             variables.setExpanded(True)
 
         if 'function' in simbolos:
-            funciones = Item(self, [self.tr('Funciones')])
+            funciones = Item(self.tree, [self.tr('Funciones')])
             funciones.clickeable = False
             for f in simbolos['function']:
                 funcion = Item(funciones, [f.get('nombre')])
@@ -77,7 +82,7 @@ class ArbolDeSimbolos(QTreeWidget):
             funciones.setExpanded(True)
 
         if 'struct' in simbolos:
-            structs = Item(self, [self.tr('Estructuras')])
+            structs = Item(self.tree, [self.tr('Estructuras')])
             structs.clickeable = False
             for s in simbolos['struct']:
                 struct = Item(structs, [s.get('nombre')])
@@ -87,7 +92,7 @@ class ArbolDeSimbolos(QTreeWidget):
             structs.setExpanded(True)
 
         if 'member' in simbolos:
-            miembros = Item(self, [self.tr('Miembros')])
+            miembros = Item(self.tree, [self.tr('Miembros')])
             miembros.clickeable = False
             for m in simbolos['member']:
                 nombre = m['nombre'] + ' [' + m['padre'] + ']'
@@ -102,8 +107,8 @@ class ArbolDeSimbolos(QTreeWidget):
         if item.clickeable:
             self._ir_a_linea.emit(int(item.linea) - 1)
 
-    def closeEvent(self, e):
-        super(ArbolDeSimbolos, self).closeEvent(e)
+    #def closeEvent(self, e):
+        #super(ArbolDeSimbolos, self).closeEvent(e)
         #FIXME: emitir señal de cerrado para hacer dock
 
 

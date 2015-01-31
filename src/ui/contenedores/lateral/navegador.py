@@ -7,6 +7,7 @@
 
 from PyQt4.QtGui import (
     QListWidget,
+    QDockWidget
     )
 
 from PyQt4.QtCore import (
@@ -15,25 +16,26 @@ from PyQt4.QtCore import (
     )
 
 
-class Navegador(QListWidget):
+class Navegador(QDockWidget):
 
     cambiar_editor = pyqtSignal(int)
 
     def __init__(self):
         super(Navegador, self).__init__()
-        self.setMaximumHeight(200)
-        self.connect(self, SIGNAL("clicked(QModelIndex)"),
+        self.navegador = QListWidget()
+        self.navegador.connect(self, SIGNAL("clicked(QModelIndex)"),
                     self._cambiar_editor)
+        self.setWidget(self.navegador)
 
     def agregar(self, archivo):
-        self.addItem(archivo)
+        self.navegador.addItem(archivo)
 
     def eliminar(self, indice):
-        self.takeItem(indice)
+        self.navegador.takeItem(indice)
 
     def cambiar_foco(self, indice):
-        self.setCurrentRow(indice)
+        self.navegador.setCurrentRow(indice)
 
     def _cambiar_editor(self):
-        indice = self.row(self.currentItem())
+        indice = self.navegador.row(self.navegador.currentItem())
         self.cambiar_editor.emit(indice)

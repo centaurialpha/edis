@@ -32,8 +32,9 @@ from src.helpers import (
     configuracion,
     #dependencias
     )
+from src.ui.widgets import tool_button
 from src.helpers.configuracion import ESettings
-from src.ui.contenedores.lateral import lateral_container
+from src.ui.contenedores.lateral import explorador, navegador, arbol_simbolos, lateral_container
 from src.ui.contenedores.output import contenedor_secundario
 from src.ui.dialogos import (
     dialogo_guardar_archivos,
@@ -75,12 +76,23 @@ class EDIS(QMainWindow):
         EDIS.menu_bar(5, self.trUtf8("E&jecución"))
         EDIS.menu_bar(6, self.trUtf8("A&cerca de"))
         # Toolbar
-        #FIXME: Visibilidad
         self.toolbar = QToolBar(self)
         self.toolbar.setMovable(False)
         self.toolbar.setObjectName("toolbar")
         self.toolbar.setIconSize(QSize(22, 22))
         self.addToolBar(Qt.RightToolBarArea, self.toolbar)
+        #FIXME:
+        self.dock_toolbar = QToolBar(self)
+        self.dock_toolbar.setObjectName("dock_toolbar")
+        self.tb_simbolos = tool_button.CustomToolButton("Símbolos", self)
+        self.tb_navegador = tool_button.CustomToolButton("Navegador", self)
+        self.tb_explorador = tool_button.CustomToolButton("Explorador", self)
+        self.dock_toolbar.setMovable(False)
+        self.dock_toolbar.addWidget(self.tb_simbolos)
+        self.dock_toolbar.addWidget(self.tb_navegador)
+        self.dock_toolbar.addWidget(self.tb_explorador)
+        self.addToolBar(Qt.LeftToolBarArea, self.dock_toolbar)
+        # Menú
         self.cargar_menu()
         # Barra de estado
         self.barra_de_estado = EDIS.componente("barra_de_estado")
@@ -94,6 +106,10 @@ class EDIS(QMainWindow):
 
         if ESettings.get('general/inicio'):
             self.mostrar_inicio()
+
+        self.tb_simbolos.toggled.connect(self.visibilidad_simbolos)
+        self.tb_navegador.toggled.connect(self.visibilidad_navegador)
+        self.tb_explorador.toggled.connect(self.visibilidad_explorador)
 
     @classmethod
     def cargar_componente(cls, nombre, instancia):
@@ -183,15 +199,24 @@ class EDIS(QMainWindow):
     def cargar_contenedores(self, central):
         """ Carga los 3 contenedores (editor, lateral y output) """
 
+        #FIXME: cambiar
         principal = EDIS.componente("principal")
         self.contenedor_editor = principal
         self.contenedor_output = contenedor_secundario.ContenedorOutput(self)
         self.contenedor_lateral = lateral_container.ContenedorLateral(self)
-
+        self.si = arbol_simbolos.ArbolDeSimbolos()
+        self.na = navegador.Navegador()
+        self.ex = explorador.Explorador(self)
+        self.addDockWidget(Qt.LeftDockWidgetArea, self.ex)
+        self.addDockWidget(Qt.LeftDockWidgetArea, self.na)
+        self.addDockWidget(Qt.LeftDockWidgetArea, self.si)
         # Agrego los contenedores al widget central
-        central.agregar_contenedor_lateral(self.contenedor_lateral)
+        #central.agregar_contenedor_lateral(self.contenedor_lateral)
         central.agregar_contenedor_editor(self.contenedor_editor)
         central.agregar_contenedor_output(self.contenedor_output)
+        self.si.visibilityChanged[bool].connect(self.visi1)
+        self.na.visibilityChanged[bool].connect(self.visi2)
+        self.ex.visibilityChanged[bool].connect(self.visi)
 
         #FIXME: Modularizar esto
         self.connect(self.contenedor_editor,
@@ -215,12 +240,58 @@ class EDIS(QMainWindow):
         self.connect(self.contenedor_editor,
                     SIGNAL("actualizarSimbolos(QString)"),
                     self.contenedor_lateral.actualizar_simbolos)
-        self.connect(self.contenedor_lateral.stack._arbol_simbolos,
-                    SIGNAL("irALinea(int)"),
-                    self.contenedor_editor.ir_a_linea)
+        #self.connect(self.contenedor_lateral.stack._arbol_simbolos,
+                    #SIGNAL("irALinea(int)"),
+                    #self.contenedor_editor.ir_a_linea)
         self.connect(self.contenedor_output.salida_.output,
                     SIGNAL("ir_a_linea(int)"),
                     self.contenedor_editor.ir_a_linea)
+
+    #FIXME: Cambiar esto
+    def visibilidad_simbolos(self, toggled):
+        if toggled:
+            for i in [self.na, self.ex]:
+                if i.isVisible():
+                    i.hide()
+            self.si.show()
+        else:
+            self.si.hide()
+
+    def visibilidad_explorador(self, toggled):
+        if toggled:
+            for i in [self.na, self.si]:
+                if i.isVisible():
+                    i.hide()
+            self.ex.show()
+        else:
+            self.ex.hide()
+
+    def visibilidad_navegador(self, toggled):
+        if toggled:
+            for i in [self.ex, self.si]:
+                if i.isVisible():
+                    i.hide()
+            self.na.show()
+        else:
+            self.na.hide()
+
+    def visi(self, v):
+        if v:
+            self.tb_explorador.setChecked(True)
+        else:
+            self.tb_explorador.setChecked(False)
+
+    def visi2(self, v):
+        if v:
+            self.tb_navegador.setChecked(True)
+        else:
+            self.tb_navegador.setChecked(False)
+
+    def visi1(self, v):
+        if v:
+            self.tb_simbolos.setChecked(True)
+        else:
+            self.tb_simbolos.setChecked(False)
 
     def __actualizar_cursor(self, linea, columna, lineas):
         #FIXME:
