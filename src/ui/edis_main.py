@@ -237,17 +237,13 @@ class EDIS(QMainWindow):
         self.simbolos.irALinea[int].connect(principal.ir_a_linea)
         #FIXME: cambiar nombre
         output.salida_.output.ir_a_linea[int].connect(principal.ir_a_linea)
+        principal.archivo_modificado[bool].connect(self.__titulo_modificado)
+        principal.archivo_cambiado['QString'].connect(self.__titulo_ventana)
 
         return principal
         #self.connect(self.contenedor_editor.stack,
                     #SIGNAL("todo_cerrado()"),
                     #self.todo_cerrado)
-        #self.connect(self.contenedor_editor,
-                    #SIGNAL("archivo_cambiado(QString)"),
-                    #self.__titulo_ventana)
-        #self.connect(self.contenedor_editor,
-                    #SIGNAL("archivo_modificado(bool)"),
-                    #self.__titulo_modificado)
 
     def toggled_simbolos(self, t):
         if t:

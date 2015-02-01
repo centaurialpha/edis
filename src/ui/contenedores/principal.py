@@ -108,6 +108,7 @@ class EditorContainer(QWidget):
         if not nombre:
             nombre = "Nuevo_archivo"
         weditor = editor.crear_editor(nombre)
+        weditor.nombre = nombre
         self.agregar_widget(weditor)
         weditor.modificationChanged[bool].connect(self.stack.editor_modificado)
         weditor.cursorPositionChanged[int, int].connect(self.actualizar_cursor)
@@ -134,7 +135,7 @@ class EditorContainer(QWidget):
                             archivo)
                 nuevo_editor = self.agregar_editor(archivo)
                 nuevo_editor.texto = contenido
-                nuevo_editor.nombre = archivo
+                #nuevo_editor.nombre = archivo
                 self.archivo_cambiado.emit(archivo)
                 self.archivo_abierto.emit(archivo)
 
