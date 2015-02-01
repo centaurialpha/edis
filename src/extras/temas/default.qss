@@ -30,12 +30,12 @@ QToolBar#dock_toolbar {
     padding: 6px;
 }
 
-QToolBar#selector {
+/*QToolBar#selector {
     background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
                                        stop: 0 #5a584f, stop: 1 #41403b);
     border-left: 1px solid gray;
     }
-
+*/
 QToolBar#preferencias {
     background: #41403b;
     spacing: 7px;
@@ -92,7 +92,7 @@ QSplitter::handle {
     border: 0px solid transparent;
     height: 3px;
 }
-
+/*
 QSplitter#split_lateral::handle {
     background: #595959;
 }
@@ -100,7 +100,7 @@ QSplitter#split_lateral::handle:hover,
 QSplitter::handle:hover {
     background: gray;
 }
-
+*/
 QComboBox#combo_selector {
     background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
                                        stop: 0 #5a584f, stop: 1 #41403b);
