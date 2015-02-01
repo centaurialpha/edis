@@ -314,12 +314,6 @@ class EDIS(QMainWindow):
         else:
             self.output.show()
 
-    def mostrar_ocultar_lateral(self):
-        if self.contenedor_lateral.isVisible():
-            self.contenedor_lateral.hide()
-        else:
-            self.contenedor_lateral.show()
-
     def mostrar_ocultar_toolbar(self):
         if self.toolbar.isVisible():
             self.toolbar.hide()

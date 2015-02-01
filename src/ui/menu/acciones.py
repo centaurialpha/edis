@@ -204,12 +204,6 @@ ACCIONES = (
         'atajo': _ATAJO['fullscreen']},
     {
         'seccion': 2,
-        'nombre': 'Mostrar lateral',
-        'conexion': 'edis.mostrar_ocultar_lateral',
-        'checkable': True,
-        'atajo': _ATAJO['lateral']},
-    {
-        'seccion': 2,
         'nombre': 'Mostrar compilador',
         'conexion': 'edis.mostrar_ocultar_output',
         'checkable': True,
