@@ -24,6 +24,10 @@ from src.helpers import (
 import src.ui.central
 from src.ui.widgets import barra_de_estado
 import src.ui.contenedores.principal
+import src.ui.contenedores.output.contenedor_secundario
+import src.ui.contenedores.lateral.navegador
+import src.ui.contenedores.lateral.explorador
+import src.ui.contenedores.lateral.arbol_simbolos
 import src.ui.menu.menu
 #lint:enable
 from src.ui.edis_main import EDIS

@@ -326,8 +326,7 @@ class EditorContainer(QWidget):
         self.posicion_cursor.emit(linea + 1, columna + 1, lineas)
 
     def compilar_codigo_fuente(self):
-        edis = EDIS.componente("edis")
-        output = edis.contenedor_output
+        output = EDIS.componente("output")
         weditor = self.devolver_editor()
         if weditor is not None:
             self.guardar_archivo(weditor)

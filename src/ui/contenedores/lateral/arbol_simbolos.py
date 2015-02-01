@@ -11,15 +11,14 @@ from PyQt4.QtGui import (
     QAbstractItemView,
     QHeaderView,
     QIcon,
-    QDockWidget
+    QDockWidget,
     )
 
-from PyQt4.QtCore import (
-    SIGNAL,
-    pyqtSignal
-    )
+from PyQt4.QtCore import pyqtSignal
 
+from src.ectags import ectags
 from src import paths
+from src.ui.edis_main import EDIS
 
 
 class ArbolDeSimbolos(QDockWidget):
@@ -38,27 +37,36 @@ class ArbolDeSimbolos(QDockWidget):
 
     def __init__(self):
         QDockWidget.__init__(self)
-        self.tree = QTreeWidget(self)
+        self.tree = QTreeWidget()
         self.setWidget(self.tree)
         self.tree.setObjectName("simbolos")
         self.tree.header().setHidden(True)
         self.tree.setSelectionMode(self.tree.SingleSelection)
         self.tree.setAnimated(True)
-        #self.tree.header().setStretchLastSection(False)
-        #self.tree.header().setHorizontalScrollMode(
-            #QAbstractItemView.ScrollPerPixel)
-        #self.tree.header().setResizeMode(0, QHeaderView.ResizeToContents)
+        self.tree.header().setStretchLastSection(False)
+        self.tree.header().setHorizontalScrollMode(
+            QAbstractItemView.ScrollPerPixel)
+        self.tree.header().setResizeMode(0, QHeaderView.ResizeToContents)
 
-        self.tree.connect(self.tree, SIGNAL("itemClicked(QTreeWidgetItem *, int)"),
-            self.ir_a_linea)
-        self.tree.connect(self.tree, SIGNAL("itemActivated(QTreeWidgetItem *, int)"),
-            self.ir_a_linea)
+        # Conexión
+        self.tree.itemClicked[QTreeWidgetItem, int].connect(self.ir_a_linea)
+        self.tree.itemActivated[QTreeWidgetItem, int].connect(self.ir_a_linea)
 
-    def actualizar_simbolos(self, simbolos):
+        EDIS.cargar_lateral("simbolos", self)
+
+    def actualizar_simbolos(self, archivo):
+        #FIXME: mover esto
+        self.ctags = ectags.Ctags()
+        tag = self.ctags.run_ctags(archivo)
+        simbolos = self.ctags.parser(tag)
+        self._actualizar_simbolos(simbolos)
+
+    def _actualizar_simbolos(self, simbolos):
         if simbolos is None:
             QTreeWidgetItem(self.tree, [self.tr('ctags no está instalado.')])
             return
 
+        # Limpiar
         self.tree.clear()
 
         if 'variable' in simbolos:
@@ -107,10 +115,6 @@ class ArbolDeSimbolos(QDockWidget):
         if item.clickeable:
             self._ir_a_linea.emit(int(item.linea) - 1)
 
-    #def closeEvent(self, e):
-        #super(ArbolDeSimbolos, self).closeEvent(e)
-        #FIXME: emitir señal de cerrado para hacer dock
-
 
 class Item(QTreeWidgetItem):
 
@@ -118,3 +122,6 @@ class Item(QTreeWidgetItem):
         QTreeWidgetItem.__init__(self, parent, nombre)
         self.linea = None
         self.clickeable = True
+
+
+simbolos = ArbolDeSimbolos()

@@ -17,6 +17,8 @@ from PyQt4.QtCore import (
     QDir
     )
 
+from src.ui.edis_main import EDIS
+
 
 class Explorador(QDockWidget):
 
@@ -24,7 +26,6 @@ class Explorador(QDockWidget):
 
     def __init__(self, parent=None):
         super(Explorador, self).__init__()
-        self.setWindowTitle("Explorador")
         self.explorador = QTreeView()
         self.setWidget(self.explorador)
         self.explorador.header().setHidden(True)
@@ -47,8 +48,13 @@ class Explorador(QDockWidget):
         # Conexion
         self.explorador.doubleClicked.connect(self._abrir_archivo)
 
+        EDIS.cargar_lateral("explorador", self)
+
     def _abrir_archivo(self, i):
         if not self.modelo.isDir(i):
             indice = self.modelo.index(i.row(), 0, i.parent())
             archivo = self.modelo.filePath(indice)
             self.abriendoArchivo.emit(archivo)
+
+
+explorador = Explorador()

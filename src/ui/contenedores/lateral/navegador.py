@@ -15,6 +15,8 @@ from PyQt4.QtCore import (
     pyqtSignal
     )
 
+from src.ui.edis_main import EDIS
+
 
 class Navegador(QDockWidget):
 
@@ -26,6 +28,8 @@ class Navegador(QDockWidget):
         self.navegador.connect(self, SIGNAL("clicked(QModelIndex)"),
                     self._cambiar_editor)
         self.setWidget(self.navegador)
+
+        EDIS.cargar_lateral("navegador", self)
 
     def agregar(self, archivo):
         self.navegador.addItem(archivo)
@@ -39,3 +43,6 @@ class Navegador(QDockWidget):
     def _cambiar_editor(self):
         indice = self.navegador.row(self.navegador.currentItem())
         self.cambiar_editor.emit(indice)
+
+
+navegador = Navegador()

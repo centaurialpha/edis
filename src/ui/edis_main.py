@@ -21,7 +21,7 @@ from PyQt4.QtGui import (
 
 # Módulos QtCore
 from PyQt4.QtCore import (
-    SIGNAL,
+    #SIGNAL,
     Qt,
     QSize,
     )
@@ -34,8 +34,6 @@ from src.helpers import (
     )
 from src.ui.widgets import tool_button
 from src.helpers.configuracion import ESettings
-from src.ui.contenedores.lateral import explorador, navegador, arbol_simbolos, lateral_container
-from src.ui.contenedores.output import contenedor_secundario
 from src.ui.dialogos import (
     dialogo_guardar_archivos,
     #dialogo_dependencias,
@@ -51,11 +49,16 @@ class EDIS(QMainWindow):
 
     # Cada instancia de una clase  se guarda en éste diccionario
     __COMPONENTES = {}
+    __LATERAL = {}  # Widgets laterales
     __MENUBAR = {}  # Nombre de los menus
     __ACCIONES = {}
 
     def __init__(self):
         QMainWindow.__init__(self)
+        # Esto para tener widgets laterales en full height,
+        # existe otra forma?
+        window = QMainWindow(self)
+
         self.setWindowTitle(ui.__nombre__)
         self.setMinimumSize(750, 500)
         # Se cargan las dimensiones de la ventana
@@ -98,18 +101,19 @@ class EDIS(QMainWindow):
         self.barra_de_estado = EDIS.componente("barra_de_estado")
         self.setStatusBar(self.barra_de_estado)
         # Widget central
-        self.central = EDIS.componente("central")
-        self.cargar_contenedores(self.central)
-        self.setCentralWidget(self.central)
+        central = self.cargar_central(window)
+        window.setCentralWidget(central)
+        window.setWindowFlags(Qt.Widget)
+        self.setCentralWidget(window)
 
         EDIS.cargar_componente("edis", self)
 
         if ESettings.get('general/inicio'):
             self.mostrar_inicio()
 
-        self.tb_simbolos.toggled.connect(self.visibilidad_simbolos)
-        self.tb_navegador.toggled.connect(self.visibilidad_navegador)
-        self.tb_explorador.toggled.connect(self.visibilidad_explorador)
+        self.tb_simbolos.toggled.connect(self.toggled_simbolos)
+        self.tb_navegador.toggled.connect(self.toggled_navegador)
+        self.tb_explorador.toggled.connect(self.toggled_explorador)
 
     @classmethod
     def cargar_componente(cls, nombre, instancia):
@@ -122,6 +126,14 @@ class EDIS(QMainWindow):
         """ Devuelve la instancia de un componente """
 
         return cls.__COMPONENTES.get(nombre, None)
+
+    @classmethod
+    def cargar_lateral(cls, nombre, instancia):
+        cls.__LATERAL[nombre] = instancia
+
+    @classmethod
+    def lateral(cls, nombre):
+        return cls.__LATERAL.get(nombre, None)
 
     @classmethod
     def menu_bar(cls, clave, nombre):
@@ -196,102 +208,88 @@ class EDIS(QMainWindow):
                 if configuracion.ITEMS_TOOLBAR[i + 1] == 'separador':
                     self.toolbar.addSeparator()
 
-    def cargar_contenedores(self, central):
-        """ Carga los 3 contenedores (editor, lateral y output) """
-
-        #FIXME: cambiar
+    def cargar_central(self, window):
         principal = EDIS.componente("principal")
-        self.contenedor_editor = principal
-        self.contenedor_output = contenedor_secundario.ContenedorOutput(self)
-        self.contenedor_lateral = lateral_container.ContenedorLateral(self)
-        self.si = arbol_simbolos.ArbolDeSimbolos()
-        self.na = navegador.Navegador()
-        self.ex = explorador.Explorador(self)
-        self.addDockWidget(Qt.LeftDockWidgetArea, self.ex)
-        self.addDockWidget(Qt.LeftDockWidgetArea, self.na)
-        self.addDockWidget(Qt.LeftDockWidgetArea, self.si)
-        # Agrego los contenedores al widget central
-        #central.agregar_contenedor_lateral(self.contenedor_lateral)
-        central.agregar_contenedor_editor(self.contenedor_editor)
-        central.agregar_contenedor_output(self.contenedor_output)
-        self.si.visibilityChanged[bool].connect(self.visi1)
-        self.na.visibilityChanged[bool].connect(self.visi2)
-        self.ex.visibilityChanged[bool].connect(self.visi)
+        self.simbolos = EDIS.lateral("simbolos")
+        self.navegador = EDIS.lateral("navegador")
+        self.navegador.hide()
+        self.explorador = EDIS.lateral("explorador")
+        self.explorador.hide()
+        output = EDIS.componente("output")
+        window.addDockWidget(Qt.BottomDockWidgetArea, output)
+        output.hide()
+        for widget in [self.navegador, self.explorador, self.simbolos]:
+            self.addDockWidget(Qt.LeftDockWidgetArea, widget)
 
-        #FIXME: Modularizar esto
-        self.connect(self.contenedor_editor,
-                    SIGNAL("archivo_cambiado(QString)"),
-                    self.__actualizar_estado)
-        self.connect(self.contenedor_editor.stack,
-                    SIGNAL("todo_cerrado()"),
-                    self.todo_cerrado)
-        self.connect(self.contenedor_editor,
-                    SIGNAL("archivo_cambiado(QString)"),
-                    self.__titulo_ventana)
-        self.connect(self.contenedor_editor,
-                    SIGNAL("archivo_modificado(bool)"),
-                    self.__titulo_modificado)
-        self.connect(self.contenedor_editor,
-                    SIGNAL("posicion_cursor(int, int, int)"),
-                    self.__actualizar_cursor)
-        self.connect(self.contenedor_editor,
-                    SIGNAL("archivo_cambiado(QString)"),
-                    self.contenedor_lateral.actualizar_simbolos)
-        self.connect(self.contenedor_editor,
-                    SIGNAL("actualizarSimbolos(QString)"),
-                    self.contenedor_lateral.actualizar_simbolos)
-        #self.connect(self.contenedor_lateral.stack._arbol_simbolos,
-                    #SIGNAL("irALinea(int)"),
-                    #self.contenedor_editor.ir_a_linea)
-        self.connect(self.contenedor_output.salida_.output,
-                    SIGNAL("ir_a_linea(int)"),
-                    self.contenedor_editor.ir_a_linea)
+        # Conexión
+        self.simbolos.visibilityChanged[bool].connect(
+            self.visibilidad_simbolos)
+        self.navegador.visibilityChanged[bool].connect(
+            self.visibilidad_navegador)
+        self.explorador.visibilityChanged[bool].connect(
+            self.visibilidad_explorador)
+        principal.archivo_cambiado['QString'].connect(self.__actualizar_estado)
+        principal.posicion_cursor.connect(self.__actualizar_cursor)
+        principal.actualizarSimbolos['QString'].connect(
+            self.simbolos.actualizar_simbolos)
+        principal.archivo_cambiado['QString'].connect(
+            self.simbolos.actualizar_simbolos)
+        self.simbolos.irALinea[int].connect(principal.ir_a_linea)
+        #FIXME: cambiar nombre
+        output.salida_.output.ir_a_linea[int].connect(principal.ir_a_linea)
 
-    #FIXME: Cambiar esto
-    def visibilidad_simbolos(self, toggled):
-        if toggled:
-            for i in [self.na, self.ex]:
-                if i.isVisible():
-                    i.hide()
-            self.si.show()
+        return principal
+        #self.connect(self.contenedor_editor.stack,
+                    #SIGNAL("todo_cerrado()"),
+                    #self.todo_cerrado)
+        #self.connect(self.contenedor_editor,
+                    #SIGNAL("archivo_cambiado(QString)"),
+                    #self.__titulo_ventana)
+        #self.connect(self.contenedor_editor,
+                    #SIGNAL("archivo_modificado(bool)"),
+                    #self.__titulo_modificado)
+
+    def toggled_simbolos(self, t):
+        if t:
+            for w in [self.explorador, self.navegador]:
+                w.hide()
+            self.simbolos.show()
         else:
-            self.si.hide()
+            self.simbolos.hide()
 
-    def visibilidad_explorador(self, toggled):
-        if toggled:
-            for i in [self.na, self.si]:
-                if i.isVisible():
-                    i.hide()
-            self.ex.show()
+    def toggled_navegador(self, t):
+        if t:
+            for w in [self.explorador, self.simbolos]:
+                w.hide()
+            self.navegador.show()
         else:
-            self.ex.hide()
+            self.navegador.hide()
 
-    def visibilidad_navegador(self, toggled):
-        if toggled:
-            for i in [self.ex, self.si]:
-                if i.isVisible():
-                    i.hide()
-            self.na.show()
+    def toggled_explorador(self, t):
+        if t:
+            for w in [self.navegador, self.simbolos]:
+                w.hide()
+            self.explorador.show()
         else:
-            self.na.hide()
+            self.explorador.hide()
 
-    def visi(self, v):
+    def visibilidad_simbolos(self, v):
         if v:
-            self.tb_explorador.setChecked(True)
+            self.tb_simbolos.setChecked(True)
         else:
-            self.tb_explorador.setChecked(False)
+            self.tb_simbolos.setChecked(False)
 
-    def visi2(self, v):
+    def visibilidad_navegador(self, v):
         if v:
             self.tb_navegador.setChecked(True)
         else:
             self.tb_navegador.setChecked(False)
 
-    def visi1(self, v):
+    def visibilidad_explorador(self, v):
         if v:
-            self.tb_simbolos.setChecked(True)
+            self.tb_explorador.setChecked(True)
         else:
-            self.tb_simbolos.setChecked(False)
+            self.tb_explorador.setChecked(False)
 
     def __actualizar_cursor(self, linea, columna, lineas):
         #FIXME:
