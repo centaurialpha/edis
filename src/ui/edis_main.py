@@ -215,9 +215,9 @@ class EDIS(QMainWindow):
         self.navegador.hide()
         self.explorador = EDIS.lateral("explorador")
         self.explorador.hide()
-        output = EDIS.componente("output")
-        window.addDockWidget(Qt.BottomDockWidgetArea, output)
-        output.hide()
+        self.output = EDIS.componente("output")
+        window.addDockWidget(Qt.BottomDockWidgetArea, self.output)
+        self.output.hide()
         for widget in [self.navegador, self.explorador, self.simbolos]:
             self.addDockWidget(Qt.LeftDockWidgetArea, widget)
 
@@ -236,7 +236,7 @@ class EDIS(QMainWindow):
             self.simbolos.actualizar_simbolos)
         self.simbolos.irALinea[int].connect(principal.ir_a_linea)
         #FIXME: cambiar nombre
-        output.salida_.output.ir_a_linea[int].connect(principal.ir_a_linea)
+        self.output.salida_.output.ir_a_linea[int].connect(principal.ir_a_linea)
         principal.archivo_modificado[bool].connect(self.__titulo_modificado)
         principal.archivo_cambiado['QString'].connect(self.__titulo_ventana)
         principal.stack.todo_cerrado.connect(self.todo_cerrado)
@@ -309,10 +309,10 @@ class EDIS(QMainWindow):
         webbrowser.open_new(ui.__reportar_bug__)
 
     def mostrar_ocultar_output(self):
-        if self.contenedor_output.isVisible():
-            self.contenedor_output.hide()
+        if self.output.isVisible():
+            self.output.hide()
         else:
-            self.contenedor_output.show()
+            self.output.show()
 
     def mostrar_ocultar_lateral(self):
         if self.contenedor_lateral.isVisible():
