@@ -51,6 +51,7 @@ class PosicionCursorWidget(QLabel):
         self.linea_columna = "Línea %s, Columna %s - " \
         "<span style='color: #aaaaaa;'>%s líneas</span>"
         self.setText(self.tr(self.linea_columna % (0, 0, 0)))
+        self.hide()
 
     def actualizar_cursor(self, linea, columna, lineas):
         self.setText(self.linea_columna % (linea, columna, lineas))

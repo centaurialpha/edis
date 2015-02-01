@@ -239,12 +239,11 @@ class EDIS(QMainWindow):
         output.salida_.output.ir_a_linea[int].connect(principal.ir_a_linea)
         principal.archivo_modificado[bool].connect(self.__titulo_modificado)
         principal.archivo_cambiado['QString'].connect(self.__titulo_ventana)
+        principal.stack.todo_cerrado.connect(self.todo_cerrado)
 
         return principal
-        #self.connect(self.contenedor_editor.stack,
-                    #SIGNAL("todo_cerrado()"),
-                    #self.todo_cerrado)
 
+    #FIXME: mejorar
     def toggled_simbolos(self, t):
         if t:
             for w in [self.explorador, self.navegador]:
@@ -270,34 +269,25 @@ class EDIS(QMainWindow):
             self.explorador.hide()
 
     def visibilidad_simbolos(self, v):
-        if v:
-            self.tb_simbolos.setChecked(True)
-        else:
-            self.tb_simbolos.setChecked(False)
+        self.tb_simbolos.setChecked(v)
 
     def visibilidad_navegador(self, v):
-        if v:
-            self.tb_navegador.setChecked(True)
-        else:
-            self.tb_navegador.setChecked(False)
+        self.tb_navegador.setChecked(v)
 
     def visibilidad_explorador(self, v):
-        if v:
-            self.tb_explorador.setChecked(True)
-        else:
-            self.tb_explorador.setChecked(False)
+        self.tb_explorador.setChecked(v)
 
     def __actualizar_cursor(self, linea, columna, lineas):
-        #FIXME:
+        self.barra_de_estado.cursor_widget.show()
         self.barra_de_estado.cursor_widget.actualizar_cursor(
             linea, columna, lineas)
 
     def __actualizar_estado(self, archivo):
-        #FIXME: Arreglar esto
         self.barra_de_estado.path_archivo(archivo)
 
     def todo_cerrado(self):
         self.setWindowTitle(ui.__nombre__)
+        self.barra_de_estado.cursor_widget.hide()
         self.__actualizar_estado("")
 
     def __titulo_ventana(self, titulo):
