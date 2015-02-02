@@ -23,9 +23,9 @@ else:
     PATH = os.path.realpath(os.path.dirname(__file__))
 EDIS = os.path.join(HOME, ".edis")
 # Archivo de configuración
-CONFIGURACION = os.path.join(HOME, "config.ini")
+CONFIGURACION = os.path.join(EDIS, "edis_config.ini")
 # Archivo de log
-LOG = os.path.join(HOME, "edis.log")
+LOG = os.path.join(EDIS, "edis_log.log")
 # Iconos
 ICONOS = {}
 PATH_ICONOS = os.path.join(PATH, "images")

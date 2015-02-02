@@ -28,8 +28,8 @@ def main():
     from src import paths
 
     # Si no existe la carpeta de configuraciones se crea
-    if not os.path.isdir(paths.HOME):
-        os.mkdir(paths.HOME)
+    if not os.path.isdir(paths.EDIS):
+        os.mkdir(paths.EDIS)
 
     from PyQt4.QtGui import QApplication
 
