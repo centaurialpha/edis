@@ -115,6 +115,12 @@ class ArbolDeSimbolos(QDockWidget):
         if item.clickeable:
             self._ir_a_linea.emit(int(item.linea) - 1)
 
+    def showEvent(self, evento):
+        """ Fija el ancho """
+
+        super(ArbolDeSimbolos, self).showEvent(evento)
+        self.setFixedWidth(256)
+
 
 class Item(QTreeWidgetItem):
 
