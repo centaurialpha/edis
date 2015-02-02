@@ -28,6 +28,7 @@ from PyQt4.QtCore import (
 
 # Módulos EDIS
 from src import ui
+from src.ui import system_tray
 from src.helpers import (
     configuracion,
     #dependencias
@@ -114,6 +115,10 @@ class EDIS(QMainWindow):
         self.tb_simbolos.toggled.connect(self.toggled_simbolos)
         self.tb_navegador.toggled.connect(self.toggled_navegador)
         self.tb_explorador.toggled.connect(self.toggled_explorador)
+
+        # Comprobar nueva versión
+        self.noti = system_tray.NotificacionActualizacion()
+        self.noti.show()
 
     @classmethod
     def cargar_componente(cls, nombre, instancia):

@@ -15,12 +15,12 @@ __autor__ = "Gabriel Acosta"
 __email_autor__ = "acostadariogabriel@gmail.com"
 __codigo_fuente__ = "http://github.com/centaurialpha/edis"
 __web__ = "http://centaurialpha.github.io/edis"
-__version__ = "1.0-beta1"
+__version__ = "1.0-beta"
 __python__ = "https://www.python.org/"
 __qt__ = "https://qt.digia.com/"
 __pyqt__ = "http://www.riverbankcomputing.co.uk/software/pyqt/intro"
 __reportar_bug__ = "http://github.com/centaurialpha/edis/issues"
-__actualizar__ = \
+__version_web__ = \
     "https://raw.githubusercontent.com/centaurialpha/edis/master/version"
 __gcc__ = \
     "http://sourceforge.net/projects/mingw/files/Installer/mingw-get-setup.exe"
