@@ -6,6 +6,7 @@
 # License: GPLv3 (see http://www.gnu.org/licenses/gpl.html)
 
 import webbrowser
+from urllib import request
 
 from PyQt4.QtGui import (
     QSystemTrayIcon,
@@ -19,21 +20,15 @@ from PyQt4.QtCore import (
     pyqtSignal
     )
 
-#from src import ui
+from src import ui
 from src import paths
-
-FASES = {
-    'rc': 2,
-    'beta': 1,
-    'alpha': 0
-    }
 
 
 class NotificacionActualizacion(QSystemTrayIcon):
 
     def __init__(self, parent=None):
         QSystemTrayIcon.__init__(self, parent)
-        self.setIcon(QIcon(paths.ICONOS['new']))
+        self.setIcon(QIcon(paths.ICONOS['icon']))
         self.hilo = Thread()
         self.hilo.start()
         self.hilo.version.connect(self._mostrar_mensaje)
@@ -48,8 +43,10 @@ class NotificacionActualizacion(QSystemTrayIcon):
         menu.addSeparator()
         menu.addAction(accion_salir)
         self.setContextMenu(menu)
-        self.showMessage(self.tr("Actualización"),
-                        self.tr("Existe una nueva versión de EDIS!"))
+        self.showMessage(self.tr("Nueva versión disponible!"),
+                        self.tr("Existe una nueva versión de EDIS!\n"
+                        "versión: %s." % version),
+                        QSystemTrayIcon.Information, 10000)
 
 
 class Thread(QThread):
@@ -57,4 +54,11 @@ class Thread(QThread):
     version = pyqtSignal('PyQt_PyObject', 'PyQt_PyObject')
 
     def run(self):
-        pass
+        #FIXME: controlar conexión
+        version_actual, fase_actual = ui.__version__.split('-')
+        version_web = request.urlopen(ui.__version_web__).read().decode('utf-8')
+        version_web, fase = version_web.split('-')
+        if float(version_actual) < float(version_web):
+            self.version.emit(version_web, ui.__web__)
+        elif fase_actual != fase:
+            self.version.emit(version_web + '-' + fase, ui.__web__)
