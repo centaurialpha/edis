@@ -22,6 +22,9 @@ from PyQt4.QtCore import (
 
 from src import ui
 from src import paths
+from src.helpers import logger
+
+log = logger.edis_logger.get_logger(__name__)
 
 
 class NotificacionActualizacion(QSystemTrayIcon):
@@ -54,11 +57,14 @@ class Thread(QThread):
     version = pyqtSignal('PyQt_PyObject', 'PyQt_PyObject')
 
     def run(self):
-        #FIXME: controlar conexión
-        version_actual, fase_actual = ui.__version__.split('-')
-        version_web = request.urlopen(ui.__version_web__).read().decode('utf-8')
-        version_web, fase = version_web.split('-')
-        if float(version_actual) < float(version_web):
-            self.version.emit(version_web, ui.__web__)
-        elif fase_actual != fase:
-            self.version.emit(version_web + '-' + fase, ui.__web__)
+        try:
+            version_web = request.urlopen(
+                ui.__version_web__).read().decode('utf-8')
+            version_actual, fase_actual = ui.__version__.split('-')
+            version_web, fase = version_web.split('-')
+            if float(version_actual) < float(version_web):
+                self.version.emit(version_web, ui.__web__)
+            elif fase_actual != fase:
+                self.version.emit(version_web + '-' + fase, ui.__web__)
+        except:
+            log.info("No se pudo establecer la conexión")
