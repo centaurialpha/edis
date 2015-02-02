@@ -146,7 +146,8 @@ QMenu::separator {
 
 QListView,
 QTreeView,
-QTreeWidget {
+QTreeWidget,
+QDockWidget::title {
     background: #474641;
     color: #dedede;
 }
