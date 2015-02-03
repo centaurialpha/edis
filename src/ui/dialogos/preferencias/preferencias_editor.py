@@ -123,7 +123,8 @@ class CaracteristicasEditor(QWidget):
 
         # Conexiones
         self.slider_margen.valueChanged[int].connect(lcd_margen.display)
-        self.slider_indentacion.valueChanged[int].connect(lcd_indentacion.display)
+        self.slider_indentacion.valueChanged[int].connect(
+            lcd_indentacion.display)
         self.btn_fuente.clicked.connect(self._seleccionar_fuente)
 
         # Configuraciones
@@ -150,8 +151,6 @@ class CaracteristicasEditor(QWidget):
         if ok:
             fuente = seleccion.family()
             size = str(seleccion.pointSize())
-            ESettings.set('editor/fuente', fuente)
-            ESettings.set('editor/fuenteTam,', int(size))
             self.btn_fuente.setText(fuente + ', ' + size)
 
     def guardar(self):

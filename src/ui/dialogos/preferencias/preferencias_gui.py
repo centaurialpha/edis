@@ -41,8 +41,6 @@ from PyQt4.QtGui import (
 #from src import recursos
 #from src.helpers import configuraciones
 from src.helpers.configuracion import ESettings
-from src.ui.contenedores.lateral import lateral_container
-#from edis.interfaz import distribuidor
 
 
 class ConfiguracionGUI(QWidget):
@@ -74,17 +72,3 @@ class ConfiguracionGUI(QWidget):
         ESettings.set('gui/simbolos', self.check_simbolos.isChecked())
         ESettings.set('gui/navegador', self.check_navegador.isChecked())
         ESettings.set('gui/explorador', self.check_explorador.isChecked())
-        contenedor_lateral = lateral_container.ContenedorLateral()
-        if self.check_simbolos.isChecked():
-            contenedor_lateral.agregar_arbol_de_simbolos()
-        else:
-            contenedor_lateral.eliminar_arbol_de_simbolos()
-        if self.check_navegador.isChecked():
-            contenedor_lateral.agregar_navegador()
-        else:
-            contenedor_lateral.eliminar_navegador()
-        if self.check_explorador.isChecked():
-            contenedor_lateral.agregar_explorador()
-        else:
-            contenedor_lateral.eliminar_explorador()
-        contenedor_lateral.actualizar()

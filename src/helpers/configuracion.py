@@ -80,16 +80,12 @@ class ESettings(object):
         qconfig = QSettings(paths.CONFIGURACION, QSettings.IniFormat)
         for clave, valor in list(configuracion.items()):
             tipo = eval(str(type(valor)).split("'")[1])
-            if tipo == str:
-                tipo = 'QString'
-            elif clave == 'ventana/dimensiones':
+            if clave == 'ventana/dimensiones':
                 configuracion[clave] = qconfig.value(clave, valor)
             elif clave == 'ventana/posicion':
                 configuracion[clave] = qconfig.value(clave, valor)
             else:
                 configuracion[clave] = qconfig.value(clave, valor, type=tipo)
-        if not configuracion['editor/fuente']:
-            configuracion['editor/fuente'] = FUENTE
 
     @staticmethod
     def get(valor):
