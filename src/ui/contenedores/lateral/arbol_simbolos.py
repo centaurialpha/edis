@@ -10,8 +10,7 @@ from PyQt4.QtGui import (
     QTreeWidgetItem,
     QAbstractItemView,
     QHeaderView,
-    QIcon,
-    QDockWidget,
+    QIcon
     )
 
 from PyQt4.QtCore import pyqtSignal
@@ -19,11 +18,12 @@ from PyQt4.QtCore import pyqtSignal
 from src.ectags import ectags
 from src import paths
 from src.ui.edis_main import EDIS
+from src.ui.contenedores.lateral import custom_dock
 
 #FIXME: Controlar el ancho cuando se inicia por primera vez
 
 
-class ArbolDeSimbolos(QDockWidget):
+class ArbolDeSimbolos(custom_dock.CustomDock):
 
     _ir_a_linea = pyqtSignal(int, name='irALinea')
 
@@ -38,7 +38,7 @@ class ArbolDeSimbolos(QDockWidget):
         }
 
     def __init__(self):
-        QDockWidget.__init__(self)
+        custom_dock.CustomDock.__init__(self)
         self.tree = QTreeWidget()
         self.setWidget(self.tree)
         self.tree.setObjectName("simbolos")

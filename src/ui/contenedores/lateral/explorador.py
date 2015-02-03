@@ -7,8 +7,7 @@
 
 from PyQt4.QtGui import (
     QTreeView,
-    QFileSystemModel,
-    QDockWidget
+    QFileSystemModel
     )
 
 from PyQt4.QtCore import (
@@ -18,14 +17,15 @@ from PyQt4.QtCore import (
     )
 
 from src.ui.edis_main import EDIS
+from src.ui.contenedores.lateral import custom_dock
 
 
-class Explorador(QDockWidget):
+class Explorador(custom_dock.CustomDock):
 
     abriendoArchivo = pyqtSignal(['QString'])
 
     def __init__(self, parent=None):
-        super(Explorador, self).__init__()
+        custom_dock.CustomDock.__init__(self)
         self.explorador = QTreeView()
         self.setWidget(self.explorador)
         self.explorador.header().setHidden(True)
