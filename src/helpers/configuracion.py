@@ -19,12 +19,10 @@ WINDOWS = False
 if sys.platform == 'linux':
     LINUX = True
     FUENTE = 'Monospace'
-    TAM_FUENTE = 12
     TERMINAL = ''
 elif sys.platform == 'win32':
     WINDOWS = True
     FUENTE = 'Courier'
-    TAM_FUENTE = 10
 
 ITEMS_TOOLBAR = [
     'Nuevo archivo',
@@ -62,7 +60,7 @@ configuracion = {
     'editor/mostrarTabs': False,
     'editor/modoWrap': False,
     'editor/fuente': "",
-    'editor/fuenteTam': 0,
+    'editor/fuenteTam': 10,
     'general/inicio': True,
     'terminal': ''
     }
