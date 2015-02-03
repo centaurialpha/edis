@@ -21,6 +21,8 @@ from PyQt4.QtCore import (
     Qt
     )
 
+from src.helpers.configuracion import ESettings
+
 
 class MiniMapa(QPlainTextEdit):
 
@@ -52,8 +54,8 @@ class MiniMapa(QPlainTextEdit):
 
     def actualizar_codigo(self):
         texto = self.editor.texto
-        #FIXME: usar indentación desde configuración
-        texto = texto.replace('\t', ' ' * 4)  # Reemplaza tabs por espacios
+        # Reemplaza tabs por espacios
+        texto = texto.replace('\t', ' ' * ESettings.get('editor/indentacion'))
         self.setPlainText(texto)
 
     def codigo(self, codigo):
@@ -72,12 +74,12 @@ class MiniMapa(QPlainTextEdit):
             self.deslizador.mover(rec.y())
 
     def redimensionar(self):
-        ancho = self.editor.width() * 0.17
+        ancho = self.editor.width() * 0.15
         altura = self.editor.height()
         self.setFixedSize(ancho, altura)
         self.mover(self.editor.width() - self.width(), 0)
         #FIXME: Márgen de línea
-        tam_fuente = self.width() / 80
+        tam_fuente = self.width() / 70
         fuente = self.document().defaultFont()
         fuente.setPointSize(tam_fuente)
         self.setFont(fuente)
