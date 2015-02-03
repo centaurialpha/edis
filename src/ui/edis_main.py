@@ -332,7 +332,7 @@ class EDIS(QMainWindow):
 
         principal = EDIS.componente("principal")
         for archivo in archivos:
-            principal.abrir_archivo(archivo)
+            principal.abrir_archivo(archivo[0], archivo[1])
 
     def acerca_de_qt(self):
         QMessageBox.aboutQt(self)

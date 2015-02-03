@@ -116,7 +116,7 @@ class EditorContainer(QWidget):
         weditor.setFocus()
         return weditor
 
-    def abrir_archivo(self, nombre=""):
+    def abrir_archivo(self, nombre="", posicion_cursor=None):
         filtro = "Archivos C/C++(*.cpp *.c);;ASM(*.s);;HEADERS(*.h);;(*.*)"
         if not nombre:
             carpeta = os.path.expanduser("~")
@@ -134,7 +134,9 @@ class EditorContainer(QWidget):
                             archivo)
                 nuevo_editor = self.agregar_editor(archivo)
                 nuevo_editor.texto = contenido
-                #nuevo_editor.nombre = archivo
+                if posicion_cursor is not None:
+                    linea, columna = posicion_cursor
+                    nuevo_editor.setCursorPosition(linea, columna)
                 self.archivo_cambiado.emit(archivo)
                 self.archivo_abierto.emit(archivo)
 

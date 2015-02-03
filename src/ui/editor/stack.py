@@ -106,9 +106,11 @@ class StackWidget(QStackedWidget):
                 self.todo_cerrado.emit()
 
     def archivos_abiertos(self):
-        archivos = list()
+        archivos = []
         for indice in range(self.contar):
-            archivos.append(self.editor(indice).nombre)
+            path = self.editor(indice).nombre
+            posicion_cursor = self.editor(indice).getCursorPosition()
+            archivos.append([path, posicion_cursor])
         return archivos
 
     def cambiar_widget(self, indice):
