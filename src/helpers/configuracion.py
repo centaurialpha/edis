@@ -59,6 +59,7 @@ configuracion = {
     'editor/fuente': "",
     'editor/fuenteTam': 10,
     'general/inicio': True,
+    'general/archivos': [],
     'terminal': ''
     }
 
@@ -105,6 +106,8 @@ class ESettings(object):
             'editor/fuente', "", type=str)
         configuracion['editor/fuenteTam'] = qconfig.value(
             'editor/fuenteTam', 11, type=int)
+        configuracion['general/archivos'] = qconfig.value(
+            'general/archivos', [], type='QStringList')
 
     @staticmethod
     def get(valor):

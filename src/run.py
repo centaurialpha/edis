@@ -16,9 +16,7 @@ from PyQt4.QtCore import (
     QLibraryInfo
     )
 from src import paths
-from src.helpers import (
-    configuracion,
-    )
+from src.helpers.configuracion import ESettings
 
 #lint:disable
 import src.ui.central
@@ -34,7 +32,7 @@ from src.ui.edis_main import EDIS
 
 
 def correr_interfaz(app):
-    configuracion.ESettings().cargar()
+    ESettings().cargar()
     import src.ui.inicio  # lint:ok
     # Traductor
     local = QLocale.system().name()
@@ -49,5 +47,9 @@ def correr_interfaz(app):
             "extras", "temas", "default.qss")) as tema:
         estilo = tema.read()
     app.setStyleSheet(estilo)
+    # Cargar archivos de última sesión
+    archivos = ESettings.get('general/archivos')
+    if archivos:
+        edis.cargar_archivos(archivos)
     edis.show()
     sys.exit(app.exec_())

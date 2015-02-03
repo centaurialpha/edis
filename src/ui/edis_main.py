@@ -327,6 +327,13 @@ class EDIS(QMainWindow):
         else:
             self.showFullScreen()
 
+    def cargar_archivos(self, archivos):
+        """ Carga los archivos desde la última sesión """
+
+        principal = EDIS.componente("principal")
+        for archivo in archivos:
+            principal.abrir_archivo(archivo)
+
     def acerca_de_qt(self):
         QMessageBox.aboutQt(self)
 
@@ -354,6 +361,7 @@ class EDIS(QMainWindow):
         if ESettings.get('ventana/guardarDimensiones'):
             ESettings.set('ventana/dimensiones', self.size())
             ESettings.set('ventana/posicion', self.pos())
+        ESettings.set('general/archivos', principal.archivos_abiertos())
 
     def mostrar_inicio(self):
         dialogo = EDIS.componente("inicio")
