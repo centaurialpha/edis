@@ -284,9 +284,8 @@ class EditorContainer(QWidget):
             weditor.actualizar()
 
     def mostrar_guias(self):
-        #FIXME:
-        #accion = EDIS.accion("Mostrar guías")
-        #configuraciones.GUIA_INDENTACION = accion.isChecked()
+        guias = ESettings.get('editor/guias')
+        ESettings.set('editor/guias', not guias)
         weditor = self.devolver_editor()
         if weditor is not None:
             weditor.actualizar()
