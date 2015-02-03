@@ -158,7 +158,7 @@ class CaracteristicasEditor(QWidget):
 
         fuente, fuente_tam = self.btn_fuente.text().split(',')
         ESettings.set('editor/fuente', fuente)
-        ESettings.set('editor/fuenteTam,', int(fuente_tam))
+        ESettings.set('editor/fuenteTam', int(fuente_tam.strip()))
         ESettings.set('editor/margen', self.check_margen.isChecked())
         ESettings.set('editor/margenAncho', self.slider_margen.value())
         ESettings.set('editor/guias', self.check_guia.isChecked())

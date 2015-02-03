@@ -48,12 +48,9 @@ configuracion = {
     'ventana/posicion': 0,
     'ventana/guardarDimensiones': True,
     'general/confirmarSalida': True,
-    'gui/simbolos': True,
-    'gui/explorador': True,
-    'gui/navegador': True,
     'editor/margen': True,
-    'editor/tipoCursor': 2,  # 0: invisilbe; 1: línea; 2: bloque
     'editor/margenAncho': 80,
+    'editor/tipoCursor': 2,  # 0: invisilbe; 1: línea; 2: bloque
     'editor/indentacion': True,
     'editor/indentacionAncho': 4,
     'editor/guias': False,
@@ -78,14 +75,36 @@ class ESettings(object):
         """
 
         qconfig = QSettings(paths.CONFIGURACION, QSettings.IniFormat)
-        for clave, valor in list(configuracion.items()):
-            tipo = eval(str(type(valor)).split("'")[1])
-            if clave == 'ventana/dimensiones':
-                configuracion[clave] = qconfig.value(clave, valor)
-            elif clave == 'ventana/posicion':
-                configuracion[clave] = qconfig.value(clave, valor)
-            else:
-                configuracion[clave] = qconfig.value(clave, valor, type=tipo)
+        configuracion['ventana/dimensiones'] = qconfig.value(
+            'ventana/dimensiones', type='QSize')
+        configuracion['ventana/posicion'] = qconfig.value(
+            'ventana/posicion', type='QPoint')
+        configuracion['general/inicio'] = qconfig.value(
+            'general/inicio', True, type=bool)
+        configuracion['ventana/guardarDimensiones'] = qconfig.value(
+            'ventana/guardarDimensiones', True, type=bool)
+        configuracion['general/confirmarSalida'] = qconfig.value(
+            'general/confirmarSalida', True, type=bool)
+        configuracion['editor/margen'] = qconfig.value(
+            'editor/margen', True, type=bool)
+        configuracion['editor/margenAncho'] = qconfig.value(
+            'editor/margenAncho', 80, type=int)
+        configuracion['editor/tipoCursor'] = qconfig.value(
+            'editor/tipoCursor', 2, type=int)
+        configuracion['editor/indentacion'] = qconfig.value(
+            'editor/indentacion', True, type=bool)
+        configuracion['editor/indentacionAncho'] = qconfig.value(
+            'editor/indentacionAncho', 4, type=int)
+        configuracion['editor/guias'] = qconfig.value(
+            'editor/guias', False, type=bool)
+        configuracion['editor/mostrarTabs'] = qconfig.value(
+            'editor/mostrarTabs', False, type=bool)
+        configuracion['editor/modoWrap'] = qconfig.value(
+            'editor/modoWrap', False, type=bool)
+        configuracion['editor/fuente'] = qconfig.value(
+            'editor/fuente', "", type=str)
+        configuracion['editor/fuenteTam'] = qconfig.value(
+            'editor/fuenteTam', 11, type=int)
 
     @staticmethod
     def get(valor):

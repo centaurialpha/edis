@@ -47,28 +47,29 @@ class ConfiguracionGUI(QWidget):
 
     def __init__(self, parent):
         super(ConfiguracionGUI, self).__init__(parent)
-        contenedor = QVBoxLayout(self)
+        #contenedor = QVBoxLayout(self)
 
-        # Widgets laterales
-        grupo_lateral = QGroupBox(self.tr("Widgets laterales:"))
-        box = QVBoxLayout(grupo_lateral)
-        self.check_simbolos = QCheckBox(self.tr("Árbol de símbolos"))
-        self.check_simbolos.setChecked(ESettings.get('gui/simbolos'))
-        box.addWidget(self.check_simbolos)
-        self.check_navegador = QCheckBox(self.tr("Navegador"))
-        self.check_navegador.setChecked(ESettings.get('gui/navegador'))
-        box.addWidget(self.check_navegador)
-        self.check_explorador = QCheckBox(self.tr("Explorador"))
-        self.check_explorador.setChecked(ESettings.get('gui/explorador'))
-        box.addWidget(self.check_explorador)
-        contenedor.addWidget(grupo_lateral)
+        ## Widgets laterales
+        #grupo_lateral = QGroupBox(self.tr("Widgets laterales:"))
+        #box = QVBoxLayout(grupo_lateral)
+        #self.check_simbolos = QCheckBox(self.tr("Árbol de símbolos"))
+        #self.check_simbolos.setChecked(ESettings.get('gui/simbolos'))
+        #box.addWidget(self.check_simbolos)
+        #self.check_navegador = QCheckBox(self.tr("Navegador"))
+        #self.check_navegador.setChecked(ESettings.get('gui/navegador'))
+        #box.addWidget(self.check_navegador)
+        #self.check_explorador = QCheckBox(self.tr("Explorador"))
+        #self.check_explorador.setChecked(ESettings.get('gui/explorador'))
+        #box.addWidget(self.check_explorador)
+        #contenedor.addWidget(grupo_lateral)
 
-        contenedor.addItem(QSpacerItem(0, 10, QSizePolicy.Expanding,
-                            QSizePolicy.Expanding))
+        #contenedor.addItem(QSpacerItem(0, 10, QSizePolicy.Expanding,
+                            #QSizePolicy.Expanding))
 
     def guardar(self):
-        """ Guarda las configuraciones de la GUI. """
+        pass
+        #""" Guarda las configuraciones de la GUI. """
 
-        ESettings.set('gui/simbolos', self.check_simbolos.isChecked())
-        ESettings.set('gui/navegador', self.check_navegador.isChecked())
-        ESettings.set('gui/explorador', self.check_explorador.isChecked())
+        #ESettings.set('gui/simbolos', self.check_simbolos.isChecked())
+        #ESettings.set('gui/navegador', self.check_navegador.isChecked())
+        #ESettings.set('gui/explorador', self.check_explorador.isChecked())
