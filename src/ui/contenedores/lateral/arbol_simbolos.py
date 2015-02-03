@@ -20,8 +20,6 @@ from src import paths
 from src.ui.edis_main import EDIS
 from src.ui.contenedores.lateral import custom_dock
 
-#FIXME: Controlar el ancho cuando se inicia por primera vez
-
 
 class ArbolDeSimbolos(custom_dock.CustomDock):
 
