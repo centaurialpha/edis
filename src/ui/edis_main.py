@@ -158,7 +158,6 @@ class EDIS(QMainWindow):
 
     def cargar_menu(self):
         #FIXME: Mejorar
-        #FIXME: Separadores
         items_toolbar = OrderedDict()
         menu_bar = self.menuBar()
         menu_edis = self.componente("menu")
@@ -187,9 +186,6 @@ class EDIS(QMainWindow):
                     icono = accion.icono
                     if icono:
                         qaccion.setIcon(QIcon(icono))
-                    #FIXME: Checked en visibilidad
-                    if accion.checkable:
-                        qaccion.setCheckable(True)
                     if accion.conexion:
                         if accion.conexion.split('.')[0] == 'edis':
                             funcion = getattr(self,

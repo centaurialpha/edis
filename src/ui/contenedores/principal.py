@@ -24,9 +24,8 @@ from PyQt4.QtCore import (
     pyqtSignal,
     )
 
-from src.helpers import (
-    manejador_de_archivo,
-    )
+from src.helpers import manejador_de_archivo
+from src.helpers.configuracion import ESettings
 from src.ui.editor import (
     editor,
     stack
@@ -278,9 +277,8 @@ class EditorContainer(QWidget):
             weditor.pegar()
 
     def mostrar_tabs_espacios_blancos(self):
-        #FIXME:
-        #accion = EDIS.accion("Mostrar tabs y espacios en blanco")
-        #configuraciones.MOSTRAR_TABS = accion.isChecked()
+        tabs_espacios = ESettings.get('editor/mostrarTabs')
+        ESettings.set('editor/mostrarTabs', not tabs_espacios)
         weditor = self.devolver_editor()
         if weditor is not None:
             weditor.actualizar()

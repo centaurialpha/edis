@@ -206,7 +206,6 @@ ACCIONES = (
         'seccion': 2,
         'nombre': 'Mostrar compilador',
         'conexion': 'edis.mostrar_ocultar_output',
-        'checkable': True,
         'atajo': _ATAJO['mostrar-compilador']},
     {
         'seccion': 2,
@@ -217,13 +216,11 @@ ACCIONES = (
     {
         'seccion': 2,
         'nombre': 'Mostrar tabs y espacios en blanco',
-        'conexion': 'mostrar_tabs_espacios_blancos',
-        'checkable': True},
+        'conexion': 'mostrar_tabs_espacios_blancos'},
     {
         'seccion': 2,
         'nombre': 'Mostrar guías',
         'conexion': 'mostrar_guias',
-        'checkable': True,
         'separador': True},
     {
         'seccion': 2,
