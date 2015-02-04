@@ -81,12 +81,15 @@ class EDIS(QMainWindow):
         EDIS.menu_bar(6, self.trUtf8("A&cerca de"))
         # Toolbar
         self.toolbar = QToolBar(self)
+        toggle_action = self.toolbar.toggleViewAction()
+        toggle_action.setText(self.tr("Toolbar"))
         self.toolbar.setMovable(False)
         self.toolbar.setObjectName("toolbar")
         self.toolbar.setIconSize(QSize(22, 22))
         self.addToolBar(Qt.RightToolBarArea, self.toolbar)
-        #FIXME:
         self.dock_toolbar = QToolBar(self)
+        toggle_action = self.dock_toolbar.toggleViewAction()
+        toggle_action.setText(self.tr("Dock toolbar"))
         self.dock_toolbar.setObjectName("dock_toolbar")
         self.tb_simbolos = tool_button.CustomToolButton("Símbolos", self)
         self.tb_navegador = tool_button.CustomToolButton("Navegador", self)
@@ -96,6 +99,8 @@ class EDIS(QMainWindow):
         self.dock_toolbar.addWidget(self.tb_navegador)
         self.dock_toolbar.addWidget(self.tb_explorador)
         self.addToolBar(Qt.LeftToolBarArea, self.dock_toolbar)
+        # Animated property
+        self.setDockOptions(QMainWindow.AnimatedDocks)
         # Menú
         self.cargar_menu()
         # Barra de estado
