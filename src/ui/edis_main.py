@@ -64,7 +64,7 @@ class EDIS(QMainWindow):
         self.setMinimumSize(750, 500)
         # Se cargan las dimensiones de la ventana
         d = ESettings.get('ventana/dimensiones')
-        if d != 0:
+        if d:
             self.resize(d)
         else:
             self.showMaximized()
