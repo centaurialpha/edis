@@ -29,7 +29,7 @@ class Selector(QDialog):
 
     def __init__(self, parent=None):
         super(Selector, self).__init__(parent,
-                Qt.Dialog | Qt.FramelessWindowHint)
+                                       Qt.Dialog | Qt.FramelessWindowHint)
         # Configuración
         self.setModal(True)
 
@@ -49,7 +49,7 @@ class Selector(QDialog):
         self.__cargar()
 
         self.connect(self.root, SIGNAL("abrirArchivo(int)"),
-                    self.__abrir_archivo)
+                     self.__abrir_archivo)
 
     def __abrir_archivo(self, indice):
         principal = EDIS.componente("principal")

@@ -194,7 +194,8 @@ class EDIS(QMainWindow):
                     if accion.conexion:
                         if accion.conexion.split('.')[0] == 'edis':
                             funcion = getattr(self,
-                                accion.conexion.split('.')[1], None)
+                                              accion.conexion.split('.')[1],
+                                              None)
                         else:
                             funcion = getattr(principal, accion.conexion, None)
                         # Es una función ?
@@ -355,7 +356,7 @@ class EDIS(QMainWindow):
 
         principal = EDIS.componente("principal")
         if principal.check_archivos_sin_guardar() and \
-            ESettings.get('general/confirmarSalida'):
+                ESettings.get('general/confirmarSalida'):
 
             archivos_sin_guardar = principal.archivos_sin_guardar()
             dialogo = dialogo_guardar_archivos.Dialogo(

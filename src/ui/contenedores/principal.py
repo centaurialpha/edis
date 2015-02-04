@@ -66,13 +66,13 @@ class EditorContainer(QWidget):
 
     def instalar_signals(self):
         self.connect(self.stack, SIGNAL("Guardar_Editor_Actual()"),
-                    self.guardar_archivo)
+                     self.guardar_archivo)
         self.connect(self.stack, SIGNAL("archivo_modificado(bool)"),
-                    self._archivo_modificado)
+                     self._archivo_modificado)
         self.connect(self.stack, SIGNAL("archivo_cerrado(int)"),
-                    self._archivo_cerrado)
+                     self._archivo_cerrado)
         self.connect(self.stack, SIGNAL("archivo_reciente(QStringList)"),
-                    self.actualizar_recientes)
+                     self.actualizar_recientes)
 
     def actualizar_recientes(self, recientes):
         edis = EDIS.componente('edis')
@@ -123,15 +123,16 @@ class EditorContainer(QWidget):
             editor_widget = self.widget_actual()
             if editor_widget and editor_widget.nombre:
                 carpeta = self.__ultima_carpeta_visitada(editor_widget.nombre)
-            archivos = QFileDialog.getOpenFileNames(self,
-                            self.trUtf8("Abrir archivo"), carpeta, filtro)
+            archivos = QFileDialog.getOpenFileNames(self, self.trUtf8(
+                                                    "Abrir archivo"),
+                                                    carpeta, filtro)
         else:
             archivos = [nombre]
         for archivo in archivos:
             if not self.__archivo_abierto(archivo):
                 self.stack.no_esta_abierto = False
-                contenido = manejador_de_archivo.leer_contenido_de_archivo(
-                            archivo)
+                contenido = \
+                    manejador_de_archivo.leer_contenido_de_archivo(archivo)
                 nuevo_editor = self.agregar_editor(archivo)
                 nuevo_editor.texto = contenido
                 if posicion_cursor is not None:
@@ -230,8 +231,8 @@ class EditorContainer(QWidget):
         weditor.guardado()
 
     def guardar_todo(self):
-        for editor in self.stack.editores:
-            self.guardar_archivo(editor)
+        for weditor in self.stack.editores:
+            self.guardar_archivo(weditor)
 
     def guardar_seleccionado(self, archivo):
         for i in range(self.stack.contar):

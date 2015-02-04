@@ -53,9 +53,9 @@ class PopupBusqueda(QDialog):
         btn_siguiente = QToolButton()
         btn_siguiente.setIcon(QIcon(recursos.ICONOS['arrow-forward']))
         self.check_cs = QCheckBox(self.tr(
-                                "Sensitivo a mayúsculas y minúsculas"))
+                                  "Sensitivo a mayúsculas y minúsculas"))
         self.check_wo = QCheckBox(self.tr(
-                                "Solo palabras completas"))
+                                  "Solo palabras completas"))
         box.addWidget(btn_cerrar)
         box.addWidget(self.linea)
         box.addWidget(btn_buscar)

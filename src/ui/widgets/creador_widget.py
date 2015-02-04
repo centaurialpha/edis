@@ -33,7 +33,7 @@ def get_icono_estandard(nombre):
 
 
 def crear_accion(parent, texto, icono=None, atajo=None, tip=None,
-                slot=None):
+                 slot=None):
     """ Retorna un QAction con los parámetros asociados. """
 
     accion = QAction(parent.trUtf8(texto), parent)
@@ -50,8 +50,7 @@ def crear_accion(parent, texto, icono=None, atajo=None, tip=None,
 
 
 def create_button(parent, text=None, shortcut=None, icon=None, triggered=None,
-                    text_beside=False, toggled=None, autoraise=True,
-                    action=None):
+                  text_beside=False, toggled=None, autoraise=True, action=None):
 
     """ Create a ToolButton """
 

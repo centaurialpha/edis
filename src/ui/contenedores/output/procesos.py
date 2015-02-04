@@ -37,7 +37,7 @@ from src.ui.contenedores.output import salida
 class EjecutarWidget(QWidget):
 
     _script = '%s -e "bash -c ./%s;echo;echo;echo;echo -n Presione \<Enter\> '\
-    'para salir.;read I"'
+              'para salir.;read I"'
 
     def __init__(self):
         super(EjecutarWidget, self).__init__()
@@ -79,7 +79,7 @@ class EjecutarWidget(QWidget):
             self.output.addItem(error1)
         else:
             error = salida.Item(self.tr("Ha ocurrido un error en la ejecución. "
-                                    "Código de error: %s" % codigo_error))
+                                "Código de error: %s" % codigo_error))
             error.setForeground(Qt.red)
             self.output.addItem(error)
 
@@ -96,14 +96,14 @@ class EjecutarWidget(QWidget):
 
         self.output.clear()
         item = salida.Item(self.tr(
-                            "Compilando archivo: %s ( %s )" %
-                            (directorio.split('/')[-1], nombre_archivo)))
+                           "Compilando archivo: %s ( %s )" %
+                           (directorio.split('/')[-1], nombre_archivo)))
         self.output.addItem(item)
 
         clang = 'clang'
         parametros_clang = ['-Wall', '-o']
         self.proceso_compilacion.start(clang, parametros_clang +
-                                        [self.ejecutable] + [nombre_archivo])
+                                       [self.ejecutable] + [nombre_archivo])
         self.proceso_compilacion.waitForFinished()
 
     def ejecucion_terminada(self, codigoError, exitStatus):
@@ -151,13 +151,13 @@ class EjecutarWidget(QWidget):
                                     " para ejecutar el binario."))
                 return
             proceso = 'xterm -T "%s" -e /usr/bin/cb_console_runner "%s"' \
-                    % (self.ejecutable, os.path.join(direc, self.ejecutable))
+                      % (self.ejecutable, os.path.join(direc, self.ejecutable))
             # Run !
             self.proceso_ejecucion.start(proceso)
         else:
             #FIXME: Usar QProcess
             Popen([os.path.join(direc, self.ejecutable)],
-                    creationflags=CREATE_NEW_CONSOLE)
+                  creationflags=CREATE_NEW_CONSOLE)
 
     def compilar_ejecutar(self, archivo):
         self.correr_compilacion(archivo)

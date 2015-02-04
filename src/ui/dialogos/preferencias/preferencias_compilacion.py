@@ -40,10 +40,8 @@ class ECTab(QWidget):
         self.tabs.setTabPosition(3)
         self.configCompilacion = ConfiguracionCompilacion(self)
         self.configEjecucion = ConfiguracionEjecucion(self)
-        self.tabs.addTab(self.configCompilacion,
-            self.trUtf8("Compilación"))
-        self.tabs.addTab(self.configEjecucion,
-            self.trUtf8("Ejecución"))
+        self.tabs.addTab(self.configCompilacion, self.trUtf8("Compilación"))
+        self.tabs.addTab(self.configEjecucion, self.trUtf8("Ejecución"))
 
         vbox.addWidget(self.tabs)
 
@@ -75,7 +73,7 @@ class ConfiguracionCompilacion(QWidget):
             self.trUtf8("Generar código Ensamblador."))
         self.checkEnsamblado.setToolTip(
             self.trUtf8("Se genera un código en lenguaje ensamblador "
-            "propio del procesador."))
+                        "propio del procesador."))
         self.checkOptimizacion.toggled.connect(
             self.comboOptimizacion.setEnabled)
 
@@ -101,7 +99,7 @@ class ConfiguracionCompilacion(QWidget):
 
         layoutV.addWidget(grupoCompilacion)
         layoutV.addItem(QSpacerItem(10, 0, QSizePolicy.Expanding,
-            QSizePolicy.Expanding))
+                        QSizePolicy.Expanding))
 
     def guardar(self):
         qconfig = QSettings(recursos.CONFIGURACION, QSettings.IniFormat)
@@ -123,7 +121,7 @@ class ConfiguracionEjecucion(QWidget):
         self.check_terminal()
 
         self.layoutV.addItem(QSpacerItem(0, 10, QSizePolicy.Expanding,
-            QSizePolicy.Expanding))
+                             QSizePolicy.Expanding))
 
     def check_terminal(self):
         if sys.platform != 'linux2':

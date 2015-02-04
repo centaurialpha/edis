@@ -34,8 +34,7 @@ class ContenedorOutput(QDockWidget):
         self.setWidget(self.salida_)
 
         # Conexiones
-        self.atajoEscape = QShortcut(QKeySequence(Qt.Key_Escape),
-            self)
+        self.atajoEscape = QShortcut(QKeySequence(Qt.Key_Escape), self)
         self.atajoEscape.activated.connect(self.hide)
 
         EDIS.cargar_componente("output", self)

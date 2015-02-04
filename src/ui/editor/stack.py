@@ -56,7 +56,7 @@ class StackWidget(QStackedWidget):
                 self.eliminar_widget(self.widget_actual, 1)
 
     def _agregar_a_recientes(self, archivo):
-        if not archivo in self._recientes:
+        if archivo not in self._recientes:
             self._recientes.append(archivo)
             self.archivo_reciente.emit(self._recientes)
 
@@ -86,11 +86,10 @@ class StackWidget(QStackedWidget):
             respuesta = NO
             if weditor.texto_modificado:
                 respuesta = QMessageBox.question(self, self.trUtf8(
-                                                "Archivo no guardado"),
-                                                self.trUtf8("El archivo "
-                                                "<b>%s</b> no se ha guardado"
-                                            "<br>¿ Guardar ?") % weditor.nombre,
-                                            SI | NO | CANCELAR)
+                    "Archivo no guardado"), self.trUtf8("El archivo <b>%s</b> "
+                                                        "no se ha guardado"
+                                                        "<br>¿Guardar?") %
+                    weditor.nombre, SI | NO | CANCELAR)
                 if respuesta == CANCELAR:
                     return
                 elif respuesta == SI:

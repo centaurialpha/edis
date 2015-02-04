@@ -20,10 +20,10 @@ from PyQt4.QtGui import (
 
 # Módulos QtCore
 #from PyQt4.QtCore import Qt
-from PyQt4.QtCore import QSettings
+#from PyQt4.QtCore import QSettings
 
 # Módulos EDIS
-from src import recursos
+#from src import recursos
 from src.helpers.configuracion import ESettings
 
 
@@ -66,7 +66,7 @@ class ConfiguracionGeneral(QWidget):
         contenedor.addWidget(grupo_salir)
         contenedor.addWidget(grupo_reestablecer)
         contenedor.addItem(QSpacerItem(0, 10, QSizePolicy.Expanding,
-                            QSizePolicy.Expanding))
+                           QSizePolicy.Expanding))
         btn_reestablecer.clicked.connect(self._reestablecer)
 
     def _reestablecer(self):
@@ -74,8 +74,8 @@ class ConfiguracionGeneral(QWidget):
         bands |= QMessageBox.Yes
 
         resultado = QMessageBox.question(self, self.tr("Advertencia"),
-                                        self.tr("Está seguro de borrar todas "
-                                        "las conguraciones?"), bands)
+                                         self.tr("Está seguro de borrar todas "
+                                         "las conguraciones?"), bands)
         if resultado == QMessageBox.Cancel:
             return
         elif resultado == QMessageBox.Yes:

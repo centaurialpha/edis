@@ -45,9 +45,8 @@ class FileProperty(QDialog):
         grid.addWidget(QLabel(self.trUtf8("<b>Ubicación:</b>")), 3, 0)
         grid.addWidget(QLabel(filename), 3, 1)
         grid.addWidget(QLabel(self.trUtf8("<b>Líneas de código:</b>")), 4, 0)
-        grid.addWidget(QLabel(self.tr("{0}").format(
-                        editor.lineas -
-                        len(self.get_comment_spaces(editor)))), 4, 1)
+        grid.addWidget(QLabel(self.tr("{0}").format(editor.lineas -
+                       len(self.get_comment_spaces(editor)))), 4, 1)
         grid.addWidget(QLabel(
             self.trUtf8("<b>Espacios en blanco y comentarios:</b>")), 5, 0)
         grid.addWidget(QLabel(
@@ -90,7 +89,7 @@ class FileProperty(QDialog):
         try:
             time = os.path.getmtime(filename)
             format_time = datetime.fromtimestamp(
-                                    time).strftime("%Y-%m-%d %H:%M")
+                time).strftime("%Y-%m-%d %H:%M")
             return format_time
         except:
             return "-"

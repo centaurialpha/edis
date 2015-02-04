@@ -40,7 +40,6 @@ class DialogoInsertarInclude(QDialog):
         cursor.movePosition(QTextCursor.Start)
         cursor.movePosition(QTextCursor.EndOfLine)
         include = '\n#include <{0}.h>'.format(texto)
-        if self.weditor.document().find(
-            include[1:]).position() == -1:
+        if self.weditor.document().find(include[1:]).position() == -1:
                 cursor.insertText(include)
         self.close()

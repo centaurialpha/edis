@@ -24,11 +24,13 @@ class TopToolBar(QToolBar):
         self.edis = edis
         self.setMovable(False)
         self.lateral_button = create_button(self,
-            icon=recursos.ICONOS['lateral'], toggled=self._show_hide_lateral)
+                                            icon=recursos.ICONOS['lateral'],
+                                            toggled=self._show_hide_lateral)
         self.lateral_button.setCheckable(True)
         self.lateral_button.setChecked(True)
         self.output_button = create_button(self,
-            icon=recursos.ICONOS['output'], toggled=self._show_hide_output)
+                                           icon=recursos.ICONOS['output'],
+                                           toggled=self._show_hide_output)
         self.output_button.setCheckable(True)
         self.output_button.setChecked(True)
         spacer = QWidget(self)

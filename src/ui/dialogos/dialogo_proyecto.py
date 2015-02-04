@@ -80,8 +80,8 @@ class DialogoProyecto(QDialog):
         self._validar()
 
     def _seleccionar_carpeta(self):
-        carpeta = QFileDialog.getExistingDirectory(self,
-            self.tr("Selecciona la carpeta"))
+        carpeta = QFileDialog.getExistingDirectory(self, self.tr(
+                                                   "Selecciona la carpeta"))
         if carpeta:
             self.line_ubicacion.setText(carpeta)
         self._validar()
@@ -114,8 +114,8 @@ class DialogoProyecto(QDialog):
             #FIXME:
         else:
             QMessageBox.critical(self, self.tr("Errror"),
-                            self.tr("Error al crear el proyecto\n\n%s") %
-                            self.creador_proyecto.error)
+                                 self.tr("Error al crear el proyecto\n\n%s") %
+                                 self.creador_proyecto.error)
 
 
 class CreadorProyectoThread(QThread):
@@ -133,7 +133,7 @@ class CreadorProyectoThread(QThread):
             # Se crea el archivo .epf (Edis Project File)
             archivo_epf = self._datos['nombre'] + '.epf'
             with open(os.path.join(carpeta_proyecto,
-                        archivo_epf.lower()), mode='w') as archivo:
+                      archivo_epf.lower()), mode='w') as archivo:
                 json.dump(self._datos, archivo, indent=4)
             # Archivo main.c
             open(os.path.join(carpeta_proyecto, 'main.c'), 'w').close()

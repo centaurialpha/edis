@@ -5,8 +5,6 @@
 # Copyright 2014-2015 - Gabriel Acosta
 # License: GPLv3 (see http://www.gnu.org/licenses/gpl.html)
 
-import re
-
 # Módulos QtGui
 from PyQt4.QtGui import (
     QPlainTextEdit,

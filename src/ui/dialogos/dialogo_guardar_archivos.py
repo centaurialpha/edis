@@ -33,7 +33,7 @@ class Dialogo(QDialog):
 
         vLayout = QVBoxLayout(self)
         label = QLabel(self.tr("Algunos archivos no se han guardado, "
-                        "selecciona los que \ndeseas guardar:"))
+                       "selecciona los que \ndeseas guardar:"))
         vLayout.addWidget(label)
         hLayout = QHBoxLayout()
 

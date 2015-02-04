@@ -44,7 +44,7 @@ def correr_interfaz(app):
     app.setWindowIcon(QIcon(paths.ICONOS['icon']))
     # Aplicar estilo
     with open(os.path.join(paths.PATH,
-            "extras", "temas", "default.qss")) as tema:
+              "extras", "temas", "default.qss")) as tema:
         estilo = tema.read()
     app.setStyleSheet(estilo)
     # Cargar archivos de última sesión

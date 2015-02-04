@@ -24,7 +24,7 @@ class Navegador(custom_dock.CustomDock):
         custom_dock.CustomDock.__init__(self)
         self.navegador = QListWidget()
         self.navegador.connect(self, SIGNAL("clicked(QModelIndex)"),
-                    self._cambiar_editor)
+                               self._cambiar_editor)
         self.setWidget(self.navegador)
 
         EDIS.cargar_lateral("navegador", self)

@@ -8,12 +8,12 @@
 # Módulos QtGui
 from PyQt4.QtGui import (
     QWidget,
-    QVBoxLayout,
-    #QHBoxLayout,
-    QGroupBox,
-    QCheckBox,
-    QSpacerItem,
-    QSizePolicy
+    #QVBoxLayout,
+    ##QHBoxLayout,
+    #QGroupBox,
+    #QCheckBox,
+    #QSpacerItem,
+    #QSizePolicy
     )
 #from PyQt4.QtGui import QStyleFactory
 #from PyQt4.QtGui import QVBoxLayout
@@ -40,7 +40,7 @@ from PyQt4.QtGui import (
 ## Módulos EDIS
 #from src import recursos
 #from src.helpers import configuraciones
-from src.helpers.configuracion import ESettings
+#from src.helpers.configuracion import ESettings
 
 
 class ConfiguracionGUI(QWidget):

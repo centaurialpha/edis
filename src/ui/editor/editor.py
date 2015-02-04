@@ -106,15 +106,14 @@ class Editor(Base):
         self.send("sci_settabwidth", self._indentacion)
         # Minimapa
         self.minimapa = MiniMapa(self)
-        self.connect(self, SIGNAL("selectionChanged()"),
-                    self.minimapa.area)
+        self.connect(self, SIGNAL("selectionChanged()"), self.minimapa.area)
         self.connect(self, SIGNAL("textChanged()"),
-                    self.minimapa.actualizar_codigo)
+                     self.minimapa.actualizar_codigo)
         # Thread ocurrencias
         self.hilo_ocurrencias = ThreadBusqueda()
         self.connect(self.hilo_ocurrencias,
-                    SIGNAL("ocurrenciasThread(PyQt_PyObject)"),
-                    self.marcar_palabras)
+                     SIGNAL("ocurrenciasThread(PyQt_PyObject)"),
+                     self.marcar_palabras)
         # Analizador de errores
         self.checker = checker.Checker(self)
         self.checker.errores.connect(self._marcar_errores)
@@ -137,7 +136,7 @@ class Editor(Base):
         self.match_braces_color(self._tema['brace-background'],
                                 self._tema['brace-foreground'])
         self.unmatch_braces_color(self._tema['brace-unbackground'],
-                                    self._tema['brace-unforeground'])
+                                  self._tema['brace-unforeground'])
 
     def cargar_fuente(self, fuente, tam):
         self._fuente = QFont(fuente, tam)
@@ -176,9 +175,9 @@ class Editor(Base):
         self.setIndentationGuides(ESettings.get('editor/guias'))
         if ESettings.get('editor/guias'):
             self.setIndentationGuidesBackgroundColor(QColor(
-                                                    self._tema['guia-fondo']))
+                                                     self._tema['guia-fondo']))
             self.setIndentationGuidesForegroundColor(QColor(
-                                                    self._tema['guia-fore']))
+                                                     self._tema['guia-fore']))
         if ESettings.get('editor/modoWrap'):
             self.setWrapMode(self.WrapWord)
         else:
@@ -231,7 +230,7 @@ class Editor(Base):
                                         self.indicador_warning)
 
     def buscar(self, palabra, re=False, cs=False, wo=False, wrap=False,
-                forward=True, linea=-1, indice=-1):
+               forward=True, linea=-1, indice=-1):
         """ Buscar la primera aparición de @palabra,
         si se encuentra se selecciona.
 

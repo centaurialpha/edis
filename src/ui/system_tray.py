@@ -47,9 +47,9 @@ class NotificacionActualizacion(QSystemTrayIcon):
         menu.addAction(accion_salir)
         self.setContextMenu(menu)
         self.showMessage(self.tr("Nueva versión disponible!"),
-                        self.tr("Existe una nueva versión de EDIS!\n"
-                        "versión: %s." % version),
-                        QSystemTrayIcon.Information, 10000)
+                         self.tr("Existe una nueva versión de EDIS!\n"
+                         "versión: %s." % version),
+                         QSystemTrayIcon.Information, 10000)
 
 
 class Thread(QThread):

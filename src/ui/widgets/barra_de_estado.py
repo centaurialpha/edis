@@ -49,7 +49,7 @@ class PosicionCursorWidget(QLabel):
         self.setObjectName("status_label")
         self.setStyleSheet("font: 10pt;")
         self.linea_columna = "Línea %s, Columna %s - " \
-        "<span style='color: #aaaaaa;'>%s líneas</span>"
+            "<span style='color: #aaaaaa;'>%s líneas</span>"
         self.setText(self.tr(self.linea_columna % (0, 0, 0)))
         self.hide()
 

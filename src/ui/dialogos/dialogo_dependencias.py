@@ -21,8 +21,8 @@ class DialogoDependencias(QDialog):
         box = QVBoxLayout(self)
         box.setContentsMargins(5, 5, 5, 5)
         box.addWidget(QLabel(self.tr("Las siguientes dependencias no se\n"
-                            "han encontrado en el sistema:")))
+                      "han encontrado en el sistema:")))
         self.lista_dependencias = QListWidget()
         box.addWidget(self.lista_dependencias)
-        self.lista_dependencias.addItems([clave for clave, valor in
-                                    list(dependencias.items()) if not valor])
+        self.lista_dependencias.addItems([clave for clave, valor in list(
+                                         dependencias.items()) if not valor])

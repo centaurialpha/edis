@@ -59,13 +59,13 @@ class Preferencias(QDialog):
 
         # Conexiones
         self.connect(self.button_general, SIGNAL("clicked()"),
-                    lambda: self.cambiar_widget(0))
+                     lambda: self.cambiar_widget(0))
         self.connect(self.button_editor, SIGNAL("clicked()"),
-                    lambda: self.cambiar_widget(1))
+                     lambda: self.cambiar_widget(1))
         self.connect(self.button_gui, SIGNAL("clicked()"),
-                    lambda: self.cambiar_widget(2))
+                     lambda: self.cambiar_widget(2))
         self.connect(self.button_compi, SIGNAL("clicked()"),
-                    lambda: self.cambiar_widget(3))
+                     lambda: self.cambiar_widget(3))
         self.connect(self.btn_cancel, SIGNAL("clicked()"), self.close)
         self.connect(self.btn_guardar, SIGNAL("clicked()"), self._guardar)
 
@@ -82,7 +82,7 @@ class Preferencias(QDialog):
         toolbar.setToolButtonStyle(Qt.ToolButtonIconOnly)
 
         self.button_general = ToolButton("General",
-                                        paths.ICONOS['general'])
+                                         paths.ICONOS['general'])
         self.button_editor = ToolButton("Editor",
                                         paths.ICONOS['edit'])
         self.button_gui = ToolButton("Interfáz", paths.ICONOS['gui'])

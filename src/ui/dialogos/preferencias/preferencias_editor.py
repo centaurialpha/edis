@@ -119,7 +119,7 @@ class CaracteristicasEditor(QWidget):
         contenedor.addWidget(grupo_fuente)
         contenedor.addWidget(grupo_cursor)
         contenedor.addItem(QSpacerItem(0, 10, QSizePolicy.Expanding,
-                            QSizePolicy.Expanding))
+                           QSizePolicy.Expanding))
 
         # Conexiones
         self.slider_margen.valueChanged[int].connect(lcd_margen.display)
@@ -133,9 +133,9 @@ class CaracteristicasEditor(QWidget):
         self.slider_margen.setValue(ESettings.get('editor/margenAncho'))
         # Indentación
         self.check_indentacion.setChecked(ESettings.get(
-                                         'editor/indentacion'))
+                                          'editor/indentacion'))
         self.slider_indentacion.setValue(ESettings.get(
-                                   'editor/indentacionAncho'))
+                                         'editor/indentacionAncho'))
         self.check_guia.setChecked(ESettings.get('editor/guias'))
 
     def _cargar_fuente(self):
@@ -163,7 +163,7 @@ class CaracteristicasEditor(QWidget):
         ESettings.set('editor/margenAncho', self.slider_margen.value())
         ESettings.set('editor/guias', self.check_guia.isChecked())
         ESettings.set('editor/indentacionAncho',
-                    self.slider_indentacion.value())
+                      self.slider_indentacion.value())
         for ntipo, radio in enumerate(self.radio_cursor):
             if radio.isChecked():
                 tipo = ntipo

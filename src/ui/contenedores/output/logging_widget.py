@@ -33,7 +33,7 @@ class Logging(QWidget):
         self.parent.item_cambiado(2)
         item = QListWidgetItem(
             self.trUtf8("%s: %s %s" % (time.strftime("%H:%M:%S"),
-                                        filename, typ)))
+                        filename, typ)))
         if self.logging_list.count() % 2 == 0:
             item.setBackground(QColor('lightgray'))
         self.logging_list.addItem(item)

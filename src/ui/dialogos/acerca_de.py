@@ -35,7 +35,7 @@ class AcercaDe(QDialog):
         label_logo = QLabel()
         label_logo.setPixmap(QPixmap(paths.ICONOS['icon']))
         label_titulo = QLabel(self.tr("<h1>EDIS</h1>\n<i>Simple Integrated "
-                            "Development Environment</i>"))
+                              "Development Environment</i>"))
         box_logo = QHBoxLayout()
         self.tabs = QTabWidget()
         self.tabs.addTab(AboutTab(), self.tr("Acerca de"))
@@ -61,12 +61,13 @@ class AboutTab(QWidget):
         box = QVBoxLayout(self)
         box.setContentsMargins(0, 0, 0, 0)
         lbl_version = QLabel(self.tr("Versión: %s") % ui.__version__)
-        label_descripcion = QLabel(self.tr("a simple cross-platform IDE for C"))
+        label_descripcion = QLabel(self.tr(
+            "a simple cross-platform IDE for C"))
         lbl_link = QLabel("Web: <a href='%s'><span style='color: #dedede;'>"
-                        "%s</span></a>" % (ui.__web__, ui.__web__))
+                          "%s</span></a>" % (ui.__web__, ui.__web__))
         lbl_sc = QLabel(self.tr("Código fuente: <a href='%s'><span style="
                         "'color: #dedede;'>%s</span></a>" %
-                        (ui.__codigo_fuente__, ui.__codigo_fuente__)))
+                                (ui.__codigo_fuente__, ui.__codigo_fuente__)))
         logo = QPixmap(paths.ICONOS['icon'])
         label_logo = QLabel()
         label_logo.setAlignment(Qt.AlignCenter)
@@ -89,14 +90,14 @@ class ReportarBugTab(QWidget):
         box = QVBoxLayout(self)
         box.setContentsMargins(0, 0, 0, 0)
         lbl_issues = QLabel(self.tr("Detalla el bug o sugerencia en:"))
-        lbl_link_issues = QLabel("<a href='%s'><span style='color: #dedede;'>%s"
-                                 "</span></a>" % (ui.__reportar_bug__,
-                                 ui.__reportar_bug__))
+        lbl_link_issues = QLabel("<a href='%s'><span style='color: #dedede;'>"
+                                 "%s</span></a>" % (ui.__reportar_bug__,
+                                                    ui.__reportar_bug__))
 
         lbl_email = QLabel(self.tr("O puedes mandar un e-mail a:"))
         lbl_link_email = QLabel("<a href='%s'><span style='color: #dedede;'>%s"
                                 "</span></a>" % (ui.__email_autor__,
-                                ui.__email_autor__))
+                                                 ui.__email_autor__))
         box.addWidget(lbl_issues)
         box.addWidget(lbl_link_issues)
         box.addWidget(lbl_email)

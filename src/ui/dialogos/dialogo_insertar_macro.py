@@ -42,7 +42,6 @@ class DialogoInsertarMacro(QDialog):
         cursor.movePosition(QTextCursor.Start)
         cursor.movePosition(QTextCursor.EndOfLine)
         macro = '\n#define {0} {1}'.format(itemDefine, itemValor)
-        if self.weditor.document().find(
-            macro[1:]).position() == -1:
+        if self.weditor.document().find(macro[1:]).position() == -1:
                 cursor.insertText(macro)
         self.close()
