@@ -120,7 +120,7 @@ class EditorContainer(QWidget):
         filtro = "Archivos C/C++(*.cpp *.c);;ASM(*.s);;HEADERS(*.h);;(*.*)"
         if not nombre:
             carpeta = os.path.expanduser("~")
-            editor_widget = self.widget_actual()
+            editor_widget = self.devolver_editor()
             if editor_widget and editor_widget.nombre:
                 carpeta = self.__ultima_carpeta_visitada(editor_widget.nombre)
             archivos = QFileDialog.getOpenFileNames(self, self.trUtf8(
