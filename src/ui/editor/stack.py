@@ -13,6 +13,7 @@ from PyQt4.QtGui import (
 from PyQt4.QtCore import (
     pyqtSignal
     )
+from src.ui.editor import editor
 
 
 class StackWidget(QStackedWidget):
@@ -29,9 +30,10 @@ class StackWidget(QStackedWidget):
         self.editores = []
         self._recientes = []
 
-    def agregar_widget(self, widget):
+    def agregar_widget(self, widget, start_page=False):
         stack = self.addWidget(widget)
-        self.editores.append(widget)
+        if not start_page:
+            self.editores.append(widget)
         self.cambiar_widget(stack)
 
     def editor_modificado(self, valor=True):
@@ -64,18 +66,20 @@ class StackWidget(QStackedWidget):
         archivos = list()
         editores = len(self.editores)
         for indice in range(editores):
-            editor = self.editores[indice]
-            if editor.texto_modificado:
-                archivos.append(editor.nombre)
+            weditor = self.editores[indice]
+            if weditor.texto_modificado:
+                archivos.append(weditor.nombre)
         return archivos
 
     def check_archivos_sin_guardar(self):
         valor = False
-        for indice in range(self.contar):
-            valor = valor or self.editor(indice).texto_modificado
+        for weditor in self.editores:
+            valor = valor or weditor.texto_modificado
         return valor
 
     def eliminar_widget(self, weditor, indice):
+        if not isinstance(weditor, editor.Editor):
+            return
         if indice != -1:
             self.cambiar_widget(indice)
 
@@ -96,6 +100,8 @@ class StackWidget(QStackedWidget):
                     self.guardar_editor_actual.emit()
             self._agregar_a_recientes(weditor.nombre)
             self.removeWidget(weditor)  # Se elimina del stack
+            if not isinstance(self.widget(0), editor.Editor):
+                indice -= 1
             del self.editores[indice]  # Se elimina de la lista
             self.archivo_cerrado.emit(indice)
             # Foco al widget actual
@@ -106,9 +112,9 @@ class StackWidget(QStackedWidget):
 
     def archivos_abiertos(self):
         archivos = []
-        for indice in range(self.contar):
-            path = self.editor(indice).nombre
-            posicion_cursor = self.editor(indice).getCursorPosition()
+        for weditor in self.editores:
+            path = weditor.nombre
+            posicion_cursor = weditor.getCursorPosition()
             archivos.append([path, posicion_cursor])
         return archivos
 

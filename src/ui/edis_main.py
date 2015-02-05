@@ -40,6 +40,7 @@ from src.ui.dialogos import (
     #dialogo_dependencias,
     acerca_de
     )
+from src.ui import start_page
 
 
 class EDIS(QMainWindow):
@@ -113,9 +114,6 @@ class EDIS(QMainWindow):
         self.setCentralWidget(window)
 
         EDIS.cargar_componente("edis", self)
-
-        if ESettings.get('general/inicio'):
-            self.mostrar_inicio()
 
         self.tb_simbolos.toggled.connect(self.toggled_simbolos)
         self.tb_navegador.toggled.connect(self.toggled_navegador)
@@ -217,7 +215,13 @@ class EDIS(QMainWindow):
 
     def cargar_central(self, window):
         principal = EDIS.componente("principal")
+        _start_page = None
+        if ESettings.get('general/inicio'):
+            _start_page = start_page.StartPage()
+            principal.stack.agregar_widget(_start_page, start_page=True)
         self.simbolos = EDIS.lateral("simbolos")
+        if _start_page is not None:
+            self.simbolos.hide()
         self.navegador = EDIS.lateral("navegador")
         self.navegador.hide()
         self.explorador = EDIS.lateral("explorador")
@@ -368,10 +372,6 @@ class EDIS(QMainWindow):
             ESettings.set('ventana/dimensiones', self.size())
             ESettings.set('ventana/posicion', self.pos())
         ESettings.set('general/archivos', principal.archivos_abiertos())
-
-    def mostrar_inicio(self):
-        dialogo = EDIS.componente("inicio")
-        dialogo.show()
 
     def detectar_dependencias(self):
         #FIXME: Mejorar
