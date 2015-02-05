@@ -95,13 +95,9 @@ QToolTip {
     opacity: 210;
 }
 
+QMenuBar,
 QStatusBar {
-    background: #383733;
-    border: 1px solid gray;
-}
-
-QMenuBar {
-    background-color: #383733;
+    background-color: #41403b;
 }
 
 QMenuBar::item {
