@@ -247,7 +247,6 @@ class EDIS(QMainWindow):
         self.simbolos.irALinea[int].connect(principal.ir_a_linea)
         #FIXME: cambiar nombre
         self.output.salida_.output.ir_a_linea[int].connect(principal.ir_a_linea)
-        principal.archivo_modificado[bool].connect(self.__titulo_modificado)
         principal.archivo_cambiado['QString'].connect(self.__titulo_ventana)
         principal.stack.todo_cerrado.connect(self.todo_cerrado)
         principal.stack.todo_cerrado.connect(principal.add_start_page)
@@ -308,15 +307,6 @@ class EDIS(QMainWindow):
 
         titulo = os.path.basename(titulo)
         self.setWindowTitle(titulo + ' - ' + ui.__nombre__)
-
-    def __titulo_modificado(self, valor):
-        """ Agrega (*) al título cuando el archivo es modificado """
-
-        titulo_actual = self.windowTitle()
-        if valor and not titulo_actual.startswith('*'):
-            self.setWindowTitle('*' + titulo_actual)
-        else:
-            self.setWindowTitle(titulo_actual.split('*')[-1])
 
     def reportar_bug(self):
         webbrowser.open_new(ui.__reportar_bug__)

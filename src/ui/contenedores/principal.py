@@ -91,7 +91,11 @@ class EditorContainer(QWidget):
         self.cambiar_widget(indice)
 
     def _archivo_modificado(self, valor):
+        #FIXME: mejorar
         self.archivo_modificado.emit(valor)
+        status_bar = EDIS.componente("barra_de_estado")
+        weditor = self.devolver_editor()
+        status_bar.path_archivo(weditor.nombre)
 
     def __archivo_guardado(self, weditor):
         self.actualizar_simbolos.emit(weditor.nombre)

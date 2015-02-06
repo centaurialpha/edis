@@ -39,7 +39,16 @@ class BarraDeEstado(QStatusBar):
         EDIS.cargar_componente("barra_de_estado", self)
 
     def path_archivo(self, path):
-        self.lbl_archivo.setText(path)
+        #FIXME: mejorar
+        if not path:
+            self.lbl_archivo.setText("")
+        principal = EDIS.componente("principal")
+        weditor = principal.devolver_editor()
+        if weditor is not None:
+            if weditor.texto_modificado:
+                self.lbl_archivo.setText(path + ' *')
+            else:
+                self.lbl_archivo.setText(path)
 
 
 class PosicionCursorWidget(QLabel):
