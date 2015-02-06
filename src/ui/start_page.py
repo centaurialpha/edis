@@ -21,6 +21,6 @@ class StartPage(QWidget):
         box.setContentsMargins(0, 0, 0, 0)
         view = QDeclarativeView()
         view.setMinimumSize(400, 400)
-        view.setSource(QUrl("src/ui/StartPage/StartPage.qml"))
+        view.setSource(QUrl("src/ui/StartPage.qml"))
         view.setResizeMode(QDeclarativeView.SizeRootObjectToView)
         box.addWidget(view)

@@ -27,7 +27,7 @@ Rectangle {
 
                 Image {
                     id: logo
-                    source: "icon.png"
+                    source: "../../src/images/icon.png"
                 }
 
                 Column {
