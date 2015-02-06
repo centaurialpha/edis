@@ -79,6 +79,7 @@ class StackWidget(QStackedWidget):
 
     def eliminar_widget(self, weditor, indice):
         if not isinstance(weditor, editor.Editor):
+            self.removeWidget(self.widget(0))
             return
         if indice != -1:
             self.cambiar_widget(indice)
@@ -91,17 +92,17 @@ class StackWidget(QStackedWidget):
             if weditor.texto_modificado:
                 respuesta = QMessageBox.question(self, self.trUtf8(
                     "Archivo no guardado"), self.trUtf8("El archivo <b>%s</b> "
-                                                        "no se ha guardado"
-                                                        "<br>¿Guardar?") %
+                                                        "no se ha guardado<br>"
+                                                        "¿Guardar?") %
                     weditor.nombre, SI | NO | CANCELAR)
                 if respuesta == CANCELAR:
                     return
                 elif respuesta == SI:
                     self.guardar_editor_actual.emit()
             self._agregar_a_recientes(weditor.nombre)
-            self.removeWidget(weditor)  # Se elimina del stack
             if not isinstance(self.widget(0), editor.Editor):
                 indice -= 1
+            self.removeWidget(weditor)  # Se elimina del stack
             del self.editores[indice]  # Se elimina de la lista
             self.archivo_cerrado.emit(indice)
             # Foco al widget actual
