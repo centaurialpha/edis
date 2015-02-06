@@ -7,25 +7,18 @@
 
 from PyQt4.QtGui import QListWidget
 
-from PyQt4.QtCore import (
-    SIGNAL,
-    pyqtSignal
-    )
-
 from src.ui.edis_main import EDIS
 from src.ui.contenedores.lateral import custom_dock
 
 
 class Navegador(custom_dock.CustomDock):
 
-    cambiar_editor = pyqtSignal(int)
-
     def __init__(self):
         custom_dock.CustomDock.__init__(self)
         self.navegador = QListWidget()
-        self.navegador.connect(self, SIGNAL("clicked(QModelIndex)"),
-                               self._cambiar_editor)
         self.setWidget(self.navegador)
+
+        self.navegador.itemClicked.connect(self._cambiar_editor)
 
         EDIS.cargar_lateral("navegador", self)
 
@@ -40,7 +33,8 @@ class Navegador(custom_dock.CustomDock):
 
     def _cambiar_editor(self):
         indice = self.navegador.row(self.navegador.currentItem())
-        self.cambiar_editor.emit(indice)
+        principal = EDIS.componente("principal")
+        principal.cambiar_widget(indice)
 
 
 navegador = Navegador()

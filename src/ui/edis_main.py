@@ -251,6 +251,8 @@ class EDIS(QMainWindow):
         principal.archivo_cambiado['QString'].connect(self.__titulo_ventana)
         principal.stack.todo_cerrado.connect(self.todo_cerrado)
         principal.stack.todo_cerrado.connect(principal.add_start_page)
+        principal.archivo_abierto['QString'].connect(self.navegador.agregar)
+        principal.archivo_cerrado[int].connect(self.navegador.eliminar)
 
         return principal
 
