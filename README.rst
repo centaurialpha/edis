@@ -57,3 +57,9 @@ Run Edis
      git clone https://github.com/centaurialpha/edis.git
      cd edis
      ./edis
+
+Contact
+-------
+
+* `Edis Web <http://centaurialpha.github.io/edis>`_
+* `Lista de e-mail <http://groups.google.com/group/edis-ide/topics>`_
