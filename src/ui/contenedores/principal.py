@@ -39,6 +39,7 @@ from src.ui.dialogos import (
     dialogo_proyecto,
     dialogo_reemplazo
     )
+from src.ui import start_page
 
 
 class EditorContainer(QWidget):
@@ -165,6 +166,13 @@ class EditorContainer(QWidget):
         """ Agrega @widget al stacked """
 
         self.stack.agregar_widget(widget)
+
+    def add_start_page(self):
+        """ Agrega la página de inicio al stack """
+
+        _start_page = start_page.StartPage()
+        self.stack.insertWidget(0, _start_page)
+        self.stack.setCurrentIndex(0)
 
     def eliminar_widget(self, widget):
         """ Elimina el @widget del stacked """

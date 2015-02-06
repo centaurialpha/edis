@@ -30,10 +30,12 @@ class StackWidget(QStackedWidget):
         self.editores = []
         self._recientes = []
 
-    def agregar_widget(self, widget, start_page=False):
+    def agregar_widget(self, widget):
+        if self.count() == 1 and not isinstance(self.widget(0), editor.Editor):
+            # Se elimina la página de inicio
+            self.removeWidget(self.widget(0))
         stack = self.addWidget(widget)
-        if not start_page:
-            self.editores.append(widget)
+        self.editores.append(widget)
         self.cambiar_widget(stack)
 
     def editor_modificado(self, valor=True):
@@ -79,7 +81,6 @@ class StackWidget(QStackedWidget):
 
     def eliminar_widget(self, weditor, indice):
         if not isinstance(weditor, editor.Editor):
-            self.removeWidget(self.widget(0))
             return
         if indice != -1:
             self.cambiar_widget(indice)
@@ -100,8 +101,6 @@ class StackWidget(QStackedWidget):
                 elif respuesta == SI:
                     self.guardar_editor_actual.emit()
             self._agregar_a_recientes(weditor.nombre)
-            if not isinstance(self.widget(0), editor.Editor):
-                indice -= 1
             self.removeWidget(weditor)  # Se elimina del stack
             del self.editores[indice]  # Se elimina de la lista
             self.archivo_cerrado.emit(indice)

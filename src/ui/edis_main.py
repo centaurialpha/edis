@@ -40,7 +40,6 @@ from src.ui.dialogos import (
     #dialogo_dependencias,
     acerca_de
     )
-from src.ui import start_page
 
 
 class EDIS(QMainWindow):
@@ -215,12 +214,12 @@ class EDIS(QMainWindow):
 
     def cargar_central(self, window):
         principal = EDIS.componente("principal")
-        _start_page = None
+        start_page = False
         if ESettings.get('general/inicio'):
-            _start_page = start_page.StartPage()
-            principal.stack.agregar_widget(_start_page, start_page=True)
+            principal.add_start_page()
+            start_page = True
         self.simbolos = EDIS.lateral("simbolos")
-        if _start_page is not None:
+        if start_page:
             self.simbolos.hide()
         self.navegador = EDIS.lateral("navegador")
         self.navegador.hide()
@@ -251,6 +250,7 @@ class EDIS(QMainWindow):
         principal.archivo_modificado[bool].connect(self.__titulo_modificado)
         principal.archivo_cambiado['QString'].connect(self.__titulo_ventana)
         principal.stack.todo_cerrado.connect(self.todo_cerrado)
+        principal.stack.todo_cerrado.connect(principal.add_start_page)
 
         return principal
 
