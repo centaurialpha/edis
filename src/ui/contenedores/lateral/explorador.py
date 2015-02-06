@@ -12,7 +12,6 @@ from PyQt4.QtGui import (
 
 from PyQt4.QtCore import (
     QModelIndex,
-    pyqtSignal,
     QDir
     )
 
@@ -21,8 +20,6 @@ from src.ui.contenedores.lateral import custom_dock
 
 
 class Explorador(custom_dock.CustomDock):
-
-    abriendoArchivo = pyqtSignal(['QString'])
 
     def __init__(self, parent=None):
         custom_dock.CustomDock.__init__(self)
@@ -54,7 +51,8 @@ class Explorador(custom_dock.CustomDock):
         if not self.modelo.isDir(i):
             indice = self.modelo.index(i.row(), 0, i.parent())
             archivo = self.modelo.filePath(indice)
-            self.abriendoArchivo.emit(archivo)
+            principal = EDIS.componente("principal")
+            principal.abrir_archivo(archivo)
 
 
 explorador = Explorador()
