@@ -332,9 +332,11 @@ class EDIS(QMainWindow):
     def cargar_archivos(self, archivos):
         """ Carga los archivos desde la última sesión """
 
-        principal = EDIS.componente("principal")
-        for archivo in archivos:
-            principal.abrir_archivo(archivo[0], archivo[1])
+        if archivos:
+            self.simbolos.show()
+            principal = EDIS.componente("principal")
+            for archivo in archivos:
+                principal.abrir_archivo(archivo[0], archivo[1])
 
     def acerca_de_qt(self):
         QMessageBox.aboutQt(self)

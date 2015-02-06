@@ -49,7 +49,7 @@ def correr_interfaz(app):
     app.setStyleSheet(estilo)
     # Cargar archivos de última sesión
     archivos = ESettings.get('general/archivos')
-    if archivos:
-        edis.cargar_archivos(archivos)
+    #if archivos:
+    edis.cargar_archivos(archivos)
     edis.show()
     sys.exit(app.exec_())
