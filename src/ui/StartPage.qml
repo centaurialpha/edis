@@ -41,11 +41,25 @@ Rectangle {
 
     Text {
         text: qsTr("Copyright © 2014-2015 Edis under GPLv3 License")
-        font.pointSize: 9
+        font.pointSize: 10
         color: "#dedede"
         anchors.bottom: parent.bottom
         anchors.right: parent.right
         anchors.bottomMargin: 5
-        anchors.rightMargin: 5
+        anchors.rightMargin: 10
+    }
+
+    Text {
+        id: link
+        text: qsTr("Edis use the <b>Clang</b> compiler: <a href='http://clang.llvm.org'><span style='color: #ffffff;'>http://clang.llvm.org</span></a>")
+        font.pointSize: 10
+        color: "#dedede"
+        anchors.bottom: parent.bottom
+        anchors.left: parent.left
+        anchors.bottomMargin: 5
+        anchors.leftMargin: 10
+
+        onLinkActivated: Qt.openUrlExternally(link)
+
     }
 }

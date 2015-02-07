@@ -112,7 +112,8 @@ class EditorContainer(QWidget):
         if not nombre:
             nombre = "Nuevo_archivo"
         weditor = editor.crear_editor(nombre)
-        weditor.nombre = nombre
+        #FIXME: Arreglar
+        #weditor.nombre = nombre
         self.agregar_widget(weditor)
         weditor.modificationChanged[bool].connect(self.stack.editor_modificado)
         weditor.cursorPositionChanged[int, int].connect(self.actualizar_cursor)
@@ -214,12 +215,14 @@ class EditorContainer(QWidget):
             selector_ = selector.Selector(self)
             selector_.show()
 
-    def guardar_archivo(self, weditor=None):
+    def guardar_archivo(self, weditor):
         #FIXME: Controlar con try-except
-        if not weditor:
-            weditor = self.devolver_editor()
-            if not weditor:
-                return False
+        weditor = self.devolver_editor()
+        print(weditor.es_nuevo)
+        #if not weditor:
+            #weditor = self.devolver_editor()
+            #if not weditor:
+                #return False
 
         if weditor.es_nuevo:
             return self.guardar_archivo_como(weditor)
