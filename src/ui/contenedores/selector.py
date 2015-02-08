@@ -22,7 +22,7 @@ from PyQt4.QtCore import (
 from PyQt4.QtDeclarative import QDeclarativeView
 
 from src import paths
-from src.ui.edis_main import EDIS
+from src.ui.main import EDIS
 
 
 class Selector(QDialog):

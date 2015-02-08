@@ -28,7 +28,7 @@ from PyQt4.QtCore import (
     QSettings
     )
 
-from src.ui.edis_main import EDIS
+from src.ui.main import EDIS
 from src import paths
 from src.helpers import configuracion
 from src import ui

@@ -17,7 +17,7 @@ from PyQt4.QtGui import (
 from PyQt4.QtCore import Qt
 
 from src.ui.contenedores.output import procesos
-from src.ui.edis_main import EDIS
+from src.ui.main import EDIS
 
 
 class ContenedorOutput(QDockWidget):

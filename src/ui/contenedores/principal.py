@@ -30,7 +30,7 @@ from src.ui.editor import (
     editor,
     stack
     )
-from src.ui.edis_main import EDIS
+from src.ui.main import EDIS
 from src.ui.widgets import popup_busqueda
 from src.ui.contenedores import selector
 from src.ui.dialogos import (

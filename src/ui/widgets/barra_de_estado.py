@@ -14,7 +14,7 @@ from PyQt4.QtGui import (
 
 from PyQt4.QtCore import QTimer
 
-from src.ui.edis_main import EDIS
+from src.ui.main import EDIS
 
 
 class BarraDeEstado(QStatusBar):

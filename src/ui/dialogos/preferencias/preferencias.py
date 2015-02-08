@@ -24,7 +24,7 @@ from PyQt4.QtCore import (
     QSize
     )
 
-from src.ui.edis_main import EDIS
+from src.ui.main import EDIS
 from src import paths
 from src.ui.dialogos.preferencias import (
     preferencias_general,

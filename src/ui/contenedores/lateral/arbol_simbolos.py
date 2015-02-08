@@ -17,7 +17,7 @@ from PyQt4.QtCore import pyqtSignal
 
 from src.ectags import ectags
 from src import paths
-from src.ui.edis_main import EDIS
+from src.ui.main import EDIS
 from src.ui.contenedores.lateral import custom_dock
 
 

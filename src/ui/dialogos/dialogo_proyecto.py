@@ -24,7 +24,7 @@ from PyQt4.QtCore import (
     QThread
     )
 
-from src.ui.edis_main import EDIS
+from src.ui.main import EDIS
 
 #TODO: Esto todavía está incompleto
 

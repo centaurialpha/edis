@@ -30,7 +30,7 @@ from PyQt4.QtCore import Qt
 #from src import recursos
 from src.helpers.configuracion import ESettings
 from src.helpers import configuracion
-from src.ui.edis_main import EDIS
+from src.ui.main import EDIS
 
 
 class TabEditor(QWidget):

@@ -19,7 +19,6 @@ from src import paths
 from src.helpers.configuracion import ESettings
 
 #lint:disable
-import src.ui.central
 from src.ui.widgets import barra_de_estado
 import src.ui.contenedores.principal
 import src.ui.contenedores.output.contenedor_secundario
@@ -28,7 +27,7 @@ import src.ui.contenedores.lateral.explorador
 import src.ui.contenedores.lateral.arbol_simbolos
 import src.ui.menu.menu
 #lint:enable
-from src.ui.edis_main import EDIS
+from src.ui.main import EDIS
 
 
 def correr_interfaz(app):

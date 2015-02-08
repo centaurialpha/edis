@@ -16,7 +16,7 @@ from PyQt4.QtGui import (
     QPushButton
     )
 
-from src.ui.edis_main import EDIS
+from src.ui.main import EDIS
 
 
 class DialogoReemplazo(QDialog):

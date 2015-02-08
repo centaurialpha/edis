@@ -9,9 +9,7 @@
 from PyQt4.QtCore import QObject
 
 from src.ui.menu import acciones
-from src.ui.edis_main import EDIS
-
-#FIXME: Se podría mejorar
+from src.ui.main import EDIS
 
 
 class Menu(QObject):
