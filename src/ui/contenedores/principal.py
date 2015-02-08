@@ -44,6 +44,7 @@ from src.ui import start_page
 
 class EditorContainer(QWidget):
 
+    # Señales
     archivo_cambiado = pyqtSignal(['QString'])
     archivo_abierto = pyqtSignal(['QString'])
     posicion_cursor = pyqtSignal(int, int, int)
@@ -108,13 +109,13 @@ class EditorContainer(QWidget):
             self.archivo_cambiado.emit(weditor.nombre)
             self.cambiar_item.emit(indice)
 
-    def agregar_editor(self, nombre=""):
-        if not nombre:
-            nombre = "Nuevo_archivo"
-        weditor = editor.crear_editor(nombre)
-        #FIXME: Arreglar
-        #weditor.nombre = nombre
+    def agregar_editor(self, filename=""):
+        if not filename:
+            filename = "Nuevo_archivo"
+        weditor = editor.crear_editor(filename)
         self.agregar_widget(weditor)
+        self.archivo_cambiado.emit(filename)
+        # Señales del Editor
         weditor.modificationChanged[bool].connect(self.stack.editor_modificado)
         weditor.cursorPositionChanged[int, int].connect(self.actualizar_cursor)
         weditor.archivo_guardado.connect(self.__archivo_guardado)
@@ -141,6 +142,7 @@ class EditorContainer(QWidget):
                     manejador_de_archivo.leer_contenido_de_archivo(archivo)
                 nuevo_editor = self.agregar_editor(archivo)
                 nuevo_editor.texto = contenido
+                nuevo_editor.nombre = archivo
                 if posicion_cursor is not None:
                     linea, columna = posicion_cursor
                     nuevo_editor.setCursorPosition(linea, columna)
