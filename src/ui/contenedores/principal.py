@@ -87,6 +87,15 @@ class EditorContainer(QWidget):
     def _abrir_reciente(self, accion):
         self.abrir_archivo(accion.text())
 
+    def get_recents_files(self):
+        edis = EDIS.componente('edis')
+        recent_menu = edis.accion('Abrir reciente')
+        actions = recent_menu.actions()
+        recents_files = []
+        for filename in actions:
+            recents_files.append(filename.text())
+        return recents_files
+
     def _archivo_cerrado(self, indice):
         self.archivo_cerrado.emit(indice)
         self.cambiar_widget(indice)

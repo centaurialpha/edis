@@ -60,6 +60,7 @@ configuracion = {
     'editor/fuenteTam': 10,
     'general/inicio': True,
     'general/archivos': [],
+    'general/recientes': [],
     'terminal': ''
     }
 
@@ -108,6 +109,8 @@ class ESettings(object):
             'editor/fuenteTam', 11, type=int)
         configuracion['general/archivos'] = qconfig.value(
             'general/archivos', [])
+        configuracion['general/recientes'] = qconfig.value(
+            'general/recientes', [])
 
     @staticmethod
     def get(valor):

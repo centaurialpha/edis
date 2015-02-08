@@ -21,7 +21,7 @@ from PyQt4.QtGui import (
 
 # Módulos QtCore
 from PyQt4.QtCore import (
-    #SIGNAL,
+    SIGNAL,
     Qt,
     QSize,
     )
@@ -329,14 +329,23 @@ class EDIS(QMainWindow):
         else:
             self.showFullScreen()
 
-    def cargar_archivos(self, archivos):
-        """ Carga los archivos desde la última sesión """
+    def cargar_archivos(self, archivos, recents_files):
+        """ Carga archivos al editor desde la última sesión y actualiza el menú
+        de archivos recientes.
+        """
 
         if archivos:
             self.simbolos.show()
             principal = EDIS.componente("principal")
             for archivo in archivos:
                 principal.abrir_archivo(archivo[0], archivo[1])
+        #FIXME: Se está haciendo lo mismo en EditorContainer
+        menu_recents_files = EDIS.accion("Abrir reciente")
+        principal = EDIS.componente("principal")
+        self.connect(menu_recents_files, SIGNAL("triggered(QAction*)"),
+                     principal._abrir_reciente)
+        for recent_file in recents_files:
+            menu_recents_files.addAction(recent_file)
 
     def acerca_de_qt(self):
         QMessageBox.aboutQt(self)
@@ -366,6 +375,7 @@ class EDIS(QMainWindow):
             ESettings.set('ventana/dimensiones', self.size())
             ESettings.set('ventana/posicion', self.pos())
         ESettings.set('general/archivos', principal.archivos_abiertos())
+        ESettings.set('general/recientes', principal.get_recents_files())
 
     def detectar_dependencias(self):
         #FIXME: Mejorar
