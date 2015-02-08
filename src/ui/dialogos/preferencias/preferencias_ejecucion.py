@@ -8,16 +8,18 @@
 from PyQt4.QtGui import (
     QWidget,
     QVBoxLayout,
-    QRadioButton,
+    #QRadioButton,
     QSpacerItem,
     QSizePolicy
     )
 
 from src.helpers import (
     configuracion,
-    comprobar_terminales
+    #comprobar_terminales
     )
 from src.helpers.configuracion import ESettings
+
+#FIXME:
 
 
 class ConfiguracionEjecucion(QWidget):
@@ -26,26 +28,27 @@ class ConfiguracionEjecucion(QWidget):
         super(ConfiguracionEjecucion, self).__init__()
         box = QVBoxLayout(self)
         layout_radio = QVBoxLayout()
-        self.buscar_terminal()
+        #self.buscar_terminal()
 
-        for i in self.radio_terminales:
-            layout_radio.addWidget(i)
-            if i.text() == configuracion.ESettings.get('terminal'):
-                i.setChecked(True)
+        #for i in self.radio_terminales:
+            #layout_radio.addWidget(i)
+            #if i.text() == configuracion.ESettings.get('terminal'):
+                #i.setChecked(True)
 
-        box.addLayout(layout_radio)
-        box.addItem(QSpacerItem(0, 10, QSizePolicy.Expanding,
-                    QSizePolicy.Expanding))
+        #box.addLayout(layout_radio)
+        #box.addItem(QSpacerItem(0, 10, QSizePolicy.Expanding,
+                    #QSizePolicy.Expanding))
 
     def buscar_terminal(self):
         self.radio_terminales = []
-        terminales = comprobar_terminales.comprobar()
-        [self.radio_terminales.append(QRadioButton(terminal))
-            for terminal in terminales]
+        #terminales = comprobar_terminales.comprobar()
+        #[self.radio_terminales.append(QRadioButton(terminal))
+            #for terminal in terminales]
 
     def guardar(self):
-        terminal = ""
-        for i in self.radio_terminales:
-            if i.isChecked():
-                terminal = i.text()
-        ESettings.set('terminal', terminal)
+        pass
+        #terminal = ""
+        #for i in self.radio_terminales:
+            #if i.isChecked():
+                #terminal = i.text()
+        #ESettings.set('terminal', terminal)
