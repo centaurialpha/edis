@@ -15,7 +15,8 @@ from PyQt4.QtGui import (
     QFileDialog,
     QPrintPreviewDialog,
     QTextDocument,
-    QInputDialog
+    QInputDialog,
+    QMessageBox
     )
 
 from PyQt4.QtCore import (
@@ -25,6 +26,7 @@ from PyQt4.QtCore import (
     )
 
 from src.helpers import manejador_de_archivo
+from src.helpers.exceptions import EdisIOException
 from src.helpers.configuracion import ESettings
 from src.ui.editor import (
     editor,
@@ -40,6 +42,10 @@ from src.ui.dialogos import (
     dialogo_reemplazo
     )
 from src.ui import start_page
+from src.helpers import logger
+
+log = logger.edis_logger.get_logger(__name__)
+ERROR = log.error
 
 
 class EditorContainer(QWidget):
@@ -134,7 +140,7 @@ class EditorContainer(QWidget):
 
     def abrir_archivo(self, nombre="", posicion_cursor=None):
         filtro = "Archivos C/C++(*.cpp *.c);;ASM(*.s);;HEADERS(*.h);;(*.*)"
-        print(self.stack.no_esta_abierto)
+        nombre = '/home/gabo/cualll.c'
         if not nombre:
             carpeta = os.path.expanduser("~")
             editor_widget = self.devolver_editor()
@@ -145,20 +151,23 @@ class EditorContainer(QWidget):
                                                     carpeta, filtro)
         else:
             archivos = [nombre]
-        for archivo in archivos:
-            if not self.__archivo_abierto(archivo):
-                self.stack.no_esta_abierto = False
-                contenido = \
-                    manejador_de_archivo.leer_contenido_de_archivo(archivo)
-                nuevo_editor = self.agregar_editor(archivo)
-                nuevo_editor.texto = contenido
-                nuevo_editor.nombre = archivo
-                if posicion_cursor is not None:
-                    linea, columna = posicion_cursor
-                    nuevo_editor.setCursorPosition(linea, columna)
-                self.archivo_cambiado.emit(archivo)
-                self.archivo_abierto.emit(archivo)
-
+        try:
+            for archivo in archivos:
+                if not self.__archivo_abierto(archivo):
+                    self.stack.no_esta_abierto = False
+                    contenido = manejador_de_archivo.get_file_content(archivo)
+                    nuevo_editor = self.agregar_editor(archivo)
+                    nuevo_editor.texto = contenido
+                    nuevo_editor.nombre = archivo
+                    if posicion_cursor is not None:
+                        linea, columna = posicion_cursor
+                        nuevo_editor.setCursorPosition(linea, columna)
+                    self.archivo_cambiado.emit(archivo)
+                    self.archivo_abierto.emit(archivo)
+        except EdisIOException as error:
+            ERROR('Error opening file: %s', error)
+            QMessageBox.critical(self, self.tr('Error al abrir el archivo'),
+                                    str(error))
         self.stack.no_esta_abierto = True
 
     def __ultima_carpeta_visitada(self, path):

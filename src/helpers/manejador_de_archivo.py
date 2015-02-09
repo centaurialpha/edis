@@ -13,24 +13,20 @@ from PyQt4.QtGui import QMessageBox
 
 from PyQt4.QtCore import (
     QFile,
-    QTextStream,
-    QIODevice
+    QTextStream
     )
+from src.helpers.exceptions import EdisIOException
 
 
-def leer_contenido_de_archivo(archivo):
-    """ Intenta abrir y leer el contenido del archivo, lo retorna en caso de
-    éxito, de lo contrario se retora un string vacío  """
+def get_file_content(archivo):
+    """ Lee el contenido de @archivo y lo retorna """
 
     try:
-        filename = QFile(archivo)
-        if not filename.open(QIODevice.ReadOnly | QIODevice.Text):
-            return False
-        stream = QTextStream(filename)
-        data = str(stream.readAll())
-        return data
-    except IOError:
-        raise
+        with open(archivo, mode='r') as filename:
+            content = filename.read()
+    except IOError as error:
+        raise EdisIOException(error)
+    return content
 
 
 def devolver_tam_archivo(archivo):
