@@ -140,7 +140,6 @@ class EditorContainer(QWidget):
 
     def abrir_archivo(self, nombre="", posicion_cursor=None):
         filtro = "Archivos C/C++(*.cpp *.c);;ASM(*.s);;HEADERS(*.h);;(*.*)"
-        nombre = '/home/gabo/cualll.c'
         if not nombre:
             carpeta = os.path.expanduser("~")
             editor_widget = self.devolver_editor()
