@@ -378,7 +378,6 @@ class Editor(Base):
         self.insertAt(complementario, linea, indice + 1)
 
     def guardado(self):
-        self.checker.run_cppcheck(self.nombre)
         self._guardado.emit(self)
         self.es_nuevo = False
         self.texto_modificado = False

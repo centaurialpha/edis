@@ -295,7 +295,7 @@ class EDIS(QMainWindow):
             linea, columna, lineas)
 
     def __actualizar_estado(self, archivo):
-        self.barra_de_estado.path_archivo(archivo)
+        self.barra_de_estado.update_status(archivo)
 
     def todo_cerrado(self):
         self.setWindowTitle(ui.__nombre__)

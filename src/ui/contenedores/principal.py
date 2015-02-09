@@ -109,9 +109,6 @@ class EditorContainer(QWidget):
     def _archivo_modificado(self, valor):
         #FIXME: mejorar
         self.archivo_modificado.emit(valor)
-        status_bar = EDIS.componente("barra_de_estado")
-        weditor = self.devolver_editor()
-        status_bar.path_archivo(weditor.nombre)
 
     def __archivo_guardado(self, weditor):
         self.actualizar_simbolos.emit(weditor.nombre)
@@ -129,7 +126,6 @@ class EditorContainer(QWidget):
             filename = "Nuevo_archivo"
         weditor = editor.crear_editor(filename)
         self.agregar_widget(weditor)
-        self.archivo_cambiado.emit(filename)
         # Señales del Editor
         weditor.modificationChanged[bool].connect(self.stack.editor_modificado)
         weditor.cursorPositionChanged[int, int].connect(self.actualizar_cursor)
@@ -235,15 +231,9 @@ class EditorContainer(QWidget):
             selector_ = selector.Selector(self)
             selector_.show()
 
-    def guardar_archivo(self, weditor):
+    def guardar_archivo(self):
         #FIXME: Controlar con try-except
         weditor = self.devolver_editor()
-        print(weditor.es_nuevo)
-        #if not weditor:
-            #weditor = self.devolver_editor()
-            #if not weditor:
-                #return False
-
         if weditor.es_nuevo:
             return self.guardar_archivo_como(weditor)
         nombre_archivo = weditor.nombre
