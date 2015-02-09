@@ -355,7 +355,7 @@ class EditorContainer(QWidget):
         output = EDIS.componente("output")
         weditor = self.devolver_editor()
         if weditor is not None:
-            self.guardar_archivo(weditor)
+            self.guardar_archivo()
             output.compilar(weditor.nombre)
 
     def ejecutar_programa(self):
