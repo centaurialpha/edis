@@ -63,7 +63,8 @@ class ArbolDeSimbolos(custom_dock.CustomDock):
 
     def _actualizar_simbolos(self, simbolos):
         if simbolos is None:
-            QTreeWidgetItem(self.tree, [self.tr('ctags no está instalado.')])
+            no_ctags = Item(self.tree, [self.tr('Ctags no está instalado.')])
+            no_ctags.clickeable = False
             return
 
         # Limpiar

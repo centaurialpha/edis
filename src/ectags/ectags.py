@@ -16,9 +16,12 @@ if sys.platform == 'win32':
         )
 from src import paths
 from src.helpers import (
-    #logger,
+    logger,
     configuracion
     )
+
+log = logger.edis_logger.get_logger(__name__)
+WARNING = log.warning
 
 
 class Ctags(object):
@@ -42,9 +45,8 @@ class Ctags(object):
         else:
             try:
                 proceso = Popen(comando + parametros, stdout=PIPE)
-            except Exception as e:
-                #FIXME: logger
-                print(e.args)
+            except Exception:
+                WARNING('Ctags no está instalado!')
                 proceso = None
         if proceso is not None:
             salida = proceso.communicate()[0]
