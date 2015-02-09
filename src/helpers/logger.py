@@ -8,7 +8,9 @@
 import logging
 from src import paths
 
-FORMATO_LOG = "%(asctime)s %(name)10s %(levelname)10s %(message)10s"
+# Fecha Hora   Módulo:Función:Línea   Nivel Mensaje
+FORMATO_LOG = "%(asctime)s %(name)10s:%(funcName)s:%(lineno)s " \
+              "%(levelname)10s %(message)10s"
 FORMATO_TIEMPO = "%y-%m-%d %H:%M:%S"
 ARCHIVO_LOG = paths.LOG
 
