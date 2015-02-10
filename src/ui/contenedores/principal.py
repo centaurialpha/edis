@@ -362,7 +362,7 @@ class EditorContainer(QWidget):
         """ Ejecuta el programa objeto """
 
         edis = EDIS.componente("edis")
-        output = edis.contenedor_output
+        output = edis.output
         output.ejecutar()
 
     def compilar_ejecutar(self):

@@ -144,6 +144,7 @@ class EjecutarWidget(QWidget):
     def correr_programa(self, archivo):
         """ Ejecuta el binario generado por el compilador """
 
+        #FIXME: Agregar terminal por defecto
         direc = os.path.dirname(archivo)
         self.proceso_ejecucion.setWorkingDirectory(direc)
 
