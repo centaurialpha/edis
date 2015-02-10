@@ -17,7 +17,7 @@ from PyQt4.QtGui import (
     QVBoxLayout,
     QWidget,
     QColor,
-    QMessageBox,
+    #QMessageBox,
     QItemSelectionModel
     )
 
@@ -149,12 +149,6 @@ class EjecutarWidget(QWidget):
         self.proceso_ejecucion.setWorkingDirectory(direc)
 
         if configuracion.LINUX:
-            terminal = configuracion.ESettings.get('terminal')
-            if not terminal:
-                QMessageBox.warning(self, self.tr("Advertencia"),
-                                    self.tr("No se ha configurado una terminal"
-                                    " para ejecutar el binario."))
-                return
             proceso = 'xterm -T "%s" -e /usr/bin/cb_console_runner "%s"' \
                       % (self.ejecutable, os.path.join(direc, self.ejecutable))
             # Run !
