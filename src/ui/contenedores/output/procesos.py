@@ -32,6 +32,10 @@ from PyQt4.QtCore import (
 # Módulos EDIS
 from src.helpers import configuracion
 from src.ui.contenedores.output import salida
+from src import paths
+
+PATH_GCC = os.path.join(paths.PATH, "gcc", "bin", "gcc.exe")
+GCC = 'gcc' if sys.platform.startswith('linux') else PATH_GCC
 
 
 class EjecutarWidget(QWidget):
@@ -100,9 +104,9 @@ class EjecutarWidget(QWidget):
                            (directorio.split('/')[-1], nombre_archivo)))
         self.output.addItem(item)
 
-        clang = 'clang'
-        parametros_clang = ['-Wall', '-o']
-        self.proceso_compilacion.start(clang, parametros_clang +
+        gcc = GCC
+        parametros_gcc = ['-Wall', '-o']
+        self.proceso_compilacion.start(gcc, parametros_gcc +
                                        [self.ejecutable] + [nombre_archivo])
         self.proceso_compilacion.waitForFinished()
 
