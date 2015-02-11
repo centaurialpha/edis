@@ -271,9 +271,10 @@ class EditorContainer(QWidget):
         return self.stack.check_archivos_sin_guardar()
 
     def busqueda(self):
-        #FIXME:
-        dialogo = popup_busqueda.PopupBusqueda(self.devolver_editor())
-        dialogo.show()
+        weditor = self.devolver_editor()
+        if weditor is not None:
+            dialogo = popup_busqueda.PopupBusqueda(self.devolver_editor())
+            dialogo.show()
 
     def reemplazar(self):
         dialogo = dialogo_reemplazo.DialogoReemplazo(self)
