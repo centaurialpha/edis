@@ -375,7 +375,7 @@ class EditorContainer(QWidget):
 
     def limpiar_construccion(self):
         edis = EDIS.componente("edis")
-        output = edis.contenedor_output
+        output = edis.output
         output.limpiar()
 
     def terminar_programa(self):
