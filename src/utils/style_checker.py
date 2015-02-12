@@ -20,9 +20,13 @@ MAX_LINE_LENGTH = 79
 REGEX_COMMENT_LINE = re.compile("^\s*\/\*.*\*\/\s*$")
 REGEX_OPERATOR_SPACE = re.compile("(\w\s?(\+|\-|\*|\<|\>|\=)\w)" +
                                   "|(\w(\=\=|\<\=|\>\=)\w)")
+REGEX_COMMA_SPACE = re.compile(",[^ ]")
+REGEX_PAREN_CURLY_SPACE = re.compile("\)\{")
+
 # Mensajes
 M_MAX_LINE_LENGTH = "%s:La línea supera los %s caracteres."
 M_OPERATOR_SPACE = "%s:Poner espacio alrededor de operadores."
+M_COMMA_SPACE = "%s:No hay espacio después de la coma."
 
 
 class EChecker(object):
@@ -55,11 +59,25 @@ class EChecker(object):
             if not REGEX_COMMENT_LINE.search(line):
                 self._results.append(M_OPERATOR_SPACE % self._line_number)
 
+    def _check_comma_space(self, line):
+        """
+        /* MAL */
+        int foo,bar;
+
+        /* BIEN */
+        int foo, bar;
+
+        """
+
+        if REGEX_COMMA_SPACE.search(line):
+            self._results.append(M_COMMA_SPACE % self._line_number)
+
     def run_all_checks(self):
         for line in self._source:
             # Checkers
             self._check_max_line_length(line)
             self._check_operator_space(line)
+            self._check_comma_space(line)
             self._line_number += 1
         return self._results
 
