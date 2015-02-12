@@ -114,9 +114,10 @@ class Editor(Base):
         self.connect(self.hilo_ocurrencias,
                      SIGNAL("ocurrenciasThread(PyQt_PyObject)"),
                      self.marcar_palabras)
-        # Analizador de errores
+        # Analizador de estilo de código
         self.checker = checker.Checker(self)
-        self.checker.errores.connect(self._marcar_errores)
+        self.connect(self.checker, SIGNAL("finished()"), self._show_violations)
+        #self.checker.errores.connect(self._marcar_errores)
         # Fuente
         fuente = ESettings.get('editor/fuente')
         tam_fuente = ESettings.get('editor/fuenteTam')
@@ -164,6 +165,7 @@ class Editor(Base):
         self.__nombre = nuevo_nombre
         if nuevo_nombre:
             self.es_nuevo = False
+        self.checker.start_checker()
 
     def actualizar(self):
         """ Actualiza las opciones del editor """
@@ -215,19 +217,13 @@ class Editor(Base):
         for p in palabras:
             self.fillIndicatorRange(p[0], p[1], p[0], p[2], self.indicador)
 
-    def _marcar_errores(self, errores):
-        self.borrarIndicadores(self.indicador_error)
+    def _show_violations(self):
+        data = self.checker.data
         self.borrarIndicadores(self.indicador_warning)
-        for error in list(errores.items()):
-            linea = error[0]
-            if error[1][0] == 'error':
-                self.fillIndicatorRange(linea, 0, linea,
-                                        self.lineLength(linea),
-                                        self.indicador_error)
-            if error[1][0] == 'style':
-                self.fillIndicatorRange(linea, 0, linea,
-                                        self.lineLength(linea),
-                                        self.indicador_warning)
+        for line, message in list(data.items()):
+            line = int(line) - 1
+            self.fillIndicatorRange(line, 0, line, self.lineLength(line),
+                                    self.indicador_warning)
 
     def buscar(self, palabra, re=False, cs=False, wo=False, wrap=False,
                forward=True, linea=-1, indice=-1):
@@ -288,12 +284,7 @@ class Editor(Base):
         self.minimapa.redimensionar()
 
     def mouseMoveEvent(self, e):
-        posicion = e.pos()
-        linea = self.lineAt(posicion)
-        mensaje = self.checker.tooltip(linea)
-        if mensaje:
-            QToolTip.showText(self.mapToGlobal(posicion), mensaje, self)
-        super(Editor, self).mouseMoveEvent(e)
+        pass
 
     def comentar(self):
         if self.hasSelectedText():
