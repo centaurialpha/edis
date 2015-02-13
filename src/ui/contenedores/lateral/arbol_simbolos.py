@@ -15,7 +15,6 @@ from PyQt4.QtGui import (
 
 from PyQt4.QtCore import pyqtSignal
 
-from src.ectags import ectags
 from src import paths
 from src.ui.main import EDIS
 from src.ui.contenedores.lateral import custom_dock
@@ -54,63 +53,61 @@ class ArbolDeSimbolos(custom_dock.CustomDock):
 
         EDIS.cargar_lateral("simbolos", self)
 
-    def actualizar_simbolos(self, archivo):
-        #FIXME: mover esto
-        self.ctags = ectags.Ctags()
-        tag = self.ctags.run_ctags(archivo)
-        simbolos = self.ctags.parser(tag)
-        self._actualizar_simbolos(simbolos)
-
-    def _actualizar_simbolos(self, simbolos):
+    def actualizar_simbolos(self, simbolos):
         #FIXME:
         # Limpiar
         self.tree.clear()
-        if simbolos is None:
-            no_ctags = Item(self.tree, [self.tr('Ctags no está instalado.')])
-            no_ctags.clickeable = False
-            return
 
-        if 'variable' in simbolos:
-            variables = Item(self.tree, [self.tr('Variables')])
-            variables.clickeable = False
-            for v in simbolos['variable']:
-                variable = Item(variables, [v.get('nombre')])
-                linea = v['linea']
-                variable.linea = linea
-                variable.setIcon(0, QIcon(self.iconos['global']))
-            variables.setExpanded(True)
+        #if 'variable' in simbolos:
+            #variables = Item(self.tree, [self.tr('Variables')])
+            #variables.clickeable = False
+            #for v in simbolos['variable']:
+                #variable = Item(variables, [v.get('nombre')])
+                #linea = v['linea']
+                #variable.linea = linea
+                #variable.setIcon(0, QIcon(self.iconos['global']))
+            #variables.setExpanded(True)
 
-        if 'function' in simbolos:
-            funciones = Item(self.tree, [self.tr('Funciones')])
-            funciones.clickeable = False
-            for f in simbolos['function']:
-                funcion = Item(funciones, [f.get('nombre')])
-                linea = f['linea']
-                funcion.linea = linea
-                funcion.setIcon(0, QIcon(self.iconos['funcion']))
-            funciones.setExpanded(True)
+        if 'functions' in simbolos:
+            functions = Item(self.tree, [self.tr('Funciones')])
+            functions.clickeable = False
+            for line, func in list(simbolos['functions'].items()):
+                function = Item(functions, [func])
+                function.linea = line
+                function.setIcon(0, QIcon(self.iconos['funcion']))
+            functions.setExpanded(True)
 
-        if 'struct' in simbolos:
-            structs = Item(self.tree, [self.tr('Estructuras')])
-            structs.clickeable = False
-            for s in simbolos['struct']:
-                struct = Item(structs, [s.get('nombre')])
-                linea = s['linea']
-                struct.linea = linea
-                struct.setIcon(0, QIcon(self.iconos['struct']))
-            structs.setExpanded(True)
+        #if 'function' in simbolos:
+            #funciones = Item(self.tree, [self.tr('Funciones')])
+            #funciones.clickeable = False
+            #for f in simbolos['function']:
+                #funcion = Item(funciones, [f.get('nombre')])
+                #linea = f['linea']
+                #funcion.linea = linea
+                #funcion.setIcon(0, QIcon(self.iconos['funcion']))
+            #funciones.setExpanded(True)
 
-        if 'member' in simbolos:
-            miembros = Item(self.tree, [self.tr('Miembros')])
-            miembros.clickeable = False
-            for m in simbolos['member']:
-                nombre = m['nombre'] + ' [' + m['padre'] + ']'
-                miembro = Item(miembros, [nombre])
-                miembro.setIcon(0, QIcon(self.iconos['miembro']))
-                linea = m['linea']
-                miembro.linea = linea
+        #if 'struct' in simbolos:
+            #structs = Item(self.tree, [self.tr('Estructuras')])
+            #structs.clickeable = False
+            #for s in simbolos['struct']:
+                #struct = Item(structs, [s.get('nombre')])
+                #linea = s['linea']
+                #struct.linea = linea
+                #struct.setIcon(0, QIcon(self.iconos['struct']))
+            #structs.setExpanded(True)
 
-            miembros.setExpanded(True)
+        #if 'member' in simbolos:
+            #miembros = Item(self.tree, [self.tr('Miembros')])
+            #miembros.clickeable = False
+            #for m in simbolos['member']:
+                #nombre = m['nombre'] + ' [' + m['padre'] + ']'
+                #miembro = Item(miembros, [nombre])
+                #miembro.setIcon(0, QIcon(self.iconos['miembro']))
+                #linea = m['linea']
+                #miembro.linea = linea
+
+            #miembros.setExpanded(True)
 
     def ir_a_linea(self, item):
         if item.clickeable:

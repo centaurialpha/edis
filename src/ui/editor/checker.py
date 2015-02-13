@@ -7,7 +7,7 @@
 
 from PyQt4.QtCore import QThread
 
-from src.utils import style_checker
+from src.tools import style_checker
 
 
 class Checker(QThread):

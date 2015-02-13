@@ -43,6 +43,7 @@ from src.ui.dialogos import (
     )
 from src.ui import start_page
 from src.helpers import logger
+from src.tools import code_analizer
 
 log = logger.edis_logger.get_logger(__name__)
 ERROR = log.error
@@ -55,7 +56,7 @@ class EditorContainer(QWidget):
     archivo_abierto = pyqtSignal(['QString'])
     posicion_cursor = pyqtSignal(int, int, int)
     archivo_modificado = pyqtSignal(bool)
-    actualizar_simbolos = pyqtSignal(['QString'], name="actualizarSimbolos")
+    #actualizar_simbolos = pyqtSignal(['QString'], name="actualizarSimbolos")
     archivo_cerrado = pyqtSignal(int)
     cambiar_item = pyqtSignal(int)
 
@@ -81,6 +82,18 @@ class EditorContainer(QWidget):
                      self._archivo_cerrado)
         self.connect(self.stack, SIGNAL("archivo_reciente(QStringList)"),
                      self.actualizar_recientes)
+        self.connect(self, SIGNAL("archivo_cambiado(QString)"),
+                     self.update_symbols)
+
+    def update_symbols(self, s):
+        """ Se obtienen los símbolos en un diccionario """
+
+        weditor = self.devolver_editor()
+        source_code = weditor.texto
+        source_sanitize = code_analizer.sanitize_source_code(source_code)
+        symbols = code_analizer.parse_symbols(source_sanitize)
+        symbols_widget = EDIS.lateral("simbolos")
+        symbols_widget.actualizar_simbolos(symbols)
 
     def actualizar_recientes(self, recientes):
         edis = EDIS.componente('edis')
