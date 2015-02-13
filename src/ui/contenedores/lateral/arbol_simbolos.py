@@ -62,13 +62,13 @@ class ArbolDeSimbolos(custom_dock.CustomDock):
         self._actualizar_simbolos(simbolos)
 
     def _actualizar_simbolos(self, simbolos):
+        #FIXME:
+        # Limpiar
+        self.tree.clear()
         if simbolos is None:
             no_ctags = Item(self.tree, [self.tr('Ctags no está instalado.')])
             no_ctags.clickeable = False
             return
-
-        # Limpiar
-        self.tree.clear()
 
         if 'variable' in simbolos:
             variables = Item(self.tree, [self.tr('Variables')])
