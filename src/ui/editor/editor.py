@@ -271,6 +271,14 @@ class Editor(Base):
             self.hilo_ocurrencias.buscar(
                 self._texto_bajo_el_cursor(), self.texto)
 
+    def mouseMoveEvent(self, event):
+        super(Editor, self).mouseMoveEvent(event)
+        position = event.pos()
+        line = str(self.lineAt(position) + 1)
+        message = self.checker.data.get(line, None)
+        if message is not None:
+            QToolTip.showText(self.mapToGlobal(position), message)
+
     def keyPressEvent(self, e):
         super(Editor, self).keyPressEvent(e)
         if e.key() == Qt.Key_Escape:
@@ -282,9 +290,6 @@ class Editor(Base):
     def resizeEvent(self, e):
         super(Editor, self).resizeEvent(e)
         self.minimapa.redimensionar()
-
-    def mouseMoveEvent(self, e):
-        pass
 
     def comentar(self):
         if self.hasSelectedText():
