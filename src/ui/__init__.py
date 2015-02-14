@@ -19,7 +19,7 @@ __version__ = "1.0-beta"
 __python__ = "https://www.python.org/"
 __qt__ = "https://qt.digia.com/"
 __pyqt__ = "http://www.riverbankcomputing.co.uk/software/pyqt/intro"
-__reportar_bug__ = "http://github.com/centaurialpha/edis/issues"
+__reportar_bug__ = "http://github.com/centaurialpha/edis/issues/new"
 __version_web__ = \
     "https://raw.githubusercontent.com/centaurialpha/edis/master/version"
 __gcc__ = \
