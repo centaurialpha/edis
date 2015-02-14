@@ -58,6 +58,7 @@ class ArbolDeSimbolos(custom_dock.CustomDock):
         self.tree.clear()
 
         if 'globals' in simbolos:
+            print("SI")
             _globals = Item(self.tree, [self.tr("Globales")])
             _globals.clickeable = False
             for _glob, nline in list(simbolos['globals'].items()):

@@ -24,6 +24,7 @@ def parse_symbols(source):
         Estructuras, uniones, variables, funciones.
     """
 
+    symbols = {}
     functions = {}
     structs = {}
     vars_globals = {}
@@ -53,7 +54,14 @@ def parse_symbols(source):
                 var_nline = decl.coord.line
                 vars_globals[var_name] = var_nline
 
-    return {'functions': functions, 'structs': structs, 'globals': vars_globals}
+    if functions:
+        symbols['functions'] = functions
+    if structs:
+        symbols['structs'] = structs
+    if vars_globals:
+        symbols['globals'] = vars_globals
+
+    return symbols
 
 
 def parse_structs(ast_object):

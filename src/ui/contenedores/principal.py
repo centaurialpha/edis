@@ -56,7 +56,7 @@ class EditorContainer(QWidget):
     archivo_abierto = pyqtSignal(['QString'])
     posicion_cursor = pyqtSignal(int, int, int)
     archivo_modificado = pyqtSignal(bool)
-    #actualizar_simbolos = pyqtSignal(['QString'], name="actualizarSimbolos")
+    actualizar_simbolos = pyqtSignal(['QString'], name="actualizarSimbolos")
     archivo_cerrado = pyqtSignal(int)
     cambiar_item = pyqtSignal(int)
 

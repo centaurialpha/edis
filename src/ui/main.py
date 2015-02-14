@@ -240,8 +240,8 @@ class EDIS(QMainWindow):
             self.visibilidad_explorador)
         principal.archivo_cambiado['QString'].connect(self.__actualizar_estado)
         principal.posicion_cursor.connect(self.__actualizar_cursor)
-        #principal.actualizarSimbolos['QString'].connect(
-            #self.simbolos.actualizar_simbolos)
+        principal.actualizarSimbolos['QString'].connect(
+            principal.update_symbols)
         #principal.archivo_cambiado.connect(principal.update_symbols)
         self.simbolos.irALinea[int].connect(principal.ir_a_linea)
         #FIXME: cambiar nombre
