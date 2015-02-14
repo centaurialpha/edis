@@ -12,6 +12,11 @@ from .pycparser import (
     c_ast
     )
 
+from src.helpers import logger
+
+log = logger.edis_logger.get_logger(__name__)
+ERROR = log.error
+
 
 def parse_symbols(source):
     """ Parsea el código fuente para obtener los símbolos:
@@ -20,10 +25,16 @@ def parse_symbols(source):
     """
 
     functions = {}
+    structs = {}
+    vars_globals = {}
 
     parser = c_parser.CParser()
     # AST Abstract Syntax Tree
-    ast = parser.parse(source)
+    try:
+        ast = parser.parse(source)
+    except:
+        ERROR('El código fuente tiene errores de sintáxis')
+        return {}
     ast_objects = ast.ext
     for ast_object in ast_objects:
         if ast_object.__class__ is c_ast.FuncDef:
@@ -31,26 +42,35 @@ def parse_symbols(source):
             function_nline = ast_object.decl.coord.line
             functions[function_nline] = function_name
         elif ast_object.__class__ is c_ast.Decl:
-            if ast_object.type.__class__ is c_ast.Struct:
-                parse_structs(ast_object)
+            decl = ast_object.type
+            if decl.__class__ is c_ast.Struct:
+                struct_name = decl.name
+                struct_nline = decl.coord.line
+                members = parse_structs(ast_object)
+                structs[struct_nline] = (struct_name, members)
+            elif decl.__class__ is c_ast.TypeDecl:
+                var_name = decl.declname
+                var_nline = decl.coord.line
+                vars_globals[var_name] = var_nline
 
-    return {'functions': functions}
+    return {'functions': functions, 'structs': structs, 'globals': vars_globals}
 
 
 def parse_structs(ast_object):
-    structs = {}
-    _members = []
+    """ Devuelve una lista con los miembros de una estructura """
+
+    members_list = []
+    members_dict = {}
 
     members = ast_object.type.decls
-    struct_name = ast_object.type.name
-    struct_nline = ast_object.type.coord.line
 
     for member in members:
         member_name = member.name
         member_nline = member.coord.line
-        _members.append({member_nline: member_name})
+        members_dict[member_name] = member_nline
+    members_list.append(members_dict)
 
-    print(_members)
+    return members_list
 
 
 def sanitize_source_code(source_code):
