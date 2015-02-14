@@ -58,10 +58,9 @@ class ArbolDeSimbolos(custom_dock.CustomDock):
         self.tree.clear()
 
         if 'globals' in simbolos:
-            print("SI")
             _globals = Item(self.tree, [self.tr("Globales")])
             _globals.clickeable = False
-            for _glob, nline in list(simbolos['globals'].items()):
+            for _glob, nline in sorted(list(simbolos['globals'].items())):
                 _global = Item(_globals, [_glob])
                 _global.linea = nline
                 _global.setIcon(0, QIcon(self.iconos['global']))
@@ -70,9 +69,9 @@ class ArbolDeSimbolos(custom_dock.CustomDock):
         if 'functions' in simbolos:
             functions = Item(self.tree, [self.tr('Funciones')])
             functions.clickeable = False
-            for line, func in list(simbolos['functions'].items()):
+            for func, nline in sorted(list(simbolos['functions'].items())):
                 function = Item(functions, [func])
-                function.linea = line
+                function.linea = nline
                 function.setIcon(0, QIcon(self.iconos['funcion']))
             functions.setExpanded(True)
 
