@@ -20,7 +20,7 @@ Awesome features
 * **Code folding**
 * **Minimap**
 * **Highlighting words**
-* **Errors checker**
+* **Code style checker**
 * **File selector**
 * **Tree symbols**
 * **Auto-completion of keywords**
@@ -37,12 +37,6 @@ Estas dependencias son necesarias para ejecutar Edis desde el código fuente.
 * `Python <https://python.org>`_ 3.x
 * `PyQt4 <http://www.riverbankcomputing.co.uk/software/pyqt/intro>`_ >= 4.8
 * `QScintilla2 <http://www.riverbankcomputing.com/software/qscintilla/intro>`_
-
-
-* **Opcional:**
-     
-  * `Ctags <http://ctags.sourceforge.net/>`_ *Necesario para crear el árbol de símbolos*
-  * `Cppcheck <http://cppcheck.sourceforge.net/>`_ *Análisis estático de errores*
      
 Install
 -------
