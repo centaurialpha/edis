@@ -68,6 +68,15 @@ class ArbolDeSimbolos(custom_dock.CustomDock):
                 #variable.setIcon(0, QIcon(self.iconos['global']))
             #variables.setExpanded(True)
 
+        if 'globals' in simbolos:
+            _globals = Item(self.tree, [self.tr("Globales")])
+            _globals.clickeable = False
+            for _glob, nline in list(simbolos['globals'].items()):
+                _global = Item(_globals, [_glob])
+                _global.linea = nline
+                _global.setIcon(0, QIcon(self.iconos['global']))
+            _globals.setExpanded(True)
+
         if 'functions' in simbolos:
             functions = Item(self.tree, [self.tr('Funciones')])
             functions.clickeable = False
