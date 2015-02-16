@@ -1,0 +1,23 @@
+<RCC>
+    <qresource prefix="/image">
+        <file alias="back">images/arrow-back.png</file>
+        <file alias="down">images/arrow-down.png</file>
+        <file alias="forward">images/arrow-forward.png</file>
+        <file alias="up">images/arrow-up.png</file>
+        <file alias="build">images/build.png</file>
+        <file alias="close">images/close.png</file>
+        <file alias="copy">images/copy.png</file>
+        <file alias="cut">images/cut.png</file>
+        <file alias="open">images/folder-open.png</file>
+        <file alias="edis">images/icon.png</file>
+        <file alias="new">images/new.png</file>
+        <file alias="paste">images/paste.png</file>
+        <file alias="qt">images/qt.png</file>
+        <file alias="redo">images/redo.png</file>
+        <file alias="run">images/run.png</file>
+        <file alias="save">images/save.png</file>
+        <file alias="search">images/search.png</file>
+        <file alias="stop">images/stop.png</file>
+        <file alias="undo">images/undo.png</file>
+    </qresource>
+</RCC>

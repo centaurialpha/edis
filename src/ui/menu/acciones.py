@@ -25,7 +25,7 @@ ACCIONES = (
         'nombre': 'Nuevo archivo',
         'conexion': 'agregar_editor',
         'atajo': _ATAJO['nuevo'],
-        'icono': _ICONO['new']},
+        'icono': ':image/new'},
     {
         'seccion': 0,
         'nombre': 'Nuevo proyecto',
