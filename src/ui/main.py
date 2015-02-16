@@ -33,7 +33,7 @@ from src.helpers import (
     configuracion,
     #dependencias
     )
-from src.ui.widgets import tool_button
+#from src.ui.widgets import tool_button
 from src.helpers.configuracion import ESettings
 from src.ui.dialogos import (
     dialogo_guardar_archivos,
@@ -91,18 +91,18 @@ class EDIS(QMainWindow):
         toggle_action = self.dock_toolbar.toggleViewAction()
         toggle_action.setText(self.tr("Dock toolbar"))
         self.dock_toolbar.setObjectName("dock_toolbar")
-        self.tb_simbolos = tool_button.CustomToolButton("Símbolos", self)
-        self.tb_navegador = tool_button.CustomToolButton("Navegador", self)
-        self.tb_explorador = tool_button.CustomToolButton("Explorador", self)
+        #self.tb_simbolos = tool_button.CustomToolButton("Símbolos", self)
+        #self.tb_navegador = tool_button.CustomToolButton("Navegador", self)
+        #self.tb_explorador = tool_button.CustomToolButton("Explorador", self)
         self.dock_toolbar.setMovable(False)
-        self.dock_toolbar.addWidget(self.tb_simbolos)
-        self.dock_toolbar.addWidget(self.tb_navegador)
-        self.dock_toolbar.addWidget(self.tb_explorador)
+        #self.dock_toolbar.addWidget(self.tb_simbolos)
+        #self.dock_toolbar.addWidget(self.tb_navegador)
+        #self.dock_toolbar.addWidget(self.tb_explorador)
         self.addToolBar(Qt.LeftToolBarArea, self.dock_toolbar)
         # Animated property
         self.setDockOptions(QMainWindow.AnimatedDocks)
         # Menú
-        self.cargar_menu()
+        #self.cargar_menu()
         # Barra de estado
         self.barra_de_estado = EDIS.componente("barra_de_estado")
         self.setStatusBar(self.barra_de_estado)
@@ -114,9 +114,9 @@ class EDIS(QMainWindow):
 
         EDIS.cargar_componente("edis", self)
 
-        self.tb_simbolos.toggled.connect(self.toggled_simbolos)
-        self.tb_navegador.toggled.connect(self.toggled_navegador)
-        self.tb_explorador.toggled.connect(self.toggled_explorador)
+        #self.tb_simbolos.toggled.connect(self.toggled_simbolos)
+        #self.tb_navegador.toggled.connect(self.toggled_navegador)
+        #self.tb_explorador.toggled.connect(self.toggled_explorador)
 
         # Comprobar nueva versión
         self.noti = system_tray.NotificacionActualizacion()
@@ -157,6 +157,9 @@ class EDIS(QMainWindow):
     @classmethod
     def accion(cls, nombre):
         return cls.__ACCIONES.get(nombre, None)
+
+    def setup_menu(self):
+        pass
 
     def cargar_menu(self):
         #FIXME: Mejorar
@@ -214,43 +217,46 @@ class EDIS(QMainWindow):
 
     def cargar_central(self, window):
         principal = EDIS.componente("principal")
-        start_page = False
+        dock = EDIS.componente("dock")
+        print(dock)
+        #start_page = False
         if ESettings.get('general/inicio'):
             principal.add_start_page()
-            start_page = True
-        self.simbolos = EDIS.lateral("simbolos")
-        if start_page:
-            self.simbolos.hide()
-        self.navegador = EDIS.lateral("navegador")
-        self.navegador.hide()
-        self.explorador = EDIS.lateral("explorador")
-        self.explorador.hide()
-        self.output = EDIS.componente("output")
-        window.addDockWidget(Qt.BottomDockWidgetArea, self.output)
-        self.output.hide()
-        for widget in [self.navegador, self.explorador, self.simbolos]:
-            self.addDockWidget(Qt.LeftDockWidgetArea, widget)
+            #start_page = True
+        #self.simbolos = EDIS.lateral("simbolos")
+        #if start_page:
+            #self.simbolos.hide()
+        #self.navegador = EDIS.lateral("navegador")
+        #self.navegador.hide()
+        #self.explorador = EDIS.lateral("explorador")
+        #self.explorador.hide()
+        #self.output = EDIS.componente("output")
+        #window.addDockWidget(Qt.BottomDockWidgetArea, self.output)
+        #self.output.hide()
+        #for widget in [self.navegador, self.explorador, self.simbolos]:
+            #self.addDockWidget(Qt.LeftDockWidgetArea, widget)
 
         # Conexión
-        self.simbolos.visibilityChanged[bool].connect(
-            self.visibilidad_simbolos)
-        self.navegador.visibilityChanged[bool].connect(
-            self.visibilidad_navegador)
-        self.explorador.visibilityChanged[bool].connect(
-            self.visibilidad_explorador)
-        principal.archivo_cambiado['QString'].connect(self.__actualizar_estado)
-        principal.posicion_cursor.connect(self.__actualizar_cursor)
-        principal.actualizarSimbolos['QString'].connect(
-            principal.update_symbols)
+        #self.simbolos.visibilityChanged[bool].connect(
+            #self.visibilidad_simbolos)
+        #self.navegador.visibilityChanged[bool].connect(
+            #self.visibilidad_navegador)
+        #self.explorador.visibilityChanged[bool].connect(
+            #self.visibilidad_explorador)
+        #principal.archivo_cambiado['QString'].connect(self.__actualizar_estado)
+        #principal.posicion_cursor.connect(self.__actualizar_cursor)
+        #principal.actualizarSimbolos['QString'].connect(
+            #principal.update_symbols)
         #principal.archivo_cambiado.connect(principal.update_symbols)
-        self.simbolos.irALinea[int].connect(principal.ir_a_linea)
+        #self.simbolos.irALinea[int].connect(principal.ir_a_linea)
         #FIXME: cambiar nombre
-        self.output.salida_.output.ir_a_linea[int].connect(principal.ir_a_linea)
+        #self.output.salida_.output.ir_a_linea[int].connect(
+            #principal.ir_a_linea)
         principal.archivo_cambiado['QString'].connect(self.__titulo_ventana)
-        principal.stack.todo_cerrado.connect(self.todo_cerrado)
+        #principal.stack.todo_cerrado.connect(self.todo_cerrado)
         principal.stack.todo_cerrado.connect(principal.add_start_page)
-        principal.archivo_abierto['QString'].connect(self.navegador.agregar)
-        principal.archivo_cerrado[int].connect(self.navegador.eliminar)
+        #principal.archivo_abierto['QString'].connect(self.navegador.agregar)
+        #principal.archivo_cerrado[int].connect(self.navegador.eliminar)
 
         return principal
 
@@ -373,8 +379,8 @@ class EDIS(QMainWindow):
         if ESettings.get('ventana/guardarDimensiones'):
             ESettings.set('ventana/dimensiones', self.size())
             ESettings.set('ventana/posicion', self.pos())
-        ESettings.set('general/archivos', principal.archivos_abiertos())
-        ESettings.set('general/recientes', principal.get_recents_files())
+        #ESettings.set('general/archivos', principal.archivos_abiertos())
+        #ESettings.set('general/recientes', principal.get_recents_files())
 
     def detectar_dependencias(self):
         #FIXME: Mejorar

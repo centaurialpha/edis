@@ -25,7 +25,8 @@ import src.ui.contenedores.output.contenedor_secundario
 import src.ui.contenedores.lateral.navegador
 import src.ui.contenedores.lateral.explorador
 import src.ui.contenedores.lateral.arbol_simbolos
-import src.ui.menu.menu
+import src.ui.dock_manager
+#import src.ui.menu.menu
 #lint:enable
 from src.ui.main import EDIS
 
@@ -52,6 +53,6 @@ def correr_interfaz(app):
     recents_files = ESettings.get('general/recientes')
     if recents_files is None:
         recents_files = []
-    edis.cargar_archivos(archivos, recents_files)
+    #edis.cargar_archivos(archivos, recents_files)
     edis.show()
     sys.exit(app.exec_())
