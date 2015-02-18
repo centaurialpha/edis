@@ -76,9 +76,8 @@ class EDIS(QMainWindow):
         EDIS.menu_bar(1, self.trUtf8("&Editar"))
         EDIS.menu_bar(2, self.trUtf8("&Ver"))
         EDIS.menu_bar(3, self.trUtf8("&Buscar"))
-        EDIS.menu_bar(4, self.trUtf8("&Herramientas"))
-        EDIS.menu_bar(5, self.trUtf8("E&jecución"))
-        EDIS.menu_bar(6, self.trUtf8("A&cerca de"))
+        EDIS.menu_bar(4, self.trUtf8("E&jecución"))
+        EDIS.menu_bar(5, self.trUtf8("A&cerca de"))
         # Toolbar
         self.toolbar = QToolBar(self)
         toggle_action = self.toolbar.toggleViewAction()
@@ -102,6 +101,8 @@ class EDIS(QMainWindow):
         # Animated property
         self.setDockOptions(QMainWindow.AnimatedDocks)
         # Menú
+        menu_bar = self.menuBar()
+        self.setup_menu(menu_bar)
         #self.cargar_menu()
         # Barra de estado
         self.barra_de_estado = EDIS.componente("barra_de_estado")
@@ -148,21 +149,34 @@ class EDIS(QMainWindow):
 
         cls.__MENUBAR[clave] = nombre
 
-    @classmethod
-    def get_menu(cls, clave):
-        """ Devuelve un diccionario con los menu """
+    #@classmethod
+    #def get_menu(cls, clave):
+        #""" Devuelve un diccionario con los menu """
 
-        return cls.__MENUBAR.get(clave, None)
+        #return cls.__MENUBAR.get(clave, None)
 
-    @classmethod
-    def accion(cls, nombre):
-        return cls.__ACCIONES.get(nombre, None)
+    #@classmethod
+    #def accion(cls, nombre):
+        #return cls.__ACCIONES.get(nombre, None)
 
-    def setup_menu(self):
-        pass
+    def setup_menu(self, menu_bar):
+        from src.ui import actions
+        menu_items = {}
+        editor_container = EDIS.componente("principal")
+        for i, m in enumerate(list(EDIS.__MENUBAR.values())):
+            menu = menu_bar.addMenu(m)
+            menu_items[i] = menu
+        for i, _actions in enumerate(actions.ACTIONS):
+            for action in _actions:
+                menu_name = menu_items[i]
+                name = action.get('name', None)
+                connection = action.get('connection', None)
+                qaction = menu_name.addAction(name)
+                slot = getattr(editor_container, connection, None)
+                if hasattr(slot, "__call__"):
+                    self.connect(qaction, SIGNAL("triggered()"), slot)
 
     def cargar_menu(self):
-        #FIXME: Mejorar
         items_toolbar = OrderedDict()
         menu_bar = self.menuBar()
         menu_edis = self.componente("menu")

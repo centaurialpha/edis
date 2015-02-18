@@ -134,7 +134,7 @@ class EditorContainer(QWidget):
             self.archivo_cambiado.emit(weditor.nombre)
             self.cambiar_item.emit(indice)
 
-    def agregar_editor(self, filename=""):
+    def add_editor(self, filename=""):
         if not filename:
             filename = "Nuevo_archivo"
         weditor = editor.crear_editor(filename)
@@ -147,7 +147,7 @@ class EditorContainer(QWidget):
         weditor.setFocus()
         return weditor
 
-    def abrir_archivo(self, nombre="", posicion_cursor=None):
+    def open_file(self, nombre="", posicion_cursor=None):
         filtro = "Archivos C/C++(*.cpp *.c);;ASM(*.s);;HEADERS(*.h);;(*.*)"
         if not nombre:
             carpeta = os.path.expanduser("~")
@@ -164,7 +164,7 @@ class EditorContainer(QWidget):
                 if not self.__archivo_abierto(archivo):
                     self.stack.no_esta_abierto = False
                     contenido = manejador_de_archivo.get_file_content(archivo)
-                    nuevo_editor = self.agregar_editor(archivo)
+                    nuevo_editor = self.add_editor(archivo)
                     nuevo_editor.texto = contenido
                     nuevo_editor.nombre = archivo
                     if posicion_cursor is not None:
@@ -496,7 +496,7 @@ class EditorContainer(QWidget):
     def _drop_event(self, evento):
         data = evento.mimeData()
         archivo = data.urls()[0].toLocalFile()
-        self.abrir_archivo(archivo)
+        self.open_file(archivo)
 
 
 principal = EditorContainer()
