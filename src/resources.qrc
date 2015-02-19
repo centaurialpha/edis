@@ -26,5 +26,8 @@
         <file alias="member">images/miembro.png</file>
         <file alias="struct">images/struct.png</file>
         <file alias="var">images/variable.png</file>
+        <file alias="general">images/general.png</file>
+        <file alias="gui">images/gui.png</file>
+        <file alias="edit">images/edit.png</file>
     </qresource>
 </RCC>
