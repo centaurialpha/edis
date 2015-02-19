@@ -370,29 +370,28 @@ class EditorContainer(QWidget):
         weditor = self.devolver_editor()
         if weditor is not None:
             self.save_file()
-            output.compilar(weditor.nombre)
+            output.build(weditor.nombre)
 
     def run_binary(self):
         """ Ejecuta el programa objeto """
 
         output = EDIS.componente("output")
-        output.ejecutar()
+        output.run()
 
     def build_and_run(self):
         output = EDIS.componente("output")
         weditor = self.devolver_editor()
         if weditor is not None:
             self.save_file()
-            output.compilar_ejecutar(weditor.nombre)
+            output.build_and_run(weditor.nombre)
 
-    def limpiar_construccion(self):
-        edis = EDIS.componente("edis")
-        output = edis.output
-        output.limpiar()
+    def clean_construction(self):
+        output = EDIS.componente("output")
+        output.clean()
 
-    def terminar_programa(self):
-        edis = EDIS.componente("edis")
-        edis.contenedor_output.terminar_programa()
+    def stop_program(self):
+        output = EDIS.componente("output")
+        output.stop()
 
     def imprimir_documento(self):
         weditor = self.devolver_editor()

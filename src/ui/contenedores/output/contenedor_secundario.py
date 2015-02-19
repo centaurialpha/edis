@@ -46,25 +46,25 @@ class ContenedorOutput(QDockWidget):
         self.setTitleBarWidget(widget_vacio)
         del title_bar
 
-    def compilar(self, path):
+    def build(self, path):
         self.show()
         self.nombre_archivo = path
         self.salida_.correr_compilacion(self.nombre_archivo)
 
-    def ejecutar(self):
+    def run(self):
         if self.nombre_archivo is None:
             return
         self.salida_.correr_programa(self.nombre_archivo)
 
-    def compilar_ejecutar(self, archivo):
+    def build_and_run(self, archivo):
         self.show()
         self.nombre_archivo = archivo
         self.salida_.compilar_ejecutar(self.nombre_archivo)
 
-    def limpiar(self):
+    def clean(self):
         self.salida_.limpiar(self.nombre_archivo)
 
-    def terminar_programa(self):
+    def stop(self):
         self.salida_.terminar_proceso()
 
 
