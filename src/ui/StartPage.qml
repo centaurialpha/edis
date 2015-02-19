@@ -48,7 +48,7 @@ Rectangle {
 
     Text {
         id: link
-        text: qsTr("Edis use the <b>Clang</b> compiler: <a href='http://clang.llvm.org'><span style='color: #ffffff;'>http://clang.llvm.org</span></a>")
+        text: qsTr("Edis is Free Software! <a href='http://centaurialpha.github.io/edis'><span style='color: #ffffff;'>http://centaurialpha.github.io/edis</span></a>")
         font.pointSize: 10
         color: "#dedede"
         anchors.bottom: parent.bottom
