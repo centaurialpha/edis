@@ -157,11 +157,11 @@ ACTIONS = ([
     # Menú ejecución
     [{
         "name": "Compilar",
-        "connection": "build",
+        "connection": "build_source_code",
         "shortcut": "build"},
     {
         "name": "Ejecutar",
-        "connection": "run",
+        "connection": "run_binary",
         "shortcut": "run"},
     {
         "name": "Compilar y ejecutar",

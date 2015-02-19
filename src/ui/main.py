@@ -182,7 +182,7 @@ class EDIS(QMainWindow):
             method = getattr(dock, "load_%s_widget" % name, None)
             widget = EDIS.lateral(name)
             method(widget)
-            window.addDockWidget(Qt.LeftDockWidgetArea, widget)
+            self.addDockWidget(Qt.LeftDockWidgetArea, widget)
         output_widget = EDIS.componente("output")
         dock.load_output_widget(output_widget)
         window.addDockWidget(Qt.BottomDockWidgetArea, output_widget)
