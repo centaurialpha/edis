@@ -117,9 +117,10 @@ class Editor(Base):
         # Analizador de estilo de código
         self.checker = None
         if ESettings.get('editor/style-checker'):
-            self.checker = checker.Checker(self)
-            self.connect(self.checker, SIGNAL("finished()"),
-                         self._show_violations)
+            self.load_checker()
+            #self.checker = checker.Checker(self)
+            #self.connect(self.checker, SIGNAL("finished()"),
+                         #self._show_violations)
         #self.checker.errores.connect(self._marcar_errores)
         # Fuente
         fuente = ESettings.get('editor/fuente')
@@ -158,6 +159,17 @@ class Editor(Base):
         else:
             #FIXME:
             pass
+
+    def load_checker(self, activated=True):
+        if activated and self.checker is not None:
+            return
+        if not activated:
+            self.checker = None
+            self.borrarIndicadores(self.indicador_warning)
+        else:
+            self.checker = checker.Checker(self)
+            self.connect(self.checker, SIGNAL("finished()"),
+                         self._show_violations)
 
     @property
     def nombre(self):

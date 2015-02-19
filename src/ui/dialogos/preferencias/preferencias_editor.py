@@ -71,6 +71,8 @@ class EditorConfiguration(QWidget):
         group_extras = QGroupBox(self.tr("Extras:"))
         box = QGridLayout(group_extras)
         self.check_style_checker = QCheckBox(self.tr("Analizador de estilo"))
+        self.check_style_checker.setChecked(ESettings.get(
+                                            'editor/style-checker'))
         box.addWidget(self.check_style_checker, 1, 0)
 
         # Tipo de letra
@@ -148,8 +150,8 @@ class EditorConfiguration(QWidget):
         ESettings.set('editor/margen', self.check_margen.isChecked())
         ESettings.set('editor/margenAncho', self.slider_margen.value())
         ESettings.set('editor/guias', self.check_guia.isChecked())
-        ESettings.set('editor/style-checker',
-                      self.check_style_checker.isChecked())
+        checker_value = self.check_style_checker.isChecked()
+        ESettings.set('editor/style-checker', checker_value)
         ESettings.set('editor/indentacionAncho',
                       self.slider_indentacion.value())
         for ntipo, radio in enumerate(self.radio_cursor):
@@ -163,3 +165,4 @@ class EditorConfiguration(QWidget):
             weditor.actualizar()
             weditor.actualizar_margen()
             weditor.actualizar_indentacion()
+            weditor.load_checker(checker_value)
