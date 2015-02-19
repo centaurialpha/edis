@@ -29,5 +29,6 @@
         <file alias="general">images/general.png</file>
         <file alias="gui">images/gui.png</file>
         <file alias="edit">images/edit.png</file>
+        <file alias="splash">images/splash.png</file>
     </qresource>
 </RCC>

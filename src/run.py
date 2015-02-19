@@ -8,12 +8,18 @@
 import sys
 import os
 
-from PyQt4.QtGui import QIcon
+from PyQt4.QtGui import (
+    QIcon,
+    QSplashScreen,
+    QPixmap,
+    QDesktopWidget
+    )
 
 from PyQt4.QtCore import (
     QLocale,
     QTranslator,
-    QLibraryInfo
+    QLibraryInfo,
+    Qt
     )
 from src import paths
 from src.helpers.configuracion import ESettings
@@ -32,21 +38,32 @@ from src.ui.main import EDIS
 
 
 def correr_interfaz(app):
-    ESettings().cargar()
-    # Traductor
+    app.setWindowIcon(QIcon(":image/edis"))
     local = QLocale.system().name()
     qtraductor = QTranslator()
     qtraductor.load("qt_" + local, QLibraryInfo.location(
                     QLibraryInfo.TranslationsPath))
+    pixmap = QPixmap(":image/splash")
+    splash = Splash(pixmap, Qt.WindowStaysOnTopHint)
+    splash.setMask(pixmap.mask())
+    splash.show()
+    app.processEvents()
 
+    splash.showMessage("Cargando configuraciones...",
+                       Qt.AlignBottom | Qt.black)
+    ESettings().cargar()
+
+    splash.showMessage("Cargado UI...", Qt.AlignBottom | Qt.black)
     edis = EDIS()
-    app.setWindowIcon(QIcon(":image/edis"))
+    edis.show()
+
     # Aplicar estilo
     with open(os.path.join(paths.PATH,
               "extras", "temas", "default.qss")) as tema:
         estilo = tema.read()
     app.setStyleSheet(estilo)
     # Archivos de última sesión
+    splash.showMessage("Cargando archivos...", Qt.AlignBottom | Qt.black)
     files = ESettings.get('general/archivos')
     if files is None:
         files = []
@@ -55,5 +72,14 @@ def correr_interfaz(app):
     if recents_files is None:
         recents_files = []
     edis.cargar_archivos(files, recents_files)
-    edis.show()
+    splash.finish(edis)
     sys.exit(app.exec_())
+
+
+class Splash(QSplashScreen):
+
+    """ Custom Splash """
+
+    def __init__(self, pix, flag):
+        super(Splash, self).__init__(pix, flag)
+        self.move(800, 410)
