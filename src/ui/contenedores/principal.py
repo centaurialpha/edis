@@ -22,7 +22,7 @@ from PyQt4.QtGui import (
 from PyQt4.QtCore import (
     SIGNAL,
     QFileInfo,
-    pyqtSignal,
+    pyqtSignal
     )
 
 from src.helpers import manejador_de_archivo
@@ -52,13 +52,12 @@ ERROR = log.error
 class EditorContainer(QWidget):
 
     # Señales
-    archivo_cambiado = pyqtSignal('QString', name="fileChanged")
-    archivo_abierto = pyqtSignal('QString', name="openedFile")
-    posicion_cursor = pyqtSignal(int, int, int, name="cursorPosition")
-    archivo_modificado = pyqtSignal(bool)
-    actualizar_simbolos = pyqtSignal('QString', name="updateSymbols")
-    archivo_cerrado = pyqtSignal(int, name="closedFile")
-    cambiar_item = pyqtSignal(int)
+    closedFile = pyqtSignal(int)
+    cursorPosition = pyqtSignal(int, int, int)
+    fileModified = pyqtSignal(bool)
+    updateSymbols = pyqtSignal('QString')
+    fileChanged = pyqtSignal('QString')
+    openedFile = pyqtSignal('QString')
 
     def __init__(self, edis=None):
         QWidget.__init__(self, edis)
@@ -114,24 +113,22 @@ class EditorContainer(QWidget):
             recents_files.append(filename.text())
         return recents_files
 
-    def _archivo_cerrado(self, indice):
-        self.archivo_cerrado.emit(indice)
-        self.cambiar_widget(indice)
+    def _archivo_cerrado(self, index):
+        self.closedFile.emit(index)
+        self.cambiar_widget(index)
 
-    def _archivo_modificado(self, valor):
-        #FIXME: mejorar
-        self.archivo_modificado.emit(valor)
+    def _archivo_modificado(self, value):
+        self.fileModified.emit(value)
 
     def __archivo_guardado(self, weditor):
-        self.actualizar_simbolos.emit(weditor.nombre)
-        self.archivo_modificado.emit(False)
+        self.updateSymbols.emit(weditor.nombre)
+        self.fileModified.emit(False)
 
-    def cambiar_widget(self, indice):
-        self.stack.cambiar_widget(indice)
+    def cambiar_widget(self, index):
+        self.stack.cambiar_widget(index)
         weditor = self.devolver_editor()
         if weditor is not None:
-            self.archivo_cambiado.emit(weditor.nombre)
-            self.cambiar_item.emit(indice)
+            self.fileChanged.emit(weditor.nombre)
 
     def add_editor(self, filename=""):
         if not filename:
@@ -169,8 +166,8 @@ class EditorContainer(QWidget):
                     if posicion_cursor is not None:
                         linea, columna = posicion_cursor
                         nuevo_editor.setCursorPosition(linea, columna)
-                    self.archivo_cambiado.emit(archivo)
-                    self.archivo_abierto.emit(archivo)
+                    self.fileChanged.emit(archivo)
+                    self.openedFile.emit(archivo)
         except EdisIOException as error:
             ERROR('Error opening file: %s', error)
             QMessageBox.critical(self, self.tr('Error al abrir el archivo'),
@@ -264,7 +261,7 @@ class EditorContainer(QWidget):
         nombre_archivo = manejador_de_archivo.escribir_archivo(nombre_archivo,
                 weditor.texto)
         weditor.nombre = nombre_archivo
-        self.archivo_cambiado.emit(nombre_archivo)
+        self.fileChanged.emit(nombre_archivo)
         weditor.guardado()
 
     def save_all(self):
@@ -359,10 +356,10 @@ class EditorContainer(QWidget):
         dialogo = dialogo_log.DialogoLog(self)
         dialogo.show()
 
-    def actualizar_cursor(self, linea, columna):
+    def actualizar_cursor(self, line, row):
         weditor = self.devolver_editor()
-        lineas = weditor.lineas
-        self.posicion_cursor.emit(linea + 1, columna + 1, lineas)
+        lines = weditor.lineas
+        self.cursorPosition.emit(line + 1, row + 1, lines)
 
     def build_source_code(self):
         output = EDIS.componente("output")
