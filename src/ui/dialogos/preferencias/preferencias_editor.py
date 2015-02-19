@@ -10,7 +10,6 @@ from PyQt4.QtGui import (
     QWidget,
     QVBoxLayout,
     QGridLayout,
-    QTabWidget,
     QGroupBox,
     QHBoxLayout,
     QCheckBox,
@@ -33,31 +32,11 @@ from src.helpers import configuracion
 from src.ui.main import EDIS
 
 
-class TabEditor(QWidget):
-    """ Tab Editor """
-
-    def __init__(self):
-        super(TabEditor, self).__init__()
-        vbox = QVBoxLayout(self)
-        vbox.setContentsMargins(0, 0, 0, 0)
-        self.setObjectName("tabs")
-        self.tabs = QTabWidget()
-        self.tabs.setTabPosition(3)
-        self.configEditor = CaracteristicasEditor()
-        self.tabs.addTab(self.configEditor, self.trUtf8("Características"))
-
-        vbox.addWidget(self.tabs)
-
-    def guardar(self):
-        for i in range(self.tabs.count()):
-            self.tabs.widget(i).guardar()
-
-
-class CaracteristicasEditor(QWidget):
+class EditorConfiguration(QWidget):
     """ Clase Configuracion Editor """
 
     def __init__(self):
-        super(CaracteristicasEditor, self).__init__()
+        super(EditorConfiguration, self).__init__()
         contenedor = QVBoxLayout(self)
 
         # Márgen de línea
@@ -88,6 +67,12 @@ class CaracteristicasEditor(QWidget):
         self.check_guia = QCheckBox(self.tr("Activar guías"))
         box.addWidget(self.check_guia, 1, 0)
 
+        # Extras
+        group_extras = QGroupBox(self.tr("Extras:"))
+        box = QGridLayout(group_extras)
+        self.check_style_checker = QCheckBox(self.tr("Analizador de estilo"))
+        box.addWidget(self.check_style_checker, 1, 0)
+
         # Tipo de letra
         grupo_fuente = QGroupBox(self.tr("Tipo de letra:"))
         box = QHBoxLayout(grupo_fuente)
@@ -116,6 +101,7 @@ class CaracteristicasEditor(QWidget):
 
         contenedor.addWidget(grupo_margen)
         contenedor.addWidget(grupo_indentacion)
+        contenedor.addWidget(group_extras)
         contenedor.addWidget(grupo_fuente)
         contenedor.addWidget(grupo_cursor)
         contenedor.addItem(QSpacerItem(0, 10, QSizePolicy.Expanding,
@@ -162,6 +148,8 @@ class CaracteristicasEditor(QWidget):
         ESettings.set('editor/margen', self.check_margen.isChecked())
         ESettings.set('editor/margenAncho', self.slider_margen.value())
         ESettings.set('editor/guias', self.check_guia.isChecked())
+        ESettings.set('editor/style-checker',
+                      self.check_style_checker.isChecked())
         ESettings.set('editor/indentacionAncho',
                       self.slider_indentacion.value())
         for ntipo, radio in enumerate(self.radio_cursor):

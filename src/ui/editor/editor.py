@@ -115,8 +115,11 @@ class Editor(Base):
                      SIGNAL("ocurrenciasThread(PyQt_PyObject)"),
                      self.marcar_palabras)
         # Analizador de estilo de código
-        self.checker = checker.Checker(self)
-        self.connect(self.checker, SIGNAL("finished()"), self._show_violations)
+        self.checker = None
+        if ESettings.get('editor/style-checker'):
+            self.checker = checker.Checker(self)
+            self.connect(self.checker, SIGNAL("finished()"),
+                         self._show_violations)
         #self.checker.errores.connect(self._marcar_errores)
         # Fuente
         fuente = ESettings.get('editor/fuente')
@@ -165,7 +168,8 @@ class Editor(Base):
         self.__nombre = nuevo_nombre
         if nuevo_nombre:
             self.es_nuevo = False
-        self.checker.start_checker()
+        if self.checker is not None:
+            self.checker.start_checker()
 
     def actualizar(self):
         """ Actualiza las opciones del editor """
@@ -273,6 +277,8 @@ class Editor(Base):
 
     def mouseMoveEvent(self, event):
         super(Editor, self).mouseMoveEvent(event)
+        if self.checker is None:
+            return
         position = event.pos()
         line = str(self.lineAt(position) + 1)
         message = self.checker.data.get(line, None)

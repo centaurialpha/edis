@@ -55,6 +55,7 @@ configuracion = {
     'editor/modoWrap': False,
     'editor/fuente': "",
     'editor/fuenteTam': 10,
+    'editor/style-checker': False,
     'general/inicio': True,
     'general/archivos': [],
     'general/recientes': [],
@@ -104,6 +105,8 @@ class ESettings(object):
             'editor/fuente', "", type=str)
         configuracion['editor/fuenteTam'] = qconfig.value(
             'editor/fuenteTam', 11, type=int)
+        configuracion['editor/style-checker'] = qconfig.value(
+            'editor/style-checker', False, type=bool)
         configuracion['general/archivos'] = qconfig.value(
             'general/archivos', [])
         configuracion['general/recientes'] = qconfig.value(
