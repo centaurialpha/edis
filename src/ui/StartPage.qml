@@ -27,13 +27,10 @@ Rectangle {
 
                 Image {
                     id: logo
-                    source: "../../src/images/icon.png"
+                    source: "../images/logo.png"
                 }
 
-                Column {
-                    Text { text: qsTr("EDIS"); color: "#dedede"; font.pointSize: 30 }
-                    Text { text: qsTr("a simple cross-platform IDE for C"); color: "#dedede" }
-                }
+
             }
         }
 

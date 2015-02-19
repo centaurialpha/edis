@@ -80,13 +80,7 @@ class EDIS(QMainWindow):
         toggle_action = self.dock_toolbar.toggleViewAction()
         toggle_action.setText(self.tr("Dock toolbar"))
         self.dock_toolbar.setObjectName("dock_toolbar")
-        #self.tb_simbolos = tool_button.CustomToolButton("Símbolos", self)
-        #self.tb_navegador = tool_button.CustomToolButton("Navegador", self)
-        #self.tb_explorador = tool_button.CustomToolButton("Explorador", self)
         self.dock_toolbar.setMovable(False)
-        #self.dock_toolbar.addWidget(self.tb_simbolos)
-        #self.dock_toolbar.addWidget(self.tb_navegador)
-        #self.dock_toolbar.addWidget(self.tb_explorador)
         self.addToolBar(Qt.LeftToolBarArea, self.dock_toolbar)
         # Animated property
         self.setDockOptions(QMainWindow.AnimatedDocks)
@@ -103,10 +97,6 @@ class EDIS(QMainWindow):
         self.setCentralWidget(window)
 
         EDIS.cargar_componente("edis", self)
-
-        #self.tb_simbolos.toggled.connect(self.toggled_simbolos)
-        #self.tb_navegador.toggled.connect(self.toggled_navegador)
-        #self.tb_explorador.toggled.connect(self.toggled_explorador)
 
         # Comprobar nueva versión
         self.noti = system_tray.NotificacionActualizacion()
@@ -184,6 +174,7 @@ class EDIS(QMainWindow):
     def cargar_central(self, window):
         principal = EDIS.componente("principal")
         dock = EDIS.componente("dock")  # lint:ok
+        dock.load_dock_toolbar(self.dock_toolbar)
         #start_page = False
         if ESettings.get('general/inicio'):
             principal.add_start_page()
