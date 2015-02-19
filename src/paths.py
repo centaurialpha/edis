@@ -26,10 +26,3 @@ EDIS = os.path.join(HOME, ".edis")
 CONFIGURACION = os.path.join(EDIS, "edis_config.ini")
 # Archivo de log
 LOG = os.path.join(EDIS, "edis_log.log")
-# Iconos
-#ICONOS = {}
-#PATH_ICONOS = os.path.join(PATH, "images")
-#lista_iconos = os.listdir(PATH_ICONOS)
-#for icono in lista_iconos:
-    #clave = icono.split('.')[0]
-    #ICONOS[clave] = os.path.join(PATH_ICONOS, icono)
