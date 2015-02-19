@@ -49,7 +49,6 @@ class EDIS(QMainWindow):
     # Cada instancia de una clase  se guarda en éste diccionario
     __COMPONENTES = {}
     __LATERAL = {}  # Widgets laterales
-    __MENUBAR = {}  # Nombre de los menus
     __ACCIONES = {}
 
     def __init__(self):
@@ -69,13 +68,6 @@ class EDIS(QMainWindow):
         pos = ESettings.get('ventana/posicion')
         if pos != 0:
             self.move(pos)
-        # Secciones del menubar
-        EDIS.menu_bar(0, self.trUtf8("&Archivo"))
-        EDIS.menu_bar(1, self.trUtf8("&Editar"))
-        EDIS.menu_bar(2, self.trUtf8("&Ver"))
-        EDIS.menu_bar(3, self.trUtf8("&Buscar"))
-        EDIS.menu_bar(4, self.trUtf8("E&jecución"))
-        EDIS.menu_bar(5, self.trUtf8("A&cerca de"))
         # Toolbar
         self.toolbar = QToolBar(self)
         toggle_action = self.toolbar.toggleViewAction()
@@ -140,18 +132,6 @@ class EDIS(QMainWindow):
     def lateral(cls, nombre):
         return cls.__LATERAL.get(nombre, None)
 
-    @classmethod
-    def menu_bar(cls, clave, nombre):
-        """ Se guarda el nombre de cada menú """
-
-        cls.__MENUBAR[clave] = nombre
-
-    #@classmethod
-    #def get_menu(cls, clave):
-        #""" Devuelve un diccionario con los menu """
-
-        #return cls.__MENUBAR.get(clave, None)
-
     #@classmethod
     #def accion(cls, nombre):
         #return cls.__ACCIONES.get(nombre, None)
@@ -160,11 +140,19 @@ class EDIS(QMainWindow):
         from src.ui import actions
         from src import recursos
 
+        menubar_items = [
+            self.tr("&Archivo"),
+            self.tr("&Editar"),
+            self.tr("&Ver"),
+            self.tr("&Buscar"),
+            self.tr("E&jecución"),
+            self.tr("A&cerca de")
+            ]
         menu_items = {}
         editor_container = EDIS.componente("principal")
         shortcuts = recursos.SHORTCUTS
         toolbar_items = configuracion.TOOLBAR_ITEMS
-        for i, m in enumerate(list(EDIS.__MENUBAR.values())):
+        for i, m in enumerate(menubar_items):
             menu = menu_bar.addMenu(m)
             menu_items[i] = menu
         for i, _actions in enumerate(actions.ACTIONS):
