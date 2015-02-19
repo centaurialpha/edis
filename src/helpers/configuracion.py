@@ -24,21 +24,18 @@ elif sys.platform == 'win32':
     WINDOWS = True
     FUENTE = 'Courier'
 
-ITEMS_TOOLBAR = [
-    'Nuevo archivo',
-    'Abrir',
-    'Guardar',
-    'separador',
-    'Deshacer',
-    'separador',
-    'Rehacer',
-    'separador',
-    'Indentar',
-    'Remover indentación',
-    'Compilar',
-    'Ejecutar',
-    'Terminar',
-    'separador'
+TOOLBAR_ITEMS = [
+    "new",
+    "open",
+    "save",
+    "undo",
+    "redo",
+    "copy",
+    "cut",
+    "paste",
+    "build",
+    "run",
+    "stop"
     ]
 
 # Configuracion por defecto

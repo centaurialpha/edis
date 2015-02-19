@@ -316,6 +316,7 @@ class Editor(Base):
             self.send("sci_endundoaction")
 
     def a_titulo(self):
+        #FIXME: Tratar cuando no se selecciona texto
         self.send("sci_beginundoaction")
         if self.hasSelectedText():
             texto = self.selectedText().title()

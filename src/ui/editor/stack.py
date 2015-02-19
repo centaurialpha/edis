@@ -18,7 +18,7 @@ from src.ui.editor import editor
 
 class StackWidget(QStackedWidget):
 
-    todo_cerrado = pyqtSignal()
+    todo_cerrado = pyqtSignal(name="allClosed")
     guardar_editor_actual = pyqtSignal(name="Guardar_Editor_Actual")
     archivo_modificado = pyqtSignal(bool)
     archivo_cerrado = pyqtSignal(int)

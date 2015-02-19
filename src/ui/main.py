@@ -6,10 +6,8 @@
 # License: GPLv3 (see http://www.gnu.org/licenses/gpl.html)
 
 # Módulos Python
-from subprocess import Popen, PIPE
 import os
 import webbrowser
-from collections import OrderedDict
 
 # Módulos QtGui
 from PyQt4.QtGui import (
@@ -103,7 +101,6 @@ class EDIS(QMainWindow):
         # Menú
         menu_bar = self.menuBar()
         self.setup_menu(menu_bar)
-        #self.cargar_menu()
         # Barra de estado
         self.barra_de_estado = EDIS.componente("barra_de_estado")
         self.setStatusBar(self.barra_de_estado)
@@ -161,78 +158,44 @@ class EDIS(QMainWindow):
 
     def setup_menu(self, menu_bar):
         from src.ui import actions
+        from src import recursos
+
         menu_items = {}
         editor_container = EDIS.componente("principal")
+        shortcuts = recursos.SHORTCUTS
+        toolbar_items = configuracion.TOOLBAR_ITEMS
         for i, m in enumerate(list(EDIS.__MENUBAR.values())):
             menu = menu_bar.addMenu(m)
             menu_items[i] = menu
         for i, _actions in enumerate(actions.ACTIONS):
             for action in _actions:
+                obj = editor_container
                 menu_name = menu_items[i]
                 name = action.get('name', None)
                 connection = action.get('connection', None)
+                shortcut = action.get('shortcut', None)
+                separator = action.get('separator', False)
                 qaction = menu_name.addAction(name)
-                slot = getattr(editor_container, connection, None)
+                #FIXME: No depender de shortcut
+                icon = QIcon(":image/%s" % shortcut)
+                qaction.setIcon(icon)
+                if shortcut is not None:
+                    qaction.setShortcut(shortcuts[shortcut])
+                if connection.startswith('edis'):
+                    obj = self
+                    connection = connection.split('.')[-1]
+                slot = getattr(obj, connection, None)
                 if hasattr(slot, "__call__"):
                     self.connect(qaction, SIGNAL("triggered()"), slot)
-
-    def cargar_menu(self):
-        items_toolbar = OrderedDict()
-        menu_bar = self.menuBar()
-        menu_edis = self.componente("menu")
-        principal = self.componente("principal")
-        for i in range(7):
-            menu = menu_bar.addMenu(self.get_menu(i))
-            for accion in menu_edis.acciones:
-                seccion = accion.seccion
-                submenu = accion.submenu
-                if seccion == i:
-                    if submenu:
-                        if isinstance(submenu, bool):
-                            smenu = menu.addMenu(accion.nombre)
-                            EDIS.__ACCIONES[accion.nombre] = smenu
-                            if accion.nombre == 'Abrir reciente':
-                                menu.addSeparator()
-                            continue
-                        else:
-                            qaccion = smenu.addAction(accion.nombre)
-                    else:
-                        qaccion = menu.addAction(accion.nombre)
-                    if accion.nombre in configuracion.ITEMS_TOOLBAR:
-                        items_toolbar[accion.nombre] = qaccion
-                    if accion.atajo:
-                        qaccion.setShortcut(accion.atajo)
-                    icono = accion.icono
-                    if icono:
-                        qaccion.setIcon(QIcon(icono))
-                    if accion.conexion:
-                        if accion.conexion.split('.')[0] == 'edis':
-                            funcion = getattr(self,
-                                              accion.conexion.split('.')[1],
-                                              None)
-                        else:
-                            funcion = getattr(principal, accion.conexion, None)
-                        # Es una función ?
-                        if hasattr(funcion, '__call__'):
-                            qaccion.triggered.connect(funcion)
-                    if accion.separador:
-                        menu.addSeparator()
-                    EDIS.__ACCIONES[accion.nombre] = qaccion
-
-        self.__cargar_toolbar(items_toolbar)
-
-    def __cargar_toolbar(self, items_toolbar):
-        #FIXME: Arreglar esto
-        for i, accion in enumerate(list(items_toolbar.items())):
-            if accion[0] in configuracion.ITEMS_TOOLBAR:
-                self.toolbar.addAction(accion[1])
-                if configuracion.ITEMS_TOOLBAR[i + 1] == 'separador':
-                    self.toolbar.addSeparator()
+                if separator:
+                    menu_name.addSeparator()
+                #FIXME: agregar separador
+                if shortcut in toolbar_items:
+                    self.toolbar.addAction(qaction)
 
     def cargar_central(self, window):
         principal = EDIS.componente("principal")
-        dock = EDIS.componente("dock")
-        print(dock)
+        dock = EDIS.componente("dock")  # lint:ok
         #start_page = False
         if ESettings.get('general/inicio'):
             principal.add_start_page()
@@ -250,99 +213,53 @@ class EDIS(QMainWindow):
         #for widget in [self.navegador, self.explorador, self.simbolos]:
             #self.addDockWidget(Qt.LeftDockWidgetArea, widget)
 
-        # Conexión
-        #self.simbolos.visibilityChanged[bool].connect(
-            #self.visibilidad_simbolos)
-        #self.navegador.visibilityChanged[bool].connect(
-            #self.visibilidad_navegador)
-        #self.explorador.visibilityChanged[bool].connect(
-            #self.visibilidad_explorador)
         #principal.archivo_cambiado['QString'].connect(self.__actualizar_estado)
-        #principal.posicion_cursor.connect(self.__actualizar_cursor)
+        self.connect(principal, SIGNAL("cursorPosition(int, int, int)"),
+                     self._update_cursor)
         #principal.actualizarSimbolos['QString'].connect(
             #principal.update_symbols)
         #principal.archivo_cambiado.connect(principal.update_symbols)
         #self.simbolos.irALinea[int].connect(principal.ir_a_linea)
-        #FIXME: cambiar nombre
         #self.output.salida_.output.ir_a_linea[int].connect(
             #principal.ir_a_linea)
-        principal.archivo_cambiado['QString'].connect(self.__titulo_ventana)
-        #principal.stack.todo_cerrado.connect(self.todo_cerrado)
+        self.connect(principal, SIGNAL("fileChanged(QString)"),
+                     self._change_title)
+        self.connect(principal.stack, SIGNAL("allClosed()"), self._all_closed)
         principal.stack.todo_cerrado.connect(principal.add_start_page)
         #principal.archivo_abierto['QString'].connect(self.navegador.agregar)
         #principal.archivo_cerrado[int].connect(self.navegador.eliminar)
 
         return principal
 
-    #FIXME: mejorar
-    def toggled_simbolos(self, t):
-        if t:
-            for w in [self.explorador, self.navegador]:
-                w.hide()
-            self.simbolos.show()
-        else:
-            self.simbolos.hide()
-
-    def toggled_navegador(self, t):
-        if t:
-            for w in [self.explorador, self.simbolos]:
-                w.hide()
-            self.navegador.show()
-        else:
-            self.navegador.hide()
-
-    def toggled_explorador(self, t):
-        if t:
-            for w in [self.navegador, self.simbolos]:
-                w.hide()
-            self.explorador.show()
-        else:
-            self.explorador.hide()
-
-    def visibilidad_simbolos(self, v):
-        self.tb_simbolos.setChecked(v)
-
-    def visibilidad_navegador(self, v):
-        self.tb_navegador.setChecked(v)
-
-    def visibilidad_explorador(self, v):
-        self.tb_explorador.setChecked(v)
-
-    def __actualizar_cursor(self, linea, columna, lineas):
+    def _update_cursor(self, line, row, lines):
         self.barra_de_estado.cursor_widget.show()
-        self.barra_de_estado.cursor_widget.actualizar_cursor(
-            linea, columna, lineas)
+        self.barra_de_estado.cursor_widget.actualizar_cursor(line, row, lines)
 
-    def __actualizar_estado(self, archivo):
+    def _update_status(self, archivo):
         self.barra_de_estado.update_status(archivo)
 
-    def todo_cerrado(self):
+    def _all_closed(self):
         self.setWindowTitle(ui.__nombre__)
         self.barra_de_estado.cursor_widget.hide()
-        self.__actualizar_estado("")
+        self._update_status("")
 
-    def __titulo_ventana(self, titulo):
+    def _change_title(self, titulo):
         """ Cambia el título de la ventana (nombre_archivo - EDIS) """
 
         titulo = os.path.basename(titulo)
         self.setWindowTitle(titulo + ' - ' + ui.__nombre__)
 
-    def reportar_bug(self):
+    def report_bug(self):
         webbrowser.open_new(ui.__reportar_bug__)
 
-    def mostrar_ocultar_output(self):
-        if self.output.isVisible():
-            self.output.hide()
-        else:
-            self.output.show()
+    def show_hide_toolbars(self):
+        for toolbar in [self.toolbar, self.dock_toolbar]:
+            if toolbar.isVisible():
+                toolbar.hide()
+            else:
+                toolbar.show()
 
-    def mostrar_ocultar_toolbar(self):
-        if self.toolbar.isVisible():
-            self.toolbar.hide()
-        else:
-            self.toolbar.show()
-
-    def mostrar_pantalla_completa(self):
+    def show_full_screen(self):
         if self.isFullScreen():
             self.showNormal()
         else:
@@ -366,10 +283,10 @@ class EDIS(QMainWindow):
         for recent_file in recents_files:
             menu_recents_files.addAction(recent_file)
 
-    def acerca_de_qt(self):
+    def about_qt(self):
         QMessageBox.aboutQt(self)
 
-    def acerca_de_edis(self):
+    def about_edis(self):
         dialogo = acerca_de.AcercaDe(self)
         dialogo.exec_()
 
@@ -396,33 +313,7 @@ class EDIS(QMainWindow):
         #ESettings.set('general/archivos', principal.archivos_abiertos())
         #ESettings.set('general/recientes', principal.get_recents_files())
 
-    def detectar_dependencias(self):
-        #FIXME: Mejorar
-        pass
-        #ok, ejec = dependencias.detectar()
-        #if not ok:
-            #dialogo = dialogo_dependencias.DialogoDependencias(ejec, self)
-            #dialogo.show()
-
-    def comprobar_compilador(self):
-        #TODO: Quitar esto
-        proceso = Popen('gcc --help', stdout=PIPE, stderr=PIPE, shell=True)
-        if proceso.wait() != 0:
-            flags = QMessageBox.Yes
-            flags |= QMessageBox.No
-            r = QMessageBox.warning(self,
-                                    self.tr("No se encontro el compilador"),
-                                    self.tr("Desea instalarlo?"), flags)
-            if r == QMessageBox.Yes:
-                self._descargar_compilador()
-            elif r == QMessageBox.No:
-                return False
-
-    def _descargar_compilador(self):
-        #FIXME:
-        webbrowser.open_new(ui.__gcc__)
-
-    def configuracion_edis(self):
+    def show_settings(self):
         from src.ui.dialogos.preferencias import preferencias
         dialogo = preferencias.Preferencias(self)
         dialogo.show()

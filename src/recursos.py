@@ -5,61 +5,54 @@
 # Copyright 2014-2015 - Gabriel Acosta
 # License: GPLv3 (see http://www.gnu.org/licenses/gpl.html)
 
-"""
-Éste módulo tiene información acerca de los directorios necesarios para
-la aplicación.
-
-"""
-
 from PyQt4.QtGui import QKeySequence
 
 from PyQt4.QtCore import Qt
 
 
-# Atajos de teclas
-ATAJOS = {
+# Atajos
+SHORTCUTS = {
     # Archivo
-    "nuevo": QKeySequence(Qt.CTRL + Qt.Key_N),
-    "abrir": QKeySequence(Qt.CTRL + Qt.Key_O),
-    "guardar": QKeySequence(Qt.CTRL + Qt.Key_S),
-    "cerrar-tab": QKeySequence(Qt.CTRL + Qt.Key_W),
-    "imprimir": QKeySequence(Qt.CTRL + Qt.Key_P),
-    "propiedades": QKeySequence(Qt.CTRL + Qt.SHIFT + Qt.Key_P),
-    "salir": QKeySequence(Qt.CTRL + Qt.Key_Q),
+    "new": QKeySequence(Qt.CTRL + Qt.Key_N),
+    "open": QKeySequence(Qt.CTRL + Qt.Key_O),
+    "save": QKeySequence(Qt.CTRL + Qt.Key_S),
+    "close": QKeySequence(Qt.CTRL + Qt.Key_W),
+    "properties": QKeySequence(Qt.CTRL + Qt.SHIFT + Qt.Key_P),
+    "exit": QKeySequence(Qt.CTRL + Qt.Key_Q),
     # Editar
-    "deshacer": QKeySequence(Qt.CTRL + Qt.Key_Z),
-    "rehacer": QKeySequence(Qt.CTRL + Qt.Key_Y),
-    "cortar": QKeySequence(Qt.CTRL + Qt.Key_X),
-    "copiar": QKeySequence(Qt.CTRL + Qt.Key_C),
-    "pegar": QKeySequence(Qt.CTRL + Qt.Key_V),
-    "seleccionar": QKeySequence(Qt.CTRL + Qt.Key_A),
-    "indentar": QKeySequence(Qt.Key_Tab),
-    "quitar-indentacion": QKeySequence(Qt.SHIFT + Qt.Key_Tab),
-    "mover-arriba": QKeySequence(Qt.ALT + Qt.Key_Up),
-    "mover-abajo": QKeySequence(Qt.ALT + Qt.Key_Down),
-    "comentar": QKeySequence(Qt.CTRL + Qt.Key_D),
-    "descomentar": QKeySequence(Qt.CTRL + Qt.SHIFT + Qt.Key_D),
-    "titulo": QKeySequence(Qt.CTRL + Qt.Key_T),
-    "eliminar": QKeySequence(Qt.CTRL + Qt.SHIFT + Qt.Key_X),
-    "duplicar": QKeySequence(Qt.ALT + Qt.Key_D),
-    "preferencias": QKeySequence(Qt.CTRL + Qt.ALT + Qt.Key_P),
+    "undo": QKeySequence(Qt.CTRL + Qt.Key_Z),
+    "redo": QKeySequence(Qt.CTRL + Qt.Key_Y),
+    "cut": QKeySequence(Qt.CTRL + Qt.Key_X),
+    "copy": QKeySequence(Qt.CTRL + Qt.Key_C),
+    "paste": QKeySequence(Qt.CTRL + Qt.Key_V),
+    "select": QKeySequence(Qt.CTRL + Qt.Key_A),
+    "indent": QKeySequence(Qt.Key_Tab),
+    "unindent": QKeySequence(Qt.SHIFT + Qt.Key_Tab),
+    "up": QKeySequence(Qt.ALT + Qt.Key_Up),
+    "down": QKeySequence(Qt.ALT + Qt.Key_Down),
+    "comment": QKeySequence(Qt.CTRL + Qt.Key_D),
+    "uncomment": QKeySequence(Qt.CTRL + Qt.SHIFT + Qt.Key_D),
+    "title": QKeySequence(Qt.CTRL + Qt.Key_T),
+    "delete": QKeySequence(Qt.CTRL + Qt.SHIFT + Qt.Key_X),
+    "duplicate": QKeySequence(Qt.ALT + Qt.Key_D),
+    "preferences": QKeySequence(Qt.CTRL + Qt.ALT + Qt.Key_P),
     # Ver
     "fullscreen": QKeySequence(Qt.CTRL + Qt.Key_F11),
-    "ocultar-todo": QKeySequence(Qt.Key_F11),
-    "mostrar-toolbar": QKeySequence(Qt.Key_F8),
-    "lateral": QKeySequence(Qt.Key_F6),
-    "mostrar-compilador": QKeySequence(Qt.Key_F7),
-    "acercar": QKeySequence(Qt.CTRL + Qt.Key_Plus),
-    "alejar": QKeySequence(Qt.CTRL + Qt.Key_Minus),
-    "selector": QKeySequence(Qt.CTRL + Qt.Key_M),
+    "hide-all": QKeySequence(Qt.Key_F11),
+    "hide-toolbar": QKeySequence(Qt.Key_F8),
+    "hide-output": QKeySequence(Qt.Key_F7),
+    "zoom-in": QKeySequence(Qt.CTRL + Qt.Key_Plus),
+    "zoom-out": QKeySequence(Qt.CTRL + Qt.Key_Minus),
+    "show-selector": QKeySequence(Qt.CTRL + Qt.Key_M),
     # Código
-    "compilar": QKeySequence(Qt.CTRL + Qt.Key_F5),
-    "ejecutar": QKeySequence(Qt.CTRL + Qt.Key_F6),
-    "comp-ejec": QKeySequence(Qt.CTRL + Qt.Key_F10),
+    "build": QKeySequence(Qt.CTRL + Qt.Key_F5),
+    "run": QKeySequence(Qt.CTRL + Qt.Key_F6),
+    "build-run": QKeySequence(Qt.CTRL + Qt.Key_F10),
+    "stop": QKeySequence(Qt.CTRL + Qt.Key_B),
     # Buscar
-    "busqueda-rapida": QKeySequence(Qt.CTRL + Qt.Key_F),
-    "buscar": QKeySequence(Qt.CTRL + Qt.Key_H),
-    "ir": QKeySequence(Qt.CTRL + Qt.Key_J)
+    "find": QKeySequence(Qt.CTRL + Qt.Key_F),
+    "find-replace": QKeySequence(Qt.CTRL + Qt.Key_H),
+    "go-to-line": QKeySequence(Qt.CTRL + Qt.Key_J)
     }
 
 # Tema editor
