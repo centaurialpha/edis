@@ -18,10 +18,7 @@ from PyQt4.QtCore import (
     QPoint
     )
 
-from src import (
-    paths,
-    recursos
-    )
+from src import recursos
 
 
 class PopupBusqueda(QDialog):
@@ -39,9 +36,9 @@ class PopupBusqueda(QDialog):
         box.addWidget(self.line)
         # Botones
         btn_anterior = QToolButton()
-        btn_anterior.setIcon(QIcon(paths.ICONOS['arrow-down']))
+        btn_anterior.setIcon(QIcon(":image/down"))
         btn_siguiente = QToolButton()
-        btn_siguiente.setIcon(QIcon(paths.ICONOS['arrow-up']))
+        btn_siguiente.setIcon(QIcon(":image/up"))
         box.addWidget(btn_anterior)
         box.addWidget(btn_siguiente)
 
