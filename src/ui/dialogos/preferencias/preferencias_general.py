@@ -54,6 +54,13 @@ class ConfiguracionGeneral(QWidget):
             ESettings.get('ventana/guardarDimensiones'))
         box.addWidget(self.check_dimensiones)
 
+        # Notificaciones
+        group_notifications = QGroupBox(self.tr("Notificaciones:"))
+        box = QVBoxLayout(group_notifications)
+        self.check_updates = QCheckBox(self.tr("Comprobar actualizaciones"))
+        self.check_updates.setChecked(ESettings.get('general/updates'))
+        box.addWidget(self.check_updates)
+
         # Reestablecer
         grupo_reestablecer = QGroupBox(self.tr("Reestablecer:"))
         box = QHBoxLayout(grupo_reestablecer)
@@ -64,6 +71,7 @@ class ConfiguracionGeneral(QWidget):
 
         contenedor.addWidget(grupo_inicio)
         contenedor.addWidget(grupo_salir)
+        contenedor.addWidget(group_notifications)
         contenedor.addWidget(grupo_reestablecer)
         contenedor.addItem(QSpacerItem(0, 10, QSizePolicy.Expanding,
                            QSizePolicy.Expanding))
@@ -90,3 +98,4 @@ class ConfiguracionGeneral(QWidget):
                       self.check_dimensiones.isChecked())
         ESettings.set('general/confirmarSalida',
                       self.check_al_cerrar.isChecked())
+        ESettings.set('general/updates', self.check_updates.isChecked())

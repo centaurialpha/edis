@@ -58,7 +58,7 @@ configuracion = {
     'general/inicio': True,
     'general/archivos': [],
     'general/recientes': [],
-    'terminal': ''
+    'general/updates': True
     }
 
 #FIXME:
@@ -108,6 +108,8 @@ class ESettings(object):
             'general/archivos', [])
         configuracion['general/recientes'] = qconfig.value(
             'general/recientes', [])
+        configuracion['general/updates'] = qconfig.value(
+            'general/updates', True, type=bool)
 
     @staticmethod
     def get(valor):

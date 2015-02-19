@@ -98,8 +98,9 @@ class EDIS(QMainWindow):
         EDIS.cargar_componente("edis", self)
 
         # Comprobar nueva versión
-        self.noti = system_tray.NotificacionActualizacion()
-        self.noti.show()
+        if ESettings.get('general/updates'):
+            self.noti = system_tray.NotificacionActualizacion()
+            self.noti.show()
 
     @classmethod
     def cargar_componente(cls, nombre, instancia):
