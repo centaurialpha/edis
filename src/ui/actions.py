@@ -25,7 +25,8 @@ ACTIONS = ([
         "connection": "close_all"},
     {
         "name": "Cerrar los demás",
-        "connection": "close_all_others"},
+        "connection": "close_all_others",
+        "separator": True},
     {
         "name": "Guardar",
         "connection": "save_file",
@@ -35,10 +36,12 @@ ACTIONS = ([
         "connection": "save_file_as"},
     {
         "name": "Guardar todo",
-        "connection": "save_all"},
+        "connection": "save_all",
+        "separator": True},
     {
         "name": "Propiedades",
-        "connection": "file_properties"},
+        "connection": "file_properties",
+        "separator": True},
     {
         "name": "Salir",
         "connection": "edis.close",
@@ -67,7 +70,8 @@ ACTIONS = ([
     {
         "name": "Seleccionar todo",
         "connection": "select_all",
-        "shortcut": "select"},
+        "shortcut": "select",
+        "separator": True},
     {
         "name": "Indentar",
         "connection": "indent",
@@ -75,7 +79,8 @@ ACTIONS = ([
     {
         "name": "Quitar indentación",
         "connection": "unindent",
-        "shortcut": "unindent"},
+        "shortcut": "unindent",
+        "separator": True},
     {
         "name": "Duplicar línea",
         "connection": "duplicate_line",
@@ -83,7 +88,8 @@ ACTIONS = ([
     {
         "name": "Eliminar línea",
         "connection": "delete_line",
-        "shortcut": "delete"},
+        "shortcut": "delete",
+        "separator": True},
     {
         "name": "A minúsculas",
         "connection": "to_lowercase"},
@@ -92,7 +98,8 @@ ACTIONS = ([
         "connection": "to_uppercase"},
     {
         "name": "A título",
-        "connection": "to_title"},
+        "connection": "to_title",
+        "separator": True},
     {
         "name": "Comentar",
         "connection": "comment",
@@ -100,13 +107,15 @@ ACTIONS = ([
     {
         "name": "Descomentar",
         "connection": "uncomment",
-        "shortcut": "uncomment"},
+        "shortcut": "uncomment",
+        "separator": True},
     {
         "name": "Mover hacia arriba",
         "connection": "move_up"},
     {
         "name": "Mover hacia abajo",
-        "connection": "move_down"},
+        "connection": "move_down",
+        "separator": True},
     {
         "name": "Configuración",
         "connection": "edis.show_settings"}],
@@ -122,17 +131,20 @@ ACTIONS = ([
     {
         "name": "Mostrar/ocultar toolbars",
         "connection": "edis.show_hide_toolbars",
-        "shortcut": "hide-toolbar"},
+        "shortcut": "hide-toolbar",
+        "separator": True},
     {
         "name": "Mostrar tabs y espacios en blanco",
         "connection": "show_tabs_and_spaces"},
     {
         "name": "Mostrar guías",
-        "connection": "show_indentation_guides"},
+        "connection": "show_indentation_guides",
+        "separator": True},
     {
         "name": "Selector",
         "connection": "show_selector",
-        "shortcut": "show-selector"},
+        "shortcut": "show-selector",
+        "separator": True},
     {
         "name": "Acercar",
         "connection": "zoom_in",
@@ -149,7 +161,8 @@ ACTIONS = ([
     {
         "name": "Buscar y reemplazar",
         "connection": "find_and_replace",
-        "shortcut": "find-replace"},
+        "shortcut": "find-replace",
+        "separator": True},
     {
         "name": "Ir a línea",
         "connection": "show_go_to_line",
@@ -170,17 +183,20 @@ ACTIONS = ([
     {
         "name": "Terminar programa",
         "connection": "stop_program",
-        "shortcut": "stop"},
+        "shortcut": "stop",
+        "separator": True},
     {
         "name": "Limpiar construcción",
         "connection": "clean_construction"}],
     # Menú acerca de
     [{
         "name": "Reportar bug!",
-        "connection": "edis.report_bug"},
+        "connection": "edis.report_bug",
+        "separator": True},
     {
         "name": "Archivo de log",
-        "connection": "show_log_file"},
+        "connection": "show_log_file",
+        "separator": True},
     {
         "name": "Acerca de Edis",
         "connection": "edis.about_edis"},
