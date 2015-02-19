@@ -80,8 +80,8 @@ class EditorContainer(QWidget):
                      self._archivo_modificado)
         self.connect(self.stack, SIGNAL("archivo_cerrado(int)"),
                      self._archivo_cerrado)
-        #self.connect(self.stack, SIGNAL("archivo_reciente(QStringList)"),
-                     #self.actualizar_recientes)
+        self.connect(self.stack, SIGNAL("recentFile(QStringList)"),
+                     self.update_recents_files)
         self.connect(self, SIGNAL("fileChanged(QString)"),
                      self.update_symbols)
 
@@ -95,21 +95,20 @@ class EditorContainer(QWidget):
         symbols_widget = EDIS.lateral("symbols")
         symbols_widget.update_symbols(symbols)
 
-    def actualizar_recientes(self, recientes):
-        edis = EDIS.componente('edis')
-        menu = edis.accion('Abrir reciente')
-        self.connect(menu, SIGNAL("triggered(QAction*)"), self._abrir_reciente)
+    def update_recents_files(self, recents_files):
+        menu = EDIS.componente("menu_recent_file")
+        self.connect(menu, SIGNAL("triggered(QAction*)"),
+                     self._open_recent_file)
         menu.clear()
-        for archivo in recientes:
-            menu.addAction(archivo)
+        for _file in recents_files:
+            menu.addAction(_file)
 
-    def _abrir_reciente(self, accion):
-        self.abrir_archivo(accion.text())
+    def _open_recent_file(self, accion):
+        self.open_file(accion.text())
 
     def get_recents_files(self):
-        edis = EDIS.componente('edis')
-        recent_menu = edis.accion('Abrir reciente')
-        actions = recent_menu.actions()
+        menu = EDIS.componente('menu_recent_file')
+        actions = menu.actions()
         recents_files = []
         for filename in actions:
             recents_files.append(filename.text())
@@ -347,7 +346,7 @@ class EditorContainer(QWidget):
         if weditor is not None:
             weditor.seleccionar()
 
-    def archivos_abiertos(self):
+    def opened_files(self):
         return self.stack.archivos_abiertos()
 
     def file_properties(self):

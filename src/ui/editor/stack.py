@@ -22,7 +22,7 @@ class StackWidget(QStackedWidget):
     guardar_editor_actual = pyqtSignal(name="Guardar_Editor_Actual")
     archivo_modificado = pyqtSignal(bool)
     archivo_cerrado = pyqtSignal(int)
-    archivo_reciente = pyqtSignal(['QStringList'])
+    archivo_reciente = pyqtSignal('QStringList', name="recentFile")
 
     def __init__(self, parent=None):
         super(StackWidget, self).__init__()

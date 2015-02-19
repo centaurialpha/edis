@@ -14,7 +14,10 @@ ACTIONS = ([
     {
         "name": "Abrir archivo",
         "connection": "open_file",
-        "shortcut": "open",
+        "shortcut": "open"},
+    {
+        "name": "Abrir archivo reciente",
+        "menu": True,
         "separator": True},
     {
         "name": "Cerrar",

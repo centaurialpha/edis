@@ -49,7 +49,6 @@ class EDIS(QMainWindow):
     # Cada instancia de una clase  se guarda en éste diccionario
     __COMPONENTES = {}
     __LATERAL = {}  # Widgets laterales
-    __ACCIONES = {}
 
     def __init__(self):
         QMainWindow.__init__(self)
@@ -122,10 +121,6 @@ class EDIS(QMainWindow):
     def lateral(cls, nombre):
         return cls.__LATERAL.get(nombre, None)
 
-    #@classmethod
-    #def accion(cls, nombre):
-        #return cls.__ACCIONES.get(nombre, None)
-
     def setup_menu(self, menu_bar):
         from src.ui import actions
         from src import recursos
@@ -153,6 +148,12 @@ class EDIS(QMainWindow):
                 connection = action.get('connection', None)
                 shortcut = action.get('shortcut', None)
                 separator = action.get('separator', False)
+                subm = action.get('menu', False)
+                if subm:
+                    # Archivos recientes
+                    submenu = menu_name.addMenu(name)
+                    EDIS.cargar_componente("menu_recent_file", submenu)
+                    continue
                 qaction = menu_name.addAction(name)
                 #FIXME: No depender de shortcut
                 icon = QIcon(":image/%s" % shortcut)
@@ -241,23 +242,23 @@ class EDIS(QMainWindow):
         dock = EDIS.componente("dock")
         dock.output_visibility()
 
-    def cargar_archivos(self, archivos, recents_files):
+    def cargar_archivos(self, files, recents_files):
         """ Carga archivos al editor desde la última sesión y actualiza el menú
         de archivos recientes.
         """
 
-        if archivos:
-            self.simbolos.show()
-            principal = EDIS.componente("principal")
-            for archivo in archivos:
-                principal.abrir_archivo(archivo[0], archivo[1])
-        #FIXME: Se está haciendo lo mismo en EditorContainer
-        menu_recents_files = EDIS.accion("Abrir reciente")
         principal = EDIS.componente("principal")
-        self.connect(menu_recents_files, SIGNAL("triggered(QAction*)"),
-                     principal._abrir_reciente)
-        for recent_file in recents_files:
-            menu_recents_files.addAction(recent_file)
+        for _file in files:
+            filename, cursor_position = _file
+            principal.open_file(filename, cursor_position)
+        principal.update_recents_files(recents_files)
+        #FIXME: Se está haciendo lo mismo en EditorContainer
+        #menu_recents_files = EDIS.accion("Abrir reciente")
+        #principal = EDIS.componente("principal")
+        #self.connect(menu_recents_files, SIGNAL("triggered(QAction*)"),
+                     #principal._abrir_reciente)
+        #for recent_file in recents_files:
+            #menu_recents_files.addAction(recent_file)
 
     def about_qt(self):
         QMessageBox.aboutQt(self)
@@ -286,8 +287,9 @@ class EDIS(QMainWindow):
         if ESettings.get('ventana/guardarDimensiones'):
             ESettings.set('ventana/dimensiones', self.size())
             ESettings.set('ventana/posicion', self.pos())
-        #ESettings.set('general/archivos', principal.archivos_abiertos())
-        #ESettings.set('general/recientes', principal.get_recents_files())
+        opened_files = principal.opened_files()
+        ESettings.set('general/archivos', opened_files)
+        ESettings.set('general/recientes', principal.get_recents_files())
 
     def show_settings(self):
         from src.ui.dialogos.preferencias import preferencias

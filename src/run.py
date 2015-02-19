@@ -47,11 +47,13 @@ def correr_interfaz(app):
         estilo = tema.read()
     app.setStyleSheet(estilo)
     # Archivos de última sesión
-    archivos = ESettings.get('general/archivos')
+    files = ESettings.get('general/archivos')
+    if files is None:
+        files = []
     # Archivos recientes
     recents_files = ESettings.get('general/recientes')
     if recents_files is None:
         recents_files = []
-    #edis.cargar_archivos(archivos, recents_files)
+    edis.cargar_archivos(files, recents_files)
     edis.show()
     sys.exit(app.exec_())
