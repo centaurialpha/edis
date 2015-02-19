@@ -15,14 +15,13 @@ from PyQt4.QtGui import (
 
 from PyQt4.QtCore import pyqtSignal
 
-from src import paths
 from src.ui.main import EDIS
 from src.ui.contenedores.lateral import custom_dock
 
 
 class ArbolDeSimbolos(custom_dock.CustomDock):
 
-    _ir_a_linea = pyqtSignal(int, name='irALinea')
+    _ir_a_linea = pyqtSignal(int, name='goToLine')
 
     iconos = {
         'clase': ':image/class',
@@ -51,9 +50,9 @@ class ArbolDeSimbolos(custom_dock.CustomDock):
         self.tree.itemClicked[QTreeWidgetItem, int].connect(self.ir_a_linea)
         self.tree.itemActivated[QTreeWidgetItem, int].connect(self.ir_a_linea)
 
-        EDIS.cargar_lateral("simbolos", self)
+        EDIS.cargar_lateral("symbols", self)
 
-    def actualizar_simbolos(self, simbolos):
+    def update_symbols(self, simbolos):
         # Limpiar
         self.tree.clear()
 

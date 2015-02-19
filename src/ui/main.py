@@ -91,7 +91,7 @@ class EDIS(QMainWindow):
         self.barra_de_estado = EDIS.componente("barra_de_estado")
         self.setStatusBar(self.barra_de_estado)
         # Widget central
-        central = self.cargar_central(window)
+        central = self._load_ui(window)
         window.setCentralWidget(central)
         window.setWindowFlags(Qt.Widget)
         self.setCentralWidget(window)
@@ -171,42 +171,35 @@ class EDIS(QMainWindow):
                 if shortcut in toolbar_items:
                     self.toolbar.addAction(qaction)
 
-    def cargar_central(self, window):
+    def _load_ui(self, window):
+        """ Carga los componentes laterales y la salida del compilador """
+
         principal = EDIS.componente("principal")
-        dock = EDIS.componente("dock")  # lint:ok
+        dock = EDIS.componente("dock")
         dock.load_dock_toolbar(self.dock_toolbar)
-        #start_page = False
+        names_instances = ["symbols", "navigator", "explorer"]
+        for name in names_instances:
+            method = getattr(dock, "load_%s_widget" % name, None)
+            widget = EDIS.lateral(name)
+            method(widget)
+            window.addDockWidget(Qt.LeftDockWidgetArea, widget)
+        output_widget = EDIS.componente("output")
+        dock.load_output_widget(output_widget)
+        window.addDockWidget(Qt.BottomDockWidgetArea, output_widget)
         if ESettings.get('general/inicio'):
             principal.add_start_page()
-            #start_page = True
-        #self.simbolos = EDIS.lateral("simbolos")
-        #if start_page:
-            #self.simbolos.hide()
-        #self.navegador = EDIS.lateral("navegador")
-        #self.navegador.hide()
-        #self.explorador = EDIS.lateral("explorador")
-        #self.explorador.hide()
-        #self.output = EDIS.componente("output")
-        #window.addDockWidget(Qt.BottomDockWidgetArea, self.output)
-        #self.output.hide()
-        #for widget in [self.navegador, self.explorador, self.simbolos]:
-            #self.addDockWidget(Qt.LeftDockWidgetArea, widget)
 
-        #principal.archivo_cambiado['QString'].connect(self.__actualizar_estado)
+        # Conexiones
+        self.connect(principal, SIGNAL("fileChanged(QString)"),
+                     self._update_status)
         self.connect(principal, SIGNAL("cursorPosition(int, int, int)"),
                      self._update_cursor)
         #principal.actualizarSimbolos['QString'].connect(
             #principal.update_symbols)
-        #principal.archivo_cambiado.connect(principal.update_symbols)
-        #self.simbolos.irALinea[int].connect(principal.ir_a_linea)
-        #self.output.salida_.output.ir_a_linea[int].connect(
-            #principal.ir_a_linea)
         self.connect(principal, SIGNAL("fileChanged(QString)"),
                      self._change_title)
         self.connect(principal.stack, SIGNAL("allClosed()"), self._all_closed)
         principal.stack.todo_cerrado.connect(principal.add_start_page)
-        #principal.archivo_abierto['QString'].connect(self.navegador.agregar)
-        #principal.archivo_cerrado[int].connect(self.navegador.eliminar)
 
         return principal
 
@@ -243,6 +236,10 @@ class EDIS(QMainWindow):
             self.showNormal()
         else:
             self.showFullScreen()
+
+    def show_hide_output(self):
+        dock = EDIS.componente("dock")
+        dock.output_visibility()
 
     def cargar_archivos(self, archivos, recents_files):
         """ Carga archivos al editor desde la última sesión y actualiza el menú

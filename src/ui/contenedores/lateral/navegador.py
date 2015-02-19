@@ -20,12 +20,12 @@ class Navegador(custom_dock.CustomDock):
 
         self.navegador.itemClicked.connect(self._cambiar_editor)
 
-        EDIS.cargar_lateral("navegador", self)
+        EDIS.cargar_lateral("navigator", self)
 
-    def agregar(self, archivo):
+    def add_item(self, archivo):
         self.navegador.addItem(archivo)
 
-    def eliminar(self, indice):
+    def delete_item(self, indice):
         self.navegador.takeItem(indice)
 
     def cambiar_foco(self, indice):

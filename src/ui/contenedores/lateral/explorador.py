@@ -45,7 +45,7 @@ class Explorador(custom_dock.CustomDock):
         # Conexion
         self.explorador.doubleClicked.connect(self._abrir_archivo)
 
-        EDIS.cargar_lateral("explorador", self)
+        EDIS.cargar_lateral("explorer", self)
 
     def _abrir_archivo(self, i):
         if not self.modelo.isDir(i):

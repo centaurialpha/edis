@@ -41,14 +41,67 @@ class DockManager(QObject):
                    self.explorer_button]:
             toolbar.addWidget(tb)
 
+    def load_output_widget(self, output_widget):
+        self._output_widget = output_widget
+        self._output_widget.hide()
+        editor_container = EDIS.componente("principal")
+        self.connect(output_widget, SIGNAL("goToLine(int)"),
+                     editor_container.go_to_line)
+
+    def load_symbols_widget(self, symbols_widget):
+        self._symbols_widget = symbols_widget
+        editor_container = EDIS.componente("principal")
+        self.connect(self._symbols_widget, SIGNAL("goToLine(int)"),
+                     editor_container.go_to_line)
+        self.connect(self._symbols_widget, SIGNAL("visibilityChanged(bool)"),
+                     lambda checked: self.symbols_button.setChecked(checked))
+
+    def load_navigator_widget(self, navigator_widget):
+        self._navigator_widget = navigator_widget
+        navigator_widget.hide()
+        editor_container = EDIS.componente("principal")
+        self.connect(editor_container, SIGNAL("openedFile(QString)"),
+                     navigator_widget.add_item)
+        self.connect(editor_container, SIGNAL("closedFile(int)"),
+                     navigator_widget.delete_item)
+        self.connect(self._navigator_widget, SIGNAL("visibilityChanged(bool)"),
+                     lambda checked: self.navigator_button.setChecked(checked))
+
+    def load_explorer_widget(self, explorer_widget):
+        self._explorer_widget = explorer_widget
+        explorer_widget.hide()
+        self.connect(self._explorer_widget, SIGNAL("visibilityChanged(bool)"),
+                     lambda checked: self.explorer_button.setChecked(checked))
+
     def _symbols_visibility(self, value):
-        pass
+        if value:
+            for widget in [self._navigator_widget, self._explorer_widget]:
+                    widget.hide()
+            self._symbols_widget.show()
+        else:
+            self._symbols_widget.hide()
 
     def _navigator_visibility(self, value):
-        pass
+        if value:
+            for widget in [self._symbols_widget, self._explorer_widget]:
+                widget.hide()
+            self._navigator_widget.show()
+        else:
+            self._navigator_widget.hide()
 
     def _explorer_visibility(self, value):
-        pass
+        if value:
+            for widget in [self._symbols_widget, self._navigator_widget]:
+                widget.hide()
+            self._explorer_widget.show()
+        else:
+            self._explorer_widget.hide()
+
+    def output_visibility(self):
+        if self._output_widget.isVisible():
+            self._output_widget.hide()
+        else:
+            self._output_widget.show()
 
 
 dock_manager = DockManager()

@@ -53,11 +53,11 @@ class EditorContainer(QWidget):
 
     # Señales
     archivo_cambiado = pyqtSignal('QString', name="fileChanged")
-    archivo_abierto = pyqtSignal(['QString'])
+    archivo_abierto = pyqtSignal('QString', name="openedFile")
     posicion_cursor = pyqtSignal(int, int, int, name="cursorPosition")
     archivo_modificado = pyqtSignal(bool)
-    actualizar_simbolos = pyqtSignal(['QString'], name="actualizarSimbolos")
-    archivo_cerrado = pyqtSignal(int)
+    actualizar_simbolos = pyqtSignal('QString', name="updateSymbols")
+    archivo_cerrado = pyqtSignal(int, name="closedFile")
     cambiar_item = pyqtSignal(int)
 
     def __init__(self, edis=None):
@@ -82,7 +82,7 @@ class EditorContainer(QWidget):
                      self._archivo_cerrado)
         #self.connect(self.stack, SIGNAL("archivo_reciente(QStringList)"),
                      #self.actualizar_recientes)
-        self.connect(self, SIGNAL("archivo_cambiado(QString)"),
+        self.connect(self, SIGNAL("fileChanged(QString)"),
                      self.update_symbols)
 
     def update_symbols(self, s):
@@ -92,8 +92,8 @@ class EditorContainer(QWidget):
         source_code = weditor.texto
         source_sanitize = code_analizer.sanitize_source_code(source_code)
         symbols = code_analizer.parse_symbols(source_sanitize)
-        symbols_widget = EDIS.lateral("simbolos")
-        symbols_widget.actualizar_simbolos(symbols)
+        symbols_widget = EDIS.lateral("symbols")
+        symbols_widget.update_symbols(symbols)
 
     def actualizar_recientes(self, recientes):
         edis = EDIS.componente('edis')
