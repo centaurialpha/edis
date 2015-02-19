@@ -44,7 +44,7 @@ class Base(QsciScintilla):
         self.indicador_warning = 1
         self.indicador_error = 2
         # Estilo de indicadores
-        self.send("sci_indicsetstyle", self.indicador, "indic_container")
+        self.send("sci_indicsetstyle", self.indicador, "indic_box")
         self.send("sci_indicsetalpha", self.indicador, 100)
         self.send("sci_indicsetfore", self.indicador, 0x0000ff)
         self.send("sci_indicsetstyle", self.indicador_warning, "indic_dots")
