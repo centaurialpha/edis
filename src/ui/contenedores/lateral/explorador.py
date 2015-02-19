@@ -43,16 +43,16 @@ class Explorador(custom_dock.CustomDock):
         self.explorador.hideColumn(3)
 
         # Conexion
-        self.explorador.doubleClicked.connect(self._abrir_archivo)
+        self.explorador.doubleClicked.connect(self._open_file)
 
         EDIS.cargar_lateral("explorer", self)
 
-    def _abrir_archivo(self, i):
+    def _open_file(self, i):
         if not self.modelo.isDir(i):
             indice = self.modelo.index(i.row(), 0, i.parent())
             archivo = self.modelo.filePath(indice)
             principal = EDIS.componente("principal")
-            principal.abrir_archivo(archivo)
+            principal.open_file(archivo)
 
 
 explorador = Explorador()
