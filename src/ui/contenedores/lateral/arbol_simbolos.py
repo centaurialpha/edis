@@ -25,13 +25,13 @@ class ArbolDeSimbolos(custom_dock.CustomDock):
     _ir_a_linea = pyqtSignal(int, name='irALinea')
 
     iconos = {
-        'clase': paths.ICONOS['class'],
-        'funcion': paths.ICONOS['funcion'],
-        'struct': paths.ICONOS['struct'],
-        'miembro': paths.ICONOS['miembro'],
-        'global': paths.ICONOS['variable'],
-        'enumerator': paths.ICONOS['enumerator'],
-        'enums': paths.ICONOS['enums']
+        'clase': ':image/class',
+        'funcion': ':image/function',
+        'struct': ':image/struct',
+        'miembro': ':image/member',
+        'global': ':image/var',
+        'enumerator': ':image/enumerator',
+        'enums': ':image/enum'
         }
 
     def __init__(self):

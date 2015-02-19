@@ -33,7 +33,6 @@ from src.ui.main import EDIS
 
 def correr_interfaz(app):
     ESettings().cargar()
-    import src.ui.inicio  # lint:ok
     # Traductor
     local = QLocale.system().name()
     qtraductor = QTranslator()
@@ -41,7 +40,7 @@ def correr_interfaz(app):
                     QLibraryInfo.TranslationsPath))
 
     edis = EDIS()
-    app.setWindowIcon(QIcon(paths.ICONOS['icon']))
+    app.setWindowIcon(QIcon(":image/edis"))
     # Aplicar estilo
     with open(os.path.join(paths.PATH,
               "extras", "temas", "default.qss")) as tema:

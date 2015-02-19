@@ -19,5 +19,12 @@
         <file alias="search">images/search.png</file>
         <file alias="stop">images/stop.png</file>
         <file alias="undo">images/undo.png</file>
+        <file alias="class">images/class.png</file>
+        <file alias="enumerator">images/enumerator.png</file>
+        <file alias="enum">images/enums.png</file>
+        <file alias="function">images/funcion.png</file>
+        <file alias="member">images/miembro.png</file>
+        <file alias="struct">images/struct.png</file>
+        <file alias="var">images/variable.png</file>
     </qresource>
 </RCC>

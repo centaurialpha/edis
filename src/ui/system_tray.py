@@ -21,7 +21,6 @@ from PyQt4.QtCore import (
     )
 
 from src import ui
-from src import paths
 from src.helpers import logger
 
 log = logger.edis_logger.get_logger(__name__)
@@ -31,7 +30,7 @@ class NotificacionActualizacion(QSystemTrayIcon):
 
     def __init__(self, parent=None):
         QSystemTrayIcon.__init__(self, parent)
-        self.setIcon(QIcon(paths.ICONOS['icon']))
+        self.setIcon(QIcon(":image/edis"))
         self.hilo = Thread()
         self.hilo.start()
         self.hilo.version.connect(self._mostrar_mensaje)
