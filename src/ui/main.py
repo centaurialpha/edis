@@ -195,12 +195,9 @@ class EDIS(QMainWindow):
                      self._update_status)
         self.connect(principal, SIGNAL("cursorPosition(int, int, int)"),
                      self._update_cursor)
-        #principal.actualizarSimbolos['QString'].connect(
-            #principal.update_symbols)
         self.connect(principal, SIGNAL("fileChanged(QString)"),
                      self._change_title)
         self.connect(principal.stack, SIGNAL("allClosed()"), self._all_closed)
-        principal.stack.todo_cerrado.connect(principal.add_start_page)
 
         return principal
 

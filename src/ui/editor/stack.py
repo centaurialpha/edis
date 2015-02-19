@@ -18,11 +18,11 @@ from src.ui.editor import editor
 
 class StackWidget(QStackedWidget):
 
-    todo_cerrado = pyqtSignal(name="allClosed")
-    guardar_editor_actual = pyqtSignal(name="Guardar_Editor_Actual")
-    archivo_modificado = pyqtSignal(bool)
-    archivo_cerrado = pyqtSignal(int)
-    archivo_reciente = pyqtSignal('QStringList', name="recentFile")
+    allClosed = pyqtSignal()
+    saveCurrentFile = pyqtSignal()
+    fileModified = pyqtSignal(bool)
+    fileClosed = pyqtSignal(int)
+    recentFile = pyqtSignal('QStringList')
 
     def __init__(self, parent=None):
         super(StackWidget, self).__init__()
@@ -38,13 +38,13 @@ class StackWidget(QStackedWidget):
         self.editores.append(widget)
         self.cambiar_widget(stack)
 
-    def editor_modificado(self, valor=True):
+    def editor_modificado(self, value=True):
         weditor = self.widget_actual
-        if valor and self.no_esta_abierto:
+        if value and self.no_esta_abierto:
             weditor.texto_modificado = True
         else:
             weditor.texto_modificado = False
-        self.archivo_modificado.emit(valor)
+        self.fileModified.emit(value)
 
     def cerrar(self):
         self.eliminar_widget(self.widget_actual, self.indice_actual)
@@ -62,7 +62,7 @@ class StackWidget(QStackedWidget):
     def _agregar_a_recientes(self, archivo):
         if archivo not in self._recientes:
             self._recientes.append(archivo)
-            self.archivo_reciente.emit(self._recientes)
+            self.recentFile.emit(self._recientes)
 
     def archivos_sin_guardar(self):
         archivos = list()
@@ -79,11 +79,11 @@ class StackWidget(QStackedWidget):
             valor = valor or weditor.texto_modificado
         return valor
 
-    def eliminar_widget(self, weditor, indice):
+    def eliminar_widget(self, weditor, index):
         if not isinstance(weditor, editor.Editor):
             return
-        if indice != -1:
-            self.cambiar_widget(indice)
+        if index != -1:
+            self.cambiar_widget(index)
 
             SI = QMessageBox.Yes
             NO = QMessageBox.No
@@ -99,16 +99,16 @@ class StackWidget(QStackedWidget):
                 if respuesta == CANCELAR:
                     return
                 elif respuesta == SI:
-                    self.guardar_editor_actual.emit()
+                    self.saveCurrentFile.emit()
             self._agregar_a_recientes(weditor.nombre)
             self.removeWidget(weditor)  # Se elimina del stack
-            del self.editores[indice]  # Se elimina de la lista
-            self.archivo_cerrado.emit(indice)
+            del self.editores[index]  # Se elimina de la lista
+            self.fileClosed.emit(index)
             # Foco al widget actual
             if self.widget_actual is not None:
                 self.widget_actual.setFocus()
             else:
-                self.todo_cerrado.emit()
+                self.allClosed.emit()
 
     def archivos_abiertos(self):
         archivos = []

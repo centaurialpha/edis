@@ -73,16 +73,17 @@ class EditorContainer(QWidget):
         EDIS.cargar_componente("principal", self)
 
     def instalar_signals(self):
-        self.connect(self.stack, SIGNAL("Guardar_Editor_Actual()"),
+        self.connect(self.stack, SIGNAL("saveCurrentFile()"),
                      self.save_file)
-        self.connect(self.stack, SIGNAL("archivo_modificado(bool)"),
+        self.connect(self.stack, SIGNAL("fileModified(bool)"),
                      self._archivo_modificado)
-        self.connect(self.stack, SIGNAL("archivo_cerrado(int)"),
+        self.connect(self.stack, SIGNAL("fileClosed(int)"),
                      self._archivo_cerrado)
         self.connect(self.stack, SIGNAL("recentFile(QStringList)"),
                      self.update_recents_files)
         self.connect(self, SIGNAL("fileChanged(QString)"),
                      self.update_symbols)
+        self.connect(self.stack, SIGNAL("allClosed()"), self.add_start_page)
 
     def update_symbols(self, s):
         """ Se obtienen los símbolos en un diccionario """
