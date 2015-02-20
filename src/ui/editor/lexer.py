@@ -11,34 +11,29 @@ from PyQt4.QtGui import QColor
 from src import recursos
 
 
-class LexerC(QsciLexerCPP):
+class Lexer(QsciLexerCPP):
+
+    """ Lexer para C """
 
     def __init__(self, *args, **kwargs):
-        super(LexerC, self).__init__(*args, **kwargs)
+        super(Lexer, self).__init__(*args, **kwargs)
         # Configuración
         self.setStylePreprocessor(True)
         self.setFoldComments(True)
         self.setFoldPreprocessor(True)
+        self.setFoldCompact(False)
 
-        self.__cargar_highlighter()
+        self._load_highlighter()
 
-    def __cargar_highlighter(self):
+    def _load_highlighter(self):
+        """ Método privado que carga el resaltado de sintáxis """
+
         self.setDefaultPaper(QColor(recursos.TEMA['FondoEditor']))
         self.setPaper(self.defaultPaper(0))
         self.setColor(QColor(recursos.TEMA['Color']))
 
-        tipos = dir(LexerC)
-        for tipo in tipos:
-            if tipo in recursos.TEMA:
-                atr = getattr(self, tipo)
-                self.setColor(QColor(recursos.TEMA[tipo]), atr)
-
-    def keywords(self, clave):
-        super(LexerC, self).keywords(clave)
-        if clave == 1:
-            return ('auto break case const continue default do else enum'
-                    'extern for goto if return sizeof struct switch typedef'
-                    'union while')
-        elif clave == 2:
-            return ('char double float int long register short signed static'
-                    'unsigned void volatile')
+        types = dir(self)
+        for _type in types:
+            if _type in recursos.TEMA:
+                atr = getattr(self, _type)
+                self.setColor(QColor(recursos.TEMA[_type]), atr)

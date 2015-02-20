@@ -134,7 +134,7 @@ class EditorContainer(QWidget):
     def add_editor(self, filename=""):
         if not filename:
             filename = "Nuevo_archivo"
-        weditor = editor.crear_editor(filename)
+        weditor = editor.Editor()
         self.agregar_widget(weditor)
         # Señales del Editor
         weditor.modificationChanged[bool].connect(self.stack.editor_modificado)

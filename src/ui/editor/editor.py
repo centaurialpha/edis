@@ -19,10 +19,10 @@ from PyQt4.QtCore import (
     QThread,
     SIGNAL
     )
-from PyQt4.Qsci import (
-    QsciScintilla,
-    QsciAPIs
-    )
+#from PyQt4.Qsci import (
+    #QsciScintilla,
+    #QsciAPIs
+    #)
 
 from src import recursos
 from src.ui.editor.base import Base
@@ -30,20 +30,11 @@ from src.ui.editor.minimapa import MiniMapa
 from src.ui.editor import (
     checker,
     lexer,
-    keywords
+    #keywords
     )
 from src.helpers.configuracion import ESettings
 
 #FIXME: Cambiar comentario '//' (C++ style) por '/* */' (C style)
-
-
-def crear_editor(nombre_archivo):
-    if nombre_archivo.find('.') != -1:
-        extension = nombre_archivo.split('.')[-1]
-    else:
-        extension = 'c'  # Extensión reconocida por el Lexer
-    editor = Editor(nombre_archivo, extension)
-    return editor
 
 
 class ThreadBusqueda(QThread):
@@ -82,7 +73,7 @@ class Editor(Base):
     _undo = pyqtSignal(['PyQt_PyObject'], name='accion_undo')
     _drop = pyqtSignal(['PyQt_PyObject'], name='dropSignal')
 
-    def __init__(self, nombre_archivo, ext=''):
+    def __init__(self):
         super(Editor, self).__init__()
         self.__nombre = ""
         self.texto_modificado = False
@@ -91,16 +82,16 @@ class Editor(Base):
         # Actualiza flags (espacios en blanco, cursor, sidebar, etc)
         self.actualizar()
         # Lexer
-        self._lexer = None
-        self.cargar_lexer(ext)
+        self._lexer = lexer.Lexer()
+        self.setLexer(self._lexer)
         # Autocompletado
-        #FIXME:
-        api = QsciAPIs(self._lexer)
-        for palabra in keywords.keywords:
-            api.add(palabra)
-        api.prepare()
-        self.setAutoCompletionThreshold(1)
-        self.setAutoCompletionSource(QsciScintilla.AcsAPIs)
+        #FIXME: autocompeltado
+        #api = QsciAPIs(self._lexer)
+        #for palabra in keywords.keywords:
+            #api.add(palabra)
+        #api.prepare()
+        #self.setAutoCompletionThreshold(1)
+        #self.setAutoCompletionSource(QsciScintilla.AcsAPIs)
         # Indentación
         self._indentacion = ESettings.get('editor/indentacionAncho')
         self.send("sci_settabwidth", self._indentacion)
@@ -146,15 +137,6 @@ class Editor(Base):
         else:
             self._lexer.setFont(self._fuente)
         self.setMarginsFont(self._fuente)
-
-    def cargar_lexer(self, extension):
-        if extension in ['c', 'cpp']:
-            self._lexer = lexer.LexerC(self)
-            self._lexer.setFoldCompact(False)
-            self.setLexer(self._lexer)
-        else:
-            #FIXME:
-            pass
 
     def load_checker(self, activated=True):
         if activated and self.checker is not None:
