@@ -34,6 +34,8 @@ from src.ui.editor import (
     )
 from src.helpers.configuracion import ESettings
 
+#FIXME: Cambiar comentario '//' (C++ style) por '/* */' (C style)
+
 
 def crear_editor(nombre_archivo):
     if nombre_archivo.find('.') != -1:
@@ -80,8 +82,6 @@ class Editor(Base):
     _undo = pyqtSignal(['PyQt_PyObject'], name='accion_undo')
     _drop = pyqtSignal(['PyQt_PyObject'], name='dropSignal')
 
-    _comentario = "//"
-
     def __init__(self, nombre_archivo, ext=''):
         super(Editor, self).__init__()
         self.__nombre = ""
@@ -118,10 +118,6 @@ class Editor(Base):
         self.checker = None
         if ESettings.get('editor/style-checker'):
             self.load_checker()
-            #self.checker = checker.Checker(self)
-            #self.connect(self.checker, SIGNAL("finished()"),
-                         #self._show_violations)
-        #self.checker.errores.connect(self._marcar_errores)
         # Fuente
         fuente = ESettings.get('editor/fuente')
         tam_fuente = ESettings.get('editor/fuenteTam')
@@ -311,30 +307,30 @@ class Editor(Base):
 
     def comment(self):
         if self.hasSelectedText():
-            linea_desde, _, linea_hasta, _ = self.getSelection()
+            line_from, _, line_to, _ = self.getSelection()
 
             # Iterar todas las líneas seleccionadas
             self.send("sci_beginundoaction")
-            for linea in range(linea_desde, linea_hasta + 1):
-                self.insertAt(Editor._comentario, linea, 0)
+            for line in range(line_from, line_to + 1):
+                self.insertAt('//', line, 0)
             self.send("sci_endundoaction")
         else:
-            linea = self.devolver_posicion_del_cursor()[0]
-            self.insertAt(Editor._comentario, linea, 0)
+            line = self.devolver_posicion_del_cursor()[0]
+            self.insertAt('//', line, 0)
 
     def uncomment(self):
         if self.hasSelectedText():
-            linea_desde, _, linea_hasta, _ = self.getSelection()
+            line_from, _, line_to, _ = self.getSelection()
             self.send("sci_beginundoaction")
-            for linea in range(linea_desde, linea_hasta + 1):
-                self.setSelection(linea, 0, linea, 2)
-                if not self.text(linea).startswith(Editor._comentario):
+            for line in range(line_from, line_to + 1):
+                self.setSelection(line, 0, line, 2)
+                if not self.text(line).startswith('//'):
                     continue
                 self.removeSelectedText()
             self.send("sci_endundoaction")
         else:
             line, _ = self.getCursorPosition()
-            if not self.text(line).startswith(Editor._comentario):
+            if not self.text(line).startswith('//'):
                 return
             self.setSelection(line, 0, line, 2)
             self.removeSelectedText()
