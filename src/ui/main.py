@@ -135,6 +135,7 @@ class EDIS(QMainWindow):
             self.tr("A&cerca de")
             ]
         menu_items = {}
+        toolbar_actions = {}
         editor_container = EDIS.componente("principal")
         shortcuts = recursos.SHORTCUTS
         toolbar_items = configuracion.TOOLBAR_ITEMS
@@ -169,9 +170,15 @@ class EDIS(QMainWindow):
                     self.connect(qaction, SIGNAL("triggered()"), slot)
                 if separator:
                     menu_name.addSeparator()
-                #FIXME: agregar separador
                 if shortcut in toolbar_items:
-                    self.toolbar.addAction(qaction)
+                    toolbar_actions[shortcut] = qaction
+        # Load toolbar
+        for item in toolbar_items:
+            action = toolbar_actions.get(item, None)
+            if action is None:
+                self.toolbar.addSeparator()
+            else:
+                self.toolbar.addAction(action)
 
     def _load_ui(self, window):
         """ Carga los componentes laterales y la salida del compilador """

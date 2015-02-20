@@ -11,8 +11,7 @@ import os
 from PyQt4.QtGui import (
     QIcon,
     QSplashScreen,
-    QPixmap,
-    QDesktopWidget
+    QPixmap
     )
 
 from PyQt4.QtCore import (
@@ -32,7 +31,6 @@ import src.ui.contenedores.lateral.navegador
 import src.ui.contenedores.lateral.explorador
 import src.ui.contenedores.lateral.arbol_simbolos
 import src.ui.dock_manager
-#import src.ui.menu.menu
 #lint:enable
 from src.ui.main import EDIS
 
