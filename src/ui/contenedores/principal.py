@@ -69,10 +69,10 @@ class EditorContainer(QWidget):
         self.stack = stack.StackWidget(self)
         vbox.addWidget(self.stack)
 
-        self.instalar_signals()
+        self.load_signals()
         EDIS.cargar_componente("principal", self)
 
-    def instalar_signals(self):
+    def load_signals(self):
         self.connect(self.stack, SIGNAL("saveCurrentFile()"),
                      self.save_file)
         self.connect(self.stack, SIGNAL("fileModified(bool)"),
