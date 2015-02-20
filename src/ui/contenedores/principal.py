@@ -408,15 +408,15 @@ class EditorContainer(QWidget):
             dialogo.paintRequested.connect(documento.print_)
             dialogo.exec_()
 
-    def comentar_documento(self):
+    def comment(self):
         weditor = self.devolver_editor()
         if weditor is not None:
-            weditor.comentar()
+            weditor.comment()
 
-    def descomentar_documento(self):
+    def uncomment(self):
         weditor = self.devolver_editor()
         if weditor is not None:
-            weditor.descomentar()
+            weditor.uncomment()
 
     def indent(self):
         weditor = self.devolver_editor()

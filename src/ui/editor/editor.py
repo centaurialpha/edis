@@ -309,7 +309,7 @@ class Editor(Base):
         super(Editor, self).resizeEvent(e)
         self.minimapa.redimensionar()
 
-    def comentar(self):
+    def comment(self):
         if self.hasSelectedText():
             linea_desde, _, linea_hasta, _ = self.getSelection()
 
@@ -322,7 +322,7 @@ class Editor(Base):
             linea = self.devolver_posicion_del_cursor()[0]
             self.insertAt(Editor._comentario, linea, 0)
 
-    def descomentar(self):
+    def uncomment(self):
         if self.hasSelectedText():
             linea_desde, _, linea_hasta, _ = self.getSelection()
             self.send("sci_beginundoaction")
@@ -332,6 +332,12 @@ class Editor(Base):
                     continue
                 self.removeSelectedText()
             self.send("sci_endundoaction")
+        else:
+            line, _ = self.getCursorPosition()
+            if not self.text(line).startswith(Editor._comentario):
+                return
+            self.setSelection(line, 0, line, 2)
+            self.removeSelectedText()
 
     def a_titulo(self):
         #FIXME: Tratar cuando no se selecciona texto
