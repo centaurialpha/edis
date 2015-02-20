@@ -150,11 +150,11 @@ ACTIONS = ([
         "separator": True},
     {
         "name": "Acercar",
-        "connection": "zoom_in",
+        "connection": "action_zoom_in",
         "shortcut": "zoom-in"},
     {
         "name": "Alejar",
-        "connection": "zoom_out",
+        "connection": "action_zoom_out",
         "shortcut": "zoom-out"}],
     # Menú buscar
     [{
