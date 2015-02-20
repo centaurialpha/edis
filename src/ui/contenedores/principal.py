@@ -88,7 +88,7 @@ class EditorContainer(QWidget):
     def update_symbols(self):
         """ Se obtienen los símbolos en un diccionario """
 
-        weditor = self.devolver_editor()
+        weditor = self.get_active_editor()
         source_code = weditor.texto
         source_sanitize = code_analizer.sanitize_source_code(source_code)
         symbols = code_analizer.parse_symbols(source_sanitize)
@@ -127,7 +127,7 @@ class EditorContainer(QWidget):
 
     def cambiar_widget(self, index):
         self.stack.cambiar_widget(index)
-        weditor = self.devolver_editor()
+        weditor = self.get_active_editor()
         if weditor is not None:
             self.fileChanged.emit(weditor.nombre)
 
@@ -148,7 +148,7 @@ class EditorContainer(QWidget):
         filtro = "Archivos C/C++(*.cpp *.c);;ASM(*.s);;HEADERS(*.h);;(*.*)"
         if not nombre:
             carpeta = os.path.expanduser("~")
-            editor_widget = self.devolver_editor()
+            editor_widget = self.get_active_editor()
             if editor_widget and editor_widget.nombre:
                 carpeta = self.__ultima_carpeta_visitada(editor_widget.nombre)
             archivos = QFileDialog.getOpenFileNames(self, self.trUtf8(
@@ -218,7 +218,7 @@ class EditorContainer(QWidget):
     def indice_actual(self):
         return self.stack.indice_actual
 
-    def devolver_editor(self):
+    def get_active_editor(self):
         """ Devuelve el Editor si el widget actual es una instancia de él,
         de lo contrario devuelve None. """
 
@@ -237,13 +237,13 @@ class EditorContainer(QWidget):
         self.stack.cerrar_demas()
 
     def selector(self):
-        if self.devolver_editor() is not None:
+        if self.get_active_editor() is not None:
             selector_ = selector.Selector(self)
             selector_.show()
 
     def save_file(self):
         #FIXME: Controlar con try-except
-        weditor = self.devolver_editor()
+        weditor = self.get_active_editor()
         if weditor.es_nuevo:
             return self.save_file_as(weditor)
         nombre_archivo = weditor.nombre
@@ -282,9 +282,9 @@ class EditorContainer(QWidget):
         return self.stack.check_archivos_sin_guardar()
 
     def find(self):
-        weditor = self.devolver_editor()
+        weditor = self.get_active_editor()
         if weditor is not None:
-            dialogo = popup_busqueda.PopupBusqueda(self.devolver_editor())
+            dialogo = popup_busqueda.PopupBusqueda(self.get_active_editor())
             dialogo.show()
 
     def find_and_replace(self):
@@ -292,56 +292,56 @@ class EditorContainer(QWidget):
         dialogo.show()
 
     def undo(self):
-        weditor = self.devolver_editor()
+        weditor = self.get_active_editor()
         if weditor is not None:
             weditor.deshacer()
 
     def redo(self):
-        weditor = self.devolver_editor()
+        weditor = self.get_active_editor()
         if weditor is not None:
             weditor.rehacer()
 
     def cut(self):
-        weditor = self.devolver_editor()
+        weditor = self.get_active_editor()
         if weditor is not None:
             weditor.cortar()
 
     def copy(self):
-        weditor = self.devolver_editor()
+        weditor = self.get_active_editor()
         if weditor is not None:
             weditor.copiar()
 
     def paste(self):
-        weditor = self.devolver_editor()
+        weditor = self.get_active_editor()
         if weditor is not None:
             weditor.pegar()
 
     def show_tabs_and_spaces(self):
         tabs_espacios = ESettings.get('editor/mostrarTabs')
         ESettings.set('editor/mostrarTabs', not tabs_espacios)
-        weditor = self.devolver_editor()
+        weditor = self.get_active_editor()
         if weditor is not None:
             weditor.actualizar()
 
     def show_indentation_guides(self):
         guias = ESettings.get('editor/guias')
         ESettings.set('editor/guias', not guias)
-        weditor = self.devolver_editor()
+        weditor = self.get_active_editor()
         if weditor is not None:
             weditor.actualizar()
 
     def zoom_in(self):
-        weditor = self.devolver_editor()
+        weditor = self.get_active_editor()
         if weditor is not None:
             weditor.zoom_in()
 
     def zoom_out(self):
-        weditor = self.devolver_editor()
+        weditor = self.get_active_editor()
         if weditor is not None:
             weditor.zoom_out()
 
     def select_all(self):
-        weditor = self.devolver_editor()
+        weditor = self.get_active_editor()
         if weditor is not None:
             weditor.seleccionar()
 
@@ -349,7 +349,7 @@ class EditorContainer(QWidget):
         return self.stack.archivos_abiertos()
 
     def file_properties(self):
-        weditor = self.devolver_editor()
+        weditor = self.get_active_editor()
         if weditor is not None:
             dialogo = dialogo_propiedades.FileProperty(weditor, self)
             dialogo.show()
@@ -359,13 +359,13 @@ class EditorContainer(QWidget):
         dialogo.show()
 
     def actualizar_cursor(self, line, row):
-        weditor = self.devolver_editor()
+        weditor = self.get_active_editor()
         lines = weditor.lineas
         self.cursorPosition.emit(line + 1, row + 1, lines)
 
     def build_source_code(self):
         output = EDIS.componente("output")
-        weditor = self.devolver_editor()
+        weditor = self.get_active_editor()
         if weditor is not None:
             self.save_file()
             output.build(weditor.nombre)
@@ -378,7 +378,7 @@ class EditorContainer(QWidget):
 
     def build_and_run(self):
         output = EDIS.componente("output")
-        weditor = self.devolver_editor()
+        weditor = self.get_active_editor()
         if weditor is not None:
             self.save_file()
             output.build_and_run(weditor.nombre)
@@ -392,7 +392,7 @@ class EditorContainer(QWidget):
         output.stop()
 
     def imprimir_documento(self):
-        weditor = self.devolver_editor()
+        weditor = self.get_active_editor()
         if weditor is not None:
             # Extensión
             ext = weditor.nombre.split('.')[-1]
@@ -409,62 +409,62 @@ class EditorContainer(QWidget):
             dialogo.exec_()
 
     def comment(self):
-        weditor = self.devolver_editor()
+        weditor = self.get_active_editor()
         if weditor is not None:
             weditor.comment()
 
     def uncomment(self):
-        weditor = self.devolver_editor()
+        weditor = self.get_active_editor()
         if weditor is not None:
             weditor.uncomment()
 
     def indent(self):
-        weditor = self.devolver_editor()
+        weditor = self.get_active_editor()
         if weditor is not None:
             weditor.indentar()
 
     def unindent(self):
-        weditor = self.devolver_editor()
+        weditor = self.get_active_editor()
         if weditor is not None:
             weditor.quitar_indentacion()
 
     def to_title(self):
-        weditor = self.devolver_editor()
+        weditor = self.get_active_editor()
         if weditor is not None:
             weditor.a_titulo()
 
     def duplicate_line(self):
-        weditor = self.devolver_editor()
+        weditor = self.get_active_editor()
         if weditor is not None:
             weditor.duplicar_linea()
 
     def delete_line(self):
-        weditor = self.devolver_editor()
+        weditor = self.get_active_editor()
         if weditor is not None:
             weditor.eliminar_linea()
 
     def move_down(self):
-        weditor = self.devolver_editor()
+        weditor = self.get_active_editor()
         if weditor is not None:
             weditor.mover_linea_abajo()
 
     def move_up(self):
-        weditor = self.devolver_editor()
+        weditor = self.get_active_editor()
         if weditor is not None:
             weditor.mover_linea_arriba()
 
     def go_to_line(self, linea):
-        weditor = self.devolver_editor()
+        weditor = self.get_active_editor()
         if weditor is not None:
             weditor.setCursorPosition(linea, 0)
 
     def plegar_desplegar(self):
-        weditor = self.devolver_editor()
+        weditor = self.get_active_editor()
         if weditor is not None:
             weditor.foldAll()
 
     def show_go_to_line(self):
-        weditor = self.devolver_editor()
+        weditor = self.get_active_editor()
         if weditor is not None:
             max_lines = weditor.lineas
             line, ok = QInputDialog.getInt(self, self.tr("Ir a línea"),

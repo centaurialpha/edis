@@ -159,7 +159,7 @@ class EditorConfiguration(QWidget):
                 tipo = ntipo
         ESettings.set('editor/tipoCursor', tipo)
         principal = EDIS.componente("principal")
-        weditor = principal.devolver_editor()
+        weditor = principal.get_active_editor()
         if weditor is not None:
             weditor.cargar_fuente(fuente, int(fuente_tam))
             weditor.actualizar()
