@@ -291,30 +291,30 @@ class EditorContainer(QWidget):
         dialogo = dialogo_reemplazo.DialogoReemplazo(self)
         dialogo.show()
 
-    def undo(self):
+    def action_undo(self):
         weditor = self.get_active_editor()
         if weditor is not None:
-            weditor.deshacer()
+            weditor.undo()
 
-    def redo(self):
+    def action_redo(self):
         weditor = self.get_active_editor()
         if weditor is not None:
-            weditor.rehacer()
+            weditor.redo()
 
-    def cut(self):
+    def action_cut(self):
         weditor = self.get_active_editor()
         if weditor is not None:
-            weditor.cortar()
+            weditor.cut()
 
-    def copy(self):
+    def action_copy(self):
         weditor = self.get_active_editor()
         if weditor is not None:
-            weditor.copiar()
+            weditor.copy()
 
-    def paste(self):
+    def action_paste(self):
         weditor = self.get_active_editor()
         if weditor is not None:
-            weditor.pegar()
+            weditor.paste()
 
     def show_tabs_and_spaces(self):
         tabs_espacios = ESettings.get('editor/mostrarTabs')
@@ -330,20 +330,20 @@ class EditorContainer(QWidget):
         if weditor is not None:
             weditor.actualizar()
 
-    def zoom_in(self):
+    def action_zoom_in(self):
         weditor = self.get_active_editor()
         if weditor is not None:
             weditor.zoom_in()
 
-    def zoom_out(self):
+    def action_zoom_out(self):
         weditor = self.get_active_editor()
         if weditor is not None:
             weditor.zoom_out()
 
-    def select_all(self):
+    def action_select_all(self):
         weditor = self.get_active_editor()
         if weditor is not None:
-            weditor.seleccionar()
+            weditor.selectAll()
 
     def opened_files(self):
         return self.stack.archivos_abiertos()
@@ -408,50 +408,60 @@ class EditorContainer(QWidget):
             dialogo.paintRequested.connect(documento.print_)
             dialogo.exec_()
 
-    def comment(self):
+    def action_comment(self):
         weditor = self.get_active_editor()
         if weditor is not None:
             weditor.comment()
 
-    def uncomment(self):
+    def action_uncomment(self):
         weditor = self.get_active_editor()
         if weditor is not None:
             weditor.uncomment()
 
-    def indent(self):
+    def action_indent(self):
         weditor = self.get_active_editor()
         if weditor is not None:
-            weditor.indentar()
+            weditor.indent_more()
 
-    def unindent(self):
+    def action_unindent(self):
         weditor = self.get_active_editor()
         if weditor is not None:
-            weditor.quitar_indentacion()
+            weditor.indent_less()
 
-    def to_title(self):
+    def action_to_lowercase(self):
         weditor = self.get_active_editor()
         if weditor is not None:
-            weditor.a_titulo()
+            weditor.to_lowercase()
 
-    def duplicate_line(self):
+    def action_to_uppercase(self):
         weditor = self.get_active_editor()
         if weditor is not None:
-            weditor.duplicar_linea()
+            weditor.to_uppercase()
 
-    def delete_line(self):
+    def action_to_title(self):
         weditor = self.get_active_editor()
         if weditor is not None:
-            weditor.eliminar_linea()
+            weditor.to_title()
 
-    def move_down(self):
+    def action_duplicate_line(self):
         weditor = self.get_active_editor()
         if weditor is not None:
-            weditor.mover_linea_abajo()
+            weditor.duplicate_line()
 
-    def move_up(self):
+    def action_delete_line(self):
         weditor = self.get_active_editor()
         if weditor is not None:
-            weditor.mover_linea_arriba()
+            weditor.delete_line()
+
+    def action_move_down(self):
+        weditor = self.get_active_editor()
+        if weditor is not None:
+            weditor.move_down()
+
+    def action_move_up(self):
+        weditor = self.get_active_editor()
+        if weditor is not None:
+            weditor.move_up()
 
     def go_to_line(self, linea):
         weditor = self.get_active_editor()

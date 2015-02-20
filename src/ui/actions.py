@@ -52,72 +52,72 @@ ACTIONS = ([
     # Menú editar
     [{
         "name": "Deshacer",
-        "connection": "undo",
+        "connection": "action_undo",
         "shortcut": "undo"},
     {
         "name": "Rehacer",
-        "connection": "redo",
+        "connection": "action_redo",
         "shortcut": "redo"},
     {
         "name": "Cortar",
-        "connection": "cut",
+        "connection": "action_cut",
         "shortcut": "cut"},
     {
         "name": "Copiar",
-        "connection": "copy",
+        "connection": "action_copy",
         "shortcut": "copy"},
     {
         "name": "Pegar",
-        "connection": "paste",
+        "connection": "action_paste",
         "shortcut": "paste"},
     {
         "name": "Seleccionar todo",
-        "connection": "select_all",
+        "connection": "action_select_all",
         "shortcut": "select",
         "separator": True},
     {
         "name": "Indentar",
-        "connection": "indent",
+        "connection": "action_indent",
         "shortcut": "indent"},
     {
         "name": "Quitar indentación",
-        "connection": "unindent",
+        "connection": "action_unindent",
         "shortcut": "unindent",
         "separator": True},
     {
         "name": "Duplicar línea",
-        "connection": "duplicate_line",
+        "connection": "action_duplicate_line",
         "shortcut": "duplicate"},
     {
         "name": "Eliminar línea",
-        "connection": "delete_line",
+        "connection": "action_delete_line",
         "shortcut": "delete",
         "separator": True},
     {
         "name": "A minúsculas",
-        "connection": "to_lowercase"},
+        "connection": "action_to_lowercase"},
     {
         "name": "A mayúsculas",
-        "connection": "to_uppercase"},
+        "connection": "action_to_uppercase"},
     {
         "name": "A título",
-        "connection": "to_title",
+        "connection": "action_to_title",
         "separator": True},
     {
         "name": "Comentar",
-        "connection": "comment",
+        "connection": "action_comment",
         "shortcut": "comment"},
     {
         "name": "Descomentar",
-        "connection": "uncomment",
+        "connection": "action_uncomment",
         "shortcut": "uncomment",
         "separator": True},
     {
         "name": "Mover hacia arriba",
-        "connection": "move_up"},
+        "connection": "action_move_up"},
     {
         "name": "Mover hacia abajo",
-        "connection": "move_down",
+        "connection": "action_move_down",
         "separator": True},
     {
         "name": "Configuración",

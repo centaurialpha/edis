@@ -85,7 +85,7 @@ class Editor(Base):
         self._lexer = lexer.Lexer()
         self.setLexer(self._lexer)
         # Autocompletado
-        #FIXME: autocompeltado
+        #FIXME: autocompletado
         #api = QsciAPIs(self._lexer)
         #for palabra in keywords.keywords:
             #api.add(palabra)
@@ -238,7 +238,7 @@ class Editor(Base):
             linea, indice = -1, -1
         self.findFirst(palabra, re, cs, wo, wrap, forward, linea, indice)
 
-    def reemplazar(self, reemplazar, reemplazo, todo=False):
+    def replace_word(self, reemplazar, reemplazo, todo=False):
         """ Reemplaza una o varias ocurrencias de @reemplazar por @reemplazo """
 
         #FIXME: posición del cursor
@@ -252,18 +252,18 @@ class Editor(Base):
             self.replace(reemplazo)
         self.send("sci_endundoaction")
 
-    def _texto_bajo_el_cursor(self):
+    def _text_under_cursor(self):
         """ Texto seleccionado con el cursor """
 
-        linea, indice = self.getCursorPosition()  # Posición del cursor
-        palabra = self.wordAtLineIndex(linea, indice)  # Palabra en esa pos
-        return palabra
+        line, index = self.getCursorPosition()  # Posición del cursor
+        word = self.wordAtLineIndex(line, index)  # Palabra en esa pos
+        return word
 
     def mouseReleaseEvent(self, e):
         super(Editor, self).mouseReleaseEvent(e)
         if e.button() == Qt.LeftButton:
             self.hilo_ocurrencias.buscar(
-                self._texto_bajo_el_cursor(), self.texto)
+                self._text_under_cursor(), self.texto)
 
     def mouseMoveEvent(self, event):
         super(Editor, self).mouseMoveEvent(event)
@@ -279,9 +279,6 @@ class Editor(Base):
         super(Editor, self).keyPressEvent(e)
         if e.key() == Qt.Key_Escape:
             self.borrarIndicadores(self.indicador)
-        if e.key() == Qt.Key_BraceLeft:
-            #FIXME: autocompletar llave
-            pass
 
     def resizeEvent(self, e):
         super(Editor, self).resizeEvent(e)
@@ -317,18 +314,37 @@ class Editor(Base):
             self.setSelection(line, 0, line, 2)
             self.removeSelectedText()
 
-    def a_titulo(self):
-        #FIXME: Tratar cuando no se selecciona texto
-        self.send("sci_beginundoaction")
+    def to_lowercase(self):
         if self.hasSelectedText():
-            texto = self.selectedText().title()
-        self.replaceSelectedText(texto)
-        self.send("sci_endundoaction")
+            text = self.selectedText().lower()
+        else:
+            line, _ = self.getCursorPosition()
+            text = self.text(line).lower()
+            self.setSelection(line, 0, line, len(text))
+        self.replaceSelectedText(text)
 
-    def duplicar_linea(self):
+    def to_uppercase(self):
+        if self.hasSelectedText():
+            text = self.selectedText().upper()
+        else:
+            line, _ = self.getCursorPosition()
+            text = self.text(line).upper()
+            self.setSelection(line, 0, line, len(text))
+        self.replaceSelectedText(text)
+
+    def to_title(self):
+        if self.hasSelectedText():
+            text = self.selectedText().title()
+        else:
+            line, _ = self.getCursorPosition()
+            text = self.text(line).title()
+            self.setSelection(line, 0, line, len(text))
+        self.replaceSelectedText(text)
+
+    def duplicate_line(self):
         self.send("sci_lineduplicate")
 
-    def eliminar_linea(self):
+    def delete_line(self):
         if self.hasSelectedText():
             self.send("sci_beginundoaction")
             desde, desde_indice, hasta, _ = self.getSelection()
@@ -340,7 +356,7 @@ class Editor(Base):
         else:
             self.send("sci_linedelete")
 
-    def indentar(self):
+    def indent_more(self):
         if self.hasSelectedText():
             self.send("sci_beginundoaction")
             desde, _, hasta, _ = self.getSelection()
@@ -351,7 +367,7 @@ class Editor(Base):
             linea, _ = self.devolver_posicion_del_cursor()
             self.indent(linea)
 
-    def quitar_indentacion(self):
+    def indent_less(self):
         if self.hasSelectedText():
             self.send("sci_beginundoaction")
             desde, _, hasta, _ = self.getSelection()
@@ -362,19 +378,11 @@ class Editor(Base):
             linea, _ = self.devolver_posicion_del_cursor()
             self.unindent(linea)
 
-    def mover_linea_abajo(self):
+    def move_down(self):
         self.send("sci_moveselectedlinesdown")
 
-    def mover_linea_arriba(self):
+    def move_up(self):
         self.send("sci_moveselectedlinesup")
-
-    def _completar_brace(self, e):
-        #FIXME: Evitar duplicar brace
-        braces = {'{': '}', '(': ')', '[': ']'}
-        brace = e.text()
-        complementario = braces.get(brace)
-        linea, indice = self.devolver_posicion_del_cursor()
-        self.insertAt(complementario, linea, indice + 1)
 
     def guardado(self):
         self._guardado.emit(self)
