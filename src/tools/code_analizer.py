@@ -21,7 +21,7 @@ ERROR = log.error
 def parse_symbols(source):
     """ Parsea el código fuente para obtener los símbolos:
 
-        Estructuras, uniones, variables, funciones.
+        Estructuras, uniones, enumeraciones, variables, funciones.
     """
 
     symbols = {}
@@ -65,9 +65,8 @@ def parse_symbols(source):
 
 
 def parse_structs(ast_object):
-    """ Devuelve una lista con los miembros de una estructura """
+    """ Devuelve un diccionario con los miembros de una estructura """
 
-    members_list = []
     members_dict = {}
 
     members = ast_object.type.decls
@@ -76,9 +75,8 @@ def parse_structs(ast_object):
         member_name = member.name
         member_nline = member.coord.line
         members_dict[member_name] = member_nline
-    members_list.append(members_dict)
 
-    return members_list
+    return members_dict
 
 
 def sanitize_source_code(source_code):

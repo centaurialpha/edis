@@ -21,17 +21,7 @@ from src.ui.contenedores.lateral import custom_dock
 
 class ArbolDeSimbolos(custom_dock.CustomDock):
 
-    _ir_a_linea = pyqtSignal(int, name='goToLine')
-
-    iconos = {
-        'clase': ':image/class',
-        'funcion': ':image/function',
-        'struct': ':image/struct',
-        'miembro': ':image/member',
-        'global': ':image/var',
-        'enumerator': ':image/enumerator',
-        'enums': ':image/enum'
-        }
+    goToLine = pyqtSignal(int)
 
     def __init__(self):
         custom_dock.CustomDock.__init__(self)
@@ -47,44 +37,55 @@ class ArbolDeSimbolos(custom_dock.CustomDock):
         self.tree.header().setResizeMode(0, QHeaderView.ResizeToContents)
 
         # Conexión
-        self.tree.itemClicked[QTreeWidgetItem, int].connect(self.ir_a_linea)
-        self.tree.itemActivated[QTreeWidgetItem, int].connect(self.ir_a_linea)
+        self.tree.itemClicked[QTreeWidgetItem, int].connect(self.go_to_line)
+        self.tree.itemActivated[QTreeWidgetItem, int].connect(self.go_to_line)
 
         EDIS.cargar_lateral("symbols", self)
 
-    def update_symbols(self, simbolos):
+    def update_symbols(self, symbols):
         # Limpiar
         self.tree.clear()
 
-        if 'globals' in simbolos:
+        if 'globals' in symbols:
             _globals = Item(self.tree, [self.tr("Globales")])
-            _globals.clickeable = False
-            for _glob, nline in sorted(list(simbolos['globals'].items())):
+            _globals.clicked = False
+            for _glob, nline in sorted(list(symbols['globals'].items())):
                 _global = Item(_globals, [_glob])
-                _global.linea = nline
-                _global.setIcon(0, QIcon(self.iconos['global']))
+                _global.line = nline
+                _global.setIcon(0, QIcon(":image/var"))
             _globals.setExpanded(True)
 
-        if 'functions' in simbolos:
+        if 'functions' in symbols:
             functions = Item(self.tree, [self.tr('Funciones')])
-            functions.clickeable = False
-            for func, nline in sorted(list(simbolos['functions'].items())):
+            functions.clicked = False
+            for func, nline in sorted(list(symbols['functions'].items())):
                 function = Item(functions, [func])
-                function.linea = nline
-                function.setIcon(0, QIcon(self.iconos['funcion']))
+                function.line = nline
+                function.setIcon(0, QIcon(":image/function"))
             functions.setExpanded(True)
 
-    def ir_a_linea(self, item):
-        if item.clickeable:
-            self._ir_a_linea.emit(int(item.linea) - 1)
+        if 'structs' in symbols:
+            structs = Item(self.tree, [self.tr("Estructuras")])
+            structs.clicked = False
+            for nline, item in sorted(list(symbols['structs'].items())):
+                struct = Item(structs, [item[0]])
+                struct.line = nline
+                struct.setIcon(0, QIcon(":image/struct"))
+                members = item[1]
+                for name, nline in sorted(list(members.items())):
+                    member = Item(struct, [name])
+                    member.line = nline
+                    member.setIcon(0, QIcon(":image/member"))
+                struct.setExpanded(True)
+            structs.setExpanded(True)
+
+    def go_to_line(self, item):
+        if item.clicked:
+            self.goToLine.emit(int(item.line) - 1)
 
 
-class Item(QTreeWidgetItem):
-
-    def __init__(self, parent, nombre):
-        QTreeWidgetItem.__init__(self, parent, nombre)
-        self.linea = None
-        self.clickeable = True
+# Custom item basado en QTreeWidgetItem
+Item = type('Item', (QTreeWidgetItem,), {'line': None, 'clicked': True})
 
 
 simbolos = ArbolDeSimbolos()
