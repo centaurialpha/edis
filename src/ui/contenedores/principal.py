@@ -85,7 +85,7 @@ class EditorContainer(QWidget):
                      self.update_symbols)
         self.connect(self.stack, SIGNAL("allClosed()"), self.add_start_page)
 
-    def update_symbols(self, s):
+    def update_symbols(self):
         """ Se obtienen los símbolos en un diccionario """
 
         weditor = self.devolver_editor()
@@ -250,6 +250,7 @@ class EditorContainer(QWidget):
         codigo_fuente = weditor.texto
         manejador_de_archivo.escribir_archivo(nombre_archivo, codigo_fuente)
         weditor.nombre = nombre_archivo
+        self.update_symbols()
         weditor.guardado()
 
     def save_file_as(self, weditor):
