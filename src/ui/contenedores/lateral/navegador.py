@@ -34,7 +34,7 @@ class Navegador(custom_dock.CustomDock):
     def _cambiar_editor(self):
         indice = self.navegador.row(self.navegador.currentItem())
         principal = EDIS.componente("principal")
-        principal.cambiar_widget(indice)
+        principal.change_widget(indice)
 
 
 navegador = Navegador()
