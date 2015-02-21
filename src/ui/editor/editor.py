@@ -231,26 +231,12 @@ class Editor(Base):
         @wrap: envoltura
         """
 
-        #FIXME: Marcar palabras encontradas
-        if self.hasSelectedText():
-            linea, indice, lhasta, ihasta = self.getSelection()
-        if wrap:
-            linea, indice = -1, -1
-        self.findFirst(palabra, re, cs, wo, wrap, forward, linea, indice)
+        pass
 
     def replace_word(self, reemplazar, reemplazo, todo=False):
         """ Reemplaza una o varias ocurrencias de @reemplazar por @reemplazo """
 
-        #FIXME: posición del cursor
-        self.send("sci_beginundoaction")
-        if self.hasSelectedText():
-            self.replaceSelectedText(reemplazo)
-        while todo:
-            ok = self.findNext()
-            if not ok:
-                break
-            self.replace(reemplazo)
-        self.send("sci_endundoaction")
+        pass
 
     def _text_under_cursor(self):
         """ Texto seleccionado con el cursor """

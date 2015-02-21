@@ -15,7 +15,8 @@ from PyQt4.QtGui import (
 
 from PyQt4.QtCore import (
     Qt,
-    QPoint
+    QPoint,
+    SIGNAL
     )
 
 from src import recursos
@@ -25,73 +26,75 @@ class PopupBusqueda(QDialog):
 
     def __init__(self, editor):
         QDialog.__init__(self, editor)
-        self.editor = editor
+        self._editor = editor
         self.total = 0
         # Popup!
         self.setWindowFlags(Qt.Popup)
         box = QHBoxLayout(self)
         box.setContentsMargins(5, 5, 5, 5)
-        self.line = Line(self)
+        self.line = CustomLineEdit(self)
         self.line.setMinimumWidth(200)
         box.addWidget(self.line)
         # Botones
-        btn_anterior = QToolButton()
-        btn_anterior.setIcon(QIcon(":image/down"))
-        btn_siguiente = QToolButton()
-        btn_siguiente.setIcon(QIcon(":image/up"))
-        box.addWidget(btn_anterior)
-        box.addWidget(btn_siguiente)
+        btn_previous = QToolButton()
+        btn_previous.setIcon(QIcon(":image/up"))
+        btn_next = QToolButton()
+        btn_next.setIcon(QIcon(":image/down"))
+        box.addWidget(btn_previous)
+        box.addWidget(btn_next)
 
         # Posición
-        qpoint = self.editor.rect().topRight()
-        global_point = self.editor.mapToGlobal(qpoint)
+        qpoint = self._editor.rect().topRight()
+        global_point = self._editor.mapToGlobal(qpoint)
         self.move(global_point - QPoint(self.width() + 180, 0))
 
         # Conexiones
-        btn_anterior.clicked.connect(self.buscar_anterior)
-        btn_siguiente.clicked.connect(self.buscar_siguiente)
+        self.connect(self.line, SIGNAL("textEdited(QString)"), self._find)
+        self.connect(self.line, SIGNAL("returnPressed()"), self._find_next)
+        self.connect(btn_previous, SIGNAL("clicked()"), self._find_previous)
+        self.connect(btn_next, SIGNAL("clicked()"), self._find_next)
 
-    def buscar(self, forward=True, wrap=False):
-        weditor = self.editor
-        palabra = self.palabra_buscada
-        codigo = weditor.texto
-        self.total = codigo.count(palabra)
-        weditor.buscar(palabra, cs=True, wo=False, wrap=wrap, forward=forward)
-        self.line.actualizar(self.total)
+    def _find(self):
+        weditor = self._editor
+        found = weditor.findFirst(self.word, False, False, False, False,
+                                  True, 0, 0, True)
+        if self.word:
+            self.line.update(found)
+        weditor.hilo_ocurrencias.buscar(self.word, weditor.text())
 
-    def buscar_siguiente(self):
-        self.buscar(wrap=True)
+    def _find_next(self):
+        weditor = self._editor
+        weditor.findFirst(self.word, False, False, False, True,
+                                  True, -1, -1, True)
 
-    def buscar_anterior(self):
-        self.buscar(forward=False)
+    def _find_previous(self):
+        weditor = self._editor
+        weditor.findFirst(self.word, False, False, False, True,
+                          False, -1, -1, True)
+        weditor.findNext()
 
     @property
-    def palabra_buscada(self):
+    def word(self):
+        """ Devuelve el texto ingresado en el CustomLineEdit """
+
         return self.line.text()
 
 
-class Line(QLineEdit):
+class CustomLineEdit(QLineEdit):
 
-    def __init__(self, popup):
-        super(Line, self).__init__(popup)
-        self.popup = popup
+    """ QLineEdit personalizado """
 
-    def actualizar(self, total):
-        if total == 0:
-            self.setStyleSheet(
-                'background-color: %s; border-radius: 3px' %
-                recursos.TEMA['error'])
+    def __init__(self, parent):
+        super(CustomLineEdit, self).__init__()
+        self._parent = parent
+
+    def update(self, found):
+        if not found:
+            self.setStyleSheet('background: %s; border-radius: 3px' %
+                               recursos.TEMA['error'])
         else:
             self.setStyleSheet('color: #dedede')
 
-    def keyPressEvent(self, e):
-        super(Line, self).keyPressEvent(e)
-        # Incluye 0-9 y a-z
-        if e.key() in range(0x30, 0x5b) or e.key() == Qt.Key_Backspace:
-            self.popup.buscar()
-        if e.key() in (Qt.Key_Return, Qt.Key_Enter):
-            self.popup.buscar_siguiente()
-
-    def showEvent(self, e):
-        super(Line, self).showEvent(e)
+    def showEvent(self, event):
+        super(CustomLineEdit, self).showEvent(event)
         self.setFocus()

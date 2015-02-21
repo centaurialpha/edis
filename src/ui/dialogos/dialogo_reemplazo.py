@@ -20,6 +20,9 @@ from PyQt4.QtCore import SIGNAL
 
 from src.ui.main import EDIS
 
+#FIXME: Que no se comporte como dialogo
+#FIXME: Buscar antes de la posición del cursor
+
 
 class ReplaceDialog(QDialog):
 
