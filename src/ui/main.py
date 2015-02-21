@@ -265,29 +265,29 @@ class EDIS(QMainWindow):
         dialogo = acerca_de.AcercaDe(self)
         dialogo.exec_()
 
-    def closeEvent(self, e):
+    def closeEvent(self, event):
         """
         Éste médoto es llamado automáticamente por Qt cuando se
         cierra la aplicación
 
         """
 
-        principal = EDIS.componente("principal")
-        if principal.check_files_not_saved() and \
+        editor_container = EDIS.componente("principal")
+        if editor_container.check_files_not_saved() and \
                 ESettings.get('general/confirmarSalida'):
 
-            archivos_sin_guardar = principal.files_not_saved()
-            dialogo = dialogo_guardar_archivos.Dialogo(
-                archivos_sin_guardar, principal)
-            dialogo.exec_()
-            if dialogo.ignorado():
-                e.ignore()
+            files_not_saved = editor_container.files_not_saved()
+            dialog = dialogo_guardar_archivos.DialogSaveFiles(
+                files_not_saved, editor_container)
+            dialog.exec_()
+            if dialog.ignorado():
+                event.ignore()
         if ESettings.get('ventana/guardarDimensiones'):
             ESettings.set('ventana/dimensiones', self.size())
             ESettings.set('ventana/posicion', self.pos())
-        opened_files = principal.opened_files()
+        opened_files = editor_container.opened_files()
         ESettings.set('general/archivos', opened_files)
-        ESettings.set('general/recientes', principal.get_recents_files())
+        ESettings.set('general/recientes', editor_container.get_recents_files())
 
     def show_settings(self):
         from src.ui.dialogos.preferencias import preferencias

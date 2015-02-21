@@ -23,13 +23,13 @@ from PyQt4.QtCore import (
     )
 
 
-class Dialogo(QDialog):
+class DialogSaveFiles(QDialog):
 
-    def __init__(self, archivos, principal):
-        super(Dialogo, self).__init__(principal)
+    def __init__(self, files, editor_container):
+        super(DialogSaveFiles, self).__init__(editor_container)
         self.setWindowTitle(self.tr("Archivos sin guardar!"))
-        self.principal = principal
-        self.evento_ignorado = False
+        self._editor_container = editor_container
+        self._event_ignore = False
 
         vLayout = QVBoxLayout(self)
         label = QLabel(self.tr("Algunos archivos no se han guardado, "
@@ -37,53 +37,53 @@ class Dialogo(QDialog):
         vLayout.addWidget(label)
         hLayout = QHBoxLayout()
 
-        self.lista = QListWidget()
-        [self.lista.addItem(item) for item in archivos]
-        self.lista.setSelectionMode(QAbstractItemView.ExtendedSelection)
-        hLayout.addWidget(self.lista)
+        self.list_widget = QListWidget()
+        [self.list_widget.addItem(item) for item in files]
+        self.list_widget.setSelectionMode(QAbstractItemView.ExtendedSelection)
+        hLayout.addWidget(self.list_widget)
 
-        layoutBotones = QVBoxLayout()
-        botonTodo = QPushButton(self.tr("Todo"))
-        botonNinguno = QPushButton(self.tr("Ninguno"))
-        botonGuardar = QPushButton(self.tr("Guardar"))
-        botonCancelar = QPushButton(self.tr("Cancelar"))
-        botonNoGuardar = QPushButton(self.tr("No guardar"))
-        layoutBotones.addWidget(botonTodo)
-        layoutBotones.addWidget(botonNinguno)
-        layoutBotones.addWidget(botonGuardar)
-        layoutBotones.addWidget(botonNoGuardar)
-        layoutBotones.addWidget(botonCancelar)
+        box_buttons = QVBoxLayout()
+        btn_all = QPushButton(self.tr("Todo"))
+        btn_nothing = QPushButton(self.tr("Ninguno"))
+        btn_save = QPushButton(self.tr("Guardar"))
+        btn_cancel = QPushButton(self.tr("Cancelar"))
+        btn_not_save = QPushButton(self.tr("No guardar"))
+        box_buttons.addWidget(btn_all)
+        box_buttons.addWidget(btn_nothing)
+        box_buttons.addWidget(btn_save)
+        box_buttons.addWidget(btn_not_save)
+        box_buttons.addWidget(btn_cancel)
 
-        hLayout.addLayout(layoutBotones)
+        hLayout.addLayout(box_buttons)
         vLayout.addLayout(hLayout)
 
-        self.tecla_escape = QShortcut(QKeySequence(Qt.Key_Escape), self)
+        self.key_scape = QShortcut(QKeySequence(Qt.Key_Escape), self)
 
-        self.connect(self.tecla_escape, SIGNAL("activated()"), self.ignorar)
-        self.connect(botonTodo, SIGNAL("clicked()"), self.seleccionar_todo)
-        self.connect(botonNinguno, SIGNAL("clicked()"), self.deseleccionar)
-        self.connect(botonGuardar, SIGNAL("clicked()"), self.guardar)
-        self.connect(botonNoGuardar, SIGNAL("clicked()"), self.close)
-        self.connect(botonCancelar, SIGNAL("clicked()"), self.ignorar)
+        self.connect(self.key_scape, SIGNAL("activated()"), self._ignore)
+        self.connect(btn_all, SIGNAL("clicked()"), self._select_all)
+        self.connect(btn_nothing, SIGNAL("clicked()"), self._deselect)
+        self.connect(btn_save, SIGNAL("clicked()"), self._save)
+        self.connect(btn_not_save, SIGNAL("clicked()"), self.close)
+        self.connect(btn_cancel, SIGNAL("clicked()"), self._ignore)
 
-    def ignorar(self):
-        self.evento_ignorado = True
+    def _ignore(self):
+        self._event_ignore = True
         self.hide()
 
     def ignorado(self):
-        return self.evento_ignorado
+        return self._event_ignore
 
-    def seleccionar_todo(self):
-        for item in range(self.lista.count()):
-            self.lista.item(item).setSelected(True)
+    def _select_all(self):
+        for item in range(self.list_widget.count()):
+            self.list_widget.item(item).setSelected(True)
 
-    def deseleccionar(self):
-        for item in range(self.lista.count()):
-            self.lista.item(item).setSelected(False)
+    def _deselect(self):
+        for item in range(self.list_widget.count()):
+            self.list_widget.item(item).setSelected(False)
 
-    def guardar(self):
-        archivos_seleccionados = self.lista.selectedItems()
-        for archivo in archivos_seleccionados:
-            nombre = archivo.text()
-            self.principal.guardar_seleccionado(nombre)
+    def _save(self):
+        selected_files = self.list_widget.selectedItems()
+        for _file in selected_files:
+            filename = _file.text()
+            self._editor_container.save_selected(filename)
         self.close()

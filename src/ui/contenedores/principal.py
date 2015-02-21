@@ -272,9 +272,9 @@ class EditorContainer(QWidget):
             self.save_file(weditor)
 
     def save_selected(self, filename):
-        for index in range(self.stack.contar):
+        for index in range(self.stack.count()):
             if self.stack.editor(index).nombre == filename:
-                self.save_file(self.stack.editor(index))
+                self.save_file(self.stack.widget(index))
 
     def files_not_saved(self):
         return self.stack.archivos_sin_guardar()
