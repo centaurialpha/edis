@@ -238,9 +238,10 @@ class EditorContainer(QWidget):
             selector_ = selector.Selector(self)
             selector_.show()
 
-    def save_file(self):
+    def save_file(self, weditor=None):
         #FIXME: Controlar con try-except
-        weditor = self.get_active_editor()
+        if weditor is None:
+            weditor = self.get_active_editor()
         if weditor.es_nuevo:
             return self.save_file_as(weditor)
         filename = weditor.nombre
@@ -250,8 +251,10 @@ class EditorContainer(QWidget):
         self.update_symbols()
         weditor.guardado()
 
-    def save_file_as(self, weditor):
+    def save_file_as(self, weditor=None):
         #FIXME: Controlar con try-except
+        if weditor is None:
+            weditor = self.get_active_editor()
         working_directory = os.path.expanduser("~")
         filename = QFileDialog.getSaveFileName(self,
                                                self.trUtf8("Guardar archivo"),
