@@ -59,9 +59,11 @@ class StackWidget(QStackedWidget):
             if self.contar > 1:
                 self.eliminar_widget(self.widget_actual, 1)
 
-    def _agregar_a_recientes(self, archivo):
-        if archivo not in self._recientes:
-            self._recientes.append(archivo)
+    def _agregar_a_recientes(self, filename):
+        if not filename:
+            return
+        if filename not in self._recientes:
+            self._recientes.append(filename)
             self.recentFile.emit(self._recientes)
 
     def archivos_sin_guardar(self):
