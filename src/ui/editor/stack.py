@@ -111,12 +111,14 @@ class StackWidget(QStackedWidget):
                 self.allClosed.emit()
 
     def archivos_abiertos(self):
-        archivos = []
+        files = []
         for weditor in self.editores:
             path = weditor.nombre
-            posicion_cursor = weditor.getCursorPosition()
-            archivos.append([path, posicion_cursor])
-        return archivos
+            if not path:
+                continue
+            cursor_position = weditor.getCursorPosition()
+            files.append([path, cursor_position])
+        return files
 
     def cambiar_widget(self, indice):
         self.setCurrentIndex(indice)
