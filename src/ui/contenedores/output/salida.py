@@ -11,18 +11,22 @@ from PyQt4.QtGui import (
     QColor
     )
 
-from PyQt4.QtCore import pyqtSignal
+from PyQt4.QtCore import SIGNAL
+
+from src.ui.main import EDIS
 
 
 class SalidaCompilador(QListWidget):
-
-    ir_a_linea = pyqtSignal(int)
 
     def __init__(self, parent):
         QListWidget.__init__(self, parent)
         self.setObjectName("salida_compilador")
         self._parent = parent
-        self.itemClicked.connect(self._ir_a_linea)
+        self._editor_container = EDIS.componente("principal")
+
+        # Conexión
+        self.connect(self, SIGNAL("itemClicked(QListWidgetItem*)"),
+                     self._go_to_line)
 
     def parsear_salida_stderr(self):
         proceso = self._parent.proceso_compilacion
@@ -46,18 +50,18 @@ class SalidaCompilador(QListWidget):
                 normal = Item(linea, self)
                 self.addItem(normal)
 
-    def _ir_a_linea(self, item):
+    def _go_to_line(self, item):
         if item.clickeable:
-            linea = self._parsear_linea(item)
-            self.ir_a_linea.emit(linea)
+            line = self._parsear_linea(item)
+            self._editor_container.go_to_line(line)
 
     def _parsear_linea(self, item):
         data = item.text()
         for l in data.split(':'):
             if l.isdigit():
-                linea = int(l)
+                line = int(l)
                 break  # El segundo item es el número de columna
-        return linea - 1
+        return line - 1
 
 
 class Item(QListWidgetItem):

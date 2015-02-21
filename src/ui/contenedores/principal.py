@@ -447,10 +447,10 @@ class EditorContainer(QWidget):
         if weditor is not None:
             weditor.move_up()
 
-    def go_to_line(self, linea):
+    def go_to_line(self, line):
         weditor = self.get_active_editor()
         if weditor is not None:
-            weditor.setCursorPosition(linea, 0)
+            weditor.setCursorPosition(line, 0)
 
     def show_go_to_line(self):
         weditor = self.get_active_editor()

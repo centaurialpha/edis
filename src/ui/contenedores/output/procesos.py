@@ -25,8 +25,7 @@ from PyQt4.QtGui import (
 from PyQt4.QtCore import (
     QProcess,
     QDir,
-    Qt,
-    SIGNAL
+    Qt
     )
 
 # Módulos EDIS
@@ -59,7 +58,6 @@ class EjecutarWidget(QWidget):
         self.proceso_ejecucion = QProcess(self)
 
         # Conexión
-        self.output.ir_a_linea.connect(self._emitir_ir_a_linea)
         self.proceso_compilacion.readyReadStandardError.connect(
             self.output.parsear_salida_stderr)
         self.proceso_compilacion.finished[int, QProcess.ExitStatus].connect(
@@ -68,9 +66,6 @@ class EjecutarWidget(QWidget):
             self._error_compilacion)
         self.proceso_ejecucion.error[QProcess.ProcessError].connect(
             self._ejecucion_terminada)
-
-    def _emitir_ir_a_linea(self, linea):
-        self.emit(SIGNAL("ir_a_linea(int)"), linea)
 
     def _ejecucion_terminada(self, codigo_error):
         """ Éste método es ejecutado cuando la ejecución es frenada por el
