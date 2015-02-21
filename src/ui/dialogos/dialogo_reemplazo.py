@@ -16,24 +16,26 @@ from PyQt4.QtGui import (
     QPushButton
     )
 
+from PyQt4.QtCore import SIGNAL
+
 from src.ui.main import EDIS
 
 
-class DialogoReemplazo(QDialog):
+class ReplaceDialog(QDialog):
 
     def __init__(self, parent=None):
-        super(DialogoReemplazo, self).__init__(parent)
+        super(ReplaceDialog, self).__init__(parent)
         self.setWindowTitle(self.tr("Reemplazar"))
         box = QVBoxLayout(self)
 
         grilla = QGridLayout()
         grilla.addWidget(QLabel(self.tr("Buscar por:")), 0, 0)
-        self.linea_busqueda = QLineEdit()
-        self.linea_busqueda.setMinimumWidth(350)
-        grilla.addWidget(self.linea_busqueda, 0, 1)
+        self._search_line = QLineEdit()
+        self._search_line.setMinimumWidth(350)
+        grilla.addWidget(self._search_line, 0, 1)
         grilla.addWidget(QLabel(self.tr("Reemplazar con:")), 1, 0)
-        self.linea_reemplazo = QLineEdit()
-        grilla.addWidget(self.linea_reemplazo, 1, 1)
+        self._replace_line = QLineEdit()
+        grilla.addWidget(self._replace_line, 1, 1)
         self.check_cs = QCheckBox(self.tr("Respetar Case Sensitive"))
         self.check_cs.setChecked(True)
         grilla.addWidget(self.check_cs, 2, 0)
@@ -41,37 +43,37 @@ class DialogoReemplazo(QDialog):
         self.check_wo.setChecked(True)
         grilla.addWidget(self.check_wo, 2, 1)
 
-        box_botones = QHBoxLayout()
-        box_botones.addStretch(1)
-        btn_buscar = QPushButton(self.tr("Buscar"))
-        box_botones.addWidget(btn_buscar)
-        btn_reemplazar = QPushButton(self.tr("Reemplazar"))
-        box_botones.addWidget(btn_reemplazar)
-        btn_reemplazar_todo = QPushButton(self.tr("Reemplazar todo"))
-        box_botones.addWidget(btn_reemplazar_todo)
+        box_buttons = QHBoxLayout()
+        box_buttons.addStretch(1)
+        btn_find = QPushButton(self.tr("Buscar"))
+        box_buttons.addWidget(btn_find)
+        btn_replace = QPushButton(self.tr("Reemplazar"))
+        box_buttons.addWidget(btn_replace)
+        btn_replace_all = QPushButton(self.tr("Reemplazar todo"))
+        box_buttons.addWidget(btn_replace_all)
 
         box.addLayout(grilla)
-        box.addLayout(box_botones)
+        box.addLayout(box_buttons)
 
-        btn_reemplazar.clicked.connect(self._reemplazar)
-        btn_buscar.clicked.connect(self._buscar)
-        btn_reemplazar_todo.clicked.connect(self._reemplazar_todo)
+        self.connect(btn_replace, SIGNAL("clicked()"), self._replace)
+        self.connect(btn_find, SIGNAL("clicked()"), self._find)
+        self.connect(btn_replace_all, SIGNAL("clicked()"), self._replace_all)
 
-    def _reemplazar(self):
-        principal = EDIS.componente("principal")
-        weditor = principal.devolver_editor()
-        weditor.reemplazar(self.palabra_buscada, self.palabra_reemplazo)
+    def _replace(self):
+        editor_container = EDIS.componente("principal")
+        weditor = editor_container.get_active_editor()
+        weditor.replace_word(self.palabra_buscada, self.palabra_reemplazo)
+        weditor.buscar(self.palabra_buscada, cs=self.cs, wo=self.wo, wrap=False, forward=True)
+
+    def _replace_all(self):
+        editor_container = EDIS.componente("principal")
+        weditor = editor_container.get_active_editor()
         weditor.buscar(self.palabra_buscada, cs=self.cs, wo=self.wo)
+        weditor.replace_word(self.palabra_buscada, self.palabra_reemplazo, True)
 
-    def _reemplazar_todo(self):
-        principal = EDIS.componente("principal")
-        weditor = principal.devolver_editor()
-        weditor.buscar(self.palabra_buscada, cs=self.cs, wo=self.wo)
-        weditor.reemplazar(self.palabra_buscada, self.palabra_reemplazo, True)
-
-    def _buscar(self):
-        principal = EDIS.componente("principal")
-        weditor = principal.devolver_editor()
+    def _find(self):
+        editor_container = EDIS.componente("principal")
+        weditor = editor_container.get_active_editor()
         weditor.buscar(self.palabra_buscada)
 
     @property
@@ -84,8 +86,8 @@ class DialogoReemplazo(QDialog):
 
     @property
     def palabra_buscada(self):
-        return self.linea_busqueda.text()
+        return self._search_line.text()
 
     @property
     def palabra_reemplazo(self):
-        return self.linea_reemplazo.text()
+        return self._replace_line.text()

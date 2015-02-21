@@ -289,8 +289,9 @@ class EditorContainer(QWidget):
             dialog.show()
 
     def find_and_replace(self):
-        dialog = dialogo_reemplazo.DialogoReemplazo(self)
-        dialog.show()
+        if self.get_active_editor() is not None:
+            dialog = dialogo_reemplazo.ReplaceDialog(self)
+            dialog.show()
 
     def action_undo(self):
         weditor = self.get_active_editor()
