@@ -7,14 +7,10 @@
 
 import os
 
-from PyQt4.Qsci import QsciPrinter
-
 from PyQt4.QtGui import (
     QWidget,
     QVBoxLayout,
     QFileDialog,
-    QPrintPreviewDialog,
-    QTextDocument,
     QInputDialog,
     QMessageBox
     )
@@ -38,7 +34,7 @@ from src.ui.contenedores import selector
 from src.ui.dialogos import (
     dialogo_propiedades,
     dialogo_log,
-    dialogo_proyecto,
+    #dialogo_proyecto,
     dialogo_reemplazo
     )
 from src.ui import start_page
@@ -116,7 +112,7 @@ class EditorContainer(QWidget):
 
     def _archivo_cerrado(self, index):
         self.closedFile.emit(index)
-        self.cambiar_widget(index)
+        self.change_widget(index)
 
     def _archivo_modificado(self, value):
         self.fileModified.emit(value)
@@ -125,7 +121,7 @@ class EditorContainer(QWidget):
         self.updateSymbols.emit(weditor.nombre)
         self.fileModified.emit(False)
 
-    def cambiar_widget(self, index):
+    def change_widget(self, index):
         self.stack.cambiar_widget(index)
         weditor = self.get_active_editor()
         if weditor is not None:
@@ -135,54 +131,53 @@ class EditorContainer(QWidget):
         if not filename:
             filename = "Nuevo_archivo"
         weditor = editor.Editor()
-        self.agregar_widget(weditor)
+        self.add_widget(weditor)
         # Señales del Editor
         weditor.modificationChanged[bool].connect(self.stack.editor_modificado)
-        weditor.cursorPositionChanged[int, int].connect(self.actualizar_cursor)
+        weditor.cursorPositionChanged[int, int].connect(self.update_cursor)
         weditor.archivo_guardado.connect(self.__archivo_guardado)
         weditor.dropSignal.connect(self._drop_editor)
         weditor.setFocus()
         return weditor
 
-    def open_file(self, nombre="", posicion_cursor=None):
-        filtro = "Archivos C/C++(*.cpp *.c);;ASM(*.s);;HEADERS(*.h);;(*.*)"
-        if not nombre:
-            carpeta = os.path.expanduser("~")
+    def open_file(self, filename="", cursor_position=None):
+        filter_files = "Archivos C(*.cpp *.c);;ASM(*.s);;HEADERS(*.h);;(*.*)"
+        if not filename:
+            working_directory = os.path.expanduser("~")
             editor_widget = self.get_active_editor()
             if editor_widget and editor_widget.nombre:
-                carpeta = self.__ultima_carpeta_visitada(editor_widget.nombre)
-            if not nombre:
-                return
-            archivos = QFileDialog.getOpenFileNames(self, self.trUtf8(
-                                                    "Abrir archivo"),
-                                                    carpeta, filtro)
+                working_directory = self._last_folder(editor_widget.nombre)
+            filenames = QFileDialog.getOpenFileNames(self, self.trUtf8(
+                                                     "Abrir archivo"),
+                                                     working_directory,
+                                                     filter_files)
         else:
-            archivos = [nombre]
+            filenames = [filename]
         try:
-            for archivo in archivos:
-                if not self.__archivo_abierto(archivo):
+            for _file in filenames:
+                if not self._is_open(_file):
                     self.stack.no_esta_abierto = False
-                    contenido = manejador_de_archivo.get_file_content(archivo)
-                    nuevo_editor = self.add_editor(archivo)
-                    nuevo_editor.texto = contenido
-                    nuevo_editor.nombre = archivo
-                    if posicion_cursor is not None:
-                        linea, columna = posicion_cursor
-                        nuevo_editor.setCursorPosition(linea, columna)
-                    self.fileChanged.emit(archivo)
-                    self.openedFile.emit(archivo)
+                    content = manejador_de_archivo.get_file_content(_file)
+                    nuevo_editor = self.add_editor(_file)
+                    nuevo_editor.texto = content
+                    nuevo_editor.nombre = _file
+                    if cursor_position is not None:
+                        line, row = cursor_position
+                        nuevo_editor.setCursorPosition(line, row)
+                    self.fileChanged.emit(_file)
+                    self.openedFile.emit(_file)
         except EdisIOException as error:
             ERROR('Error opening file: %s', error)
             QMessageBox.critical(self, self.tr('Error al abrir el archivo'),
                                     str(error))
         self.stack.no_esta_abierto = True
 
-    def __ultima_carpeta_visitada(self, path):
+    def _last_folder(self, path):
         """ Devuelve la última carpeta a la que se accedió """
 
         return QFileInfo(path).absolutePath()
 
-    def __archivo_abierto(self, archivo):
+    def _is_open(self, archivo):
         """
         Retorna True si un archivo ya esta abierto,
         False en caso contrario
@@ -195,7 +190,7 @@ class EditorContainer(QWidget):
                 return True
         return False
 
-    def agregar_widget(self, widget):
+    def add_widget(self, widget):
         """ Agrega @widget al stacked """
 
         self.stack.agregar_widget(widget)
@@ -207,24 +202,24 @@ class EditorContainer(QWidget):
         self.stack.insertWidget(0, _start_page)
         self.stack.setCurrentIndex(0)
 
-    def eliminar_widget(self, widget):
+    def remove_widget(self, widget):
         """ Elimina el @widget del stacked """
 
         self.stack.removeWidget(widget)
 
-    def widget_actual(self):
+    def current_widget(self):
         """ Widget actual """
 
         return self.stack.widget_actual
 
-    def indice_actual(self):
+    def current_index(self):
         return self.stack.indice_actual
 
     def get_active_editor(self):
         """ Devuelve el Editor si el widget actual es una instancia de él,
         de lo contrario devuelve None. """
 
-        widget = self.widget_actual()
+        widget = self.current_widget()
         if isinstance(widget, editor.Editor):
             return widget
         return None
@@ -248,50 +243,51 @@ class EditorContainer(QWidget):
         weditor = self.get_active_editor()
         if weditor.es_nuevo:
             return self.save_file_as(weditor)
-        nombre_archivo = weditor.nombre
-        codigo_fuente = weditor.texto
-        manejador_de_archivo.escribir_archivo(nombre_archivo, codigo_fuente)
-        weditor.nombre = nombre_archivo
+        filename = weditor.nombre
+        source_code = weditor.texto
+        manejador_de_archivo.escribir_archivo(filename, source_code)
+        weditor.nombre = filename
         self.update_symbols()
         weditor.guardado()
 
     def save_file_as(self, weditor):
         #FIXME: Controlar con try-except
-        carpeta = os.path.expanduser("~")
-        nombre_archivo = QFileDialog.getSaveFileName(self,
-                self.trUtf8("Guardar archivo"), carpeta)
-        if not nombre_archivo:
+        working_directory = os.path.expanduser("~")
+        filename = QFileDialog.getSaveFileName(self,
+                                               self.trUtf8("Guardar archivo"),
+                                               working_directory)
+        if not filename:
             return False
-        nombre_archivo = manejador_de_archivo.escribir_archivo(nombre_archivo,
-                weditor.texto)
-        weditor.nombre = nombre_archivo
-        self.fileChanged.emit(nombre_archivo)
+        filename = manejador_de_archivo.escribir_archivo(filename,
+                                                         weditor.texto)
+        weditor.nombre = filename
+        self.fileChanged.emit(filename)
         weditor.guardado()
 
     def save_all(self):
         for weditor in self.stack.editores:
             self.save_file(weditor)
 
-    def guardar_seleccionado(self, archivo):
-        for i in range(self.stack.contar):
-            if self.stack.editor(i).nombre == archivo:
-                self.save_file(self.stack.editor(i))
+    def save_selected(self, filename):
+        for index in range(self.stack.contar):
+            if self.stack.editor(index).nombre == filename:
+                self.save_file(self.stack.editor(index))
 
-    def archivos_sin_guardar(self):
+    def files_not_saved(self):
         return self.stack.archivos_sin_guardar()
 
-    def check_archivos_sin_guardar(self):
+    def check_files_not_saved(self):
         return self.stack.check_archivos_sin_guardar()
 
     def find(self):
         weditor = self.get_active_editor()
         if weditor is not None:
-            dialogo = popup_busqueda.PopupBusqueda(self.get_active_editor())
-            dialogo.show()
+            dialog = popup_busqueda.PopupBusqueda(self.get_active_editor())
+            dialog.show()
 
     def find_and_replace(self):
-        dialogo = dialogo_reemplazo.DialogoReemplazo(self)
-        dialogo.show()
+        dialog = dialogo_reemplazo.DialogoReemplazo(self)
+        dialog.show()
 
     def action_undo(self):
         weditor = self.get_active_editor()
@@ -319,15 +315,15 @@ class EditorContainer(QWidget):
             weditor.paste()
 
     def show_tabs_and_spaces(self):
-        tabs_espacios = ESettings.get('editor/mostrarTabs')
-        ESettings.set('editor/mostrarTabs', not tabs_espacios)
+        tabs_spaces = ESettings.get('editor/mostrarTabs')
+        ESettings.set('editor/mostrarTabs', not tabs_spaces)
         weditor = self.get_active_editor()
         if weditor is not None:
             weditor.actualizar()
 
     def show_indentation_guides(self):
-        guias = ESettings.get('editor/guias')
-        ESettings.set('editor/guias', not guias)
+        guides = ESettings.get('editor/guias')
+        ESettings.set('editor/guias', not guides)
         weditor = self.get_active_editor()
         if weditor is not None:
             weditor.actualizar()
@@ -353,14 +349,14 @@ class EditorContainer(QWidget):
     def file_properties(self):
         weditor = self.get_active_editor()
         if weditor is not None:
-            dialogo = dialogo_propiedades.FileProperty(weditor, self)
-            dialogo.show()
+            dialog = dialogo_propiedades.FileProperty(weditor, self)
+            dialog.show()
 
-    def archivo_log(self):
-        dialogo = dialogo_log.DialogoLog(self)
-        dialogo.show()
+    def log_file(self):
+        dialog = dialogo_log.DialogoLog(self)
+        dialog.show()
 
-    def actualizar_cursor(self, line, row):
+    def update_cursor(self, line, row):
         weditor = self.get_active_editor()
         lines = weditor.lineas
         self.cursorPosition.emit(line + 1, row + 1, lines)
@@ -392,23 +388,6 @@ class EditorContainer(QWidget):
     def stop_program(self):
         output = EDIS.componente("output")
         output.stop()
-
-    def imprimir_documento(self):
-        weditor = self.get_active_editor()
-        if weditor is not None:
-            # Extensión
-            ext = weditor.nombre.split('.')[-1]
-            # Se reemplaza la extensión por 'pdf'
-            nombre = weditor.nombre.replace(ext, 'pdf')
-            documento = QTextDocument(weditor.texto)
-            printer = QsciPrinter()
-            printer.setPageSize(QsciPrinter.A4)
-            printer.setOutputFileName(nombre)
-            printer.setDocName(nombre)
-
-            dialogo = QPrintPreviewDialog(printer)
-            dialogo.paintRequested.connect(documento.print_)
-            dialogo.exec_()
 
     def action_comment(self):
         weditor = self.get_active_editor()
@@ -470,11 +449,6 @@ class EditorContainer(QWidget):
         if weditor is not None:
             weditor.setCursorPosition(linea, 0)
 
-    def plegar_desplegar(self):
-        weditor = self.get_active_editor()
-        if weditor is not None:
-            weditor.foldAll()
-
     def show_go_to_line(self):
         weditor = self.get_active_editor()
         if weditor is not None:
@@ -485,26 +459,22 @@ class EditorContainer(QWidget):
             if ok:
                 weditor.setCursorPosition(line - 1, 0)
 
-    def proyecto_nuevo(self):
-        dialogo = dialogo_proyecto.DialogoProyecto(self)
-        dialogo.show()
-
-    def dragEnterEvent(self, evento):
-        data = evento.mimeData()
+    def dragEnterEvent(self, event):
+        data = event.mimeData()
         if data.hasText():
             # Se acepta el evento de arrastrado
-            evento.accept()
+            event.accept()
 
-    def dropEvent(self, evento):
-        self._drop_event(evento)
+    def dropEvent(self, event):
+        self._drop_event(event)
 
-    def _drop_editor(self, evento):
-        self._drop_event(evento)
+    def _drop_editor(self, event):
+        self._drop_event(event)
 
-    def _drop_event(self, evento):
-        data = evento.mimeData()
-        archivo = data.urls()[0].toLocalFile()
-        self.open_file(archivo)
+    def _drop_event(self, event):
+        data = event.mimeData()
+        filename = data.urls()[0].toLocalFile()
+        self.open_file(filename)
 
 
 principal = EditorContainer()

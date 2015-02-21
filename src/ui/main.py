@@ -257,13 +257,6 @@ class EDIS(QMainWindow):
             filename, cursor_position = _file
             principal.open_file(filename, cursor_position)
         principal.update_recents_files(recents_files)
-        #FIXME: Se está haciendo lo mismo en EditorContainer
-        #menu_recents_files = EDIS.accion("Abrir reciente")
-        #principal = EDIS.componente("principal")
-        #self.connect(menu_recents_files, SIGNAL("triggered(QAction*)"),
-                     #principal._abrir_reciente)
-        #for recent_file in recents_files:
-            #menu_recents_files.addAction(recent_file)
 
     def about_qt(self):
         QMessageBox.aboutQt(self)
@@ -280,10 +273,10 @@ class EDIS(QMainWindow):
         """
 
         principal = EDIS.componente("principal")
-        if principal.check_archivos_sin_guardar() and \
+        if principal.check_files_not_saved() and \
                 ESettings.get('general/confirmarSalida'):
 
-            archivos_sin_guardar = principal.archivos_sin_guardar()
+            archivos_sin_guardar = principal.files_not_saved()
             dialogo = dialogo_guardar_archivos.Dialogo(
                 archivos_sin_guardar, principal)
             dialogo.exec_()
