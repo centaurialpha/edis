@@ -151,6 +151,8 @@ class EditorContainer(QWidget):
             editor_widget = self.get_active_editor()
             if editor_widget and editor_widget.nombre:
                 carpeta = self.__ultima_carpeta_visitada(editor_widget.nombre)
+            if not nombre:
+                return
             archivos = QFileDialog.getOpenFileNames(self, self.trUtf8(
                                                     "Abrir archivo"),
                                                     carpeta, filtro)
