@@ -103,5 +103,25 @@ class DockManager(QObject):
         else:
             self._output_widget.show()
 
+    def show_hide_all(self):
+        toolbars = EDIS.componente("toolbars")
+        if (self._output_widget.isVisible() or toolbars[0].isVisible() or
+                toolbars[1].isVisible() or self._symbols_widget.isVisible()):
+            if self._output_widget:
+                self._output_widget.hide()
+            if toolbars[0]:
+                toolbars[0].hide()
+            if toolbars[1]:
+                toolbars[1].hide()
+            if self._symbols_widget:
+                self._symbols_widget.hide()
+        else:
+            if toolbars[1]:
+                toolbars[1].show()
+            if toolbars[0]:
+                toolbars[0].show()
+            if self._symbols_widget:
+                self._symbols_widget.show()
+
 
 dock_manager = DockManager()

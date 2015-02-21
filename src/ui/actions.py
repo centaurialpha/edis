@@ -128,6 +128,10 @@ ACTIONS = ([
         "connection": "edis.show_full_screen",
         "shortcut": "fullscreen"},
     {
+        "name": "Ocultar todo",
+        "connection": "edis.show_hide_all",
+        "shortcut": "hide-all"},
+    {
         "name": "Mostrar/ocultar compilador",
         "connection": "edis.show_hide_output",
         "shortcut": "hide-output"},

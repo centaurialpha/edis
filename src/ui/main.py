@@ -81,6 +81,8 @@ class EDIS(QMainWindow):
         self.dock_toolbar.setObjectName("dock_toolbar")
         self.dock_toolbar.setMovable(False)
         self.addToolBar(Qt.LeftToolBarArea, self.dock_toolbar)
+        toolbars = [self.toolbar, self.dock_toolbar]
+        EDIS.cargar_componente("toolbars", toolbars)
         # Animated property
         self.setDockOptions(QMainWindow.AnimatedDocks)
         # Menú
@@ -236,6 +238,10 @@ class EDIS(QMainWindow):
                 toolbar.hide()
             else:
                 toolbar.show()
+
+    def show_hide_all(self):
+        dock = EDIS.componente("dock")
+        dock.show_hide_all()
 
     def show_full_screen(self):
         if self.isFullScreen():
