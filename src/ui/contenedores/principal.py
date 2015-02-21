@@ -88,6 +88,7 @@ class EditorContainer(QWidget):
         source_code = weditor.texto
         source_sanitize = code_analizer.sanitize_source_code(source_code)
         symbols = code_analizer.parse_symbols(source_sanitize)
+        weditor.syntax_error(symbols)
         symbols_widget = EDIS.lateral("symbols")
         symbols_widget.update_symbols(symbols)
 

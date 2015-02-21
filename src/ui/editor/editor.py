@@ -130,6 +130,14 @@ class Editor(Base):
         self.unmatch_braces_color(self._tema['brace-unbackground'],
                                   self._tema['brace-unforeground'])
 
+    def syntax_error(self, ok):
+        if not ok:
+            color = QColor(recursos.TEMA['error'])
+            self.setFoldMarginColors(color, color)
+        else:
+            self.setFoldMarginColors(QColor(recursos.TEMA['foldBack']),
+                                     QColor(recursos.TEMA['foldFore']))
+
     def cargar_fuente(self, fuente, tam):
         self._fuente = QFont(fuente, tam)
         if self._lexer is None:
