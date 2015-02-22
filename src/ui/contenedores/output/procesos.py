@@ -24,6 +24,7 @@ from PyQt4.QtGui import (
 # Módulos QtCore
 from PyQt4.QtCore import (
     QProcess,
+    QProcessEnvironment,
     QDir,
     Qt
     )
@@ -33,8 +34,7 @@ from src.helpers import configuracion
 from src.ui.contenedores.output import salida
 from src import paths
 
-PATH_GCC = os.path.join(paths.PATH, "gcc", "bin", "gcc.exe")
-GCC = 'gcc' if sys.platform.startswith('linux') else PATH_GCC
+ENV_GCC = os.path.join(paths.PATH, "gcc", "bin")
 
 
 class EjecutarWidget(QWidget):
@@ -55,6 +55,10 @@ class EjecutarWidget(QWidget):
 
         # Procesos
         self.proceso_compilacion = QProcess(self)
+        if not sys.platform.startswith('linux'):
+            self._envgcc = QProcessEnvironment.systemEnvironment()
+            self._envgcc.insert("PATH", ENV_GCC)
+            self.proceso_compilacion.setProcessEnvironment(self._envgcc)
         self.proceso_ejecucion = QProcess(self)
 
         # Conexión
@@ -98,9 +102,8 @@ class EjecutarWidget(QWidget):
                            "Compilando archivo: %s ( %s )" %
                            (directorio.split('/')[-1], nombre_archivo)))
         self.output.addItem(item)
-
-        gcc = GCC
         parametros_gcc = ['-Wall', '-o']
+        gcc = os.path.join(self._environment, 'gcc')
         self.proceso_compilacion.start(gcc, parametros_gcc +
                                        [self.ejecutable] + [nombre_archivo])
         self.proceso_compilacion.waitForFinished()
@@ -152,6 +155,12 @@ class EjecutarWidget(QWidget):
             #FIXME: Usar QProcess
             Popen([os.path.join(direc, self.ejecutable)],
                   creationflags=CREATE_NEW_CONSOLE)
+
+    @property
+    def _environment(self):
+        """ Devuelve la variable de entorno gcc """
+
+        return self._envgcc.value("PATH", "")
 
     def compilar_ejecutar(self, archivo):
         self.correr_compilacion(archivo)
