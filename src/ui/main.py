@@ -59,12 +59,12 @@ class EDIS(QMainWindow):
         self.setWindowTitle('{' + ui.__nombre__ + '}')
         self.setMinimumSize(750, 500)
         # Se cargan las dimensiones de la ventana
-        d = ESettings.get('ventana/dimensiones')
+        d = ESettings.get('ventana/size')
         if d:
             self.resize(d)
         else:
             self.showMaximized()
-        pos = ESettings.get('ventana/posicion')
+        pos = ESettings.get('ventana/position')
         if pos != 0:
             self.move(pos)
         # Toolbar
@@ -100,7 +100,7 @@ class EDIS(QMainWindow):
         EDIS.cargar_componente("edis", self)
 
         # Comprobar nueva versión
-        if ESettings.get('general/updates'):
+        if ESettings.get('general/check-updates'):
             self.noti = system_tray.NotificacionActualizacion()
             self.noti.show()
 
@@ -197,7 +197,7 @@ class EDIS(QMainWindow):
         output_widget = EDIS.componente("output")
         dock.load_output_widget(output_widget)
         window.addDockWidget(Qt.BottomDockWidgetArea, output_widget)
-        if ESettings.get('general/inicio'):
+        if ESettings.get('general/show-start-page'):
             principal.add_start_page()
 
         # Conexiones
@@ -280,7 +280,7 @@ class EDIS(QMainWindow):
 
         editor_container = EDIS.componente("principal")
         if editor_container.check_files_not_saved() and \
-                ESettings.get('general/confirmarSalida'):
+                ESettings.get('general/confirm-exit'):
 
             files_not_saved = editor_container.files_not_saved()
             dialog = dialogo_guardar_archivos.DialogSaveFiles(
@@ -288,12 +288,13 @@ class EDIS(QMainWindow):
             dialog.exec_()
             if dialog.ignorado():
                 event.ignore()
-        if ESettings.get('ventana/guardarDimensiones'):
-            ESettings.set('ventana/dimensiones', self.size())
-            ESettings.set('ventana/posicion', self.pos())
+        if ESettings.get('ventana/store-size'):
+            ESettings.set('ventana/size', self.size())
+            ESettings.set('ventana/position', self.pos())
         opened_files = editor_container.opened_files()
-        ESettings.set('general/archivos', opened_files)
-        ESettings.set('general/recientes', editor_container.get_recents_files())
+        ESettings.set('general/files', opened_files)
+        ESettings.set('general/recents-files',
+            editor_container.get_recents_files())
 
     def show_settings(self):
         from src.ui.dialogos.preferencias import preferencias

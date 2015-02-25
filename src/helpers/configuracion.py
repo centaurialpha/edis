@@ -44,25 +44,26 @@ TOOLBAR_ITEMS = [
 # Configuracion por defecto
 # configuracion[clave_QSettings] = valor_QSettings
 configuracion = {
-    'ventana/dimensiones': 0,
-    'ventana/posicion': 0,
-    'ventana/guardarDimensiones': True,
-    'general/confirmarSalida': True,
-    'editor/margen': True,
-    'editor/margenAncho': 80,
-    'editor/tipoCursor': 2,  # 0: invisilbe; 1: línea; 2: bloque
-    'editor/indentacion': True,
-    'editor/indentacionAncho': 4,
-    'editor/guias': False,
-    'editor/mostrarTabs': False,
-    'editor/modoWrap': False,
-    'editor/fuente': "",
-    'editor/fuenteTam': 10,
-    'editor/style-checker': False,
-    'general/inicio': True,
-    'general/archivos': [],
-    'general/recientes': [],
-    'general/updates': True
+    'ventana/size': 0,
+    'ventana/position': 0,
+    'ventana/store-size': True,
+    'general/confirm-exit': True,
+    'editor/show-margin': True,
+    'editor/width-margin': 80,
+    'editor/cursor': 2,  # 0: invisilbe; 1: línea; 2: bloque
+    'editor/indent': True,
+    'editor/width-indent': 4,
+    'editor/show-guides': False,
+    'editor/show-tabs-spaces': False,
+    'editor/wrap-mode': False,
+    'editor/font': "",
+    'editor/size-font': 10,
+    'editor/style-checker': True,
+    'editor/show-minimap': False,
+    'general/show-start-page': True,
+    'general/files': [],
+    'general/recents-files': [],
+    'general/check-updates': True
     }
 
 #FIXME:
@@ -78,44 +79,46 @@ class ESettings(object):
         """
 
         qconfig = QSettings(paths.CONFIGURACION, QSettings.IniFormat)
-        configuracion['ventana/dimensiones'] = qconfig.value(
-            'ventana/dimensiones', type='QSize')
-        configuracion['ventana/posicion'] = qconfig.value(
-            'ventana/posicion', type='QPoint')
-        configuracion['general/inicio'] = qconfig.value(
-            'general/inicio', True, type=bool)
-        configuracion['ventana/guardarDimensiones'] = qconfig.value(
-            'ventana/guardarDimensiones', True, type=bool)
-        configuracion['general/confirmarSalida'] = qconfig.value(
-            'general/confirmarSalida', True, type=bool)
-        configuracion['editor/margen'] = qconfig.value(
-            'editor/margen', True, type=bool)
-        configuracion['editor/margenAncho'] = qconfig.value(
-            'editor/margenAncho', 80, type=int)
-        configuracion['editor/tipoCursor'] = qconfig.value(
-            'editor/tipoCursor', 2, type=int)
-        configuracion['editor/indentacion'] = qconfig.value(
-            'editor/indentacion', True, type=bool)
-        configuracion['editor/indentacionAncho'] = qconfig.value(
-            'editor/indentacionAncho', 4, type=int)
-        configuracion['editor/guias'] = qconfig.value(
-            'editor/guias', False, type=bool)
-        configuracion['editor/mostrarTabs'] = qconfig.value(
-            'editor/mostrarTabs', False, type=bool)
-        configuracion['editor/modoWrap'] = qconfig.value(
-            'editor/modoWrap', False, type=bool)
-        configuracion['editor/fuente'] = qconfig.value(
-            'editor/fuente', "", type=str)
-        configuracion['editor/fuenteTam'] = qconfig.value(
-            'editor/fuenteTam', 11, type=int)
+        configuracion['ventana/size'] = qconfig.value(
+            'ventana/size', type='QSize')
+        configuracion['ventana/position'] = qconfig.value(
+            'ventana/position', type='QPoint')
+        configuracion['general/show-start-page'] = qconfig.value(
+            'general/show-start-page', True, type=bool)
+        configuracion['ventana/store-size'] = qconfig.value(
+            'ventana/store-size', True, type=bool)
+        configuracion['general/confirm-exit'] = qconfig.value(
+            'general/confirm-exit', True, type=bool)
+        configuracion['editor/show-margin'] = qconfig.value(
+            'editor/show-margin', True, type=bool)
+        configuracion['editor/width-margin'] = qconfig.value(
+            'editor/width-margin', 80, type=int)
+        configuracion['editor/cursor'] = qconfig.value(
+            'editor/cursor', 2, type=int)
+        configuracion['editor/indent'] = qconfig.value(
+            'editor/indent', True, type=bool)
+        configuracion['editor/width-indent'] = qconfig.value(
+            'editor/width-indent', 4, type=int)
+        configuracion['editor/show-guides'] = qconfig.value(
+            'editor/show-guides', False, type=bool)
+        configuracion['editor/show-tabs-spaces'] = qconfig.value(
+            'editor/show-tabs-spaces', False, type=bool)
+        configuracion['editor/wrap-mode'] = qconfig.value(
+            'editor/wrap-mode', False, type=bool)
+        configuracion['editor/font'] = qconfig.value(
+            'editor/font', "", type=str)
+        configuracion['editor/size-font'] = qconfig.value(
+            'editor/size-font', 11, type=int)
         configuracion['editor/style-checker'] = qconfig.value(
             'editor/style-checker', False, type=bool)
-        configuracion['general/archivos'] = qconfig.value(
-            'general/archivos', [])
-        configuracion['general/recientes'] = qconfig.value(
-            'general/recientes', [])
-        configuracion['general/updates'] = qconfig.value(
-            'general/updates', True, type=bool)
+        configuracion['editor/show-minimap'] = qconfig.value(
+            'editor/show-minimap', False, type=bool)
+        configuracion['general/files'] = qconfig.value(
+            'general/files', [])
+        configuracion['general/recents-files'] = qconfig.value(
+            'general/recents-files', [])
+        configuracion['general/check-updates'] = qconfig.value(
+            'general/check-updates', True, type=bool)
 
     @staticmethod
     def get(valor):

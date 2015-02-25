@@ -33,7 +33,7 @@ class Base(QsciScintilla):
     def __init__(self):
         QsciScintilla.__init__(self)
         # Configuración de Qscintilla
-        self.setCaretLineVisible(ESettings.get('editor/margen'))
+        self.setCaretLineVisible(ESettings.get('editor/show-margin'))
         self.setIndentationsUseTabs(False)
         self.setAutoIndent(True)
         self.setBackspaceUnindents(True)

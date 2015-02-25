@@ -98,7 +98,7 @@ class EditorConfiguration(QWidget):
             for cursor in tipos_cursor]
         for ntipo, radiob in enumerate(self.radio_cursor):
             box.addWidget(radiob)
-            if ntipo == ESettings.get('editor/tipoCursor'):
+            if ntipo == ESettings.get('editor/cursor'):
                 radiob.setChecked(True)
 
         contenedor.addWidget(grupo_margen)
@@ -117,20 +117,19 @@ class EditorConfiguration(QWidget):
 
         # Configuraciones
         # Márgen
-        self.check_margen.setChecked(ESettings.get('editor/margen'))
-        self.slider_margen.setValue(ESettings.get('editor/margenAncho'))
+        self.check_margen.setChecked(ESettings.get('editor/show-margin'))
+        self.slider_margen.setValue(ESettings.get('editor/width-margin'))
         # Indentación
-        self.check_indentacion.setChecked(ESettings.get(
-                                          'editor/indentacion'))
+        self.check_indentacion.setChecked(ESettings.get('editor/indent'))
         self.slider_indentacion.setValue(ESettings.get(
-                                         'editor/indentacionAncho'))
-        self.check_guia.setChecked(ESettings.get('editor/guias'))
+                                         'editor/width-indent'))
+        self.check_guia.setChecked(ESettings.get('editor/show-guides'))
 
     def _cargar_fuente(self):
-        fuente = ESettings.get('editor/fuente')
+        fuente = ESettings.get('editor/font')
         if not fuente:
             fuente = configuracion.FUENTE
-        size = str(ESettings.get('editor/fuenteTam'))
+        size = str(ESettings.get('editor/size-font'))
         texto = fuente + ', ' + size
         self.btn_fuente.setText(texto)
 
@@ -145,19 +144,18 @@ class EditorConfiguration(QWidget):
         """ Guarda las configuraciones del Editor. """
 
         fuente, fuente_tam = self.btn_fuente.text().split(',')
-        ESettings.set('editor/fuente', fuente)
-        ESettings.set('editor/fuenteTam', int(fuente_tam.strip()))
-        ESettings.set('editor/margen', self.check_margen.isChecked())
-        ESettings.set('editor/margenAncho', self.slider_margen.value())
-        ESettings.set('editor/guias', self.check_guia.isChecked())
+        ESettings.set('editor/font', fuente)
+        ESettings.set('editor/size-font', int(fuente_tam.strip()))
+        ESettings.set('editor/show-margin', self.check_margen.isChecked())
+        ESettings.set('editor/width-margin', self.slider_margen.value())
+        ESettings.set('editor/show-guides', self.check_guia.isChecked())
         checker_value = self.check_style_checker.isChecked()
         ESettings.set('editor/style-checker', checker_value)
-        ESettings.set('editor/indentacionAncho',
-                      self.slider_indentacion.value())
+        ESettings.set('editor/width-indent', self.slider_indentacion.value())
         for ntipo, radio in enumerate(self.radio_cursor):
             if radio.isChecked():
                 tipo = ntipo
-        ESettings.set('editor/tipoCursor', tipo)
+        ESettings.set('editor/cursor', tipo)
         principal = EDIS.componente("principal")
         weditor = principal.get_active_editor()
         if weditor is not None:

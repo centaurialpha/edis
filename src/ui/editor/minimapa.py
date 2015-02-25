@@ -55,7 +55,7 @@ class MiniMapa(QPlainTextEdit):
     def actualizar_codigo(self):
         texto = self.editor.texto
         # Reemplaza tabs por espacios
-        texto = texto.replace('\t', ' ' * ESettings.get('editor/indentacion'))
+        texto = texto.replace('\t', ' ' * ESettings.get('editor/indent'))
         self.setPlainText(texto)
 
     def codigo(self, codigo):

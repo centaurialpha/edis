@@ -93,7 +93,7 @@ class Editor(Base):
         #self.setAutoCompletionThreshold(1)
         #self.setAutoCompletionSource(QsciScintilla.AcsAPIs)
         # Indentación
-        self._indentacion = ESettings.get('editor/indentacionAncho')
+        self._indentacion = ESettings.get('editor/width-indent')
         self.send("sci_settabwidth", self._indentacion)
         # Minimapa
         self.minimapa = MiniMapa(self)
@@ -110,8 +110,8 @@ class Editor(Base):
         if ESettings.get('editor/style-checker'):
             self.load_checker()
         # Fuente
-        fuente = ESettings.get('editor/fuente')
-        tam_fuente = ESettings.get('editor/fuenteTam')
+        fuente = ESettings.get('editor/font')
+        tam_fuente = ESettings.get('editor/size-font')
         self.cargar_fuente(fuente, tam_fuente)
         self.setMarginsBackgroundColor(QColor(self._tema['sidebar-fondo']))
         self.setMarginsForegroundColor(QColor(self._tema['sidebar-fore']))
@@ -120,7 +120,7 @@ class Editor(Base):
         self.caret_line(self._tema['caret-background'],
                         self._tema['caret-line'], self._tema['caret-opacidad'])
         # Márgen
-        if ESettings.get('editor/margen'):
+        if ESettings.get('editor/show-margin'):
             self.actualizar_margen()
 
         # Brace matching
@@ -172,21 +172,21 @@ class Editor(Base):
     def actualizar(self):
         """ Actualiza las opciones del editor """
 
-        if ESettings.get('editor/mostrarTabs'):
+        if ESettings.get('editor/show-tabs-spaces'):
             self.setWhitespaceVisibility(self.WsVisible)
         else:
             self.setWhitespaceVisibility(self.WsInvisible)
-        self.setIndentationGuides(ESettings.get('editor/guias'))
-        if ESettings.get('editor/guias'):
+        self.setIndentationGuides(ESettings.get('editor/show-guides'))
+        if ESettings.get('editor/show-guides'):
             self.setIndentationGuidesBackgroundColor(QColor(
                                                      self._tema['guia-fondo']))
             self.setIndentationGuidesForegroundColor(QColor(
                                                      self._tema['guia-fore']))
-        if ESettings.get('editor/modoWrap'):
+        if ESettings.get('editor/wrap-mode'):
             self.setWrapMode(self.WrapWord)
         else:
             self.setWrapMode(self.WrapNone)
-        self.send("sci_setcaretstyle", ESettings.get('editor/tipoCursor'))
+        self.send("sci_setcaretstyle", ESettings.get('editor/cursor'))
 
     @property
     def altura_lineas(self):
@@ -201,16 +201,16 @@ class Editor(Base):
     def actualizar_margen(self):
         """ Actualiza el ancho del márgen de línea """
 
-        if ESettings.get('editor/margen'):
+        if ESettings.get('editor/show-margin'):
             self.setEdgeMode(Base.EdgeLine)
-            ancho = ESettings.get('editor/margenAncho')
+            ancho = ESettings.get('editor/width-margin')
             self.setEdgeColumn(ancho)
             self.setEdgeColor(QColor(self._tema['margen']))
         else:
             self.setEdgeMode(Base.EdgeNone)
 
     def actualizar_indentacion(self):
-        ancho = ESettings.get('editor/indentacionAncho')
+        ancho = ESettings.get('editor/width-indent')
         self.send("sci_settabwidth", ancho)
         self._indentacion = ancho
 

@@ -62,11 +62,11 @@ def correr_interfaz(app):
     app.setStyleSheet(estilo)
     # Archivos de última sesión
     splash.showMessage("Cargando archivos...", Qt.AlignBottom | Qt.black)
-    files = ESettings.get('general/archivos')
+    files = ESettings.get('general/files')
     if files is None:
         files = []
     # Archivos recientes
-    recents_files = ESettings.get('general/recientes')
+    recents_files = ESettings.get('general/recents-files')
     if recents_files is None:
         recents_files = []
     edis.cargar_archivos(files, recents_files)

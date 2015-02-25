@@ -38,7 +38,7 @@ class ConfiguracionGeneral(QWidget):
         grupo_inicio = QGroupBox(self.tr("Al inicio:"))
         box = QVBoxLayout(grupo_inicio)
         self.check_inicio = QCheckBox(self.tr("Mostrar ventana de inicio"))
-        self.check_inicio.setChecked(ESettings.get('general/inicio'))
+        self.check_inicio.setChecked(ESettings.get('general/show-start-page'))
         box.addWidget(self.check_inicio)
 
         # Al salir
@@ -46,19 +46,19 @@ class ConfiguracionGeneral(QWidget):
         box = QVBoxLayout(grupo_salir)
         self.check_al_cerrar = QCheckBox(self.tr("Confirmar al cerrar"))
         self.check_al_cerrar.setChecked(
-            ESettings.get('general/confirmarSalida'))
+            ESettings.get('general/confirm-exit'))
         box.addWidget(self.check_al_cerrar)
         self.check_dimensiones = QCheckBox(self.tr(
             "Guardar posición y tamaño de la ventana"))
         self.check_dimensiones.setChecked(
-            ESettings.get('ventana/guardarDimensiones'))
+            ESettings.get('ventana/store-size'))
         box.addWidget(self.check_dimensiones)
 
         # Notificaciones
         group_notifications = QGroupBox(self.tr("Notificaciones:"))
         box = QVBoxLayout(group_notifications)
         self.check_updates = QCheckBox(self.tr("Comprobar actualizaciones"))
-        self.check_updates.setChecked(ESettings.get('general/updates'))
+        self.check_updates.setChecked(ESettings.get('general/check-updates'))
         box.addWidget(self.check_updates)
 
         # Reestablecer
@@ -93,9 +93,9 @@ class ConfiguracionGeneral(QWidget):
     def guardar(self):
         """ Guarda las configuraciones Generales. """
 
-        ESettings.set('general/inicio', self.check_inicio.isChecked())
-        ESettings.set('ventana/guardarDimensiones',
+        ESettings.set('general/show-start-page', self.check_inicio.isChecked())
+        ESettings.set('ventana/store-size',
                       self.check_dimensiones.isChecked())
-        ESettings.set('general/confirmarSalida',
+        ESettings.set('general/confirm-exit',
                       self.check_al_cerrar.isChecked())
-        ESettings.set('general/updates', self.check_updates.isChecked())
+        ESettings.set('general/check-updates', self.check_updates.isChecked())
