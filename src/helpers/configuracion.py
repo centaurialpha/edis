@@ -18,11 +18,11 @@ WINDOWS = False
 #FIXME: Mac OS
 if sys.platform.startswith('linux'):
     LINUX = True
-    FUENTE = 'Monospace'
+    DEFAULT_FONT = 'Monospace'
     TERMINAL = ''
 elif sys.platform.startswith('win'):
     WINDOWS = True
-    FUENTE = 'Courier'
+    DEFAULT_FONT = 'Courier'
 
 TOOLBAR_ITEMS = [
     "new",
@@ -104,6 +104,8 @@ class ESettings(object):
             'editor/wrap-mode', False, type=bool)
         settings['editor/font'] = qconfig.value(
             'editor/font', "", type=str)
+        if not settings['editor/font']:
+            settings['editor/font'] = DEFAULT_FONT
         settings['editor/size-font'] = qconfig.value(
             'editor/size-font', 11, type=int)
         settings['editor/style-checker'] = qconfig.value(
