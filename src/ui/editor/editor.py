@@ -176,11 +176,6 @@ class Editor(base.Base):
         else:
             self.setWhitespaceVisibility(self.WsInvisible)
         self.setIndentationGuides(ESettings.get('editor/show-guides'))
-        #if ESettings.get('editor/show-guides'):
-            #self.setIndentationGuidesBackgroundColor(QColor(
-                                                     #self._tema['guia-fondo']))
-            #self.setIndentationGuidesForegroundColor(QColor(
-                                                     #self._tema['guia-fore']))
         if ESettings.get('editor/wrap-mode'):
             self.setWrapMode(self.WrapWord)
         else:
