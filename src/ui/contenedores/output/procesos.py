@@ -111,7 +111,6 @@ class EjecutarWidget(QWidget):
         gcc = 'gcc'
         if not sys.platform.startswith("linux"):
             gcc = os.path.join(self._environment, 'gcc')
-        ERROR("EnvGCC: %s - GCC: %s", ENV_GCC, gcc)
         self.proceso_compilacion.start(gcc, parametros_gcc +
                                        [self.ejecutable] + [nombre_archivo])
         self.proceso_compilacion.waitForFinished()
@@ -142,7 +141,6 @@ class EjecutarWidget(QWidget):
 
         """
 
-        ERROR("codigo de error: %s", error)
         texto = salida.Item(self.tr("Ha ocurrido un error: quizás el compilador"
                             " no está instalado."))
         texto.setForeground(Qt.red)
