@@ -16,11 +16,11 @@ LINUX = False
 WINDOWS = False
 
 #FIXME: Mac OS
-if sys.platform == 'linux':
+if sys.platform.startswith('linux'):
     LINUX = True
     FUENTE = 'Monospace'
     TERMINAL = ''
-elif sys.platform == 'win32':
+elif sys.platform.startswith('win'):
     WINDOWS = True
     FUENTE = 'Courier'
 
@@ -42,8 +42,8 @@ TOOLBAR_ITEMS = [
     ]
 
 # Configuracion por defecto
-# configuracion[clave_QSettings] = valor_QSettings
-configuracion = {
+# settings[clave_QSettings] = valor_QSettings
+settings = {
     'ventana/size': 0,
     'ventana/position': 0,
     'ventana/store-size': True,
@@ -66,9 +66,6 @@ configuracion = {
     'general/check-updates': True
     }
 
-#FIXME:
-RECIENTES = []
-
 
 class ESettings(object):
 
@@ -79,57 +76,57 @@ class ESettings(object):
         """
 
         qconfig = QSettings(paths.CONFIGURACION, QSettings.IniFormat)
-        configuracion['ventana/size'] = qconfig.value(
+        settings['ventana/size'] = qconfig.value(
             'ventana/size', type='QSize')
-        configuracion['ventana/position'] = qconfig.value(
+        settings['ventana/position'] = qconfig.value(
             'ventana/position', type='QPoint')
-        configuracion['general/show-start-page'] = qconfig.value(
+        settings['general/show-start-page'] = qconfig.value(
             'general/show-start-page', True, type=bool)
-        configuracion['ventana/store-size'] = qconfig.value(
+        settings['ventana/store-size'] = qconfig.value(
             'ventana/store-size', True, type=bool)
-        configuracion['general/confirm-exit'] = qconfig.value(
+        settings['general/confirm-exit'] = qconfig.value(
             'general/confirm-exit', True, type=bool)
-        configuracion['editor/show-margin'] = qconfig.value(
+        settings['editor/show-margin'] = qconfig.value(
             'editor/show-margin', True, type=bool)
-        configuracion['editor/width-margin'] = qconfig.value(
+        settings['editor/width-margin'] = qconfig.value(
             'editor/width-margin', 80, type=int)
-        configuracion['editor/cursor'] = qconfig.value(
+        settings['editor/cursor'] = qconfig.value(
             'editor/cursor', 2, type=int)
-        configuracion['editor/indent'] = qconfig.value(
+        settings['editor/indent'] = qconfig.value(
             'editor/indent', True, type=bool)
-        configuracion['editor/width-indent'] = qconfig.value(
+        settings['editor/width-indent'] = qconfig.value(
             'editor/width-indent', 4, type=int)
-        configuracion['editor/show-guides'] = qconfig.value(
+        settings['editor/show-guides'] = qconfig.value(
             'editor/show-guides', False, type=bool)
-        configuracion['editor/show-tabs-spaces'] = qconfig.value(
+        settings['editor/show-tabs-spaces'] = qconfig.value(
             'editor/show-tabs-spaces', False, type=bool)
-        configuracion['editor/wrap-mode'] = qconfig.value(
+        settings['editor/wrap-mode'] = qconfig.value(
             'editor/wrap-mode', False, type=bool)
-        configuracion['editor/font'] = qconfig.value(
+        settings['editor/font'] = qconfig.value(
             'editor/font', "", type=str)
-        configuracion['editor/size-font'] = qconfig.value(
+        settings['editor/size-font'] = qconfig.value(
             'editor/size-font', 11, type=int)
-        configuracion['editor/style-checker'] = qconfig.value(
+        settings['editor/style-checker'] = qconfig.value(
             'editor/style-checker', True, type=bool)
-        configuracion['editor/show-minimap'] = qconfig.value(
+        settings['editor/show-minimap'] = qconfig.value(
             'editor/show-minimap', False, type=bool)
-        configuracion['general/files'] = qconfig.value(
+        settings['general/files'] = qconfig.value(
             'general/files', [])
-        configuracion['general/recents-files'] = qconfig.value(
+        settings['general/recents-files'] = qconfig.value(
             'general/recents-files', [])
-        configuracion['general/check-updates'] = qconfig.value(
+        settings['general/check-updates'] = qconfig.value(
             'general/check-updates', True, type=bool)
 
     @staticmethod
     def get(valor):
-        return configuracion[valor]
+        return settings[valor]
 
     @staticmethod
     def set(clave, valor):
         qconfig = QSettings(paths.CONFIGURACION, QSettings.IniFormat)
-        configuracion[clave] = valor
+        settings[clave] = valor
         qconfig.setValue(clave, valor)
 
     @staticmethod
-    def borrar():
+    def clear():
         QSettings(paths.CONFIGURACION, QSettings.IniFormat).clear()

@@ -73,6 +73,10 @@ class EditorConfiguration(QWidget):
         self.check_style_checker = QCheckBox(self.tr("Analizador de estilo"))
         self.check_style_checker.setChecked(ESettings.get(
                                             'editor/style-checker'))
+        self.check_minimap = QCheckBox(self.tr(
+            "Minimapa (es necesario reiniciar)"))
+        self.check_minimap.setChecked(ESettings.get('editor/show-minimap'))
+        box.addWidget(self.check_minimap, 1, 1)
         box.addWidget(self.check_style_checker, 1, 0)
 
         # Tipo de letra
@@ -149,6 +153,7 @@ class EditorConfiguration(QWidget):
         ESettings.set('editor/show-margin', self.check_margen.isChecked())
         ESettings.set('editor/width-margin', self.slider_margen.value())
         ESettings.set('editor/show-guides', self.check_guia.isChecked())
+        ESettings.set('editor/show-minimap', self.check_minimap.isChecked())
         checker_value = self.check_style_checker.isChecked()
         ESettings.set('editor/style-checker', checker_value)
         ESettings.set('editor/width-indent', self.slider_indentacion.value())

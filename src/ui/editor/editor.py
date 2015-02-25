@@ -19,18 +19,14 @@ from PyQt4.QtCore import (
     QThread,
     SIGNAL
     )
-#from PyQt4.Qsci import (
-    #QsciScintilla,
-    #QsciAPIs
-    #)
+from PyQt4.Qsci import QsciScintilla
 
 from src import recursos
-from src.ui.editor.base import Base
-from src.ui.editor.minimapa import MiniMapa
 from src.ui.editor import (
     checker,
     lexer,
-    #keywords
+    base,
+    minimap
     )
 from src.helpers.configuracion import ESettings
 
@@ -62,7 +58,7 @@ class ThreadBusqueda(QThread):
         self.start()
 
 
-class Editor(Base):
+class Editor(base.Base):
 
     # Estilo
     _tema = recursos.TEMA
@@ -96,10 +92,13 @@ class Editor(Base):
         self._indentacion = ESettings.get('editor/width-indent')
         self.send("sci_settabwidth", self._indentacion)
         # Minimapa
-        self.minimapa = MiniMapa(self)
-        self.connect(self, SIGNAL("selectionChanged()"), self.minimapa.area)
-        self.connect(self, SIGNAL("textChanged()"),
-                     self.minimapa.actualizar_codigo)
+        self.minimap = None
+        if ESettings.get('editor/show-minimap'):
+            self.minimap = minimap.MiniMapa(self)
+            self.connect(self, SIGNAL("selectionChanged()"),
+                         self.minimap.area)
+            self.connect(self, SIGNAL("textChanged()"),
+                         self.minimap.actualizar_codigo)
         # Thread ocurrencias
         self.hilo_ocurrencias = ThreadBusqueda()
         self.connect(self.hilo_ocurrencias,
@@ -124,7 +123,7 @@ class Editor(Base):
             self.actualizar_margen()
 
         # Brace matching
-        self.match_braces(Base.SloppyBraceMatch)
+        self.match_braces(QsciScintilla.SloppyBraceMatch)
         self.match_braces_color(self._tema['brace-background'],
                                 self._tema['brace-foreground'])
         self.unmatch_braces_color(self._tema['brace-unbackground'],
@@ -202,12 +201,12 @@ class Editor(Base):
         """ Actualiza el ancho del márgen de línea """
 
         if ESettings.get('editor/show-margin'):
-            self.setEdgeMode(Base.EdgeLine)
+            self.setEdgeMode(QsciScintilla.EdgeLine)
             ancho = ESettings.get('editor/width-margin')
             self.setEdgeColumn(ancho)
             self.setEdgeColor(QColor(self._tema['margen']))
         else:
-            self.setEdgeMode(Base.EdgeNone)
+            self.setEdgeMode(QsciScintilla.EdgeNone)
 
     def actualizar_indentacion(self):
         ancho = ESettings.get('editor/width-indent')
@@ -276,7 +275,8 @@ class Editor(Base):
 
     def resizeEvent(self, e):
         super(Editor, self).resizeEvent(e)
-        self.minimapa.redimensionar()
+        if self.minimap is not None:
+            self.minimap.redimensionar()
 
     def comment(self):
         if self.hasSelectedText():

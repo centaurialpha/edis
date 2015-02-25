@@ -87,7 +87,7 @@ class ConfiguracionGeneral(QWidget):
         if resultado == QMessageBox.Cancel:
             return
         elif resultado == QMessageBox.Yes:
-            ESettings.borrar()
+            ESettings.clear()
             self.parent.close()
 
     def guardar(self):
