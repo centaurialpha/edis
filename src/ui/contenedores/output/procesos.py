@@ -33,6 +33,10 @@ from PyQt4.QtCore import (
 from src.helpers import configuracion
 from src.ui.contenedores.output import salida
 from src import paths
+from src.helpers import logger
+
+log = logger.edis_logger.get_logger(__name__)
+ERROR = log.error
 
 ENV_GCC = os.path.join(paths.PATH, "gcc", "bin")
 
@@ -102,8 +106,12 @@ class EjecutarWidget(QWidget):
                            "Compilando archivo: %s ( %s )" %
                            (directorio.split('/')[-1], nombre_archivo)))
         self.output.addItem(item)
+
         parametros_gcc = ['-Wall', '-o']
-        gcc = os.path.join(self._environment, 'gcc')
+        gcc = 'gcc'
+        if not sys.platform.startswith("linux"):
+            gcc = os.path.join(self._environment, 'gcc')
+        ERROR("EnvGCC: %s - GCC: %s", ENV_GCC, gcc)
         self.proceso_compilacion.start(gcc, parametros_gcc +
                                        [self.ejecutable] + [nombre_archivo])
         self.proceso_compilacion.waitForFinished()
@@ -134,6 +142,7 @@ class EjecutarWidget(QWidget):
 
         """
 
+        ERROR("codigo de error: %s", error)
         texto = salida.Item(self.tr("Ha ocurrido un error: quizás el compilador"
                             " no está instalado."))
         texto.setForeground(Qt.red)

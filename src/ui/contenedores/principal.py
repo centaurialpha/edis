@@ -39,7 +39,6 @@ from src.ui.dialogos import (
     )
 from src.ui import start_page
 from src.helpers import logger
-from src.tools import code_analizer
 
 log = logger.edis_logger.get_logger(__name__)
 ERROR = log.error
@@ -51,7 +50,7 @@ class EditorContainer(QWidget):
     closedFile = pyqtSignal(int)
     cursorPosition = pyqtSignal(int, int, int)
     fileModified = pyqtSignal(bool)
-    updateSymbols = pyqtSignal('QString')
+    updateSymbols = pyqtSignal('PyQt_PyObject')
     fileChanged = pyqtSignal('QString')
     openedFile = pyqtSignal('QString')
 
@@ -77,20 +76,7 @@ class EditorContainer(QWidget):
                      self._archivo_cerrado)
         self.connect(self.stack, SIGNAL("recentFile(QStringList)"),
                      self.update_recents_files)
-        self.connect(self, SIGNAL("fileChanged(QString)"),
-                     self.update_symbols)
         self.connect(self.stack, SIGNAL("allClosed()"), self.add_start_page)
-
-    def update_symbols(self):
-        """ Se obtienen los símbolos en un diccionario """
-
-        weditor = self.get_active_editor()
-        source_code = weditor.texto
-        source_sanitize = code_analizer.sanitize_source_code(source_code)
-        symbols = code_analizer.parse_symbols(source_sanitize)
-        weditor.syntax_error(symbols)
-        symbols_widget = EDIS.lateral("symbols")
-        symbols_widget.update_symbols(symbols)
 
     def update_recents_files(self, recents_files):
         menu = EDIS.componente("menu_recent_file")
@@ -119,7 +105,7 @@ class EditorContainer(QWidget):
         self.fileModified.emit(value)
 
     def __archivo_guardado(self, weditor):
-        self.updateSymbols.emit(weditor.nombre)
+        self.updateSymbols.emit(weditor)
         self.fileModified.emit(False)
 
     def change_widget(self, index):
@@ -127,6 +113,7 @@ class EditorContainer(QWidget):
         weditor = self.get_active_editor()
         if weditor is not None:
             self.fileChanged.emit(weditor.nombre)
+            self.updateSymbols.emit(weditor)
 
     def add_editor(self, filename=""):
         if not filename:
@@ -145,9 +132,9 @@ class EditorContainer(QWidget):
         filter_files = "Archivos C(*.cpp *.c);;ASM(*.s);;HEADERS(*.h);;(*.*)"
         if not filename:
             working_directory = os.path.expanduser("~")
-            editor_widget = self.get_active_editor()
-            if editor_widget and editor_widget.nombre:
-                working_directory = self._last_folder(editor_widget.nombre)
+            weditor = self.get_active_editor()
+            if weditor and weditor.nombre:
+                working_directory = self._last_folder(weditor.nombre)
             filenames = QFileDialog.getOpenFileNames(self, self.trUtf8(
                                                      "Abrir archivo"),
                                                      working_directory,
@@ -159,14 +146,15 @@ class EditorContainer(QWidget):
                 if not self._is_open(_file):
                     self.stack.no_esta_abierto = False
                     content = manejador_de_archivo.get_file_content(_file)
-                    nuevo_editor = self.add_editor(_file)
-                    nuevo_editor.texto = content
-                    nuevo_editor.nombre = _file
+                    weditor = self.add_editor(_file)
+                    weditor.texto = content
+                    weditor.nombre = _file
                     if cursor_position is not None:
                         line, row = cursor_position
-                        nuevo_editor.setCursorPosition(line, row)
+                        weditor.setCursorPosition(line, row)
                     self.fileChanged.emit(_file)
                     self.openedFile.emit(_file)
+                    self.updateSymbols.emit(weditor)
         except EdisIOException as error:
             ERROR('Error opening file: %s', error)
             QMessageBox.critical(self, self.tr('Error al abrir el archivo'),
@@ -249,7 +237,6 @@ class EditorContainer(QWidget):
         source_code = weditor.texto
         manejador_de_archivo.escribir_archivo(filename, source_code)
         weditor.nombre = filename
-        self.update_symbols()
         weditor.guardado()
 
     def save_file_as(self, weditor=None):

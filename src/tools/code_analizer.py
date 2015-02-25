@@ -7,7 +7,7 @@
 
 import re
 
-from .pycparser import (
+from src.tools.pycparser import (
     c_parser,
     c_ast
     )

@@ -11,6 +11,7 @@ from PyQt4.QtCore import (
     )
 
 from src.ui.widgets import tool_button
+from src.tools import code_analizer
 from src.ui.main import EDIS
 
 
@@ -53,6 +54,8 @@ class DockManager(QObject):
         editor_container = EDIS.componente("principal")
         self.connect(self._symbols_widget, SIGNAL("goToLine(int)"),
                      editor_container.go_to_line)
+        self.connect(editor_container, SIGNAL("updateSymbols(PyQt_PyObject)"),
+                     self._update_symbols)
         self.connect(self._symbols_widget, SIGNAL("visibilityChanged(bool)"),
                      lambda checked: self.symbols_button.setChecked(checked))
 
@@ -122,6 +125,12 @@ class DockManager(QObject):
                 toolbars[0].show()
             if self._symbols_widget:
                 self._symbols_widget.show()
+
+    def _update_symbols(self, weditor):
+        source_code = weditor.texto
+        source_sanitize = code_analizer.sanitize_source_code(source_code)
+        symbols = code_analizer.parse_symbols(source_sanitize)
+        self._symbols_widget.update_symbols(symbols)
 
 
 dock_manager = DockManager()
