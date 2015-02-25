@@ -110,7 +110,7 @@ class ESettings(object):
         configuracion['editor/size-font'] = qconfig.value(
             'editor/size-font', 11, type=int)
         configuracion['editor/style-checker'] = qconfig.value(
-            'editor/style-checker', False, type=bool)
+            'editor/style-checker', True, type=bool)
         configuracion['editor/show-minimap'] = qconfig.value(
             'editor/show-minimap', False, type=bool)
         configuracion['general/files'] = qconfig.value(
