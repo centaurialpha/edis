@@ -31,11 +31,11 @@ class DockManager(QObject):
             self.tr("Explorador"))
 
         # Conexiones
-        self.connect(self.symbols_button, SIGNAL("toggled(bool)"),
+        self.connect(self.symbols_button, SIGNAL("clicked(bool)"),
                      self._symbols_visibility)
-        self.connect(self.navigator_button, SIGNAL("toggled(bool)"),
+        self.connect(self.navigator_button, SIGNAL("clicked(bool)"),
                      self._navigator_visibility)
-        self.connect(self.explorer_button, SIGNAL("toggled(bool)"),
+        self.connect(self.explorer_button, SIGNAL("clicked(bool)"),
                      self._explorer_visibility)
 
         EDIS.cargar_componente("dock", self)
