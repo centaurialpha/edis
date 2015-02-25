@@ -238,3 +238,21 @@ QTabWidget::pane {
     background-color: #383733;
     position: absolute;
 }
+
+QSlider::groove:horizontal {
+    height: 7px;
+    background: qlineargradient(x1:0, y1:0, x2:0, y2:1,
+                                stop:0 #B1B1B1, stop:1 #c4c4c4);
+    margin: 2px 0;
+}
+
+QSlider::handle:horizontal {
+    background: #555;
+    width: 25px;
+    margin: -2px 0;
+    border-radius: 1px;
+}
+
+QSlider::handle:horizontal:hover {
+    background: gray;
+}
