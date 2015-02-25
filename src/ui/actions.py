@@ -114,10 +114,12 @@ ACTIONS = ([
         "separator": True},
     {
         "name": "Mover hacia arriba",
-        "connection": "action_move_up"},
+        "connection": "action_move_up",
+        "shortcut": "up"},
     {
         "name": "Mover hacia abajo",
         "connection": "action_move_down",
+        "shortcut": "down",
         "separator": True},
     {
         "name": "Configuración",
