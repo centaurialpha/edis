@@ -7,7 +7,8 @@
 
 from PyQt4.QtCore import (
     QObject,
-    SIGNAL
+    SIGNAL,
+    pyqtSignal
     )
 
 from src.ui.widgets import tool_button
@@ -16,6 +17,8 @@ from src.ui.main import EDIS
 
 
 class DockManager(QObject):
+
+    syntaxError = pyqtSignal(bool)
 
     def __init__(self):
         super(DockManager, self).__init__()
@@ -130,6 +133,8 @@ class DockManager(QObject):
         source_code = weditor.texto
         source_sanitize = code_analizer.sanitize_source_code(source_code)
         symbols = code_analizer.parse_symbols(source_sanitize)
+        syntax_ok = True if symbols else False
+        self.syntaxError.emit(syntax_ok)
         self._symbols_widget.update_symbols(symbols)
 
 

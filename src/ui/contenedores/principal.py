@@ -105,8 +105,11 @@ class EditorContainer(QWidget):
         self.fileModified.emit(value)
 
     def __archivo_guardado(self, weditor):
+        dock_manager = EDIS.componente("dock")
         self.updateSymbols.emit(weditor)
         self.fileModified.emit(False)
+        self.connect(dock_manager, SIGNAL("syntaxError(bool)"),
+                     weditor.syntax_error)
 
     def change_widget(self, index):
         self.stack.cambiar_widget(index)
