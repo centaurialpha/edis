@@ -56,7 +56,7 @@ class EDIS(QMainWindow):
         # existe otra forma?
         window = QMainWindow(self)
 
-        self.setWindowTitle(ui.__nombre__)
+        self.setWindowTitle('{' + ui.__nombre__ + '}')
         self.setMinimumSize(750, 500)
         # Se cargan las dimensiones de la ventana
         d = ESettings.get('ventana/dimensiones')
@@ -219,15 +219,15 @@ class EDIS(QMainWindow):
         self.barra_de_estado.update_status(archivo)
 
     def _all_closed(self):
-        self.setWindowTitle(ui.__nombre__)
+        self.setWindowTitle('{' + ui.__nombre__ + '}')
         self.barra_de_estado.cursor_widget.hide()
         self._update_status("")
 
-    def _change_title(self, titulo):
-        """ Cambia el título de la ventana (nombre_archivo - EDIS) """
+    def _change_title(self, title):
+        """ Cambia el título de la ventana (filename - {EDIS}) """
 
-        titulo = os.path.basename(titulo)
-        self.setWindowTitle(titulo + ' - ' + ui.__nombre__)
+        title = os.path.basename(title)
+        self.setWindowTitle(title + ' - ' + '{' + ui.__nombre__ + '}')
 
     def report_bug(self):
         webbrowser.open_new(ui.__reportar_bug__)
