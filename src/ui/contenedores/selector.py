@@ -9,14 +9,14 @@ import os
 
 from PyQt4.QtGui import (
     QDialog,
-    QVBoxLayout,
+    QVBoxLayout
     )
 
 from PyQt4.QtCore import (
     QUrl,
     SIGNAL,
     Qt,
-    QDir
+    QDir,
     )
 
 from PyQt4.QtDeclarative import QDeclarativeView
@@ -30,15 +30,14 @@ class Selector(QDialog):
     def __init__(self, parent=None):
         super(Selector, self).__init__(parent,
                                        Qt.Dialog | Qt.FramelessWindowHint)
-        # Configuración
-        self.setModal(True)
-
+        self.setAttribute(Qt.WA_TranslucentBackground)
+        self.setStyleSheet("background: transparent")
         box = QVBoxLayout(self)
-        box.setContentsMargins(0, 0, 1, 1)
+        box.setContentsMargins(0, 0, 0, 0)
         box.setSpacing(0)
         # Interfáz QML
         view = QDeclarativeView()
-        qml = os.path.join(paths.PATH, "ui", "selector", "selector.qml")
+        qml = os.path.join(paths.PATH, "ui", "Selector.qml")
         path = QDir.fromNativeSeparators(qml)
         view.setSource(QUrl.fromLocalFile(path))
 
@@ -46,25 +45,27 @@ class Selector(QDialog):
         box.addWidget(view)
 
         self.root = view.rootObject()
-        self.__cargar()
+        self._load()
 
-        self.connect(self.root, SIGNAL("abrirArchivo(int)"),
-                     self.__abrir_archivo)
+        self.connect(self.root, SIGNAL("openFile(int)"),
+                     self._open_file)
+        self.connect(self.root, SIGNAL("animationCompleted()"),
+                     self._animation_completed)
 
-    def __abrir_archivo(self, indice):
-        principal = EDIS.componente("principal")
-        principal.cambiar_widget(indice)
-        self.hide()
+    def _open_file(self, index):
+        editor_container = EDIS.componente("principal")
+        editor_container.change_widget(index)
+        self.root.close_widget()
 
-    def __current_indice(self):
-        principal = EDIS.componente("principal")
-        indice = principal.indice_actual()
-        self.root.item_actual(indice)
+    def _load(self):
+        editor_container = EDIS.componente("principal")
+        files_opened = editor_container.opened_files()
+        for _file in files_opened:
+            _file = os.path.basename(_file[0])
+            self.root.load_file(_file)
+        self.root.current_index(editor_container.current_index())
+        self.root.start_animation()
 
-    def __cargar(self):
-        principal = EDIS.componente("principal")
-        archivos_abiertos_ = principal.archivos_abiertos()
-        for archivo in archivos_abiertos_:
-            archivo = archivo.split('/')[-1]
-            self.root.cargar_archivo(archivo)
-        self.__current_indice()
+    def _animation_completed(self):
+        self.root.close_widget()
+        self.close()

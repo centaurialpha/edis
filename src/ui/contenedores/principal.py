@@ -222,7 +222,7 @@ class EditorContainer(QWidget):
     def close_all_others(self):
         self.stack.cerrar_demas()
 
-    def selector(self):
+    def show_selector(self):
         if self.get_active_editor() is not None:
             selector_ = selector.Selector(self)
             selector_.show()
