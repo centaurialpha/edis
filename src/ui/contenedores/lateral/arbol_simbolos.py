@@ -58,7 +58,7 @@ class ArbolDeSimbolos(custom_dock.CustomDock):
         if 'functions' in symbols:
             functions = Item(self.tree, [self.tr('Funciones')])
             functions.clicked = False
-            for func, nline in sorted(list(symbols['functions'].items())):
+            for nline, func in sorted(list(symbols['functions'].items())):
                 function = Item(functions, [func])
                 function.line = nline
                 function.setIcon(0, QIcon(":image/function"))

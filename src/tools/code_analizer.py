@@ -41,7 +41,7 @@ def parse_symbols(source):
         if ast_object.__class__ is c_ast.FuncDef:
             function_name = ast_object.decl.name
             function_nline = ast_object.decl.coord.line
-            functions[function_name] = function_nline
+            functions[function_nline] = function_name
         elif ast_object.__class__ is c_ast.Decl:
             decl = ast_object.type
             if decl.__class__ is c_ast.Struct:

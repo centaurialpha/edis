@@ -5,6 +5,8 @@
 # Copyright 2014-2015 - Edis Team
 # License: GPLv3 (see http://www.gnu.org/licenses/gpl.html)
 
+import bisect
+
 from PyQt4.QtGui import (
     QWidget,
     QHBoxLayout,
@@ -13,7 +15,8 @@ from PyQt4.QtGui import (
     QToolButton,
     QStackedWidget,
     QMessageBox,
-    QStyle
+    QStyle,
+    QIcon
     )
 
 from PyQt4.QtCore import (
@@ -163,6 +166,9 @@ class EditorWidget(QWidget):
             else:
                 self.allFilesClosed.emit()
 
+    def add_symbols(self, symbols):
+        self.combo.add_symbols_combo(symbols)
+
 
 class ComboContainer(QWidget):
 
@@ -172,6 +178,8 @@ class ComboContainer(QWidget):
         box = QHBoxLayout(self)
         box.setContentsMargins(0, 0, 0, 0)
         box.setSpacing(3)
+
+        self._lines_symbols = []
 
         # Combo archivos
         self.combo_file = QComboBox()
@@ -202,3 +210,20 @@ class ComboContainer(QWidget):
             self.combo_file.setStyleSheet("color: %s" % color)
         else:
             self.combo_file.setStyleSheet("color: white")
+
+    def add_symbols_combo(self, symbols):
+        """ Agrega símbolos al combo """
+
+        self.combo_symbols.clear()
+        lines = []
+        for item in symbols:
+            lines.append(item[0][0])
+            to_combo = item[0][1]
+            if item[1] == 'func':
+                icon = QIcon(":image/function")
+            self.combo_symbols.addItem(icon, to_combo)
+        self._lines_symbols = sorted(lines)
+
+    def move_to_symbol(self, line):
+        index = bisect.bisect(self._lines_symbols, line)
+        self.combo_symbols.setCurrentIndex(index - 1)

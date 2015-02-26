@@ -68,6 +68,7 @@ class Editor(base.Base):
     fileSaved = pyqtSignal('PyQt_PyObject')
     _undo = pyqtSignal(['PyQt_PyObject'], name='accion_undo')
     _drop = pyqtSignal(['PyQt_PyObject'], name='dropSignal')
+    linesChanged = pyqtSignal(int)
 
     def __init__(self):
         super(Editor, self).__init__()
@@ -262,6 +263,11 @@ class Editor(base.Base):
         message = self.checker.data.get(line, None)
         if message is not None:
             QToolTip.showText(self.mapToGlobal(position), message)
+
+    def keyReleaseEvent(self, event):
+        super(Editor, self).keyReleaseEvent(event)
+        line, _ = self.getCursorPosition()
+        self.linesChanged.emit(line)
 
     def keyPressEvent(self, e):
         super(Editor, self).keyPressEvent(e)

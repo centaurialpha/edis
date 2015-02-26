@@ -138,13 +138,15 @@ class EditorContainer(QWidget):
         self.editor_widget.add_widget(weditor)
         if isinstance(self.stack.widget(0), start_page.StartPage):
             self.stack.removeWidget(self.stack.widget(0))
-        # Señales del Editor
+        # Conexiones
         self.connect(weditor, SIGNAL("cursorPositionChanged(int, int)"),
                      self.update_cursor)
         self.connect(weditor, SIGNAL("modificationChanged(bool)"),
                      self.editor_widget.editor_modified)
         self.connect(weditor, SIGNAL("fileSaved(PyQt_PyObject)"),
                      self._file_saved)
+        self.connect(weditor, SIGNAL("linesChanged(int)"),
+                     self.editor_widget.combo.move_to_symbol)
         weditor.dropSignal.connect(self._drop_editor)
         weditor.setFocus()
         return weditor
@@ -474,6 +476,9 @@ class EditorContainer(QWidget):
                                            max=max_lines)
             if ok:
                 weditor.setCursorPosition(line - 1, 0)
+
+    def add_symbols_combo(self, symbols):
+        self.editor_widget.add_symbols(symbols)
 
     def dragEnterEvent(self, event):
         data = event.mimeData()
