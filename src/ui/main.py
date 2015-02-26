@@ -207,7 +207,8 @@ class EDIS(QMainWindow):
                      self._update_cursor)
         self.connect(principal, SIGNAL("fileChanged(QString)"),
                      self._change_title)
-        self.connect(principal.stack, SIGNAL("allClosed()"), self._all_closed)
+        self.connect(principal.editor_widget, SIGNAL("allFilesClosed()"),
+                     self._all_closed)
 
         return principal
 

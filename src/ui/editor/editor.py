@@ -65,7 +65,7 @@ class Editor(base.Base):
 
     # Señales
     _modificado = pyqtSignal(bool, name='archivo_modificado')
-    _guardado = pyqtSignal(['PyQt_PyObject'], name='archivo_guardado')
+    fileSaved = pyqtSignal('PyQt_PyObject')
     _undo = pyqtSignal(['PyQt_PyObject'], name='accion_undo')
     _drop = pyqtSignal(['PyQt_PyObject'], name='dropSignal')
 
@@ -157,11 +157,11 @@ class Editor(base.Base):
                          self._show_violations)
 
     @property
-    def nombre(self):
+    def filename(self):
         return self.__nombre
 
-    @nombre.setter
-    def nombre(self, nuevo_nombre):  # lint:ok
+    @filename.setter
+    def filename(self, nuevo_nombre):  # lint:ok
         self.__nombre = nuevo_nombre
         if nuevo_nombre:
             self.es_nuevo = False
@@ -374,7 +374,7 @@ class Editor(base.Base):
         self.send("sci_moveselectedlinesup")
 
     def guardado(self):
-        self._guardado.emit(self)
+        self.fileSaved.emit(self)
         self.es_nuevo = False
         self.texto_modificado = False
 
