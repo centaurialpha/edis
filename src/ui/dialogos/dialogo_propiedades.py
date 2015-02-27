@@ -28,7 +28,7 @@ class FileProperty(QDialog):
     def __init__(self, editor, parent=None):
         QDialog.__init__(self, parent, Qt.Dialog)
         self.setWindowTitle(self.trUtf8("Propiedades del archivo"))
-        filename = editor.nombre
+        filename = editor.filename
         vLayout = QVBoxLayout(self)
         vLayout.setContentsMargins(10, 15, 10, 10)
         vLayout.setSpacing(10)

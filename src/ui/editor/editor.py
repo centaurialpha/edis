@@ -383,6 +383,7 @@ class Editor(base.Base):
         self.fileSaved.emit(self)
         self.is_new = False
         self.texto_modificado = False
+        self.setModified(False)
 
     def dropEvent(self, evento):
         self._drop.emit(evento)

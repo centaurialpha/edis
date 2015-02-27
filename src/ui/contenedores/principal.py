@@ -51,7 +51,6 @@ class EditorContainer(QWidget):
     # Señales
     closedFile = pyqtSignal(int)
     cursorPosition = pyqtSignal(int, int, int)
-    fileModified = pyqtSignal(bool)
     updateSymbols = pyqtSignal('PyQt_PyObject')
     fileChanged = pyqtSignal('QString')
     openedFile = pyqtSignal('QString')
@@ -74,8 +73,6 @@ class EditorContainer(QWidget):
         # Conexiones
         self.connect(self.editor_widget, SIGNAL("saveCurrentFile()"),
                      self.save_file)
-        self.connect(self.editor_widget, SIGNAL("fileModified(bool)"),
-                     self._file_modified)
         self.connect(self.editor_widget, SIGNAL("fileClosed(int)"),
                      self._file_closed)
         self.connect(self.editor_widget, SIGNAL("recentFile(QStringList)"),
@@ -112,15 +109,14 @@ class EditorContainer(QWidget):
 
     def _file_closed(self, index):
         self.closedFile.emit(index)
-        #self.change_widget(index)
 
     def _file_modified(self, value):
-        self.fileModified.emit(value)
+        #FIXME:
+        self.editor_widget.editor_modified(value)
 
     def _file_saved(self, weditor):
         self.updateSymbols.emit(weditor)
         self.editor_widget.editor_modified(False)
-        self.fileModified.emit(False)
 
     def change_widget(self, index, fromCombo=False):
         if not fromCombo:
@@ -143,7 +139,8 @@ class EditorContainer(QWidget):
         self.connect(weditor, SIGNAL("cursorPositionChanged(int, int)"),
                      self.update_cursor)
         self.connect(weditor, SIGNAL("modificationChanged(bool)"),
-                     self.editor_widget.editor_modified)
+                     #self.editor_widget.editor_modified)
+                     self._file_modified)
         self.connect(weditor, SIGNAL("fileSaved(PyQt_PyObject)"),
                      self._file_saved)
         self.connect(weditor, SIGNAL("linesChanged(int)"),

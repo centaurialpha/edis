@@ -76,7 +76,7 @@ TEMA = {
     'brace-background': '#044888',
     'brace-unforeground': 'white',
     'brace-unbackground': 'red',
-    'margen': '#4d4d4d',
+    'margen': '#cccccc',
     'caret-background': 'gray',
     'caret-line': '#687073',
     'caret-opacidad': 20,

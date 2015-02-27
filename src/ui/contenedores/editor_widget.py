@@ -34,7 +34,6 @@ class EditorWidget(QWidget):
     allFilesClosed = pyqtSignal()
     saveCurrentFile = pyqtSignal()
     fileClosed = pyqtSignal(int)
-    fileModified = pyqtSignal(bool)
     recentFile = pyqtSignal('QStringList')
 
     def __init__(self):
