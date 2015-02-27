@@ -37,7 +37,7 @@ def parse_symbols(source):
         ast = parser.parse(source)
     except:
         ERROR('El código fuente tiene errores de sintáxis')
-        return {}
+        return {}, {}
     ast_objects = ast.ext
     for ast_object in ast_objects:
         if ast_object.__class__ is c_ast.FuncDef:
