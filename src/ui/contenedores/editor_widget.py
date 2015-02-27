@@ -93,7 +93,7 @@ class EditorWidget(QWidget):
             self.remove_widget(self.current_widget(), 0)
 
     def editor_modified(self, value):
-        weditor = self.sender()
+        weditor = self.current_widget()
         index = self.current_index()
         if value and self.not_open:
             weditor.texto_modificado = True

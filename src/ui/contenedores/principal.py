@@ -282,7 +282,8 @@ class EditorContainer(QWidget):
         weditor.guardado()
 
     def save_all(self):
-        for weditor in self.stack.editores:
+        for index in range(self.editor_widget.count()):
+            weditor = self.editor_widget.widget(index)
             self.save_file(weditor)
 
     def save_selected(self, filename):
