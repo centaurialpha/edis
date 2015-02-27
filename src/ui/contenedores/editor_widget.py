@@ -228,5 +228,6 @@ class ComboContainer(QWidget):
         self._lines_symbols = lines
 
     def move_to_symbol(self, line):
+        line += 1
         index = bisect.bisect(self._lines_symbols, line)
         self.combo_symbols.setCurrentIndex(index - 1)
