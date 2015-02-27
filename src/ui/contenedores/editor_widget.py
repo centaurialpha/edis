@@ -45,7 +45,7 @@ class EditorWidget(QWidget):
 
         box = QVBoxLayout(self)
         box.setContentsMargins(0, 0, 0, 0)
-        box.setSpacing(1)
+        box.setSpacing(0)
 
         # Combo container
         self.combo = ComboContainer(self)
@@ -177,7 +177,7 @@ class ComboContainer(QWidget):
         self._editor_widget = parent
         box = QHBoxLayout(self)
         box.setContentsMargins(0, 0, 0, 0)
-        box.setSpacing(3)
+        box.setSpacing(0)
 
         self._lines_symbols = []
 
@@ -192,6 +192,7 @@ class ComboContainer(QWidget):
 
         # Botón cerrar
         btn_close_editor = QToolButton()
+        btn_close_editor.setMaximumWidth(30)
         btn_close_editor.setIcon(
             self.style().standardIcon(QStyle.SP_DialogCloseButton))
         box.addWidget(btn_close_editor)

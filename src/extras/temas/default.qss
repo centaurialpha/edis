@@ -161,6 +161,7 @@ QDialog {
 
 QLabel#status_label {
     color: #FFFFFF;
+    background: transparent;
 }
 
 QPushButton {
@@ -258,17 +259,36 @@ QSlider::handle:horizontal:hover {
 }
 
 QComboBox {
-    background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
-                                       stop: 0 #5a584f, stop: 1 #41403b);
-    padding: 0px 0px 3px 15px;
+    background:qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
+                               stop: 0 #5a584f, stop: 1 #2e2d2a);
     color: #FFFFFF;
+    padding: 0px 18px 1px 10px;
+    height: 23px;
+    min-width: 6em;
+    border-right-width: 1px;
+    border-right-color: darkgray;
 }
 
 QComboBox::drop-down {
-    border-left-width: 1px;
+    width: 0px;
+}
+
+QComboBox:item:selected {
+    background: gray;
+}
+
+QComboBox:on {
+    background: transparent;
 }
 
 QComboBox:hover {
-    background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
-                                       stop: 0 #66645a, stop: 1 #4d4b45);
+    background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
+                                      stop: 0 #66645a, stop: 1.0 #3b3936);
+}
+
+QComboBox QAbstractItemView {
+     border: 1px solid darkgray;
+     background-color: #5a584f;
+     margin-top: 0px;
+     padding-bottom: 0px;
 }
