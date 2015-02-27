@@ -74,7 +74,7 @@ class Editor(base.Base):
         super(Editor, self).__init__()
         self._filename = ""
         self.texto_modificado = False
-        self.es_nuevo = True
+        self.is_new = True
         self.guardado_actualmente = False
         # Actualiza flags (espacios en blanco, cursor, sidebar, etc)
         self.actualizar()
@@ -165,7 +165,7 @@ class Editor(base.Base):
     def filename(self, new_filename):  # lint:ok
         self._filename = new_filename
         if new_filename:
-            self.es_nuevo = False
+            self.is_new = False
         if self.checker is not None:
             self.checker.start_checker()
 
@@ -381,7 +381,7 @@ class Editor(base.Base):
 
     def guardado(self):
         self.fileSaved.emit(self)
-        self.es_nuevo = False
+        self.is_new = False
         self.texto_modificado = False
 
     def dropEvent(self, evento):

@@ -126,7 +126,7 @@ class EditorContainer(QWidget):
         if not fromCombo:
             self.editor_widget.change_item(index)
         weditor = self.get_active_editor()
-        if weditor is not None:
+        if weditor is not None and not weditor.is_new:
             self.fileChanged.emit(weditor.filename)
             self.updateSymbols.emit(weditor)
 
@@ -257,7 +257,7 @@ class EditorContainer(QWidget):
         #FIXME: Controlar con try-except
         if weditor is None:
             weditor = self.get_active_editor()
-        if weditor.es_nuevo:
+        if weditor.is_new:
             return self.save_file_as(weditor)
         filename = weditor.filename
         source_code = weditor.texto
