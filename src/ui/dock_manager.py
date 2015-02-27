@@ -132,20 +132,13 @@ class DockManager(QObject):
         source_code = weditor.texto
         editor_container = EDIS.componente("principal")
         source_sanitize = code_analizer.sanitize_source_code(source_code)
-        symbols = code_analizer.parse_symbols(source_sanitize)
-        symbols_combo = self._parse_symbols_to_combo(symbols)
+        symbols, symbols_combo = code_analizer.parse_symbols(source_sanitize)
+        symbols_combo = sorted(symbols_combo.items())
         syntax_ok = True if symbols else False
         weditor = editor_container.get_active_editor()
         weditor.syntax_error(syntax_ok)
         self._symbols_widget.update_symbols(symbols)
         editor_container.add_symbols_combo(symbols_combo)
-
-    def _parse_symbols_to_combo(self, symbols):
-        symbols_combo = []
-        symbols = sorted(symbols['functions'].items())
-        for item in symbols:
-            symbols_combo.append((item, 'func'))
-        return symbols_combo
 
 
 dock_manager = DockManager()

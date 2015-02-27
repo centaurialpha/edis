@@ -217,13 +217,15 @@ class ComboContainer(QWidget):
 
         self.combo_symbols.clear()
         lines = []
-        for item in symbols:
-            lines.append(item[0][0])
-            to_combo = item[0][1]
-            if item[1] == 'func':
+        for symbol in symbols:
+            lines.append(symbol[0])
+            to_combo = symbol[1][0]
+            if symbol[1][1] == 'function':
                 icon = QIcon(":image/function")
+            elif symbol[1][1] == 'struct':
+                icon = QIcon(":image/struct")
             self.combo_symbols.addItem(icon, to_combo)
-        self._lines_symbols = sorted(lines)
+        self._lines_symbols = lines
 
     def move_to_symbol(self, line):
         index = bisect.bisect(self._lines_symbols, line)

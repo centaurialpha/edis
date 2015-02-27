@@ -24,7 +24,9 @@ def parse_symbols(source):
         Estructuras, uniones, enumeraciones, variables, funciones.
     """
 
+    #FIXME: parsear enumeraciones, uniones
     symbols = {}
+    symbols_combo = {}
     functions = {}
     structs = {}
     vars_globals = {}
@@ -42,11 +44,13 @@ def parse_symbols(source):
             function_name = ast_object.decl.name
             function_nline = ast_object.decl.coord.line
             functions[function_nline] = function_name
+            symbols_combo[function_nline] = (function_name, 'function')
         elif ast_object.__class__ is c_ast.Decl:
             decl = ast_object.type
             if decl.__class__ is c_ast.Struct:
                 struct_name = decl.name
                 struct_nline = decl.coord.line
+                symbols_combo[struct_nline] = (struct_name, 'struct')
                 members = parse_structs(ast_object)
                 structs[struct_nline] = (struct_name, members)
             elif decl.__class__ is c_ast.TypeDecl:
@@ -61,7 +65,7 @@ def parse_symbols(source):
     if vars_globals:
         symbols['globals'] = vars_globals
 
-    return symbols
+    return symbols, symbols_combo
 
 
 def parse_structs(ast_object):
