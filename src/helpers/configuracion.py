@@ -44,8 +44,9 @@ TOOLBAR_ITEMS = [
 # Configuracion por defecto
 # settings[clave_QSettings] = valor_QSettings
 settings = {
-    'ventana/size': 0,
-    'ventana/position': 0,
+    'ventana/size': '',
+    'ventana/position': '',
+    'ventana/show-maximized': True,
     'ventana/store-size': True,
     'general/confirm-exit': True,
     'editor/show-margin': True,
@@ -84,6 +85,8 @@ class ESettings(object):
             'general/show-start-page', True, type=bool)
         settings['ventana/store-size'] = qconfig.value(
             'ventana/store-size', True, type=bool)
+        settings['ventana/show-maximized'] = qconfig.value(
+            'ventana/show-maximized', True, type=bool)
         settings['general/confirm-exit'] = qconfig.value(
             'general/confirm-exit', True, type=bool)
         settings['editor/show-margin'] = qconfig.value(

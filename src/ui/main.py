@@ -53,20 +53,17 @@ class EDIS(QMainWindow):
     def __init__(self):
         QMainWindow.__init__(self)
         # Esto para tener widgets laterales en full height,
-        # existe otra forma?
         window = QMainWindow(self)
-
         self.setWindowTitle('{' + ui.__nombre__ + '}')
         self.setMinimumSize(750, 500)
         # Se cargan las dimensiones de la ventana
-        d = ESettings.get('ventana/size')
-        if d:
-            self.resize(d)
+        if ESettings.get('ventana/show-maximized'):
+            self.setWindowState(Qt.WindowMaximized)
         else:
-            self.showMaximized()
-        pos = ESettings.get('ventana/position')
-        if pos != 0:
-            self.move(pos)
+            size = ESettings.get('ventana/size')
+            position = ESettings.get('ventana/position')
+            self.resize(size)
+            self.move(position)
         # Toolbar
         self.toolbar = QToolBar(self)
         toggle_action = self.toolbar.toggleViewAction()
@@ -290,8 +287,12 @@ class EDIS(QMainWindow):
             if dialog.ignorado():
                 event.ignore()
         if ESettings.get('ventana/store-size'):
-            ESettings.set('ventana/size', self.size())
-            ESettings.set('ventana/position', self.pos())
+            if self.isMaximized():
+                ESettings.set('ventana/show-maximized', True)
+            else:
+                ESettings.set('ventana/show-maximized', False)
+                ESettings.set('ventana/size', self.size())
+                ESettings.set('ventana/position', self.pos())
         opened_files = editor_container.opened_files()
         ESettings.set('general/files', opened_files)
         ESettings.set('general/recents-files',
