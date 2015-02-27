@@ -72,7 +72,7 @@ class Editor(base.Base):
 
     def __init__(self):
         super(Editor, self).__init__()
-        self.__nombre = ""
+        self._filename = ""
         self.texto_modificado = False
         self.es_nuevo = True
         self.guardado_actualmente = False
@@ -159,12 +159,12 @@ class Editor(base.Base):
 
     @property
     def filename(self):
-        return self.__nombre
+        return self._filename
 
     @filename.setter
-    def filename(self, nuevo_nombre):  # lint:ok
-        self.__nombre = nuevo_nombre
-        if nuevo_nombre:
+    def filename(self, new_filename):  # lint:ok
+        self._filename = new_filename
+        if new_filename:
             self.es_nuevo = False
         if self.checker is not None:
             self.checker.start_checker()

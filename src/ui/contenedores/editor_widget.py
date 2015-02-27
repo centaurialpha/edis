@@ -21,10 +21,9 @@ from PyQt4.QtGui import (
 
 from PyQt4.QtCore import (
     pyqtSignal,
-    SIGNAL
+    SIGNAL,
     )
 
-from src import recursos
 from src.ui.editor import editor
 from src.ui.main import EDIS
 
@@ -94,13 +93,13 @@ class EditorWidget(QWidget):
             self.remove_widget(self.current_widget(), 0)
 
     def editor_modified(self, value):
-        weditor = self.current_widget()
+        weditor = self.sender()
+        index = self.current_index()
         if value and self.not_open:
             weditor.texto_modificado = True
         else:
             weditor.texto_modificado = False
-        #self.fileModified.emit(value)
-        self.combo.set_modified(value)
+        self.combo.set_modified(weditor, index, value)
 
     def _add_to_recent(self, filename):
         if not filename:
@@ -207,12 +206,18 @@ class ComboContainer(QWidget):
         current_index = self._editor_widget.current_index()
         self._editor_widget.remove_widget(current_editor, current_index)
 
-    def set_modified(self, value):
-        if value:
-            color = recursos.TEMA['error']
-            self.combo_file.setStyleSheet("color: %s" % color)
+    def set_modified(self, weditor, index, modified):
+        #FIXME: texto nuevo archivo
+        if modified:
+            text = self.tr(" (modificado)")
+            current_text = self.combo_file.currentText()
+            self.combo_file.setItemText(index, current_text + text)
         else:
-            self.combo_file.setStyleSheet("color: white")
+            if not weditor.filename:
+                text = "Nuevo_archivo"
+            else:
+                text = weditor.filename
+            self.combo_file.setItemText(index, text)
 
     def add_symbols_combo(self, symbols):
         """ Agrega símbolos al combo """
