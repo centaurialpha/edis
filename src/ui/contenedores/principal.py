@@ -129,6 +129,7 @@ class EditorContainer(QWidget):
         if weditor is not None and not weditor.is_new:
             self.fileChanged.emit(weditor.filename)
             self.updateSymbols.emit(weditor)
+            weditor.setFocus()
 
     def add_editor(self, filename=""):
         if not filename:
