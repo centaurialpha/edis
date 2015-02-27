@@ -103,6 +103,8 @@ class EditorWidget(QWidget):
         self.combo.set_modified(value)
 
     def _add_to_recent(self, filename):
+        if not filename:
+            return
         if filename not in self._recents_files:
             self._recents_files.append(filename)
             self.recentFile.emit(self._recents_files)
