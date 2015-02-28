@@ -50,7 +50,7 @@ settings = {
     'ventana/store-size': True,
     'general/confirm-exit': True,
     'editor/show-margin': True,
-    'editor/width-margin': 80,
+    'editor/width-margin': 79,
     'editor/cursor': 2,  # 0: invisilbe; 1: línea; 2: bloque
     'editor/indent': True,
     'editor/width-indent': 4,
@@ -92,7 +92,7 @@ class ESettings(object):
         settings['editor/show-margin'] = qconfig.value(
             'editor/show-margin', True, type=bool)
         settings['editor/width-margin'] = qconfig.value(
-            'editor/width-margin', 80, type=int)
+            'editor/width-margin', 79, type=int)
         settings['editor/cursor'] = qconfig.value(
             'editor/cursor', 2, type=int)
         settings['editor/indent'] = qconfig.value(
