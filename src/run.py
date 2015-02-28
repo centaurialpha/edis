@@ -23,6 +23,8 @@ from PyQt4.QtCore import (
 from src import paths
 from src.helpers.configuracion import ESettings
 
+# Se cargan las configuraciones
+ESettings().cargar()
 #lint:disable
 from src.ui.widgets import barra_de_estado
 import src.ui.contenedores.principal
@@ -46,10 +48,6 @@ def correr_interfaz(app):
     splash.setMask(pixmap.mask())
     splash.show()
     app.processEvents()
-
-    splash.showMessage("Cargando configuraciones...",
-                       Qt.AlignBottom | Qt.black)
-    ESettings().cargar()
 
     splash.showMessage("Cargado UI...", Qt.AlignBottom | Qt.black)
     edis = EDIS()

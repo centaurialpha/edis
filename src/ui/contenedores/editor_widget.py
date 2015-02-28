@@ -58,6 +58,8 @@ class EditorWidget(QWidget):
 
     def add_widget(self, widget):
         index = self.stack.addWidget(widget)
+        if not self.combo.isVisible():
+            self.combo.setVisible(True)
         self.stack.setCurrentIndex(index)
 
     def add_item_combo(self, text):
@@ -178,7 +180,6 @@ class ComboContainer(QWidget):
         box = QHBoxLayout(self)
         box.setContentsMargins(0, 0, 0, 0)
         box.setSpacing(0)
-
         self._lines_symbols = []
 
         # Combo archivos

@@ -45,6 +45,8 @@ from src.helpers import logger
 log = logger.edis_logger.get_logger(__name__)
 ERROR = log.error
 
+#FIXME: Mejorar la forma en la que se muestra/oculta el stacked del editor
+
 
 class EditorContainer(QWidget):
 
@@ -69,6 +71,9 @@ class EditorContainer(QWidget):
         # Editor widget
         self.editor_widget = editor_widget.EditorWidget()
         self.stack.addWidget(self.editor_widget)
+
+        if not ESettings.get('general/show-start-page'):
+            self.editor_widget.combo.hide()
 
         # Conexiones
         self.connect(self.editor_widget, SIGNAL("saveCurrentFile()"),
@@ -213,6 +218,8 @@ class EditorContainer(QWidget):
             _start_page = start_page.StartPage()
             self.stack.insertWidget(0, _start_page)
             self.stack.setCurrentIndex(0)
+        else:
+            self.editor_widget.combo.setVisible(False)
 
     def remove_widget(self, widget):
         """ Elimina el @widget del stacked """
