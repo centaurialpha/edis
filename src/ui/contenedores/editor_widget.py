@@ -212,7 +212,7 @@ class ComboContainer(QWidget):
 
     def _go_to_symbol(self, index):
         editor_container = EDIS.componente("principal")
-        line = self._lines_symbols[index] - 1
+        line = self._lines_symbols[index]
         editor_container.go_to_line(line)
 
     def _show_icon_checker(self, value):
