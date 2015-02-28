@@ -209,9 +209,10 @@ class EditorContainer(QWidget):
     def add_start_page(self):
         """ Agrega la página de inicio al stack """
 
-        _start_page = start_page.StartPage()
-        self.stack.insertWidget(0, _start_page)
-        self.stack.setCurrentIndex(0)
+        if ESettings.get('general/show-start-page'):
+            _start_page = start_page.StartPage()
+            self.stack.insertWidget(0, _start_page)
+            self.stack.setCurrentIndex(0)
 
     def remove_widget(self, widget):
         """ Elimina el @widget del stacked """
