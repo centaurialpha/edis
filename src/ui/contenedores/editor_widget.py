@@ -207,6 +207,13 @@ class ComboContainer(QWidget):
                      self._close_current_file)
         self.connect(dock, SIGNAL("updateSyntaxCheck(bool)"),
                      self._show_icon_checker)
+        self.connect(self.combo_symbols, SIGNAL("activated(int)"),
+                     self._go_to_symbol)
+
+    def _go_to_symbol(self, index):
+        editor_container = EDIS.componente("principal")
+        line = self._lines_symbols[index] - 1
+        editor_container.go_to_line(line)
 
     def _show_icon_checker(self, value):
         index = self._editor_widget.current_index()
