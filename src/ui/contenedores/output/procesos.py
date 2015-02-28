@@ -125,11 +125,11 @@ class EjecutarWidget(QWidget):
 
         if exitStatus == QProcess.NormalExit and codigoError == 0:
             item_ok = salida.Item(self.tr("¡COMPILACIÓN EXITOSA!"))
-            item_ok.setForeground(QColor("#0046cc"))
+            item_ok.setForeground(QColor("#a6e22e"))
             self.output.addItem(item_ok)
         else:
             item_error = salida.Item(self.tr("¡LA COMPILACIÓN HA FALLADO!"))
-            item_error.setForeground(Qt.red)
+            item_error.setForeground(QColor("#e73e3e"))
             self.output.addItem(item_error)
         count = self.output.count()
         self.output.setCurrentRow(count - 1, QItemSelectionModel.NoUpdate)
