@@ -131,12 +131,11 @@ class DockManager(QObject):
     def _update_symbols(self, weditor):
         source_code = weditor.texto
         editor_container = EDIS.componente("principal")
-        source_sanitize = code_analizer.sanitize_source_code(source_code)
-        symbols, symbols_combo = code_analizer.parse_symbols(source_sanitize)
+        symbols, symbols_combo = code_analizer.parse_symbols(source_code)
         symbols_combo = sorted(symbols_combo.items())
         syntax_ok = True if symbols else False
+        self.emit(SIGNAL("updateSyntaxCheck(bool)"), syntax_ok)
         weditor = editor_container.get_active_editor()
-        weditor.syntax_error(syntax_ok)
         self._symbols_widget.update_symbols(symbols)
         editor_container.add_symbols_combo(symbols_combo)
 

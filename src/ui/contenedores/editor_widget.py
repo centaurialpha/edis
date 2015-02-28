@@ -22,6 +22,7 @@ from PyQt4.QtGui import (
 from PyQt4.QtCore import (
     pyqtSignal,
     SIGNAL,
+    QSize
     )
 
 from src.ui.editor import editor
@@ -184,10 +185,12 @@ class ComboContainer(QWidget):
 
         # Combo archivos
         self.combo_file = QComboBox()
+        self.combo_file.setIconSize(QSize(18, 18))
         box.addWidget(self.combo_file)
 
         # Combo símbolos
         self.combo_symbols = QComboBox()
+        self.combo_symbols.setIconSize(QSize(18, 18))
         self.combo_symbols.setMaximumWidth(350)
         box.addWidget(self.combo_symbols)
 
@@ -198,8 +201,21 @@ class ComboContainer(QWidget):
             self.style().standardIcon(QStyle.SP_DialogCloseButton))
         box.addWidget(btn_close_editor)
 
+        dock = EDIS.componente("dock")
+
         self.connect(btn_close_editor, SIGNAL("clicked()"),
                      self._close_current_file)
+        self.connect(dock, SIGNAL("updateSyntaxCheck(bool)"),
+                     self._show_icon_checker)
+
+    def _show_icon_checker(self, value):
+        index = self._editor_widget.current_index()
+        icon = QIcon()
+        if not value:
+            icon = QIcon(":image/bug")
+            self.combo_file.setItemIcon(index, icon)
+        else:
+            self.combo_file.setItemIcon(index, icon)
 
     def _close_current_file(self):
         current_editor = self._editor_widget.current_widget()

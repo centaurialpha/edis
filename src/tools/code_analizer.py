@@ -34,7 +34,8 @@ def parse_symbols(source):
     parser = c_parser.CParser()
     # AST Abstract Syntax Tree
     try:
-        ast = parser.parse(source)
+        source_code = sanitize_source_code(source)
+        ast = parser.parse(source_code)
     except:
         ERROR('El código fuente tiene errores de sintáxis')
         return {}, {}
