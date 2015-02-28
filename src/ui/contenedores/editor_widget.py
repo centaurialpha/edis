@@ -16,13 +16,15 @@ from PyQt4.QtGui import (
     QStackedWidget,
     QMessageBox,
     QStyle,
-    QIcon
+    QIcon,
+    QMenu
     )
 
 from PyQt4.QtCore import (
     pyqtSignal,
     SIGNAL,
-    QSize
+    QSize,
+    Qt
     )
 
 from src.ui.editor import editor
@@ -186,6 +188,7 @@ class ComboContainer(QWidget):
         # Combo archivos
         self.combo_file = QComboBox()
         self.combo_file.setIconSize(QSize(18, 18))
+        self.combo_file.setContextMenuPolicy(Qt.CustomContextMenu)
         box.addWidget(self.combo_file)
 
         # Combo símbolos
@@ -197,18 +200,43 @@ class ComboContainer(QWidget):
         # Botón cerrar
         btn_close_editor = QToolButton()
         btn_close_editor.setMaximumWidth(30)
+        btn_close_editor.setToolTip(self.tr("Cerrar archivo"))
         btn_close_editor.setIcon(
             self.style().standardIcon(QStyle.SP_DialogCloseButton))
         box.addWidget(btn_close_editor)
 
         dock = EDIS.componente("dock")
 
+        # Conexiones
         self.connect(btn_close_editor, SIGNAL("clicked()"),
                      self._close_current_file)
         self.connect(dock, SIGNAL("updateSyntaxCheck(bool)"),
                      self._show_icon_checker)
         self.connect(self.combo_symbols, SIGNAL("activated(int)"),
                      self._go_to_symbol)
+        self.connect(self.combo_file,
+                     SIGNAL("customContextMenuRequested(const QPoint)"),
+                     self._load_menu_combo_file)
+
+    def _load_menu_combo_file(self, point):
+        """ Muestra el menú """
+
+        menu = QMenu()
+        editor_container = EDIS.componente("principal")
+        compile_action = menu.addAction(self.tr("Compilar"))
+        execute_action = menu.addAction(self.tr("Ejecutar"))
+        menu.addSeparator()
+        close_action = menu.addAction(self.tr("Cerrar archivo"))
+
+        # Conexiones
+        self.connect(compile_action, SIGNAL("triggered()"),
+                     editor_container.build_source_code)
+        self.connect(execute_action, SIGNAL("triggered()"),
+                     editor_container.run_binary)
+        self.connect(close_action, SIGNAL("triggered()"),
+                     editor_container.close_file)
+
+        menu.exec_(self.mapToGlobal(point))
 
     def _go_to_symbol(self, index):
         editor_container = EDIS.componente("principal")
