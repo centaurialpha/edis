@@ -267,6 +267,7 @@ QComboBox {
     min-width: 6em;
     border-right-width: 1px;
     border-right-color: darkgray;
+    border-radius: 5px;
 }
 
 QComboBox::drop-down {
