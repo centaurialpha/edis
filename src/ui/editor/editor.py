@@ -150,7 +150,7 @@ class Editor(base.Base):
             return
         if not activated:
             self.checker = None
-            self.clear_indicators(self.indicador_warning)
+            self.clear_indicators(self._warning_indicator)
         else:
             self.checker = checker.Checker(self)
             self.connect(self.checker, SIGNAL("finished()"),
@@ -209,17 +209,18 @@ class Editor(base.Base):
         self._indentacion = ancho
 
     def marcar_palabras(self, palabras):
-        self.clear_indicators(self.indicador)
+        self.clear_indicators(self._word_indicator)
         for p in palabras:
-            self.fillIndicatorRange(p[0], p[1], p[0], p[2], self.indicador)
+            self.fillIndicatorRange(p[0], p[1], p[0], p[2],
+                                    self._word_indicator)
 
     def _show_violations(self):
         data = self.checker.data
-        self.clear_indicators(self.indicador_warning)
+        self.clear_indicators(self._warning_indicator)
         for line, message in list(data.items()):
             line = int(line) - 1
             self.fillIndicatorRange(line, 0, line, self.lineLength(line),
-                                    self.indicador_warning)
+                                    self._warning_indicator)
 
     def buscar(self, palabra, re=False, cs=False, wo=False, wrap=False,
                forward=True, linea=-1, indice=-1):
@@ -252,7 +253,7 @@ class Editor(base.Base):
         if e.button() == Qt.LeftButton:
             word = self._text_under_cursor()
             if not word:
-                self.clear_indicators(self.indicador)
+                self.clear_indicators(self._word_indicator)
                 return
             self.hilo_ocurrencias.buscar(word, self.texto)
 
@@ -274,7 +275,7 @@ class Editor(base.Base):
     def keyPressEvent(self, e):
         super(Editor, self).keyPressEvent(e)
         if e.key() == Qt.Key_Escape:
-            self.clear_indicators(self.indicador)
+            self.clear_indicators(self._word_indicator)
 
     def resizeEvent(self, e):
         super(Editor, self).resizeEvent(e)

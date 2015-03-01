@@ -40,17 +40,16 @@ class Base(QsciScintilla):
         # Scrollbar
         self.send("sci_sethscrollbar", 0)
         # Indicadores
-        self.indicador = 0
-        self.indicador_warning = 1
-        self.indicador_error = 2
+        self._word_indicator = 0
+        self._warning_indicator = 1
+        self._error_indicator = 2
         # Estilo de indicadores
-        self.send("sci_indicsetstyle", self.indicador, "indic_box")
-        self.send("sci_indicsetalpha", self.indicador, 100)
-        self.send("sci_indicsetfore", self.indicador, 0x0000ff)
-        self.send("sci_indicsetstyle", self.indicador_warning, "indic_dots")
-        self.send("sci_indicsetfore", self.indicador_warning, QColor('yellow'))
-        self.send("sci_indicsetstyle", self.indicador_error, "indic_dots")
-        self.send("sci_indicsetfore", self.indicador_error, 0x0000ff)
+        self.send("sci_indicsetstyle", self._word_indicator, "indic_box")
+        self.send("sci_indicsetfore", self._word_indicator, 0x00ffde)
+        self.send("sci_indicsetstyle", self._warning_indicator, "indic_dots")
+        self.send("sci_indicsetfore", self._warning_indicator, 0xffff00)
+        self.send("sci_indicsetstyle", self._error_indicator, "indic_dots")
+        self.send("sci_indicsetfore", self._error_indicator, 0x0000ff)
 
         # Folding
         self.setFolding(QsciScintilla.BoxedTreeFoldStyle)
