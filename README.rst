@@ -5,14 +5,14 @@
 .. image:: https://img.shields.io/badge/Licencia-GPLv3-red.svg?style=flat-square
      :target: http://gplv3.fsf.org
 .. image:: https://img.shields.io/badge/build-passing-green.svg?style=flat-square
-.. image:: ./src/images/logo.png 
+.. image:: ./src/images/sources/logo.png 
 
 What is this?
 -------------
 **Edis** es un Entorno de Desarrollo Integrado (IDE) simple y ligero, está programado en Python y Qt. Edis se basa en la 
 simplicidad: *write, build and run!*.
 
-.. image:: ./src/images/edis_screenshot.png
+.. image:: ./src/images/sources/edis_screenshot.png
 
 Awesome features
 ----------------
