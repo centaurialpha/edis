@@ -37,22 +37,31 @@ class ThreadBusqueda(QThread):
     """ Éste hilo busca ocurrencias de una palabra en el código fuente """
 
     def run(self):
-        palabra = re.escape(self.__palabra)
-        encontradas = []
-        linea = 0
+        found_list = []
+        found_generator = self.ffind_with_lines(self._text, self._word)
+        for i in found_generator:
+            found_list.append([i[2], i[0], i[1]])
 
-        for linea_texto in self.__codigo.splitlines():
-            indice = linea_texto.find(palabra)
-            if indice != -1:
-                indice_start = indice
-                indice_end = indice_start + len(palabra)
-                encontradas.append([linea, indice_start, indice_end])
-            linea += 1
-        self.emit(SIGNAL("ocurrenciasThread(PyQt_PyObject)"), encontradas)
+        self.emit(SIGNAL("ocurrenciasThread(PyQt_PyObject)"), found_list)
 
-    def buscar(self, palabra, codigo):
-        self.__codigo = codigo
-        self.__palabra = palabra
+    def ffind_with_lines(self, text, word):
+        for line_number, line in enumerate(text.splitlines()):
+            for index, end in self.ffind(line, word):
+                yield index, end, line_number
+
+    def ffind(self, text, word):
+        i = 0
+        while True:
+            i = text.find(word, i)
+            if i == -1:
+                return
+            end = i + len(word)
+            yield i, end
+            i += len(word)
+
+    def buscar(self, word, source):
+        self._text = source
+        self._word = word
 
         # Run!
         self.start()
