@@ -22,23 +22,18 @@ from PyQt4.QtCore import (
     pyqtSignal
     )
 
-from src.helpers import manejador_de_archivo
+from src.helpers import file_manager
 from src.helpers.exceptions import EdisIOException
-from src.helpers.configuracion import ESettings
-from src.ui.editor import (
-    editor,
-    #stack
-    )
+from src.helpers.configurations import ESettings
+from src.ui.editor import editor
 from src.ui.main import EDIS
-from src.ui.widgets import popup_busqueda
-from src.ui.contenedores import selector
-from src.ui.dialogos import (
-    dialogo_propiedades,
-    dialogo_log,
-    #dialogo_proyecto,
-    dialogo_reemplazo
+from src.ui.widgets import find_popup
+from src.ui.containers import selector
+from src.ui.dialogs import (
+    file_properties,
+    replace
     )
-from src.ui.contenedores import editor_widget
+from src.ui.containers import editor_widget
 from src.ui import start_page
 from src.helpers import logger
 
@@ -160,7 +155,7 @@ class EditorContainer(QWidget):
         weditor = self.get_active_editor()
         if weditor is not None:
             filename = weditor.filename
-            content = manejador_de_archivo.get_file_content(filename)
+            content = file_manager.get_file_content(filename)
             weditor.setText(content)
             weditor.setModified(False)
 
@@ -181,7 +176,7 @@ class EditorContainer(QWidget):
             for _file in filenames:
                 if not self._is_open(_file):
                     self.editor_widget.not_open = False
-                    content = manejador_de_archivo.get_file_content(_file)
+                    content = file_manager.get_file_content(_file)
                     weditor = self.add_editor(_file)
                     weditor.texto = content
                     weditor.filename = _file
@@ -272,7 +267,7 @@ class EditorContainer(QWidget):
             return self.save_file_as(weditor)
         filename = weditor.filename
         source_code = weditor.texto
-        manejador_de_archivo.escribir_archivo(filename, source_code)
+        file_manager.escribir_archivo(filename, source_code)
         weditor.filename = filename
         weditor.guardado()
 
@@ -286,7 +281,7 @@ class EditorContainer(QWidget):
                                                working_directory)
         if not filename:
             return False
-        filename = manejador_de_archivo.escribir_archivo(filename,
+        filename = file_manager.escribir_archivo(filename,
                                                          weditor.texto)
         weditor.filename = filename
         self.fileChanged.emit(filename)
@@ -306,12 +301,12 @@ class EditorContainer(QWidget):
     def find(self):
         weditor = self.get_active_editor()
         if weditor is not None:
-            dialog = popup_busqueda.PopupBusqueda(self.get_active_editor())
+            dialog = find_popup.PopupBusqueda(self.get_active_editor())
             dialog.show()
 
     def find_and_replace(self):
         if self.get_active_editor() is not None:
-            dialog = dialogo_reemplazo.ReplaceDialog(self)
+            dialog = replace.ReplaceDialog(self)
             dialog.show()
 
     def action_undo(self):
@@ -374,12 +369,8 @@ class EditorContainer(QWidget):
     def file_properties(self):
         weditor = self.get_active_editor()
         if weditor is not None:
-            dialog = dialogo_propiedades.FileProperty(weditor, self)
+            dialog = file_properties.FileProperty(weditor, self)
             dialog.show()
-
-    def log_file(self):
-        dialog = dialogo_log.DialogoLog(self)
-        dialog.show()
 
     def update_cursor(self, line, row):
         weditor = self.get_active_editor()
@@ -505,4 +496,4 @@ class EditorContainer(QWidget):
         self.open_file(filename)
 
 
-principal = EditorContainer()
+editor_container = EditorContainer()

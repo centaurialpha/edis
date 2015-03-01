@@ -21,18 +21,18 @@ from PyQt4.QtCore import (
     Qt
     )
 from src import paths
-from src.helpers.configuracion import ESettings
+from src.helpers.configurations import ESettings
 
 # Se cargan las configuraciones
 ESettings().cargar()
 #lint:disable
-from src.ui.widgets import barra_de_estado
+from src.ui.widgets import status_bar
 import src.ui.dock_manager
-import src.ui.contenedores.principal
-import src.ui.contenedores.output.contenedor_secundario
-import src.ui.contenedores.lateral.navegador
-import src.ui.contenedores.lateral.explorador
-import src.ui.contenedores.lateral.arbol_simbolos
+import src.ui.containers.editor_container
+import src.ui.containers.output.output_container
+import src.ui.containers.lateral.navigator
+import src.ui.containers.lateral.explorer
+import src.ui.containers.lateral.tree_symbols
 #lint:enable
 from src.ui.main import EDIS
 

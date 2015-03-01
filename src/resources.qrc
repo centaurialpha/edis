@@ -36,10 +36,10 @@
         <file alias="fullscreen">images/view-fullscreen.png</file>
         <file alias="reload">images/view-refresh.png</file>
         <file alias="close">images/window-close.png</file>
-        <file alias="icon">images/sources/icon.png</file>
         <file alias="splash">images/sources/splash.png</file>
         <file alias="exit">images/application-exit.png</file>
         <file alias="zoom-in">images/zoom-in.png</file>
         <file alias="zoom-out">images/zoom-out.png</file>
+        <file alias="edis">images/icon.png</file>
     </qresource>
 </RCC>

@@ -30,8 +30,8 @@ from PyQt4.QtCore import (
     )
 
 # Módulos EDIS
-from src.helpers import configuracion
-from src.ui.contenedores.output import salida
+from src.helpers import configurations
+from src.ui.containers.output import output_compiler
 from src import paths
 from src.helpers import logger
 
@@ -53,7 +53,7 @@ class EjecutarWidget(QWidget):
         layoutV = QVBoxLayout(self)
         layoutV.setContentsMargins(0, 0, 0, 0)
         layoutV.setSpacing(0)
-        self.output = salida.SalidaCompilador(self)
+        self.output = output_compiler.SalidaCompilador(self)
         layoutV.addWidget(self.output)
         self.setLayout(layoutV)
 
@@ -81,12 +81,13 @@ class EjecutarWidget(QWidget):
 
         self.output.clear()
         if codigo_error == 1:
-            error1 = salida.Item(self.tr("El proceso ha sido frenado"))
+            error1 = output_compiler.Item(self.tr("El proceso ha sido frenado"))
             error1.setForeground(Qt.blue)
             self.output.addItem(error1)
         else:
-            error = salida.Item(self.tr("Ha ocurrido un error en la ejecución. "
-                                "Código de error: %s" % codigo_error))
+            error = output_compiler.Item(self.tr("Ha ocurrido un error en la "
+                                         " ejecución. Código de error: %s" %
+                                         codigo_error))
             error.setForeground(Qt.red)
             self.output.addItem(error)
 
@@ -102,9 +103,10 @@ class EjecutarWidget(QWidget):
         self.proceso_compilacion.setWorkingDirectory(directorio_ejecutable)
 
         self.output.clear()
-        item = salida.Item(self.tr(
-                           "Compilando archivo: %s ( %s )" %
-                           (directorio.split('/')[-1], nombre_archivo)))
+        item = output_compiler.Item(self.tr(
+                                    "Compilando archivo: %s ( %s )" %
+                                    (directorio.split('/')[-1],
+                                    nombre_archivo)))
         self.output.addItem(item)
 
         parametros_gcc = ['-Wall', '-o']
@@ -124,11 +126,12 @@ class EjecutarWidget(QWidget):
         """
 
         if exitStatus == QProcess.NormalExit and codigoError == 0:
-            item_ok = salida.Item(self.tr("¡COMPILACIÓN EXITOSA!"))
+            item_ok = output_compiler.Item(self.tr("¡COMPILACIÓN EXITOSA!"))
             item_ok.setForeground(QColor("#a6e22e"))
             self.output.addItem(item_ok)
         else:
-            item_error = salida.Item(self.tr("¡LA COMPILACIÓN HA FALLADO!"))
+            item_error = output_compiler.Item(self.tr(
+                                              "¡LA COMPILACIÓN HA FALLADO!"))
             item_error.setForeground(QColor("#e73e3e"))
             self.output.addItem(item_error)
         count = self.output.count()
@@ -141,8 +144,9 @@ class EjecutarWidget(QWidget):
 
         """
 
-        texto = salida.Item(self.tr("Ha ocurrido un error: quizás el compilador"
-                            " no está instalado."))
+        texto = output_compiler.Item(
+            self.tr("Ha ocurrido un error: quizás el compilador"
+            " no está instalado."))
         texto.setForeground(Qt.red)
         self.output.addItem(texto)
 
@@ -153,7 +157,7 @@ class EjecutarWidget(QWidget):
         direc = os.path.dirname(archivo)
         self.proceso_ejecucion.setWorkingDirectory(direc)
 
-        if configuracion.LINUX:
+        if configurations.LINUX:
             proceso = 'xterm -T "%s" -e /usr/bin/cb_console_runner "%s"' \
                       % (self.ejecutable, os.path.join(direc, self.ejecutable))
             # Run !
@@ -179,7 +183,7 @@ class EjecutarWidget(QWidget):
         if archivo is None:
             return
         binario = archivo.split('.')[0]
-        if configuracion.WINDOWS:
+        if configurations.WINDOWS:
             binario = binario + '.exe'
         os.remove(binario)
 

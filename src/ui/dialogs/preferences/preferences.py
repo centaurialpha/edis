@@ -25,9 +25,9 @@ from PyQt4.QtCore import (
     )
 
 from src.ui.main import EDIS
-from src.ui.dialogos.preferencias import (
-    preferencias_general,
-    preferencias_editor,
+from src.ui.dialogs.preferences import (
+    general_configuration,
+    editor_configuration,
     #preferencias_gui,
     #preferencias_ejecucion
     )
@@ -41,8 +41,8 @@ class Preferencias(QDialog):
         QDialog.__init__(self, parent, Qt.Dialog)
         self.setMinimumWidth(715)
         self.setWindowTitle(self.tr("Preferencias - EDIS"))
-        self.general = preferencias_general.ConfiguracionGeneral(self)
-        self.editor = preferencias_editor.EditorConfiguration()
+        self.general = general_configuration.ConfiguracionGeneral(self)
+        self.editor = editor_configuration.EditorConfiguration()
         #self.gui = preferencias_gui.ConfiguracionGUI(self)
         #self._ejecucion = preferencias_ejecucion.ConfiguracionEjecucion(self)
 

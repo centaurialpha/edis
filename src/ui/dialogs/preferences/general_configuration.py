@@ -24,7 +24,7 @@ from PyQt4.QtGui import (
 
 # Módulos EDIS
 #from src import recursos
-from src.helpers.configuracion import ESettings
+from src.helpers.configurations import ESettings
 
 
 class ConfiguracionGeneral(QWidget):

@@ -27,8 +27,8 @@ from PyQt4.QtCore import Qt
 
 # Módulos EDIS
 #from src import recursos
-from src.helpers.configuracion import ESettings
-from src.helpers import configuracion
+from src.helpers.configurations import ESettings
+from src.helpers import configurations
 from src.ui.main import EDIS
 
 
@@ -132,7 +132,7 @@ class EditorConfiguration(QWidget):
     def _cargar_fuente(self):
         fuente = ESettings.get('editor/font')
         if not fuente:
-            fuente = configuracion.FUENTE
+            fuente = configurations.FUENTE
         size = str(ESettings.get('editor/size-font'))
         texto = fuente + ', ' + size
         self.btn_fuente.setText(texto)

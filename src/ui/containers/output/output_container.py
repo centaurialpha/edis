@@ -16,7 +16,7 @@ from PyQt4.QtGui import (
 # Módulos QtCore
 from PyQt4.QtCore import Qt
 
-from src.ui.contenedores.output import procesos
+from src.ui.containers.output import process
 from src.ui.main import EDIS
 
 
@@ -30,7 +30,7 @@ class ContenedorOutput(QDockWidget):
 
         self.nombre_archivo = None
 
-        self.salida_ = procesos.EjecutarWidget()
+        self.salida_ = process.EjecutarWidget()
         self.setWidget(self.salida_)
 
         # Conexiones

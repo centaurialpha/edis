@@ -27,16 +27,11 @@ from PyQt4.QtCore import (
 # Módulos EDIS
 from src import ui
 from src.ui import system_tray
-from src.helpers import (
-    configuracion,
-    #dependencias
-    )
-#from src.ui.widgets import tool_button
-from src.helpers.configuracion import ESettings
-from src.ui.dialogos import (
-    dialogo_guardar_archivos,
-    #dialogo_dependencias,
-    acerca_de
+from src.helpers import configurations
+from src.helpers.configurations import ESettings
+from src.ui.dialogs import (
+    unsaved_files,
+    about
     )
 
 
@@ -137,7 +132,7 @@ class EDIS(QMainWindow):
         toolbar_actions = {}
         editor_container = EDIS.componente("principal")
         shortcuts = recursos.SHORTCUTS
-        toolbar_items = configuracion.TOOLBAR_ITEMS
+        toolbar_items = configurations.TOOLBAR_ITEMS
         for i, m in enumerate(menubar_items):
             menu = menu_bar.addMenu(m)
             menu_items[i] = menu
@@ -270,8 +265,8 @@ class EDIS(QMainWindow):
         QMessageBox.aboutQt(self)
 
     def about_edis(self):
-        dialogo = acerca_de.AcercaDe(self)
-        dialogo.exec_()
+        dialog = about.AcercaDe(self)
+        dialog.exec_()
 
     def closeEvent(self, event):
         """
@@ -285,7 +280,7 @@ class EDIS(QMainWindow):
                 ESettings.get('general/confirm-exit'):
 
             files_not_saved = editor_container.files_not_saved()
-            dialog = dialogo_guardar_archivos.DialogSaveFiles(
+            dialog = unsaved_files.DialogSaveFiles(
                 files_not_saved, editor_container)
             dialog.exec_()
             if dialog.ignorado():
@@ -303,6 +298,6 @@ class EDIS(QMainWindow):
             editor_container.get_recents_files())
 
     def show_settings(self):
-        from src.ui.dialogos.preferencias import preferencias
-        dialogo = preferencias.Preferencias(self)
-        dialogo.show()
+        from src.ui.dialogs.preferences import preferences
+        dialog = preferences.Preferencias(self)
+        dialog.show()

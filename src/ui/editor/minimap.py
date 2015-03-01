@@ -21,7 +21,7 @@ from PyQt4.QtCore import (
     Qt
     )
 
-from src.helpers.configuracion import ESettings
+from src.helpers.configurations import ESettings
 
 
 class MiniMapa(QPlainTextEdit):

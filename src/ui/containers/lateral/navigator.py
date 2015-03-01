@@ -8,7 +8,7 @@
 from PyQt4.QtGui import QListWidget
 
 from src.ui.main import EDIS
-from src.ui.contenedores.lateral import custom_dock
+from src.ui.containers.lateral import custom_dock
 
 
 class Navegador(custom_dock.CustomDock):

@@ -19,7 +19,7 @@ from PyQt4.Qsci import (
     )
 
 from src import recursos
-from src.helpers.configuracion import ESettings
+from src.helpers.configurations import ESettings
 
 
 class Base(QsciScintilla):
@@ -45,11 +45,12 @@ class Base(QsciScintilla):
         self._error_indicator = 2
         # Estilo de indicadores
         self.send("sci_indicsetstyle", self._word_indicator, "indic_box")
-        self.send("sci_indicsetfore", self._word_indicator, 0x00ffde)
+        self.send("sci_indicsetfore", self._word_indicator,
+            QColor("#00ffde"))
         self.send("sci_indicsetstyle", self._warning_indicator, "indic_dots")
-        self.send("sci_indicsetfore", self._warning_indicator, 0xffff00)
+        self.send("sci_indicsetfore", self._warning_indicator,
+            QColor("#ffff00"))
         self.send("sci_indicsetstyle", self._error_indicator, "indic_dots")
-        self.send("sci_indicsetfore", self._error_indicator, 0x0000ff)
 
         # Folding
         self.setFolding(QsciScintilla.BoxedTreeFoldStyle)

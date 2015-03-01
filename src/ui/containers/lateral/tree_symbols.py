@@ -16,7 +16,7 @@ from PyQt4.QtGui import (
 from PyQt4.QtCore import pyqtSignal
 
 from src.ui.main import EDIS
-from src.ui.contenedores.lateral import custom_dock
+from src.ui.containers.lateral import custom_dock
 
 
 class ArbolDeSimbolos(custom_dock.CustomDock):

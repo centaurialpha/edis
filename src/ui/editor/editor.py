@@ -26,7 +26,7 @@ from src.ui.editor import (
     base,
     minimap
     )
-from src.helpers.configuracion import ESettings
+from src.helpers.configurations import ESettings
 
 #FIXME: Cambiar comentario '//' (C++ style) por '/* */' (C style)
 
