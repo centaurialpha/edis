@@ -32,6 +32,11 @@ ACTIONS = ([
         "connection": "close_all_others",
         "separator": True},
     {
+        "name": "Recargar",
+        "connection": "reload_file",
+        "shortcut": "reload",
+        "separator": True},
+    {
         "name": "Guardar",
         "connection": "save_file",
         "shortcut": "save"},

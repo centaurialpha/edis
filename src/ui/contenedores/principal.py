@@ -154,6 +154,16 @@ class EditorContainer(QWidget):
         weditor.setFocus()
         return weditor
 
+    def reload_file(self):
+        """ Recarga el archivo """
+
+        weditor = self.get_active_editor()
+        if weditor is not None:
+            filename = weditor.filename
+            content = manejador_de_archivo.get_file_content(filename)
+            weditor.setText(content)
+            weditor.setModified(False)
+
     def open_file(self, filename="", cursor_position=None):
         filter_files = "Archivos C(*.cpp *.c);;ASM(*.s);;HEADERS(*.h);;(*.*)"
         if not filename:
