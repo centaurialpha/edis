@@ -17,6 +17,7 @@ ACTIONS = ([
         "shortcut": "open"},
     {
         "name": "Abrir archivo reciente",
+        "icon": "open-recent",
         "menu": True,
         "separator": True},
     {
@@ -36,13 +37,16 @@ ACTIONS = ([
         "shortcut": "save"},
     {
         "name": "Guardar como...",
+        "icon": "save-as",
         "connection": "save_file_as"},
     {
         "name": "Guardar todo",
         "connection": "save_all",
+        "icon": "save-all",
         "separator": True},
     {
         "name": "Propiedades",
+        "icon": "properties",
         "connection": "file_properties",
         "separator": True},
     {
@@ -196,20 +200,19 @@ ACTIONS = ([
         "separator": True},
     {
         "name": "Limpiar construcción",
+        "icon": "clean",
         "connection": "clean_construction"}],
     # Menú acerca de
     [{
         "name": "Reportar bug!",
+        "icon": "bug",
         "connection": "edis.report_bug",
-        "separator": True},
-    {
-        "name": "Archivo de log",
-        "connection": "show_log_file",
         "separator": True},
     {
         "name": "Acerca de Edis",
         "connection": "edis.about_edis"},
     {
         "name": "Acerca de Qt",
+        "icon": "qt",
         "connection": "edis.about_qt"}]
     )

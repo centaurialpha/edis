@@ -148,6 +148,11 @@ class EDIS(QMainWindow):
                 name = action.get('name', None)
                 connection = action.get('connection', None)
                 shortcut = action.get('shortcut', None)
+                icon_action = action.get('icon', None)
+                if icon_action is not None:
+                    icon = QIcon(":image/%s" % icon_action)
+                else:
+                    icon = QIcon(":image/%s" % shortcut)
                 separator = action.get('separator', False)
                 subm = action.get('menu', False)
                 if subm:
@@ -157,7 +162,6 @@ class EDIS(QMainWindow):
                     continue
                 qaction = menu_name.addAction(name)
                 #FIXME: No depender de shortcut
-                icon = QIcon(":image/%s" % shortcut)
                 qaction.setIcon(icon)
                 if shortcut is not None:
                     qaction.setShortcut(shortcuts[shortcut])
