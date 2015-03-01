@@ -17,6 +17,8 @@ from src.helpers import logger
 log = logger.edis_logger.get_logger(__name__)
 ERROR = log.error
 
+pattern_file_pointer = re.compile(r'(\s)*FILE')
+
 
 def parse_symbols(source):
     """ Parsea el código fuente para obtener los símbolos:
@@ -85,7 +87,7 @@ def parse_structs(ast_object):
 
 
 def sanitize_source_code(source_code):
-    """ Ignora comentarios y declarativas del preprocesador """
+    """ Limpia el código fuente para poder ser analizado por pycparser """
 
     def blot_out_non_new_lines(str_in):
         return "" + ("\n" * str_in.count('\n'))
@@ -98,6 +100,11 @@ def sanitize_source_code(source_code):
             return s
     source = ""
     for line in source_code.splitlines():
+        # Se ignora el puntero a FILE, pycparser produce una excepción
+        if pattern_file_pointer.match(line):
+            source += '\n'
+            continue
+        # Se ignoran las declarativas del preprocesador
         if line.startswith('#'):
             source += '\n'
             continue
