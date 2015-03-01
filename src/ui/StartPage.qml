@@ -37,7 +37,7 @@ Rectangle {
     }
 
     Text {
-        text: qsTr("Copyright © 2014-2015 Edis under GPLv3 License")
+        text: qsTr("Copyright © 2014-" + Qt.formatDate(new Date(), "yyyy ") + "Edis under GPLv3 License")
         font.pointSize: 10
         color: "#dedede"
         anchors.bottom: parent.bottom
