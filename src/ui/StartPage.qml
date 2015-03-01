@@ -27,7 +27,7 @@ Rectangle {
 
                 Image {
                     id: logo
-                    source: "../images/logo.png"
+                    source: "../images/sources/logo.png"
                 }
 
 

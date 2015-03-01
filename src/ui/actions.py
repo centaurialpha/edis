@@ -26,10 +26,7 @@ ACTIONS = ([
         "shortcut": "close"},
     {
         "name": "Cerrar todo",
-        "connection": "close_all"},
-    {
-        "name": "Cerrar los demás",
-        "connection": "close_all_others",
+        "connection": "close_all",
         "separator": True},
     {
         "name": "Recargar",
@@ -43,11 +40,7 @@ ACTIONS = ([
     {
         "name": "Guardar como...",
         "icon": "save-as",
-        "connection": "save_file_as"},
-    {
-        "name": "Guardar todo",
-        "connection": "save_all",
-        "icon": "save-all",
+        "connection": "save_file_as",
         "separator": True},
     {
         "name": "Propiedades",
@@ -132,7 +125,8 @@ ACTIONS = ([
         "separator": True},
     {
         "name": "Configuración",
-        "connection": "edis.show_settings"}],
+        "connection": "edis.show_settings",
+        "shortcut": "preferences"}],
     # Menú ver
     [{
         "name": "Pantalla completa",
@@ -184,7 +178,7 @@ ACTIONS = ([
     {
         "name": "Ir a línea",
         "connection": "show_go_to_line",
-        "shortcut": "go-to-line"}],
+        "shortcut": "go"}],
     # Menú ejecución
     [{
         "name": "Compilar",

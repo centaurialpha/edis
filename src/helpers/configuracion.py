@@ -36,6 +36,9 @@ TOOLBAR_ITEMS = [
     "cut",
     "paste",
     "separator",
+    "indent",
+    "unindent",
+    "separator",
     "build",
     "run",
     "stop"

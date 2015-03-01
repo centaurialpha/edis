@@ -53,7 +53,7 @@ SHORTCUTS = {
     # Buscar
     "find": QKeySequence(Qt.CTRL + Qt.Key_F),
     "find-replace": QKeySequence(Qt.CTRL + Qt.Key_H),
-    "go-to-line": QKeySequence(Qt.CTRL + Qt.Key_J)
+    "go": QKeySequence(Qt.CTRL + Qt.Key_J)
     }
 
 # Tema editor

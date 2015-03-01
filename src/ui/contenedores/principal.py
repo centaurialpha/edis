@@ -259,11 +259,6 @@ class EditorContainer(QWidget):
     def close_all(self):
         self.editor_widget.close_all()
 
-    def close_all_others(self):
-        #FIXME: completar
-        pass
-        #self.stack.cerrar_demas()
-
     def show_selector(self):
         if self.get_active_editor() is not None:
             selector_ = selector.Selector(self)
@@ -296,11 +291,6 @@ class EditorContainer(QWidget):
         weditor.filename = filename
         self.fileChanged.emit(filename)
         weditor.guardado()
-
-    def save_all(self):
-        for index in range(self.editor_widget.count()):
-            weditor = self.editor_widget.widget(index)
-            self.save_file(weditor)
 
     def save_selected(self, filename):
         for index in range(self.stack.count()):
