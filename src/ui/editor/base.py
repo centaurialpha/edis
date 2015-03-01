@@ -134,7 +134,7 @@ class Base(QsciScintilla):
             else arg
             for arg in args])
 
-    def borrarIndicadores(self, indicador):
+    def clear_indicators(self, indicador):
         """ Elimina todos los indicadores @indicador """
 
         self.clearIndicatorRange(0, 0, self.lineas, 0, indicador)
