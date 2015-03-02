@@ -46,7 +46,7 @@ class Base(QsciScintilla):
         # Estilo de indicadores
         self.send("sci_indicsetstyle", self._word_indicator, "indic_box")
         self.send("sci_indicsetfore", self._word_indicator,
-            QColor("#00ffde"))
+            QColor("#ccd900"))
         self.send("sci_indicsetstyle", self._warning_indicator, "indic_dots")
         self.send("sci_indicsetfore", self._warning_indicator,
             QColor("#ffff00"))
