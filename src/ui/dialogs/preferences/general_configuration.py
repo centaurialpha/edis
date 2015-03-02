@@ -18,41 +18,35 @@ from PyQt4.QtGui import (
     QSpacerItem
     )
 
-# Módulos QtCore
-#from PyQt4.QtCore import Qt
-#from PyQt4.QtCore import QSettings
-
-# Módulos EDIS
-#from src import recursos
 from src.helpers.configurations import ESettings
 
 
-class ConfiguracionGeneral(QWidget):
+class GeneralConfiguration(QWidget):
 
     def __init__(self, parent):
-        super(ConfiguracionGeneral, self).__init__(parent)
+        super(GeneralConfiguration, self).__init__(parent)
         self.parent = parent
-        contenedor = QVBoxLayout(self)
+        container = QVBoxLayout(self)
 
         # Inicio
-        grupo_inicio = QGroupBox(self.tr("Al inicio:"))
-        box = QVBoxLayout(grupo_inicio)
-        self.check_inicio = QCheckBox(self.tr("Mostrar ventana de inicio"))
-        self.check_inicio.setChecked(ESettings.get('general/show-start-page'))
-        box.addWidget(self.check_inicio)
+        group_on_start = QGroupBox(self.tr("Al inicio:"))
+        box = QVBoxLayout(group_on_start)
+        self.check_on_start = QCheckBox(self.tr("Mostrar ventana de inicio"))
+        self.check_on_start.setChecked(ESettings.get('general/show-start-page'))
+        box.addWidget(self.check_on_start)
 
         # Al salir
-        grupo_salir = QGroupBox(self.tr("Al salir:"))
-        box = QVBoxLayout(grupo_salir)
-        self.check_al_cerrar = QCheckBox(self.tr("Confirmar al cerrar"))
-        self.check_al_cerrar.setChecked(
+        group_on_exit = QGroupBox(self.tr("Al salir:"))
+        box = QVBoxLayout(group_on_exit)
+        self.check_on_exit = QCheckBox(self.tr("Confirmar al cerrar"))
+        self.check_on_exit.setChecked(
             ESettings.get('general/confirm-exit'))
-        box.addWidget(self.check_al_cerrar)
-        self.check_dimensiones = QCheckBox(self.tr(
+        box.addWidget(self.check_on_exit)
+        self.check_geometry = QCheckBox(self.tr(
             "Guardar posición y tamaño de la ventana"))
-        self.check_dimensiones.setChecked(
+        self.check_geometry.setChecked(
             ESettings.get('ventana/store-size'))
-        box.addWidget(self.check_dimensiones)
+        box.addWidget(self.check_geometry)
 
         # Notificaciones
         group_notifications = QGroupBox(self.tr("Notificaciones:"))
@@ -62,40 +56,41 @@ class ConfiguracionGeneral(QWidget):
         box.addWidget(self.check_updates)
 
         # Reestablecer
-        grupo_reestablecer = QGroupBox(self.tr("Reestablecer:"))
-        box = QHBoxLayout(grupo_reestablecer)
+        group_restart = QGroupBox(self.tr("Reestablecer:"))
+        box = QHBoxLayout(group_restart)
         btn_reestablecer = QPushButton(self.tr("Reestablecer todo"))
         btn_reestablecer.setObjectName("custom")
         box.addWidget(btn_reestablecer)
         box.addStretch(1)
 
-        contenedor.addWidget(grupo_inicio)
-        contenedor.addWidget(grupo_salir)
-        contenedor.addWidget(group_notifications)
-        contenedor.addWidget(grupo_reestablecer)
-        contenedor.addItem(QSpacerItem(0, 10, QSizePolicy.Expanding,
+        container.addWidget(group_on_start)
+        container.addWidget(group_on_exit)
+        container.addWidget(group_notifications)
+        container.addWidget(group_restart)
+        container.addItem(QSpacerItem(0, 10, QSizePolicy.Expanding,
                            QSizePolicy.Expanding))
-        btn_reestablecer.clicked.connect(self._reestablecer)
+        btn_reestablecer.clicked.connect(self._restart_configurations)
 
-    def _reestablecer(self):
-        bands = QMessageBox.Cancel
-        bands |= QMessageBox.Yes
+    def _restart_configurations(self):
+        flags = QMessageBox.Cancel
+        flags |= QMessageBox.Yes
 
-        resultado = QMessageBox.question(self, self.tr("Advertencia"),
+        result = QMessageBox.question(self, self.tr("Advertencia"),
                                          self.tr("Está seguro de borrar todas "
-                                         "las conguraciones?"), bands)
-        if resultado == QMessageBox.Cancel:
+                                         "las conguraciones?"), flags)
+        if result == QMessageBox.Cancel:
             return
-        elif resultado == QMessageBox.Yes:
+        elif result == QMessageBox.Yes:
             ESettings.clear()
             self.parent.close()
 
     def guardar(self):
         """ Guarda las configuraciones Generales. """
 
-        ESettings.set('general/show-start-page', self.check_inicio.isChecked())
+        ESettings.set('general/show-start-page',
+                      self.check_on_start.isChecked())
         ESettings.set('ventana/store-size',
-                      self.check_dimensiones.isChecked())
+                      self.check_geometry.isChecked())
         ESettings.set('general/confirm-exit',
-                      self.check_al_cerrar.isChecked())
+                      self.check_on_exit.isChecked())
         ESettings.set('general/check-updates', self.check_updates.isChecked())

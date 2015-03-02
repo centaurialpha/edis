@@ -35,7 +35,7 @@ class Base(QsciScintilla):
         # Configuración de Qscintilla
         self.setCaretLineVisible(ESettings.get('editor/show-margin'))
         self.setIndentationsUseTabs(False)
-        self.setAutoIndent(True)
+        self.setAutoIndent(ESettings.get('editor/indent'))
         self.setBackspaceUnindents(True)
         # Scrollbar
         self.send("sci_sethscrollbar", 0)

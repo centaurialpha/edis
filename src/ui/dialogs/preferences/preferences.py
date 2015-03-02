@@ -41,7 +41,7 @@ class Preferencias(QDialog):
         QDialog.__init__(self, parent, Qt.Dialog)
         self.setMinimumWidth(715)
         self.setWindowTitle(self.tr("Preferencias - EDIS"))
-        self.general = general_configuration.ConfiguracionGeneral(self)
+        self.general = general_configuration.GeneralConfiguration(self)
         self.editor = editor_configuration.EditorConfiguration()
         #self.gui = preferencias_gui.ConfiguracionGUI(self)
         #self._ejecucion = preferencias_ejecucion.ConfiguracionEjecucion(self)

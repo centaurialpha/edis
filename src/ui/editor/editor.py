@@ -181,6 +181,7 @@ class Editor(base.Base):
         else:
             self.setWrapMode(self.WrapNone)
         self.send("sci_setcaretstyle", ESettings.get('editor/cursor'))
+        self.setAutoIndent(ESettings.get('editor/indent'))
 
     @property
     def altura_lineas(self):

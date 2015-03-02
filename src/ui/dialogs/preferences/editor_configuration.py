@@ -42,11 +42,11 @@ class EditorConfiguration(QWidget):
         # Márgen de línea
         grupo_margen = QGroupBox(self.tr("Márgen:"))
         box = QGridLayout(grupo_margen)
-        self.check_margen = QCheckBox(self.tr("Mostrar"))
-        box.addWidget(self.check_margen, 0, 0)
-        self.slider_margen = QSlider(Qt.Horizontal)
-        self.slider_margen.setMaximum(180)
-        box.addWidget(self.slider_margen, 0, 1)
+        self.check_margin = QCheckBox(self.tr("Mostrar"))
+        box.addWidget(self.check_margin, 0, 0)
+        self.slider_margin = QSlider(Qt.Horizontal)
+        self.slider_margin.setMaximum(180)
+        box.addWidget(self.slider_margin, 0, 1)
         lcd_margen = QLCDNumber()
         lcd_margen.setStyleSheet("color: #dedede")
         lcd_margen.setSegmentStyle(lcd_margen.Flat)
@@ -55,17 +55,17 @@ class EditorConfiguration(QWidget):
         # Indentación
         grupo_indentacion = QGroupBox(self.tr("Indentación:"))
         box = QGridLayout(grupo_indentacion)
-        self.check_indentacion = QCheckBox(self.tr("Activar"))
-        box.addWidget(self.check_indentacion, 0, 0)
-        self.slider_indentacion = QSlider(Qt.Horizontal)
-        self.slider_indentacion.setMaximum(20)
-        box.addWidget(self.slider_indentacion, 0, 1)
+        self.check_indentation = QCheckBox(self.tr("Activar"))
+        box.addWidget(self.check_indentation, 0, 0)
+        self.slider_indentation = QSlider(Qt.Horizontal)
+        self.slider_indentation.setMaximum(20)
+        box.addWidget(self.slider_indentation, 0, 1)
         lcd_indentacion = QLCDNumber()
         lcd_indentacion.setStyleSheet("color: #dedede")
         lcd_indentacion.setSegmentStyle(lcd_indentacion.Flat)
         box.addWidget(lcd_indentacion, 0, 2)
-        self.check_guia = QCheckBox(self.tr("Activar guías"))
-        box.addWidget(self.check_guia, 1, 0)
+        self.check_guides = QCheckBox(self.tr("Activar guías"))
+        box.addWidget(self.check_guides, 1, 0)
 
         # Extras
         group_extras = QGroupBox(self.tr("Extras:"))
@@ -82,11 +82,11 @@ class EditorConfiguration(QWidget):
         # Tipo de letra
         grupo_fuente = QGroupBox(self.tr("Tipo de letra:"))
         box = QHBoxLayout(grupo_fuente)
-        self.btn_fuente = QPushButton()
-        self.btn_fuente.setObjectName("custom")
-        self.btn_fuente.setMaximumWidth(250)
+        self.btn_font = QPushButton()
+        self.btn_font.setObjectName("custom")
+        self.btn_font.setMaximumWidth(250)
         self._cargar_fuente()
-        box.addWidget(self.btn_fuente)
+        box.addWidget(self.btn_font)
         box.addStretch(1)
 
         # Cursor
@@ -114,49 +114,50 @@ class EditorConfiguration(QWidget):
                            QSizePolicy.Expanding))
 
         # Conexiones
-        self.slider_margen.valueChanged[int].connect(lcd_margen.display)
-        self.slider_indentacion.valueChanged[int].connect(
+        self.slider_margin.valueChanged[int].connect(lcd_margen.display)
+        self.slider_indentation.valueChanged[int].connect(
             lcd_indentacion.display)
-        self.btn_fuente.clicked.connect(self._seleccionar_fuente)
+        self.btn_font.clicked.connect(self._seleccionar_fuente)
 
         # Configuraciones
         # Márgen
-        self.check_margen.setChecked(ESettings.get('editor/show-margin'))
-        self.slider_margen.setValue(ESettings.get('editor/width-margin'))
+        self.check_margin.setChecked(ESettings.get('editor/show-margin'))
+        self.slider_margin.setValue(ESettings.get('editor/width-margin'))
         # Indentación
-        self.check_indentacion.setChecked(ESettings.get('editor/indent'))
-        self.slider_indentacion.setValue(ESettings.get(
+        self.check_indentation.setChecked(ESettings.get('editor/indent'))
+        self.slider_indentation.setValue(ESettings.get(
                                          'editor/width-indent'))
-        self.check_guia.setChecked(ESettings.get('editor/show-guides'))
+        self.check_guides.setChecked(ESettings.get('editor/show-guides'))
 
     def _cargar_fuente(self):
         fuente = ESettings.get('editor/font')
         if not fuente:
-            fuente = configurations.FUENTE
+            fuente = configurations.DEFAULT_FONT
         size = str(ESettings.get('editor/size-font'))
         texto = fuente + ', ' + size
-        self.btn_fuente.setText(texto)
+        self.btn_font.setText(texto)
 
     def _seleccionar_fuente(self):
         seleccion, ok = QFontDialog.getFont()
         if ok:
             fuente = seleccion.family()
             size = str(seleccion.pointSize())
-            self.btn_fuente.setText(fuente + ', ' + size)
+            self.btn_font.setText(fuente + ', ' + size)
 
     def guardar(self):
         """ Guarda las configuraciones del Editor. """
 
-        fuente, fuente_tam = self.btn_fuente.text().split(',')
+        fuente, fuente_tam = self.btn_font.text().split(',')
         ESettings.set('editor/font', fuente)
         ESettings.set('editor/size-font', int(fuente_tam.strip()))
-        ESettings.set('editor/show-margin', self.check_margen.isChecked())
-        ESettings.set('editor/width-margin', self.slider_margen.value())
-        ESettings.set('editor/show-guides', self.check_guia.isChecked())
+        ESettings.set('editor/show-margin', self.check_margin.isChecked())
+        ESettings.set('editor/width-margin', self.slider_margin.value())
+        ESettings.set('editor/show-guides', self.check_guides.isChecked())
         ESettings.set('editor/show-minimap', self.check_minimap.isChecked())
         checker_value = self.check_style_checker.isChecked()
         ESettings.set('editor/style-checker', checker_value)
-        ESettings.set('editor/width-indent', self.slider_indentacion.value())
+        ESettings.set('editor/indent', self.check_indentation.isChecked())
+        ESettings.set('editor/width-indent', self.slider_indentation.value())
         for ntipo, radio in enumerate(self.radio_cursor):
             if radio.isChecked():
                 tipo = ntipo
