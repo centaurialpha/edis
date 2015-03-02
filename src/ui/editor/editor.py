@@ -284,6 +284,8 @@ class Editor(base.Base):
             self.minimap.redimensionar()
 
     def comment(self):
+        #FIXME: tener en cuenta /* */
+        #FIXME: no funciona si el comentario no esta en el índice 0
         if self.hasSelectedText():
             line_from, _, line_to, _ = self.getSelection()
 
