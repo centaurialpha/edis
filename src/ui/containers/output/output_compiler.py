@@ -39,7 +39,7 @@ class SalidaCompilador(QListWidget):
                 self.addItem(warning)
             elif linea.find(': error') != -1:
                 error = Item(linea, self)
-                error.setForeground(QColor("#e73e3e"))
+                error.setForeground(QColor("#df3e3e"))
                 error.clickeable = True
                 self.addItem(error)
             elif linea.find('^') != -1:

@@ -22,9 +22,7 @@
         <file alias="unindent">images/format-indent-less.png</file>
         <file alias="indent">images/format-indent-more.png</file>
         <file alias="function">images/function.png</file>
-        <file alias="down">images/go-down.png</file>
         <file alias="go">images/go-jump.png</file>
-        <file alias="up">images/go-up.png</file>
         <file alias="run">images/media-playback-start.png</file>
         <file alias="stop">images/media-playback-stop.png</file>
         <file alias="member">images/member.png</file>
@@ -41,5 +39,7 @@
         <file alias="zoom-in">images/zoom-in.png</file>
         <file alias="zoom-out">images/zoom-out.png</file>
         <file alias="edis">images/icon.png</file>
+        <file alias="down">images/draw-arrow-down.png</file>
+        <file alias="up">images/draw-arrow-up.png</file>
     </qresource>
 </RCC>
