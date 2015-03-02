@@ -4,6 +4,7 @@ python:
     - 3.4
 
 before_install:
+    - "sh -e /etc/init.d/xvfb start"
     - sudo apt-get install -qq wget python3-dev build-essential
     - sudo apt-get install -qq python3-pyqt4 libqt4-dev python3-sip-dev
     - cd /tmp
@@ -20,6 +21,7 @@ before_install:
     - python -B configure.py --confirm-license
     - make --quiet
     - sudo make --quiet install
+    - cd $TRAVIS_BUILD_DIR
 
 install: true
 
@@ -30,3 +32,5 @@ after_script: true
 after_success: true
 
 after_failure: true
+
+cache: apt
