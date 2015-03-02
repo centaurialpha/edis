@@ -26,7 +26,7 @@ class ReplaceWidget(QDialog):
     def __init__(self):
         super(ReplaceWidget, self).__init__()
         box = QVBoxLayout(self)
-        box.setContentsMargins(5, 5, 10, 0)
+        box.setContentsMargins(5, 5, 5, 5)
         box.setSpacing(2)
 
         self._cs = False
