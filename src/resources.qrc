@@ -41,5 +41,7 @@
         <file alias="edis">images/icon.png</file>
         <file alias="down">images/draw-arrow-down.png</file>
         <file alias="up">images/draw-arrow-up.png</file>
+        <file alias="general-pref">images/preferences-desktop.png</file>
+        <file alias="editor-pref">images/preferences-desktop-peripherals.png</file>
     </qresource>
 </RCC>

@@ -80,8 +80,8 @@ class Preferencias(QDialog):
         toolbar.setObjectName("preferencias")
         toolbar.setToolButtonStyle(Qt.ToolButtonIconOnly)
 
-        self.button_general = ToolButton("General", ":image/general")
-        self.button_editor = ToolButton("Editor", ":image/edit")
+        self.button_general = ToolButton("General", ":image/general-pref")
+        self.button_editor = ToolButton("Editor", ":image/editor-pref")
         #self.button_gui = ToolButton("Interfáz", ":image/gui")
         #self.button_compi = ToolButton("Ejecución", ":image/build")
 
