@@ -4,7 +4,8 @@ python:
     - 3.4
 
 before_install:
-    - "sh -e /etc/init.d/xvfb start"
+    - export DISPLAY=:99.0
+    - sh -e /etc/init.d/xvfb start
     - sudo apt-get install -qq wget python3-dev build-essential
     - sudo apt-get install -qq python3-pyqt4 libqt4-dev python3-sip-dev
     - cd /tmp
