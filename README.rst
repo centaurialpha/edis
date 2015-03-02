@@ -1,7 +1,6 @@
 .. image:: https://travis-ci.org/centaurialpha/edis.svg?branch=master
-     :target: https://travis-ci.org/centaurialpha/edis
-
-.. image:: ./src/images/sources/logo.png 
+|
+.. image:: ./src/images/sources/logo.png
 
 What is this?
 -------------
