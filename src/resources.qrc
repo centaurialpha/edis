@@ -43,5 +43,7 @@
         <file alias="up">images/draw-arrow-up.png</file>
         <file alias="general-pref">images/preferences-desktop.png</file>
         <file alias="editor-pref">images/preferences-desktop-peripherals.png</file>
+        <file alias="back">images/draw-arrow-back.png</file>
+        <file alias="forward">images/draw-arrow-forward.png</file>
     </qresource>
 </RCC>

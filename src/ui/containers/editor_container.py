@@ -27,12 +27,12 @@ from src.helpers.exceptions import EdisIOException
 from src.helpers.configurations import ESettings
 from src.ui.editor import editor
 from src.ui.main import EDIS
-from src.ui.widgets import find_popup
-from src.ui.containers import selector
-from src.ui.dialogs import (
-    file_properties,
-    replace
+from src.ui.widgets import (
+    find_popup,
+    replace_widget
     )
+from src.ui.containers import selector
+from src.ui.dialogs import file_properties
 from src.ui.containers import editor_widget
 from src.ui import start_page
 from src.helpers import logger
@@ -62,6 +62,11 @@ class EditorContainer(QWidget):
         # Stacked
         self.stack = QStackedWidget()
         self.box.addWidget(self.stack)
+
+        # Replace widget
+        self._replace_widget = replace_widget.ReplaceWidget()
+        self._replace_widget.hide()
+        self.box.addWidget(self._replace_widget)
 
         # Editor widget
         self.editor_widget = editor_widget.EditorWidget()
@@ -304,9 +309,13 @@ class EditorContainer(QWidget):
             dialog.show()
 
     def find_and_replace(self):
-        if self.get_active_editor() is not None:
-            dialog = replace.ReplaceDialog(self)
-            dialog.show()
+        weditor = self.get_active_editor()
+        if weditor is not None:
+            if self._replace_widget.isVisible():
+                self._replace_widget.hide()
+                weditor.setFocus()
+            else:
+                self._replace_widget.show()
 
     def action_undo(self):
         weditor = self.get_active_editor()

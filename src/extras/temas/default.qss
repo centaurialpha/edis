@@ -36,8 +36,13 @@ QToolBar#preferencias {
     padding: 7px;
 }
 
-QToolButton#dock_button {
+QToolButton {
     color: #FFFFFF;
+}
+
+QToolButton:hover {
+    background: #595851;
+    border-radius: 2px;
 }
 
 QToolButton#dock_button:checked {
@@ -190,9 +195,13 @@ QPlainTextEdit#output {
 
 QLineEdit {
     background: #41403b;
-    border: 1px solid gray;
+    border: 0px solid gray;
     border-radius: 3px;
     color: #FFFFFF;
+}
+
+QLineEdit#popup {
+    border: 1px solid gray;
 }
 
 QLabel,

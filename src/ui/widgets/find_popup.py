@@ -9,7 +9,6 @@ from PyQt4.QtGui import (
     QDialog,
     QHBoxLayout,
     QToolButton,
-    QLineEdit,
     QIcon
     )
 
@@ -19,7 +18,7 @@ from PyQt4.QtCore import (
     SIGNAL
     )
 
-from src import recursos
+from src.ui.widgets import line_edit
 
 
 class PopupBusqueda(QDialog):
@@ -32,7 +31,8 @@ class PopupBusqueda(QDialog):
         self.setWindowFlags(Qt.Popup)
         box = QHBoxLayout(self)
         box.setContentsMargins(5, 5, 5, 5)
-        self.line = CustomLineEdit(self)
+        self.line = line_edit.CustomLineEdit()
+        self.line.setObjectName("popup")
         self.line.setMinimumWidth(200)
         box.addWidget(self.line)
         # Botones
@@ -55,6 +55,8 @@ class PopupBusqueda(QDialog):
         self.connect(btn_next, SIGNAL("clicked()"), self._find_next)
 
     def _find(self):
+        if not self.word:
+            return
         weditor = self._editor
         found = weditor.findFirst(self.word, False, False, False, False,
                                   True, 0, 0, True)
@@ -79,22 +81,6 @@ class PopupBusqueda(QDialog):
 
         return self.line.text()
 
-
-class CustomLineEdit(QLineEdit):
-
-    """ QLineEdit personalizado """
-
-    def __init__(self, parent):
-        super(CustomLineEdit, self).__init__()
-        self._parent = parent
-
-    def update(self, found):
-        if not found:
-            self.setStyleSheet('background: %s; border-radius: 3px' %
-                               recursos.TEMA['error'])
-        else:
-            self.setStyleSheet('color: #dedede')
-
     def showEvent(self, event):
-        super(CustomLineEdit, self).showEvent(event)
-        self.setFocus()
+        super(PopupBusqueda, self).showEvent(event)
+        self.line.setFocus()
