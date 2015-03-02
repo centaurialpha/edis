@@ -6,6 +6,7 @@
      :target: http://riverbankcomputing.co.uk/software/pyqt/intro 
 .. image:: https://img.shields.io/badge/Licencia-GPLv3-red.svg?style=flat-square
      :target: http://gplv3.fsf.org
+     
 .. image:: ./src/images/sources/logo.png 
 
 What is this?
