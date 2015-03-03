@@ -1,10 +1,17 @@
+========
+Edis-IDE
+========
+
 .. image:: https://travis-ci.org/centaurialpha/edis.svg?branch=master
+     :target: https://travis-ci.org/centaurialpha/edis
+.. image:: https://coveralls.io/repos/centaurialpha/edis/badge.svg?branch=master
+     :target: https://coveralls.io/r/centaurialpha/edis 
 |
 .. image:: ./src/images/sources/logo.png
 
 What is this?
 -------------
-**Edis** es un Entorno de Desarrollo Integrado (IDE) simple y ligero, está programado en Python y Qt. Edis se basa en la 
+**Edis** es un Entorno de Desarrollo Integrado (IDE) para C simple y ligero, está programado en Python y Qt. Edis se basa en la 
 simplicidad: *write, build and run!*.
 
 .. image:: ./src/images/sources/edis_screenshot.png
@@ -45,7 +52,7 @@ Run Edis
 
      git clone https://github.com/centaurialpha/edis.git
      cd edis
-     ./edis
+     ./bin/edis
 
 Contact
 -------
