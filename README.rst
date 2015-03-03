@@ -6,6 +6,7 @@ Edis-IDE
      :target: https://travis-ci.org/centaurialpha/edis
 .. image:: https://coveralls.io/repos/centaurialpha/edis/badge.svg?branch=master
      :target: https://coveralls.io/r/centaurialpha/edis 
+|
 .. image:: ./src/images/sources/logo.png
 
 What is this?
