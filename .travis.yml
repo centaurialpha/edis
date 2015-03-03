@@ -27,3 +27,5 @@ before_install:
 install: true
 
 script: python -m unittest
+
+after_success: coveralls
