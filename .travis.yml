@@ -26,7 +26,8 @@ before_install:
 
 install:
     - pip install coveralls
+    - pip install nose
 
-script: coverage run --source=src test
+script: nosetests --with-coverage --cover-package=src
 
 after_success: coveralls
