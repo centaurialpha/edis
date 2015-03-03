@@ -15,7 +15,6 @@ from PyQt4.QtGui import (
     QToolButton,
     QStackedWidget,
     QMessageBox,
-    QStyle,
     QIcon,
     QMenu
     )
@@ -201,8 +200,8 @@ class ComboContainer(QWidget):
         btn_close_editor = QToolButton()
         btn_close_editor.setMaximumWidth(30)
         btn_close_editor.setToolTip(self.tr("Cerrar archivo"))
-        btn_close_editor.setIcon(
-            self.style().standardIcon(QStyle.SP_DialogCloseButton))
+        btn_close_editor.setIcon(QIcon(":image/close"))
+            #self.style().standardIcon(QStyle.SP_DialogCloseButton))
         box.addWidget(btn_close_editor)
 
         dock = EDIS.componente("dock")
