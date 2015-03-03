@@ -24,8 +24,9 @@ before_install:
     - sudo make --quiet install
     - cd $TRAVIS_BUILD_DIR
 
-install: true
+install:
+    - pip install coveralls
 
-script: python -m unittest
+script: coverage run --source=src test
 
 after_success: coveralls
