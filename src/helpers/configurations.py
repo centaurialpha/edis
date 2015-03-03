@@ -127,14 +127,20 @@ class ESettings(object):
 
     @staticmethod
     def get(valor):
+        """ Devuelve el valor de una configuración """
+
         return settings[valor]
 
     @staticmethod
     def set(clave, valor):
+        """ Carga una configuración """
+
         qconfig = QSettings(paths.CONFIGURACION, QSettings.IniFormat)
         settings[clave] = valor
         qconfig.setValue(clave, valor)
 
     @staticmethod
     def clear():
+        """ Borra todas las configuraciones"""
+
         QSettings(paths.CONFIGURACION, QSettings.IniFormat).clear()

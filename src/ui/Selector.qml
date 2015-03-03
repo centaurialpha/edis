@@ -28,6 +28,10 @@ Rectangle {
             var index = list.currentIndex
             root.openFile(index)
         }
+
+        Keys.onEscapePressed: {
+            closeAnimation.start();
+        }
     }
 
     SequentialAnimation {

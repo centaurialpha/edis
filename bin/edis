@@ -14,14 +14,14 @@ DIR_INSTALACION = "@ INSTALLED_BASE_DIR @"
 
 # Se obtiene el nombre reemplazado si existe
 if os.path.exists(DIR_INSTALACION):
-    proyecto = DIR_INSTALACION
+    project = DIR_INSTALACION
 else:
-    proyecto = os.path.abspath(os.path.dirname(os.path.dirname(
+    project = os.path.abspath(os.path.dirname(os.path.dirname(
                                             os.path.realpath(sys.argv[0]))))
 
 
-if proyecto not in sys.path:
-    sys.path.insert(0, proyecto)
+if project not in sys.path:
+    sys.path.insert(0, project)
 
 
 def main():
@@ -30,7 +30,7 @@ def main():
 
     app = QApplication(sys.argv)
     from src import run
-    run.correr_interfaz(app)
+    run.run_edis(app)
 
 
 if __name__ == "__main__":

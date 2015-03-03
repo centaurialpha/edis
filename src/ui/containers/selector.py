@@ -54,11 +54,15 @@ class Selector(QDialog):
         self.connect(self.root, SIGNAL("close()"), self.close)
 
     def _open_file(self, index):
+        """ Cambia el índice del stacked """
+
         editor_container = EDIS.componente("principal")
         editor_container.change_widget(index)
         self.root.close_widget()
 
     def _load(self):
+        """ Carga los archivos abiertos """
+
         editor_container = EDIS.componente("principal")
         files_opened = editor_container.opened_files()
         for _file in files_opened:
@@ -68,5 +72,7 @@ class Selector(QDialog):
         self.root.start_animation()
 
     def _animation_completed(self):
+        """ cierra el widget """
+
         self.root.close_widget()
         self.close()

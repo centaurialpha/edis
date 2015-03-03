@@ -37,13 +37,16 @@ from src.ui.dialogs import (
 
 class EDIS(QMainWindow):
     """
-    Esta clase es conocedora de todas las demás.
+    Clase principal:
+        Esta clase es la encargada de instalar todos los servicios del IDE,
+        las instancias de los componentes que cumplen funciones críticas están
+        disponibles desde los atributos de clase.
+
 
     """
 
-    # Cada instancia de una clase  se guarda en éste diccionario
     __COMPONENTES = {}
-    __LATERAL = {}  # Widgets laterales
+    __LATERAL = {}
 
     def __init__(self):
         QMainWindow.__init__(self)
@@ -97,26 +100,34 @@ class EDIS(QMainWindow):
             self.noti.show()
 
     @classmethod
-    def cargar_componente(cls, nombre, instancia):
-        """ Se guarda el nombre y la instancia de una clase """
+    def cargar_componente(cls, name, instance):
+        """ Guarda un componente """
 
-        cls.__COMPONENTES[nombre] = instancia
+        cls.__COMPONENTES[name] = instance
 
     @classmethod
-    def componente(cls, nombre):
+    def componente(cls, name):
         """ Devuelve la instancia de un componente """
 
-        return cls.__COMPONENTES.get(nombre, None)
+        return cls.__COMPONENTES.get(name, None)
 
     @classmethod
-    def cargar_lateral(cls, nombre, instancia):
-        cls.__LATERAL[nombre] = instancia
+    def cargar_lateral(cls, name, instance):
+        """ Carga un componente lateral """
+
+        cls.__LATERAL[name] = instance
 
     @classmethod
-    def lateral(cls, nombre):
-        return cls.__LATERAL.get(nombre, None)
+    def lateral(cls, name):
+        """ Devuelve la instancia de un componente lateral """
+
+        return cls.__LATERAL.get(name, None)
 
     def setup_menu(self, menu_bar):
+        """ Instala la barra de menú (QMenuBar), acciones, shortcuts, toolbars
+        y conexiones de cada QAction.
+        """
+
         from src.ui import actions
         from src import recursos
 
@@ -179,7 +190,9 @@ class EDIS(QMainWindow):
                 self.toolbar.addAction(action)
 
     def _load_ui(self, window):
-        """ Carga los componentes laterales y la salida del compilador """
+        """ Carga el componente principal (Editor Container), componentes
+        laterales y la salida del compilador.
+        """
 
         principal = EDIS.componente("principal")
         dock = EDIS.componente("dock")
@@ -209,13 +222,19 @@ class EDIS(QMainWindow):
         return principal
 
     def _update_cursor(self, line, row, lines):
+        """ Actualiza la posición del cursor en la barra de estado """
+
         self.barra_de_estado.cursor_widget.show()
         self.barra_de_estado.cursor_widget.actualizar_cursor(line, row, lines)
 
     def _update_status(self, archivo):
+        """ Actualiza el path del archivo en la barra de estado """
+
         self.barra_de_estado.update_status(archivo)
 
     def _all_closed(self):
+        """ Limpia la barra de estado y el título de la ventana """
+
         self.setWindowTitle('{' + ui.__nombre__ + '}')
         self.barra_de_estado.cursor_widget.hide()
         self._update_status("")
@@ -227,9 +246,13 @@ class EDIS(QMainWindow):
         self.setWindowTitle(title + ' - ' + '{' + ui.__nombre__ + '}')
 
     def report_bug(self):
+        """ Se abre la url para reportar un bug """
+
         webbrowser.open_new(ui.__reportar_bug__)
 
     def show_hide_toolbars(self):
+        """ Cambia la visibilidad de las barras de herramientas """
+
         for toolbar in [self.toolbar, self.dock_toolbar]:
             if toolbar.isVisible():
                 toolbar.hide()
@@ -237,16 +260,22 @@ class EDIS(QMainWindow):
                 toolbar.show()
 
     def show_hide_all(self):
+        """ Oculta todo excepto la barra de menú y el editor """
+
         dock = EDIS.componente("dock")
         dock.show_hide_all()
 
     def show_full_screen(self):
+        """ Cambia a modo FullScreen """
+
         if self.isFullScreen():
             self.showNormal()
         else:
             self.showFullScreen()
 
     def show_hide_output(self):
+        """ Cambia la visibilidad de la salida del compilador """
+
         dock = EDIS.componente("dock")
         dock.output_visibility()
 
@@ -262,6 +291,8 @@ class EDIS(QMainWindow):
         principal.update_recents_files(recents_files)
 
     def about_qt(self):
+        """ Muestra el díalogo acerca de Qt """
+
         QMessageBox.aboutQt(self)
 
     def about_edis(self):
@@ -271,7 +302,7 @@ class EDIS(QMainWindow):
     def closeEvent(self, event):
         """
         Éste médoto es llamado automáticamente por Qt cuando se
-        cierra la aplicación
+        cierra la aplicación y se guardan algunas configuraciones.
 
         """
 
@@ -298,6 +329,8 @@ class EDIS(QMainWindow):
             editor_container.get_recents_files())
 
     def show_settings(self):
+        """ Muestra el díalogo de preferencias """
+
         from src.ui.dialogs.preferences import preferences
         dialog = preferences.Preferencias(self)
         dialog.show()

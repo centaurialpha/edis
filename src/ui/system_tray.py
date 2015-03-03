@@ -28,6 +28,8 @@ log = logger.edis_logger.get_logger(__name__)
 
 class NotificacionActualizacion(QSystemTrayIcon):
 
+    """ Custom System Tray Icon """
+
     def __init__(self, parent=None):
         QSystemTrayIcon.__init__(self, parent)
         self.setIcon(QIcon(":image/edis"))
@@ -36,6 +38,8 @@ class NotificacionActualizacion(QSystemTrayIcon):
         self.hilo.version.connect(self._mostrar_mensaje)
 
     def _mostrar_mensaje(self, version, link):
+        """ Muestra el system tray icon """
+
         menu = QMenu()
         accion_descarga = QAction("Descargar", self)
         accion_descarga.triggered.connect(lambda: webbrowser.open_new(link))
@@ -53,6 +57,10 @@ class NotificacionActualizacion(QSystemTrayIcon):
 
 class Thread(QThread):
 
+    """ Este hilo obtiene información de la versión de Edis y la compara con
+        la versión instalada
+
+    """
     version = pyqtSignal('PyQt_PyObject', 'PyQt_PyObject')
 
     def run(self):

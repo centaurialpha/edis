@@ -37,23 +37,27 @@ import src.ui.containers.lateral.tree_symbols
 from src.ui.main import EDIS
 
 
-def correr_interfaz(app):
+def run_edis(app):
+    """ Se carga la interfáz """
+
     app.setWindowIcon(QIcon(":image/edis"))
     local = QLocale.system().name()
     qtraductor = QTranslator()
     qtraductor.load("qt_" + local, QLibraryInfo.location(
                     QLibraryInfo.TranslationsPath))
     pixmap = QPixmap(":image/splash")
+    # Splash screen
     splash = Splash(pixmap, Qt.WindowStaysOnTopHint)
     splash.setMask(pixmap.mask())
     splash.show()
     app.processEvents()
 
+    # GUI
     splash.showMessage("Cargado UI...", Qt.AlignBottom | Qt.black)
     edis = EDIS()
     edis.show()
 
-    # Aplicar estilo
+    # Se aplica el estilo
     with open(os.path.join(paths.PATH,
               "extras", "temas", "default.qss")) as tema:
         estilo = tema.read()

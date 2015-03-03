@@ -17,6 +17,8 @@ from src.ui.main import EDIS
 
 class DockManager(QObject):
 
+    """ Esta clase maneja los Docks """
+
     def __init__(self):
         super(DockManager, self).__init__()
         # Tool buttons
@@ -38,11 +40,15 @@ class DockManager(QObject):
         EDIS.cargar_componente("dock", self)
 
     def load_dock_toolbar(self, toolbar):
+        """ Carga la barra de herramientas del Dock Lateral"""
+
         for tb in [self.symbols_button, self.navigator_button,
                    self.explorer_button]:
             toolbar.addWidget(tb)
 
     def load_output_widget(self, output_widget):
+        """ Carga el widget del compilador """
+
         self._output_widget = output_widget
         self._output_widget.hide()
         editor_container = EDIS.componente("principal")
@@ -50,6 +56,8 @@ class DockManager(QObject):
                      editor_container.go_to_line)
 
     def load_symbols_widget(self, symbols_widget):
+        """ Carga el árbol de símbolos """
+
         self._symbols_widget = symbols_widget
         editor_container = EDIS.componente("principal")
         self.connect(self._symbols_widget, SIGNAL("goToLine(int)"),
@@ -62,6 +70,8 @@ class DockManager(QObject):
                      lambda checked: self.symbols_button.setChecked(checked))
 
     def load_navigator_widget(self, navigator_widget):
+        """ Carga el navegador """
+
         self._navigator_widget = navigator_widget
         navigator_widget.hide()
         editor_container = EDIS.componente("principal")
@@ -73,12 +83,16 @@ class DockManager(QObject):
                      lambda checked: self.navigator_button.setChecked(checked))
 
     def load_explorer_widget(self, explorer_widget):
+        """ Carga el explorador """
+
         self._explorer_widget = explorer_widget
         explorer_widget.hide()
         self.connect(self._explorer_widget, SIGNAL("visibilityChanged(bool)"),
                      lambda checked: self.explorer_button.setChecked(checked))
 
     def _symbols_visibility(self, value):
+        """ Cambia la visibilidad del árbol de símbolos """
+
         if value:
             for widget in [self._navigator_widget, self._explorer_widget]:
                     widget.hide()
@@ -87,6 +101,8 @@ class DockManager(QObject):
             self._symbols_widget.hide()
 
     def _navigator_visibility(self, value):
+        """ Cambia la visibilidad del navegador """
+
         if value:
             for widget in [self._symbols_widget, self._explorer_widget]:
                 widget.hide()
@@ -95,6 +111,8 @@ class DockManager(QObject):
             self._navigator_widget.hide()
 
     def _explorer_visibility(self, value):
+        """ Cambia la visibilidad del explorador """
+
         if value:
             for widget in [self._symbols_widget, self._navigator_widget]:
                 widget.hide()
@@ -103,12 +121,16 @@ class DockManager(QObject):
             self._explorer_widget.hide()
 
     def output_visibility(self):
+        """ Cambia la visibilidad de la salida del compilador """
+
         if self._output_widget.isVisible():
             self._output_widget.hide()
         else:
             self._output_widget.show()
 
     def show_hide_all(self):
+        """ Oculta todo excepto el editor y la barra de menú """
+
         toolbars = EDIS.componente("toolbars")
         if (self._output_widget.isVisible() or toolbars[0].isVisible() or
                 toolbars[1].isVisible() or self._symbols_widget.isVisible()):
@@ -129,6 +151,8 @@ class DockManager(QObject):
                 self._symbols_widget.show()
 
     def _update_symbols(self, weditor):
+        """ Actualiza los símbolos """
+
         source_code = weditor.texto
         if not source_code:
             self.emit(SIGNAL("updateSyntaxCheck(bool)"), True)

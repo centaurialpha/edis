@@ -14,6 +14,7 @@ from PyQt4.QtCore import QUrl
 
 
 class StartPage(QWidget):
+    """ Interfáz QML """
 
     def __init__(self):
         QWidget.__init__(self)
