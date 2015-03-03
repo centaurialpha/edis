@@ -11,7 +11,7 @@ Edis-IDE
 
 What is this?
 -------------
-**Edis** es un Entorno de Desarrollo Integrado (IDE) para C simple y ligero, está programado en Python y Qt. Edis se basa en la 
+**Edis** es un Entorno de Desarrollo Integrado (IDE) para el lenguaje C, simple y ligero, está programado en Python y Qt. Edis se basa en la 
 simplicidad: *write, build and run!*.
 
 .. image:: ./src/images/sources/edis_screenshot.png
@@ -52,7 +52,7 @@ Run Edis
 
      git clone https://github.com/centaurialpha/edis.git
      cd edis
-     ./bin/edis
+     python bin/edis
 
 Contact
 -------
