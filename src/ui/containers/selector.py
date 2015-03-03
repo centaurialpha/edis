@@ -51,6 +51,7 @@ class Selector(QDialog):
                      self._open_file)
         self.connect(self.root, SIGNAL("animationCompleted()"),
                      self._animation_completed)
+        self.connect(self.root, SIGNAL("close()"), self.close)
 
     def _open_file(self, index):
         editor_container = EDIS.componente("principal")

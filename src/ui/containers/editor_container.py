@@ -242,7 +242,7 @@ class EditorContainer(QWidget):
         return self.editor_widget.current_widget()
 
     def current_index(self):
-        return self.stack.indice_actual
+        return self.editor_widget.current_index()
 
     def get_active_editor(self):
         """ Devuelve el Editor si el widget actual es una instancia de él,

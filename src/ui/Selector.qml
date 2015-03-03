@@ -5,9 +5,12 @@ Rectangle {
 
     width: 380; height: 260;
     color: "#474641"
+    border.color: "gray";
+    border.width: 2;
 
     signal openFile(int index)
     signal animationCompleted()
+    signal close
 
     ListView {
         id: list
@@ -18,7 +21,7 @@ Rectangle {
         anchors.topMargin: 15
         anchors.leftMargin: 30
         delegate: Text { color: "#dedede"; text: filename; font.pointSize: 14 }
-        highlight: Rectangle { color: "gray"; opacity: 0.2 }
+        highlight: Rectangle { color: "gray"; opacity: 0.2; width: 300 }
         focus: true
 
         Keys.onReturnPressed: {
@@ -27,31 +30,26 @@ Rectangle {
         }
     }
 
-    ParallelAnimation {
+    SequentialAnimation {
         id: animation
-
         running: false
-        NumberAnimation { target: root; property: "x"; to: 0; from: 200; duration: 300 }
-        NumberAnimation { target: root; property: "y"; to: 0; from: 200; duration: 300 }
-        NumberAnimation { target: root; property: "height"; to: 260; duration: 300 }
-        NumberAnimation { target: root; property: "width"; to: 380; duration: 300 }
+
+        NumberAnimation { target: root; property: "opacity"; to: 1; from: 0; duration: 200; easing.type: Easing.InOutQuad }
 
     }
 
-    ParallelAnimation {
+    SequentialAnimation {
         id: closeAnimation
-
         running: false
-        NumberAnimation { target: root; property: "x"; to: 200; duration: 300 }
-        NumberAnimation { target: root; property: "y"; to: 200; duration: 300 }
-        NumberAnimation { target: root; property: "height"; to: 0; duration: 300 }
-        NumberAnimation { target: root; property: "width"; to: 0; duration: 300 }
 
-        onCompleted: {
-            root.visible = false;
-            root.animationCompleted();
+        NumberAnimation { target: root; property: "opacity"; to: 0; from: 1; duration: 200; easing.type: Easing.InOutQuad }
+
+    }
+
+    onOpacityChanged: {
+        if(root.opacity == 0){
+            root.close();
         }
-
     }
 
     function load_file(filename){
