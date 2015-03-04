@@ -22,16 +22,11 @@ Rectangle {
             spacing: 10
             anchors.horizontalCenter: parent.horizontalCenter
 
-            Row {
-                spacing: 30
-
-                Image {
-                    id: logo
-                    source: "../images/sources/logo.png"
-                }
-
-
+            Image {
+                id: logo
+                source: "../images/sources/logo.png"
             }
+
         }
 
     }
@@ -48,7 +43,7 @@ Rectangle {
 
     Text {
         id: link
-        text: qsTr("Edis is Free Software! <a href='http://centaurialpha.github.io/edis'><span style='color: #ffffff;'>http://centaurialpha.github.io/edis</span></a>")
+        text: qsTr("<b>Edis</b> is Free Software! <a href='http://centaurialpha.github.io/edis'><span style='color: #ffffff;'>http://centaurialpha.github.io/edis</span></a>")
         font.pointSize: 10
         color: "#dedede"
         anchors.bottom: parent.bottom
