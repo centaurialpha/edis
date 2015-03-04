@@ -9,7 +9,7 @@
 
 import os
 
-from PyQt4.QtCore import QFile
+from PyQt4.QtCore import QFile, QTextStream, QIODevice
 
 from src.helpers.exceptions import EdisIOException
 
@@ -39,6 +39,9 @@ def write_file(filename, content):
     ext = os.path.splitext(filename)[-1]
     if not ext:
         filename += '.c'
-    with open(filename, mode='w') as _file:
-        _file.write(content)
+    _file = QFile(filename)
+    if not _file.open(QIODevice.WriteOnly | QIODevice.Truncate):
+        raise EdisIOException
+    outfile = QTextStream(_file)
+    outfile << content
     return filename
