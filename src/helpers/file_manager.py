@@ -7,6 +7,8 @@
 
 """ Manejo de archivos """
 
+import os
+
 from PyQt4.QtCore import QFile
 
 from src.helpers.exceptions import EdisIOException
@@ -23,7 +25,7 @@ def get_file_content(archivo):
     return content
 
 
-def devolver_tam_archivo(archivo):
+def get_file_size(archivo):
     """ Retorna el tamaño del archivo en bytes. """
 
     tam = QFile(archivo).size()
@@ -34,8 +36,9 @@ def write_file(filename, content):
     """ Se escribe en el archivo, si el nombre no tiene extensión se agrega .c
     """
 
-    ext = filename.split('.')[-1]
+    ext = os.path.splitext(filename)[-1]
     if not ext:
         filename += '.c'
     with open(filename, mode='w') as _file:
         _file.write(content)
+    return filename

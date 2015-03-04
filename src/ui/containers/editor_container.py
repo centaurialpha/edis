@@ -272,7 +272,7 @@ class EditorContainer(QWidget):
             return self.save_file_as(weditor)
         filename = weditor.filename
         source_code = weditor.texto
-        file_manager.write_file(filename, source_code)
+        filename = file_manager.write_file(filename, source_code)
         weditor.filename = filename
         weditor.guardado()
 
