@@ -29,6 +29,9 @@ install:
     - pip install nose
     - pip install nose-exclude
 
-script: nosetests tests --with-coverage --cover-package=src
+script:
+    - nosetests --with-coverage --cover-package=src/.
+    - coverage combine
+    - coverage report --omit 'src/tools/pycparser/*'
 
 after_success: coveralls
