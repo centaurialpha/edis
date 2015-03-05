@@ -19,7 +19,8 @@ from PyQt4.QtGui import (
     QFontDialog,
     QSpacerItem,
     QSizePolicy,
-    QRadioButton
+    QRadioButton,
+    QFont
     )
 
 # Módulos QtCore
@@ -138,7 +139,9 @@ class EditorConfiguration(QWidget):
         self.btn_font.setText(texto)
 
     def _seleccionar_fuente(self):
-        seleccion, ok = QFontDialog.getFont()
+        initial_font = QFont(ESettings.get('editor/font'),
+            ESettings.get('editor/size-font'))
+        seleccion, ok = QFontDialog.getFont(initial_font)
         if ok:
             fuente = seleccion.family()
             size = str(seleccion.pointSize())
