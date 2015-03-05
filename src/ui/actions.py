@@ -164,7 +164,11 @@ ACTIONS = ([
     {
         "name": "Alejar",
         "connection": "action_zoom_out",
-        "shortcut": "zoom-out"}],
+        "shortcut": "zoom-out"},
+    {
+        "name": "Tamaño normal",
+        "connection": "action_normal_size",
+        "shortcut": "normal-font-size"}],
     # Menú buscar
     [{
         "name": "Buscar",

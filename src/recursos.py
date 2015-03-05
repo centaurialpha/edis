@@ -44,6 +44,7 @@ SHORTCUTS = {
     "hide-output": QKeySequence(Qt.Key_F7),
     "zoom-in": QKeySequence(Qt.CTRL + Qt.Key_Plus),
     "zoom-out": QKeySequence(Qt.CTRL + Qt.Key_Minus),
+    "normal-font-size": QKeySequence(Qt.CTRL + Qt.Key_0),
     "show-selector": QKeySequence(Qt.CTRL + Qt.Key_M),
     # Código
     "build": QKeySequence(Qt.CTRL + Qt.Key_F5),

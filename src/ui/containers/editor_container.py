@@ -366,6 +366,13 @@ class EditorContainer(QWidget):
         if weditor is not None:
             weditor.zoom_out()
 
+    def action_normal_size(self):
+        """ Carga el tamaño por default de la fuente """
+
+        weditor = self.get_active_editor()
+        if weditor is not None:
+            weditor.zoomTo(0)
+
     def action_select_all(self):
         weditor = self.get_active_editor()
         if weditor is not None:
