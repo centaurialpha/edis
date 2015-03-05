@@ -163,9 +163,10 @@ class EjecutarWidget(QWidget):
             # Run !
             self.proceso_ejecucion.start(proceso)
         else:
-            #FIXME: Usar QProcess
-            Popen([os.path.join(direc, self.ejecutable)],
-                  creationflags=CREATE_NEW_CONSOLE)
+            pauser = os.path.join(paths.PATH, "tools", "pauser",
+                                  "system_pause.exe")
+            process = pauser + ' ' + os.path.join(direc, self.ejecutable)
+            Popen(process, creationflags=CREATE_NEW_CONSOLE)
 
     @property
     def _environment(self):
