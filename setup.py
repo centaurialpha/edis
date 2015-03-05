@@ -10,19 +10,19 @@ import sys
 from distutils.command.install import install
 from distutils.core import setup
 
-MODULOS = [
+MODULES = [
     ('PyQt4', 'http://riverbankcomputing.co.uk/software/pyqt/intro'),
     ('PyQt4.Qsci', 'http://riverbankcomputing.co.uk/software/qscintilla/intro')
     ]
 
 # Se verifica dependencias de módulos
-for nombre_modulo, link in MODULOS:
+for module, link in MODULES:
     try:
-        desde = 'PyQt4' if nombre_modulo == 'PyQt4.Qsci' else ''
-        __import__(nombre_modulo, fromlist=desde)
+        _from = 'PyQt4' if module == 'PyQt4.Qsci' else ''
+        __import__(module, fromlist=_from)
     except ImportError:
         print("El módulo %s no está instalado.\n%s para más info." %
-              (nombre_modulo, link))
+              (module, link))
         sys.exit(1)
 
 from src import ui
@@ -42,11 +42,11 @@ class CustomInstall(install):
             script_path = os.path.join(self.install_scripts,
                                        os.path.basename(script))
             with open(script_path, 'r') as f:
-                contenido = f.read()
-            contenido = contenido.replace('@ INSTALLED_BASE_DIR @',
+                content = f.read()
+            content = content.replace('@ INSTALLED_BASE_DIR @',
                                           self._custom_data_dir)
             with open(script_path, 'w') as f:
-                f.write(contenido)
+                f.write(content)
 
             src_desktop = self.distribution.get_name() + '.desktop'
             src_desktop = src_desktop.lower()
@@ -54,14 +54,13 @@ class CustomInstall(install):
             if not os.path.exists(self._custom_apps_dir):
                 os.makedirs(self._custom_apps_dir)
             dst_desktop = os.path.join(self._custom_apps_dir, src_desktop)
-
             with open(src_desktop, 'r') as f:
-                contenido = f.read()
-            icono = os.path.join(self._custom_data_dir, 'src', 'images',
+                content = f.read()
+            icon = os.path.join(self._custom_data_dir, 'src', 'images',
                                  'icon.png')
-            contenido = contenido.replace('@ INSTALLED_ICON @', icono)
+            content = content.replace('@ INSTALLED_ICON @', icon)
             with open(dst_desktop, 'w') as f:
-                f.write(contenido)
+                f.write(content)
 
     def finalize_options(self):
         """ Después de la instalación """
@@ -83,13 +82,24 @@ class CustomInstall(install):
 
 
 # Se compila la lista de paquetes
-paquetes = []
+packages = []
 for dir_path, dir_names, filenames in os.walk('src'):
     if '__pycache__' not in dir_path.split('/')[-1] and \
             '__init__.py' in filenames:
-        paquete = dir_path.replace('/', '.')
-        paquetes.append(paquete)
+        package = dir_path.replace('/', '.')
+        packages.append(package)
 
+classifiers = [
+    'Development Status :: 5 - Production/Stable',
+    'Environment :: X11 Applications',
+    'License :: OSI Approved :: GNU General Public License v3 or '
+        'later (GPLv3+)',
+    'Natural Language :: Spanish',
+    'Operating System :: OS Independent',
+    'Programming Language :: Python :: 3 :: Only',
+    'Topic :: Text Editors :: Integrated Development Environments (IDE)',
+    'Topic :: Utilities'
+    ]
 
 setup(
     name=ui.__nombre__.title(),
@@ -98,21 +108,14 @@ setup(
     author=ui.__autor__,
     author_email=ui.__email_autor__,
     url=ui.__codigo_fuente__,
-    license='GPL v3',
+    license='GPLv3+',
     long_description=open('README.rst').read(),
     package_data={
-        'src': ['images/*', 'extras/temas/*', 'ui/selector/*']
+        'src': ['extras/temas/*', 'images/icon.png', 'images/sources/logo.png',
+                 'ui/*.qml']
         },
-    packages=paquetes,
-    scripts=['edis'],
-    classifiers=[
-        'Development Status :: 4 - Beta',
-        'Environment :: X11 Applications',
-        'License :: OSI Approved :: GNU General Public License v3 (GPLv3)',
-        'Operating System :: OS Independent',
-        'Programming Language :: Python :: 3',
-        'Topic :: Text Editors :: Integrated Development Environments (IDE)',
-        'Topic :: Utilities'
-        ],
+    packages=packages,
+    scripts=['bin/edis'],
+    classifiers=classifiers,
     cmdclass={'install': CustomInstall},
     )
