@@ -22,12 +22,16 @@ REGEX_OPERATOR_SPACE = re.compile("(\w\s?(\+|\-|\*|\<|\>|\=)\w)" +
                                   "|(\w(\=\=|\<\=|\>\=)\w)")
 REGEX_COMMA_SPACE = re.compile(",[^ ]")
 REGEX_PAREN_CURLY_SPACE = re.compile("\)\{")
+REGEX_OPEN_COMMENT_SPACE = re.compile(r'\/\*[^ *\n]')
+REGEX_CLOSE_COMMENT_SPACE = re.compile(r'[^ *]\*\/')
 
 # Mensajes
 M_MAX_LINE_LENGTH = "%s:La línea supera los %s caracteres."
 M_OPERATOR_SPACE = "%s:Poner espacio alrededor de operadores."
 M_COMMA_SPACE = "%s:No hay espacio después de la coma."
 M_PAREN_CURLY_SPACE = "%s:Agrega un espacio entre ) y {."
+M_OPEN_COMMENT_SPACE = "%s:Agrega un espacio después de abrir el comentario"
+M_CLOSE_COMMENT_SPACE = "%s:Agrega un espacio antes de cerrar el comentario"
 
 
 class EChecker(object):
@@ -77,6 +81,14 @@ class EChecker(object):
         if REGEX_PAREN_CURLY_SPACE.search(line):
             self._results.append(M_PAREN_CURLY_SPACE % self._line_number)
 
+    def _check_open_comment_space(self, line):
+        if REGEX_OPEN_COMMENT_SPACE.search(line):
+            self._results.append(M_OPEN_COMMENT_SPACE % self._line_number)
+
+    def _check_close_comment_space(self, line):
+        if REGEX_CLOSE_COMMENT_SPACE.search(line):
+            self._results.append(M_CLOSE_COMMENT_SPACE % self._line_number)
+
     def run_all_checks(self):
         for line in self._source:
             # Checkers
@@ -84,6 +96,8 @@ class EChecker(object):
             self._check_operator_space(line)
             self._check_comma_space(line)
             self._check_paren_curly_space(line)
+            self._check_open_comment_space(line)
+            self._check_close_comment_space(line)
             self._line_number += 1
         return self._results
 
