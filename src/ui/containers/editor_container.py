@@ -11,7 +11,6 @@ from PyQt4.QtGui import (
     QWidget,
     QVBoxLayout,
     QFileDialog,
-    QInputDialog,
     QMessageBox,
     QStackedWidget
     )
@@ -29,7 +28,8 @@ from src.ui.editor import editor
 from src.ui.main import EDIS
 from src.ui.widgets import (
     find_popup,
-    replace_widget
+    replace_widget,
+    goto_line_widget
     )
 from src.ui.containers import selector
 from src.ui.dialogs import file_properties
@@ -476,12 +476,8 @@ class EditorContainer(QWidget):
     def show_go_to_line(self):
         weditor = self.get_active_editor()
         if weditor is not None:
-            max_lines = weditor.lineas
-            line, ok = QInputDialog.getInt(self, self.tr("Ir a línea"),
-                                           self.tr("Línea:"), min=1,
-                                           max=max_lines)
-            if ok:
-                weditor.setCursorPosition(line - 1, 0)
+            dialog = goto_line_widget.GoToLineDialog(weditor)
+            dialog.show()
 
     def add_symbols_combo(self, symbols):
         self.editor_widget.add_symbols(symbols)

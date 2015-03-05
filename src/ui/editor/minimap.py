@@ -78,8 +78,10 @@ class MiniMapa(QPlainTextEdit):
         altura = self.editor.height()
         self.setFixedSize(ancho, altura)
         self.mover(self.editor.width() - self.width(), 0)
-        #FIXME: Márgen de línea
-        tam_fuente = self.width() / 70
+        #FIXME:
+        tam_fuente = self.width() // 100
+        if tam_fuente == 0:
+            tam_fuente = 1
         fuente = self.document().defaultFont()
         fuente.setPointSize(tam_fuente)
         self.setFont(fuente)
