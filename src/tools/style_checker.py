@@ -7,6 +7,9 @@
 
 import re
 
+# Éste módulo está basado en la guía de estilo de código:
+# http://courses.cms.caltech.edu/cs11/material/c/mike/misc/c_style_guide.html
+
 """
 Analizador de estilo de código para C.
 C es un lenguaje que no obliga a tener el código organizado para funcionar,
