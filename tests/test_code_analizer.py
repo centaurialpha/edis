@@ -6,12 +6,12 @@
 # License: GPLv3 (see http://www.gnu.org/licenses/gpl.html)
 
 import unittest
+import os
 
 from src.tools import code_analizer
 
 CODE = """
 #include <stdio.h>
-FILE * fp;
 struct ufo {
     int a;
 };
@@ -21,16 +21,20 @@ void main( void ) {
 }
 """
 
-CODE_BUG = "#include <stdio.h>\nFILE * fp;\nvoid main( void ){"
-
 
 class CodeAnalizerTestCase(unittest.TestCase):
 
+    def setUp(self):
+        self.filename = os.path.join(os.path.dirname(__file__),
+                                     "c_files", "for_test.c")
+
     def test_parse_symbols(self):
-        self.assertEqual(({}, {}), code_analizer.parse_symbols(CODE_BUG))
+        symbols_expected = {}, {}
+        self.assertEqual(symbols_expected,
+                         code_analizer.parse_symbols(self.filename))
 
     def test_sanitize_source_coude(self):
-        expected = "\n\n\nstruct ufo {\n    int a;\n};\n\nvoid main( void ) " \
+        expected = "\n\nstruct ufo {\n    int a;\n};\n\nvoid main( void ) " \
                    "{\n    return;\n}\n"
         self.assertEqual(expected, code_analizer.sanitize_source_code(CODE))
 

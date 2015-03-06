@@ -21,7 +21,7 @@ class FileManagerTestCase(unittest.TestCase):
 
     def test_read_file(self):
         content = "#include <stdio.h>\n/* qwertyuiopasdfghjklñzxcvbnm */\n" \
-            "int main( void ) {\n    return 0;\n}\n"
+            "int main( void ) {\n    return 0\n}"
 
         self.assertEqual(content, file_manager.get_file_content(self._filename))
 
@@ -31,7 +31,7 @@ class FileManagerTestCase(unittest.TestCase):
             lambda: file_manager.get_file_content(fake_filename))
 
     def test_get_file_size(self):
-        size = 89  # bytes
+        size = 87  # bytes
         self.assertEqual(size, file_manager.get_file_size(self._filename))
 
     def test_write_file(self):
