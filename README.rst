@@ -52,7 +52,7 @@ Easy install
 
 *GNU/Linux:*
 
-Descargar código fuente desde `acá <https://github.com/centaurialpha/edis/releases>`_ ó con *Git*:
+Descargar código fuente desde `acá <https://github.com/centaurialpha/edis/releases>`_ ó clona el repositorio:
 
 ::
 
