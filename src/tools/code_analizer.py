@@ -15,12 +15,12 @@ from src.tools.pycparser import (
     )
 
 from src.helpers import logger
+from src import paths
 
 log = logger.edis_logger.get_logger(__name__)
 ERROR = log.error
 
-path = os.path.join(os.path.dirname(__file__), "pycparser")
-
+path = os.path.join(paths.PATH, "tools", "pycparser")
 # Fake libc
 fake_libc = os.path.join(path, "fake_libc_include")
 fake_libc = '-I' + fake_libc
@@ -98,8 +98,8 @@ def parse_symbols(filename):
     try:
         ast = parse_file(filename, use_cpp=True, cpp_path=cpp_path,
                          cpp_args=fake_libc)
-    except:
-        ERROR('El código fuente tiene errores de sintáxis')
+    except Exception as reason:
+        ERROR('El código fuente tiene errores de sintáxis: %s', reason)
         return {}, {}
     visitor = NodeVisitor()
     visitor.visit(ast)
