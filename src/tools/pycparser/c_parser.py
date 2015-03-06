@@ -6,12 +6,13 @@
 # Copyright (C) 2008-2013, Eli Bendersky
 # License: BSD
 #------------------------------------------------------------------------------
+import re
 
 from .ply import yacc
 
 from . import c_ast
 from .c_lexer import CLexer
-from .plyparser import PLYParser
+from .plyparser import PLYParser, Coord, ParseError
 from .ast_transforms import fix_switch_cases
 
 
@@ -982,51 +983,28 @@ class CParser(PLYParser):
         p[0] = p[2]
 
     def p_direct_declarator_3(self, p):
-        """ direct_declarator   : direct_declarator LBRACKET type_qualifier_list_opt assignment_expression_opt RBRACKET
-       """
-        # Accept dimension qualifiers
-        # Per C99 6.7.5.3 p7
-        arr = c_ast.ArrayDecl(
-            type=None,
-            dim=p[4],
-            dim_quals=p[3] if p[3] != None else [],
-            coord=p[1].coord)
-
-        p[0] = self._type_modify_decl(decl=p[1], modifier=arr)
-
-    def p_direct_declarator_4(self, p):
-        """ direct_declarator   : direct_declarator LBRACKET STATIC type_qualifier_list_opt assignment_expression RBRACKET
-                                | direct_declarator LBRACKET type_qualifier_list STATIC assignment_expression RBRACKET
+        """ direct_declarator   : direct_declarator LBRACKET assignment_expression_opt RBRACKET
         """
-        # Using slice notation for PLY objects doesn't work in Python 3 for the
-        # version of PLY embedded with pycparser; see PLY Google Code issue 30.
-        # Work around that here by listing the two elements separately.
-        listed_quals = [item if isinstance(item, list) else [item]
-            for item in [p[3],p[4]]]
-        dim_quals = [qual for sublist in listed_quals for qual in sublist
-            if qual is not None]
         arr = c_ast.ArrayDecl(
             type=None,
-            dim=p[5],
-            dim_quals=dim_quals,
+            dim=p[3],
             coord=p[1].coord)
 
         p[0] = self._type_modify_decl(decl=p[1], modifier=arr)
 
     # Special for VLAs
     #
-    def p_direct_declarator_5(self, p):
-        """ direct_declarator   : direct_declarator LBRACKET type_qualifier_list_opt TIMES RBRACKET
+    def p_direct_declarator_4(self, p):
+        """ direct_declarator   : direct_declarator LBRACKET TIMES RBRACKET
         """
         arr = c_ast.ArrayDecl(
             type=None,
-            dim=c_ast.ID(p[4], self._coord(p.lineno(4))),
-            dim_quals=p[3] if p[3] != None else [],
+            dim=c_ast.ID(p[3], self._coord(p.lineno(3))),
             coord=p[1].coord)
 
         p[0] = self._type_modify_decl(decl=p[1], modifier=arr)
 
-    def p_direct_declarator_6(self, p):
+    def p_direct_declarator_5(self, p):
         """ direct_declarator   : direct_declarator LPAREN parameter_type_list RPAREN
                                 | direct_declarator LPAREN identifier_list_opt RPAREN
         """
@@ -1233,7 +1211,6 @@ class CParser(PLYParser):
         arr = c_ast.ArrayDecl(
             type=None,
             dim=p[3],
-            dim_quals=[],
             coord=p[1].coord)
 
         p[0] = self._type_modify_decl(decl=p[1], modifier=arr)
@@ -1244,7 +1221,6 @@ class CParser(PLYParser):
         p[0] = c_ast.ArrayDecl(
             type=c_ast.TypeDecl(None, None, None),
             dim=p[2],
-            dim_quals=[],
             coord=self._coord(p.lineno(1)))
 
     def p_direct_abstract_declarator_4(self, p):
@@ -1253,7 +1229,6 @@ class CParser(PLYParser):
         arr = c_ast.ArrayDecl(
             type=None,
             dim=c_ast.ID(p[3], self._coord(p.lineno(3))),
-            dim_quals=[],
             coord=p[1].coord)
 
         p[0] = self._type_modify_decl(decl=p[1], modifier=arr)
@@ -1264,7 +1239,6 @@ class CParser(PLYParser):
         p[0] = c_ast.ArrayDecl(
             type=c_ast.TypeDecl(None, None, None),
             dim=c_ast.ID(p[3], self._coord(p.lineno(3))),
-            dim_quals=[],
             coord=self._coord(p.lineno(1)))
 
     def p_direct_abstract_declarator_6(self, p):
@@ -1348,8 +1322,7 @@ class CParser(PLYParser):
 
     def p_iteration_statement_4(self, p):
         """ iteration_statement : FOR LPAREN declaration expression_opt SEMI expression_opt RPAREN statement """
-        p[0] = c_ast.For(c_ast.DeclList(p[3], self._coord(p.lineno(1))),
-                         p[4], p[6], p[8], self._coord(p.lineno(1)))
+        p[0] = c_ast.For(c_ast.DeclList(p[3]), p[4], p[6], p[8], self._coord(p.lineno(1)))
 
     def p_jump_statement_1(self, p):
         """ jump_statement  : GOTO ID SEMI """
@@ -1612,7 +1585,7 @@ class CParser(PLYParser):
             p[0] = c_ast.Constant(
                 'string', p[1], self._coord(p.lineno(1)))
         else:
-            p[1].value = p[1].value.rstrip()[:-1] + p[2][2:]
+            p[1].value = p[1].value.rstrip[:-1] + p[2][1:]
             p[0] = p[1]
 
     def p_brace_open(self, p):
@@ -1640,3 +1613,22 @@ class CParser(PLYParser):
                             column=self.clex.find_tok_column(p)))
         else:
             self._parse_error('At end of input', '')
+
+
+#------------------------------------------------------------------------------
+if __name__ == "__main__":
+    import pprint
+    import time, sys
+
+    #t1 = time.time()
+    #parser = CParser(lex_optimize=True, yacc_debug=True, yacc_optimize=False)
+    #sys.write(time.time() - t1)
+
+    #buf = '''
+        #int (*k)(int);
+    #'''
+
+    ## set debuglevel to 2 for debugging
+    #t = parser.parse(buf, 'x.c', debuglevel=0)
+    #t.show(showcoord=True)
+

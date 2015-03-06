@@ -6,9 +6,11 @@
 # License: GPLv3 (see http://www.gnu.org/licenses/gpl.html)
 
 import re
+import os
+import sys
 
 from src.tools.pycparser import (
-    c_parser,
+    parse_file,
     c_ast
     )
 
@@ -17,73 +19,97 @@ from src.helpers import logger
 log = logger.edis_logger.get_logger(__name__)
 ERROR = log.error
 
-pattern_file_pointer = re.compile(r'(\s)*FILE')
+path = os.path.join(os.path.dirname(__file__), "pycparser")
+
+# Fake libc
+fake_libc = os.path.join(path, "fake_libc_include")
+fake_libc = '-I' + fake_libc
+# CPP path
+cpp_path = os.path.join(path, "cpp.exe") if sys.platform == 'win32' else 'cpp'
 
 
-def parse_symbols(source):
-    """ Parsea el código fuente para obtener los símbolos:
+class NodeVisitor(c_ast.NodeVisitor):
 
-        Estructuras, uniones, enumeraciones, variables, funciones.
+    """ Nodo visitador: basado en la clase NodeVisitor de c_ast.
+            cada método visit_XXX visita la clase XXX.
+            Por ejemplo, el método visit_FuncDef visita la clase FuncDef,
+            analiza una función armando una estructura tipo diccionario que
+            será utilizada por el IDE para armar el árbol de símbolos.
     """
 
-    #FIXME: parsear enumeraciones, uniones
-    symbols = {}
-    symbols_combo = {}
-    functions = {}
-    structs = {}
-    vars_globals = {}
+    def __init__(self):
+        super(NodeVisitor, self).__init__()
+        self.functions = {}
+        self.globals = {}
+        self.structs = {}
+        self.members = {}
+        self.symbols_combo = {}
+        self.params = []
 
-    parser = c_parser.CParser()
-    # AST Abstract Syntax Tree
+    def visit_FuncDef(self, node):
+        decl = node.decl
+        function_name = decl.name
+        function_nline = decl.coord.line
+        # Parámetros de la función
+        for param in decl.type.args.params:
+            _type = param.type
+            if isinstance(_type, c_ast.PtrDecl):
+                param_name = _type.type
+                if isinstance(param_name, c_ast.PtrDecl):
+                    # Puntero a puntero
+                    param_name = param_name.type.declname
+                else:
+                    # Puntero
+                    param_name = param_name.declname
+            elif isinstance(_type, c_ast.TypeDecl):
+                param_name = param.name
+                if param_name is None:
+                    param_name = ""
+            self.params.append(param_name)
+        self.functions[function_nline] = function_name
+        args = '(' + ', '.join(self.params) + ')'
+        self.symbols_combo[function_nline] = (function_name + args, 'function')
+        # Reiniciar parámetros
+        self.params = []
+
+    def visit_Decl(self, node):
+        global_name = node.name
+        global_nline = node.coord.line
+        self.globals[global_name] = global_nline
+
+    def visit_Struct(self, node):
+        struct_name = node.name
+        struct_nline = node.coord.line
+        # Miembros de la estructura
+        for member in node.decls:
+            member_name = member.name
+            member_nline = member.coord.line
+            self.members[member_name] = member_nline
+        self.structs[struct_nline] = (struct_name, self.members)
+        self.symbols_combo[struct_nline] = (struct_name, 'struct')
+
+
+def parse_symbols(filename):
+    """ Analiza el código fuente y genera el árbol de símbolos """
+
+    symbols = {}
+    symbols_combo = None
     try:
-        source_code = sanitize_source_code(source)
-        ast = parser.parse(source_code)
+        ast = parse_file(filename, use_cpp=True, cpp_path=cpp_path,
+                         cpp_args=fake_libc)
     except:
         ERROR('El código fuente tiene errores de sintáxis')
         return {}, {}
-    ast_objects = ast.ext
-    for ast_object in ast_objects:
-        if ast_object.__class__ is c_ast.FuncDef:
-            function_name = ast_object.decl.name
-            function_nline = ast_object.decl.coord.line
-            functions[function_nline] = function_name
-            symbols_combo[function_nline] = (function_name, 'function')
-        elif ast_object.__class__ is c_ast.Decl:
-            decl = ast_object.type
-            if decl.__class__ is c_ast.Struct:
-                struct_name = decl.name
-                struct_nline = decl.coord.line
-                symbols_combo[struct_nline] = (struct_name, 'struct')
-                members = parse_structs(ast_object)
-                structs[struct_nline] = (struct_name, members)
-            elif decl.__class__ is c_ast.TypeDecl:
-                var_name = decl.declname
-                var_nline = decl.coord.line
-                vars_globals[var_name] = var_nline
-
-    if functions:
-        symbols['functions'] = functions
-    if structs:
-        symbols['structs'] = structs
-    if vars_globals:
-        symbols['globals'] = vars_globals
-
+    visitor = NodeVisitor()
+    visitor.visit(ast)
+    if visitor.functions:
+        symbols['functions'] = visitor.functions
+    if visitor.structs:
+        symbols['structs'] = visitor.structs
+    if visitor.globals:
+        symbols['globals'] = visitor.globals
+    symbols_combo = visitor.symbols_combo
     return symbols, symbols_combo
-
-
-def parse_structs(ast_object):
-    """ Devuelve un diccionario con los miembros de una estructura """
-
-    members_dict = {}
-
-    members = ast_object.type.decls
-
-    for member in members:
-        member_name = member.name
-        member_nline = member.coord.line
-        members_dict[member_name] = member_nline
-
-    return members_dict
 
 
 def sanitize_source_code(source_code):
@@ -100,11 +126,6 @@ def sanitize_source_code(source_code):
             return s
     source = ""
     for line in source_code.splitlines():
-        # Se ignora el puntero a FILE, pycparser produce una excepción
-        if pattern_file_pointer.match(line):
-            source += '\n'
-            continue
-        # Se ignoran las declarativas del preprocesador
         if line.startswith('#'):
             source += '\n'
             continue

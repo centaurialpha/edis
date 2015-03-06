@@ -52,7 +52,7 @@ class ArbolDeSimbolos(custom_dock.CustomDock):
             for _glob, nline in sorted(list(symbols['globals'].items())):
                 _global = Item(_globals, [_glob])
                 _global.line = nline
-                _global.setIcon(0, QIcon(":image/var"))
+                _global.setIcon(0, QIcon(":image/variable"))
             _globals.setExpanded(True)
 
         if 'functions' in symbols:
