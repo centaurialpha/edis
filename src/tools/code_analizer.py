@@ -34,7 +34,7 @@ class NodeVisitor(c_ast.NodeVisitor):
             cada método visit_XXX visita la clase XXX.
             Por ejemplo, el método visit_FuncDef visita la clase FuncDef,
             analiza una función armando una estructura tipo diccionario que
-            será utilizada por el IDE para armar el árbol de símbolos.
+            será utilizado por el IDE para armar el árbol de símbolos.
     """
 
     def __init__(self):
@@ -50,22 +50,23 @@ class NodeVisitor(c_ast.NodeVisitor):
         decl = node.decl
         function_name = decl.name
         function_nline = decl.coord.line
-        # Parámetros de la función
-        for param in decl.type.args.params:
-            _type = param.type
-            if isinstance(_type, c_ast.PtrDecl):
-                param_name = _type.type
-                if isinstance(param_name, c_ast.PtrDecl):
-                    # Puntero a puntero
-                    param_name = param_name.type.declname
-                else:
-                    # Puntero
-                    param_name = param_name.declname
-            elif isinstance(_type, c_ast.TypeDecl):
-                param_name = param.name
-                if param_name is None:
-                    param_name = ""
-            self.params.append(param_name)
+        if decl.type.args is not None:
+            # Parámetros de la función
+            for param in decl.type.args.params:
+                _type = param.type
+                if isinstance(_type, c_ast.PtrDecl):
+                    param_name = _type.type
+                    if isinstance(param_name, c_ast.PtrDecl):
+                        # Puntero a puntero
+                        param_name = param_name.type.declname
+                    else:
+                        # Puntero
+                        param_name = param_name.declname
+                elif isinstance(_type, c_ast.TypeDecl):
+                    param_name = param.name
+                    if param_name is None:
+                        param_name = ""
+                self.params.append(param_name)
         self.functions[function_nline] = function_name
         args = '(' + ', '.join(self.params) + ')'
         self.symbols_combo[function_nline] = (function_name + args, 'function')
