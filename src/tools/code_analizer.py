@@ -6,26 +6,13 @@
 # License: GPLv3 (see http://www.gnu.org/licenses/gpl.html)
 
 import re
-import os
-import sys
 
-from src.tools.pycparser import (
-    parse_file,
-    c_ast
-    )
+from src.tools.pycparser import c_ast
 
 from src.helpers import logger
-from src import paths
 
 log = logger.edis_logger.get_logger(__name__)
 ERROR = log.error
-
-path = os.path.join(paths.PATH, "tools", "pycparser")
-# Fake libc
-fake_libc = os.path.join(path, "fake_libc_include")
-fake_libc = '-I' + fake_libc
-# CPP path
-cpp_path = os.path.join(path, "cpp.exe") if sys.platform == 'win32' else 'cpp'
 
 
 class NodeVisitor(c_ast.NodeVisitor):
@@ -88,29 +75,6 @@ class NodeVisitor(c_ast.NodeVisitor):
             self.members[member_name] = member_nline
         self.structs[struct_nline] = (struct_name, self.members)
         self.symbols_combo[struct_nline] = (struct_name, 'struct')
-
-
-def parse_symbols(filename):
-    """ Analiza el código fuente y genera el árbol de símbolos """
-
-    symbols = {}
-    symbols_combo = None
-    try:
-        ast = parse_file(filename, use_cpp=True, cpp_path=cpp_path,
-                         cpp_args=fake_libc)
-    except Exception as reason:
-        ERROR('El código fuente tiene errores de sintáxis: %s', reason)
-        return {}, {}
-    visitor = NodeVisitor()
-    visitor.visit(ast)
-    if visitor.functions:
-        symbols['functions'] = visitor.functions
-    if visitor.structs:
-        symbols['structs'] = visitor.structs
-    if visitor.globals:
-        symbols['globals'] = visitor.globals
-    symbols_combo = visitor.symbols_combo
-    return symbols, symbols_combo
 
 
 def sanitize_source_code(source_code):

@@ -120,8 +120,9 @@ class EditorContainer(QWidget):
         self.editor_widget.editor_modified(value)
 
     def _file_saved(self, weditor):
-        self.updateSymbols.emit(weditor)
         self.editor_widget.editor_modified(False)
+        filename = weditor.filename
+        self.emit(SIGNAL("updateSymbols(QString)"), filename)
 
     def change_widget(self, index, fromCombo=False):
         if not fromCombo:
@@ -129,7 +130,7 @@ class EditorContainer(QWidget):
         weditor = self.get_active_editor()
         if weditor is not None and not weditor.is_new:
             self.fileChanged.emit(weditor.filename)
-            self.updateSymbols.emit(weditor)
+            self.emit(SIGNAL("updateSymbols(QString)"), weditor.filename)
             weditor.setFocus()
 
     def add_editor(self, filename=""):
@@ -191,7 +192,7 @@ class EditorContainer(QWidget):
                     weditor.setModified(False)
                     self.fileChanged.emit(_file)
                     self.openedFile.emit(_file)
-                    self.updateSymbols.emit(weditor)
+                    self.emit(SIGNAL("updateSymbols(QString)"), _file)
         except EdisIOException as error:
             ERROR('Error opening file: %s', error)
             QMessageBox.critical(self, self.tr('Error al abrir el archivo'),

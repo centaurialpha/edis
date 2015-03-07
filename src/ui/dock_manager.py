@@ -7,12 +7,12 @@
 
 from PyQt4.QtCore import (
     QObject,
-    SIGNAL
+    SIGNAL,
     )
 
 from src.ui.widgets import tool_button
-from src.tools import code_analizer
 from src.ui.main import EDIS
+from src.ui import thread_parse
 
 
 class DockManager(QObject):
@@ -21,6 +21,11 @@ class DockManager(QObject):
 
     def __init__(self):
         super(DockManager, self).__init__()
+        # Thread
+        self.thread = thread_parse.Thread()
+        self.connect(self.thread,
+                     SIGNAL("symbols(PyQt_PyObject, PyQt_PyObject)"),
+                     self._update_symbols_widget)
         # Tool buttons
         self.symbols_button = tool_button.CustomToolButton(
             self.tr("Símbolos"))
@@ -56,14 +61,14 @@ class DockManager(QObject):
                      editor_container.go_to_line)
 
     def load_symbols_widget(self, symbols_widget):
-        """ Carga el árbol de símbolos """
+        """ Carga widget de símbolos """
 
         self._symbols_widget = symbols_widget
         editor_container = EDIS.componente("principal")
         self.connect(self._symbols_widget, SIGNAL("goToLine(int)"),
                      editor_container.go_to_line)
-        self.connect(editor_container, SIGNAL("updateSymbols(PyQt_PyObject)"),
-                     self._update_symbols)
+        self.connect(editor_container, SIGNAL("updateSymbols(QString)"),
+                     lambda filename: self.thread.parse(filename))
         self.connect(editor_container.editor_widget, SIGNAL("allFilesClosed()"),
                      self._symbols_widget.tree.clear)
         self.connect(self._symbols_widget, SIGNAL("visibilityChanged(bool)"),
@@ -150,18 +155,13 @@ class DockManager(QObject):
             if self._symbols_widget:
                 self._symbols_widget.show()
 
-    def _update_symbols(self, weditor):
-        """ Actualiza los símbolos """
-
-        filename = weditor.filename
-        symbols, symbols_combo = code_analizer.parse_symbols(filename)
+    def _update_symbols_widget(self, symbols, symbols_combo):
         editor_container = EDIS.componente("principal")
         symbols_combo = sorted(symbols_combo.items())
+        editor_container.add_symbols_combo(symbols_combo)
         syntax_ok = True if symbols else False
         self.emit(SIGNAL("updateSyntaxCheck(bool)"), syntax_ok)
-        weditor = editor_container.get_active_editor()
         self._symbols_widget.update_symbols(symbols)
-        editor_container.add_symbols_combo(symbols_combo)
 
 
 dock_manager = DockManager()

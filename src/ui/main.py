@@ -194,12 +194,12 @@ class EDIS(QMainWindow):
         laterales y la salida del compilador.
         """
 
-        principal = EDIS.componente("principal")
+        editor_container = EDIS.componente("principal")
         dock = EDIS.componente("dock")
         dock.load_dock_toolbar(self.dock_toolbar)
         names_instances = ["symbols", "navigator", "explorer"]
         for name in names_instances:
-            method = getattr(dock, "load_%s_widget" % name, None)
+            method = getattr(dock, "load_%s_widget" % name)
             widget = EDIS.lateral(name)
             method(widget)
             self.addDockWidget(Qt.LeftDockWidgetArea, widget)
@@ -207,19 +207,19 @@ class EDIS(QMainWindow):
         dock.load_output_widget(output_widget)
         window.addDockWidget(Qt.BottomDockWidgetArea, output_widget)
         if ESettings.get('general/show-start-page'):
-            principal.add_start_page()
+            editor_container.add_start_page()
 
         # Conexiones
-        self.connect(principal, SIGNAL("fileChanged(QString)"),
+        self.connect(editor_container, SIGNAL("fileChanged(QString)"),
                      self._update_status)
-        self.connect(principal, SIGNAL("cursorPosition(int, int, int)"),
+        self.connect(editor_container, SIGNAL("cursorPosition(int, int, int)"),
                      self._update_cursor)
-        self.connect(principal, SIGNAL("fileChanged(QString)"),
+        self.connect(editor_container, SIGNAL("fileChanged(QString)"),
                      self._change_title)
-        self.connect(principal.editor_widget, SIGNAL("allFilesClosed()"),
+        self.connect(editor_container.editor_widget, SIGNAL("allFilesClosed()"),
                      self._all_closed)
 
-        return principal
+        return editor_container
 
     def _update_cursor(self, line, row, lines):
         """ Actualiza la posición del cursor en la barra de estado """
@@ -284,11 +284,11 @@ class EDIS(QMainWindow):
         de archivos recientes.
         """
 
-        principal = EDIS.componente("principal")
+        editor_container = EDIS.componente("principal")
         for _file in files:
             filename, cursor_position = _file
-            principal.open_file(filename, cursor_position)
-        principal.update_recents_files(recents_files)
+            editor_container.open_file(filename, cursor_position)
+        editor_container.update_recents_files(recents_files)
 
     def about_qt(self):
         """ Muestra el díalogo acerca de Qt """
