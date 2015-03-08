@@ -11,67 +11,78 @@ from urllib import request
 from PyQt4.QtGui import (
     QSystemTrayIcon,
     QMenu,
-    QAction,
     QIcon
     )
 
 from PyQt4.QtCore import (
     QThread,
-    pyqtSignal
+    pyqtSignal,
+    SIGNAL
     )
 
 from src import ui
 from src.helpers import logger
 
 log = logger.edis_logger.get_logger(__name__)
+INFO = log.info
 
 
 class NotificacionActualizacion(QSystemTrayIcon):
 
-    """ Custom System Tray Icon """
+    """ System Tray Icon """
 
     def __init__(self, parent=None):
         QSystemTrayIcon.__init__(self, parent)
         self.setIcon(QIcon(":image/edis"))
-        self.hilo = Thread()
-        self.hilo.start()
-        self.hilo.version.connect(self._mostrar_mensaje)
+        self.menu = QMenu()
+        self.setContextMenu(self.menu)
+        exit_action = self.menu.addAction(self.tr("Salir"))
+        self.thread = Thread()
 
-    def _mostrar_mensaje(self, version, link):
+        # Conexiones
+        self.connect(self.thread,
+                     SIGNAL("updateVersion(QString, QString, bool)"),
+                     self._show_tray)
+        self.connect(exit_action, SIGNAL("triggered()"), self.hide)
+
+        self.thread.start()
+        self.setToolTip(self.tr("Comprobando actualización..."))
+
+    def _show_tray(self, version, link, found):
         """ Muestra el system tray icon """
 
-        menu = QMenu()
-        accion_descarga = QAction("Descargar", self)
-        accion_descarga.triggered.connect(lambda: webbrowser.open_new(link))
-        accion_salir = QAction("Salir", self)
-        accion_salir.triggered.connect(self.hide)
-        menu.addAction(accion_descarga)
-        menu.addSeparator()
-        menu.addAction(accion_salir)
-        self.setContextMenu(menu)
-        self.showMessage(self.tr("Nueva versión disponible!"),
-                         self.tr("Existe una nueva versión de EDIS!\n"
-                         "versión: %s." % version),
-                         QSystemTrayIcon.Information, 10000)
+        if found:
+            self.menu.clear()
+            download_action = self.menu.addAction(self.tr("Descargar!"))
+            exit_action = self.menu.addAction(self.tr("Cerrar notificaciones"))
+
+            self.connect(download_action, SIGNAL("triggered()"),
+                         lambda: webbrowser.open_new(link))
+            self.connect(exit_action, SIGNAL("triggered()"), self.hide)
+            self.showMessage(self.tr("Nueva versión disponible!"),
+                             self.tr("Existe una nueva versión de Edis!\n"
+                             "versión: %s." % version),
+                             QSystemTrayIcon.Information, 10000)
+        else:
+            self.hide()
+            self.thread.terminate()
 
 
 class Thread(QThread):
 
-    """ Este hilo obtiene información de la versión de Edis y la compara con
-        la versión instalada
+    """ Este hilo compara la versión local con la versión más reciente en el
+    repositorio y emite la señal con los resultados """
 
-    """
-    version = pyqtSignal('PyQt_PyObject', 'PyQt_PyObject')
+    updateVersion = pyqtSignal('QString', 'QString', bool)
 
     def run(self):
         try:
-            version_web = request.urlopen(
-                ui.__version_web__).read().decode('utf-8')
-            version_actual, fase_actual = ui.__version__.split('-')
-            version_web, fase = version_web.split('-')
-            if float(version_actual) < float(version_web):
-                self.version.emit(version_web, ui.__web__)
-            elif fase_actual != fase:
-                self.version.emit(version_web + '-' + fase, ui.__web__)
+            found = False
+            web_version = request.urlopen(
+                ui.__version_web__).read().decode('utf-8').strip()
+            current_version = ui.__version__
+            if current_version < web_version:
+                found = True
+            self.updateVersion.emit(web_version, ui.__web__, found)
         except:
-            log.info("No se pudo establecer la conexión")
+            INFO("No se pudo establecer la conexión")
