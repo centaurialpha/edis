@@ -59,7 +59,7 @@ def run_edis(app):
 
     # Se aplica el estilo
     with open(os.path.join(paths.PATH,
-              "extras", "temas", "default.qss")) as tema:
+              "extras", "temas", "edark.qss")) as tema:
         estilo = tema.read()
     app.setStyleSheet(estilo)
     # Archivos de última sesión
