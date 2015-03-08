@@ -58,7 +58,7 @@ settings = {
     'editor/indent': True,
     'editor/width-indent': 4,
     'editor/show-guides': False,
-    'editor/show-tabs-spaces': False,
+    'editor/show-tabs-spaces': True,
     'editor/wrap-mode': False,
     'editor/font': "",
     'editor/size-font': 10,
@@ -105,7 +105,7 @@ class ESettings(object):
         settings['editor/show-guides'] = qconfig.value(
             'editor/show-guides', False, type=bool)
         settings['editor/show-tabs-spaces'] = qconfig.value(
-            'editor/show-tabs-spaces', False, type=bool)
+            'editor/show-tabs-spaces', True, type=bool)
         settings['editor/wrap-mode'] = qconfig.value(
             'editor/wrap-mode', False, type=bool)
         settings['editor/font'] = qconfig.value(
