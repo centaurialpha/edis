@@ -64,7 +64,7 @@ class EChecker(object):
         i = i + 2;
 
         """
-        if REGEX_OPERATOR_SPACE.search(line) and not line.startswith('#'):
+        if REGEX_OPERATOR_SPACE.match(line) and not line.startswith('#'):
             if not REGEX_COMMENT_LINE.search(line) and not \
                     REGEX_IS_ARRAY.search(line):
                 self._results.append(M_OPERATOR_SPACE % self._line_number)

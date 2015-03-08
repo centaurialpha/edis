@@ -18,7 +18,7 @@ def get_file_content(archivo):
     """ Lee el contenido de @archivo y lo retorna """
 
     try:
-        with open(archivo, mode='r') as filename:
+        with open(archivo, mode='rU') as filename:
             content = filename.read()
     except IOError as error:
         raise EdisIOException(error)
