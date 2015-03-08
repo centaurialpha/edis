@@ -18,14 +18,14 @@ QMainWindow::separator:hover {
 
 QToolBar#toolbar {
     background: qlineargradient(x1: 1, y1: 0, x2: 0, y2: 0,
-                                       stop: 0 #5a584f, stop: 1 #41403b);
+                                       stop: 0 #5a584f, stop: 1 #3b3b3b);
     spacing: 6px;
     padding: 6px;
 }
 
 QToolBar#dock_toolbar {
     background: qlineargradient(x1: 0, y1: 0, x2: 1, y2: 0,
-                                       stop: 0 #5a584f, stop: 1 #41403b);
+                                       stop: 0 #5a584f, stop: 1 #3b3b3b);
     spacing: 6px;
     padding: 6px;
 }
@@ -127,7 +127,7 @@ QMenu::item {
 }
 
 QMenu::item:selected {
-    background: #6a6a6a;
+    background: #6f6da7;
 }
 
 QMenu::separator {
