@@ -97,16 +97,16 @@ class Editor(base.Base):
         #self.setAutoCompletionThreshold(1)
         #self.setAutoCompletionSource(QsciScintilla.AcsAPIs)
         # Indentación
-        self._indentacion = ESettings.get('editor/width-indent')
-        self.send("sci_settabwidth", self._indentacion)
+        self.indentation = ESettings.get('editor/width-indent')
+        self.send("sci_settabwidth", self.indentation)
         # Minimapa
         self.minimap = None
         if ESettings.get('editor/show-minimap'):
-            self.minimap = minimap.MiniMapa(self)
-            self.connect(self, SIGNAL("selectionChanged()"),
-                         self.minimap.area)
+            self.minimap = minimap.Minimap(self)
+            #self.connect(self, SIGNAL("selectionChanged()"),
+                         #self.minimap.area)
             self.connect(self, SIGNAL("textChanged()"),
-                         self.minimap.actualizar_codigo)
+                         self.minimap.update_code)
         # Thread ocurrencias
         self.hilo_ocurrencias = ThreadBusqueda()
         self.connect(self.hilo_ocurrencias,
@@ -207,7 +207,7 @@ class Editor(base.Base):
     def actualizar_indentacion(self):
         ancho = ESettings.get('editor/width-indent')
         self.send("sci_settabwidth", ancho)
-        self._indentacion = ancho
+        self.indentation = ancho
 
     def marcar_palabras(self, palabras):
         self.clear_indicators(self._word_indicator)
@@ -281,7 +281,7 @@ class Editor(base.Base):
     def resizeEvent(self, e):
         super(Editor, self).resizeEvent(e)
         if self.minimap is not None:
-            self.minimap.redimensionar()
+            self.minimap.update_geometry()
 
     def comment(self):
         #FIXME: tener en cuenta /* */
