@@ -46,12 +46,12 @@ QToolButton:hover {
 }
 
 QToolButton#dock_button:checked {
-    background: #41403b;
+    background: #333333;
     border-radius: 2px;
 }
 
 QToolButton#dock_button:hover {
-    background: #404040;
+    background: #575757;
     border-radius: 2px;
 }
 
