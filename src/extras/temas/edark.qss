@@ -7,7 +7,7 @@ QMainWindow {
 }
 
 QMainWindow::separator {
-    background: #444;
+    background: #444444;
     border: 0px solid transparent;
     height: 3px;
 }
@@ -53,6 +53,18 @@ QToolButton#dock_button:checked {
 QToolButton#dock_button:hover {
     background: #404040;
     border-radius: 2px;
+}
+
+QToolButton#combo-button {
+    border-style: solid;
+    background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
+                                       stop: 0 #666666, stop: 1 #333333);
+    padding: 3px;
+}
+
+QToolButton#combo-button:hover {
+    background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
+                                      stop: 0 #737373, stop: 1.0 #404040);
 }
 
 QScrollBar:vertical {
@@ -264,7 +276,7 @@ QComboBox {
     padding: 0px 18px 1px 10px;
     height: 23px;
     min-width: 6em;
-    border-right-width: 1px;
+    border-right-width: 0px;
     border-right-color: darkgray;
 }
 

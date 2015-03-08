@@ -198,6 +198,7 @@ class ComboContainer(QWidget):
 
         # Botón cerrar
         btn_close_editor = QToolButton()
+        btn_close_editor.setObjectName("combo-button")
         btn_close_editor.setMaximumWidth(30)
         btn_close_editor.setToolTip(self.tr("Cerrar archivo"))
         btn_close_editor.setIcon(QIcon(":image/close"))
