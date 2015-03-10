@@ -260,7 +260,7 @@ class ComboContainer(QWidget):
     def set_modified(self, weditor, index, modified):
         #FIXME: texto nuevo archivo
         if modified:
-            text = self.tr(" (modificado)")
+            text = " \u2022"  # Bullet caracter
             current_text = self.combo_file.currentText()
             self.combo_file.setItemText(index, current_text + text)
         else:
