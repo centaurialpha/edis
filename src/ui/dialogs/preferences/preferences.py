@@ -28,8 +28,7 @@ from src.ui.main import EDIS
 from src.ui.dialogs.preferences import (
     general_configuration,
     editor_configuration,
-    #preferencias_gui,
-    #preferencias_ejecucion
+    theme_configuration
     )
 
 #FIXME: Ejecución, compilación
@@ -43,16 +42,13 @@ class Preferencias(QDialog):
         self.setWindowTitle(self.tr("Preferencias - EDIS"))
         self.general = general_configuration.GeneralConfiguration(self)
         self.editor = editor_configuration.EditorConfiguration()
-        #self.gui = preferencias_gui.ConfiguracionGUI(self)
-        #self._ejecucion = preferencias_ejecucion.ConfiguracionEjecucion(self)
+        self.themes = theme_configuration.ThemeConfiguration()
 
         # valor: texto en combo, clave: instancia de widgets
         self.widgets = OrderedDict([
             ('General', self.general),
-            ('Editor', self.editor)])
-            #('GUI', self.gui),
-            #('Ejecucion', self._ejecucion)])
-            #])
+            ('Editor', self.editor),
+            ('Style Sheet', self.themes)])
 
         self.load_ui()
 
@@ -61,10 +57,9 @@ class Preferencias(QDialog):
                      lambda: self.cambiar_widget(0))
         self.connect(self.button_editor, SIGNAL("clicked()"),
                      lambda: self.cambiar_widget(1))
-        #self.connect(self.button_gui, SIGNAL("clicked()"),
-                     #lambda: self.cambiar_widget(2))
-        #self.connect(self.button_compi, SIGNAL("clicked()"),
-                     #lambda: self.cambiar_widget(3))
+        self.connect(self.button_themes, SIGNAL("clicked()"),
+                     lambda: self.cambiar_widget(2))
+
         self.connect(self.btn_cancel, SIGNAL("clicked()"), self.close)
         self.connect(self.btn_guardar, SIGNAL("clicked()"), self._guardar)
 
@@ -82,13 +77,11 @@ class Preferencias(QDialog):
 
         self.button_general = ToolButton("General", ":image/general-pref")
         self.button_editor = ToolButton("Editor", ":image/editor-pref")
-        #self.button_gui = ToolButton("Interfáz", ":image/gui")
-        #self.button_compi = ToolButton("Ejecución", ":image/build")
+        self.button_themes = ToolButton("Style Sheet", ":image/theme")
 
         toolbar.addWidget(self.button_general)
         toolbar.addWidget(self.button_editor)
-        #toolbar.addWidget(self.button_gui)
-        #toolbar.addWidget(self.button_compi)
+        toolbar.addWidget(self.button_themes)
 
         box.addWidget(toolbar)
 

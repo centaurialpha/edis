@@ -18,6 +18,7 @@ class Minimap(QsciScintilla):
         self._indentation = self._weditor.indentation
         self.setLexer(self._weditor.lexer())
         # Configuración Scintilla
+        self.setStyleSheet("background: transparent;")
         self.setReadOnly(True)
         self.SendScintilla(QsciScintilla.SCI_SETHSCROLLBAR, False)
         self.setFolding(QsciScintilla.NoFoldStyle, 1)
