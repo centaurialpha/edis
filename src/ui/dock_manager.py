@@ -64,6 +64,7 @@ class DockManager(QObject):
         """ Carga widget de símbolos """
 
         self._symbols_widget = symbols_widget
+        self._symbols_widget.hide()
         editor_container = EDIS.componente("principal")
         self.connect(self._symbols_widget, SIGNAL("goToLine(int)"),
                      editor_container.go_to_line)
