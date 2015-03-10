@@ -45,5 +45,6 @@
         <file alias="editor-pref">images/preferences-desktop-peripherals.png</file>
         <file alias="back">images/draw-arrow-back.png</file>
         <file alias="forward">images/draw-arrow-forward.png</file>
+        <file alias="theme">images/preferences-desktop-wallpaper.png</file>
     </qresource>
 </RCC>
