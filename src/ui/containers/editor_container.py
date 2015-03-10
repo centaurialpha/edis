@@ -141,6 +141,9 @@ class EditorContainer(QWidget):
         self.editor_widget.add_widget(weditor)
         if isinstance(self.stack.widget(0), start_page.StartPage):
             self.stack.removeWidget(self.stack.widget(0))
+        symbols_widget = EDIS.lateral('symbols')
+        if not symbols_widget.isVisible():
+            symbols_widget.show()
         # Conexiones
         self.connect(weditor, SIGNAL("cursorPositionChanged(int, int)"),
                      self.update_cursor)
@@ -229,6 +232,8 @@ class EditorContainer(QWidget):
             _start_page = start_page.StartPage()
             self.stack.insertWidget(0, _start_page)
             self.stack.setCurrentIndex(0)
+            symbols = EDIS.lateral('symbols')
+            symbols.hide()
         else:
             self.editor_widget.combo.setVisible(False)
 
