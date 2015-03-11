@@ -35,7 +35,7 @@ class GeneralConfiguration(QWidget):
         self.check_on_start.setChecked(ESettings.get('general/show-start-page'))
         box.addWidget(self.check_on_start)
         self.check_load_files = QCheckBox(self.tr("Cargar archivos desde la "
-                                          "última sessión"))
+                                          "última sesión"))
         self.check_load_files.setChecked(ESettings.get('general/load-files'))
         box.addWidget(self.check_load_files)
 
