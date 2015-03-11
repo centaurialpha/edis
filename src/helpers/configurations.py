@@ -65,6 +65,7 @@ settings = {
     'editor/style-checker': True,
     'editor/show-minimap': False,
     'general/show-start-page': True,
+    'general/load-files': True,
     'general/files': [],
     'general/recents-files': [],
     'general/check-updates': True
@@ -86,6 +87,8 @@ class ESettings(object):
             'ventana/position', type='QPoint')
         settings['general/show-start-page'] = qconfig.value(
             'general/show-start-page', True, type=bool)
+        settings['general/load-files'] = qconfig.value(
+            'general/load-files', True, type=bool)
         settings['ventana/store-size'] = qconfig.value(
             'ventana/store-size', True, type=bool)
         settings['ventana/show-maximized'] = qconfig.value(

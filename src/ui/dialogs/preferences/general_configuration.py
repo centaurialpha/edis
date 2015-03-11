@@ -34,6 +34,10 @@ class GeneralConfiguration(QWidget):
         self.check_on_start = QCheckBox(self.tr("Mostrar ventana de inicio"))
         self.check_on_start.setChecked(ESettings.get('general/show-start-page'))
         box.addWidget(self.check_on_start)
+        self.check_load_files = QCheckBox(self.tr("Cargar archivos desde la "
+                                          "última sessión"))
+        self.check_load_files.setChecked(ESettings.get('general/load-files'))
+        box.addWidget(self.check_load_files)
 
         # Al salir
         group_on_exit = QGroupBox(self.tr("Al salir:"))
@@ -94,3 +98,4 @@ class GeneralConfiguration(QWidget):
         ESettings.set('general/confirm-exit',
                       self.check_on_exit.isChecked())
         ESettings.set('general/check-updates', self.check_updates.isChecked())
+        ESettings.set('general/load-files', self.check_load_files.isChecked())

@@ -63,14 +63,16 @@ def run_edis(app):
         estilo = tema.read()
     app.setStyleSheet(estilo)
     # Archivos de última sesión
-    splash.showMessage("Cargando archivos...", Qt.AlignBottom | Qt.black)
-    files = ESettings.get('general/files')
-    if files is None:
-        files = []
-    # Archivos recientes
-    recents_files = ESettings.get('general/recents-files')
-    if recents_files is None:
-        recents_files = []
+    files, recents_files = [], []
+    if ESettings.get('general/load-files'):
+        splash.showMessage("Cargando archivos...", Qt.AlignBottom | Qt.black)
+        files = ESettings.get('general/files')
+        if files is None:
+            files = []
+        # Archivos recientes
+        recents_files = ESettings.get('general/recents-files')
+        if recents_files is None:
+            recents_files = []
     edis.cargar_archivos(files, recents_files)
     splash.finish(edis)
     sys.exit(app.exec_())
