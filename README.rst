@@ -90,6 +90,11 @@ Contact
 * `Edis Web <http://centaurialpha.github.io/edis>`_
 * `Lista de e-mail <http://groups.google.com/group/edis-ide/topics>`_
 
+Contributing
+============
+
+Para contribuir con el proyecto por favor lee esto: `Contribuyendo con Edis <https://github.com/centaurialpha/edis/blob/master/CONTRIBUTING.md>`_.
+
 License
 =======
 
