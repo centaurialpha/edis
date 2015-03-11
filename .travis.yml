@@ -1,6 +1,7 @@
 language: python
 
 python:
+    - 3.3
     - 3.4
 
 before_install:
@@ -25,13 +26,7 @@ before_install:
     - cd $TRAVIS_BUILD_DIR
 
 install:
-    - pip install coveralls
     - pip install nose
-    - pip install nose-exclude
 
 script:
-    - nosetests --with-coverage --cover-package=src/.
-    - coverage combine
-    - coverage report --omit 'src/tools/pycparser/*'
-
-after_success: coveralls
+    - nosetests
