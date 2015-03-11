@@ -28,7 +28,6 @@
         <file alias="member">images/member.png</file>
         <file alias="preferences">images/preferences-system.png</file>
         <file alias="qt">images/qt.png</file>
-        <file alias="bug">images/script-error.png</file>
         <file alias="struct">images/struct.png</file>
         <file alias="variable">images/variable.png</file>
         <file alias="fullscreen">images/view-fullscreen.png</file>
@@ -46,5 +45,6 @@
         <file alias="back">images/draw-arrow-back.png</file>
         <file alias="forward">images/draw-arrow-forward.png</file>
         <file alias="theme">images/preferences-desktop-wallpaper.png</file>
+        <file alias="bug">images/bug.png</file>
     </qresource>
 </RCC>
