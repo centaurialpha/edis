@@ -284,8 +284,10 @@ class ComboContainer(QWidget):
         """ Agrega símbolos al combo """
 
         self.combo_symbols.clear()
-        lines = []
+        self.combo_symbols.addItem(self.tr("<Selecciona un símbolo>"))
+        lines = [1]
         for symbol in symbols:
+
             lines.append(symbol[0])
             to_combo = symbol[1][0]
             if symbol[1][1] == 'function':
