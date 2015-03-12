@@ -189,6 +189,9 @@ class ComboContainer(QWidget):
         # Basado en la GUI de Qt Creator
         # Combo archivos
         self.combo_file = QComboBox()
+        self.combo_file.setToolTip(self.tr(
+                                   "Click izquierdo para cambiar de archivo.\n"
+                                   "Click derecho para ver el menú."))
         self.combo_file.setIconSize(QSize(18, 18))
         self.combo_file.setContextMenuPolicy(Qt.CustomContextMenu)
         box.addWidget(self.combo_file)
@@ -239,12 +242,19 @@ class ComboContainer(QWidget):
 
         menu = QMenu()
         editor_container = EDIS.componente("principal")
+        save_as_action = menu.addAction(self.tr("Guardar como"))
+        reload_action = menu.addAction(self.tr("Recargar"))
+        menu.addSeparator()
         compile_action = menu.addAction(self.tr("Compilar"))
         execute_action = menu.addAction(self.tr("Ejecutar"))
         menu.addSeparator()
         close_action = menu.addAction(self.tr("Cerrar archivo"))
 
         # Conexiones
+        self.connect(save_as_action, SIGNAL("triggered()"),
+                     editor_container.save_file_as)
+        self.connect(reload_action, SIGNAL("triggered()"),
+                     editor_container.reload_file)
         self.connect(compile_action, SIGNAL("triggered()"),
                      editor_container.build_source_code)
         self.connect(execute_action, SIGNAL("triggered()"),
