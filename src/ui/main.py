@@ -228,7 +228,6 @@ class EDIS(QMainWindow):
         """ Limpia la barra de estado y el título de la ventana """
 
         self.setWindowTitle('{' + ui.__nombre__ + '}')
-        self.barra_de_estado.cursor_widget.hide()
         self._update_status("")
 
     def _change_title(self, title):

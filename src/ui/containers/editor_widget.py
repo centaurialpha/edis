@@ -189,8 +189,7 @@ class ComboContainer(QWidget):
         # Basado en la GUI de Qt Creator
         # Combo archivos
         self.combo_file = QComboBox()
-        #self.combo_file.setObjectName("combo-file")
-        self.combo_file.setIconSize(QSize(16, 16))
+        self.combo_file.setIconSize(QSize(18, 18))
         self.combo_file.setContextMenuPolicy(Qt.CustomContextMenu)
         box.addWidget(self.combo_file)
         # Botón cerrar
@@ -202,7 +201,6 @@ class ComboContainer(QWidget):
         box.addWidget(btn_close_editor)
         # Combo símbolos
         self.combo_symbols = QComboBox()
-        #self.combo_symbols.setObjectName("combo-symbols")
         self.combo_symbols.setIconSize(QSize(18, 18))
         self.combo_symbols.setMaximumWidth(250)
         box.addWidget(self.combo_symbols)
