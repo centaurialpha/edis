@@ -34,6 +34,7 @@ class GoToLineDialog(base_dialog.BaseDialog):
         self.connect(self.line, SIGNAL("returnPressed()"), self.close)
 
     def _go(self, strline):
+        print("LALA")
         if not strline.isdigit():
             return
         line = int(strline) - 1
