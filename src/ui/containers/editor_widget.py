@@ -206,9 +206,10 @@ class ComboContainer(QWidget):
         box.addWidget(self.combo_symbols)
         # Label número de línea y columna
         self.label_line_row = QLabel()
+        self.label_line_row.mousePressEvent = self._show_dialog_go_to_line
         self.label_line_row.setSizePolicy(QSizePolicy.Fixed, QSizePolicy.Fixed)
         self.label_line_row.setObjectName("combo-label")
-        self.line_row = "# Lin: %s, Col: %s - %s"
+        self.line_row = "Lin: %s, Col: %s - %s"
         self.label_line_row.setText(self.line_row % (0, 0, 0))
         box.addWidget(self.label_line_row)
 
@@ -227,6 +228,11 @@ class ComboContainer(QWidget):
 
     def update_cursor_position(self, line, row, lines):
         self.label_line_row.setText(self.line_row % (line, row, lines))
+
+    def _show_dialog_go_to_line(self, event):
+        if event.button() == Qt.LeftButton:
+            editor_container = EDIS.componente("principal")
+            editor_container.show_go_to_line()
 
     def _load_menu_combo_file(self, point):
         """ Muestra el menú """
