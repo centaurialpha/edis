@@ -22,14 +22,14 @@ class BarraDeEstado(QStatusBar):
     def __init__(self, parent=None):
         super(BarraDeEstado, self).__init__()
         # Widgets
-        self.cursor_widget = PosicionCursorWidget()
+        #self.cursor_widget = PosicionCursorWidget()
         self.uptime_widget = UpTimeWidget()
         self.lbl_archivo = QLabel(self.tr(""))
         # Contenedor
         contenedor = QWidget()
         box = QHBoxLayout(contenedor)
         box.setContentsMargins(0, 0, 10, 0)
-        box.addWidget(self.cursor_widget)
+        #box.addWidget(self.cursor_widget)
         box.addWidget(self.uptime_widget)
 
         # Agregar contenedor al status bar
@@ -42,19 +42,19 @@ class BarraDeEstado(QStatusBar):
         self.lbl_archivo.setText(filename)
 
 
-class PosicionCursorWidget(QLabel):
+#class PosicionCursorWidget(QLabel):
 
-    def __init__(self):
-        super(PosicionCursorWidget, self).__init__()
-        self.setObjectName("status_label")
-        self.setStyleSheet("font: 10pt;")
-        self.linea_columna = "Línea %s, Columna %s - " \
-            "<span style='color: #aaaaaa;'>%s líneas</span>"
-        self.setText(self.tr(self.linea_columna % (0, 0, 0)))
-        self.hide()
+    #def __init__(self):
+        #super(PosicionCursorWidget, self).__init__()
+        #self.setObjectName("status_label")
+        #self.setStyleSheet("font: 10pt;")
+        #self.linea_columna = "Línea %s, Columna %s - " \
+            #"<span style='color: #aaaaaa;'>%s líneas</span>"
+        #self.setText(self.tr(self.linea_columna % (0, 0, 0)))
+        #self.hide()
 
-    def actualizar_cursor(self, linea, columna, lineas):
-        self.setText(self.linea_columna % (linea, columna, lineas))
+    #def actualizar_cursor(self, linea, columna, lineas):
+        #self.setText(self.linea_columna % (linea, columna, lineas))
 
 
 class UpTimeWidget(QLabel):

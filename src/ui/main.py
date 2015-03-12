@@ -212,20 +212,12 @@ class EDIS(QMainWindow):
         # Conexiones
         self.connect(editor_container, SIGNAL("fileChanged(QString)"),
                      self._update_status)
-        self.connect(editor_container, SIGNAL("cursorPosition(int, int, int)"),
-                     self._update_cursor)
         self.connect(editor_container, SIGNAL("fileChanged(QString)"),
                      self._change_title)
         self.connect(editor_container.editor_widget, SIGNAL("allFilesClosed()"),
                      self._all_closed)
 
         return editor_container
-
-    def _update_cursor(self, line, row, lines):
-        """ Actualiza la posición del cursor en la barra de estado """
-
-        self.barra_de_estado.cursor_widget.show()
-        self.barra_de_estado.cursor_widget.actualizar_cursor(line, row, lines)
 
     def _update_status(self, archivo):
         """ Actualiza el path del archivo en la barra de estado """

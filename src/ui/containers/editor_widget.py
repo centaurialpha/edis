@@ -16,7 +16,9 @@ from PyQt4.QtGui import (
     QStackedWidget,
     QMessageBox,
     QIcon,
-    QMenu
+    QMenu,
+    QSizePolicy,
+    QLabel
     )
 
 from PyQt4.QtCore import (
@@ -184,26 +186,33 @@ class ComboContainer(QWidget):
         box.setSpacing(0)
         self._lines_symbols = []
 
+        # Basado en la GUI de Qt Creator
         # Combo archivos
         self.combo_file = QComboBox()
-        self.combo_file.setIconSize(QSize(18, 18))
+        #self.combo_file.setObjectName("combo-file")
+        self.combo_file.setIconSize(QSize(16, 16))
         self.combo_file.setContextMenuPolicy(Qt.CustomContextMenu)
         box.addWidget(self.combo_file)
-
-        # Combo símbolos
-        self.combo_symbols = QComboBox()
-        self.combo_symbols.setIconSize(QSize(18, 18))
-        self.combo_symbols.setMaximumWidth(350)
-        box.addWidget(self.combo_symbols)
-
         # Botón cerrar
         btn_close_editor = QToolButton()
         btn_close_editor.setObjectName("combo-button")
-        btn_close_editor.setMaximumWidth(30)
+        btn_close_editor.setMaximumHeight(30)
         btn_close_editor.setToolTip(self.tr("Cerrar archivo"))
         btn_close_editor.setIcon(QIcon(":image/close"))
-            #self.style().standardIcon(QStyle.SP_DialogCloseButton))
         box.addWidget(btn_close_editor)
+        # Combo símbolos
+        self.combo_symbols = QComboBox()
+        #self.combo_symbols.setObjectName("combo-symbols")
+        self.combo_symbols.setIconSize(QSize(18, 18))
+        self.combo_symbols.setMaximumWidth(250)
+        box.addWidget(self.combo_symbols)
+        # Label número de línea y columna
+        self.label_line_row = QLabel()
+        self.label_line_row.setSizePolicy(QSizePolicy.Fixed, QSizePolicy.Fixed)
+        self.label_line_row.setObjectName("combo-label")
+        self.line_row = "# Lin: %s, Col: %s - %s"
+        self.label_line_row.setText(self.line_row % (0, 0, 0))
+        box.addWidget(self.label_line_row)
 
         dock = EDIS.componente("dock")
 
@@ -217,6 +226,9 @@ class ComboContainer(QWidget):
         self.connect(self.combo_file,
                      SIGNAL("customContextMenuRequested(const QPoint)"),
                      self._load_menu_combo_file)
+
+    def update_cursor_position(self, line, row, lines):
+        self.label_line_row.setText(self.line_row % (line, row, lines))
 
     def _load_menu_combo_file(self, point):
         """ Muestra el menú """

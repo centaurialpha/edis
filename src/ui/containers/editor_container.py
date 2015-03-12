@@ -396,6 +396,8 @@ class EditorContainer(QWidget):
     def update_cursor(self, line, row):
         weditor = self.get_active_editor()
         lines = weditor.lineas
+        self.editor_widget.combo.update_cursor_position(
+            line + 1, row + 1, lines)
         self.cursorPosition.emit(line + 1, row + 1, lines)
 
     def build_source_code(self):

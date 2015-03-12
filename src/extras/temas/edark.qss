@@ -59,7 +59,6 @@ QToolButton#combo-button {
     border-style: solid;
     background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
                                        stop: 0 #666666, stop: 1 #333333);
-    padding: 3px;
 }
 
 QToolButton#combo-button:hover {
@@ -175,6 +174,13 @@ QLabel#status_label {
     background: transparent;
 }
 
+QLabel#combo-label {
+    background:qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
+                               stop: 0 #666666, stop: 1 #333333);
+
+    padding: 0px 0px 5px;
+}
+
 QPushButton {
     background: #424242;
     border-radius: 3px;
@@ -273,11 +279,8 @@ QComboBox {
     background:qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
                                stop: 0 #666666, stop: 1 #333333);
     color: #FFFFFF;
-    padding: 0px 18px 1px 10px;
-    height: 23px;
+    padding: 0px 0px 3px 10px;
     min-width: 6em;
-    border-right-width: 0px;
-    border-right-color: darkgray;
 }
 
 QComboBox::drop-down {
