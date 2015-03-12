@@ -25,17 +25,26 @@ class GoToLineDialog(base_dialog.BaseDialog):
         box = QVBoxLayout(self)
         box.setContentsMargins(5, 5, 5, 5)
         self.line = QLineEdit()
+        self.line.setText(self.tr("<línea>:<columna>"))
+        self.line.setSelection(0, len(self.line.text()))
         self.line.setObjectName("popup")
         self.line.setMinimumWidth(200)
         box.addWidget(self.line)
         self.move(self.global_point - QPoint(self.width() + 130, 0))
 
-        self.connect(self.line, SIGNAL("textEdited(QString)"), self._go)
-        self.connect(self.line, SIGNAL("returnPressed()"), self.close)
+        self.connect(self.line, SIGNAL("returnPressed()"), self._go)
 
-    def _go(self, strline):
-        print("LALA")
-        if not strline.isdigit():
+    def _go(self):
+        data = self.line.text()
+        if data.startswith(':'):
             return
-        line = int(strline) - 1
-        self._weditor.setCursorPosition(line, 0)
+        index = 0
+        if ':' in data:
+            data = data.split(':')
+            if not data[1]:
+                return
+            line, index = int(data[0]), int(data[1])
+        else:
+            line = data.split(':')[0]
+        self._weditor.setCursorPosition(int(line) - 1, index)
+        self.close()
