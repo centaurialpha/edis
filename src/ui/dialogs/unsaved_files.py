@@ -38,7 +38,10 @@ class DialogSaveFiles(QDialog):
         hLayout = QHBoxLayout()
 
         self.list_widget = QListWidget()
-        [self.list_widget.addItem(item) for item in files]
+        for _file in files:
+            if not _file:
+                _file = "Nuevo archivo"
+            self.list_widget.addItem(_file)
         self.list_widget.setSelectionMode(QAbstractItemView.ExtendedSelection)
         hLayout.addWidget(self.list_widget)
 
