@@ -42,9 +42,10 @@ def run_edis(app):
 
     app.setWindowIcon(QIcon(":image/edis"))
     local = QLocale.system().name()
-    qtraductor = QTranslator()
-    qtraductor.load("qt_" + local, QLibraryInfo.location(
+    qtranslator = QTranslator()
+    qtranslator.load("qt_" + local, QLibraryInfo.location(
                     QLibraryInfo.TranslationsPath))
+    app.installTranslator(qtranslator)
     pixmap = QPixmap(":image/splash")
     # Splash screen
     splash = Splash(pixmap, Qt.WindowStaysOnTopHint)
