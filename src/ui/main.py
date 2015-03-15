@@ -25,6 +25,7 @@ from PyQt4.QtCore import (
     )
 
 # Módulos EDIS
+from src import recursos
 from src import ui
 from src.ui import system_tray
 from src.helpers import configurations
@@ -62,7 +63,7 @@ class EDIS(QMainWindow):
             position = ESettings.get('ventana/position')
             self.resize(size)
             self.move(position)
-        # Toolbar
+        # Toolbars
         self.toolbar = QToolBar(self)
         toggle_action = self.toolbar.toggleViewAction()
         toggle_action.setText(self.tr("Toolbar"))
@@ -129,15 +130,14 @@ class EDIS(QMainWindow):
         """
 
         from src.ui import actions
-        from src import recursos
 
         menubar_items = [
-            self.tr("&Archivo"),
-            self.tr("&Editar"),
-            self.tr("&Ver"),
-            self.tr("&Buscar"),
-            self.tr("E&jecución"),
-            self.tr("A&cerca de")
+            self.tr("&File"),
+            self.tr("&Edit"),
+            self.tr("&View"),
+            self.tr("&Search"),
+            self.tr("&Build"),
+            self.tr("&Help")
             ]
         menu_items = {}
         toolbar_actions = {}
@@ -303,7 +303,7 @@ class EDIS(QMainWindow):
 
             files_not_saved = editor_container.files_not_saved()
             dialog = unsaved_files.DialogSaveFiles(
-                files_not_saved, editor_container)
+                files_not_saved, editor_container, self)
             dialog.exec_()
             if dialog.ignorado():
                 event.ignore()

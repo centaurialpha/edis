@@ -152,10 +152,11 @@ class EditorWidget(QWidget):
             result = QMessageBox.No
             if widget.texto_modificado:
                 result = QMessageBox.question(self, self.tr(
-                                              "Archivo no guardado"),
-                                              self.tr("El archivo <b>%s</b> "
-                                              "no se ha guardado<br>"
-                                              "¿Guardar?") % widget.filename,
+                                              "File not saved"),
+                                              self.tr("The file <b>{0}</b> "
+                                              "has unsaved changes. Would you "
+                                              "like to save them?").format(
+                                              widget.filename),
                                               QMessageBox.Yes, QMessageBox.No,
                                               QMessageBox.Cancel)
                 if result == QMessageBox.Cancel:
@@ -189,9 +190,6 @@ class ComboContainer(QWidget):
         # Basado en la GUI de Qt Creator
         # Combo archivos
         self.combo_file = QComboBox()
-        self.combo_file.setToolTip(self.tr(
-                                   "Click izquierdo para cambiar de archivo.\n"
-                                   "Click derecho para ver el menú."))
         self.combo_file.setIconSize(QSize(18, 18))
         self.combo_file.setContextMenuPolicy(Qt.CustomContextMenu)
         box.addWidget(self.combo_file)
@@ -199,7 +197,7 @@ class ComboContainer(QWidget):
         btn_close_editor = QToolButton()
         btn_close_editor.setObjectName("combo-button")
         btn_close_editor.setMaximumHeight(30)
-        btn_close_editor.setToolTip(self.tr("Cerrar archivo"))
+        btn_close_editor.setToolTip(self.tr("Close file"))
         btn_close_editor.setIcon(QIcon(":image/close"))
         box.addWidget(btn_close_editor)
         # Combo símbolos
@@ -242,13 +240,13 @@ class ComboContainer(QWidget):
 
         menu = QMenu()
         editor_container = EDIS.componente("principal")
-        save_as_action = menu.addAction(self.tr("Guardar como"))
-        reload_action = menu.addAction(self.tr("Recargar"))
+        save_as_action = menu.addAction(self.tr("Save as"))
+        reload_action = menu.addAction(self.tr("Reload"))
         menu.addSeparator()
-        compile_action = menu.addAction(self.tr("Compilar"))
-        execute_action = menu.addAction(self.tr("Ejecutar"))
+        compile_action = menu.addAction(self.tr("Build"))
+        execute_action = menu.addAction(self.tr("Run"))
         menu.addSeparator()
-        close_action = menu.addAction(self.tr("Cerrar archivo"))
+        close_action = menu.addAction(self.tr("Close file"))
 
         # Conexiones
         self.connect(save_as_action, SIGNAL("triggered()"),
@@ -291,7 +289,7 @@ class ComboContainer(QWidget):
             self.combo_file.setItemText(index, current_text + text)
         else:
             if not weditor.filename:
-                text = "Nuevo_archivo"
+                text = "untitled"
             else:
                 text = weditor.filename
             self.combo_file.setItemText(index, text)
@@ -300,7 +298,7 @@ class ComboContainer(QWidget):
         """ Agrega símbolos al combo """
 
         self.combo_symbols.clear()
-        self.combo_symbols.addItem(self.tr("<Selecciona un símbolo>"))
+        self.combo_symbols.addItem(self.tr("<Select Symbol>"))
         lines = [1]
         for symbol in symbols:
 

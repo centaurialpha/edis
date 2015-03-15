@@ -22,7 +22,6 @@ class BarraDeEstado(QStatusBar):
     def __init__(self, parent=None):
         super(BarraDeEstado, self).__init__()
         # Widgets
-        #self.cursor_widget = PosicionCursorWidget()
         self.uptime_widget = UpTimeWidget()
         self.lbl_archivo = QLabel(self.tr(""))
         # Contenedor
@@ -42,21 +41,6 @@ class BarraDeEstado(QStatusBar):
         self.lbl_archivo.setText(filename)
 
 
-#class PosicionCursorWidget(QLabel):
-
-    #def __init__(self):
-        #super(PosicionCursorWidget, self).__init__()
-        #self.setObjectName("status_label")
-        #self.setStyleSheet("font: 10pt;")
-        #self.linea_columna = "Línea %s, Columna %s - " \
-            #"<span style='color: #aaaaaa;'>%s líneas</span>"
-        #self.setText(self.tr(self.linea_columna % (0, 0, 0)))
-        #self.hide()
-
-    #def actualizar_cursor(self, linea, columna, lineas):
-        #self.setText(self.linea_columna % (linea, columna, lineas))
-
-
 class UpTimeWidget(QLabel):
 
     def __init__(self):
@@ -66,8 +50,7 @@ class UpTimeWidget(QLabel):
         # Inicio
         self.tiempo = 0
 
-        self.lbl_tiempo = "Tiempo: %smin"
-        self.setText(self.tr(self.lbl_tiempo % (0)))
+        self.setText("Uptime: {0}min".format(self.tiempo))
 
         # Timer
         self.timer = QTimer()
@@ -88,7 +71,7 @@ class UpTimeWidget(QLabel):
             tiempo = hora + minutos
         else:
             tiempo = str(self.tiempo) + "min"
-        self.setText(self.tr("Tiempo: %s" % tiempo))
+        self.setText("Uptime: {0}".format(tiempo))
 
 
 barra_de_estado = BarraDeEstado()

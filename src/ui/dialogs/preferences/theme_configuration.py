@@ -45,7 +45,7 @@ class ThemeConfiguration(QWidget):
         container = QWidget()
         vbox = QVBoxLayout(container)
         vbox.setContentsMargins(0, 0, 0, 0)
-        vbox.addWidget(QLabel(self.tr("Selecciona un Style Sheet:")))
+        vbox.addWidget(QLabel(self.tr("Choose a Style Sheet:")))
         self.list_of_themes = QListWidget()
         self._update_list_of_themes()
         vbox.addWidget(self.list_of_themes)
@@ -54,9 +54,10 @@ class ThemeConfiguration(QWidget):
         container = QWidget()
         vbox = QVBoxLayout(container)
         vbox.setContentsMargins(0, 0, 0, 0)
-        link_doc = QLabel(self.tr("Documentación y ejemplos: <a href='%s'>"
-                                  "<span style='color: lightblue;'>%s</span>"
-                                  "</a>" % (doc_stylesheet, doc_stylesheet)))
+        link_doc = QLabel(self.tr("Documentation and examples: <a href='{0}'>"
+                                  "<span style='color: lightblue;'>{1}</span>"
+                                  "</a>").format(
+                                  doc_stylesheet, doc_stylesheet))
         vbox.addWidget(link_doc)
         self.theme_creator = ThemeEditor()
         vbox.addWidget(self.theme_creator)
@@ -64,13 +65,13 @@ class ThemeConfiguration(QWidget):
         # Box botones
         box_btn = QHBoxLayout()
         box_btn.addStretch(1)
-        self.btn_preview = QPushButton(self.tr("Previsualizar"))
+        self.btn_preview = QPushButton(self.tr("Preview"))
         self.btn_preview.setVisible(False)
         box_btn.addWidget(self.btn_preview)
-        self.btn_save_theme = QPushButton(self.tr("Guardar estilo"))
+        self.btn_save_theme = QPushButton(self.tr("Save style"))
         self.btn_save_theme.setVisible(False)
         box_btn.addWidget(self.btn_save_theme)
-        self.btn_create_new_theme = QPushButton(self.tr("Crea un estilo!"))
+        self.btn_create_new_theme = QPushButton(self.tr("Create a style!"))
         box_btn.addWidget(self.btn_create_new_theme)
         box.addLayout(box_btn)
 
@@ -91,13 +92,13 @@ class ThemeConfiguration(QWidget):
         if self.stacked.currentIndex() == 0:
             self.stacked.setCurrentIndex(1)
             self.theme_creator.setFocus()
-            self.btn_create_new_theme.setText(self.tr("Estilos"))
+            self.btn_create_new_theme.setText(self.tr("Styles"))
             self.btn_preview.setVisible(True)
             self.btn_save_theme.setVisible(True)
 
         else:
             self.stacked.setCurrentIndex(0)
-            self.btn_create_new_theme.setText(self.tr("Crea un estilo!"))
+            self.btn_create_new_theme.setText(self.tr("Create a style!"))
             self.btn_preview.setVisible(False)
             self.btn_save_theme.setVisible(False)
 
@@ -127,7 +128,7 @@ class ThemeConfiguration(QWidget):
     def _save_theme(self):
         """ Guarda el tema creado por el editor """
 
-        name, ok = QInputDialog.getText(self, "", self.tr("Nombre:"))
+        name, ok = QInputDialog.getText(self, "", self.tr("Name:"))
         if ok:
             content = self.theme_creator.text()
             name = "%s.qss" % name

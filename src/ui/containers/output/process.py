@@ -81,12 +81,12 @@ class EjecutarWidget(QWidget):
 
         self.output.clear()
         if codigo_error == 1:
-            error1 = output_compiler.Item(self.tr("El proceso ha sido frenado"))
+            error1 = output_compiler.Item(self.tr("The process terminated"))
             error1.setForeground(Qt.blue)
             self.output.addItem(error1)
         else:
-            error = output_compiler.Item(self.tr("Ha ocurrido un error en la "
-                                         " ejecución. Código de error: %s" %
+            error = output_compiler.Item(self.tr("An error has occurred. "
+                                         "Error code: {0}").format(
                                          codigo_error))
             error.setForeground(Qt.red)
             self.output.addItem(error)
@@ -104,9 +104,8 @@ class EjecutarWidget(QWidget):
 
         self.output.clear()
         item = output_compiler.Item(self.tr(
-                                    "Compilando archivo: %s ( %s )" %
-                                    (directorio.split('/')[-1],
-                                    nombre_archivo)))
+                                    "Building file: {0} ( {1} )".format(
+                                    directorio.split('/')[-1], nombre_archivo)))
         self.output.addItem(item)
 
         parametros_gcc = ['-Wall', '-o']
@@ -126,12 +125,12 @@ class EjecutarWidget(QWidget):
         """
 
         if exitStatus == QProcess.NormalExit and codigoError == 0:
-            item_ok = output_compiler.Item(self.tr("¡COMPILACIÓN EXITOSA!"))
+            item_ok = output_compiler.Item(
+                self.tr("¡COMPILATION FINISHED SUCCESSFULLY!"))
             item_ok.setForeground(QColor("#a6e22e"))
             self.output.addItem(item_ok)
         else:
-            item_error = output_compiler.Item(self.tr(
-                                              "¡LA COMPILACIÓN HA FALLADO!"))
+            item_error = output_compiler.Item(self.tr("¡COMPILATION FAILED!"))
             item_error.setForeground(QColor("#e73e3e"))
             self.output.addItem(item_error)
         count = self.output.count()
@@ -145,8 +144,7 @@ class EjecutarWidget(QWidget):
         """
 
         texto = output_compiler.Item(
-            self.tr("Ha ocurrido un error: quizás el compilador"
-            " no está instalado."))
+            self.tr("An error has occurred: Compiler not found."))
         texto.setForeground(Qt.red)
         self.output.addItem(texto)
 

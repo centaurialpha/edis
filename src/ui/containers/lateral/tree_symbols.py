@@ -47,7 +47,7 @@ class ArbolDeSimbolos(custom_dock.CustomDock):
         self.tree.clear()
 
         if 'globals' in symbols:
-            _globals = Item(self.tree, [self.tr("Globales")])
+            _globals = Item(self.tree, [self.tr("Globals")])
             _globals.clicked = False
             for _glob, nline in sorted(list(symbols['globals'].items())):
                 _global = Item(_globals, [_glob])
@@ -56,7 +56,7 @@ class ArbolDeSimbolos(custom_dock.CustomDock):
             _globals.setExpanded(True)
 
         if 'functions' in symbols:
-            functions = Item(self.tree, [self.tr('Funciones')])
+            functions = Item(self.tree, [self.tr('Functions')])
             functions.clicked = False
             for nline, func in sorted(list(symbols['functions'].items())):
                 function = Item(functions, [func])
@@ -65,7 +65,7 @@ class ArbolDeSimbolos(custom_dock.CustomDock):
             functions.setExpanded(True)
 
         if 'structs' in symbols:
-            structs = Item(self.tree, [self.tr("Estructuras")])
+            structs = Item(self.tree, [self.tr("Structs")])
             structs.clicked = False
             for nline, item in sorted(list(symbols['structs'].items())):
                 struct = Item(structs, [item[0]])

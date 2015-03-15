@@ -175,8 +175,7 @@ class EditorContainer(QWidget):
             weditor = self.get_active_editor()
             if weditor and weditor.filename:
                 working_directory = self._last_folder(weditor.filename)
-            filenames = QFileDialog.getOpenFileNames(self, self.trUtf8(
-                                                     "Abrir archivo"),
+            filenames = QFileDialog.getOpenFileNames(self, self.tr("Open file"),
                                                      working_directory,
                                                      filter_files)
         else:
@@ -198,7 +197,7 @@ class EditorContainer(QWidget):
                     self.emit(SIGNAL("updateSymbols(QString)"), _file)
         except EdisIOException as error:
             ERROR('Error opening file: %s', error)
-            QMessageBox.critical(self, self.tr('Error al abrir el archivo'),
+            QMessageBox.critical(self, self.tr('Could not open file'),
                                     str(error))
         self.editor_widget.not_open = True
 
@@ -287,8 +286,7 @@ class EditorContainer(QWidget):
         if weditor is None:
             weditor = self.get_active_editor()
         working_directory = os.path.expanduser("~")
-        filename = QFileDialog.getSaveFileName(self,
-                                               self.trUtf8("Guardar archivo"),
+        filename = QFileDialog.getSaveFileName(self, self.tr("Save file"),
                                                working_directory)
         if not filename:
             return False
@@ -298,9 +296,9 @@ class EditorContainer(QWidget):
         weditor.guardado()
 
     def save_selected(self, filename):
-        for index in range(self.stack.count()):
-            if self.stack.editor(index).filename == filename:
-                self.save_file(self.stack.widget(index))
+        for index in range(self.editor_widget.count()):
+            if self.editor_widget.widget(index).filename == filename:
+                self.save_file(self.editor_widget.widget(index))
 
     def files_not_saved(self):
         return self.editor_widget.files_not_saved()

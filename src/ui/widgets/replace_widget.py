@@ -46,10 +46,10 @@ class ReplaceWidget(QDialog):
         self._line_replace = QLineEdit()
         replace_layout.addWidget(self._line_replace)
         btn_replace = QToolButton()
-        btn_replace.setText(self.tr("Reemplazar"))
+        btn_replace.setText(self.tr("Replace"))
         replace_layout.addWidget(btn_replace)
         btn_replace_all = QToolButton()
-        btn_replace_all.setText(self.tr("Reemplazar todo"))
+        btn_replace_all.setText(self.tr("Replace all"))
         replace_layout.addWidget(btn_replace_all)
 
         box.addLayout(find_layout)

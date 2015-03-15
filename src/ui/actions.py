@@ -5,217 +5,219 @@
 # Copyright 2014-2015 - Edis Team
 # License: GPLv3 (see http://www.gnu.org/licenses/gpl.html)
 
+from PyQt4.QtGui import QApplication
+translate = QApplication.translate
 
 ACTIONS = ([
     {
-        "name": "Archivo nuevo",
+        "name": translate("EDIS", "New file"),
         "connection": "add_editor",
         "shortcut": "new"},
     {
-        "name": "Abrir archivo",
+        "name": translate("EDIS", "Open file"),
         "connection": "open_file",
         "shortcut": "open"},
     {
-        "name": "Abrir archivo reciente",
+        "name": translate("EDIS", "Open recent file"),
         "icon": "open-recent",
         "menu": True,
         "separator": True},
     {
-        "name": "Cerrar",
+        "name": translate("EDIS", "Close"),
         "connection": "close_file",
         "shortcut": "close"},
     {
-        "name": "Cerrar todo",
+        "name": translate("EDIS", "Close all"),
         "connection": "close_all",
         "separator": True},
     {
-        "name": "Recargar",
+        "name": translate("EDIS", "Reload"),
         "connection": "reload_file",
         "shortcut": "reload",
         "separator": True},
     {
-        "name": "Guardar",
+        "name": translate("EDIS", "Save"),
         "connection": "save_file",
         "shortcut": "save"},
     {
-        "name": "Guardar como...",
+        "name": translate("EDIS", "Save as..."),
         "icon": "save-as",
         "connection": "save_file_as",
         "separator": True},
     {
-        "name": "Propiedades",
+        "name": translate("EDIS", "Properties"),
         "icon": "properties",
         "connection": "file_properties",
         "separator": True},
     {
-        "name": "Salir",
+        "name": translate("EDIS", "Exit"),
         "connection": "edis.close",
         "shortcut": "exit"}],
     # Menú editar
     [{
-        "name": "Deshacer",
+        "name": translate("EDIS", "Undo"),
         "connection": "action_undo",
         "shortcut": "undo"},
     {
-        "name": "Rehacer",
+        "name": translate("EDIS", "Redo"),
         "connection": "action_redo",
         "shortcut": "redo"},
     {
-        "name": "Cortar",
+        "name": translate("EDIS", "Cut"),
         "connection": "action_cut",
         "shortcut": "cut"},
     {
-        "name": "Copiar",
+        "name": translate("EDIS", "Copy"),
         "connection": "action_copy",
         "shortcut": "copy"},
     {
-        "name": "Pegar",
+        "name": translate("EDIS", "Paste"),
         "connection": "action_paste",
         "shortcut": "paste"},
     {
-        "name": "Seleccionar todo",
+        "name": translate("EDIS", "Select all"),
         "connection": "action_select_all",
         "shortcut": "select",
         "separator": True},
     {
-        "name": "Indentar",
+        "name": translate("EDIS", "Indent more"),
         "connection": "action_indent",
         "shortcut": "indent"},
     {
-        "name": "Quitar indentación",
+        "name": translate("EDIS", "Indent less"),
         "connection": "action_unindent",
         "shortcut": "unindent",
         "separator": True},
     {
-        "name": "Duplicar línea",
+        "name": translate("EDIS", "Duplicale line"),
         "connection": "action_duplicate_line",
         "shortcut": "duplicate"},
     {
-        "name": "Eliminar línea",
+        "name": translate("EDIS", "Delete line"),
         "connection": "action_delete_line",
         "shortcut": "delete",
         "separator": True},
     {
-        "name": "A minúsculas",
+        "name": translate("EDIS", "To lower"),
         "connection": "action_to_lowercase"},
     {
-        "name": "A mayúsculas",
+        "name": translate("EDIS", "To upper"),
         "connection": "action_to_uppercase"},
     {
-        "name": "A título",
+        "name": translate("EDIS", "To title"),
         "connection": "action_to_title",
         "separator": True},
     {
-        "name": "Comentar",
+        "name": translate("EDIS", "Comment"),
         "connection": "action_comment",
         "shortcut": "comment"},
     {
-        "name": "Descomentar",
+        "name": translate("EDIS", "Uncomment"),
         "connection": "action_uncomment",
         "shortcut": "uncomment",
         "separator": True},
     {
-        "name": "Mover hacia arriba",
+        "name": translate("EDIS", "Move up"),
         "connection": "action_move_up",
         "shortcut": "up"},
     {
-        "name": "Mover hacia abajo",
+        "name": translate("EDIS", "Move down"),
         "connection": "action_move_down",
         "shortcut": "down",
         "separator": True},
     {
-        "name": "Configuración",
+        "name": translate("EDIS", "Configuration"),
         "connection": "edis.show_settings",
         "shortcut": "preferences"}],
     # Menú ver
     [{
-        "name": "Pantalla completa",
+        "name": translate("EDIS", "Show Fullscreen"),
         "connection": "edis.show_full_screen",
         "shortcut": "fullscreen"},
     {
-        "name": "Ocultar todo",
+        "name": translate("EDIS", "Show/hide all"),
         "connection": "edis.show_hide_all",
         "shortcut": "hide-all"},
     {
-        "name": "Mostrar/ocultar compilador",
+        "name": translate("EDIS", "Show/hide compiler"),
         "connection": "edis.show_hide_output",
         "shortcut": "hide-output"},
     {
-        "name": "Mostrar/ocultar toolbars",
+        "name": translate("EDIS", "Show/hide toolbars"),
         "connection": "edis.show_hide_toolbars",
         "shortcut": "hide-toolbar",
         "separator": True},
     {
-        "name": "Mostrar tabs y espacios en blanco",
+        "name": translate("EDIS", "Show tabs and spaces"),
         "connection": "show_tabs_and_spaces"},
     {
-        "name": "Mostrar guías",
+        "name": translate("EDIS", "Show indentation guides"),
         "connection": "show_indentation_guides",
         "separator": True},
     {
-        "name": "Selector",
+        "name": translate("EDIS", "Show File Selector"),
         "connection": "show_selector",
         "shortcut": "show-selector",
         "separator": True},
     {
-        "name": "Acercar",
+        "name": translate("EDIS", "Zoom In"),
         "connection": "action_zoom_in",
         "shortcut": "zoom-in"},
     {
-        "name": "Alejar",
+        "name": translate("EDIS", "Zoom Out"),
         "connection": "action_zoom_out",
         "shortcut": "zoom-out"},
     {
-        "name": "Tamaño normal",
+        "name": translate("EDIS", "Normal Size"),
         "connection": "action_normal_size",
         "shortcut": "normal-font-size"}],
     # Menú buscar
     [{
-        "name": "Buscar",
+        "name": translate("EDIS", "Find..."),
         "connection": "find",
         "shortcut": "find"},
     {
-        "name": "Buscar y reemplazar",
+        "name": translate("EDIS", "Replace"),
         "connection": "find_and_replace",
         "shortcut": "find-replace",
         "separator": True},
     {
-        "name": "Ir a línea",
+        "name": translate("EDIS", "Go To Line"),
         "connection": "show_go_to_line",
         "shortcut": "go"}],
     # Menú ejecución
     [{
-        "name": "Compilar",
+        "name": translate("EDIS", "Build"),
         "connection": "build_source_code",
         "shortcut": "build"},
     {
-        "name": "Ejecutar",
+        "name": translate("EDIS", "Execute"),
         "connection": "run_binary",
         "shortcut": "run"},
     {
-        "name": "Compilar y ejecutar",
+        "name": translate("EDIS", "Build and Execute"),
         "connection": "build_and_run",
         "shortcut": "build-run"},
     {
-        "name": "Terminar programa",
+        "name": translate("EDIS", "Stop"),
         "connection": "stop_program",
         "shortcut": "stop",
         "separator": True},
     {
-        "name": "Limpiar construcción",
+        "name": translate("EDIS", "Clean Construction"),
         "icon": "clean",
         "connection": "clean_construction"}],
     # Menú acerca de
     [{
-        "name": "Reportar bug!",
+        "name": translate("EDIS", "Report bug!"),
         "icon": "bug",
         "connection": "edis.report_bug",
         "separator": True},
     {
-        "name": "Acerca de Edis",
+        "name": translate("EDIS", "About Edis"),
         "connection": "edis.about_edis"},
     {
-        "name": "Acerca de Qt",
+        "name": translate("EDIS", "About Qt"),
         "icon": "qt",
         "connection": "edis.about_qt"}]
     )

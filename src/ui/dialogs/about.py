@@ -29,16 +29,16 @@ class AcercaDe(QDialog):
 
     def __init__(self, parent):
         QDialog.__init__(self, parent, Qt.WindowMinMaxButtonsHint)
-        self.setWindowTitle(self.tr("Acerca de EDIS"))
+        self.setWindowTitle(self.tr("About Edis"))
         box = QVBoxLayout(self)
         label_logo = QLabel()
         label_logo.setPixmap(QPixmap(":image/edis"))
-        label_titulo = QLabel(self.tr("<h1>EDIS</h1>\n<i>Simple Integrated "
+        label_titulo = QLabel(self.tr("<h1>Edis</h1>\n<i>Simple Integrated "
                               "Development Environment</i>"))
         box_logo = QHBoxLayout()
         self.tabs = QTabWidget()
-        self.tabs.addTab(AboutTab(), self.tr("Acerca de"))
-        self.tabs.addTab(ReportarBugTab(), self.tr("Reportar bug"))
+        self.tabs.addTab(AboutTab(), self.tr("About"))
+        self.tabs.addTab(ReportarBugTab(), self.tr("Report bug"))
         box_logo.addWidget(label_logo)
         box_logo.addWidget(label_titulo)
         box.addLayout(box_logo)
@@ -59,14 +59,14 @@ class AboutTab(QWidget):
         super(AboutTab, self).__init__()
         box = QVBoxLayout(self)
         box.setContentsMargins(0, 0, 0, 0)
-        lbl_version = QLabel(self.tr("Versión: %s") % ui.__version__)
+        lbl_version = QLabel(self.tr("Version: {0}").format(ui.__version__))
         label_descripcion = QLabel(self.tr(
             "a simple cross-platform IDE for C"))
         lbl_link = QLabel("Web: <a href='%s'><span style='color: lightblue;'>"
                           "%s</span></a>" % (ui.__web__, ui.__web__))
-        lbl_sc = QLabel(self.tr("Código fuente: <a href='%s'><span style="
-                        "'color: lightblue;'>%s</span></a>" %
-                                (ui.__codigo_fuente__, ui.__codigo_fuente__)))
+        lbl_sc = QLabel(self.tr("Source code: <a href='{0}'><span style="
+                        "'color: lightblue;'>{1}</span></a>").format(
+                        ui.__codigo_fuente__, ui.__codigo_fuente__))
         box.addWidget(label_descripcion)
         box.addWidget(lbl_version)
         box.addWidget(lbl_link)
@@ -84,12 +84,12 @@ class ReportarBugTab(QWidget):
         super(ReportarBugTab, self).__init__()
         box = QVBoxLayout(self)
         box.setContentsMargins(0, 0, 0, 0)
-        lbl_issues = QLabel(self.tr("Detalla el bug o sugerencia en:"))
+        lbl_issues = QLabel(self.tr("Detailling issue or suggestion:"))
         lbl_link_issues = QLabel("<a href='%s'><span style='color: lightblue;'>"
                                  "%s</span></a>" % (ui.__reportar_bug__,
                                                     ui.__reportar_bug__))
 
-        lbl_email = QLabel(self.tr("O puedes mandar un e-mail a:"))
+        lbl_email = QLabel(self.tr("Or send an email:"))
         lbl_link_email = QLabel("<a href='%s'><span style='color: lightblue;'>"
                                 "%s</span></a>" % (ui.__email_autor__,
                                 ui.__email_autor__))

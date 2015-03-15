@@ -11,7 +11,7 @@ import os
 from PyQt4.QtGui import (
     QIcon,
     QSplashScreen,
-    QPixmap
+    QPixmap,
     )
 
 from PyQt4.QtCore import (
@@ -24,7 +24,7 @@ from src import paths
 from src.helpers.configurations import ESettings
 
 # Se cargan las configuraciones
-ESettings().cargar()
+ESettings.cargar()
 #lint:disable
 from src.ui.widgets import status_bar
 import src.ui.dock_manager
@@ -41,11 +41,19 @@ def run_edis(app):
     """ Se carga la interfáz """
 
     app.setWindowIcon(QIcon(":image/edis"))
+    # Lenguaje
     local = QLocale.system().name()
-    qtranslator = QTranslator()
-    qtranslator.load("qt_" + local, QLibraryInfo.location(
-                    QLibraryInfo.TranslationsPath))
-    app.installTranslator(qtranslator)
+    language = ESettings.get('general/language') + '.qm'
+    if language:
+        edis_translator = QTranslator()
+        edis_translator.load(os.path.join(paths.PATH,
+                             "extras", "i18n", language))
+        app.installTranslator(edis_translator)
+        # Qt translator
+        qtranslator = QTranslator()
+        qtranslator.load("qt_" + local, QLibraryInfo.location(
+                         QLibraryInfo.TranslationsPath))
+        app.installTranslator(qtranslator)
     pixmap = QPixmap(":image/splash")
     # Splash screen
     splash = Splash(pixmap, Qt.WindowStaysOnTopHint)
@@ -54,11 +62,12 @@ def run_edis(app):
     app.processEvents()
 
     # GUI
-    splash.showMessage("Cargado UI...", Qt.AlignBottom | Qt.black)
+    splash.showMessage("Loading UI...", Qt.AlignBottom | Qt.black)
     edis = EDIS()
     edis.show()
 
     # Se aplica el estilo
+    #FIXME: Leer tema personalizado
     with open(os.path.join(paths.PATH,
               "extras", "temas", "edark.qss")) as tema:
         estilo = tema.read()
@@ -66,7 +75,7 @@ def run_edis(app):
     # Archivos de última sesión
     files, recents_files = [], []
     if ESettings.get('general/load-files'):
-        splash.showMessage("Cargando archivos...", Qt.AlignBottom | Qt.black)
+        splash.showMessage("Loading archivos...", Qt.AlignBottom | Qt.black)
         files = ESettings.get('general/files')
         if files is None:
             files = []

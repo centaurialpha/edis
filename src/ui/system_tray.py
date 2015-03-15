@@ -36,7 +36,7 @@ class NotificacionActualizacion(QSystemTrayIcon):
         self.setIcon(QIcon(":image/edis"))
         self.menu = QMenu()
         self.setContextMenu(self.menu)
-        exit_action = self.menu.addAction(self.tr("Salir"))
+        exit_action = self.menu.addAction(self.tr("Close"))
         self.thread = Thread()
 
         # Conexiones
@@ -46,22 +46,22 @@ class NotificacionActualizacion(QSystemTrayIcon):
         self.connect(exit_action, SIGNAL("triggered()"), self.hide)
 
         self.thread.start()
-        self.setToolTip(self.tr("Comprobando actualización..."))
+        self.setToolTip(self.tr("Checking updates..."))
 
     def _show_tray(self, version, link, found):
         """ Muestra el system tray icon """
 
         if found:
             self.menu.clear()
-            download_action = self.menu.addAction(self.tr("Descargar!"))
-            exit_action = self.menu.addAction(self.tr("Cerrar notificaciones"))
+            download_action = self.menu.addAction(self.tr("Download!"))
+            exit_action = self.menu.addAction(self.tr("Close notifications"))
 
             self.connect(download_action, SIGNAL("triggered()"),
                          lambda: webbrowser.open_new(link))
             self.connect(exit_action, SIGNAL("triggered()"), self.hide)
-            self.showMessage(self.tr("Nueva versión disponible!"),
-                             self.tr("Existe una nueva versión de Edis!\n"
-                             "versión: %s." % version),
+            self.showMessage(self.tr("New version available!"),
+                             self.tr("New version of Edis available!\n"
+                             "version: {0}.").format(version),
                              QSystemTrayIcon.Information, 10000)
         else:
             self.hide()

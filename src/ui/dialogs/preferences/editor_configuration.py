@@ -41,9 +41,9 @@ class EditorConfiguration(QWidget):
         contenedor = QVBoxLayout(self)
 
         # Márgen de línea
-        grupo_margen = QGroupBox(self.tr("Márgen:"))
+        grupo_margen = QGroupBox(self.tr("Margin:"))
         box = QGridLayout(grupo_margen)
-        self.check_margin = QCheckBox(self.tr("Mostrar"))
+        self.check_margin = QCheckBox(self.tr("Enable"))
         box.addWidget(self.check_margin, 0, 0)
         self.slider_margin = QSlider(Qt.Horizontal)
         self.slider_margin.setMaximum(180)
@@ -54,9 +54,9 @@ class EditorConfiguration(QWidget):
         box.addWidget(lcd_margen, 0, 2)
 
         # Indentación
-        grupo_indentacion = QGroupBox(self.tr("Indentación:"))
+        grupo_indentacion = QGroupBox(self.tr("Indentation:"))
         box = QGridLayout(grupo_indentacion)
-        self.check_indentation = QCheckBox(self.tr("Activar"))
+        self.check_indentation = QCheckBox(self.tr("Enable"))
         box.addWidget(self.check_indentation, 0, 0)
         self.slider_indentation = QSlider(Qt.Horizontal)
         self.slider_indentation.setMaximum(20)
@@ -65,23 +65,23 @@ class EditorConfiguration(QWidget):
         lcd_indentacion.setStyleSheet("color: #dedede")
         lcd_indentacion.setSegmentStyle(lcd_indentacion.Flat)
         box.addWidget(lcd_indentacion, 0, 2)
-        self.check_guides = QCheckBox(self.tr("Activar guías"))
+        self.check_guides = QCheckBox(self.tr("Enable indentation guides"))
         box.addWidget(self.check_guides, 1, 0)
 
         # Extras
         group_extras = QGroupBox(self.tr("Extras:"))
         box = QGridLayout(group_extras)
-        self.check_style_checker = QCheckBox(self.tr("Analizador de estilo"))
+        self.check_style_checker = QCheckBox(self.tr("Style checker"))
         self.check_style_checker.setChecked(ESettings.get(
                                             'editor/style-checker'))
         self.check_minimap = QCheckBox(self.tr(
-            "Minimapa (es necesario reiniciar)"))
+            "Minimap (need restart the editor)"))
         self.check_minimap.setChecked(ESettings.get('editor/show-minimap'))
         box.addWidget(self.check_minimap, 1, 1)
         box.addWidget(self.check_style_checker, 1, 0)
 
         # Tipo de letra
-        grupo_fuente = QGroupBox(self.tr("Tipo de letra:"))
+        grupo_fuente = QGroupBox(self.tr("Font type:"))
         box = QHBoxLayout(grupo_fuente)
         self.btn_font = QPushButton()
         self.btn_font.setObjectName("custom")
@@ -91,12 +91,12 @@ class EditorConfiguration(QWidget):
         box.addStretch(1)
 
         # Cursor
-        grupo_cursor = QGroupBox(self.tr("Tipo de cursor:"))
+        grupo_cursor = QGroupBox(self.tr("Cursor type:"))
         box = QVBoxLayout(grupo_cursor)
         tipos_cursor = [
-            self.tr('Invisible'),
-            self.tr('Línea'),
-            self.tr('Bloque')
+            self.tr('None'),
+            self.tr('Line'),
+            self.tr('Block')
             ]
         self.radio_cursor = []
         [self.radio_cursor.append(QRadioButton(cursor))

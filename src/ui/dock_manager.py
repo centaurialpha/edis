@@ -27,12 +27,9 @@ class DockManager(QObject):
                      SIGNAL("symbols(PyQt_PyObject, PyQt_PyObject)"),
                      self._update_symbols_widget)
         # Tool buttons
-        self.symbols_button = tool_button.CustomToolButton(
-            self.tr("Símbolos"))
-        self.navigator_button = tool_button.CustomToolButton(
-            self.tr("Navegador"))
-        self.explorer_button = tool_button.CustomToolButton(
-            self.tr("Explorador"))
+        self.symbols_button = tool_button.CustomToolButton("Symbols")
+        self.navigator_button = tool_button.CustomToolButton("Navigator")
+        self.explorer_button = tool_button.CustomToolButton("Explorer")
 
         # Conexiones
         self.connect(self.symbols_button, SIGNAL("clicked(bool)"),

@@ -64,6 +64,7 @@ settings = {
     'editor/size-font': 10,
     'editor/style-checker': True,
     'editor/show-minimap': False,
+    'general/language': "",
     'general/show-start-page': True,
     'general/load-files': True,
     'general/files': [],
@@ -74,7 +75,7 @@ settings = {
 
 class ESettings(object):
 
-    def cargar(self):
+    def cargar():
         """ Carga las configuraciones desde el archivo .ini
 
         QSettings.value(clave, valor, type=tipo)
@@ -121,6 +122,8 @@ class ESettings(object):
             'editor/style-checker', True, type=bool)
         settings['editor/show-minimap'] = qconfig.value(
             'editor/show-minimap', False, type=bool)
+        settings['general/language'] = qconfig.value(
+            'general/language', "", type=str)
         settings['general/files'] = qconfig.value(
             'general/files', [])
         settings['general/recents-files'] = qconfig.value(

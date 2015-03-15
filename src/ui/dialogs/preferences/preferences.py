@@ -39,7 +39,7 @@ class Preferencias(QDialog):
     def __init__(self, parent=None):
         QDialog.__init__(self, parent, Qt.Dialog)
         self.setMinimumWidth(715)
-        self.setWindowTitle(self.tr("Preferencias - EDIS"))
+        self.setWindowTitle(self.tr("Configurations - Edis"))
         self.general = general_configuration.GeneralConfiguration(self)
         self.editor = editor_configuration.EditorConfiguration()
         self.themes = theme_configuration.ThemeConfiguration()
@@ -95,8 +95,8 @@ class Preferencias(QDialog):
         box_buttons.setMargin(10)
         box_buttons.setSpacing(10)
         box_buttons.addStretch(1)
-        self.btn_cancel = QPushButton(self.tr("Cancelar"))
-        self.btn_guardar = QPushButton(self.tr("Guardar"))
+        self.btn_cancel = QPushButton(self.tr("Cancel"))
+        self.btn_guardar = QPushButton(self.tr("Save"))
         box_buttons.addWidget(self.btn_cancel)
         box_buttons.addWidget(self.btn_guardar)
 
