@@ -7,7 +7,7 @@
 
 from PyQt4.QtCore import (
     QObject,
-    SIGNAL,
+    SIGNAL
     )
 
 from src.ui.widgets import tool_button
@@ -135,14 +135,18 @@ class DockManager(QObject):
         """ Oculta todo excepto el editor y la barra de menú """
 
         toolbars = EDIS.componente("toolbars")
+        status_bar = EDIS.componente("barra_de_estado")
         if (self._output_widget.isVisible() or toolbars[0].isVisible() or
-                toolbars[1].isVisible() or self._symbols_widget.isVisible()):
+                toolbars[1].isVisible() or self._symbols_widget.isVisible() or
+                status_bar.isVisible()):
             if self._output_widget:
                 self._output_widget.hide()
             if toolbars[0]:
                 toolbars[0].hide()
             if toolbars[1]:
                 toolbars[1].hide()
+            if status_bar:
+                status_bar.hide()
             if self._symbols_widget:
                 self._symbols_widget.hide()
         else:
@@ -150,6 +154,8 @@ class DockManager(QObject):
                 toolbars[1].show()
             if toolbars[0]:
                 toolbars[0].show()
+            if status_bar:
+                status_bar.show()
             if self._symbols_widget:
                 self._symbols_widget.show()
 

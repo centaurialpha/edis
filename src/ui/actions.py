@@ -135,15 +135,15 @@ ACTIONS = ([
         "connection": "edis.show_full_screen",
         "shortcut": "fullscreen"},
     {
-        "name": translate("EDIS", "Show/hide all"),
+        "name": translate("EDIS", "Show Dev Mode"),
         "connection": "edis.show_hide_all",
         "shortcut": "hide-all"},
     {
-        "name": translate("EDIS", "Show/hide compiler"),
+        "name": translate("EDIS", "Show/hide Compiler"),
         "connection": "edis.show_hide_output",
         "shortcut": "hide-output"},
     {
-        "name": translate("EDIS", "Show/hide toolbars"),
+        "name": translate("EDIS", "Show/hide Toolbars"),
         "connection": "edis.show_hide_toolbars",
         "shortcut": "hide-toolbar",
         "separator": True},
