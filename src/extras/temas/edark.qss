@@ -289,7 +289,7 @@ QComboBox {
     background:qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
                                stop: 0 #757575, stop: 1 #212121);
     color: #FFFFFF;
-    padding: 0px 0px 3px 10px;
+    padding: 0px 0px 2px 20px;
     min-width: 6em;
 }
 
@@ -318,6 +318,24 @@ QComboBox QAbstractItemView {
 }
 
 QSpinBox {
-    background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
-                                      stop: 0 #757575, stop: 1.0 #303030);
+    background: #DEDEDE;
+    border-radius: 3px;
+    padding: 1px 4px 3px 2px;
+}
+
+QSpinBox::up-button {
+    subcontrol-origin: border;
+    subcontrol-position: top right;
+    width: 16px;
+    border-image: url(:/image/arrow-up) 1;
+}
+
+QSpinBox::down-button {
+    border-image: url(:/image/arrow-down)
+}
+
+QSpinBox::up-button:hover,
+QSpinBox::down-button:hover {
+    background: #999;
+    border-radius: 2px;
 }

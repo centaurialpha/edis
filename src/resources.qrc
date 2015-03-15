@@ -46,5 +46,7 @@
         <file alias="forward">images/draw-arrow-forward.png</file>
         <file alias="theme">images/preferences-desktop-wallpaper.png</file>
         <file alias="bug">images/bug.png</file>
+        <file alias="arrow-up">images/arrow-up.png</file>
+        <file alias="arrow-down">images/arrow-down.png</file>
     </qresource>
 </RCC>
