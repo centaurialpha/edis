@@ -68,7 +68,7 @@ class ThreadBusqueda(QThread):
 class Editor(base.Base):
 
     # Estilo
-    _tema = recursos.TEMA
+    _THEME = recursos.TEMA
 
     # Señales
     _modificado = pyqtSignal(bool, name='archivo_modificado')
@@ -120,12 +120,16 @@ class Editor(base.Base):
         fuente = ESettings.get('editor/font')
         tam_fuente = ESettings.get('editor/size-font')
         self.cargar_fuente(fuente, tam_fuente)
-        self.setMarginsBackgroundColor(QColor(self._tema['sidebar-fondo']))
-        self.setMarginsForegroundColor(QColor(self._tema['sidebar-fore']))
-
-        # Línea actual, cursor
-        self.caret_line(self._tema['caret-background'],
-                        self._tema['caret-line'], self._tema['caret-opacidad'])
+        self.setMarginsBackgroundColor(QColor(self._THEME['sidebar-fondo']))
+        self.setMarginsForegroundColor(QColor(self._THEME['sidebar-fore']))
+        # Línea actual
+        #FIXME: Configuración
+        self.send("sci_setcaretlinevisible",
+                  ESettings.get('editor/show-caret-line'))
+        self.send("sci_setcaretlineback", QColor(self._THEME['CaretLineBack']))
+        self.send("sci_setcaretfore", QColor(self._THEME['CaretLineFore']))
+        self.send("sci_setcaretlinebackalpha", self._THEME['CaretLineAlpha'])
+        # Cursor
         caret_period = ESettings.get('editor/cursor-period')
         self.send("sci_setcaretperiod", caret_period)
         # Márgen
@@ -134,10 +138,10 @@ class Editor(base.Base):
 
         # Brace matching
         self.match_braces(QsciScintilla.SloppyBraceMatch)
-        self.match_braces_color(self._tema['brace-background'],
-                                self._tema['brace-foreground'])
-        self.unmatch_braces_color(self._tema['brace-unbackground'],
-                                  self._tema['brace-unforeground'])
+        self.match_braces_color(self._THEME['brace-background'],
+                                self._THEME['brace-foreground'])
+        self.unmatch_braces_color(self._THEME['brace-unbackground'],
+                                  self._THEME['brace-unforeground'])
 
     def cargar_fuente(self, fuente, tam):
         self._fuente = QFont(fuente, tam)
@@ -204,7 +208,7 @@ class Editor(base.Base):
             self.setEdgeMode(QsciScintilla.EdgeLine)
             ancho = ESettings.get('editor/width-margin')
             self.setEdgeColumn(ancho)
-            self.setEdgeColor(QColor(self._tema['margen']))
+            self.setEdgeColor(QColor(self._THEME['margen']))
         else:
             self.setEdgeMode(QsciScintilla.EdgeNone)
 

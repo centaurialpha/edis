@@ -33,7 +33,6 @@ class Base(QsciScintilla):
     def __init__(self):
         QsciScintilla.__init__(self)
         # Configuración de Qscintilla
-        self.setCaretLineVisible(ESettings.get('editor/show-margin'))
         self.setIndentationsUseTabs(False)
         self.setAutoIndent(ESettings.get('editor/indent'))
         self.setBackspaceUnindents(True)
@@ -112,12 +111,6 @@ class Base(QsciScintilla):
     def unmatch_braces_color(self, fondo, fore):
         self.setUnmatchedBraceBackgroundColor(QColor(fondo))
         self.setUnmatchedBraceForegroundColor(QColor(fore))
-
-    def caret_line(self, fondo, fore, opacidad):
-        color = QColor(fondo)
-        color.setAlpha(opacidad)
-        self.setCaretForegroundColor(QColor(fore))
-        self.setCaretLineBackgroundColor(QColor(color))
 
     def send(self, *args):
         """

@@ -52,6 +52,7 @@ settings = {
     'ventana/show-maximized': True,
     'ventana/store-size': True,
     'general/confirm-exit': True,
+    'editor/show-caret-line': True,
     'editor/show-margin': True,
     'editor/width-margin': 79,
     'editor/cursor': 2,  # 0: invisilbe; 1: línea; 2: bloque
@@ -101,6 +102,8 @@ class ESettings(object):
             'ventana/show-maximized', True, type=bool)
         settings['general/confirm-exit'] = qconfig.value(
             'general/confirm-exit', True, type=bool)
+        settings['editor/show-caret-line'] = qconfig.value(
+            'editor/show-caret-line', True, type=bool)
         settings['editor/show-margin'] = qconfig.value(
             'editor/show-margin', True, type=bool)
         settings['editor/width-margin'] = qconfig.value(
