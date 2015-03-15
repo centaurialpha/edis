@@ -35,6 +35,9 @@ class GeneralConfiguration(QWidget):
         # Inicio
         group_on_start = QGroupBox(self.tr("On start:"))
         box = QVBoxLayout(group_on_start)
+        self.check_splash = QCheckBox(self.tr("Show Splash Screen"))
+        self.check_splash.setChecked(ESettings.get('general/show-splash'))
+        box.addWidget(self.check_splash)
         self.check_on_start = QCheckBox(self.tr("Show Start Page"))
         self.check_on_start.setChecked(ESettings.get('general/show-start-page'))
         box.addWidget(self.check_on_start)
@@ -107,6 +110,7 @@ class GeneralConfiguration(QWidget):
     def guardar(self):
         """ Guarda las configuraciones Generales. """
 
+        ESettings.set('general/show-splash', self.check_splash.isChecked())
         ESettings.set('general/show-start-page',
                       self.check_on_start.isChecked())
         ESettings.set('ventana/store-size',

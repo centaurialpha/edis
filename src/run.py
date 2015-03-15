@@ -56,13 +56,16 @@ def run_edis(app):
         app.installTranslator(qtranslator)
     pixmap = QPixmap(":image/splash")
     # Splash screen
-    splash = Splash(pixmap, Qt.WindowStaysOnTopHint)
-    splash.setMask(pixmap.mask())
-    splash.show()
-    app.processEvents()
-
+    show_splash = False
+    if ESettings.get('general/show-splash'):
+        splash = Splash(pixmap, Qt.WindowStaysOnTopHint)
+        splash.setMask(pixmap.mask())
+        splash.show()
+        app.processEvents()
+        show_splash = True
     # GUI
-    splash.showMessage("Loading UI...", Qt.AlignBottom | Qt.black)
+    if show_splash:
+        splash.showMessage("Loading UI...", Qt.AlignBottom | Qt.black)
     edis = Edis()
     edis.show()
 
@@ -75,7 +78,8 @@ def run_edis(app):
     # Archivos de última sesión
     files, recents_files = [], []
     if ESettings.get('general/load-files'):
-        splash.showMessage("Loading files...", Qt.AlignBottom | Qt.black)
+        if show_splash:
+            splash.showMessage("Loading files...", Qt.AlignBottom | Qt.black)
         files = ESettings.get('general/files')
         if files is None:
             files = []
@@ -84,7 +88,8 @@ def run_edis(app):
         if recents_files is None:
             recents_files = []
     edis.cargar_archivos(files, recents_files)
-    splash.finish(edis)
+    if show_splash:
+        splash.finish(edis)
     sys.exit(app.exec_())
 
 

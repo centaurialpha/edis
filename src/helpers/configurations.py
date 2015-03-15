@@ -65,6 +65,7 @@ settings = {
     'editor/style-checker': True,
     'editor/show-minimap': False,
     'general/language': "",
+    'general/show-splash': True,
     'general/show-start-page': True,
     'general/load-files': True,
     'general/files': [],
@@ -86,6 +87,8 @@ class ESettings(object):
             'ventana/size', type='QSize')
         settings['ventana/position'] = qconfig.value(
             'ventana/position', type='QPoint')
+        settings['general/show-splash'] = qconfig.value(
+            'general/show-splash', True, type=bool)
         settings['general/show-start-page'] = qconfig.value(
             'general/show-start-page', True, type=bool)
         settings['general/load-files'] = qconfig.value(

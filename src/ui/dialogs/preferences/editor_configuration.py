@@ -165,7 +165,7 @@ class EditorConfiguration(QWidget):
             if radio.isChecked():
                 tipo = ntipo
         ESettings.set('editor/cursor', tipo)
-        principal = Edis.get_componente("principal")
+        principal = Edis.get_component("principal")
         weditor = principal.get_active_editor()
         if weditor is not None:
             weditor.cargar_fuente(fuente, int(fuente_tam))
