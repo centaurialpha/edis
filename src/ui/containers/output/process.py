@@ -82,7 +82,7 @@ class EjecutarWidget(QWidget):
         self.output.clear()
         if codigo_error == 1:
             error1 = output_compiler.Item(self.tr("The process terminated"))
-            error1.setForeground(Qt.blue)
+            error1.setForeground(Qt.red)
             self.output.addItem(error1)
         else:
             error = output_compiler.Item(self.tr("An error has occurred. "
