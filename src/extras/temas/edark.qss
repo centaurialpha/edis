@@ -3,7 +3,7 @@ QWidget {
 }
 
 QMainWindow {
-    background-color: #333333;
+    background-color: #232323;
 }
 
 QMainWindow::separator {
@@ -18,20 +18,20 @@ QMainWindow::separator:hover {
 
 QToolBar#toolbar {
     background: qlineargradient(x1: 1, y1: 0, x2: 0, y2: 0,
-                                       stop: 0 #474747, stop: 1 #333333);
+                                       stop: 0 #474747, stop: 1 #232323);
     spacing: 6px;
     padding: 6px;
 }
 
 QToolBar#dock_toolbar {
     background: qlineargradient(x1: 0, y1: 0, x2: 1, y2: 0,
-                                       stop: 0 #474747, stop: 1 #333333);
+                                       stop: 0 #474747, stop: 1 #212121);
     spacing: 6px;
     padding: 6px;
 }
 
 QToolBar#preferencias {
-    background: #404040;
+    background: #303030;
     spacing: 7px;
     padding: 7px;
 }
@@ -46,7 +46,7 @@ QToolButton:hover {
 }
 
 QToolButton#dock_button:checked {
-    background: #333333;
+    background: #212121;
     border-radius: 2px;
 }
 
@@ -58,12 +58,12 @@ QToolButton#dock_button:hover {
 QToolButton#combo-button {
     border-style: solid;
     background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
-                                       stop: 0 #666666, stop: 1 #333333);
+                                       stop: 0 #757575, stop: 1 #212121);
 }
 
 QToolButton#combo-button:hover {
     background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
-                                      stop: 0 #737373, stop: 1.0 #404040);
+                                      stop: 0 #757575, stop: 1.0 #303030);
 }
 
 QScrollBar:vertical {
@@ -99,7 +99,11 @@ QScrollBar::sub-page:horizontal{
 
 QMenuBar,
 QStatusBar {
-    background-color: #333333;
+    background-color: #212121;
+}
+
+QStatusBar {
+    border-top: 1px solid #303030;
 }
 
 QMenuBar::item {
@@ -120,7 +124,7 @@ QMenuBar::item:pressed {
 }
 
 QMenu {
-    background-color: #333333;
+    background-color: #212121;
     color: #FFFFFF;
     border: 1px solid gray;
     border-radius: 2px;
@@ -132,7 +136,7 @@ QMenu::item {
 }
 
 QMenu::item:selected {
-    background: #667b99;
+    background: #4d526e;
 }
 
 QMenu::separator {
@@ -166,7 +170,7 @@ QListWidget::item:selected:!active {
 }
 
 QDialog {
-    background-color: #333333;
+    background-color: #212121;
 }
 
 QLabel#status_label {
@@ -176,13 +180,14 @@ QLabel#status_label {
 
 QLabel#combo-label {
     background:qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
-                               stop: 0 #666666, stop: 1 #333333);
+                               stop: 0 #757575, stop: 1 #212121);
 
     padding: 0px 0px 5px;
 }
 
 QPushButton {
     background: #424242;
+    border: 1px solid #505050;
     border-radius: 3px;
     min-width: 120px;
     min-height: 30px;
@@ -194,7 +199,8 @@ QPushButton#custom {
 }
 
 QPushButton:hover {
-    background: #525252;
+    border: 1px solid #606060;
+    background: #4d525a;
 }
 
 QPushButton:pressed {
@@ -230,7 +236,7 @@ QGroupBox::title {
 }
 
 QTabBar {
-    background-color: #333333;
+    background-color: #212121;
 }
 
 
@@ -253,7 +259,7 @@ QTabBar::tab:top:selected {
 QTabWidget::pane {
     border-style: solid;
     border-width: 1px;
-    background-color: #333333;
+    background-color: #212121;
     position: absolute;
 }
 
@@ -277,7 +283,7 @@ QSlider::handle:horizontal:hover {
 
 QComboBox {
     background:qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
-                               stop: 0 #666666, stop: 1 #333333);
+                               stop: 0 #757575, stop: 1 #212121);
     color: #FFFFFF;
     padding: 0px 0px 3px 10px;
     min-width: 6em;
@@ -288,7 +294,7 @@ QComboBox::drop-down {
 }
 
 QComboBox:item:selected {
-    background: #667b99;
+    background: #4d526e;
 }
 
 QComboBox:on {
@@ -297,12 +303,12 @@ QComboBox:on {
 
 QComboBox:hover {
     background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
-                                      stop: 0 #737373, stop: 1.0 #404040);
+                                      stop: 0 #757575, stop: 1.0 #303030);
 }
 
 QComboBox QAbstractItemView {
      border: 1px solid darkgray;
-     background-color: #404040;
+     background-color: #303030;
      margin-top: 0px;
      padding-bottom: 0px;
 }

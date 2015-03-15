@@ -4,8 +4,8 @@ Rectangle {
     id: root
 
     gradient: Gradient {
-         GradientStop { position: 0.0; color: "#333333" }
-         GradientStop { position: 1.0; color: "#666666" }
+         GradientStop { position: 0.0; color: "#232323" }
+         GradientStop { position: 1.0; color: "#505050" }
      }
 
     Image { source: "../images/sources/logo.png"; anchors.horizontalCenter: root.horizontalCenter }
