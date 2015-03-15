@@ -126,6 +126,8 @@ class Editor(base.Base):
         # Línea actual, cursor
         self.caret_line(self._tema['caret-background'],
                         self._tema['caret-line'], self._tema['caret-opacidad'])
+        caret_period = ESettings.get('editor/cursor-period')
+        self.send("sci_setcaretperiod", caret_period)
         # Márgen
         if ESettings.get('editor/show-margin'):
             self.actualizar_margen()
@@ -183,6 +185,7 @@ class Editor(base.Base):
         self.send("sci_setcaretstyle", ESettings.get('editor/cursor'))
         self.setCaretWidth(2)
         self.setAutoIndent(ESettings.get('editor/indent'))
+        self.send("sci_setcaretperiod", ESettings.get('editor/cursor-period'))
 
     @property
     def altura_lineas(self):

@@ -19,12 +19,16 @@ from PyQt4.QtGui import (
     QFontDialog,
     QSpacerItem,
     QSizePolicy,
-    QRadioButton,
-    QFont
+    QFont,
+    QLabel,
+    QComboBox
     )
 
 # Módulos QtCore
-from PyQt4.QtCore import Qt
+from PyQt4.QtCore import (
+    Qt,
+    SIGNAL
+    )
 
 # Módulos EDIS
 #from src import recursos
@@ -91,21 +95,25 @@ class EditorConfiguration(QWidget):
         box.addStretch(1)
 
         # Cursor
-        grupo_cursor = QGroupBox(self.tr("Cursor type:"))
-        box = QVBoxLayout(grupo_cursor)
-        tipos_cursor = [
+        grupo_cursor = QGroupBox(self.tr("Caret:"))
+        box = QGridLayout(grupo_cursor)
+        box.addWidget(QLabel(self.tr("Type:")), 0, 0)
+        self.combo_caret = QComboBox()
+        caret_types = [
             self.tr('None'),
             self.tr('Line'),
             self.tr('Block')
             ]
-        self.radio_cursor = []
-        [self.radio_cursor.append(QRadioButton(cursor))
-            for cursor in tipos_cursor]
-        for ntipo, radiob in enumerate(self.radio_cursor):
-            box.addWidget(radiob)
-            if ntipo == ESettings.get('editor/cursor'):
-                radiob.setChecked(True)
-
+        self.combo_caret.addItems(caret_types)
+        self.combo_caret.setCurrentIndex(ESettings.get('editor/cursor'))
+        box.addWidget(self.combo_caret, 0, 1)
+        self.cursor_slider = QSlider(Qt.Horizontal)
+        self.cursor_slider.setMaximum(500)
+        box.addWidget(QLabel(self.tr("Period (ms):")), 1, 0)
+        box.addWidget(self.cursor_slider, 1, 1)
+        lcd_caret = QLCDNumber()
+        lcd_caret.setSegmentStyle(QLCDNumber.Flat)
+        box.addWidget(lcd_caret, 1, 2)
         contenedor.addWidget(grupo_margen)
         contenedor.addWidget(grupo_indentacion)
         contenedor.addWidget(group_extras)
@@ -118,6 +126,8 @@ class EditorConfiguration(QWidget):
         self.slider_margin.valueChanged[int].connect(lcd_margen.display)
         self.slider_indentation.valueChanged[int].connect(
             lcd_indentacion.display)
+        self.connect(self.cursor_slider, SIGNAL("valueChanged(int)"),
+                     lcd_caret.display)
         self.btn_font.clicked.connect(self._seleccionar_fuente)
 
         # Configuraciones
@@ -129,6 +139,7 @@ class EditorConfiguration(QWidget):
         self.slider_indentation.setValue(ESettings.get(
                                          'editor/width-indent'))
         self.check_guides.setChecked(ESettings.get('editor/show-guides'))
+        self.cursor_slider.setValue(ESettings.get('editor/cursor-period'))
 
     def _cargar_fuente(self):
         fuente = ESettings.get('editor/font')
@@ -161,10 +172,8 @@ class EditorConfiguration(QWidget):
         ESettings.set('editor/style-checker', checker_value)
         ESettings.set('editor/indent', self.check_indentation.isChecked())
         ESettings.set('editor/width-indent', self.slider_indentation.value())
-        for ntipo, radio in enumerate(self.radio_cursor):
-            if radio.isChecked():
-                tipo = ntipo
-        ESettings.set('editor/cursor', tipo)
+        ESettings.set('editor/cursor', self.combo_caret.currentIndex())
+        ESettings.set('editor/cursor-period', self.cursor_slider.value())
         principal = Edis.get_component("principal")
         weditor = principal.get_active_editor()
         if weditor is not None:
