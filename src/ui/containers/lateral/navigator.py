@@ -7,7 +7,7 @@
 
 from PyQt4.QtGui import QListWidget
 
-from src.ui.main import EDIS
+from src.ui.main import Edis
 from src.ui.containers.lateral import custom_dock
 
 
@@ -20,7 +20,7 @@ class Navegador(custom_dock.CustomDock):
 
         self.navegador.itemClicked.connect(self._cambiar_editor)
 
-        EDIS.cargar_lateral("navigator", self)
+        Edis.load_lateral("navigator", self)
 
     def add_item(self, archivo):
         self.navegador.addItem(archivo)
@@ -33,7 +33,7 @@ class Navegador(custom_dock.CustomDock):
 
     def _cambiar_editor(self):
         indice = self.navegador.row(self.navegador.currentItem())
-        principal = EDIS.componente("principal")
+        principal = Edis.get_component("principal")
         principal.change_widget(indice)
 
 

@@ -22,7 +22,7 @@ from PyQt4.QtCore import (
 from PyQt4.QtDeclarative import QDeclarativeView
 
 from src import paths
-from src.ui.main import EDIS
+from src.ui.main import Edis
 
 
 class Selector(QDialog):
@@ -56,14 +56,14 @@ class Selector(QDialog):
     def _open_file(self, index):
         """ Cambia el índice del stacked """
 
-        editor_container = EDIS.componente("principal")
+        editor_container = Edis.get_component("principal")
         editor_container.change_widget(index)
         self.root.close_widget()
 
     def _load(self):
         """ Carga los archivos abiertos """
 
-        editor_container = EDIS.componente("principal")
+        editor_container = Edis.get_component("principal")
         files_opened = editor_container.opened_files()
         for _file in files_opened:
             _file = os.path.basename(_file[0])

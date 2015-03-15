@@ -36,7 +36,7 @@ from src.ui.dialogs import (
     )
 
 
-class EDIS(QMainWindow):
+class Edis(QMainWindow):
     """
     Clase principal:
         Esta clase es la encargada de instalar todos los servicios del IDE,
@@ -46,7 +46,7 @@ class EDIS(QMainWindow):
 
     """
 
-    __COMPONENTES = {}
+    __COMPONENTS = {}
     __LATERAL = {}
 
     def __init__(self):
@@ -81,14 +81,14 @@ class EDIS(QMainWindow):
         self.dock_toolbar.setMovable(False)
         self.addToolBar(Qt.LeftToolBarArea, self.dock_toolbar)
         toolbars = [self.toolbar, self.dock_toolbar]
-        EDIS.cargar_componente("toolbars", toolbars)
+        Edis.load_component("toolbars", toolbars)
         # Animated property
         self.setDockOptions(QMainWindow.AnimatedDocks)
         # Menú
         menu_bar = self.menuBar()
         self.setup_menu(menu_bar)
         # Barra de estado
-        self.barra_de_estado = EDIS.componente("barra_de_estado")
+        self.barra_de_estado = Edis.get_component("barra_de_estado")
         self.setStatusBar(self.barra_de_estado)
         # Widget central
         central = self._load_ui(window)
@@ -96,7 +96,7 @@ class EDIS(QMainWindow):
         window.setWindowFlags(Qt.Widget)
         self.setCentralWidget(window)
 
-        EDIS.cargar_componente("edis", self)
+        Edis.load_component("edis", self)
 
         # Comprobar nueva versión
         if ESettings.get('general/check-updates'):
@@ -104,25 +104,25 @@ class EDIS(QMainWindow):
             self.noti.show()
 
     @classmethod
-    def cargar_componente(cls, name, instance):
-        """ Guarda un componente """
+    def load_component(cls, name, instance):
+        """ Carga la instancia de un componente """
 
-        cls.__COMPONENTES[name] = instance
+        cls.__COMPONENTS[name] = instance
 
     @classmethod
-    def componente(cls, name):
+    def get_component(cls, name):
         """ Devuelve la instancia de un componente """
 
-        return cls.__COMPONENTES.get(name, None)
+        return cls.__COMPONENTS.get(name, None)
 
     @classmethod
-    def cargar_lateral(cls, name, instance):
+    def load_lateral(cls, name, instance):
         """ Carga un componente lateral """
 
         cls.__LATERAL[name] = instance
 
     @classmethod
-    def lateral(cls, name):
+    def get_lateral(cls, name):
         """ Devuelve la instancia de un componente lateral """
 
         return cls.__LATERAL.get(name, None)
@@ -144,7 +144,7 @@ class EDIS(QMainWindow):
             ]
         menu_items = {}
         toolbar_actions = {}
-        editor_container = EDIS.componente("principal")
+        editor_container = Edis.get_component("principal")
         shortcuts = recursos.SHORTCUTS
         toolbar_items = configurations.TOOLBAR_ITEMS
         for i, m in enumerate(menubar_items):
@@ -167,7 +167,7 @@ class EDIS(QMainWindow):
                 if subm:
                     # Archivos recientes
                     submenu = menu_name.addMenu(name)
-                    EDIS.cargar_componente("menu_recent_file", submenu)
+                    Edis.load_component("menu_recent_file", submenu)
                     continue
                 qaction = menu_name.addAction(name)
                 #FIXME: No depender de shortcut
@@ -197,16 +197,16 @@ class EDIS(QMainWindow):
         laterales y la salida del compilador.
         """
 
-        editor_container = EDIS.componente("principal")
-        dock = EDIS.componente("dock")
+        editor_container = Edis.get_component("principal")
+        dock = Edis.get_component("dock")
         dock.load_dock_toolbar(self.dock_toolbar)
         names_instances = ["symbols", "navigator", "explorer"]
         for name in names_instances:
             method = getattr(dock, "load_%s_widget" % name)
-            widget = EDIS.lateral(name)
+            widget = Edis.get_lateral(name)
             method(widget)
             self.addDockWidget(Qt.LeftDockWidgetArea, widget)
-        output_widget = EDIS.componente("output")
+        output_widget = Edis.get_component("output")
         dock.load_output_widget(output_widget)
         window.addDockWidget(Qt.BottomDockWidgetArea, output_widget)
         if ESettings.get('general/show-start-page'):
@@ -256,7 +256,7 @@ class EDIS(QMainWindow):
     def show_hide_all(self):
         """ Oculta todo excepto la barra de menú y el editor """
 
-        dock = EDIS.componente("dock")
+        dock = Edis.get_component("dock")
         dock.show_hide_all()
 
     def show_full_screen(self):
@@ -270,7 +270,7 @@ class EDIS(QMainWindow):
     def show_hide_output(self):
         """ Cambia la visibilidad de la salida del compilador """
 
-        dock = EDIS.componente("dock")
+        dock = Edis.get_component("dock")
         dock.output_visibility()
 
     def cargar_archivos(self, files, recents_files):
@@ -278,7 +278,7 @@ class EDIS(QMainWindow):
         de archivos recientes.
         """
 
-        editor_container = EDIS.componente("principal")
+        editor_container = Edis.get_component("principal")
         for _file in files:
             filename, cursor_position = _file
             editor_container.open_file(filename, cursor_position)
@@ -300,7 +300,7 @@ class EDIS(QMainWindow):
 
         """
 
-        editor_container = EDIS.componente("principal")
+        editor_container = Edis.get_component("principal")
         if editor_container.check_files_not_saved() and \
                 ESettings.get('general/confirm-exit'):
 

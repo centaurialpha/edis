@@ -30,7 +30,7 @@ from PyQt4.QtCore import Qt
 #from src import recursos
 from src.helpers.configurations import ESettings
 from src.helpers import configurations
-from src.ui.main import EDIS
+from src.ui.main import Edis
 
 
 class EditorConfiguration(QWidget):
@@ -165,7 +165,7 @@ class EditorConfiguration(QWidget):
             if radio.isChecked():
                 tipo = ntipo
         ESettings.set('editor/cursor', tipo)
-        principal = EDIS.componente("principal")
+        principal = Edis.get_componente("principal")
         weditor = principal.get_active_editor()
         if weditor is not None:
             weditor.cargar_fuente(fuente, int(fuente_tam))

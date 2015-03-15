@@ -15,7 +15,7 @@ from PyQt4.QtGui import (
 
 from PyQt4.QtCore import pyqtSignal
 
-from src.ui.main import EDIS
+from src.ui.main import Edis
 from src.ui.containers.lateral import custom_dock
 
 
@@ -40,7 +40,7 @@ class ArbolDeSimbolos(custom_dock.CustomDock):
         self.tree.itemClicked[QTreeWidgetItem, int].connect(self.go_to_line)
         self.tree.itemActivated[QTreeWidgetItem, int].connect(self.go_to_line)
 
-        EDIS.cargar_lateral("symbols", self)
+        Edis.load_lateral("symbols", self)
 
     def update_symbols(self, symbols):
         # Limpiar

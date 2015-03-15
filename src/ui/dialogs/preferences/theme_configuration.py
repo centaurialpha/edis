@@ -18,7 +18,7 @@ from PyQt4.QtGui import (
     QStackedWidget,
     QColor,
     QLabel,
-    QInputDialog
+    QInputDialog,
     )
 from PyQt4.QtCore import SIGNAL
 
@@ -66,7 +66,7 @@ class ThemeConfiguration(QWidget):
         box_btn = QHBoxLayout()
         box_btn.addStretch(1)
         self.btn_preview = QPushButton(self.tr("Preview"))
-        self.btn_preview.setVisible(False)
+        #self.btn_preview.setVisible(False)
         box_btn.addWidget(self.btn_preview)
         self.btn_save_theme = QPushButton(self.tr("Save style"))
         self.btn_save_theme.setVisible(False)
@@ -78,9 +78,6 @@ class ThemeConfiguration(QWidget):
         # Conexiones
         self.connect(link_doc, SIGNAL("linkActivated(QString)"),
                      lambda link: webbrowser.open_new(link))
-        self.connect(self.list_of_themes,
-                     SIGNAL("itemClicked(QListWidgetItem*)"),
-                     self._preview_theme)
         self.connect(self.btn_create_new_theme, SIGNAL("clicked()"),
                      self._change_widget)
         self.connect(self.btn_preview, SIGNAL("clicked()"),
@@ -112,17 +109,22 @@ class ThemeConfiguration(QWidget):
                 themes.append(theme.split('.')[0].title())
         self.list_of_themes.addItems(themes)
 
-    def _preview_theme(self, item):
+    def _preview_theme(self):
         """ Previsualización del estilo """
 
-        text = item.text()
-        theme = '%s.qss' % text.lower()
-        if text == 'Default' or text == 'Edark':
-            path_theme = os.path.join(paths.PATH, "extras", "temas", theme)
+        if not self.theme_creator.isVisible():
+            # Stack 1
+            text = self.list_of_themes.currentItem().text()
+            theme = '%s.qss' % text.lower()
+            if text == 'Default' or text == 'Edark':
+                path_theme = os.path.join(paths.PATH, "extras", "temas", theme)
+            else:
+                path_theme = os.path.join(paths.EDIS, theme)
+            with open(path_theme, 'r') as t:
+                style = t.read()
         else:
-            path_theme = os.path.join(paths.EDIS, theme)
-        with open(path_theme, 'r') as t:
-            style = t.read()
+            # Stack 2
+            style = self.theme_creator.text()
         QApplication.instance().setStyleSheet(style)
 
     def _save_theme(self):

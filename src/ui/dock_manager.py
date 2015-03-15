@@ -11,7 +11,7 @@ from PyQt4.QtCore import (
     )
 
 from src.ui.widgets import tool_button
-from src.ui.main import EDIS
+from src.ui.main import Edis
 from src.ui import thread_parse
 
 
@@ -39,7 +39,7 @@ class DockManager(QObject):
         self.connect(self.explorer_button, SIGNAL("clicked(bool)"),
                      self._explorer_visibility)
 
-        EDIS.cargar_componente("dock", self)
+        Edis.load_component("dock", self)
 
     def load_dock_toolbar(self, toolbar):
         """ Carga la barra de herramientas del Dock Lateral"""
@@ -53,7 +53,7 @@ class DockManager(QObject):
 
         self._output_widget = output_widget
         self._output_widget.hide()
-        editor_container = EDIS.componente("principal")
+        editor_container = Edis.get_component("principal")
         self.connect(output_widget, SIGNAL("goToLine(int)"),
                      editor_container.go_to_line)
 
@@ -62,7 +62,7 @@ class DockManager(QObject):
 
         self._symbols_widget = symbols_widget
         self._symbols_widget.hide()
-        editor_container = EDIS.componente("principal")
+        editor_container = Edis.get_component("principal")
         self.connect(self._symbols_widget, SIGNAL("goToLine(int)"),
                      editor_container.go_to_line)
         self.connect(editor_container, SIGNAL("updateSymbols(QString)"),
@@ -77,7 +77,7 @@ class DockManager(QObject):
 
         self._navigator_widget = navigator_widget
         navigator_widget.hide()
-        editor_container = EDIS.componente("principal")
+        editor_container = Edis.get_component("principal")
         self.connect(editor_container, SIGNAL("openedFile(QString)"),
                      navigator_widget.add_item)
         self.connect(editor_container, SIGNAL("closedFile(int)"),
@@ -134,8 +134,8 @@ class DockManager(QObject):
     def show_hide_all(self):
         """ Oculta todo excepto el editor y la barra de menú """
 
-        toolbars = EDIS.componente("toolbars")
-        status_bar = EDIS.componente("barra_de_estado")
+        toolbars = Edis.get_component("toolbars")
+        status_bar = Edis.get_component("barra_de_estado")
         if (self._output_widget.isVisible() or toolbars[0].isVisible() or
                 toolbars[1].isVisible() or self._symbols_widget.isVisible() or
                 status_bar.isVisible()):
@@ -160,7 +160,7 @@ class DockManager(QObject):
                 self._symbols_widget.show()
 
     def _update_symbols_widget(self, symbols, symbols_combo):
-        editor_container = EDIS.componente("principal")
+        editor_container = Edis.get_component("principal")
         symbols_combo = sorted(symbols_combo.items())
         editor_container.add_symbols_combo(symbols_combo)
         syntax_ok = True if symbols else False

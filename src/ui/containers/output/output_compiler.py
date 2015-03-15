@@ -13,7 +13,7 @@ from PyQt4.QtGui import (
 
 from PyQt4.QtCore import SIGNAL
 
-from src.ui.main import EDIS
+from src.ui.main import Edis
 
 
 class SalidaCompilador(QListWidget):
@@ -22,7 +22,6 @@ class SalidaCompilador(QListWidget):
         QListWidget.__init__(self, parent)
         self.setObjectName("salida_compilador")
         self._parent = parent
-        self._editor_container = EDIS.componente("principal")
 
         # Conexión
         self.connect(self, SIGNAL("itemClicked(QListWidgetItem*)"),
@@ -52,8 +51,9 @@ class SalidaCompilador(QListWidget):
 
     def _go_to_line(self, item):
         if item.clickeable:
+            editor_container = Edis.get_component("principal")
             line = self._parsear_linea(item)
-            self._editor_container.go_to_line(line)
+            editor_container.go_to_line(line)
 
     def _parsear_linea(self, item):
         data = item.text()

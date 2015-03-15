@@ -34,7 +34,7 @@ import src.ui.containers.lateral.navigator
 import src.ui.containers.lateral.explorer
 import src.ui.containers.lateral.tree_symbols
 #lint:enable
-from src.ui.main import EDIS
+from src.ui.main import Edis
 
 
 def run_edis(app):
@@ -63,7 +63,7 @@ def run_edis(app):
 
     # GUI
     splash.showMessage("Loading UI...", Qt.AlignBottom | Qt.black)
-    edis = EDIS()
+    edis = Edis()
     edis.show()
 
     # Se aplica el estilo
@@ -75,7 +75,7 @@ def run_edis(app):
     # Archivos de última sesión
     files, recents_files = [], []
     if ESettings.get('general/load-files'):
-        splash.showMessage("Loading archivos...", Qt.AlignBottom | Qt.black)
+        splash.showMessage("Loading files...", Qt.AlignBottom | Qt.black)
         files = ESettings.get('general/files')
         if files is None:
             files = []

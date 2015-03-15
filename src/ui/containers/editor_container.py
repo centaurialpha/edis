@@ -25,7 +25,7 @@ from src.helpers import file_manager
 from src.helpers.exceptions import EdisIOException
 from src.helpers.configurations import ESettings
 from src.ui.editor import editor
-from src.ui.main import EDIS
+from src.ui.main import Edis
 from src.ui.widgets import (
     find_popup,
     replace_widget,
@@ -85,12 +85,12 @@ class EditorContainer(QWidget):
         self.connect(self.editor_widget, SIGNAL("allFilesClosed()"),
                      self.add_start_page)
 
-        EDIS.cargar_componente("principal", self)
+        Edis.load_component("principal", self)
 
     def update_recents_files(self, recents_files):
         """ Actualiza el submenú de archivos recientes """
 
-        menu = EDIS.componente("menu_recent_file")
+        menu = Edis.get_component("menu_recent_file")
         self.connect(menu, SIGNAL("triggered(QAction*)"),
                      self._open_recent_file)
         menu.clear()
@@ -105,7 +105,7 @@ class EditorContainer(QWidget):
     def get_recents_files(self):
         """ Devuelve una lista con los archivos recientes en el menú """
 
-        menu = EDIS.componente('menu_recent_file')
+        menu = Edis.get_component('menu_recent_file')
         actions = menu.actions()
         recents_files = []
         for filename in actions:
@@ -141,7 +141,7 @@ class EditorContainer(QWidget):
         self.editor_widget.add_widget(weditor)
         if isinstance(self.stack.widget(0), start_page.StartPage):
             self.stack.removeWidget(self.stack.widget(0))
-        symbols_widget = EDIS.lateral('symbols')
+        symbols_widget = Edis.get_lateral('symbols')
         if not symbols_widget.isVisible():
             symbols_widget.show()
         # Conexiones
@@ -231,7 +231,7 @@ class EditorContainer(QWidget):
             _start_page = start_page.StartPage()
             self.stack.insertWidget(0, _start_page)
             self.stack.setCurrentIndex(0)
-            symbols = EDIS.lateral('symbols')
+            symbols = Edis.get_lateral('symbols')
             symbols.hide()
         else:
             self.editor_widget.combo.setVisible(False)
@@ -399,7 +399,7 @@ class EditorContainer(QWidget):
         self.cursorPosition.emit(line + 1, row + 1, lines)
 
     def build_source_code(self):
-        output = EDIS.componente("output")
+        output = Edis.get_component("output")
         weditor = self.get_active_editor()
         if weditor is not None:
             self.save_file()
@@ -408,22 +408,22 @@ class EditorContainer(QWidget):
     def run_binary(self):
         """ Ejecuta el programa objeto """
 
-        output = EDIS.componente("output")
+        output = Edis.get_component("output")
         output.run()
 
     def build_and_run(self):
-        output = EDIS.componente("output")
+        output = Edis.get_component("output")
         weditor = self.get_active_editor()
         if weditor is not None:
             self.save_file()
             output.build_and_run(weditor.filename)
 
     def clean_construction(self):
-        output = EDIS.componente("output")
+        output = Edis.get_component("output")
         output.clean()
 
     def stop_program(self):
-        output = EDIS.componente("output")
+        output = Edis.get_component("output")
         output.stop()
 
     def action_comment(self):

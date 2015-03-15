@@ -24,7 +24,6 @@ from PyQt4.QtCore import (
     QSize
     )
 
-from src.ui.main import EDIS
 from src.ui.dialogs.preferences import (
     general_configuration,
     editor_configuration,
@@ -62,8 +61,6 @@ class Preferencias(QDialog):
 
         self.connect(self.btn_cancel, SIGNAL("clicked()"), self.close)
         self.connect(self.btn_guardar, SIGNAL("clicked()"), self._guardar)
-
-        EDIS.cargar_componente("preferencias", self)
 
     def load_ui(self):
         box = QVBoxLayout(self)

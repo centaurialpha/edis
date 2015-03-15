@@ -29,7 +29,7 @@ from PyQt4.QtCore import (
     )
 
 from src.ui.editor import editor
-from src.ui.main import EDIS
+from src.ui.main import Edis
 
 
 class EditorWidget(QWidget):
@@ -74,7 +74,7 @@ class EditorWidget(QWidget):
         self.combo.combo_file.removeItem(index)
 
     def change_item(self, index):
-        editor_container = EDIS.componente("principal")
+        editor_container = Edis.get_component("principal")
         self.stack.setCurrentIndex(index)
         editor_container.change_widget(index, True)
 
@@ -215,7 +215,7 @@ class ComboContainer(QWidget):
         self.label_line_row.setText(self.line_row % (0, 0, 0))
         box.addWidget(self.label_line_row)
 
-        dock = EDIS.componente("dock")
+        dock = Edis.get_component("dock")
 
         # Conexiones
         self.connect(btn_close_editor, SIGNAL("clicked()"),
@@ -233,14 +233,14 @@ class ComboContainer(QWidget):
 
     def _show_dialog_go_to_line(self, event):
         if event.button() == Qt.LeftButton:
-            editor_container = EDIS.componente("principal")
+            editor_container = Edis.get_component("principal")
             editor_container.show_go_to_line()
 
     def _load_menu_combo_file(self, point):
         """ Muestra el menú """
 
         menu = QMenu()
-        editor_container = EDIS.componente("principal")
+        editor_container = Edis.get_component("principal")
         save_as_action = menu.addAction(self.tr("Save as"))
         reload_action = menu.addAction(self.tr("Reload"))
         menu.addSeparator()
@@ -264,7 +264,7 @@ class ComboContainer(QWidget):
         menu.exec_(self.mapToGlobal(point))
 
     def _go_to_symbol(self, index):
-        editor_container = EDIS.componente("principal")
+        editor_container = Edis.get_component("principal")
         line = self._lines_symbols[index]
         editor_container.go_to_line(line)
 

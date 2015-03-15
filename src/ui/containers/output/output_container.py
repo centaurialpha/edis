@@ -17,7 +17,7 @@ from PyQt4.QtGui import (
 from PyQt4.QtCore import Qt
 
 from src.ui.containers.output import process
-from src.ui.main import EDIS
+from src.ui.main import Edis
 
 
 class ContenedorOutput(QDockWidget):
@@ -37,7 +37,7 @@ class ContenedorOutput(QDockWidget):
         self.atajoEscape = QShortcut(QKeySequence(Qt.Key_Escape), self)
         self.atajoEscape.activated.connect(self.hide)
 
-        EDIS.cargar_componente("output", self)
+        Edis.load_component("output", self)
 
     def _quitar_titulo(self, title_bar):
         """ Quita la barra de título del DockWidget """

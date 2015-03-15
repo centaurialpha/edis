@@ -15,7 +15,7 @@ from PyQt4.QtCore import (
     QDir
     )
 
-from src.ui.main import EDIS
+from src.ui.main import Edis
 from src.ui.containers.lateral import custom_dock
 
 
@@ -45,13 +45,13 @@ class Explorador(custom_dock.CustomDock):
         # Conexion
         self.explorador.doubleClicked.connect(self._open_file)
 
-        EDIS.cargar_lateral("explorer", self)
+        Edis.load_lateral("explorer", self)
 
     def _open_file(self, i):
         if not self.modelo.isDir(i):
             indice = self.modelo.index(i.row(), 0, i.parent())
             archivo = self.modelo.filePath(indice)
-            principal = EDIS.componente("principal")
+            principal = Edis.get_component("principal")
             principal.open_file(archivo)
 
 

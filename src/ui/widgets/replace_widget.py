@@ -18,7 +18,7 @@ from PyQt4.QtGui import (
 from PyQt4.QtCore import SIGNAL
 
 from src.ui.widgets import line_edit
-from src.ui.main import EDIS
+from src.ui.main import Edis
 
 
 class ReplaceWidget(QDialog):
@@ -68,7 +68,7 @@ class ReplaceWidget(QDialog):
     def _find(self):
         if not self.word:
             return
-        editor_container = EDIS.componente("principal")
+        editor_container = Edis.get_component("principal")
         weditor = editor_container.get_active_editor()
         found = weditor.findFirst(self.word, False, self._cs, False, False,
                                   True, 0, 0, True)
@@ -77,13 +77,13 @@ class ReplaceWidget(QDialog):
         weditor.hilo_ocurrencias.buscar(self.word, weditor.text())
 
     def _find_next(self):
-        editor_container = EDIS.componente("principal")
+        editor_container = Edis.get_component("principal")
         weditor = editor_container.get_active_editor()
         weditor.findFirst(self.word, False, False, False, True,
                           True, -1, -1, True)
 
     def _find_previous(self):
-        editor_container = EDIS.componente("principal")
+        editor_container = Edis.get_component("principal")
         weditor = editor_container.get_active_editor()
         weditor.findFirst(self.word, False, False, False, True,
                           False, -1, -1, True)
@@ -92,14 +92,14 @@ class ReplaceWidget(QDialog):
     def _replace(self):
         if not self.word_replace:
             return
-        editor_container = EDIS.componente("principal")
+        editor_container = Edis.get_component("principal")
         weditor = editor_container.get_active_editor()
         if weditor.hasSelectedText():
             weditor.replace(self.word_replace)
             self._find_next()
 
     def _replace_all(self):
-        editor_container = EDIS.componente("principal")
+        editor_container = Edis.get_component("principal")
         weditor = editor_container.get_active_editor()
         found = weditor.findFirst(self.word, False, False, False, False,
                                   True, 0, 0, True)

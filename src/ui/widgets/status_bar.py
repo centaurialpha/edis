@@ -14,7 +14,7 @@ from PyQt4.QtGui import (
 
 from PyQt4.QtCore import QTimer
 
-from src.ui.main import EDIS
+from src.ui.main import Edis
 
 
 class BarraDeEstado(QStatusBar):
@@ -35,7 +35,7 @@ class BarraDeEstado(QStatusBar):
         self.addWidget(self.lbl_archivo)
         self.addPermanentWidget(contenedor)
 
-        EDIS.cargar_componente("barra_de_estado", self)
+        Edis.load_component("barra_de_estado", self)
 
     def update_status(self, filename):
         self.lbl_archivo.setText(filename)
