@@ -164,9 +164,10 @@ class EditorContainer(QWidget):
         weditor = self.get_active_editor()
         if weditor is not None:
             filename = weditor.filename
-            content = file_manager.get_file_content(filename)
-            weditor.setText(content)
-            weditor.setModified(False)
+            if filename:
+                content = file_manager.get_file_content(filename)
+                weditor.setText(content)
+                weditor.setModified(False)
 
     def open_file(self, filename="", cursor_position=None):
         filter_files = "Archivos C(*.cpp *.c);;ASM(*.s);;HEADERS(*.h);;(*.*)"
@@ -273,6 +274,8 @@ class EditorContainer(QWidget):
         #FIXME: Controlar con try-except
         if weditor is None:
             weditor = self.get_active_editor()
+            if weditor is None:
+                return
         if weditor.is_new:
             return self.save_file_as(weditor)
         filename = weditor.filename
@@ -280,11 +283,14 @@ class EditorContainer(QWidget):
         filename = file_manager.write_file(filename, source_code)
         weditor.filename = filename
         weditor.guardado()
+        return filename
 
     def save_file_as(self, weditor=None):
         #FIXME: Controlar con try-except
         if weditor is None:
             weditor = self.get_active_editor()
+            if weditor is None:
+                return
         working_directory = os.path.expanduser("~")
         filename = QFileDialog.getSaveFileName(self, self.tr("Save file"),
                                                working_directory)
@@ -294,6 +300,7 @@ class EditorContainer(QWidget):
         weditor.filename = filename
         self.fileChanged.emit(filename)
         weditor.guardado()
+        return filename
 
     def save_selected(self, filename):
         for index in range(self.editor_widget.count()):
@@ -402,8 +409,9 @@ class EditorContainer(QWidget):
         output = Edis.get_component("output")
         weditor = self.get_active_editor()
         if weditor is not None:
-            self.save_file()
-            output.build(weditor.filename)
+            filename = self.save_file()
+            if filename:
+                output.build(weditor.filename)
 
     def run_binary(self):
         """ Ejecuta el programa objeto """
