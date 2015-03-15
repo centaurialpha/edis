@@ -354,17 +354,17 @@ class EditorContainer(QWidget):
             weditor.paste()
 
     def show_tabs_and_spaces(self):
-        tabs_spaces = ESettings.get('editor/show-tabs-spaces')
-        ESettings.set('editor/show-tabs-spaces', not tabs_spaces)
         weditor = self.get_active_editor()
         if weditor is not None:
+            tabs_spaces = ESettings.get('editor/show-tabs-spaces')
+            ESettings.set('editor/show-tabs-spaces', not tabs_spaces)
             weditor.actualizar()
 
     def show_indentation_guides(self):
-        guides = ESettings.get('editor/show-guides')
-        ESettings.set('editor/show-guides', not guides)
         weditor = self.get_active_editor()
         if weditor is not None:
+            guides = ESettings.get('editor/show-guides')
+            ESettings.set('editor/show-guides', not guides)
             weditor.actualizar()
 
     def action_zoom_in(self):
