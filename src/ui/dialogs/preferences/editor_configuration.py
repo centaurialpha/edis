@@ -21,7 +21,8 @@ from PyQt4.QtGui import (
     QSizePolicy,
     QFont,
     QLabel,
-    QComboBox
+    QComboBox,
+    QSpinBox
     )
 
 # Módulos QtCore
@@ -97,6 +98,7 @@ class EditorConfiguration(QWidget):
         # Cursor
         grupo_cursor = QGroupBox(self.tr("Caret:"))
         box = QGridLayout(grupo_cursor)
+        # Type
         box.addWidget(QLabel(self.tr("Type:")), 0, 0)
         self.combo_caret = QComboBox()
         caret_types = [
@@ -105,15 +107,25 @@ class EditorConfiguration(QWidget):
             self.tr('Block')
             ]
         self.combo_caret.addItems(caret_types)
-        self.combo_caret.setCurrentIndex(ESettings.get('editor/cursor'))
+        index = ESettings.get('editor/cursor')
+        self.combo_caret.setCurrentIndex(index)
         box.addWidget(self.combo_caret, 0, 1)
+        # Width
+        box.addWidget(QLabel(self.tr("Width:")), 1, 0)
+        self.spin_caret_width = QSpinBox()
+        if index != 1:
+            self.spin_caret_width.setEnabled(False)
+        self.spin_caret_width.setRange(1, 3)
+        self.spin_caret_width.setValue(ESettings.get('editor/caret-width'))
+        box.addWidget(self.spin_caret_width, 1, 1)
+        # Period
+        box.addWidget(QLabel(self.tr("Period (ms):")), 2, 0)
         self.cursor_slider = QSlider(Qt.Horizontal)
         self.cursor_slider.setMaximum(500)
-        box.addWidget(QLabel(self.tr("Period (ms):")), 1, 0)
-        box.addWidget(self.cursor_slider, 1, 1)
+        box.addWidget(self.cursor_slider, 2, 1)
         lcd_caret = QLCDNumber()
         lcd_caret.setSegmentStyle(QLCDNumber.Flat)
-        box.addWidget(lcd_caret, 1, 2)
+        box.addWidget(lcd_caret, 2, 2)
         contenedor.addWidget(grupo_margen)
         contenedor.addWidget(grupo_indentacion)
         contenedor.addWidget(group_extras)
@@ -123,6 +135,8 @@ class EditorConfiguration(QWidget):
                            QSizePolicy.Expanding))
 
         # Conexiones
+        self.connect(self.combo_caret, SIGNAL("currentIndexChanged(int)"),
+                     self._type_changed)
         self.slider_margin.valueChanged[int].connect(lcd_margen.display)
         self.slider_indentation.valueChanged[int].connect(
             lcd_indentacion.display)
@@ -140,6 +154,12 @@ class EditorConfiguration(QWidget):
                                          'editor/width-indent'))
         self.check_guides.setChecked(ESettings.get('editor/show-guides'))
         self.cursor_slider.setValue(ESettings.get('editor/cursor-period'))
+
+    def _type_changed(self, index):
+        if index == 1:
+            self.spin_caret_width.setEnabled(True)
+        else:
+            self.spin_caret_width.setEnabled(False)
 
     def _cargar_fuente(self):
         fuente = ESettings.get('editor/font')
@@ -173,6 +193,7 @@ class EditorConfiguration(QWidget):
         ESettings.set('editor/indent', self.check_indentation.isChecked())
         ESettings.set('editor/width-indent', self.slider_indentation.value())
         ESettings.set('editor/cursor', self.combo_caret.currentIndex())
+        ESettings.set('editor/caret-width', self.spin_caret_width.value())
         ESettings.set('editor/cursor-period', self.cursor_slider.value())
         principal = Edis.get_component("principal")
         weditor = principal.get_active_editor()

@@ -55,6 +55,7 @@ settings = {
     'editor/show-margin': True,
     'editor/width-margin': 79,
     'editor/cursor': 2,  # 0: invisilbe; 1: línea; 2: bloque
+    'editor/caret-width': 1,
     'editor/cursor-perdiod': 400,
     'editor/indent': True,
     'editor/width-indent': 4,
@@ -106,6 +107,8 @@ class ESettings(object):
             'editor/width-margin', 79, type=int)
         settings['editor/cursor'] = qconfig.value(
             'editor/cursor', 2, type=int)
+        settings['editor/caret-width'] = qconfig.value(
+            'editor/caret-width', 1, type=int)
         settings['editor/cursor-period'] = qconfig.value(
             'editor/cursor-period', 400, type=int)
         settings['editor/indent'] = qconfig.value(

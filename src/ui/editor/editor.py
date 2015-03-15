@@ -183,7 +183,7 @@ class Editor(base.Base):
         else:
             self.setWrapMode(self.WrapNone)
         self.send("sci_setcaretstyle", ESettings.get('editor/cursor'))
-        self.setCaretWidth(2)
+        self.setCaretWidth(ESettings.get('editor/caret-width'))
         self.setAutoIndent(ESettings.get('editor/indent'))
         self.send("sci_setcaretperiod", ESettings.get('editor/cursor-period'))
 
