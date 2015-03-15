@@ -18,16 +18,20 @@ QMainWindow::separator:hover {
 
 QToolBar#toolbar {
     background: qlineargradient(x1: 1, y1: 0, x2: 0, y2: 0,
-                                       stop: 0 #474747, stop: 1 #232323);
-    spacing: 6px;
-    padding: 6px;
+                                       stop: 0 #474747, stop: 1 #212121);
+    spacing: 5px;
+    padding: 3px;
+}
+
+QToolBar::separator {
+    width: 1px;
+    height: 1px;
 }
 
 QToolBar#dock_toolbar {
     background: qlineargradient(x1: 0, y1: 0, x2: 1, y2: 0,
                                        stop: 0 #474747, stop: 1 #212121);
-    spacing: 6px;
-    padding: 6px;
+    padding: 3px;
 }
 
 QToolBar#preferencias {

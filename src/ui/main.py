@@ -69,9 +69,12 @@ class EDIS(QMainWindow):
         toggle_action.setText(self.tr("Toolbar"))
         self.toolbar.setMovable(False)
         self.toolbar.setObjectName("toolbar")
-        self.toolbar.setIconSize(QSize(22, 22))
+        self.toolbar.setIconSize(QSize(24, 24))
+        self.toolbar.setToolButtonStyle(Qt.ToolButtonIconOnly)
         self.addToolBar(Qt.RightToolBarArea, self.toolbar)
         self.dock_toolbar = QToolBar(self)
+        if configurations.WINDOWS:
+            self.dock_toolbar.setStyleSheet("padding: 4px;")
         toggle_action = self.dock_toolbar.toggleViewAction()
         toggle_action.setText(self.tr("Dock toolbar"))
         self.dock_toolbar.setObjectName("dock_toolbar")
