@@ -289,7 +289,7 @@ class ComboContainer(QWidget):
             self.combo_file.setItemText(index, current_text + text)
         else:
             if not weditor.filename:
-                text = "untitled"
+                text = "Untitled"
             else:
                 text = weditor.filename
             self.combo_file.setItemText(index, text)

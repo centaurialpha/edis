@@ -135,7 +135,7 @@ class EditorContainer(QWidget):
 
     def add_editor(self, filename=""):
         if not filename:
-            filename = "Nuevo_archivo"
+            filename = "Untitled"
         weditor = editor.Editor()
         self.editor_widget.add_item_combo(filename)
         self.editor_widget.add_widget(weditor)

@@ -39,7 +39,7 @@ class DialogSaveFiles(QDialog):
         self.list_widget.setSelectionMode(QAbstractItemView.ExtendedSelection)
         for e, _file in enumerate(files):
             if not _file:
-                _file = "untitled"
+                _file = "Untitled"
             self.list_widget.addItem(_file)
             self.list_widget.item(e).setSelected(True)
         vLayout.addWidget(self.list_widget)
