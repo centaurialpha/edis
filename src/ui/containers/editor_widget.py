@@ -101,9 +101,9 @@ class EditorWidget(QWidget):
         weditor = self.current_widget()
         index = self.current_index()
         if value and self.not_open:
-            weditor.texto_modificado = True
+            weditor.modified = True
         else:
-            weditor.texto_modificado = False
+            weditor.modified = False
         self.combo.set_modified(weditor, index, value)
 
     def _add_to_recent(self, filename):
@@ -117,14 +117,14 @@ class EditorWidget(QWidget):
         value = False
         for index in range(self.count()):
             weditor = self.widget(index)
-            value = value or weditor.texto_modificado
+            value = value or weditor.modified
         return value
 
     def files_not_saved(self):
         files = []
         for index in range(self.count()):
             weditor = self.widget(index)
-            if weditor.texto_modificado:
+            if weditor.modified:
                 files.append(weditor.filename)
         return files
 
@@ -150,7 +150,7 @@ class EditorWidget(QWidget):
             flags |= QMessageBox.Cancel
 
             result = QMessageBox.No
-            if widget.texto_modificado:
+            if widget.modified:
                 result = QMessageBox.question(self, self.tr(
                                               "File not saved"),
                                               self.tr("The file <b>{0}</b> "

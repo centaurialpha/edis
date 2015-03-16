@@ -99,6 +99,7 @@ class EditorConfiguration(QWidget):
         # Type
         box.addWidget(QLabel(self.tr("Type:")), 0, 0)
         self.combo_caret = QComboBox()
+        self.combo_caret.setMinimumWidth(400)
         caret_types = [
             self.tr('None'),
             self.tr('Line'),
@@ -123,12 +124,20 @@ class EditorConfiguration(QWidget):
         box.addWidget(self.cursor_slider, 2, 1)
         lcd_caret = QLCDNumber()
         lcd_caret.setSegmentStyle(QLCDNumber.Flat)
-        box.addWidget(lcd_caret, 2, 2)
+        box.addWidget(lcd_caret, 2, 3)
+        # Code completion
+        group_completion = QGroupBox(self.tr("Code Completion:"))
+        box = QVBoxLayout(group_completion)
+        self.check_completion = QCheckBox(self.tr("Enable code completion"))
+        self.check_completion.setChecked(ESettings.get('editor/completion'))
+        box.addWidget(self.check_completion)
+
         contenedor.addWidget(grupo_margen)
         contenedor.addWidget(grupo_indentacion)
         contenedor.addWidget(group_extras)
         contenedor.addWidget(grupo_fuente)
         contenedor.addWidget(grupo_cursor)
+        contenedor.addWidget(group_completion)
         contenedor.addItem(QSpacerItem(0, 10, QSizePolicy.Expanding,
                            QSizePolicy.Expanding))
 
@@ -193,8 +202,11 @@ class EditorConfiguration(QWidget):
         ESettings.set('editor/cursor', self.combo_caret.currentIndex())
         ESettings.set('editor/caret-width', self.spin_caret_width.value())
         ESettings.set('editor/cursor-period', self.cursor_slider.value())
+        code_completion = self.check_completion.isChecked()
+        ESettings.set('editor/completion', code_completion)
         principal = Edis.get_component("principal")
         weditor = principal.get_active_editor()
+        weditor.active_code_completion(code_completion)
         if weditor is not None:
             weditor.cargar_fuente(fuente, int(fuente_tam))
             weditor.actualizar()

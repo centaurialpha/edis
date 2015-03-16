@@ -11,7 +11,6 @@ from PyQt4.QtGui import (
     QDialog,
     QVBoxLayout,
     QHBoxLayout,
-    QToolButton,
     QIcon,
     QToolBar,
     QStackedWidget,
@@ -36,8 +35,7 @@ from src.ui.dialogs.preferences import (
 class Preferencias(QDialog):
 
     def __init__(self, parent=None):
-        QDialog.__init__(self, parent, Qt.Dialog)
-        self.setMinimumWidth(715)
+        QDialog.__init__(self, parent)
         self.setWindowTitle(self.tr("Configurations - Edis"))
         self.general = general_configuration.GeneralConfiguration(self)
         self.editor = editor_configuration.EditorConfiguration()
@@ -51,34 +49,33 @@ class Preferencias(QDialog):
 
         self.load_ui()
 
-        # Conexiones
-        self.connect(self.button_general, SIGNAL("clicked()"),
-                     lambda: self.cambiar_widget(0))
-        self.connect(self.button_editor, SIGNAL("clicked()"),
-                     lambda: self.cambiar_widget(1))
-        self.connect(self.button_themes, SIGNAL("clicked()"),
-                     lambda: self.cambiar_widget(2))
-
         self.connect(self.btn_cancel, SIGNAL("clicked()"), self.close)
         self.connect(self.btn_guardar, SIGNAL("clicked()"), self._guardar)
 
     def load_ui(self):
-        box = QVBoxLayout(self)
+        container = QVBoxLayout(self)
+
+        box = QHBoxLayout()
         box.setContentsMargins(0, 0, 0, 0)
-        box.setSpacing(0)
-
+        box.setSpacing(20)
         toolbar = QToolBar()
-        toolbar.setIconSize(QSize(40, 40))
+        toolbar.setToolButtonStyle(Qt.ToolButtonTextUnderIcon)
+        toolbar.setOrientation(Qt.Vertical)
+        toolbar.setIconSize(QSize(30, 30))
         toolbar.setObjectName("preferencias")
-        toolbar.setToolButtonStyle(Qt.ToolButtonIconOnly)
 
-        self.button_general = ToolButton("General", ":image/general-pref")
-        self.button_editor = ToolButton("Editor", ":image/editor-pref")
-        self.button_themes = ToolButton("Style Sheet", ":image/theme")
-
-        toolbar.addWidget(self.button_general)
-        toolbar.addWidget(self.button_editor)
-        toolbar.addWidget(self.button_themes)
+        pref_general_action = toolbar.addAction(
+            QIcon(":image/general-pref"), "General")
+        pref_editor_action = toolbar.addAction(
+            QIcon(":image/editor-pref"), "Editor")
+        pref_style_action = toolbar.addAction(
+            QIcon(":image/theme"), "Style Sheet")
+        self.connect(pref_general_action, SIGNAL("triggered()"),
+                     lambda: self.cambiar_widget(0))
+        self.connect(pref_editor_action, SIGNAL("triggered()"),
+                     lambda: self.cambiar_widget(1))
+        self.connect(pref_style_action, SIGNAL("triggered()"),
+                     lambda: self.cambiar_widget(2))
 
         box.addWidget(toolbar)
 
@@ -96,8 +93,8 @@ class Preferencias(QDialog):
         self.btn_guardar = QPushButton(self.tr("Save"))
         box_buttons.addWidget(self.btn_cancel)
         box_buttons.addWidget(self.btn_guardar)
-
-        box.addLayout(box_buttons)
+        container.addLayout(box)
+        container.addLayout(box_buttons)
 
     def mostrar(self):
         self.stack.setCurrentIndex(0)
@@ -113,12 +110,6 @@ class Preferencias(QDialog):
             for i in range(self.stack.count())]
         self.close()
 
-
-class ToolButton(QToolButton):
-
-    def __init__(self, texto, icono):
-        super(ToolButton, self).__init__()
-        self.setStyleSheet("color: #bfbfbf")
-        self.setText(self.trUtf8(texto))
-        self.setIcon(QIcon(icono))
-        self.setToolButtonStyle(Qt.ToolButtonTextUnderIcon)
+    def reject(self):
+        super(Preferencias, self).reject()
+        self.emit(SIGNAL("configurationsClose(PyQt_PyObject)"), self)

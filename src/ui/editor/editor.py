@@ -17,14 +17,15 @@ from PyQt4.QtCore import (
     QThread,
     SIGNAL
     )
-from PyQt4.Qsci import QsciScintilla
+from PyQt4.Qsci import QsciScintilla, QsciAPIs
 
 from src import recursos
 from src.ui.editor import (
     checker,
     lexer,
     base,
-    minimap
+    minimap,
+    keywords
     )
 from src.helpers.configurations import ESettings
 
@@ -80,22 +81,17 @@ class Editor(base.Base):
     def __init__(self):
         super(Editor, self).__init__()
         self._filename = ""
-        self.texto_modificado = False
+        self.modified = False
         self.is_new = True
-        self.guardado_actualmente = False
         # Actualiza flags (espacios en blanco, cursor, sidebar, etc)
         self.actualizar()
         # Lexer
         self._lexer = lexer.Lexer()
         self.setLexer(self._lexer)
         # Autocompletado
-        #FIXME: autocompletado
-        #api = QsciAPIs(self._lexer)
-        #for palabra in keywords.keywords:
-            #api.add(palabra)
-        #api.prepare()
-        #self.setAutoCompletionThreshold(1)
-        #self.setAutoCompletionSource(QsciScintilla.AcsAPIs)
+        self.api = None
+        if ESettings.get('editor/completion'):
+            self.active_code_completion()
         # Indentación
         self.indentation = ESettings.get('editor/width-indent')
         self.send("sci_settabwidth", self.indentation)
@@ -103,8 +99,6 @@ class Editor(base.Base):
         self.minimap = None
         if ESettings.get('editor/show-minimap'):
             self.minimap = minimap.Minimap(self)
-            #self.connect(self, SIGNAL("selectionChanged()"),
-                         #self.minimap.area)
             self.connect(self, SIGNAL("textChanged()"),
                          self.minimap.update_code)
         # Thread ocurrencias
@@ -222,6 +216,21 @@ class Editor(base.Base):
         for p in palabras:
             self.fillIndicatorRange(p[0], p[1], p[0], p[2],
                                     self._word_indicator)
+
+    def active_code_completion(self, enabled):
+        if self.api is not None and enabled:
+            return
+        if enabled:
+            self.api = QsciAPIs(self._lexer)
+            # Agrego keywords a la API
+            for keyword in keywords.keywords:
+                self.api.add(keyword)
+            self.api.prepare()
+            self.setAutoCompletionThreshold(3)
+            self.setAutoCompletionSource(QsciScintilla.AcsAll)
+        else:
+            self.api = None
+            self.setAutoCompletionSource(0)
 
     def _show_violations(self):
         data = self.checker.data
@@ -396,7 +405,7 @@ class Editor(base.Base):
     def guardado(self):
         self.fileSaved.emit(self)
         self.is_new = False
-        self.texto_modificado = False
+        self.modified = False
         self.setModified(False)
 
     def dropEvent(self, evento):

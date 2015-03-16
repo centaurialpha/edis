@@ -325,6 +325,8 @@ class Edis(QMainWindow):
     def show_settings(self):
         """ Muestra el díalogo de preferencias """
 
-        from src.ui.dialogs.preferences import preferences
-        dialog = preferences.Preferencias(self)
-        dialog.show()
+        #from src.ui.dialogs.preferences import preferences
+        #dialog = preferences.Preferencias(self)
+        #dialog.show()
+        editor_container = Edis.get_component("principal")
+        editor_container.show_settings()

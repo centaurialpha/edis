@@ -31,6 +31,7 @@ from src.ui.widgets import (
     replace_widget,
     goto_line_widget
     )
+from src.ui.dialogs.preferences import preferences
 from src.ui.containers import selector
 from src.ui.dialogs import file_properties
 from src.ui.containers import editor_widget
@@ -68,12 +69,13 @@ class EditorContainer(QWidget):
         self._replace_widget.hide()
         self.box.addWidget(self._replace_widget)
 
+        #FIXME:
         # Editor widget
         self.editor_widget = editor_widget.EditorWidget()
-        self.stack.addWidget(self.editor_widget)
+        #self.stack.addWidget(self.editor_widget)
 
-        if not ESettings.get('general/show-start-page'):
-            self.editor_widget.combo.hide()
+        #if not ESettings.get('general/show-start-page'):
+            #self.editor_widget.combo.hide()
 
         # Conexiones
         self.connect(self.editor_widget, SIGNAL("saveCurrentFile()"),
@@ -116,7 +118,6 @@ class EditorContainer(QWidget):
         self.closedFile.emit(index)
 
     def _file_modified(self, value):
-        #FIXME:
         self.editor_widget.editor_modified(value)
 
     def _file_saved(self, weditor):
@@ -134,13 +135,14 @@ class EditorContainer(QWidget):
             weditor.setFocus()
 
     def add_editor(self, filename=""):
+        self.stack.addWidget(self.editor_widget)
         if not filename:
             filename = "Untitled"
         weditor = editor.Editor()
         self.editor_widget.add_item_combo(filename)
         self.editor_widget.add_widget(weditor)
         if isinstance(self.stack.widget(0), start_page.StartPage):
-            self.stack.removeWidget(self.stack.widget(0))
+            self.remove_widget(self.stack.widget(0))
         symbols_widget = Edis.get_lateral('symbols')
         if not symbols_widget.isVisible():
             symbols_widget.show()
@@ -148,7 +150,6 @@ class EditorContainer(QWidget):
         self.connect(weditor, SIGNAL("cursorPositionChanged(int, int)"),
                      self.update_cursor)
         self.connect(weditor, SIGNAL("modificationChanged(bool)"),
-                     #self.editor_widget.editor_modified)
                      self._file_modified)
         self.connect(weditor, SIGNAL("fileSaved(PyQt_PyObject)"),
                      self._file_saved)
@@ -519,6 +520,14 @@ class EditorContainer(QWidget):
         data = event.mimeData()
         filename = data.urls()[0].toLocalFile()
         self.open_file(filename)
+
+    def show_settings(self):
+        preferences_widget = preferences.Preferencias(self)
+        self.connect(preferences_widget,
+                     SIGNAL("configurationsClose(PyQt_PyObject)"),
+                     lambda widget: self.remove_widget(widget))
+        index = self.stack.addWidget(preferences_widget)
+        self.stack.setCurrentIndex(index)
 
 
 editor_container = EditorContainer()

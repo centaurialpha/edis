@@ -52,12 +52,13 @@ settings = {
     'ventana/show-maximized': True,
     'ventana/store-size': True,
     'general/confirm-exit': True,
+    'editor/completion': True,
     'editor/show-caret-line': True,
     'editor/show-margin': True,
     'editor/width-margin': 79,
     'editor/cursor': 2,  # 0: invisilbe; 1: línea; 2: bloque
     'editor/caret-width': 1,
-    'editor/cursor-perdiod': 400,
+    'editor/cursor-perdiod': 300,
     'editor/indent': True,
     'editor/width-indent': 4,
     'editor/show-guides': False,
@@ -102,6 +103,8 @@ class ESettings(object):
             'ventana/show-maximized', True, type=bool)
         settings['general/confirm-exit'] = qconfig.value(
             'general/confirm-exit', True, type=bool)
+        settings['editor/completion'] = qconfig.value(
+            'editor/completion', True, type=bool)
         settings['editor/show-caret-line'] = qconfig.value(
             'editor/show-caret-line', True, type=bool)
         settings['editor/show-margin'] = qconfig.value(
@@ -113,7 +116,7 @@ class ESettings(object):
         settings['editor/caret-width'] = qconfig.value(
             'editor/caret-width', 1, type=int)
         settings['editor/cursor-period'] = qconfig.value(
-            'editor/cursor-period', 400, type=int)
+            'editor/cursor-period', 300, type=int)
         settings['editor/indent'] = qconfig.value(
             'editor/indent', True, type=bool)
         settings['editor/width-indent'] = qconfig.value(
