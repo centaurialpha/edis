@@ -54,7 +54,6 @@ class EditorConfiguration(QWidget):
         self.slider_margin.setMaximum(180)
         box.addWidget(self.slider_margin, 0, 1)
         lcd_margen = QLCDNumber()
-        lcd_margen.setStyleSheet("color: #dedede")
         lcd_margen.setSegmentStyle(lcd_margen.Flat)
         box.addWidget(lcd_margen, 0, 2)
 
@@ -67,7 +66,6 @@ class EditorConfiguration(QWidget):
         self.slider_indentation.setMaximum(20)
         box.addWidget(self.slider_indentation, 0, 1)
         lcd_indentacion = QLCDNumber()
-        lcd_indentacion.setStyleSheet("color: #dedede")
         lcd_indentacion.setSegmentStyle(lcd_indentacion.Flat)
         box.addWidget(lcd_indentacion, 0, 2)
         self.check_guides = QCheckBox(self.tr("Enable indentation guides"))

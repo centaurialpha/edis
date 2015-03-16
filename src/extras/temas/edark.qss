@@ -335,3 +335,7 @@ QSpinBox::down-button:hover {
     background: #999;
     border-radius: 2px;
 }
+
+QLCDNumber {
+    color: #FFFFFF;
+}
