@@ -152,6 +152,6 @@ class ThemeEditor(QsciScintilla):
         self.setMarginWidth(1, 40)
         self.setPaper(QColor(recursos.TEMA['FondoEditor']))
         self.setColor(QColor(recursos.TEMA['Color']))
-        self.setMarginsBackgroundColor(QColor(recursos.TEMA['foldFore']))
-        self.setMarginsForegroundColor(QColor(recursos.TEMA['sidebar-fore']))
+        self.setMarginsBackgroundColor(QColor(recursos.TEMA['FoldMarginBack']))
+        self.setMarginsForegroundColor(QColor(recursos.TEMA['FoldMarginFore']))
         self.setCaretForegroundColor(QColor('darkGray'))

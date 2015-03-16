@@ -120,8 +120,8 @@ class Editor(base.Base):
         fuente = ESettings.get('editor/font')
         tam_fuente = ESettings.get('editor/size-font')
         self.cargar_fuente(fuente, tam_fuente)
-        self.setMarginsBackgroundColor(QColor(self._THEME['sidebar-fondo']))
-        self.setMarginsForegroundColor(QColor(self._THEME['sidebar-fore']))
+        self.setMarginsBackgroundColor(QColor(self._THEME['SidebarBack']))
+        self.setMarginsForegroundColor(QColor(self._THEME['SidebarFore']))
         # Línea actual
         #FIXME: Configuración
         self.send("sci_setcaretlinevisible",

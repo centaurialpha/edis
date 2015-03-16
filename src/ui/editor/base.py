@@ -53,8 +53,8 @@ class Base(QsciScintilla):
 
         # Folding
         self.setFolding(QsciScintilla.BoxedTreeFoldStyle)
-        self.colorFoldMargen(recursos.TEMA['foldFore'],
-                             recursos.TEMA['foldBack'])
+        self.colorFoldMargen(recursos.TEMA['FoldMarginBack'],
+                             recursos.TEMA['FoldMarginFore'])
 
         self._fuente = None
 

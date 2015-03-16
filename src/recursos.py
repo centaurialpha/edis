@@ -59,7 +59,7 @@ SHORTCUTS = {
 
 # Tema editor
 TEMA = {
-    'FondoEditor': '#202020',
+    'FondoEditor': '#0e0f12',
     'Color': '#e2e2e5',
     'Keyword': '#7e8aa2',
     'Comment': '#3f3f3f',
@@ -79,9 +79,9 @@ TEMA = {
     'CaretLineAlpha': 20,
     'guia-fondo': 'red',
     'guia-fore': 'white',
-    'sidebar-fondo': '#212121',
-    'sidebar-fore': '#85878c',
-    'foldFore': '#242424',
-    'foldBack': '#242424',
+    'SidebarBack': '#262626',
+    'SidebarFore': '#B3B3B3',
+    'FoldMarginBack': '#2B2B2B',
+    'FoldMarginFore': '#2B2B2B',
     'error': '#df3e3e'
     }
