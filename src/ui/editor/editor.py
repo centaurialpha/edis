@@ -217,7 +217,7 @@ class Editor(base.Base):
             self.fillIndicatorRange(p[0], p[1], p[0], p[2],
                                     self._word_indicator)
 
-    def active_code_completion(self, enabled):
+    def active_code_completion(self, enabled=True):
         if self.api is not None and enabled:
             return
         if enabled:
