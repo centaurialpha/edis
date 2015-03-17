@@ -79,6 +79,20 @@ class ArbolDeSimbolos(custom_dock.CustomDock):
                 struct.setExpanded(True)
             structs.setExpanded(True)
 
+        if 'enums' in symbols:
+            enums = Item(self.tree, [self.tr("Enums")])
+            enums.clicked = False
+            for nline, item in sorted(list(symbols['enums'].items())):
+                enum = Item(enums, [item[0]])
+                enum.line = nline
+                enumerators = item[1]
+                for name, nline in sorted(list(enumerators.items())):
+                    enumerator = Item(enum, [name])
+                    enumerator.line = nline
+                    enumerator.setIcon(0, QIcon(":image/member"))
+                enum.setExpanded(True)
+            enums.setExpanded(True)
+
     def go_to_line(self, item):
         if item.clicked:
             self.goToLine.emit(int(item.line) - 1)

@@ -55,8 +55,8 @@ class Thread(QThread):
                 symbols['functions'] = visitor.functions
             if visitor.structs:
                 symbols['structs'] = visitor.structs
-            #if visitor.globals:
-                #symbols['globals'] = visitor.globals
+            if visitor.enums:
+                symbols['enums'] = visitor.enums
             symbols_combo = visitor.symbols_combo
         self.emit(SIGNAL("symbols(PyQt_PyObject, PyQt_PyObject)"),
                   symbols, symbols_combo)

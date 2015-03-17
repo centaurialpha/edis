@@ -27,11 +27,12 @@ class NodeVisitor(c_ast.NodeVisitor):
     def __init__(self):
         super(NodeVisitor, self).__init__()
         self.functions = {}
-        #self.globals = {}
+        self.params = []
         self.structs = {}
         self.members = {}
+        self.enums = {}
+        self.enumerators = {}
         self.symbols_combo = {}
-        self.params = []
 
     def visit_FuncDef(self, node):
         decl = node.decl
@@ -60,11 +61,6 @@ class NodeVisitor(c_ast.NodeVisitor):
         # Reiniciar parámetros
         self.params = []
 
-    #def visit_Decl(self, node):
-        #global_name = node.name
-        #global_nline = node.coord.line
-        #self.globals[global_name] = global_nline
-
     def visit_Struct(self, node):
         struct_name = node.name
         struct_nline = node.coord.line
@@ -75,6 +71,17 @@ class NodeVisitor(c_ast.NodeVisitor):
             self.members[member_name] = member_nline
         self.structs[struct_nline] = (struct_name, self.members)
         self.symbols_combo[struct_nline] = (struct_name, 'struct')
+
+    def visit_Enum(self, node):
+        enum_name = node.name
+        enum_nline = node.coord.line
+        # Enumerator list
+        enumerator_list = node.children()[0][1]
+        for enumerator in enumerator_list.enumerators:
+            enumerator_name = enumerator.name
+            enumerator_nline = enumerator.coord.line
+            self.enumerators[enumerator_name] = enumerator_nline
+        self.enums[enum_nline] = (enum_name, self.enumerators)
 
 
 def sanitize_source_code(source_code):
