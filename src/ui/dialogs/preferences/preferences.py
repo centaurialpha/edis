@@ -15,7 +15,9 @@ from PyQt4.QtGui import (
     QToolBar,
     QStackedWidget,
     QPushButton,
-    QGraphicsOpacityEffect
+    QGraphicsOpacityEffect,
+    QShortcut,
+    QKeySequence
     )
 
 from PyQt4.QtCore import (
@@ -54,6 +56,8 @@ class Preferencias(QDialog):
 
         self.load_ui()
 
+        key_escape = QShortcut(QKeySequence(Qt.Key_Escape), self)
+        self.connect(key_escape, SIGNAL("activated()"), self.close)
         self.connect(self.btn_cancel, SIGNAL("clicked()"), self.close)
         self.connect(self.btn_guardar, SIGNAL("clicked()"), self._guardar)
 
@@ -115,8 +119,8 @@ class Preferencias(QDialog):
             for i in range(self.stack.count())]
         self.close()
 
-    def reject(self):
-        super(Preferencias, self).reject()
+    def close(self):
+        super(Preferencias, self).close()
         self.emit(SIGNAL("configurationsClose(PyQt_PyObject)"), self)
 
     def showEvent(self, event):
