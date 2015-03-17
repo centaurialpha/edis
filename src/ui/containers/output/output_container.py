@@ -49,23 +49,23 @@ class ContenedorOutput(QDockWidget):
     def build(self, path):
         self.show()
         self.nombre_archivo = path
-        self.salida_.correr_compilacion(self.nombre_archivo)
+        self.salida_.run_compilation(self.nombre_archivo)
 
     def run(self):
         if self.nombre_archivo is None:
             return
-        self.salida_.correr_programa(self.nombre_archivo)
+        self.salida_.run_program(self.nombre_archivo)
 
     def build_and_run(self, archivo):
         self.show()
         self.nombre_archivo = archivo
-        self.salida_.compilar_ejecutar(self.nombre_archivo)
+        self.salida_.build_and_run(self.nombre_archivo)
 
     def clean(self):
-        self.salida_.limpiar(self.nombre_archivo)
+        self.salida_.clean(self.nombre_archivo)
 
     def stop(self):
-        self.salida_.terminar_proceso()
+        self.salida_.kill_process()
 
 
 output = ContenedorOutput()
