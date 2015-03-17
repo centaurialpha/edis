@@ -27,7 +27,7 @@ class NodeVisitor(c_ast.NodeVisitor):
     def __init__(self):
         super(NodeVisitor, self).__init__()
         self.functions = {}
-        self.globals = {}
+        #self.globals = {}
         self.structs = {}
         self.members = {}
         self.symbols_combo = {}
@@ -60,10 +60,10 @@ class NodeVisitor(c_ast.NodeVisitor):
         # Reiniciar parámetros
         self.params = []
 
-    def visit_Decl(self, node):
-        global_name = node.name
-        global_nline = node.coord.line
-        self.globals[global_name] = global_nline
+    #def visit_Decl(self, node):
+        #global_name = node.name
+        #global_nline = node.coord.line
+        #self.globals[global_name] = global_nline
 
     def visit_Struct(self, node):
         struct_name = node.name

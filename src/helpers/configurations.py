@@ -58,7 +58,7 @@ settings = {
     'editor/width-margin': 79,
     'editor/cursor': 2,  # 0: invisilbe; 1: línea; 2: bloque
     'editor/caret-width': 1,
-    'editor/cursor-perdiod': 300,
+    'editor/cursor-period': 300,
     'editor/indent': True,
     'editor/width-indent': 4,
     'editor/show-guides': False,
