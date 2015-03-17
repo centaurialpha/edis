@@ -85,11 +85,12 @@ class ArbolDeSimbolos(custom_dock.CustomDock):
             for nline, item in sorted(list(symbols['enums'].items())):
                 enum = Item(enums, [item[0]])
                 enum.line = nline
+                enum.setIcon(0, QIcon(":image/enum"))
                 enumerators = item[1]
                 for name, nline in sorted(list(enumerators.items())):
                     enumerator = Item(enum, [name])
                     enumerator.line = nline
-                    enumerator.setIcon(0, QIcon(":image/member"))
+                    enumerator.setIcon(0, QIcon(":image/enumerator"))
                 enum.setExpanded(True)
             enums.setExpanded(True)
 
