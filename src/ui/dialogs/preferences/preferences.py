@@ -14,13 +14,15 @@ from PyQt4.QtGui import (
     QIcon,
     QToolBar,
     QStackedWidget,
-    QPushButton
+    QPushButton,
+    QGraphicsOpacityEffect
     )
 
 from PyQt4.QtCore import (
     Qt,
     SIGNAL,
-    QSize
+    QSize,
+    QPropertyAnimation
     )
 
 from src.ui.dialogs.preferences import (
@@ -40,7 +42,10 @@ class Preferencias(QDialog):
         self.general = general_configuration.GeneralConfiguration(self)
         self.editor = editor_configuration.EditorConfiguration()
         self.themes = theme_configuration.ThemeConfiguration()
-
+        # Opacity effect
+        self.effect = QGraphicsOpacityEffect()
+        self.setGraphicsEffect(self.effect)
+        self.animation = QPropertyAnimation(self.effect, "opacity")
         # valor: texto en combo, clave: instancia de widgets
         self.widgets = OrderedDict([
             ('General', self.general),
@@ -113,3 +118,10 @@ class Preferencias(QDialog):
     def reject(self):
         super(Preferencias, self).reject()
         self.emit(SIGNAL("configurationsClose(PyQt_PyObject)"), self)
+
+    def showEvent(self, event):
+        super(Preferencias, self).showEvent(event)
+        self.animation.setDuration(400)
+        self.animation.setStartValue(0)
+        self.animation.setEndValue(1)
+        self.animation.start()
