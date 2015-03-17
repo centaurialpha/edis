@@ -158,6 +158,12 @@ QTreeWidget::item:selected:!active {
     background: none;
 }
 
+QListWidget#list-selector::item:selected {
+    background-color: rgba(77, 82, 110, 75%);
+    border: 0px solid transparent;
+    border-radius: 3px;
+}
+
 QTreeWidget::item:selected,
 QListWidget::item:selected,
 QTreeView::item:selected {
@@ -171,6 +177,11 @@ QListWidget::item:selected:!active {
 
 QDialog {
     background-color: #212121;
+}
+
+QDialog#file-selector {
+    border: 1px solid gray;
+    border-radius: 3px;
 }
 
 QLabel#status_label {

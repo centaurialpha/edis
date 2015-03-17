@@ -29,10 +29,11 @@ from src.ui.main import Edis
 from src.ui.widgets import (
     find_popup,
     replace_widget,
-    goto_line_widget
+    goto_line_widget,
+    file_selector
     )
 from src.ui.dialogs.preferences import preferences
-from src.ui.containers import selector
+#from src.ui.containers import selector
 from src.ui.dialogs import file_properties
 from src.ui.containers import editor_widget
 from src.ui import start_page
@@ -268,8 +269,10 @@ class EditorContainer(QWidget):
 
     def show_selector(self):
         if self.get_active_editor() is not None:
-            selector_ = selector.Selector(self)
-            selector_.show()
+            #selector_ = selector.Selector(self)
+            #selector_.show()
+            selector = file_selector.FileSelector(self)
+            selector.show()
 
     def save_file(self, weditor=None):
         #FIXME: Controlar con try-except
