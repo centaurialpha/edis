@@ -6,46 +6,61 @@
     <message>
         <location filename="src/ui/dialogs/about.py" line="62"/>
         <source>Version: {0}</source>
-        <translation>Versión: {0}</translation>
-    </message>
-    <message>
-        <location filename="src/ui/dialogs/about.py" line="63"/>
-        <source>a simple cross-platform IDE for C</source>
-        <translation></translation>
+        <translation type="obsolete">Versión: {0}</translation>
     </message>
     <message>
         <location filename="src/ui/dialogs/about.py" line="67"/>
         <source>Source code: &lt;a href=&apos;{0}&apos;&gt;&lt;span style=&apos;color: lightblue;&apos;&gt;{1}&lt;/span&gt;&lt;/a&gt;</source>
-        <translation>Código fuente: &lt;a href=&apos;{0}&apos;&gt;&lt;span style=&apos;color: lightblue;&apos;&gt;{1}&lt;/span&gt;&lt;/a&gt;</translation>
+        <translation type="obsolete">Código fuente: &lt;a href=&apos;{0}&apos;&gt;&lt;span style=&apos;color: lightblue;&apos;&gt;{1}&lt;/span&gt;&lt;/a&gt;</translation>
     </message>
 </context>
 <context>
     <name>AcercaDe</name>
     <message>
-        <location filename="src/ui/dialogs/about.py" line="32"/>
+        <location filename="src/ui/dialogs/about.py" line="34"/>
         <source>About Edis</source>
         <translation>Acerca de Edis</translation>
     </message>
     <message>
-        <location filename="src/ui/dialogs/about.py" line="36"/>
-        <source>&lt;h1&gt;Edis&lt;/h1&gt;
-&lt;i&gt;Simple Integrated Development Environment&lt;/i&gt;</source>
-        <translation></translation>
-    </message>
-    <message>
         <location filename="src/ui/dialogs/about.py" line="40"/>
         <source>About</source>
-        <translation>Acerca de</translation>
+        <translation type="obsolete">Acerca de</translation>
     </message>
     <message>
         <location filename="src/ui/dialogs/about.py" line="41"/>
         <source>Report bug</source>
-        <translation>Reportar bug</translation>
+        <translation type="obsolete">Reportar bug</translation>
+    </message>
+    <message>
+        <location filename="src/ui/dialogs/about.py" line="70"/>
+        <source>Ok</source>
+        <translation>Aceptar</translation>
+    </message>
+    <message>
+        <location filename="src/ui/dialogs/about.py" line="39"/>
+        <source>&lt;h1&gt;Edis&lt;/h1&gt;
+&lt;i&gt;a simple cross-platform IDE for C&lt;/i&gt;</source>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="src/ui/dialogs/about.py" line="45"/>
+        <source>Version: {0}</source>
+        <translation>Versión: {0}</translation>
     </message>
     <message>
         <location filename="src/ui/dialogs/about.py" line="49"/>
-        <source>Ok</source>
-        <translation>Aceptar</translation>
+        <source>Source code: &lt;a href=&apos;{0}&apos;&gt;&lt;span style=&apos;color: lightblue;&apos;&gt;{1}&lt;/span&gt;&lt;/a&gt;</source>
+        <translation>Código fuente: &lt;a href=&apos;{0}&apos;&gt;&lt;span style=&apos;color: lightblue;&apos;&gt;{1}&lt;/span&gt;&lt;/a&gt;</translation>
+    </message>
+    <message>
+        <location filename="src/ui/dialogs/about.py" line="59"/>
+        <source>Edis Team:</source>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="src/ui/dialogs/about.py" line="55"/>
+        <source>License: &lt;b&gt;Edis&lt;/b&gt; is licensed under the terms of the &lt;b&gt;G&lt;/b&gt;NU &lt;b&gt;P&lt;/b&gt;ublic &lt;b&gt;L&lt;/b&gt;icense version 3 or later.</source>
+        <translation type="unfinished">Licencia: &lt;b&gt;Edis&lt;/b&gt; está disponible bajo los términos de la licencia &lt;b&gt;GPLv3&lt;/b&gt; o posterior.</translation>
     </message>
 </context>
 <context>
@@ -64,6 +79,11 @@
         <location filename="src/ui/containers/lateral/tree_symbols.py" line="68"/>
         <source>Structs</source>
         <translation>Estucturas</translation>
+    </message>
+    <message>
+        <location filename="src/ui/containers/lateral/tree_symbols.py" line="83"/>
+        <source>Enums</source>
+        <translation>Enumeraciones</translation>
     </message>
 </context>
 <context>
@@ -559,17 +579,17 @@
 <context>
     <name>EditorContainer</name>
     <message>
-        <location filename="src/ui/containers/editor_container.py" line="180"/>
+        <location filename="src/ui/containers/editor_container.py" line="181"/>
         <source>Open file</source>
         <translation>Abrir archivo</translation>
     </message>
     <message>
-        <location filename="src/ui/containers/editor_container.py" line="202"/>
+        <location filename="src/ui/containers/editor_container.py" line="203"/>
         <source>Could not open file</source>
         <translation>No se pudo abrir el archivo</translation>
     </message>
     <message>
-        <location filename="src/ui/containers/editor_container.py" line="296"/>
+        <location filename="src/ui/containers/editor_container.py" line="299"/>
         <source>Save file</source>
         <translation>Guardar archivo</translation>
     </message>
@@ -590,32 +610,32 @@
 <context>
     <name>EjecutarWidget</name>
     <message>
-        <location filename="src/ui/containers/output/process.py" line="84"/>
+        <location filename="src/ui/containers/output/process.py" line="82"/>
         <source>The process terminated</source>
         <translation>El proceso ha terminado</translation>
     </message>
     <message>
-        <location filename="src/ui/containers/output/process.py" line="88"/>
+        <location filename="src/ui/containers/output/process.py" line="86"/>
         <source>An error has occurred. Error code: {0}</source>
         <translation>Ha ocurrido un error. Código de error: {0}</translation>
     </message>
     <message>
-        <location filename="src/ui/containers/output/process.py" line="106"/>
+        <location filename="src/ui/containers/output/process.py" line="104"/>
         <source>Building file: {0} ( {1} )</source>
         <translation>Compilando archivo: {0} ( {1} )</translation>
     </message>
     <message>
-        <location filename="src/ui/containers/output/process.py" line="128"/>
+        <location filename="src/ui/containers/output/process.py" line="125"/>
         <source>Â¡COMPILATION FINISHED SUCCESSFULLY!</source>
         <translation>¡COMPILACIÓN EXITOSA!</translation>
     </message>
     <message>
-        <location filename="src/ui/containers/output/process.py" line="133"/>
+        <location filename="src/ui/containers/output/process.py" line="130"/>
         <source>Â¡COMPILATION FAILED!</source>
         <translation>¡LA COMPILACIÓN HA FALLADO!</translation>
     </message>
     <message>
-        <location filename="src/ui/containers/output/process.py" line="146"/>
+        <location filename="src/ui/containers/output/process.py" line="143"/>
         <source>An error has occurred: Compiler not found.</source>
         <translation>Ha ocurrido un error: Compilador no encontrado.</translation>
     </message>
@@ -805,21 +825,39 @@ versión: {0}.</translation>
     </message>
 </context>
 <context>
-    <name>Preferencias</name>
+    <name>Preferences</name>
     <message>
-        <location filename="src/ui/dialogs/preferences/preferences.py" line="39"/>
+        <location filename="src/ui/dialogs/preferences/preferences.py" line="43"/>
         <source>Configurations - Edis</source>
         <translation>Configuraciones - Edis</translation>
     </message>
     <message>
-        <location filename="src/ui/dialogs/preferences/preferences.py" line="92"/>
+        <location filename="src/ui/dialogs/preferences/preferences.py" line="101"/>
         <source>Cancel</source>
         <translation>Cancelar</translation>
     </message>
     <message>
-        <location filename="src/ui/dialogs/preferences/preferences.py" line="93"/>
+        <location filename="src/ui/dialogs/preferences/preferences.py" line="102"/>
         <source>Save</source>
         <translation>Guardar</translation>
+    </message>
+</context>
+<context>
+    <name>Preferencias</name>
+    <message>
+        <location filename="src/ui/dialogs/preferences/preferences.py" line="39"/>
+        <source>Configurations - Edis</source>
+        <translation type="obsolete">Configuraciones - Edis</translation>
+    </message>
+    <message>
+        <location filename="src/ui/dialogs/preferences/preferences.py" line="92"/>
+        <source>Cancel</source>
+        <translation type="obsolete">Cancelar</translation>
+    </message>
+    <message>
+        <location filename="src/ui/dialogs/preferences/preferences.py" line="93"/>
+        <source>Save</source>
+        <translation type="obsolete">Guardar</translation>
     </message>
 </context>
 <context>
@@ -845,50 +883,65 @@ versión: {0}.</translation>
     <message>
         <location filename="src/ui/dialogs/about.py" line="87"/>
         <source>Detailling issue or suggestion:</source>
-        <translation>Detalla el bug o sugerencia:</translation>
+        <translation type="obsolete">Detalla el bug o sugerencia:</translation>
     </message>
     <message>
         <location filename="src/ui/dialogs/about.py" line="92"/>
         <source>Or send an email:</source>
-        <translation>O envía un email:</translation>
+        <translation type="obsolete">O envía un email:</translation>
     </message>
 </context>
 <context>
     <name>ThemeConfiguration</name>
     <message>
-        <location filename="src/ui/dialogs/preferences/theme_configuration.py" line="48"/>
+        <location filename="src/ui/dialogs/preferences/theme_configuration.py" line="50"/>
         <source>Choose a Style Sheet:</source>
         <translation>Elige un Style Sheet:</translation>
     </message>
     <message>
-        <location filename="src/ui/dialogs/preferences/theme_configuration.py" line="58"/>
+        <location filename="src/ui/dialogs/preferences/theme_configuration.py" line="60"/>
         <source>Documentation and examples: &lt;a href=&apos;{0}&apos;&gt;&lt;span style=&apos;color: lightblue;&apos;&gt;{1}&lt;/span&gt;&lt;/a&gt;</source>
         <translation>Documentación y ejemplos: &lt;a href=&apos;{0}&apos;&gt;&lt;span style=&apos;color: lightblue;&apos;&gt;{1}&lt;/span&gt;&lt;/a&gt;</translation>
     </message>
     <message>
-        <location filename="src/ui/dialogs/preferences/theme_configuration.py" line="69"/>
+        <location filename="src/ui/dialogs/preferences/theme_configuration.py" line="68"/>
         <source>Preview</source>
         <translation>Previsualizar</translation>
     </message>
     <message>
         <location filename="src/ui/dialogs/preferences/theme_configuration.py" line="72"/>
         <source>Save style</source>
-        <translation>Guardar estilo</translation>
+        <translation type="obsolete">Guardar estilo</translation>
     </message>
     <message>
         <location filename="src/ui/dialogs/preferences/theme_configuration.py" line="99"/>
         <source>Create a style!</source>
-        <translation>Crea un estilo!</translation>
+        <translation type="obsolete">Crea un estilo!</translation>
     </message>
     <message>
         <location filename="src/ui/dialogs/preferences/theme_configuration.py" line="93"/>
         <source>Styles</source>
-        <translation>Estilos</translation>
+        <translation type="obsolete">Estilos</translation>
     </message>
     <message>
-        <location filename="src/ui/dialogs/preferences/theme_configuration.py" line="134"/>
+        <location filename="src/ui/dialogs/preferences/theme_configuration.py" line="124"/>
         <source>Name:</source>
         <translation>Nombre:</translation>
+    </message>
+    <message>
+        <location filename="src/ui/dialogs/preferences/theme_configuration.py" line="48"/>
+        <source>Style Sheet:</source>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="src/ui/dialogs/preferences/theme_configuration.py" line="57"/>
+        <source>Create a Style Sheet:</source>
+        <translation>Crea un Style Sheet</translation>
+    </message>
+    <message>
+        <location filename="src/ui/dialogs/preferences/theme_configuration.py" line="65"/>
+        <source>Save</source>
+        <translation>Guardar</translation>
     </message>
 </context>
 </TS>

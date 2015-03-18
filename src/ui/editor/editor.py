@@ -27,7 +27,7 @@ from src.ui.editor import (
     minimap,
     keywords
     )
-from src.helpers.configurations import ESettings
+from src.helpers import settings
 
 #FIXME: Cambiar comentario '//' (C++ style) por '/* */' (C style)
 
@@ -90,14 +90,14 @@ class Editor(base.Base):
         self.setLexer(self._lexer)
         # Autocompletado
         self.api = None
-        if ESettings.get('editor/completion'):
+        if settings.get_setting('editor/completion'):
             self.active_code_completion()
         # Indentación
-        self.indentation = ESettings.get('editor/width-indent')
+        self.indentation = settings.get_setting('editor/width-indent')
         self.send("sci_settabwidth", self.indentation)
         # Minimapa
         self.minimap = None
-        if ESettings.get('editor/show-minimap'):
+        if settings.get_setting('editor/show-minimap'):
             self.minimap = minimap.Minimap(self)
             self.connect(self, SIGNAL("textChanged()"),
                          self.minimap.update_code)
@@ -108,26 +108,26 @@ class Editor(base.Base):
                      self.marcar_palabras)
         # Analizador de estilo de código
         self.checker = None
-        if ESettings.get('editor/style-checker'):
+        if settings.get_setting('editor/style-checker'):
             self.load_checker()
         # Fuente
-        fuente = ESettings.get('editor/font')
-        tam_fuente = ESettings.get('editor/size-font')
+        fuente = settings.get_setting('editor/font')
+        tam_fuente = settings.get_setting('editor/size-font')
         self.cargar_fuente(fuente, tam_fuente)
         self.setMarginsBackgroundColor(QColor(self._THEME['SidebarBack']))
         self.setMarginsForegroundColor(QColor(self._THEME['SidebarFore']))
         # Línea actual
         #FIXME: Configuración
         self.send("sci_setcaretlinevisible",
-                  ESettings.get('editor/show-caret-line'))
+                  settings.get_setting('editor/show-caret-line'))
         self.send("sci_setcaretlineback", QColor(self._THEME['CaretLineBack']))
         self.send("sci_setcaretfore", QColor(self._THEME['CaretLineFore']))
         self.send("sci_setcaretlinebackalpha", self._THEME['CaretLineAlpha'])
         # Cursor
-        caret_period = ESettings.get('editor/cursor-period')
+        caret_period = settings.get_setting('editor/cursor-period')
         self.send("sci_setcaretperiod", caret_period)
         # Márgen
-        if ESettings.get('editor/show-margin'):
+        if settings.get_setting('editor/show-margin'):
             self.actualizar_margen()
 
         # Brace matching
@@ -171,19 +171,20 @@ class Editor(base.Base):
     def actualizar(self):
         """ Actualiza las opciones del editor """
 
-        if ESettings.get('editor/show-tabs-spaces'):
+        if settings.get_setting('editor/show-tabs-spaces'):
             self.setWhitespaceVisibility(self.WsVisible)
         else:
             self.setWhitespaceVisibility(self.WsInvisible)
-        self.setIndentationGuides(ESettings.get('editor/show-guides'))
-        if ESettings.get('editor/wrap-mode'):
+        self.setIndentationGuides(settings.get_setting('editor/show-guides'))
+        if settings.get_setting('editor/wrap-mode'):
             self.setWrapMode(self.WrapWord)
         else:
             self.setWrapMode(self.WrapNone)
-        self.send("sci_setcaretstyle", ESettings.get('editor/cursor'))
-        self.setCaretWidth(ESettings.get('editor/caret-width'))
-        self.setAutoIndent(ESettings.get('editor/indent'))
-        self.send("sci_setcaretperiod", ESettings.get('editor/cursor-period'))
+        self.send("sci_setcaretstyle", settings.get_setting('editor/cursor'))
+        self.setCaretWidth(settings.get_setting('editor/caret-width'))
+        self.setAutoIndent(settings.get_setting('editor/indent'))
+        self.send("sci_setcaretperiod",
+                  settings.get_setting('editor/cursor-period'))
 
     @property
     def altura_lineas(self):
@@ -198,16 +199,16 @@ class Editor(base.Base):
     def actualizar_margen(self):
         """ Actualiza el ancho del márgen de línea """
 
-        if ESettings.get('editor/show-margin'):
+        if settings.get_setting('editor/show-margin'):
             self.setEdgeMode(QsciScintilla.EdgeLine)
-            ancho = ESettings.get('editor/width-margin')
+            ancho = settings.get_setting('editor/width-margin')
             self.setEdgeColumn(ancho)
             self.setEdgeColor(QColor(self._THEME['margen']))
         else:
             self.setEdgeMode(QsciScintilla.EdgeNone)
 
     def actualizar_indentacion(self):
-        ancho = ESettings.get('editor/width-indent')
+        ancho = settings.get_setting('editor/width-indent')
         self.send("sci_settabwidth", ancho)
         self.indentation = ancho
 
@@ -302,7 +303,7 @@ class Editor(base.Base):
 
     def comment(self):
         #FIXME: tener en cuenta /* */
-        #FIXME: no funciona si el comentario no esta en el índice 0
+        #FIXME: no funciona si el comentario no inicia en el índice 0
         if self.hasSelectedText():
             line_from, _, line_to, _ = self.getSelection()
 

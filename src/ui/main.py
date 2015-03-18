@@ -28,12 +28,15 @@ from PyQt4.QtCore import (
 from src import recursos
 from src import ui
 from src.ui import system_tray
-from src.helpers import configurations
-from src.helpers.configurations import ESettings
+from src.helpers import settings
 from src.ui.dialogs import (
     unsaved_files,
     about
     )
+
+TOOLBAR_ITEMS = ["new", "open", "save", "separator", "undo", "redo",
+                 "separator", "copy", "cut", "paste", "separator", "indent",
+                 "unindent", "separator", "build", "run", "stop"]
 
 
 class Edis(QMainWindow):
@@ -56,11 +59,11 @@ class Edis(QMainWindow):
         self.setWindowTitle('{' + ui.__nombre__ + '}')
         self.setMinimumSize(750, 500)
         # Se cargan las dimensiones de la ventana
-        if ESettings.get('ventana/show-maximized'):
+        if settings.get_setting('window/show-maximized'):
             self.setWindowState(Qt.WindowMaximized)
         else:
-            size = ESettings.get('ventana/size')
-            position = ESettings.get('ventana/position')
+            size = settings.get_setting('window/size')
+            position = settings.get_setting('window/position')
             self.resize(size)
             self.move(position)
         # Toolbars
@@ -73,7 +76,7 @@ class Edis(QMainWindow):
         self.toolbar.setToolButtonStyle(Qt.ToolButtonIconOnly)
         self.addToolBar(Qt.RightToolBarArea, self.toolbar)
         self.dock_toolbar = QToolBar(self)
-        if configurations.WINDOWS:
+        if settings.IS_WINDOWS:
             self.dock_toolbar.setStyleSheet("padding: 4px;")
         toggle_action = self.dock_toolbar.toggleViewAction()
         toggle_action.setText(self.tr("Dock toolbar"))
@@ -99,7 +102,7 @@ class Edis(QMainWindow):
         Edis.load_component("edis", self)
 
         # Comprobar nueva versión
-        if ESettings.get('general/check-updates'):
+        if settings.get_setting('general/check-updates'):
             self.noti = system_tray.NotificacionActualizacion()
             self.noti.show()
 
@@ -146,7 +149,7 @@ class Edis(QMainWindow):
         toolbar_actions = {}
         editor_container = Edis.get_component("principal")
         shortcuts = recursos.SHORTCUTS
-        toolbar_items = configurations.TOOLBAR_ITEMS
+        toolbar_items = TOOLBAR_ITEMS
         for i, m in enumerate(menubar_items):
             menu = menu_bar.addMenu(m)
             menu_items[i] = menu
@@ -209,7 +212,7 @@ class Edis(QMainWindow):
         output_widget = Edis.get_component("output")
         dock.load_output_widget(output_widget)
         window.addDockWidget(Qt.BottomDockWidgetArea, output_widget)
-        if ESettings.get('general/show-start-page'):
+        if settings.get_setting('general/show-start-page'):
             editor_container.add_start_page()
 
         # Conexiones
@@ -302,31 +305,21 @@ class Edis(QMainWindow):
 
         editor_container = Edis.get_component("principal")
         if editor_container.check_files_not_saved() and \
-                ESettings.get('general/confirm-exit'):
-
+                settings.get_setting('general/confirm-exit'):
             files_not_saved = editor_container.files_not_saved()
             dialog = unsaved_files.DialogSaveFiles(
                 files_not_saved, editor_container, self)
             dialog.exec_()
             if dialog.ignorado():
                 event.ignore()
-        if ESettings.get('ventana/store-size'):
+        if settings.get_setting('window/store-size'):
             if self.isMaximized():
-                ESettings.set('ventana/show-maximized', True)
+                settings.set_setting('window/show-maximized', True)
             else:
-                ESettings.set('ventana/show-maximized', False)
-                ESettings.set('ventana/size', self.size())
-                ESettings.set('ventana/position', self.pos())
+                settings.set_setting('window/show-maximized', False)
+                settings.set_setting('window/size', self.size())
+                settings.set_setting('window/position', self.pos())
         opened_files = editor_container.opened_files()
-        ESettings.set('general/files', opened_files)
-        ESettings.set('general/recents-files',
-            editor_container.get_recents_files())
-
-    def show_settings(self):
-        """ Muestra el díalogo de preferencias """
-
-        #from src.ui.dialogs.preferences import preferences
-        #dialog = preferences.Preferencias(self)
-        #dialog.show()
-        editor_container = Edis.get_component("principal")
-        editor_container.show_settings()
+        settings.set_setting('general/files', opened_files)
+        settings.set_setting('general/recents-files',
+                             editor_container.get_recents_files())

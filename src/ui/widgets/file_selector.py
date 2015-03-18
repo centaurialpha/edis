@@ -23,6 +23,8 @@ from PyQt4.QtCore import (
 
 from src.ui.main import Edis
 
+#FIXME:
+
 
 class FileSelector(QDialog):
 
@@ -59,6 +61,9 @@ class FileSelector(QDialog):
 
         editor_container = Edis.get_component("principal")
         opened_files = editor_container.opened_files()
+        if not opened_files:
+            self.label_path.setText(self.tr("No open files"))
+            return
         for _file in opened_files:
             base_name = os.path.basename(_file[0])
             self._files[base_name] = _file[0]
@@ -70,8 +75,10 @@ class FileSelector(QDialog):
     def _update_label(self):
         """ Actualiza el QLabel """
 
-        item = self.list_of_files.currentItem().text()
-        show_in_label = self._files.get(item)
+        item = self.list_of_files.currentItem()
+        if item is None:
+            return
+        show_in_label = self._files.get(item.text())
         self.label_path.setText(show_in_label)
 
     def _open_file(self, item):

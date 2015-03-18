@@ -21,8 +21,9 @@ from PyQt4.QtGui import (
     QComboBox
     )
 
+from PyQt4.QtCore import QSettings
 from src import paths
-from src.helpers.configurations import ESettings
+from src.helpers import settings
 
 
 class GeneralConfiguration(QWidget):
@@ -36,14 +37,17 @@ class GeneralConfiguration(QWidget):
         group_on_start = QGroupBox(self.tr("On start:"))
         box = QVBoxLayout(group_on_start)
         self.check_splash = QCheckBox(self.tr("Show Splash Screen"))
-        self.check_splash.setChecked(ESettings.get('general/show-splash'))
+        self.check_splash.setChecked(
+            settings.get_setting('general/show-splash'))
         box.addWidget(self.check_splash)
         self.check_on_start = QCheckBox(self.tr("Show Start Page"))
-        self.check_on_start.setChecked(ESettings.get('general/show-start-page'))
+        show_start_page = settings.get_setting('general/show-start-page')
+        self.check_on_start.setChecked(show_start_page)
         box.addWidget(self.check_on_start)
         self.check_load_files = QCheckBox(self.tr("Load files from the last "
                                           "session"))
-        self.check_load_files.setChecked(ESettings.get('general/load-files'))
+        load_files = settings.get_setting('general/load-files')
+        self.check_load_files.setChecked(load_files)
         box.addWidget(self.check_load_files)
 
         # Al salir
@@ -51,19 +55,20 @@ class GeneralConfiguration(QWidget):
         box = QVBoxLayout(group_on_exit)
         self.check_on_exit = QCheckBox(self.tr("Confirm exit"))
         self.check_on_exit.setChecked(
-            ESettings.get('general/confirm-exit'))
+            settings.get_setting('general/confirm-exit'))
         box.addWidget(self.check_on_exit)
         self.check_geometry = QCheckBox(self.tr(
             "Save window position and geometry"))
         self.check_geometry.setChecked(
-            ESettings.get('ventana/store-size'))
+            settings.get_setting('window/store-size'))
         box.addWidget(self.check_geometry)
 
         # Notificaciones
         group_notifications = QGroupBox(self.tr("Notifications:"))
         box = QVBoxLayout(group_notifications)
         self.check_updates = QCheckBox(self.tr("Check updates"))
-        self.check_updates.setChecked(ESettings.get('general/check-updates'))
+        self.check_updates.setChecked(
+            settings.get_setting('general/check-updates'))
         box.addWidget(self.check_updates)
 
         # Idioma
@@ -72,7 +77,7 @@ class GeneralConfiguration(QWidget):
         self.combo_lang = QComboBox()
         langs = os.listdir(os.path.join(paths.PATH, "extras", "i18n"))
         self.combo_lang.addItems(["English"] + [lang[:-3] for lang in langs])
-        lang = ESettings.get('general/language')
+        lang = settings.get_setting('general/language')
         index = 0 if not lang else self.combo_lang.findText(lang)
         self.combo_lang.setCurrentIndex(index)
         box.addWidget(self.combo_lang)
@@ -104,20 +109,23 @@ class GeneralConfiguration(QWidget):
         if result == QMessageBox.Cancel:
             return
         elif result == QMessageBox.Yes:
-            ESettings.clear()
+            QSettings(paths.CONFIGURACION, QSettings.IniFormat).clear()
             self.parent.close()
 
     def guardar(self):
         """ Guarda las configuraciones Generales. """
 
-        ESettings.set('general/show-splash', self.check_splash.isChecked())
-        ESettings.set('general/show-start-page',
-                      self.check_on_start.isChecked())
-        ESettings.set('ventana/store-size',
+        settings.set_setting('general/show-splash',
+            self.check_splash.isChecked())
+        show_start_page = self.check_on_start.isChecked()
+        settings.set_setting('general/show-start-page', show_start_page)
+        settings.set_setting('ventana/store-size',
                       self.check_geometry.isChecked())
-        ESettings.set('general/confirm-exit',
+        settings.set_setting('general/confirm-exit',
                       self.check_on_exit.isChecked())
-        ESettings.set('general/check-updates', self.check_updates.isChecked())
-        ESettings.set('general/load-files', self.check_load_files.isChecked())
+        settings.set_setting('general/check-updates',
+            self.check_updates.isChecked())
+        load_files = self.check_load_files.isChecked()
+        settings.set_setting('general/load-files', load_files)
         lang = self.combo_lang.currentText()
-        ESettings.set('general/language', lang)
+        settings.set_setting('general/language', lang)

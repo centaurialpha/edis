@@ -23,7 +23,7 @@ from PyQt4.QtCore import (
 
 from src.helpers import file_manager
 from src.helpers.exceptions import EdisIOException
-from src.helpers.configurations import ESettings
+from src.helpers import settings
 from src.ui.editor import editor
 from src.ui.main import Edis
 from src.ui.widgets import (
@@ -33,7 +33,6 @@ from src.ui.widgets import (
     file_selector
     )
 from src.ui.dialogs.preferences import preferences
-#from src.ui.containers import selector
 from src.ui.dialogs import file_properties
 from src.ui.containers import editor_widget
 from src.ui import start_page
@@ -230,7 +229,7 @@ class EditorContainer(QWidget):
     def add_start_page(self):
         """ Agrega la página de inicio al stack """
 
-        if ESettings.get('general/show-start-page'):
+        if settings.get_setting('general/show-start-page'):
             _start_page = start_page.StartPage()
             self.stack.insertWidget(0, _start_page)
             self.stack.setCurrentIndex(0)
@@ -360,15 +359,15 @@ class EditorContainer(QWidget):
     def show_tabs_and_spaces(self):
         weditor = self.get_active_editor()
         if weditor is not None:
-            tabs_spaces = ESettings.get('editor/show-tabs-spaces')
-            ESettings.set('editor/show-tabs-spaces', not tabs_spaces)
+            tabs_spaces = settings.get_setting('editor/show-tabs-spaces')
+            settings.set_setting('editor/show-tabs-spaces', not tabs_spaces)
             weditor.actualizar()
 
     def show_indentation_guides(self):
         weditor = self.get_active_editor()
         if weditor is not None:
-            guides = ESettings.get('editor/show-guides')
-            ESettings.set('editor/show-guides', not guides)
+            guides = settings.get_setting('editor/show-guides')
+            settings.set_setting('editor/show-guides', not guides)
             weditor.actualizar()
 
     def action_zoom_in(self):

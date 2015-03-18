@@ -51,14 +51,18 @@ class AcercaDe(QDialog):
                         ui.__codigo_fuente__, ui.__codigo_fuente__))
         box.addWidget(lbl_link)
         box.addWidget(lbl_sc)
+        # License
+        box.addWidget(QLabel(self.tr("License: <b>Edis</b> is licensed under "
+                     "the terms of the <b>G</b>NU <b>P</b>ublic <b>L</b>icense"
+                     " version 3 or later.")))
         # Thanks to
         group = QGroupBox(self.tr("Edis Team:"))
         group.setObjectName("group-team")
         vbox = QVBoxLayout(group)
         vbox.setAlignment(Qt.AlignCenter)
-        vbox.addWidget(QLabel(self.tr("Gabriel Acosta <gabo>")))
-        vbox.addWidget(QLabel(self.tr("Martín Miranda <debianitram>")))
-        vbox.addWidget(QLabel(self.tr("Rodrigo Acosta <ekimdev>")))
+        vbox.addWidget(QLabel("Gabriel Acosta <gabo>"))
+        vbox.addWidget(QLabel("Martín Miranda <debianitram>"))
+        vbox.addWidget(QLabel("Rodrigo Acosta <ekimdev>"))
         box.addWidget(group)
 
         box_boton = QHBoxLayout()

@@ -30,7 +30,7 @@ from PyQt4.QtCore import (
     )
 
 # Módulos EDIS
-from src.helpers import configurations
+from src.helpers import settings
 from src.ui.containers.output import output_compiler
 from src import paths
 from src.helpers import logger
@@ -152,7 +152,7 @@ class EjecutarWidget(QWidget):
         direc = os.path.dirname(archivo)
         self.proceso_ejecucion.setWorkingDirectory(direc)
 
-        if configurations.LINUX:
+        if settings.IS_LINUX:
             proceso = 'xterm -T "%s" -e /usr/bin/cb_console_runner "%s"' \
                       % (self.exe, os.path.join(direc, self.exe))
             # Run !
@@ -180,7 +180,7 @@ class EjecutarWidget(QWidget):
         if archivo is None:
             return
         binario = archivo.split('.')[0]
-        if configurations.WINDOWS:
+        if settings.IS_WINDOWS:
             binario = binario + '.exe'
         os.remove(binario)
 

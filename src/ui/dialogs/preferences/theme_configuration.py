@@ -12,10 +12,8 @@ from PyQt4.QtGui import (
     QWidget,
     QVBoxLayout,
     QHBoxLayout,
-    QListWidget,
     QApplication,
     QPushButton,
-    QStackedWidget,
     QColor,
     QLabel,
     QInputDialog,
@@ -28,12 +26,11 @@ from PyQt4.QtCore import SIGNAL
 
 from PyQt4.Qsci import QsciScintilla
 
-from src.helpers import file_manager
 from src import (
     paths,
     recursos
     )
-from src.helpers.configurations import ESettings
+from src.helpers import settings
 
 doc_stylesheet = "http://qt-project.org/doc/qt-4.8/stylesheet-examples.html"
 
@@ -50,7 +47,8 @@ class ThemeConfiguration(QWidget):
         hbox.addWidget(QLabel(self.tr("Choose a Style Sheet:")))
         self.combo_styles = QComboBox()
         self._update_combo()
-        index = self.combo_styles.findText(ESettings.get('ventana/style-sheet'))
+        index = self.combo_styles.findText(
+            settings.get_setting('window/style-sheet'))
         self.combo_styles.setCurrentIndex(index)
         hbox.addWidget(self.combo_styles, 1)
         # Create editor
@@ -130,7 +128,7 @@ class ThemeConfiguration(QWidget):
 
     def guardar(self):
         style_sheet = self.combo_styles.currentText()
-        ESettings.set('ventana/style-sheet', style_sheet)
+        settings.set_setting('window/style-sheet', style_sheet)
 
 
 class ThemeEditor(QsciScintilla):

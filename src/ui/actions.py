@@ -127,7 +127,7 @@ ACTIONS = ([
         "separator": True},
     {
         "name": translate("EDIS", "Configuration"),
-        "connection": "edis.show_settings",
+        "connection": "show_settings",
         "shortcut": "preferences"}],
     # Menú ver
     [{

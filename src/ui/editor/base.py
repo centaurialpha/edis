@@ -19,7 +19,7 @@ from PyQt4.Qsci import (
     )
 
 from src import recursos
-from src.helpers.configurations import ESettings
+from src.helpers import settings
 
 
 class Base(QsciScintilla):
@@ -34,7 +34,7 @@ class Base(QsciScintilla):
         QsciScintilla.__init__(self)
         # Configuración de Qscintilla
         self.setIndentationsUseTabs(False)
-        self.setAutoIndent(ESettings.get('editor/indent'))
+        self.setAutoIndent(settings.get_setting('editor/indent'))
         self.setBackspaceUnindents(True)
         # Scrollbar
         self.send("sci_sethscrollbar", 0)
