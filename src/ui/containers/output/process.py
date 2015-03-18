@@ -158,15 +158,11 @@ class EjecutarWidget(QWidget):
             # Run !
             self.proceso_ejecucion.start(proceso)
         else:
-            try:
-                pauser = os.path.join(paths.PATH, "tools", "pauser",
-                                      "system_pause.exe")
-                path_exe = os.path.join(direc, self.exe)
-                process = [pauser] + ["\"%s\"" % path_exe]
-                Popen(process, creationflags=CREATE_NEW_CONSOLE)
-            except Exception as reason:
-                print(reason)
-                ERROR('Error: %s', reason)
+            pauser = os.path.join(paths.PATH, "tools", "pauser",
+                                  "system_pause.exe")
+            path_exe = os.path.join(direc, self.exe)
+            process = [pauser] + ["\"%s\"" % path_exe]
+            Popen(process, creationflags=CREATE_NEW_CONSOLE)
 
     @property
     def _environment(self):

@@ -525,7 +525,9 @@ class EditorContainer(QWidget):
         self.open_file(filename)
 
     def show_settings(self):
-        preferences_widget = preferences.Preferencias(self)
+        if isinstance(self.stack.currentWidget(), preferences.Preferences):
+            return
+        preferences_widget = preferences.Preferences(self)
         self.connect(preferences_widget,
                      SIGNAL("configurationsClose(PyQt_PyObject)"),
                      lambda widget: self.remove_widget(widget))

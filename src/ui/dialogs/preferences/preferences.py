@@ -36,7 +36,7 @@ from src.ui.dialogs.preferences import (
 #FIXME: Ejecución, compilación
 
 
-class Preferencias(QDialog):
+class Preferences(QDialog):
 
     def __init__(self, parent=None):
         QDialog.__init__(self, parent)
@@ -120,11 +120,11 @@ class Preferencias(QDialog):
         self.close()
 
     def close(self):
-        super(Preferencias, self).close()
+        super(Preferences, self).close()
         self.emit(SIGNAL("configurationsClose(PyQt_PyObject)"), self)
 
     def showEvent(self, event):
-        super(Preferencias, self).showEvent(event)
+        super(Preferences, self).showEvent(event)
         self.animation.setDuration(400)
         self.animation.setStartValue(0)
         self.animation.setEndValue(1)
