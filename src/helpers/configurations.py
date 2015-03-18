@@ -51,12 +51,13 @@ settings = {
     'ventana/position': '',
     'ventana/show-maximized': True,
     'ventana/store-size': True,
+    'ventana/style-sheet': 'Edark',
     'general/confirm-exit': True,
     'editor/completion': True,
     'editor/show-caret-line': True,
     'editor/show-margin': True,
     'editor/width-margin': 79,
-    'editor/cursor': 2,  # 0: invisilbe; 1: línea; 2: bloque
+    'editor/cursor': 1,  # 0: invisilbe; 1: línea; 2: bloque
     'editor/caret-width': 1,
     'editor/cursor-period': 300,
     'editor/indent': True,
@@ -91,6 +92,8 @@ class ESettings(object):
             'ventana/size', type='QSize')
         settings['ventana/position'] = qconfig.value(
             'ventana/position', type='QPoint')
+        settings['ventana/style-sheet'] = qconfig.value(
+            'ventana/style-sheet', 'Edark', type=str)
         settings['general/show-splash'] = qconfig.value(
             'general/show-splash', True, type=bool)
         settings['general/show-start-page'] = qconfig.value(

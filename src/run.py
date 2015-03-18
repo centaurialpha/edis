@@ -69,12 +69,18 @@ def run_edis(app):
     edis = Edis()
     edis.show()
 
-    # Se aplica el estilo
-    #FIXME: Leer tema personalizado
-    with open(os.path.join(paths.PATH,
-              "extras", "temas", "edark.qss")) as tema:
-        estilo = tema.read()
-    app.setStyleSheet(estilo)
+    # Style Sheet
+    style = ESettings.get('ventana/style-sheet')
+    path_style = None
+    style_sheet = None
+    if style == 'Edark':
+        path_style = os.path.join(paths.PATH, 'extras', 'temas', 'edark.qss')
+    elif style != 'Default':
+        path_style = os.path.join(paths.EDIS, style + '.qss')
+    if path_style is not None:
+        with open(path_style, mode='r') as f:
+            style_sheet = f.read()
+    app.setStyleSheet(style_sheet)
     # Archivos de última sesión
     files, recents_files = [], []
     if ESettings.get('general/load-files'):

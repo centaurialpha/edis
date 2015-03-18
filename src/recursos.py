@@ -81,7 +81,7 @@ TEMA = {
     'guia-fore': 'white',
     'SidebarBack': '#262626',
     'SidebarFore': '#B3B3B3',
-    'FoldMarginBack': '#2B2B2B',
-    'FoldMarginFore': '#2B2B2B',
+    'FoldMarginBack': '#262626',
+    'FoldMarginFore': '#262626',
     'error': '#df3e3e'
     }

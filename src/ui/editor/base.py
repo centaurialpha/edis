@@ -52,7 +52,7 @@ class Base(QsciScintilla):
         self.send("sci_indicsetstyle", self._error_indicator, "indic_dots")
 
         # Folding
-        self.setFolding(QsciScintilla.BoxedTreeFoldStyle)
+        self.setFolding(1)
         self.colorFoldMargen(recursos.TEMA['FoldMarginBack'],
                              recursos.TEMA['FoldMarginFore'])
 
