@@ -9,18 +9,20 @@ import webbrowser
 
 from PyQt4.QtGui import (
     QDialog,
-    QTabWidget,
     QVBoxLayout,
     QHBoxLayout,
     QSpacerItem,
     QSizePolicy,
     QPushButton,
-    QWidget,
     QPixmap,
-    QLabel
+    QLabel,
+    QGroupBox
     )
 
-from PyQt4.QtCore import Qt
+from PyQt4.QtCore import (
+    Qt,
+    SIGNAL
+    )
 
 from src import ui
 
@@ -30,74 +32,43 @@ class AcercaDe(QDialog):
     def __init__(self, parent):
         QDialog.__init__(self, parent, Qt.WindowMinMaxButtonsHint)
         self.setWindowTitle(self.tr("About Edis"))
+        self.setMinimumWidth(485)
         box = QVBoxLayout(self)
         label_logo = QLabel()
         label_logo.setPixmap(QPixmap(":image/edis"))
-        label_titulo = QLabel(self.tr("<h1>Edis</h1>\n<i>Simple Integrated "
-                              "Development Environment</i>"))
+        label_titulo = QLabel(self.tr("<h1>Edis</h1>\n<i>a simple "
+                              "cross-platform IDE for C</i>"))
         box_logo = QHBoxLayout()
-        self.tabs = QTabWidget()
-        self.tabs.addTab(AboutTab(), self.tr("About"))
-        self.tabs.addTab(ReportarBugTab(), self.tr("Report bug"))
         box_logo.addWidget(label_logo)
         box_logo.addWidget(label_titulo)
         box.addLayout(box_logo)
-        box.addWidget(self.tabs)
-
-        box_boton = QHBoxLayout()
-        box_boton.addSpacerItem(QSpacerItem(1, 0, QSizePolicy.Expanding))
-        boton_ok = QPushButton(self.tr("Ok"))
-        box_boton.addWidget(boton_ok)
-        box.addLayout(box_boton)
-
-        boton_ok.clicked.connect(self.close)
-
-
-class AboutTab(QWidget):
-
-    def __init__(self):
-        super(AboutTab, self).__init__()
-        box = QVBoxLayout(self)
-        box.setContentsMargins(0, 0, 0, 0)
         lbl_version = QLabel(self.tr("Version: {0}").format(ui.__version__))
-        label_descripcion = QLabel(self.tr(
-            "a simple cross-platform IDE for C"))
+        box.addWidget(lbl_version)
         lbl_link = QLabel("Web: <a href='%s'><span style='color: lightblue;'>"
                           "%s</span></a>" % (ui.__web__, ui.__web__))
         lbl_sc = QLabel(self.tr("Source code: <a href='{0}'><span style="
                         "'color: lightblue;'>{1}</span></a>").format(
                         ui.__codigo_fuente__, ui.__codigo_fuente__))
-        box.addWidget(label_descripcion)
-        box.addWidget(lbl_version)
         box.addWidget(lbl_link)
         box.addWidget(lbl_sc)
-        box.addItem(QSpacerItem(1, 0, QSizePolicy.Expanding,
-                    QSizePolicy.Expanding))
+        # Thanks to
+        group = QGroupBox(self.tr("Edis Team:"))
+        group.setObjectName("group-team")
+        vbox = QVBoxLayout(group)
+        vbox.setAlignment(Qt.AlignCenter)
+        vbox.addWidget(QLabel(self.tr("Gabriel Acosta <gabo>")))
+        vbox.addWidget(QLabel(self.tr("Martín Miranda <debianitram>")))
+        vbox.addWidget(QLabel(self.tr("Rodrigo Acosta <ekimdev>")))
+        box.addWidget(group)
 
-        lbl_link.linkActivated.connect(lambda link: webbrowser.open(link))
-        lbl_sc.linkActivated.connect(lambda link: webbrowser.open(link))
+        box_boton = QHBoxLayout()
+        box_boton.addSpacerItem(QSpacerItem(0, 10, QSizePolicy.Expanding))
+        btn_ok = QPushButton(self.tr("Ok"))
+        box_boton.addWidget(btn_ok)
+        box.addLayout(box_boton)
 
-
-class ReportarBugTab(QWidget):
-
-    def __init__(self):
-        super(ReportarBugTab, self).__init__()
-        box = QVBoxLayout(self)
-        box.setContentsMargins(0, 0, 0, 0)
-        lbl_issues = QLabel(self.tr("Detailling issue or suggestion:"))
-        lbl_link_issues = QLabel("<a href='%s'><span style='color: lightblue;'>"
-                                 "%s</span></a>" % (ui.__reportar_bug__,
-                                                    ui.__reportar_bug__))
-
-        lbl_email = QLabel(self.tr("Or send an email:"))
-        lbl_link_email = QLabel("<a href='%s'><span style='color: lightblue;'>"
-                                "%s</span></a>" % (ui.__email_autor__,
-                                ui.__email_autor__))
-        box.addWidget(lbl_issues)
-        box.addWidget(lbl_link_issues)
-        box.addWidget(lbl_email)
-        box.addWidget(lbl_link_email)
-        box.addItem(QSpacerItem(1, 0, QSizePolicy.Expanding,
-                    QSizePolicy.Expanding))
-
-        lbl_link_issues.linkActivated.connect(lambda l: webbrowser.open(l))
+        self.connect(btn_ok, SIGNAL("clicked()"), self.close)
+        self.connect(lbl_link, SIGNAL("linkActivated(QString)"),
+                     lambda link: webbrowser.open_new(link))
+        self.connect(lbl_sc, SIGNAL("linkActivated(QString)"),
+                     lambda link: webbrowser.open_new(link))

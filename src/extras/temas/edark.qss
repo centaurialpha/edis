@@ -241,6 +241,16 @@ QGroupBox {
     padding: 5px;
 }
 
+QGroupBox#group-team {
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid gray;
+}
+
+QGroupBox#group-team::title {
+    subcontrol-position: top center;
+}
+
 QGroupBox::title {
     subcontrol-origin: margin;
     padding: 5 10px;

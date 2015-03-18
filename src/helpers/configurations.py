@@ -115,7 +115,7 @@ class ESettings(object):
         settings['editor/width-margin'] = qconfig.value(
             'editor/width-margin', 79, type=int)
         settings['editor/cursor'] = qconfig.value(
-            'editor/cursor', 2, type=int)
+            'editor/cursor', 1, type=int)
         settings['editor/caret-width'] = qconfig.value(
             'editor/caret-width', 1, type=int)
         settings['editor/cursor-period'] = qconfig.value(
