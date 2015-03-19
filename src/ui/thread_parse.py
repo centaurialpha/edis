@@ -17,7 +17,10 @@ from PyQt4.QtCore import (
 from src.tools.pycparser import c_parser
 from src.tools import code_analizer
 from src import paths
-from src.helpers import logger
+from src.helpers import (
+    logger,
+    settings
+    )
 
 path = os.path.join(paths.PATH, "tools", "pycparser")
 # Fake libc
@@ -65,7 +68,17 @@ class Thread(QThread):
         """ Corre el comando cpp """
 
         command = [cpp_path] + [fake_libc] + [self._filename]
-        process = Popen(command, stdout=PIPE, universal_newlines=True)
+        if settings.IS_WINDOWS:
+            # Flags para ocultar la consola
+            CREATE_NO_WINDOW = 0x08000000
+            process = Popen(command,
+                            stdout=PIPE,
+                            universal_newlines=True,
+                            creationflags=CREATE_NO_WINDOW)
+        else:
+            process = Popen(command,
+                            stdout=PIPE,
+                            universal_newlines=True)
         text, _ = process.communicate()
         return text
 
