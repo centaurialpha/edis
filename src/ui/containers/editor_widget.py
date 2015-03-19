@@ -74,9 +74,11 @@ class EditorWidget(QWidget):
         self.combo.combo_file.removeItem(index)
 
     def change_item(self, index):
-        editor_container = Edis.get_component("principal")
         self.stack.setCurrentIndex(index)
-        editor_container.change_widget(index, True)
+        self.emit(SIGNAL("currentWidgetChanged(int)"), index)
+        #editor_container = Edis.get_component("principal")
+        #self.stack.setCurrentIndex(index)
+        #editor_container.change_widget(index, True)
 
     def current_widget(self):
         return self.stack.currentWidget()

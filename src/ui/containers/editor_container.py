@@ -86,6 +86,8 @@ class EditorContainer(QWidget):
                      self.update_recents_files)
         self.connect(self.editor_widget, SIGNAL("allFilesClosed()"),
                      self.add_start_page)
+        self.connect(self.editor_widget, SIGNAL("currentWidgetChanged(int)"),
+                     self.change_widget)
 
         Edis.load_component("principal", self)
 
@@ -125,13 +127,11 @@ class EditorContainer(QWidget):
         filename = weditor.filename
         self.emit(SIGNAL("updateSymbols(QString)"), filename)
 
-    def change_widget(self, index, fromCombo=False):
-        if not fromCombo:
-            self.editor_widget.change_item(index)
+    def change_widget(self, index):
         weditor = self.get_active_editor()
         if weditor is not None and not weditor.is_new:
-            self.fileChanged.emit(weditor.filename)
             self.emit(SIGNAL("updateSymbols(QString)"), weditor.filename)
+            self.emit(SIGNAL("fileChanged(QString)"), weditor.filename)
             weditor.setFocus()
 
     def add_editor(self, filename=""):

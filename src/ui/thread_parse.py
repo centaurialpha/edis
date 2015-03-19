@@ -71,4 +71,8 @@ class Thread(QThread):
 
     def parse(self, filename):
         self._filename = filename
-        self.start()
+        if not self.isRunning():
+            self.start()
+        else:
+            self.wait()
+            self.start()
