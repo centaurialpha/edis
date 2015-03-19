@@ -45,14 +45,15 @@ class NotificacionActualizacion(QSystemTrayIcon):
                      self._show_tray)
         self.connect(exit_action, SIGNAL("triggered()"), self.hide)
 
-        self.thread.start()
         self.setToolTip(self.tr("Checking updates..."))
+        self.thread.start()
 
     def _show_tray(self, version, link, found):
         """ Muestra el system tray icon """
 
         if found:
             self.menu.clear()
+            self.setToolTip("")
             download_action = self.menu.addAction(self.tr("Download!"))
             exit_action = self.menu.addAction(self.tr("Close notifications"))
 
@@ -65,7 +66,6 @@ class NotificacionActualizacion(QSystemTrayIcon):
                              QSystemTrayIcon.Information, 10000)
         else:
             self.hide()
-            self.thread.terminate()
 
 
 class Thread(QThread):
@@ -83,6 +83,7 @@ class Thread(QThread):
             current_version = ui.__version__
             if current_version < web_version:
                 found = True
-            self.updateVersion.emit(web_version, ui.__web__, found)
         except:
+            web_version = ''
             INFO("No se pudo establecer la conexión")
+        self.updateVersion.emit(web_version, ui.__web__, found)
