@@ -19,7 +19,7 @@ if sys.platform.startswith('linux'):
     DEFAULT_FONT = "Monospace"
 else:
     IS_WINDOWS = True
-    DEFAULT_FONT = "Consolas"
+    DEFAULT_FONT = "Lucida Console"
 
 SETTINGS = {
     'window/size': QSize(-1, -1),
