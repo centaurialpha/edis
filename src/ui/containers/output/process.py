@@ -56,24 +56,24 @@ class EjecutarWidget(QWidget):
         self.setLayout(layoutV)
 
         # Procesos
-        self.process = QProcess(self)
+        self.build_process = QProcess(self)
         if not sys.platform.startswith('linux'):
             self._envgcc = QProcessEnvironment.systemEnvironment()
             self._envgcc.insert("PATH", ENV_GCC)
-            self.process.setProcessEnvironment(self._envgcc)
-        self.proceso_ejecucion = QProcess(self)
+            self.build_process.setProcessEnvironment(self._envgcc)
+        self.execution_process = QProcess(self)
 
         # Conexión
-        self.process.readyReadStandardError.connect(
+        self.build_process.readyReadStandardError.connect(
             self.output.parsear_salida_stderr)
-        self.process.finished[int, QProcess.ExitStatus].connect(
-            self.ejecucion_terminada)
-        self.process.error[QProcess.ProcessError].connect(
-            self._error_compilacion)
-        self.proceso_ejecucion.error[QProcess.ProcessError].connect(
-            self._ejecucion_terminada)
+        self.build_process.finished[int, QProcess.ExitStatus].connect(
+            self._compilation_finished)
+        self.build_process.error[QProcess.ProcessError].connect(
+            self._compilation_error)
+        self.execution_process.error[QProcess.ProcessError].connect(
+            self._terminate_execution)
 
-    def _ejecucion_terminada(self, error_code):
+    def _terminate_execution(self, error_code):
         """ Éste método es ejecutado cuando la ejecución es frenada por el
         usuario o algún otro error. """
 
@@ -98,7 +98,7 @@ class EjecutarWidget(QWidget):
 
         # Generar el ejecutable en el directorio del código fuente
         exe_path = os.path.dirname(path)
-        self.process.setWorkingDirectory(exe_path)
+        self.build_process.setWorkingDirectory(exe_path)
 
         self.output.clear()
         item = output_compiler.Item(self.tr(
@@ -110,10 +110,10 @@ class EjecutarWidget(QWidget):
         gcc = 'gcc'
         if not sys.platform.startswith("linux"):
             gcc = os.path.join(self._environment, 'gcc')
-        self.process.start(gcc, params + [self.exe] + [filename])
-        self.process.waitForFinished()
+        self.build_process.start(gcc, params + [self.exe] + [filename])
+        self.build_process.waitForFinished()
 
-    def ejecucion_terminada(self, codigoError, exitStatus):
+    def _compilation_finished(self, codigoError, exitStatus):
         """
         Cuando la compilación termina @codigoError toma dos valores:
             0 = La compilación ha terminado de forma correcta
@@ -133,34 +133,34 @@ class EjecutarWidget(QWidget):
         count = self.output.count()
         self.output.setCurrentRow(count - 1, QItemSelectionModel.NoUpdate)
 
-    def _error_compilacion(self, error):
+    def _compilation_error(self, error):
         """
         Éste método se ejecuta cuando el inicio del proceso de compilación
         falla. Una de las causas puede ser la ausencia del compilador.
 
         """
 
-        texto = output_compiler.Item(
+        text = output_compiler.Item(
             self.tr("An error has occurred: Compiler not found."))
-        texto.setForeground(Qt.red)
-        self.output.addItem(texto)
+        text.setForeground(Qt.red)
+        self.output.addItem(text)
 
     def run_program(self, archivo):
         """ Ejecuta el binario generado por el compilador """
 
         #FIXME: Agregar terminal por defecto
-        direc = os.path.dirname(archivo)
-        self.proceso_ejecucion.setWorkingDirectory(direc)
+        path = os.path.dirname(archivo)
+        self.execution_process.setWorkingDirectory(path)
 
         if settings.IS_LINUX:
-            proceso = 'xterm -T "%s" -e /usr/bin/cb_console_runner "%s"' \
-                      % (self.exe, os.path.join(direc, self.exe))
+            process = 'xterm -T "%s" -e /usr/bin/cb_console_runner "%s"' \
+                      % (self.exe, os.path.join(path, self.exe))
             # Run !
-            self.proceso_ejecucion.start(proceso)
+            self.execution_process.start(process)
         else:
             pauser = os.path.join(paths.PATH, "tools", "pauser",
                                   "system_pause.exe")
-            path_exe = os.path.join(direc, self.exe)
+            path_exe = os.path.join(path, self.exe)
             process = [pauser] + ["\"%s\"" % path_exe]
             Popen(process, creationflags=CREATE_NEW_CONSOLE)
 
@@ -174,17 +174,17 @@ class EjecutarWidget(QWidget):
         self.run_compilation(archivo)
         self.run_program(archivo)
 
-    def clean(self, archivo):
+    def clean(self, exe):
         """ Elimina el binario generado por la compilación """
 
-        if archivo is None:
+        if exe is None:
             return
-        binario = archivo.split('.')[0]
+        binary = exe.split('.')[0]
         if settings.IS_WINDOWS:
-            binario = binario + '.exe'
-        os.remove(binario)
+            binary += '.exe'
+        os.remove(binary)
 
     def kill_process(self):
         """ Termina el proceso """
 
-        self.proceso_ejecucion.kill()
+        self.execution_process.kill()

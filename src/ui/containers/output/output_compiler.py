@@ -28,8 +28,8 @@ class SalidaCompilador(QListWidget):
                      self._go_to_line)
 
     def parsear_salida_stderr(self):
-        proceso = self._parent.proceso_compilacion
-        texto = proceso.readAllStandardError().data().decode('utf-8')
+        process = self._parent.build_process
+        texto = process.readAllStandardError().data().decode('utf-8')
         for linea in texto.splitlines():
             if linea.find(': warning') != -1:
                 warning = Item(linea, self)
