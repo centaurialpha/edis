@@ -57,7 +57,11 @@ class AcercaDe(QDialog):
                      " version 3 or later.")))
         # Thanks to
         group = QGroupBox(self.tr("Edis Team:"))
-        group.setObjectName("group-team")
+        group.setStyleSheet("QGroupBox { font-size: 16px; padding: 10px;"
+                            "margin-top: 10 5px; border: 1px solid gray; }"
+                            "QGroupBox::title { "
+                            "subcontrol-position: top center;"
+                            "subcontrol-origin: margin; }")
         vbox = QVBoxLayout(group)
         vbox.setAlignment(Qt.AlignCenter)
         vbox.addWidget(QLabel("Gabriel Acosta <gabo>"))
