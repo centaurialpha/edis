@@ -44,10 +44,10 @@ class AcercaDe(QDialog):
         box.addLayout(box_logo)
         lbl_version = QLabel(self.tr("Version: {0}").format(ui.__version__))
         box.addWidget(lbl_version)
-        lbl_link = QLabel("Web: <a href='%s'><span style='color: lightblue;'>"
+        lbl_link = QLabel("Web: <a href='%s'><span style='color: #0197FD;'>"
                           "%s</span></a>" % (ui.__web__, ui.__web__))
         lbl_sc = QLabel(self.tr("Source code: <a href='{0}'><span style="
-                        "'color: lightblue;'>{1}</span></a>").format(
+                        "'color: #0197FD;'>{1}</span></a>").format(
                         ui.__codigo_fuente__, ui.__codigo_fuente__))
         box.addWidget(lbl_link)
         box.addWidget(lbl_sc)

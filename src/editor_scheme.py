@@ -51,7 +51,7 @@ CB_SCHEME = {
     'Margin': '#808080',
     'CaretLineBack': '#DEDEDE',
     'CaretLineFore': '#000000',
-    'CaretLineAlpha': 100,
+    'CaretLineAlpha': 20,
     'SidebarBack': '#D2D2D2',
     'SidebarFore': '#000000',
     'FoldMarginBack': '#D2D2D2',

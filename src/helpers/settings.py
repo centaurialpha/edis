@@ -28,7 +28,7 @@ SETTINGS = {
     'window/store-size': True,
     'window/style-sheet': 'Edark',
     'general/confirm-exit': True,
-    'editor/scheme': 'codeblocks',
+    'editor/scheme': 'edis',
     'editor/completion': True,
     'editor/show-caret-line': True,
     'editor/show-margin': True,

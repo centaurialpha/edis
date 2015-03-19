@@ -24,10 +24,10 @@ class Lexer(QsciLexerCPP):
         self.setFoldPreprocessor(True)
         self.setFoldCompact(False)
 
-        self._load_highlighter()
+        self.load_highlighter()
 
-    def _load_highlighter(self):
-        """ Método privado: carga el resaltado de sintáxis """
+    def load_highlighter(self):
+        """ Método público: carga el resaltado de sintáxis """
 
         scheme = editor_scheme.get_scheme(settings.get_setting('editor/scheme'))
         self.setDefaultPaper(QColor(scheme['BackgroundEditor']))

@@ -43,8 +43,9 @@ class ThemeConfiguration(QWidget):
         box = QVBoxLayout(self)
         box.setContentsMargins(0, 0, 0, 0)
         # Style Sheet
-        group1 = QGroupBox(self.tr("Style Sheet:"))
-        hbox = QHBoxLayout(group1)
+        group1 = QGroupBox(self.tr("Edis Schemes:"))
+        vbox = QVBoxLayout(group1)
+        hbox = QHBoxLayout()
         hbox.addWidget(QLabel(self.tr("Choose a Style Sheet:")))
         self.combo_styles = QComboBox()
         self._update_combo()
@@ -52,12 +53,25 @@ class ThemeConfiguration(QWidget):
             settings.get_setting('window/style-sheet'))
         self.combo_styles.setCurrentIndex(index)
         hbox.addWidget(self.combo_styles, 1)
+        vbox.addLayout(hbox)
+        hbox = QHBoxLayout()
+        hbox.addWidget(QLabel(self.tr("Editor scheme:")))
+        self.combo_editor_scheme = QComboBox()
+        self.combo_editor_scheme.addItems(['Edis', 'Code::Blocks'])
+        scheme = settings.get_setting('editor/scheme')
+        index = 0
+        if scheme != 'edis':
+            index = 1
+        self.combo_editor_scheme.setCurrentIndex(index)
+        hbox.addWidget(self.combo_editor_scheme, 1)
+        vbox.addLayout(hbox)
+        vbox.addWidget(QLabel(self.tr("Need restart to see changes")))
         # Create editor
         group2 = QGroupBox(self.tr("Create a Style Sheet:"))
         vbox = QVBoxLayout(group2)
         hbox = QHBoxLayout()
         link_doc = QLabel(self.tr("Documentation and examples: <a href='{0}'>"
-                                  "<span style='color: lightblue;'>{1}</span>"
+                                  "<span style='color: #0197FD;'>{1}</span>"
                                   "</a>").format(
                                   doc_stylesheet, doc_stylesheet))
         hbox.addWidget(link_doc)
@@ -130,6 +144,10 @@ class ThemeConfiguration(QWidget):
     def guardar(self):
         style_sheet = self.combo_styles.currentText()
         settings.set_setting('window/style-sheet', style_sheet)
+        editor_scheme = self.combo_editor_scheme.currentText()
+        if editor_scheme != 'edis':
+            editor_scheme = editor_scheme.replace('::', '').lower()
+        settings.set_setting('editor/scheme', editor_scheme)
 
 
 class ThemeEditor(QsciScintilla):

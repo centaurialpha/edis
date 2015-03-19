@@ -22,7 +22,7 @@ Rectangle {
 
     Text {
         id: link
-        text: qsTr("<b>Edis</b> is Free Software! <a href='http://centaurialpha.github.io/edis'><span style='color: lightblue;'>http://centaurialpha.github.io/edis</span></a>")
+        text: qsTr("<b>Edis</b> is Free Software! <a href='http://centaurialpha.github.io/edis'><span style='color: #0197FD;'>http://centaurialpha.github.io/edis</span></a>")
         font.pointSize: 10
         color: "#FFFFFF"
         anchors.bottom: parent.bottom
