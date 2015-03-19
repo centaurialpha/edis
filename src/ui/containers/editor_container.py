@@ -130,6 +130,7 @@ class EditorContainer(QWidget):
     def change_widget(self, index):
         weditor = self.get_active_editor()
         if weditor is not None and not weditor.is_new:
+            self.editor_widget.combo.combo_file.setCurrentIndex(index)
             self.emit(SIGNAL("updateSymbols(QString)"), weditor.filename)
             self.emit(SIGNAL("fileChanged(QString)"), weditor.filename)
             weditor.setFocus()
