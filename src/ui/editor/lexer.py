@@ -8,12 +8,13 @@
 from PyQt4.Qsci import QsciLexerCPP
 from PyQt4.QtGui import QColor
 
-from src import recursos
+from src import editor_scheme
+from src.helpers import settings
 
 
 class Lexer(QsciLexerCPP):
 
-    """ Lexer para C """
+    """ Lexer class """
 
     def __init__(self, *args, **kwargs):
         super(Lexer, self).__init__(*args, **kwargs)
@@ -26,14 +27,15 @@ class Lexer(QsciLexerCPP):
         self._load_highlighter()
 
     def _load_highlighter(self):
-        """ Método privado que carga el resaltado de sintáxis """
+        """ Método privado: carga el resaltado de sintáxis """
 
-        self.setDefaultPaper(QColor(recursos.TEMA['FondoEditor']))
+        scheme = editor_scheme.get_scheme(settings.get_setting('editor/scheme'))
+        self.setDefaultPaper(QColor(scheme['BackgroundEditor']))
         self.setPaper(self.defaultPaper(0))
-        self.setColor(QColor(recursos.TEMA['Color']))
+        self.setColor(QColor(scheme['Color']))
 
         types = dir(self)
         for _type in types:
-            if _type in recursos.TEMA:
+            if _type in scheme:
                 atr = getattr(self, _type)
-                self.setColor(QColor(recursos.TEMA[_type]), atr)
+                self.setColor(QColor(scheme[_type]), atr)

@@ -28,11 +28,12 @@ from PyQt4.Qsci import QsciScintilla
 
 from src import (
     paths,
-    recursos
+    editor_scheme
     )
 from src.helpers import settings
 
 doc_stylesheet = "http://qt-project.org/doc/qt-4.8/stylesheet-examples.html"
+scheme = editor_scheme.get_scheme(settings.get_setting('editor/scheme'))
 
 
 class ThemeConfiguration(QWidget):
@@ -139,8 +140,8 @@ class ThemeEditor(QsciScintilla):
         self.SendScintilla(QsciScintilla.SCI_SETHSCROLLBAR, False)
         self.setMarginLineNumbers(1, True)
         self.setMarginWidth(1, 40)
-        self.setPaper(QColor(recursos.TEMA['FondoEditor']))
-        self.setColor(QColor(recursos.TEMA['Color']))
-        self.setMarginsBackgroundColor(QColor(recursos.TEMA['SidebarBack']))
-        self.setMarginsForegroundColor(QColor(recursos.TEMA['SidebarFore']))
+        self.setPaper(QColor(scheme['BackgroundEditor']))
+        self.setColor(QColor(scheme['Color']))
+        self.setMarginsBackgroundColor(QColor(scheme['SidebarBack']))
+        self.setMarginsForegroundColor(QColor(scheme['SidebarFore']))
         self.setCaretForegroundColor(QColor('darkGray'))

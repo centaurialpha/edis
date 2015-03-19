@@ -19,7 +19,7 @@ from PyQt4.QtCore import (
     )
 from PyQt4.Qsci import QsciScintilla, QsciAPIs
 
-from src import recursos
+from src import editor_scheme
 from src.ui.editor import (
     checker,
     lexer,
@@ -68,9 +68,6 @@ class ThreadBusqueda(QThread):
 
 class Editor(base.Base):
 
-    # Estilo
-    _THEME = recursos.TEMA
-
     # Señales
     _modificado = pyqtSignal(bool, name='archivo_modificado')
     fileSaved = pyqtSignal('PyQt_PyObject')
@@ -116,15 +113,17 @@ class Editor(base.Base):
         fuente = settings.get_setting('editor/font')
         tam_fuente = settings.get_setting('editor/size-font')
         self.cargar_fuente(fuente, tam_fuente)
-        self.setMarginsBackgroundColor(QColor(self._THEME['SidebarBack']))
-        self.setMarginsForegroundColor(QColor(self._THEME['SidebarFore']))
+        self.scheme = editor_scheme.get_scheme(
+            settings.get_setting('editor/scheme'))
+        self.setMarginsBackgroundColor(QColor(self.scheme['SidebarBack']))
+        self.setMarginsForegroundColor(QColor(self.scheme['SidebarFore']))
         # Línea actual
         #FIXME: Configuración
         self.send("sci_setcaretlinevisible",
                   settings.get_setting('editor/show-caret-line'))
-        self.send("sci_setcaretlineback", QColor(self._THEME['CaretLineBack']))
-        self.send("sci_setcaretfore", QColor(self._THEME['CaretLineFore']))
-        self.send("sci_setcaretlinebackalpha", self._THEME['CaretLineAlpha'])
+        self.send("sci_setcaretlineback", QColor(self.scheme['CaretLineBack']))
+        self.send("sci_setcaretfore", QColor(self.scheme['CaretLineFore']))
+        self.send("sci_setcaretlinebackalpha", self.scheme['CaretLineAlpha'])
         # Cursor
         caret_period = settings.get_setting('editor/cursor-period')
         self.send("sci_setcaretperiod", caret_period)
@@ -134,10 +133,10 @@ class Editor(base.Base):
 
         # Brace matching
         self.match_braces(QsciScintilla.SloppyBraceMatch)
-        self.match_braces_color(self._THEME['brace-background'],
-                                self._THEME['brace-foreground'])
-        self.unmatch_braces_color(self._THEME['brace-unbackground'],
-                                  self._THEME['brace-unforeground'])
+        self.match_braces_color(self.scheme['MatchedBraceBack'],
+                                self.scheme['MatchedBraceFore'])
+        self.unmatch_braces_color(self.scheme['UnmatchedBraceBack'],
+                                  self.scheme['UnmatchedBraceFore'])
 
     def cargar_fuente(self, fuente, tam):
         self._fuente = QFont(fuente, tam)
@@ -214,7 +213,7 @@ class Editor(base.Base):
             self.setEdgeMode(QsciScintilla.EdgeLine)
             ancho = settings.get_setting('editor/width-margin')
             self.setEdgeColumn(ancho)
-            self.setEdgeColor(QColor(self._THEME['margen']))
+            self.setEdgeColor(QColor(self.scheme['Margin']))
         else:
             self.setEdgeMode(QsciScintilla.EdgeNone)
 

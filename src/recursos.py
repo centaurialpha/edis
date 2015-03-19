@@ -56,32 +56,3 @@ SHORTCUTS = {
     "find-replace": QKeySequence(Qt.CTRL + Qt.Key_H),
     "go": QKeySequence(Qt.CTRL + Qt.Key_J)
     }
-
-# Tema editor
-TEMA = {
-    'FondoEditor': '#0e0f12',
-    'Color': '#e2e2e5',
-    'Keyword': '#7e8aa2',
-    'Comment': '#3f3f3f',
-    'CommentLine': '#3f3f3f',
-    'Number': '#ff9900',
-    'DoubleQuotedString': '#606060',
-    'SingleQuotedString': '#606060',
-    'PreProcessor': '#faf4c6',
-    'Operator': '#e2e2e5',
-    'brace-foreground': 'white',
-    'brace-background': '#044888',
-    'brace-unforeground': 'white',
-    'brace-unbackground': 'red',
-    'margen': '#808080',
-    'CaretLineBack': 'gray',
-    'CaretLineFore': '#FFFFFF',
-    'CaretLineAlpha': 20,
-    'guia-fondo': 'red',
-    'guia-fore': 'white',
-    'SidebarBack': '#262626',
-    'SidebarFore': '#B3B3B3',
-    'FoldMarginBack': '#262626',
-    'FoldMarginFore': '#262626',
-    'error': '#df3e3e'
-    }

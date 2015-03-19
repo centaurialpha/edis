@@ -18,8 +18,9 @@ from PyQt4.Qsci import (
     QsciScintilla
     )
 
-from src import recursos
+from src import editor_scheme
 from src.helpers import settings
+scheme = editor_scheme.get_scheme(settings.get_setting('editor/scheme'))
 
 
 class Base(QsciScintilla):
@@ -53,8 +54,7 @@ class Base(QsciScintilla):
 
         # Folding
         self.setFolding(1)
-        self.colorFoldMargen(recursos.TEMA['FoldMarginBack'],
-                             recursos.TEMA['FoldMarginFore'])
+        self.colorFoldMargen(scheme['FoldMarginBack'], scheme['FoldMarginFore'])
 
         self._fuente = None
 
