@@ -18,10 +18,13 @@ class Minimap(QsciScintilla):
         self._indentation = self._weditor.indentation
         self.setLexer(self._weditor.lexer())
         # Configuración Scintilla
-        self.setStyleSheet("background: transparent;")
-        self.setReadOnly(True)
         self.SendScintilla(QsciScintilla.SCI_SETHSCROLLBAR, False)
+        self.SendScintilla(QsciScintilla.SCI_HIDESELECTION, True)
         self.setFolding(QsciScintilla.NoFoldStyle, 1)
+        self.setReadOnly(True)
+        self.setCaretWidth(0)
+        self.setStyleSheet("background: transparent; border: 0px;")
+        # Opacity
         self.efect = QGraphicsOpacityEffect()
         self.setGraphicsEffect(self.efect)
         self.efect.setOpacity(0.5)

@@ -113,7 +113,8 @@ class Editor(base.Base):
         self.setFoldMarginColors(QColor(self.scheme['FoldMarginBack']),
                                  QColor(self.scheme['FoldMarginFore']))
         self.markerDefine(QsciScintilla.SC_MARK_LEFTRECT, self._marker_modified)
-        self.setMarkerBackgroundColor(QColor(255, 0, 0), self._marker_modified)
+        self.setMarkerBackgroundColor(
+            QColor(223, 62, 62), self._marker_modified)
         self.markerDefine(QsciScintilla.SC_MARK_LEFTRECT, self._marker_save)
         self.setMarkerBackgroundColor(QColor(0, 210, 0), self._marker_save)
 
