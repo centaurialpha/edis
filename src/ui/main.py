@@ -203,7 +203,7 @@ class Edis(QMainWindow):
         editor_container = Edis.get_component("principal")
         dock = Edis.get_component("dock")
         dock.load_dock_toolbar(self.dock_toolbar)
-        names_instances = ["symbols", "navigator", "explorer"]
+        names_instances = ["symbols", "explorer"]
         for name in names_instances:
             method = getattr(dock, "load_%s_widget" % name)
             widget = Edis.get_lateral(name)

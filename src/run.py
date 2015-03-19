@@ -32,7 +32,6 @@ from src.ui.widgets import status_bar
 import src.ui.dock_manager
 import src.ui.containers.editor_container
 import src.ui.containers.output.output_container
-import src.ui.containers.lateral.navigator
 import src.ui.containers.lateral.explorer
 import src.ui.containers.lateral.tree_symbols
 #lint:enable

@@ -28,14 +28,11 @@ class DockManager(QObject):
                      self._update_symbols_widget)
         # Tool buttons
         self.symbols_button = tool_button.CustomToolButton("Symbols")
-        self.navigator_button = tool_button.CustomToolButton("Navigator")
         self.explorer_button = tool_button.CustomToolButton("Explorer")
 
         # Conexiones
         self.connect(self.symbols_button, SIGNAL("clicked(bool)"),
                      self._symbols_visibility)
-        self.connect(self.navigator_button, SIGNAL("clicked(bool)"),
-                     self._navigator_visibility)
         self.connect(self.explorer_button, SIGNAL("clicked(bool)"),
                      self._explorer_visibility)
 
@@ -44,8 +41,7 @@ class DockManager(QObject):
     def load_dock_toolbar(self, toolbar):
         """ Carga la barra de herramientas del Dock Lateral"""
 
-        for tb in [self.symbols_button, self.navigator_button,
-                   self.explorer_button]:
+        for tb in [self.symbols_button, self.explorer_button]:
             toolbar.addWidget(tb)
 
     def load_output_widget(self, output_widget):
@@ -72,19 +68,6 @@ class DockManager(QObject):
         self.connect(self._symbols_widget, SIGNAL("visibilityChanged(bool)"),
                      lambda checked: self.symbols_button.setChecked(checked))
 
-    def load_navigator_widget(self, navigator_widget):
-        """ Carga el navegador """
-
-        self._navigator_widget = navigator_widget
-        navigator_widget.hide()
-        editor_container = Edis.get_component("principal")
-        self.connect(editor_container, SIGNAL("openedFile(QString)"),
-                     navigator_widget.add_item)
-        self.connect(editor_container, SIGNAL("closedFile(int)"),
-                     navigator_widget.delete_item)
-        self.connect(self._navigator_widget, SIGNAL("visibilityChanged(bool)"),
-                     lambda checked: self.navigator_button.setChecked(checked))
-
     def load_explorer_widget(self, explorer_widget):
         """ Carga el explorador """
 
@@ -97,28 +80,16 @@ class DockManager(QObject):
         """ Cambia la visibilidad del árbol de símbolos """
 
         if value:
-            for widget in [self._navigator_widget, self._explorer_widget]:
-                    widget.hide()
+            self._explorer_widget.hide()
             self._symbols_widget.show()
         else:
             self._symbols_widget.hide()
-
-    def _navigator_visibility(self, value):
-        """ Cambia la visibilidad del navegador """
-
-        if value:
-            for widget in [self._symbols_widget, self._explorer_widget]:
-                widget.hide()
-            self._navigator_widget.show()
-        else:
-            self._navigator_widget.hide()
 
     def _explorer_visibility(self, value):
         """ Cambia la visibilidad del explorador """
 
         if value:
-            for widget in [self._symbols_widget, self._navigator_widget]:
-                widget.hide()
+            self._symbols_widget.hide()
             self._explorer_widget.show()
         else:
             self._explorer_widget.hide()
