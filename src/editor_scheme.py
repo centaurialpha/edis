@@ -14,7 +14,7 @@ EDIS_SCHEME = {
     'CommentLine': '#3F3F3F',
     'Number': '#FF9900',
     'DoubleQuotedString': '#606060',
-    'SingleQuotedString': '#606060',
+    'SingleQuotedString': '#96FF00',
     'PreProcessor': '#FAF4C6',
     'Operator': '#E2E2E5',
     'MatchedBraceFore': '#FFFFFF',
