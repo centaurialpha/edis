@@ -24,6 +24,6 @@ class Checker(QThread):
             self.data[nline] = message
 
     def start_checker(self):
-        self._source = self._weditor.texto
+        self._source = self._weditor.text()
         self.data = {}
         self.start()

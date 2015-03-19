@@ -152,7 +152,10 @@ ACTIONS = ([
         "connection": "show_tabs_and_spaces"},
     {
         "name": translate("EDIS", "Show indentation guides"),
-        "connection": "show_indentation_guides",
+        "connection": "show_indentation_guides"},
+    {
+        "name": translate("EDIS", "Delete Markers"),
+        "connection": "delete_editor_markers",
         "separator": True},
     {
         "name": translate("EDIS", "Show File Selector"),

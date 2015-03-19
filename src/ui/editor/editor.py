@@ -8,7 +8,8 @@
 from PyQt4.QtGui import (
     QColor,
     QToolTip,
-    QFont
+    QFont,
+    QFontMetrics
     )
 
 from PyQt4.QtCore import (
@@ -68,6 +69,10 @@ class ThreadBusqueda(QThread):
 
 class Editor(base.Base):
 
+    # Marcadores
+    _marker_modified = 8
+    _marker_save = 9
+
     # Señales
     _modificado = pyqtSignal(bool, name='archivo_modificado')
     fileSaved = pyqtSignal('PyQt_PyObject')
@@ -82,8 +87,38 @@ class Editor(base.Base):
         self._filename = ""
         self.modified = False
         self.is_new = True
+        self._font = None
+        # Configuration
+        self.setIndentationsUseTabs(False)
+        self.setAutoIndent(settings.get_setting('editor/indent'))
+        self.setBackspaceUnindents(True)
+        # Quita el scrollbar
+        self.send("sci_sethscrollbar", 0)
+        # Configuración de indicadores
+        self._word_indicator = 0
+        self._warning_indicator = 1
+        self._error_indicator = 2
+        self.send("sci_indicsetstyle", self._word_indicator, "indic_box")
+        self.send("sci_indicsetfore", self._word_indicator,
+            QColor("#ccd900"))
+        self.send("sci_indicsetstyle", self._warning_indicator, "indic_dots")
+        self.send("sci_indicsetfore", self._warning_indicator,
+            QColor("#ffff00"))
+        self.send("sci_indicsetstyle", self._error_indicator, "indic_dots")
+        # Scheme
+        self.scheme = editor_scheme.get_scheme(
+            settings.get_setting('editor/scheme'))
+        # Folding
+        self.setFolding(QsciScintilla.PlainFoldStyle)
+        self.setFoldMarginColors(QColor(self.scheme['FoldMarginBack']),
+                                 QColor(self.scheme['FoldMarginFore']))
+        self.markerDefine(QsciScintilla.SC_MARK_LEFTRECT, self._marker_modified)
+        self.setMarkerBackgroundColor(QColor(255, 0, 0), self._marker_modified)
+        self.markerDefine(QsciScintilla.SC_MARK_LEFTRECT, self._marker_save)
+        self.setMarkerBackgroundColor(QColor(0, 210, 0), self._marker_save)
+
         # Actualiza flags (espacios en blanco, cursor, sidebar, etc)
-        self.actualizar()
+        self.update_options()
         # Lexer
         self._lexer = lexer.Lexer()
         self.setLexer(self._lexer)
@@ -104,21 +139,18 @@ class Editor(base.Base):
         self.hilo_ocurrencias = ThreadBusqueda()
         self.connect(self.hilo_ocurrencias,
                      SIGNAL("ocurrenciasThread(PyQt_PyObject)"),
-                     self.marcar_palabras)
+                     self.mark_words)
         # Analizador de estilo de código
         self.checker = None
         if settings.get_setting('editor/style-checker'):
             self.load_checker()
         # Fuente
-        fuente = settings.get_setting('editor/font')
-        tam_fuente = settings.get_setting('editor/size-font')
-        self.cargar_fuente(fuente, tam_fuente)
-        self.scheme = editor_scheme.get_scheme(
-            settings.get_setting('editor/scheme'))
+        font = settings.get_setting('editor/font')
+        font_size = settings.get_setting('editor/size-font')
+        self.load_font(font, font_size)
         self.setMarginsBackgroundColor(QColor(self.scheme['SidebarBack']))
         self.setMarginsForegroundColor(QColor(self.scheme['SidebarFore']))
         # Línea actual
-        #FIXME: Configuración
         self.send("sci_setcaretlinevisible",
                   settings.get_setting('editor/show-caret-line'))
         self.send("sci_setcaretlineback", QColor(self.scheme['CaretLineBack']))
@@ -129,22 +161,29 @@ class Editor(base.Base):
         self.send("sci_setcaretperiod", caret_period)
         # Márgen
         if settings.get_setting('editor/show-margin'):
-            self.actualizar_margen()
-
+            self.update_margin()
         # Brace matching
-        self.match_braces(QsciScintilla.SloppyBraceMatch)
-        self.match_braces_color(self.scheme['MatchedBraceBack'],
-                                self.scheme['MatchedBraceFore'])
-        self.unmatch_braces_color(self.scheme['UnmatchedBraceBack'],
-                                  self.scheme['UnmatchedBraceFore'])
+        self.setBraceMatching(QsciScintilla.SloppyBraceMatch)
+        self.setMatchedBraceBackgroundColor(QColor(
+            self.scheme['MatchedBraceBack']))
+        self.setMatchedBraceForegroundColor(QColor(
+            self.scheme['MatchedBraceFore']))
+        self.setUnmatchedBraceBackgroundColor(QColor(
+            self.scheme['UnmatchedBraceBack']))
+        self.setUnmatchedBraceForegroundColor(QColor(
+            self.scheme['UnmatchedBraceFore']))
 
-    def cargar_fuente(self, fuente, tam):
-        self._fuente = QFont(fuente, tam)
+        # Conexiones
+        self.connect(self, SIGNAL("linesChanged()"), self.update_sidebar)
+        self.connect(self, SIGNAL("textChanged()"), self._add_marker_modified)
+
+    def load_font(self, fuente, tam):
+        self._font = QFont(fuente, tam)
         if self._lexer is None:
-            self.setFont(self._fuente)
+            self.setFont(self._font)
         else:
-            self._lexer.setFont(self._fuente)
-        self.setMarginsFont(self._fuente)
+            self._lexer.setFont(self._font)
+        self.setMarginsFont(self._font)
 
     def load_checker(self, activated=True):
         if activated and self.checker is not None:
@@ -178,7 +217,7 @@ class Editor(base.Base):
         if self.checker is not None:
             self.checker.start_checker()
 
-    def actualizar(self):
+    def update_options(self):
         """ Actualiza las opciones del editor """
 
         if settings.get_setting('editor/show-tabs-spaces'):
@@ -196,17 +235,15 @@ class Editor(base.Base):
         self.send("sci_setcaretperiod",
                   settings.get_setting('editor/cursor-period'))
 
-    @property
-    def altura_lineas(self):
-        linea, i = self.devolver_posicion_del_cursor()
-        return self.textHeight(linea)
+    def update_sidebar(self):
+        """ Ajusta el ancho del sidebar """
+        fmetrics = QFontMetrics(self._font)
+        lines = str(self.lines()) + '00'
+        if len(lines) != 1:
+            width = fmetrics.width(lines)
+            self.setMarginWidth(0, width)
 
-    def devolver_posicion_del_cursor(self):
-        """ Posición del cursor (línea, columna) """
-
-        return self.getCursorPosition()
-
-    def actualizar_margen(self):
+    def update_margin(self):
         """ Actualiza el ancho del márgen de línea """
 
         if settings.get_setting('editor/show-margin'):
@@ -217,12 +254,12 @@ class Editor(base.Base):
         else:
             self.setEdgeMode(QsciScintilla.EdgeNone)
 
-    def actualizar_indentacion(self):
+    def update_indentation(self):
         ancho = settings.get_setting('editor/width-indent')
         self.send("sci_settabwidth", ancho)
         self.indentation = ancho
 
-    def marcar_palabras(self, palabras):
+    def mark_words(self, palabras):
         self.clear_indicators(self._word_indicator)
         for p in palabras:
             self.fillIndicatorRange(p[0], p[1], p[0], p[2],
@@ -243,6 +280,14 @@ class Editor(base.Base):
             self.api = None
             self.setAutoCompletionSource(0)
 
+    def _add_marker_modified(self):
+        """ Agrega el marcador cuando el texto cambia """
+
+        nline, _ = self.getCursorPosition()
+        if self.markersAtLine(nline):
+            self.markerDelete(nline)
+        self.markerAdd(nline, self._marker_modified)
+
     def _show_violations(self):
         data = self.checker.data
         self.clear_indicators(self._warning_indicator)
@@ -250,25 +295,6 @@ class Editor(base.Base):
             line = int(line) - 1
             self.fillIndicatorRange(line, 0, line, self.lineLength(line),
                                     self._warning_indicator)
-
-    def buscar(self, palabra, re=False, cs=False, wo=False, wrap=False,
-               forward=True, linea=-1, indice=-1):
-        """ Buscar la primera aparición de @palabra,
-        si se encuentra se selecciona.
-
-        @palabra: palabra buscada.
-        @re: expresión regular en lugar de una cadena simple.
-        @cs: case sensitive
-        @wo: busca toda la palabra, si es falso cualquier texto coincidente
-        @wrap: envoltura
-        """
-
-        pass
-
-    def replace_word(self, reemplazar, reemplazo, todo=False):
-        """ Reemplaza una o varias ocurrencias de @reemplazar por @reemplazo """
-
-        pass
 
     def _text_under_cursor(self):
         """ Texto seleccionado con el cursor """
@@ -284,7 +310,7 @@ class Editor(base.Base):
             if not word:
                 self.clear_indicators(self._word_indicator)
                 return
-            self.hilo_ocurrencias.buscar(word, self.texto)
+            self.hilo_ocurrencias.buscar(word, self.text())
 
     def mouseMoveEvent(self, event):
         super(Editor, self).mouseMoveEvent(event)
@@ -413,11 +439,16 @@ class Editor(base.Base):
     def move_up(self):
         self.send("sci_moveselectedlinesup")
 
-    def guardado(self):
+    def saved(self):
         self.fileSaved.emit(self)
         self.is_new = False
         self.modified = False
         self.setModified(False)
+        # Itera todas las líneas y si existe un _marker_modified agrega
+        # un _marker_save
+        for nline in range(self.lines()):
+            if self.markersAtLine(nline):
+                self.markerAdd(nline, self._marker_save)
 
     def dropEvent(self, evento):
         self._drop.emit(evento)

@@ -218,9 +218,9 @@ class EditorConfiguration(QWidget):
         principal = Edis.get_component("principal")
         weditor = principal.get_active_editor()
         if weditor is not None:
-            weditor.cargar_fuente(fuente, int(fuente_tam))
-            weditor.actualizar()
-            weditor.actualizar_margen()
-            weditor.actualizar_indentacion()
+            weditor.load_font(fuente, int(fuente_tam))
+            weditor.update_options()
+            weditor.update_margin()
+            weditor.update_indentation()
             weditor.load_checker(checker_value)
             weditor.active_code_completion(code_completion)

@@ -189,7 +189,11 @@ class EditorContainer(QWidget):
                     self.editor_widget.not_open = False
                     content = file_manager.get_file_content(_file)
                     weditor = self.add_editor(_file)
-                    weditor.texto = content
+                    weditor.setText(content)
+                    # Cuando se setea el contenido en el editor
+                    # se emite la señal textChanged() por lo tanto se agrega
+                    # el marker, entonces se procede a borrarlo
+                    weditor.markerDelete(0, 8)
                     weditor.filename = _file
                     if cursor_position is not None:
                         line, row = cursor_position
@@ -283,10 +287,10 @@ class EditorContainer(QWidget):
         if weditor.is_new:
             return self.save_file_as(weditor)
         filename = weditor.filename
-        source_code = weditor.texto
+        source_code = weditor.text()
         filename = file_manager.write_file(filename, source_code)
         weditor.filename = filename
-        weditor.guardado()
+        weditor.saved()
         return filename
 
     def save_file_as(self, weditor=None):
@@ -300,10 +304,10 @@ class EditorContainer(QWidget):
                                                working_directory)
         if not filename:
             return False
-        filename = file_manager.write_file(filename, weditor.texto)
+        filename = file_manager.write_file(filename, weditor.text())
         weditor.filename = filename
         self.fileChanged.emit(filename)
-        weditor.guardado()
+        weditor.saved()
         return filename
 
     def save_selected(self, filename):
@@ -371,6 +375,11 @@ class EditorContainer(QWidget):
             settings.set_setting('editor/show-guides', not guides)
             weditor.actualizar()
 
+    def delete_editor_markers(self):
+        weditor = self.get_active_editor()
+        if weditor is not None:
+            weditor.markerDeleteAll()
+
     def action_zoom_in(self):
         weditor = self.get_active_editor()
         if weditor is not None:
@@ -416,7 +425,7 @@ class EditorContainer(QWidget):
 
     def update_cursor(self, line, row):
         weditor = self.get_active_editor()
-        lines = weditor.lineas
+        lines = weditor.lines()
         self.editor_widget.combo.update_cursor_position(
             line + 1, row + 1, lines)
         self.cursorPosition.emit(line + 1, row + 1, lines)
