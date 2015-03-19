@@ -444,6 +444,11 @@
         <source>Show/hide Toolbars</source>
         <translation>Mostrar/ocultar Barras de Herramientas</translation>
     </message>
+    <message>
+        <location filename="src/ui/actions.py" line="11"/>
+        <source>Delete Markers</source>
+        <translation>Borrar Marcadores</translation>
+    </message>
 </context>
 <context>
     <name>Edis</name>
@@ -584,17 +589,17 @@
 <context>
     <name>EditorContainer</name>
     <message>
-        <location filename="src/ui/containers/editor_container.py" line="181"/>
+        <location filename="src/ui/containers/editor_container.py" line="182"/>
         <source>Open file</source>
         <translation>Abrir archivo</translation>
     </message>
     <message>
-        <location filename="src/ui/containers/editor_container.py" line="203"/>
+        <location filename="src/ui/containers/editor_container.py" line="208"/>
         <source>Could not open file</source>
         <translation>No se pudo abrir el archivo</translation>
     </message>
     <message>
-        <location filename="src/ui/containers/editor_container.py" line="299"/>
+        <location filename="src/ui/containers/editor_container.py" line="304"/>
         <source>Save file</source>
         <translation>Guardar archivo</translation>
     </message>
