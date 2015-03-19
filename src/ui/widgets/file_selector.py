@@ -60,13 +60,10 @@ class FileSelector(QDialog):
         """ Carga los archivos abiertos en la lista """
 
         editor_container = Edis.get_component("principal")
-        opened_files = editor_container.opened_files()
-        if not opened_files:
-            self.label_path.setText(self.tr("No open files"))
-            return
+        opened_files = editor_container.opened_files_for_selector()
         for _file in opened_files:
-            base_name = os.path.basename(_file[0])
-            self._files[base_name] = _file[0]
+            base_name = os.path.basename(_file)
+            self._files[base_name] = _file
             self.list_of_files.addItem(base_name)
         index = editor_container.current_index()
         self.list_of_files.setCurrentRow(index)
@@ -76,8 +73,6 @@ class FileSelector(QDialog):
         """ Actualiza el QLabel """
 
         item = self.list_of_files.currentItem()
-        if item is None:
-            return
         show_in_label = self._files.get(item.text())
         self.label_path.setText(show_in_label)
 
@@ -86,7 +81,7 @@ class FileSelector(QDialog):
 
         editor_container = Edis.get_component("principal")
         index = self.list_of_files.row(item)
-        editor_container.change_widget(index)
+        editor_container.editor_widget.change_item(index)
         self.close()
 
     def showEvent(self, event):

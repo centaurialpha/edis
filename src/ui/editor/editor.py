@@ -80,6 +80,8 @@ class Editor(base.Base):
 
     def __init__(self):
         super(Editor, self).__init__()
+        #FIXME: display
+        self.__display = ""
         self._filename = ""
         self.modified = False
         self.is_new = True
@@ -155,6 +157,15 @@ class Editor(base.Base):
             self.checker = checker.Checker(self)
             self.connect(self.checker, SIGNAL("finished()"),
                          self._show_violations)
+
+    #FIXME: Mejorar esto, solo es usado por el selector
+    def get_display(self):
+        return self.__display
+
+    def set_display(self, name):
+        self.__display = name
+
+    display = property(get_display, set_display)
 
     @property
     def filename(self):

@@ -136,9 +136,10 @@ class EditorContainer(QWidget):
 
     def add_editor(self, filename=""):
         self.stack.addWidget(self.editor_widget)
+        weditor = editor.Editor()
         if not filename:
             filename = "Untitled"
-        weditor = editor.Editor()
+            weditor.display = filename
         self.editor_widget.add_item_combo(filename)
         self.editor_widget.add_widget(weditor)
         if isinstance(self.stack.widget(0), start_page.StartPage):
@@ -394,6 +395,18 @@ class EditorContainer(QWidget):
 
     def opened_files(self):
         return self.editor_widget.opened_files()
+
+    def opened_files_for_selector(self):
+        self.index_file_selector = 0
+        files = []
+        for index in range(self.editor_widget.count()):
+            weditor = self.editor_widget.widget(index)
+            path = weditor.filename
+            if not path:
+                path = weditor.display + ' (%s)' % self.index_file_selector
+                self.index_file_selector += 1
+            files.append(path)
+        return files
 
     def file_properties(self):
         weditor = self.get_active_editor()

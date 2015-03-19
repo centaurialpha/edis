@@ -76,9 +76,6 @@ class EditorWidget(QWidget):
     def change_item(self, index):
         self.stack.setCurrentIndex(index)
         self.emit(SIGNAL("currentWidgetChanged(int)"), index)
-        #editor_container = Edis.get_component("principal")
-        #self.stack.setCurrentIndex(index)
-        #editor_container.change_widget(index, True)
 
     def current_widget(self):
         return self.stack.currentWidget()
