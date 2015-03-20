@@ -20,13 +20,21 @@ un problema ya que el código se hace ilegible y difícil de mantener.
 
 # Máximo número de caracteres en una línea
 MAX_LINE_LENGTH = 79
-REGEX_COMMENT_LINE = re.compile("^\s*\/\*.*\*\/\s*$")
+# Expresiones Regulares
+# Comentarios
+REGEX_COMMENT_LINE = re.compile("(^\s*\/\*.*\*\/\s*$)|(^\s*\/\/*.*\s*$)")
+# Espacio entre operadores
 REGEX_OPERATOR_SPACE = re.compile("(\w\s?(\+|\-|\*|\<|\>|\=)\w)" +
                                   "|(\w(\=\=|\<\=|\>\=)\w)")
+# Espacio en coma
 REGEX_COMMA_SPACE = re.compile(",[^ ]")
+# Espacio entre ')' y '{'
 REGEX_PAREN_CURLY_SPACE = re.compile("\)\{")
+# Espacio despues de /*
 REGEX_OPEN_COMMENT_SPACE = re.compile(r'\/\*[^ *\n]')
+# Espacio antes de */
 REGEX_CLOSE_COMMENT_SPACE = re.compile(r'[^ *]\*\/')
+# Array
 REGEX_IS_ARRAY = re.compile(r'\[.*\]')
 
 # Mensajes
@@ -64,9 +72,9 @@ class EChecker(object):
         i = i + 2;
 
         """
-        if REGEX_OPERATOR_SPACE.match(line) and not line.startswith('#'):
+        if REGEX_OPERATOR_SPACE.search(line) and not line.startswith('#'):
             if not REGEX_COMMENT_LINE.search(line) and not \
-                    REGEX_IS_ARRAY.search(line):
+            REGEX_IS_ARRAY.search(line):
                 self._results.append(M_OPERATOR_SPACE % self._line_number)
 
     def _check_comma_space(self, line):
