@@ -73,7 +73,7 @@ class ThemeConfiguration(QWidget):
         link_doc = QLabel(self.tr("Documentation and examples: <a href='{0}'>"
                                   "<span style='color: #0197FD;'>{1}</span>"
                                   "</a>").format(
-                                  doc_stylesheet, doc_stylesheet))
+                                      doc_stylesheet, doc_stylesheet))
         hbox.addWidget(link_doc)
         self.btn_save_theme = QPushButton(self.tr("Save"))
         self.btn_save_theme.setEnabled(False)
@@ -120,7 +120,7 @@ class ThemeConfiguration(QWidget):
         path = None
         if index == 1:
             path = os.path.join(paths.PATH, "extras",
-                                       "temas", "edark.qss")
+                                "temas", "edark.qss")
         elif index != 0:
             style = self.combo_styles.currentText() + '.qss'
             path = os.path.join(paths.EDIS, style)

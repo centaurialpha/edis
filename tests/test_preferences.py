@@ -21,7 +21,8 @@ class PreferencesTestCase(unittest.TestCase):
         # GUI
         self.app = QApplication([])
         self.editor_preferences = editor_configuration.EditorConfiguration()
-        self.gral_preferences = general_configuration.GeneralConfiguration(None)
+        self.gral_preferences = general_configuration.GeneralConfiguration(
+            None)
 
     def setFormToZero(self):
         self.editor_preferences.slider_margin.setValue(0)
@@ -29,26 +30,25 @@ class PreferencesTestCase(unittest.TestCase):
 
     def test_default_values(self):
         self.assertEqual(self.gral_preferences.check_on_start.isChecked(),
-            True)
+                         True)
         self.assertEqual(self.gral_preferences.check_on_exit.isChecked(),
-            True)
+                         True)
         self.assertEqual(self.gral_preferences.check_geometry.isChecked(),
-            True)
+                         True)
         self.assertEqual(self.gral_preferences.check_updates.isChecked(),
-            True)
+                         True)
         self.assertEqual(self.editor_preferences.check_margin.isChecked(),
-            True)
+                         True)
         self.assertEqual(self.editor_preferences.slider_margin.value(), 79)
         self.assertEqual(self.editor_preferences.check_indentation.isChecked(),
-            True)
-        self.assertEqual(self.editor_preferences.slider_indentation.value(),
-            4)
+                         True)
+        self.assertEqual(self.editor_preferences.slider_indentation.value(), 4)
         self.assertEqual(self.editor_preferences.check_guides.isChecked(),
-            False)
+                         False)
         self.assertEqual(
             self.editor_preferences.check_style_checker.isChecked(), True)
         self.assertEqual(self.editor_preferences.check_minimap.isChecked(),
-            False)
+                         False)
 
     def tearDown(self):
         del self.app

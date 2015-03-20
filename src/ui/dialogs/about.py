@@ -53,8 +53,9 @@ class AcercaDe(QDialog):
         box.addWidget(lbl_sc)
         # License
         box.addWidget(QLabel(self.tr("License: <b>Edis</b> is licensed under "
-                     "the terms of the <b>G</b>NU <b>P</b>ublic <b>L</b>icense"
-                     " version 3 or later.")))
+                                     "the terms of the <b>G</b>NU "
+                                     "<b>P</b>ublic <b>L</b>icense "
+                                     "version 3 or later.")))
         # Thanks to
         group = QGroupBox(self.tr("Edis Team:"))
         group.setStyleSheet("QGroupBox { font-size: 16px; padding: 10px;"

@@ -27,7 +27,7 @@ class SalidaCompilador(QListWidget):
         self.connect(self, SIGNAL("itemClicked(QListWidgetItem*)"),
                      self._go_to_line)
 
-    def parsear_salida_stderr(self):
+    def stderr_output(self):
         process = self._parent.build_process
         texto = process.readAllStandardError().data().decode('utf-8')
         for linea in texto.splitlines():
@@ -52,10 +52,10 @@ class SalidaCompilador(QListWidget):
     def _go_to_line(self, item):
         if item.clickeable:
             editor_container = Edis.get_component("principal")
-            line = self._parsear_linea(item)
+            line = self._parse_line(item)
             editor_container.go_to_line(line)
 
-    def _parsear_linea(self, item):
+    def _parse_line(self, item):
         data = item.text()
         for l in data.split(':'):
             if l.isdigit():

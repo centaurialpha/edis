@@ -96,7 +96,7 @@ class GeneralConfiguration(QWidget):
         container.addWidget(group_language)
         container.addWidget(group_restart)
         container.addItem(QSpacerItem(0, 10, QSizePolicy.Expanding,
-                           QSizePolicy.Expanding))
+                          QSizePolicy.Expanding))
         btn_reestablecer.clicked.connect(self._restart_configurations)
 
     def _restart_configurations(self):
@@ -104,8 +104,9 @@ class GeneralConfiguration(QWidget):
         flags |= QMessageBox.Yes
 
         result = QMessageBox.question(self, self.tr("Warning!"),
-                                         self.tr("Are you sure you want to "
-                                         "reset your configurations?"), flags)
+                                      self.tr("Are you sure you want to "
+                                              "reset your configurations?"),
+                                      flags)
         if result == QMessageBox.Cancel:
             return
         elif result == QMessageBox.Yes:
@@ -116,15 +117,15 @@ class GeneralConfiguration(QWidget):
         """ Guarda las configuraciones Generales. """
 
         settings.set_setting('general/show-splash',
-            self.check_splash.isChecked())
+                             self.check_splash.isChecked())
         show_start_page = self.check_on_start.isChecked()
         settings.set_setting('general/show-start-page', show_start_page)
         settings.set_setting('ventana/store-size',
-                      self.check_geometry.isChecked())
+                             self.check_geometry.isChecked())
         settings.set_setting('general/confirm-exit',
-                      self.check_on_exit.isChecked())
+                             self.check_on_exit.isChecked())
         settings.set_setting('general/check-updates',
-            self.check_updates.isChecked())
+                             self.check_updates.isChecked())
         load_files = self.check_load_files.isChecked()
         settings.set_setting('general/load-files', load_files)
         lang = self.combo_lang.currentText()

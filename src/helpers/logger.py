@@ -24,7 +24,8 @@ class Logger(object):
     def get_logger(self, nombre):
         if self.handler is None:
             handler = logging.FileHandler(ARCHIVO_LOG, mode='w')
-            formato = logging.Formatter(fmt=FORMATO_LOG, datefmt=FORMATO_TIEMPO)
+            formato = logging.Formatter(
+                fmt=FORMATO_LOG, datefmt=FORMATO_TIEMPO)
             handler.setFormatter(formato)
             self.handler = handler
         logger = logging.getLogger(nombre)

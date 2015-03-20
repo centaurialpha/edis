@@ -41,7 +41,7 @@ from src.helpers import logger
 log = logger.edis_logger.get_logger(__name__)
 ERROR = log.error
 
-#FIXME: Mejorar la forma en la que se muestra/oculta el stacked del editor
+# FIXME: Mejorar la forma en la que se muestra/oculta el stacked del editor
 
 
 class EditorContainer(QWidget):
@@ -69,13 +69,8 @@ class EditorContainer(QWidget):
         self._replace_widget.hide()
         self.box.addWidget(self._replace_widget)
 
-        #FIXME:
         # Editor widget
         self.editor_widget = editor_widget.EditorWidget()
-        #self.stack.addWidget(self.editor_widget)
-
-        #if not ESettings.get('general/show-start-page'):
-            #self.editor_widget.combo.hide()
 
         # Conexiones
         self.connect(self.editor_widget, SIGNAL("saveCurrentFile()"),
@@ -168,15 +163,13 @@ class EditorContainer(QWidget):
         if weditor is not None and weditor.filename:
             filename = weditor.filename
             if weditor.modified:
-                result = QMessageBox.information(self,
-                                                 self.tr("File not saved"),
-                                                 self.tr("Are you sure you "
-                                                 "want to reload <b>{0}</b>?"
-                                                 "<br><br>"
-                                                 "Any unsaved changes will be "
-                                                 "lost.").format(filename),
-                                                 QMessageBox.Cancel |
-                                                 QMessageBox.Yes)
+                result = QMessageBox.information(self, self.tr(
+                    "File not saved"),
+                    self.tr("Are you sure you want to reload <b>{0}</b>?"
+                            "<br><br>"
+                            "Any unsaved changes will be lost.").format(
+                                filename),
+                    QMessageBox.Cancel | QMessageBox.Yes)
                 if result == QMessageBox.Cancel:
                     return
             content = file_manager.get_file_content(filename)
@@ -191,7 +184,8 @@ class EditorContainer(QWidget):
             weditor = self.get_active_editor()
             if weditor and weditor.filename:
                 working_directory = self._last_folder(weditor.filename)
-            filenames = QFileDialog.getOpenFileNames(self, self.tr("Open file"),
+            filenames = QFileDialog.getOpenFileNames(self,
+                                                     self.tr("Open file"),
                                                      working_directory,
                                                      filter_files)
         else:
@@ -218,7 +212,7 @@ class EditorContainer(QWidget):
         except EdisIOException as error:
             ERROR('Error opening file: %s', error)
             QMessageBox.critical(self, self.tr('Could not open file'),
-                                    str(error))
+                                 str(error))
         self.editor_widget.not_open = True
 
     def _last_folder(self, path):
@@ -286,13 +280,11 @@ class EditorContainer(QWidget):
 
     def show_selector(self):
         if self.get_active_editor() is not None:
-            #selector_ = selector.Selector(self)
-            #selector_.show()
             selector = file_selector.FileSelector(self)
             selector.show()
 
     def save_file(self, weditor=None):
-        #FIXME: Controlar con try-except
+        # FIXME: Controlar con try-except
         if weditor is None:
             weditor = self.get_active_editor()
             if weditor is None:
@@ -307,7 +299,7 @@ class EditorContainer(QWidget):
         return filename
 
     def save_file_as(self, weditor=None):
-        #FIXME: Controlar con try-except
+        # FIXME: Controlar con try-except
         if weditor is None:
             weditor = self.get_active_editor()
             if weditor is None:

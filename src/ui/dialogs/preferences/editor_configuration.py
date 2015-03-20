@@ -32,7 +32,7 @@ from PyQt4.QtCore import (
     )
 
 # Módulos EDIS
-#from src import recursos
+# from src import recursos
 from src.helpers import settings
 from src.ui.main import Edis
 
@@ -155,13 +155,17 @@ class EditorConfiguration(QWidget):
 
         # Configuraciones
         # Márgen
-        self.check_margin.setChecked(settings.get_setting('editor/show-margin'))
-        self.slider_margin.setValue(settings.get_setting('editor/width-margin'))
+        self.check_margin.setChecked(
+            settings.get_setting('editor/show-margin'))
+        self.slider_margin.setValue(
+            settings.get_setting('editor/width-margin'))
         # Indentación
-        self.check_indentation.setChecked(settings.get_setting('editor/indent'))
+        self.check_indentation.setChecked(
+            settings.get_setting('editor/indent'))
         self.slider_indentation.setValue(settings.get_setting(
                                          'editor/width-indent'))
-        self.check_guides.setChecked(settings.get_setting('editor/show-guides'))
+        self.check_guides.setChecked(
+            settings.get_setting('editor/show-guides'))
         self.cursor_slider.setValue(
             settings.get_setting('editor/cursor-period'))
 
@@ -181,7 +185,7 @@ class EditorConfiguration(QWidget):
 
     def _seleccionar_fuente(self):
         initial_font = QFont(settings.get_setting('editor/font'),
-            settings.get_setting('editor/size-font'))
+                             settings.get_setting('editor/size-font'))
         seleccion, ok = QFontDialog.getFont(initial_font)
         if ok:
             fuente = seleccion.family()
@@ -195,24 +199,25 @@ class EditorConfiguration(QWidget):
         settings.set_setting('editor/font', fuente)
         settings.set_setting('editor/size-font', int(fuente_tam.strip()))
         settings.set_setting('editor/show-margin',
-            self.check_margin.isChecked())
+                             self.check_margin.isChecked())
         settings.set_setting('editor/width-margin',
-            self.slider_margin.value())
+                             self.slider_margin.value())
         settings.set_setting('editor/show-guides',
-            self.check_guides.isChecked())
+                             self.check_guides.isChecked())
         settings.set_setting('editor/show-minimap',
-            self.check_minimap.isChecked())
+                             self.check_minimap.isChecked())
         checker_value = self.check_style_checker.isChecked()
         settings.set_setting('editor/style-checker', checker_value)
         settings.set_setting('editor/indent',
-            self.check_indentation.isChecked())
+                             self.check_indentation.isChecked())
         settings.set_setting('editor/width-indent',
-            self.slider_indentation.value())
+                             self.slider_indentation.value())
         settings.set_setting('editor/cursor',
-            self.combo_caret.currentIndex())
+                             self.combo_caret.currentIndex())
         settings.set_setting('editor/caret-width',
-            self.spin_caret_width.value())
-        settings.set_setting('editor/cursor-period', self.cursor_slider.value())
+                             self.spin_caret_width.value())
+        settings.set_setting('editor/cursor-period',
+                             self.cursor_slider.value())
         code_completion = self.check_completion.isChecked()
         settings.set_setting('editor/completion', code_completion)
         principal = Edis.get_component("principal")

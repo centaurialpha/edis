@@ -28,7 +28,7 @@ class BarraDeEstado(QStatusBar):
         contenedor = QWidget()
         box = QHBoxLayout(contenedor)
         box.setContentsMargins(0, 0, 10, 0)
-        #box.addWidget(self.cursor_widget)
+        # box.addWidget(self.cursor_widget)
         box.addWidget(self.uptime_widget)
 
         # Agregar contenedor al status bar

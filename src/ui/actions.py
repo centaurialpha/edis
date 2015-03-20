@@ -52,9 +52,9 @@ ACTIONS = ([
     {
         "name": translate("EDIS", "Exit"),
         "connection": "edis.close",
-        "shortcut": "exit"}],
+        "shortcut": "exit"}], [
     # Menú editar
-    [{
+    {
         "name": translate("EDIS", "Undo"),
         "connection": "action_undo",
         "shortcut": "undo"},
@@ -128,9 +128,9 @@ ACTIONS = ([
     {
         "name": translate("EDIS", "Configuration"),
         "connection": "show_settings",
-        "shortcut": "preferences"}],
+        "shortcut": "preferences"}], [
     # Menú ver
-    [{
+    {
         "name": translate("EDIS", "Show Fullscreen"),
         "connection": "edis.show_full_screen",
         "shortcut": "fullscreen"},
@@ -173,9 +173,9 @@ ACTIONS = ([
     {
         "name": translate("EDIS", "Normal Size"),
         "connection": "action_normal_size",
-        "shortcut": "normal-font-size"}],
+        "shortcut": "normal-font-size"}], [
     # Menú buscar
-    [{
+    {
         "name": translate("EDIS", "Find..."),
         "connection": "find",
         "shortcut": "find"},
@@ -187,9 +187,9 @@ ACTIONS = ([
     {
         "name": translate("EDIS", "Go To Line"),
         "connection": "show_go_to_line",
-        "shortcut": "go"}],
+        "shortcut": "go"}], [
     # Menú ejecución
-    [{
+    {
         "name": translate("EDIS", "Build"),
         "connection": "build_source_code",
         "shortcut": "build"},
@@ -209,9 +209,9 @@ ACTIONS = ([
     {
         "name": translate("EDIS", "Clean Construction"),
         "icon": "clean",
-        "connection": "clean_construction"}],
+        "connection": "clean_construction"}], [
     # Menú acerca de
-    [{
+    {
         "name": translate("EDIS", "Report bug!"),
         "icon": "bug",
         "connection": "edis.report_bug",

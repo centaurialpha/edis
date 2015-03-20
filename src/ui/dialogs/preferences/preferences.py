@@ -33,7 +33,7 @@ from src.ui.dialogs.preferences import (
     theme_configuration
     )
 
-#FIXME: Ejecución, compilación
+# FIXME: Ejecución, compilación
 
 
 class Preferences(QDialog):

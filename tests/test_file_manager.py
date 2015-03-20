@@ -17,18 +17,19 @@ class FileManagerTestCase(unittest.TestCase):
 
     def setUp(self):
         self._filename = os.path.join(os.path.dirname(__file__),
-                                  "c_files", "for_test.c")
+                                      "c_files", "for_test.c")
 
     def test_read_file(self):
         content = "#include <stdio.h>\n/* qwertyuiopasdfghjklñzxcvbnm */\n" \
             "int main( void ) {\n    return 0\n}"
 
-        self.assertEqual(content, file_manager.get_file_content(self._filename))
+        self.assertEqual(content, file_manager.get_file_content(
+            self._filename))
 
     def test_exception_read_file(self):
         fake_filename = "/home/gabo/fake.c"  # No existe
         self.assertRaises(EdisIOException,
-            lambda: file_manager.get_file_content(fake_filename))
+                          lambda: file_manager.get_file_content(fake_filename))
 
     def test_get_file_size(self):
         size = 87  # bytes

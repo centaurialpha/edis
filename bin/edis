@@ -17,7 +17,7 @@ if os.path.exists(DIR_INSTALACION):
     project = DIR_INSTALACION
 else:
     project = os.path.abspath(os.path.dirname(os.path.dirname(
-                                            os.path.realpath(sys.argv[0]))))
+        os.path.realpath(sys.argv[0]))))
 
 
 if project not in sys.path:
@@ -25,7 +25,6 @@ if project not in sys.path:
 
 
 def main():
-    from src import paths
     from PyQt4.QtGui import QApplication
 
     app = QApplication(sys.argv)

@@ -25,10 +25,10 @@ class ContenedorOutput(QDockWidget):
     def __init__(self):
         QDockWidget.__init__(self)
         self.setFeatures(QDockWidget.NoDockWidgetFeatures)
-        barra_titulo = self.titleBarWidget()
-        self._quitar_titulo(barra_titulo)
+        title_bar = self.titleBarWidget()
+        self._remove_titlebar(title_bar)
 
-        self.nombre_archivo = None
+        self._filename = None
 
         self.salida_ = process.EjecutarWidget()
         self.setWidget(self.salida_)
@@ -39,30 +39,30 @@ class ContenedorOutput(QDockWidget):
 
         Edis.load_component("output", self)
 
-    def _quitar_titulo(self, title_bar):
+    def _remove_titlebar(self, title_bar):
         """ Quita la barra de título del DockWidget """
 
-        widget_vacio = QWidget()
-        self.setTitleBarWidget(widget_vacio)
+        empty_widget = QWidget()
+        self.setTitleBarWidget(empty_widget)
         del title_bar
 
     def build(self, path):
         self.show()
-        self.nombre_archivo = path
-        self.salida_.run_compilation(self.nombre_archivo)
+        self._filename = path
+        self.salida_.run_compilation(self._filename)
 
     def run(self):
-        if self.nombre_archivo is None:
+        if self._filename is None:
             return
-        self.salida_.run_program(self.nombre_archivo)
+        self.salida_.run_program(self._filename)
 
-    def build_and_run(self, archivo):
+    def build_and_run(self, filename):
         self.show()
-        self.nombre_archivo = archivo
-        self.salida_.build_and_run(self.nombre_archivo)
+        self._filename = filename
+        self.salida_.build_and_run(self._filename)
 
     def clean(self):
-        self.salida_.clean(self.nombre_archivo)
+        self.salida_.clean(self._filename)
 
     def stop(self):
         self.salida_.kill_process()

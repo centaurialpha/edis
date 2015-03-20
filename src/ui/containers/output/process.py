@@ -17,7 +17,6 @@ from PyQt4.QtGui import (
     QVBoxLayout,
     QWidget,
     QColor,
-    #QMessageBox,
     QItemSelectionModel
     )
 
@@ -65,7 +64,7 @@ class EjecutarWidget(QWidget):
 
         # Conexión
         self.build_process.readyReadStandardError.connect(
-            self.output.parsear_salida_stderr)
+            self.output.stderr_output)
         self.build_process.finished[int, QProcess.ExitStatus].connect(
             self._compilation_finished)
         self.build_process.error[QProcess.ProcessError].connect(
@@ -102,8 +101,9 @@ class EjecutarWidget(QWidget):
 
         self.output.clear()
         item = output_compiler.Item(self.tr(
-                                    "Building file: {0} ( {1} )".format(
-                                    path.split('/')[-1], filename)))
+            "Building file: {0} ( {1} )".format(
+                path.split('/')[-1], filename)))
+
         self.output.addItem(item)
 
         params = ['-Wall', '-o']
@@ -148,7 +148,7 @@ class EjecutarWidget(QWidget):
     def run_program(self, archivo):
         """ Ejecuta el binario generado por el compilador """
 
-        #FIXME: Agregar terminal por defecto
+        # FIXME: Agregar terminal por defecto
         path = os.path.dirname(archivo)
         self.execution_process.setWorkingDirectory(path)
 

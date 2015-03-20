@@ -63,7 +63,8 @@ class DockManager(QObject):
                      editor_container.go_to_line)
         self.connect(editor_container, SIGNAL("updateSymbols(QString)"),
                      lambda filename: self.thread.parse(filename))
-        self.connect(editor_container.editor_widget, SIGNAL("allFilesClosed()"),
+        self.connect(editor_container.editor_widget,
+                     SIGNAL("allFilesClosed()"),
                      self._symbols_widget.tree.clear)
         self.connect(self._symbols_widget, SIGNAL("visibilityChanged(bool)"),
                      lambda checked: self.symbols_button.setChecked(checked))

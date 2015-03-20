@@ -173,7 +173,7 @@ class Edis(QMainWindow):
                     Edis.load_component("menu_recent_file", submenu)
                     continue
                 qaction = menu_name.addAction(name)
-                #FIXME: No depender de shortcut
+                # FIXME: No depender de shortcut
                 qaction.setIcon(icon)
                 if shortcut is not None:
                     qaction.setShortcut(shortcuts[shortcut])
@@ -220,7 +220,8 @@ class Edis(QMainWindow):
                      self._update_status)
         self.connect(editor_container, SIGNAL("fileChanged(QString)"),
                      self._change_title)
-        self.connect(editor_container.editor_widget, SIGNAL("allFilesClosed()"),
+        self.connect(editor_container.editor_widget,
+                     SIGNAL("allFilesClosed()"),
                      self._all_closed)
 
         return editor_container

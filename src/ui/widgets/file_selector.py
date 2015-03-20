@@ -23,8 +23,6 @@ from PyQt4.QtCore import (
 
 from src.ui.main import Edis
 
-#FIXME:
-
 
 class FileSelector(QDialog):
 
@@ -47,8 +45,8 @@ class FileSelector(QDialog):
         self._load_files()
 
         self.connect(self.list_of_files,
-                    SIGNAL("itemSelectionChanged()"),
-                    self._update_label)
+                     SIGNAL("itemSelectionChanged()"),
+                     self._update_label)
         self.connect(self.list_of_files,
                      SIGNAL("itemActivated(QListWidgetItem*)"),
                      self._open_file)

@@ -30,7 +30,7 @@ from src.ui.editor import (
     )
 from src.helpers import settings
 
-#FIXME: Cambiar comentario '//' (C++ style) por '/* */' (C style)
+# FIXME: Cambiar comentario '//' (C++ style) por '/* */' (C style)
 
 
 class ThreadBusqueda(QThread):
@@ -82,7 +82,7 @@ class Editor(base.Base):
 
     def __init__(self):
         super(Editor, self).__init__()
-        #FIXME: display
+        # FIXME: display
         self.__display = ""
         self._filename = ""
         self.modified = False
@@ -100,10 +100,10 @@ class Editor(base.Base):
         self._error_indicator = 2
         self.send("sci_indicsetstyle", self._word_indicator, "indic_box")
         self.send("sci_indicsetfore", self._word_indicator,
-            QColor("#ccd900"))
+                  QColor("#ccd900"))
         self.send("sci_indicsetstyle", self._warning_indicator, "indic_dots")
         self.send("sci_indicsetfore", self._warning_indicator,
-            QColor("#ffff00"))
+                  QColor("#ffff00"))
         self.send("sci_indicsetstyle", self._error_indicator, "indic_dots")
         # Scheme
         self.scheme = editor_scheme.get_scheme(
@@ -112,7 +112,8 @@ class Editor(base.Base):
         self.setFolding(QsciScintilla.PlainFoldStyle)
         self.setFoldMarginColors(QColor(self.scheme['FoldMarginBack']),
                                  QColor(self.scheme['FoldMarginFore']))
-        self.markerDefine(QsciScintilla.SC_MARK_LEFTRECT, self._marker_modified)
+        self.markerDefine(QsciScintilla.SC_MARK_LEFTRECT,
+                          self._marker_modified)
         self.setMarkerBackgroundColor(
             QColor(223, 62, 62), self._marker_modified)
         self.markerDefine(QsciScintilla.SC_MARK_LEFTRECT, self._marker_save)
@@ -197,7 +198,7 @@ class Editor(base.Base):
             self.connect(self.checker, SIGNAL("finished()"),
                          self._show_violations)
 
-    #FIXME: Mejorar esto, solo es usado por el selector
+    # FIXME: Mejorar esto, solo es usado por el selector
     def get_display(self):
         return self.__display
 
@@ -339,8 +340,8 @@ class Editor(base.Base):
             self.minimap.update_geometry()
 
     def comment(self):
-        #FIXME: tener en cuenta /* */
-        #FIXME: no funciona si el comentario no inicia en el índice 0
+        # FIXME: tener en cuenta /* */
+        # FIXME: no funciona si el comentario no inicia en el índice 0
         if self.hasSelectedText():
             line_from, _, line_to, _ = self.getSelection()
 

@@ -62,7 +62,7 @@ class PopupBusqueda(base_dialog.BaseDialog):
     def _find_next(self):
         weditor = self._weditor
         weditor.findFirst(self.word, False, False, False, True,
-                                  True, -1, -1, True)
+                          True, -1, -1, True)
 
     def _find_previous(self):
         weditor = self._weditor

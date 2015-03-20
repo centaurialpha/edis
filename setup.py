@@ -44,7 +44,7 @@ class CustomInstall(install):
             with open(script_path, 'r') as f:
                 content = f.read()
             content = content.replace('@ INSTALLED_BASE_DIR @',
-                                          self._custom_data_dir)
+                                      self._custom_data_dir)
             with open(script_path, 'w') as f:
                 f.write(content)
 
@@ -57,7 +57,7 @@ class CustomInstall(install):
             with open(src_desktop, 'r') as f:
                 content = f.read()
             icon = os.path.join(self._custom_data_dir, 'src', 'images',
-                                 'icon.png')
+                                'icon.png')
             content = content.replace('@ INSTALLED_ICON @', icon)
             with open(dst_desktop, 'w') as f:
                 f.write(content)
@@ -93,7 +93,7 @@ classifiers = [
     'Development Status :: 5 - Production/Stable',
     'Environment :: X11 Applications',
     'License :: OSI Approved :: GNU General Public License v3 or '
-        'later (GPLv3+)',
+    'later (GPLv3+)',
     'Natural Language :: Spanish',
     'Operating System :: OS Independent',
     'Programming Language :: Python :: 3 :: Only',
@@ -112,7 +112,7 @@ setup(
     long_description=open('README.rst').read(),
     package_data={
         'src': ['extras/temas/*', 'images/icon.png', 'images/sources/logo.png',
-                 'ui/*.qml']
+                'ui/*.qml']
         },
     packages=packages,
     scripts=['bin/edis'],

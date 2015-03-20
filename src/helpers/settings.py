@@ -56,7 +56,7 @@ SETTINGS = {
 
 
 def load_settings():
-    """ Lee las configuraciones desde el archivo .ini y las carga a SETTINGS """
+    """ Obtiene las configuraciones desde el archivo .ini """
 
     settings = QSettings(paths.CONFIGURACION, QSettings.IniFormat)
     for key, value in list(SETTINGS.items()):

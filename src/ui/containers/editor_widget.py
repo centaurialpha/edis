@@ -68,7 +68,8 @@ class EditorWidget(QWidget):
 
     def add_item_combo(self, text):
         self.combo.combo_file.addItem(text)
-        self.combo.combo_file.setCurrentIndex(self.combo.combo_file.count() - 1)
+        self.combo.combo_file.setCurrentIndex(
+            self.combo.combo_file.count() - 1)
 
     def remove_item_combo(self, index):
         self.combo.combo_file.removeItem(index)
@@ -151,18 +152,16 @@ class EditorWidget(QWidget):
             result = QMessageBox.No
             if widget.modified:
                 result = QMessageBox.question(self, self.tr(
-                                              "File not saved"),
-                                              self.tr("The file <b>{0}</b> "
-                                              "has unsaved changes. Would you "
-                                              "like to save them?").format(
-                                              widget.filename),
-                                              QMessageBox.Yes, QMessageBox.No,
-                                              QMessageBox.Cancel)
+                    "File not saved"),
+                    self.tr("The file <b>{0}</b> "
+                            "has unsaved changes. Would you "
+                            "like to save them?").format(
+                                widget.filename),
+                    QMessageBox.Yes, QMessageBox.No, QMessageBox.Cancel)
                 if result == QMessageBox.Cancel:
                     return
                 elif result == QMessageBox.Yes:
                     self.saveCurrentFile.emit()
-            #FIXME: para no
             self._add_to_recent(widget.filename)
             self.stack.removeWidget(widget)
             self.fileClosed.emit(index)
@@ -282,7 +281,6 @@ class ComboContainer(QWidget):
         self._editor_widget.remove_widget(current_editor, current_index)
 
     def set_modified(self, weditor, index, modified):
-        #FIXME: texto nuevo archivo
         if modified:
             text = " \u2022"  # Bullet caracter
             current_text = self.combo_file.currentText()

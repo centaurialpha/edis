@@ -29,7 +29,8 @@ class Lexer(QsciLexerCPP):
     def load_highlighter(self):
         """ Método público: carga el resaltado de sintáxis """
 
-        scheme = editor_scheme.get_scheme(settings.get_setting('editor/scheme'))
+        scheme = editor_scheme.get_scheme(
+            settings.get_setting('editor/scheme'))
         self.setDefaultPaper(QColor(scheme['BackgroundEditor']))
         self.setPaper(self.defaultPaper(0))
         self.setColor(QColor(scheme['Color']))

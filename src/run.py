@@ -21,11 +21,9 @@ from PyQt4.QtCore import (
     Qt
     )
 from src import paths
-#from src.helpers.configurations import ESettings
 from src.helpers import settings
 
 # Se cargan las configuraciones
-#ESettings.cargar()
 settings.load_settings()
 #lint:disable
 from src.ui.widgets import status_bar
@@ -44,7 +42,6 @@ def run_edis(app):
     app.setWindowIcon(QIcon(":image/edis"))
     # Lenguaje
     local = QLocale.system().name()
-    #language = ESettings.get('general/language') + '.qm'
     language = settings.get_setting('general/language')
     if language:
         edis_translator = QTranslator()
@@ -59,7 +56,6 @@ def run_edis(app):
     pixmap = QPixmap(":image/splash")
     # Splash screen
     show_splash = False
-    #if ESettings.get('general/show-splash'):
     if settings.get_setting('general/show-splash'):
         splash = Splash(pixmap, Qt.WindowStaysOnTopHint)
         splash.setMask(pixmap.mask())
@@ -73,7 +69,6 @@ def run_edis(app):
     edis.show()
 
     # Style Sheet
-    #style = ESettings.get('ventana/style-sheet')
     style = settings.get_setting('window/style-sheet')
     path_style = None
     style_sheet = None
@@ -87,16 +82,13 @@ def run_edis(app):
     app.setStyleSheet(style_sheet)
     # Archivos de última sesión
     files, recents_files = [], []
-    #if ESettings.get('general/load-files'):
     if settings.get_setting('general/load-files'):
         if show_splash:
             splash.showMessage("Loading files...", Qt.AlignBottom | Qt.black)
-        #files = ESettings.get('general/files')
         files = settings.get_setting('general/files')
         if files is None:
             files = []
         # Archivos recientes
-        #recents_files = ESettings.get('general/recents-files')
         recents_files = settings.get_setting('general/recents-files')
         if recents_files is None:
             recents_files = []
