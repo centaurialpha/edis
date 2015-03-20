@@ -165,12 +165,24 @@ class EditorContainer(QWidget):
         """ Recarga el archivo """
 
         weditor = self.get_active_editor()
-        if weditor is not None:
+        if weditor is not None and weditor.filename:
             filename = weditor.filename
-            if filename:
-                content = file_manager.get_file_content(filename)
-                weditor.setText(content)
-                weditor.setModified(False)
+            if weditor.modified:
+                result = QMessageBox.information(self,
+                                                 self.tr("File not saved"),
+                                                 self.tr("Are you sure you "
+                                                 "want to reload <b>{0}</b>?"
+                                                 "<br><br>"
+                                                 "Any unsaved changes will be "
+                                                 "lost.").format(filename),
+                                                 QMessageBox.Cancel |
+                                                 QMessageBox.Yes)
+                if result == QMessageBox.Cancel:
+                    return
+            content = file_manager.get_file_content(filename)
+            weditor.setText(content)
+            weditor.markerDeleteAll()
+            weditor.setModified(False)
 
     def open_file(self, filename="", cursor_position=None):
         filter_files = "Archivos C(*.cpp *.c);;ASM(*.s);;HEADERS(*.h);;(*.*)"

@@ -32,7 +32,7 @@
         <translation type="obsolete">Reportar bug</translation>
     </message>
     <message>
-        <location filename="src/ui/dialogs/about.py" line="70"/>
+        <location filename="src/ui/dialogs/about.py" line="74"/>
         <source>Ok</source>
         <translation>Aceptar</translation>
     </message>
@@ -589,19 +589,29 @@
 <context>
     <name>EditorContainer</name>
     <message>
-        <location filename="src/ui/containers/editor_container.py" line="182"/>
+        <location filename="src/ui/containers/editor_container.py" line="194"/>
         <source>Open file</source>
         <translation>Abrir archivo</translation>
     </message>
     <message>
-        <location filename="src/ui/containers/editor_container.py" line="208"/>
+        <location filename="src/ui/containers/editor_container.py" line="220"/>
         <source>Could not open file</source>
         <translation>No se pudo abrir el archivo</translation>
     </message>
     <message>
-        <location filename="src/ui/containers/editor_container.py" line="304"/>
+        <location filename="src/ui/containers/editor_container.py" line="316"/>
         <source>Save file</source>
         <translation>Guardar archivo</translation>
+    </message>
+    <message>
+        <location filename="src/ui/containers/editor_container.py" line="171"/>
+        <source>File not saved</source>
+        <translation>Archivo no guardado</translation>
+    </message>
+    <message>
+        <location filename="src/ui/containers/editor_container.py" line="171"/>
+        <source>Are you sure you want to reload &lt;b&gt;{0}&lt;/b&gt;?&lt;br&gt;&lt;br&gt;Any unsaved changes will be lost.</source>
+        <translation>Seguro que deseas recargar &lt;b&gt;{0}&lt;/b&gt;?&lt;br&gt;&lt;br&gt;Se perderán los cambios no guardados.</translation>
     </message>
 </context>
 <context>
@@ -807,27 +817,27 @@
         <translation>Cerar</translation>
     </message>
     <message>
-        <location filename="src/ui/system_tray.py" line="49"/>
+        <location filename="src/ui/system_tray.py" line="48"/>
         <source>Checking updates...</source>
         <translation>Comprobando actualizaciones...</translation>
     </message>
     <message>
-        <location filename="src/ui/system_tray.py" line="56"/>
+        <location filename="src/ui/system_tray.py" line="57"/>
         <source>Download!</source>
         <translation>Descargar!</translation>
     </message>
     <message>
-        <location filename="src/ui/system_tray.py" line="57"/>
+        <location filename="src/ui/system_tray.py" line="58"/>
         <source>Close notifications</source>
         <translation>Cerrar notificaciones</translation>
     </message>
     <message>
-        <location filename="src/ui/system_tray.py" line="62"/>
+        <location filename="src/ui/system_tray.py" line="63"/>
         <source>New version available!</source>
         <translation>Nueva versión disponible!</translation>
     </message>
     <message>
-        <location filename="src/ui/system_tray.py" line="62"/>
+        <location filename="src/ui/system_tray.py" line="63"/>
         <source>New version of Edis available!
 version: {0}.</source>
         <translation>Una nueva versión de Edis está disponible!
