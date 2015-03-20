@@ -73,7 +73,7 @@ def run_edis(app):
     path_style = None
     style_sheet = None
     if style == 'Edark':
-        path_style = os.path.join(paths.PATH, 'extras', 'temas', 'edark.qss')
+        path_style = os.path.join(paths.PATH, 'extras', 'theme', 'edark.qss')
     elif style != 'Default':
         path_style = os.path.join(paths.EDIS, style + '.qss')
     if path_style is not None:

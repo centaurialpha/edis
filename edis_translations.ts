@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS>
-<TS version="2.1" language="es_AR">
+<!DOCTYPE TS><TS version="2.0" language="es_AR" sourcelanguage="">
 <context>
     <name>AboutTab</name>
     <message>
@@ -32,7 +31,7 @@
         <translation type="obsolete">Reportar bug</translation>
     </message>
     <message>
-        <location filename="src/ui/dialogs/about.py" line="74"/>
+        <location filename="src/ui/dialogs/about.py" line="76"/>
         <source>Ok</source>
         <translation>Aceptar</translation>
     </message>
@@ -43,7 +42,7 @@
         <translation></translation>
     </message>
     <message>
-        <location filename="src/ui/dialogs/about.py" line="45"/>
+        <location filename="src/ui/dialogs/about.py" line="46"/>
         <source>Version: {0}</source>
         <translation>Versión: {0}</translation>
     </message>
@@ -53,19 +52,24 @@
         <translation type="obsolete">Código fuente: &lt;a href=&apos;{0}&apos;&gt;&lt;span style=&apos;color: lightblue;&apos;&gt;{1}&lt;/span&gt;&lt;/a&gt;</translation>
     </message>
     <message>
-        <location filename="src/ui/dialogs/about.py" line="59"/>
+        <location filename="src/ui/dialogs/about.py" line="61"/>
         <source>Edis Team:</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="src/ui/dialogs/about.py" line="55"/>
+        <location filename="src/ui/dialogs/about.py" line="56"/>
         <source>License: &lt;b&gt;Edis&lt;/b&gt; is licensed under the terms of the &lt;b&gt;G&lt;/b&gt;NU &lt;b&gt;P&lt;/b&gt;ublic &lt;b&gt;L&lt;/b&gt;icense version 3 or later.</source>
         <translation>Licencia: &lt;b&gt;Edis&lt;/b&gt; está disponible bajo los términos de la licencia &lt;b&gt;GPLv3&lt;/b&gt; o posterior.</translation>
     </message>
     <message>
         <location filename="src/ui/dialogs/about.py" line="49"/>
         <source>Source code: &lt;a href=&apos;{0}&apos;&gt;&lt;span style=&apos;color: #0197FD;&apos;&gt;{1}&lt;/span&gt;&lt;/a&gt;</source>
-        <translation>Código fuente: &lt;a href=&apos;{0}&apos;&gt;&lt;span style=&apos;color: #0197FD;&apos;&gt;{1}&lt;/span&gt;&lt;/a&gt;</translation>
+        <translation type="obsolete">Código fuente: &lt;a href=&apos;{0}&apos;&gt;&lt;span style=&apos;color: #0197FD;&apos;&gt;{1}&lt;/span&gt;&lt;/a&gt;</translation>
+    </message>
+    <message>
+        <location filename="src/ui/dialogs/about.py" line="50"/>
+        <source>Source Code: &lt;a href=&apos;{0}&apos;&gt;&lt;span style=&apos;color: #0197FD;&apos;&gt;{1}&lt;/span&gt;&lt;/a&gt;</source>
+        <translation>Código Fuente: &lt;a href=&apos;{0}&apos;&gt;&lt;span style=&apos;color: #0197FD;&apos;&gt;{1}&lt;/span&gt;&lt;/a&gt;</translation>
     </message>
 </context>
 <context>
@@ -94,32 +98,32 @@
 <context>
     <name>ComboContainer</name>
     <message>
-        <location filename="src/ui/containers/editor_widget.py" line="249"/>
+        <location filename="src/ui/containers/editor_widget.py" line="248"/>
         <source>Close file</source>
         <translation>Cerrar archivo</translation>
     </message>
     <message>
-        <location filename="src/ui/containers/editor_widget.py" line="243"/>
+        <location filename="src/ui/containers/editor_widget.py" line="242"/>
         <source>Save as</source>
         <translation>Guardar como</translation>
     </message>
     <message>
-        <location filename="src/ui/containers/editor_widget.py" line="244"/>
+        <location filename="src/ui/containers/editor_widget.py" line="243"/>
         <source>Reload</source>
         <translation>Recargar</translation>
     </message>
     <message>
-        <location filename="src/ui/containers/editor_widget.py" line="246"/>
+        <location filename="src/ui/containers/editor_widget.py" line="245"/>
         <source>Build</source>
         <translation>Compilar</translation>
     </message>
     <message>
-        <location filename="src/ui/containers/editor_widget.py" line="247"/>
+        <location filename="src/ui/containers/editor_widget.py" line="246"/>
         <source>Run</source>
         <translation>Ejecutar</translation>
     </message>
     <message>
-        <location filename="src/ui/containers/editor_widget.py" line="301"/>
+        <location filename="src/ui/containers/editor_widget.py" line="299"/>
         <source>&lt;Select Symbol&gt;</source>
         <translation>&lt;Selecciona un símbolo&gt;</translation>
     </message>
@@ -589,27 +593,27 @@
 <context>
     <name>EditorContainer</name>
     <message>
-        <location filename="src/ui/containers/editor_container.py" line="194"/>
+        <location filename="src/ui/containers/editor_container.py" line="187"/>
         <source>Open file</source>
         <translation>Abrir archivo</translation>
     </message>
     <message>
-        <location filename="src/ui/containers/editor_container.py" line="220"/>
+        <location filename="src/ui/containers/editor_container.py" line="214"/>
         <source>Could not open file</source>
         <translation>No se pudo abrir el archivo</translation>
     </message>
     <message>
-        <location filename="src/ui/containers/editor_container.py" line="316"/>
+        <location filename="src/ui/containers/editor_container.py" line="308"/>
         <source>Save file</source>
         <translation>Guardar archivo</translation>
     </message>
     <message>
-        <location filename="src/ui/containers/editor_container.py" line="171"/>
+        <location filename="src/ui/containers/editor_container.py" line="166"/>
         <source>File not saved</source>
         <translation>Archivo no guardado</translation>
     </message>
     <message>
-        <location filename="src/ui/containers/editor_container.py" line="171"/>
+        <location filename="src/ui/containers/editor_container.py" line="166"/>
         <source>Are you sure you want to reload &lt;b&gt;{0}&lt;/b&gt;?&lt;br&gt;&lt;br&gt;Any unsaved changes will be lost.</source>
         <translation>Seguro que deseas recargar &lt;b&gt;{0}&lt;/b&gt;?&lt;br&gt;&lt;br&gt;Se perderán los cambios no guardados.</translation>
     </message>
@@ -617,12 +621,12 @@
 <context>
     <name>EditorWidget</name>
     <message>
-        <location filename="src/ui/containers/editor_widget.py" line="153"/>
+        <location filename="src/ui/containers/editor_widget.py" line="154"/>
         <source>File not saved</source>
         <translation>Archivo no guardado</translation>
     </message>
     <message>
-        <location filename="src/ui/containers/editor_widget.py" line="153"/>
+        <location filename="src/ui/containers/editor_widget.py" line="154"/>
         <source>The file &lt;b&gt;{0}&lt;/b&gt; has unsaved changes. Would you like to save them?</source>
         <translation>El archivo &lt;b&gt;{0}&lt;/b&gt; tiene cambios no guardados. ¿Quieres guardarlos?</translation>
     </message>
@@ -630,28 +634,28 @@
 <context>
     <name>EjecutarWidget</name>
     <message>
-        <location filename="src/ui/containers/output/process.py" line="82"/>
+        <location filename="src/ui/containers/output/process.py" line="81"/>
         <source>The process terminated</source>
         <translation>El proceso ha terminado</translation>
     </message>
     <message>
-        <location filename="src/ui/containers/output/process.py" line="86"/>
+        <location filename="src/ui/containers/output/process.py" line="85"/>
         <source>An error has occurred. Error code: {0}</source>
         <translation>Ha ocurrido un error. Código de error: {0}</translation>
     </message>
     <message>
-        <location filename="src/ui/containers/output/process.py" line="104"/>
+        <location filename="src/ui/containers/output/process.py" line="103"/>
         <source>Building file: {0} ( {1} )</source>
         <translation>Compilando archivo: {0} ( {1} )</translation>
     </message>
     <message>
         <location filename="src/ui/containers/output/process.py" line="125"/>
-        <source>Â¡COMPILATION FINISHED SUCCESSFULLY!</source>
+        <source>&#xc2;&#xa1;COMPILATION FINISHED SUCCESSFULLY!</source>
         <translation>¡COMPILACIÓN EXITOSA!</translation>
     </message>
     <message>
         <location filename="src/ui/containers/output/process.py" line="130"/>
-        <source>Â¡COMPILATION FAILED!</source>
+        <source>&#xc2;&#xa1;COMPILATION FAILED!</source>
         <translation>¡LA COMPILACIÓN HA FALLADO!</translation>
     </message>
     <message>

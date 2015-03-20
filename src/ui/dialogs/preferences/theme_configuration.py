@@ -120,7 +120,7 @@ class ThemeConfiguration(QWidget):
         path = None
         if index == 1:
             path = os.path.join(paths.PATH, "extras",
-                                "temas", "edark.qss")
+                                "theme", "edark.qss")
         elif index != 0:
             style = self.combo_styles.currentText() + '.qss'
             path = os.path.join(paths.EDIS, style)
