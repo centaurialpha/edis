@@ -371,14 +371,14 @@ class EditorContainer(QWidget):
         if weditor is not None:
             tabs_spaces = settings.get_setting('editor/show-tabs-spaces')
             settings.set_setting('editor/show-tabs-spaces', not tabs_spaces)
-            weditor.actualizar()
+            weditor.update_options()
 
     def show_indentation_guides(self):
         weditor = self.get_active_editor()
         if weditor is not None:
             guides = settings.get_setting('editor/show-guides')
             settings.set_setting('editor/show-guides', not guides)
-            weditor.actualizar()
+            weditor.update_options()
 
     def delete_editor_markers(self):
         weditor = self.get_active_editor()
