@@ -69,7 +69,7 @@ class Thread(QThread):
 
         command = [cpp_path] + [fake_libc] + [self._filename]
         if settings.IS_WINDOWS:
-            # Flags para ocultar la consola
+            # Flag para ocultar la consola
             CREATE_NO_WINDOW = 0x08000000
             process = Popen(command,
                             stdout=PIPE,
