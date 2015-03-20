@@ -7,8 +7,6 @@
 
 from PyQt4.QtGui import QLineEdit
 
-from src import recursos
-
 
 class CustomLineEdit(QLineEdit):
 
@@ -19,7 +17,6 @@ class CustomLineEdit(QLineEdit):
 
     def update(self, found):
         if not found:
-            self.setStyleSheet('background: %s; border-radius: 3px' %
-                               recursos.TEMA['error'])
+            self.setStyleSheet('background: #DF3E3E; border-radius: 3px')
         else:
-            self.setStyleSheet('color: #dedede')
+            self.setStyleSheet('color: gray')

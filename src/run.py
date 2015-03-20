@@ -39,6 +39,7 @@ from src.ui.main import Edis
 def run_edis(app):
     """ Se carga la interfáz """
 
+    # Ícono
     app.setWindowIcon(QIcon(":image/edis"))
     # Lenguaje
     local = QLocale.system().name()

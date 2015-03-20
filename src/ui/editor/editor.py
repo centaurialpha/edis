@@ -351,7 +351,7 @@ class Editor(base.Base):
                 self.insertAt('//', line, 0)
             self.send("sci_endundoaction")
         else:
-            line = self.devolver_posicion_del_cursor()[0]
+            line, _ = self.getCursorPosition()
             self.insertAt('//', line, 0)
 
     def uncomment(self):
@@ -421,7 +421,7 @@ class Editor(base.Base):
                 self.indent(linea)
             self.send("sci_endundoaction")
         else:
-            linea, _ = self.devolver_posicion_del_cursor()
+            linea, _ = self.getCursorPosition()
             self.indent(linea)
 
     def indent_less(self):
@@ -432,7 +432,7 @@ class Editor(base.Base):
                 self.unindent(linea)
             self.send("sci_endundoaction")
         else:
-            linea, _ = self.devolver_posicion_del_cursor()
+            linea, _ = self.getCursorPosition()
             self.unindent(linea)
 
     def move_down(self):

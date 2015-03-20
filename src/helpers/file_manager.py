@@ -14,22 +14,22 @@ from PyQt4.QtCore import QFile, QTextStream, QIODevice
 from src.helpers.exceptions import EdisIOException
 
 
-def get_file_content(archivo):
-    """ Lee el contenido de @archivo y lo retorna """
+def get_file_content(_file):
+    """ Lee el contenido de @_file y lo retorna """
 
     try:
-        with open(archivo, mode='rU') as filename:
+        with open(_file, mode='rU') as filename:
             content = filename.read()
     except IOError as error:
         raise EdisIOException(error)
     return content
 
 
-def get_file_size(archivo):
+def get_file_size(_file):
     """ Retorna el tamaño del archivo en bytes. """
 
-    tam = QFile(archivo).size()
-    return tam
+    size = QFile(_file).size()
+    return size
 
 
 def write_file(filename, content):

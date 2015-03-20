@@ -14,7 +14,9 @@ from PyQt4.QtGui import (
     QMainWindow,
     QIcon,
     QToolBar,
-    QMessageBox
+    QMessageBox,
+    QFont,
+    QToolTip
     )
 
 # Módulos QtCore
@@ -54,6 +56,7 @@ class Edis(QMainWindow):
 
     def __init__(self):
         QMainWindow.__init__(self)
+        QToolTip.setFont(QFont("Ubuntu", 7))
         # Esto para tener widgets laterales en full height,
         window = QMainWindow(self)
         self.setWindowTitle('{' + ui.__edis__ + '}')
@@ -86,7 +89,7 @@ class Edis(QMainWindow):
         toolbars = [self.toolbar, self.dock_toolbar]
         Edis.load_component("toolbars", toolbars)
         # Animated property
-        self.setDockOptions(QMainWindow.AnimatedDocks)
+        #self.setDockOptions(QMainWindow.AnimatedDocks)
         # Menú
         menu_bar = self.menuBar()
         self.setup_menu(menu_bar)
@@ -164,6 +167,7 @@ class Edis(QMainWindow):
                 if icon_action is not None:
                     icon = QIcon(":image/%s" % icon_action)
                 else:
+                    # FIXME: No depender de shortcut
                     icon = QIcon(":image/%s" % shortcut)
                 separator = action.get('separator', False)
                 subm = action.get('menu', False)
@@ -173,7 +177,6 @@ class Edis(QMainWindow):
                     Edis.load_component("menu_recent_file", submenu)
                     continue
                 qaction = menu_name.addAction(name)
-                # FIXME: No depender de shortcut
                 qaction.setIcon(icon)
                 if shortcut is not None:
                     qaction.setShortcut(shortcuts[shortcut])
@@ -300,7 +303,8 @@ class Edis(QMainWindow):
     def closeEvent(self, event):
         """
         Éste médoto es llamado automáticamente por Qt cuando se
-        cierra la aplicación y se guardan algunas configuraciones.
+        cierra la aplicación, guarda algunas configuraciones como posición y
+        tamaño de la ventana, archivos, etc.
 
         """
 
