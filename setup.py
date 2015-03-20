@@ -102,12 +102,12 @@ classifiers = [
     ]
 
 setup(
-    name=ui.__nombre__.title(),
+    name=ui.__edis__.title(),
     version=ui.__version__,
-    description=ui.__descripcion__,
-    author=ui.__autor__,
-    author_email=ui.__email_autor__,
-    url=ui.__codigo_fuente__,
+    description=ui.__description__,
+    author=ui.__author__,
+    author_email=ui.__email_author__,
+    url=ui.__source_code__,
     license='GPLv3+',
     long_description=open('README.rst').read(),
     package_data={

@@ -56,7 +56,7 @@ class Edis(QMainWindow):
         QMainWindow.__init__(self)
         # Esto para tener widgets laterales en full height,
         window = QMainWindow(self)
-        self.setWindowTitle('{' + ui.__nombre__ + '}')
+        self.setWindowTitle('{' + ui.__edis__ + '}')
         self.setMinimumSize(750, 500)
         # Se cargan las dimensiones de la ventana
         if settings.get_setting('window/show-maximized'):
@@ -234,19 +234,19 @@ class Edis(QMainWindow):
     def _all_closed(self):
         """ Limpia la barra de estado y el título de la ventana """
 
-        self.setWindowTitle('{' + ui.__nombre__ + '}')
+        self.setWindowTitle('{' + ui.__edis__ + '}')
         self._update_status("")
 
     def _change_title(self, title):
         """ Cambia el título de la ventana (filename - {EDIS}) """
 
         title = os.path.basename(title)
-        self.setWindowTitle(title + ' - ' + '{' + ui.__nombre__ + '}')
+        self.setWindowTitle(title + ' - ' + '{' + ui.__edis__ + '}')
 
     def report_bug(self):
         """ Se abre la url para reportar un bug """
 
-        webbrowser.open_new(ui.__reportar_bug__)
+        webbrowser.open_new(ui.__bug_link__)
 
     def show_hide_toolbars(self):
         """ Cambia la visibilidad de las barras de herramientas """
