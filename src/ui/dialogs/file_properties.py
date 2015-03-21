@@ -45,14 +45,14 @@ class FileProperty(QDialog):
         grid.addWidget(QLabel(self.tr("<b>Location:</b>")), 3, 0)
         grid.addWidget(QLabel(filename), 3, 1)
         grid.addWidget(QLabel(self.tr("<b>Lines of code:</b>")), 4, 0)
-        grid.addWidget(QLabel(self.tr("{0}").format(editor.lineas -
+        grid.addWidget(QLabel(self.tr("{0}").format(editor.lines() -
                        len(self.get_comment_spaces(editor)))), 4, 1)
         grid.addWidget(QLabel(
             self.tr("<b>Blanks and commented lines:</b>")), 5, 0)
         grid.addWidget(QLabel(
             self.tr("{0}").format(len(self.get_comment_spaces(editor)))), 5, 1)
         grid.addWidget(QLabel(self.tr("<b>Total lines:</b>")), 6, 0)
-        grid.addWidget(QLabel(str(editor.lineas)), 6, 1)
+        grid.addWidget(QLabel(str(editor.lines())), 6, 1)
         grid.addWidget(QLabel(self.tr("<b>Modified:</b>")), 7, 0)
         grid.addWidget(QLabel(self.tr(self.get_modification(filename))), 7, 1)
 
@@ -82,7 +82,7 @@ class FileProperty(QDialog):
 
     def get_comment_spaces(self, editor):
         spaces = re.findall('(^\n)|(^(\s+)?//)|(^( +)?($|\n))',
-                            editor.texto, re.M)
+                            editor.text(), re.M)
         return spaces
 
     def get_modification(self, filename):
