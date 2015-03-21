@@ -31,23 +31,27 @@ class SalidaCompilador(QListWidget):
         process = self._parent.build_process
         texto = process.readAllStandardError().data().decode('utf-8')
         for linea in texto.splitlines():
+            item = None
             if linea.find(': warning') != -1:
-                warning = Item(linea, self)
-                warning.setForeground(QColor("#d4d443"))
-                warning.clickeable = True
-                self.addItem(warning)
+                item = Item(linea, self)
+                item.setForeground(QColor("#d4d443"))
+                item.clickeable = True
+                self.addItem(item)
             elif linea.find(': error') != -1:
-                error = Item(linea, self)
-                error.setForeground(QColor("#df3e3e"))
-                error.clickeable = True
-                self.addItem(error)
+                item = Item(linea, self)
+                item.setForeground(QColor("#df3e3e"))
+                item.clickeable = True
+                self.addItem(item)
             elif linea.find('^') != -1:
-                shap = Item(linea, self)
-                shap.setForeground(QColor("#00b34b"))
-                self.addItem(shap)
+                item = Item(linea, self)
+                item.setForeground(QColor("#00b34b"))
+                self.addItem(item)
             else:
                 normal = Item(linea, self)
                 self.addItem(normal)
+            if item is not None:
+                if item.clickeable:
+                    item.setToolTip(self.tr("Click to go to the line"))
 
     def _go_to_line(self, item):
         if item.clickeable:

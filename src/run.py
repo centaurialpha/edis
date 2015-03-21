@@ -12,6 +12,8 @@ from PyQt4.QtGui import (
     QIcon,
     QSplashScreen,
     QPixmap,
+    QToolTip,
+    QFont
     )
 
 from PyQt4.QtCore import (
@@ -63,11 +65,6 @@ def run_edis(app):
         splash.show()
         app.processEvents()
         show_splash = True
-    # GUI
-    if show_splash:
-        splash.showMessage("Loading UI...", Qt.AlignBottom | Qt.black)
-    edis = Edis()
-    edis.show()
 
     # Style Sheet
     style = settings.get_setting('window/style-sheet')
@@ -81,6 +78,15 @@ def run_edis(app):
         with open(path_style, mode='r') as f:
             style_sheet = f.read()
     app.setStyleSheet(style_sheet)
+
+    # Fuento en Tooltips
+    QToolTip.setFont(QFont(settings.DEFAULT_FONT, 9))
+
+    # GUI
+    if show_splash:
+        splash.showMessage("Loading UI...", Qt.AlignBottom | Qt.black)
+    edis = Edis()
+    edis.show()
     # Archivos de última sesión
     files, recents_files = [], []
     if settings.get_setting('general/load-files'):

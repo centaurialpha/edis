@@ -14,9 +14,7 @@ from PyQt4.QtGui import (
     QMainWindow,
     QIcon,
     QToolBar,
-    QMessageBox,
-    QFont,
-    QToolTip
+    QMessageBox
     )
 
 # Módulos QtCore
@@ -56,7 +54,6 @@ class Edis(QMainWindow):
 
     def __init__(self):
         QMainWindow.__init__(self)
-        QToolTip.setFont(QFont("Ubuntu", 7))
         # Esto para tener widgets laterales en full height,
         window = QMainWindow(self)
         self.setWindowTitle('{' + ui.__edis__ + '}')
