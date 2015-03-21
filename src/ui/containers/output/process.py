@@ -101,7 +101,7 @@ class EjecutarWidget(QWidget):
 
         self.output.clear()
         item = output_compiler.Item(self.tr(
-            "Building file: {0} ( {1} )".format(
+            ">>> Building file: {0} ( {1} )".format(
                 path.split('/')[-1], filename)))
 
         self.output.addItem(item)
@@ -124,11 +124,11 @@ class EjecutarWidget(QWidget):
         if exitStatus == QProcess.NormalExit and codigoError == 0:
             item_ok = output_compiler.Item(
                 self.tr("¡COMPILATION FINISHED SUCCESSFULLY!"))
-            item_ok.setForeground(QColor("#a6e22e"))
+            item_ok.setForeground(QColor("#7FE22A"))
             self.output.addItem(item_ok)
         else:
             item_error = output_compiler.Item(self.tr("¡COMPILATION FAILED!"))
-            item_error.setForeground(QColor("#e73e3e"))
+            item_error.setForeground(QColor("#E20000"))
             self.output.addItem(item_error)
         count = self.output.count()
         self.output.setCurrentRow(count - 1, QItemSelectionModel.NoUpdate)

@@ -100,16 +100,36 @@ class Editor(base.Base):
         self._error_indicator = 2
         self.send("sci_indicsetstyle", self._word_indicator, "indic_box")
         self.send("sci_indicsetfore", self._word_indicator,
-                  QColor("#ccd900"))
-        self.send("sci_indicsetstyle", self._warning_indicator, "indic_dots")
+                  QColor("#45FF11"))
+        self.send("sci_indicsetstyle",
+                  self._warning_indicator, "indic_squiggle")
         self.send("sci_indicsetfore", self._warning_indicator,
-                  QColor("#ffff00"))
+                  QColor("#0000FF"))
         self.send("sci_indicsetstyle", self._error_indicator, "indic_dots")
         # Scheme
         self.scheme = editor_scheme.get_scheme(
             settings.get_setting('editor/scheme'))
         # Folding
-        self.setFolding(QsciScintilla.PlainFoldStyle)
+        self.setFolding(QsciScintilla.BoxedTreeFoldStyle)  # en márgen 2
+        self.setMarginWidth(3, 5)  # 5px de espacios en márgen 3
+        self.send("sci_markersetfore",
+            QsciScintilla.SC_MARKNUM_FOLDER,
+            QColor(self.scheme['FoldMarkerFore']))
+        self.send("sci_markersetback",
+            QsciScintilla.SC_MARKNUM_FOLDER,
+            QColor(self.scheme['FoldMarkerBack']))
+        self.send("sci_markersetfore",
+            QsciScintilla.SC_MARKNUM_FOLDEROPEN,
+            QColor(self.scheme['FoldMarkerFore']))
+        self.send("sci_markersetback",
+            QsciScintilla.SC_MARKNUM_FOLDEROPEN,
+            QColor(self.scheme['FoldMarkerBack']))
+        self.send("sci_markersetback",
+            QsciScintilla.SC_MARKNUM_FOLDERSUB,
+            QColor(self.scheme['FoldMarkerBack']))
+        self.send("sci_markersetback",
+            QsciScintilla.SC_MARKNUM_FOLDERTAIL,
+            QColor(self.scheme['FoldMarkerBack']))
         self.setFoldMarginColors(QColor(self.scheme['FoldMarginBack']),
                                  QColor(self.scheme['FoldMarginFore']))
         self.markerDefine(QsciScintilla.SC_MARK_LEFTRECT,

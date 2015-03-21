@@ -20,7 +20,7 @@ class SalidaCompilador(QListWidget):
 
     def __init__(self, parent):
         QListWidget.__init__(self, parent)
-        self.setObjectName("salida_compilador")
+        self.setStyleSheet("background: #000000; color: #FFFFFF")
         self._parent = parent
 
         # Conexión

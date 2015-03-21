@@ -26,9 +26,11 @@ EDIS_SCHEME = {
     'CaretLineFore': '#FFFFFF',
     'CaretLineAlpha': 20,
     'SidebarBack': '#262626',
-    'SidebarFore': '#B3B3B3',
+    'SidebarFore': '#8C8C8C',
     'FoldMarginBack': '#262626',
     'FoldMarginFore': '#262626',
+    'FoldMarkerFore': '#262626',
+    'FoldMarkerBack': '#8C8C8C',
     'error': '#DF3E3E'
     }
 
@@ -56,6 +58,8 @@ KOMODO_SCHEME = {
     'SidebarFore': '#C2C2C2',
     'FoldMarginBack': '#F7F7F7',
     'FoldMarginFore': '#F7F7F7',
+    'FoldMarkerFore': '#F7F7F7',
+    'FoldMarkerBack': '#C2C2C2',
     'error': '#DF3E3E'
     }
 
