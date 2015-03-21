@@ -57,7 +57,7 @@ class ThemeConfiguration(QWidget):
         hbox = QHBoxLayout()
         hbox.addWidget(QLabel(self.tr("Editor scheme:")))
         self.combo_editor_scheme = QComboBox()
-        self.combo_editor_scheme.addItems(['Edis', 'Code::Blocks'])
+        self.combo_editor_scheme.addItems(['Edis', 'Komodo'])
         scheme = settings.get_setting('editor/scheme')
         index = 0
         if scheme != 'edis':
@@ -146,7 +146,7 @@ class ThemeConfiguration(QWidget):
         settings.set_setting('window/style-sheet', style_sheet)
         editor_scheme = self.combo_editor_scheme.currentText()
         if editor_scheme != 'edis':
-            editor_scheme = editor_scheme.replace('::', '').lower()
+            editor_scheme = editor_scheme.lower()
         settings.set_setting('editor/scheme', editor_scheme)
 
 

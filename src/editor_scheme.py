@@ -32,34 +32,34 @@ EDIS_SCHEME = {
     'error': '#DF3E3E'
     }
 
-# Based on Code::Blocks
-CB_SCHEME = {
+# Based on Komodo
+KOMODO_SCHEME = {
     'BackgroundEditor': '#FFFFFF',
     'Color': '#000000',
-    'Keyword': '#0000A0',
-    'Comment': '#A0A0A0',
+    'Keyword': '#333399',
+    'Comment': '#666666',
     'CommentLine': '#BEBEE6',
-    'Number': '#F000F0',
-    'DoubleQuotedString': '#0000FF',
+    'Number': '#8B0000',
+    'DoubleQuotedString': '#996633',
     'SingleQuotedString': '#E0A000',
-    'PreProcessor': '#00A000',
-    'Operator': '#FF0000',
-    'MatchedBraceFore': '#000000',
-    'MatchedBraceBack': '#80FFFF',
+    'PreProcessor': '#696969',
+    'Operator': '#781F87',
+    'MatchedBraceFore': '#FFFFFF',
+    'MatchedBraceBack': '#333399',
     'UnmatchedBraceFore': '#FFFFFF',
     'UnmatchedBraceBack': '#FF0000',
-    'Margin': '#808080',
+    'Margin': '#C2C2C2',
     'CaretLineBack': '#DEDEDE',
     'CaretLineFore': '#000000',
-    'CaretLineAlpha': 20,
-    'SidebarBack': '#D2D2D2',
-    'SidebarFore': '#000000',
-    'FoldMarginBack': '#D2D2D2',
-    'FoldMarginFore': '#FFFFFF',
+    'CaretLineAlpha': 50,
+    'SidebarBack': '#F5F5F5',
+    'SidebarFore': '#C2C2C2',
+    'FoldMarginBack': '#F7F7F7',
+    'FoldMarginFore': '#F7F7F7',
     'error': '#DF3E3E'
     }
 
-SCHEME = {'edis': EDIS_SCHEME, 'codeblocks': CB_SCHEME}
+SCHEME = {'edis': EDIS_SCHEME, 'komodo': KOMODO_SCHEME}
 
 
 def get_scheme(key):
