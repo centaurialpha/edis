@@ -35,7 +35,7 @@ class BarraDeEstado(QStatusBar):
         self.addWidget(self.lbl_archivo)
         self.addPermanentWidget(contenedor)
 
-        Edis.load_component("barra_de_estado", self)
+        Edis.load_component("status_bar", self)
 
     def update_status(self, filename):
         self.lbl_archivo.setText(filename)

@@ -29,8 +29,8 @@ EDIS_SCHEME = {
     'SidebarFore': '#8C8C8C',
     'FoldMarginBack': '#262626',
     'FoldMarginFore': '#262626',
-    'FoldMarkerFore': '#262626',
-    'FoldMarkerBack': '#8C8C8C',
+    'FoldMarkerFore': '#FFFFFF',
+    'FoldMarkerBack': '#000000',
     'error': '#DF3E3E'
     }
 

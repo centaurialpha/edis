@@ -143,8 +143,12 @@ ACTIONS = ([
         "connection": "edis.show_hide_output",
         "shortcut": "hide-output"},
     {
+        "name": translate("EDIS", "Show/hide Lateral"),
+        "connection": "edis.show_hide_lateral",
+        "shortcut": "hide-lateral"},
+    {
         "name": translate("EDIS", "Show/hide Toolbars"),
-        "connection": "edis.show_hide_toolbars",
+        "connection": "edis.show_hide_toolbar",
         "shortcut": "hide-toolbar",
         "separator": True},
     {

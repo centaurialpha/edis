@@ -70,8 +70,8 @@ class ThreadBusqueda(QThread):
 class Editor(base.Base):
 
     # Marcadores
-    _marker_modified = 8
-    _marker_save = 9
+    _marker_modified = 3
+    _marker_save = 4
 
     # Señales
     _modificado = pyqtSignal(bool, name='archivo_modificado')
@@ -110,25 +110,13 @@ class Editor(base.Base):
         self.scheme = editor_scheme.get_scheme(
             settings.get_setting('editor/scheme'))
         # Folding
-        self.setFolding(QsciScintilla.BoxedTreeFoldStyle)  # en márgen 2
+        self.setFolding(QsciScintilla.PlainFoldStyle)  # en márgen 2
         self.setMarginWidth(3, 5)  # 5px de espacios en márgen 3
         self.send("sci_markersetfore",
             QsciScintilla.SC_MARKNUM_FOLDER,
             QColor(self.scheme['FoldMarkerFore']))
         self.send("sci_markersetback",
             QsciScintilla.SC_MARKNUM_FOLDER,
-            QColor(self.scheme['FoldMarkerBack']))
-        self.send("sci_markersetfore",
-            QsciScintilla.SC_MARKNUM_FOLDEROPEN,
-            QColor(self.scheme['FoldMarkerFore']))
-        self.send("sci_markersetback",
-            QsciScintilla.SC_MARKNUM_FOLDEROPEN,
-            QColor(self.scheme['FoldMarkerBack']))
-        self.send("sci_markersetback",
-            QsciScintilla.SC_MARKNUM_FOLDERSUB,
-            QColor(self.scheme['FoldMarkerBack']))
-        self.send("sci_markersetback",
-            QsciScintilla.SC_MARKNUM_FOLDERTAIL,
             QColor(self.scheme['FoldMarkerBack']))
         self.setFoldMarginColors(QColor(self.scheme['FoldMarginBack']),
                                  QColor(self.scheme['FoldMarginFore']))

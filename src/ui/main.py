@@ -68,31 +68,21 @@ class Edis(QMainWindow):
             self.move(position)
         # Toolbars
         self.toolbar = QToolBar(self)
+        self.toolbar.setObjectName("toolbar")
         toggle_action = self.toolbar.toggleViewAction()
         toggle_action.setText(self.tr("Toolbar"))
-        self.toolbar.setMovable(False)
-        self.toolbar.setObjectName("toolbar")
         self.toolbar.setIconSize(QSize(24, 24))
         self.toolbar.setToolButtonStyle(Qt.ToolButtonIconOnly)
         self.addToolBar(Qt.RightToolBarArea, self.toolbar)
-        self.dock_toolbar = QToolBar(self)
-        if settings.IS_WINDOWS:
-            self.dock_toolbar.setStyleSheet("padding: 4px;")
-        toggle_action = self.dock_toolbar.toggleViewAction()
-        toggle_action.setText(self.tr("Dock toolbar"))
-        self.dock_toolbar.setObjectName("dock_toolbar")
-        self.dock_toolbar.setMovable(False)
-        self.addToolBar(Qt.LeftToolBarArea, self.dock_toolbar)
-        toolbars = [self.toolbar, self.dock_toolbar]
-        Edis.load_component("toolbars", toolbars)
+        Edis.load_component("toolbar", self.toolbar)
         # Animated property
-        #self.setDockOptions(QMainWindow.AnimatedDocks)
+        self.setDockOptions(QMainWindow.AnimatedDocks)
         # Menú
         menu_bar = self.menuBar()
         self.setup_menu(menu_bar)
         # Barra de estado
-        self.barra_de_estado = Edis.get_component("barra_de_estado")
-        self.setStatusBar(self.barra_de_estado)
+        self.status_bar = Edis.get_component("status_bar")
+        self.setStatusBar(self.status_bar)
         # Widget central
         central = self._load_ui(window)
         window.setCentralWidget(central)
@@ -201,16 +191,16 @@ class Edis(QMainWindow):
         """
 
         editor_container = Edis.get_component("principal")
-        dock = Edis.get_component("dock")
-        dock.load_dock_toolbar(self.dock_toolbar)
-        names_instances = ["symbols", "explorer"]
-        for name in names_instances:
-            method = getattr(dock, "load_%s_widget" % name)
-            widget = Edis.get_lateral(name)
-            method(widget)
-            self.addDockWidget(Qt.LeftDockWidgetArea, widget)
+        # Lateral
+        tab_container = Edis.get_component("tab_container")
+        lateral_widgets = ["symbols", "explorer"]
+        for widget in lateral_widgets:
+            method = getattr(tab_container, "load_%s_widget" % widget)
+            obj = Edis.get_lateral(widget)
+            method(obj)
+        self.addDockWidget(Qt.LeftDockWidgetArea, tab_container)
         output_widget = Edis.get_component("output")
-        dock.load_output_widget(output_widget)
+        output_widget.hide()
         window.addDockWidget(Qt.BottomDockWidgetArea, output_widget)
         if settings.get_setting('general/show-start-page'):
             editor_container.add_start_page()
@@ -223,13 +213,15 @@ class Edis(QMainWindow):
         self.connect(editor_container.editor_widget,
                      SIGNAL("allFilesClosed()"),
                      self._all_closed)
+        self.connect(output_widget, SIGNAL("goToLine(int)"),
+                     editor_container.go_to_line)
 
         return editor_container
 
     def _update_status(self, archivo):
         """ Actualiza el path del archivo en la barra de estado """
 
-        self.barra_de_estado.update_status(archivo)
+        self.status_bar.update_status(archivo)
 
     def _all_closed(self):
         """ Limpia la barra de estado y el título de la ventana """
@@ -248,20 +240,49 @@ class Edis(QMainWindow):
 
         webbrowser.open_new(ui.__bug_link__)
 
-    def show_hide_toolbars(self):
-        """ Cambia la visibilidad de las barras de herramientas """
+    def show_hide_toolbar(self):
+        """ Cambia la visibilidad de la barra de herramientas """
 
-        for toolbar in [self.toolbar, self.dock_toolbar]:
-            if toolbar.isVisible():
-                toolbar.hide()
-            else:
-                toolbar.show()
+        if self.toolbar.isVisible():
+            self.toolbar.hide()
+        else:
+            self.toolbar.show()
+
+    def show_hide_lateral(self):
+        """ Cambia la visibilidad del dock lateral """
+
+        lateral_widget = Edis.get_component("tab_container")
+        if not lateral_widget.isVisible():
+            lateral_widget.show()
+        else:
+            lateral_widget.hide()
 
     def show_hide_all(self):
         """ Oculta todo excepto la barra de menú y el editor """
 
-        dock = Edis.get_component("dock")
-        dock.show_hide_all()
+        toolbar = Edis.get_component("toolbar")
+        status_bar = Edis.get_component("status_bar")
+        output = Edis.get_component("output")
+        lateral = Edis.get_component("tab_container")
+        if (output.isVisible() or toolbar.isVisible() or
+           status_bar.isVisible() or lateral.isVisible()):
+            if output:
+                output.hide()
+            if toolbar:
+                toolbar.hide()
+            if status_bar:
+                status_bar.hide()
+            if lateral:
+                lateral.hide()
+        else:
+            if toolbar:
+                toolbar.show()
+            if output:
+                output.show()
+            if status_bar:
+                status_bar.show()
+            if lateral:
+                lateral.show()
 
     def show_full_screen(self):
         """ Cambia a modo FullScreen """
@@ -274,8 +295,11 @@ class Edis(QMainWindow):
     def show_hide_output(self):
         """ Cambia la visibilidad de la salida del compilador """
 
-        dock = Edis.get_component("dock")
-        dock.output_visibility()
+        output = Edis.get_component("output")
+        if output.isVisible():
+            output.hide()
+        else:
+            output.show()
 
     def cargar_archivos(self, files, recents_files):
         """ Carga archivos al editor desde la última sesión y actualiza el menú

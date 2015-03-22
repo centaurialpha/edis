@@ -28,12 +28,15 @@ from src.helpers import settings
 # Se cargan las configuraciones
 settings.load_settings()
 #lint:disable
+# Se crean los objetos
+from src.ui.containers.lateral import (
+    tab_container,
+    explorer,
+    tree_symbols
+    )
+from src.ui.containers import editor_container
+from src.ui.containers.output import output_container
 from src.ui.widgets import status_bar
-import src.ui.dock_manager
-import src.ui.containers.editor_container
-import src.ui.containers.output.output_container
-import src.ui.containers.lateral.explorer
-import src.ui.containers.lateral.tree_symbols
 #lint:enable
 from src.ui.main import Edis
 
@@ -79,7 +82,7 @@ def run_edis(app):
             style_sheet = f.read()
     app.setStyleSheet(style_sheet)
 
-    # Fuento en Tooltips
+    # Fuente en Tooltips
     QToolTip.setFont(QFont(settings.DEFAULT_FONT, 9))
 
     # GUI

@@ -20,7 +20,8 @@ class SalidaCompilador(QListWidget):
 
     def __init__(self, parent):
         QListWidget.__init__(self, parent)
-        self.setStyleSheet("background: #000000; color: #FFFFFF")
+        self.setStyleSheet(
+            "QListWidget { background: #0E0F12; color: #c5c8c6; }")
         self._parent = parent
 
         # Conexión
@@ -34,7 +35,7 @@ class SalidaCompilador(QListWidget):
             item = None
             if linea.find(': warning') != -1:
                 item = Item(linea, self)
-                item.setForeground(QColor("#d4d443"))
+                item.setForeground(QColor("#D4D443"))
                 item.clickeable = True
                 self.addItem(item)
             elif linea.find(': error') != -1:

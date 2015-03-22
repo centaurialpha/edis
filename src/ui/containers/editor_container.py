@@ -65,6 +65,7 @@ class EditorContainer(QWidget):
         self.box.addWidget(self.stack)
 
         # Replace widget
+        #FIXME: mover esto
         self._replace_widget = replace_widget.ReplaceWidget()
         self._replace_widget.hide()
         self.box.addWidget(self._replace_widget)
@@ -140,9 +141,9 @@ class EditorContainer(QWidget):
         self.editor_widget.add_widget(weditor)
         if isinstance(self.stack.widget(0), start_page.StartPage):
             self.remove_widget(self.stack.widget(0))
-        symbols_widget = Edis.get_lateral('symbols')
-        if not symbols_widget.isVisible():
-            symbols_widget.show()
+        lateral = Edis.get_component("tab_container")
+        if not lateral.isVisible():
+            lateral.show()
         # Conexiones
         self.connect(weditor, SIGNAL("cursorPositionChanged(int, int)"),
                      self.update_cursor)
@@ -200,7 +201,7 @@ class EditorContainer(QWidget):
                     # Cuando se setea el contenido en el editor
                     # se emite la señal textChanged() por lo tanto se agrega
                     # el marker, entonces se procede a borrarlo
-                    weditor.markerDelete(0, 8)
+                    weditor.markerDelete(0, 3)
                     weditor.filename = _file
                     if cursor_position is not None:
                         line, row = cursor_position
@@ -245,8 +246,8 @@ class EditorContainer(QWidget):
             _start_page = start_page.StartPage()
             self.stack.insertWidget(0, _start_page)
             self.stack.setCurrentIndex(0)
-            symbols = Edis.get_lateral('symbols')
-            symbols.hide()
+            lateral = Edis.get_component('tab_container')
+            lateral.hide()
         else:
             self.editor_widget.combo.setVisible(False)
 

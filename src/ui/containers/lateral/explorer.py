@@ -16,43 +16,40 @@ from PyQt4.QtCore import (
     )
 
 from src.ui.main import Edis
-from src.ui.containers.lateral import custom_dock
 
 
-class Explorador(custom_dock.CustomDock):
+class Explorer(QTreeView):
 
     def __init__(self, parent=None):
-        custom_dock.CustomDock.__init__(self)
-        self.explorador = QTreeView()
-        self.setWidget(self.explorador)
-        self.explorador.header().setHidden(True)
-        self.explorador.setAnimated(True)
+        QTreeView.__init__(self)
+        self.header().setHidden(True)
+        self.setAnimated(True)
 
         # Modelo
-        self.modelo = QFileSystemModel(self.explorador)
+        self.model = QFileSystemModel(self)
         path = QDir.toNativeSeparators(QDir.homePath())
-        self.modelo.setRootPath(path)
-        self.explorador.setModel(self.modelo)
-        self.modelo.setNameFilters(["*.c", "*.h", "*.s"])
-        self.explorador.setRootIndex(QModelIndex(self.modelo.index(path)))
-        self.modelo.setNameFilterDisables(False)
+        self.model.setRootPath(path)
+        self.setModel(self.model)
+        self.model.setNameFilters(["*.c", "*.h", "*.s"])
+        self.setRootIndex(QModelIndex(self.model.index(path)))
+        self.model.setNameFilterDisables(False)
 
         # Se ocultan algunas columnas
-        self.explorador.hideColumn(1)
-        self.explorador.hideColumn(2)
-        self.explorador.hideColumn(3)
+        self.hideColumn(1)
+        self.hideColumn(2)
+        self.hideColumn(3)
 
         # Conexion
-        self.explorador.doubleClicked.connect(self._open_file)
+        self.doubleClicked.connect(self._open_file)
 
         Edis.load_lateral("explorer", self)
 
     def _open_file(self, i):
-        if not self.modelo.isDir(i):
-            indice = self.modelo.index(i.row(), 0, i.parent())
-            archivo = self.modelo.filePath(indice)
+        if not self.model.isDir(i):
+            indice = self.model.index(i.row(), 0, i.parent())
+            archivo = self.model.filePath(indice)
             principal = Edis.get_component("principal")
             principal.open_file(archivo)
 
 
-explorador = Explorador()
+explorer = Explorer()

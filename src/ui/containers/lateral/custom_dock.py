@@ -14,6 +14,6 @@ class CustomDock(QDockWidget):
 
     def __init__(self):
         QDockWidget.__init__(self)
-        # Siempre undock/redock a la izquierda
-        self.setAllowedAreas(Qt.LeftDockWidgetArea)
+        # Siempre undock/redock a la izquierda o derecha
+        self.setAllowedAreas(Qt.LeftDockWidgetArea | Qt.RightDockWidgetArea)
         self.setMaximumWidth(356)

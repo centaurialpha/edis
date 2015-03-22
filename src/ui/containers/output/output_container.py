@@ -14,13 +14,16 @@ from PyQt4.QtGui import (
     )
 
 # Módulos QtCore
-from PyQt4.QtCore import Qt
+from PyQt4.QtCore import (
+    Qt,
+    SIGNAL
+    )
 
 from src.ui.containers.output import process
 from src.ui.main import Edis
 
 
-class ContenedorOutput(QDockWidget):
+class OutputContainer(QDockWidget):
 
     def __init__(self):
         QDockWidget.__init__(self)
@@ -34,8 +37,8 @@ class ContenedorOutput(QDockWidget):
         self.setWidget(self.salida_)
 
         # Conexiones
-        self.atajoEscape = QShortcut(QKeySequence(Qt.Key_Escape), self)
-        self.atajoEscape.activated.connect(self.hide)
+        key_escape = QShortcut(QKeySequence(Qt.Key_Escape), self)
+        self.connect(key_escape, SIGNAL("activated()"), self.hide)
 
         Edis.load_component("output", self)
 
@@ -50,6 +53,7 @@ class ContenedorOutput(QDockWidget):
         self.show()
         self._filename = path
         self.salida_.run_compilation(self._filename)
+        self.setFocus()
 
     def run(self):
         if self._filename is None:
@@ -68,4 +72,4 @@ class ContenedorOutput(QDockWidget):
         self.salida_.kill_process()
 
 
-output = ContenedorOutput()
+output = OutputContainer()

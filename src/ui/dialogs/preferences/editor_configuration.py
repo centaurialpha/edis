@@ -73,7 +73,7 @@ class EditorConfiguration(QWidget):
         # Extras
         group_extras = QGroupBox(self.tr("Extras:"))
         box = QGridLayout(group_extras)
-        self.check_style_checker = QCheckBox(self.tr("Style checker"))
+        self.check_style_checker = QCheckBox(self.tr("Style checker (beta)"))
         self.check_style_checker.setChecked(settings.get_setting(
                                             'editor/style-checker'))
         self.check_minimap = QCheckBox(self.tr(

@@ -54,6 +54,9 @@ class EjecutarWidget(QWidget):
         layoutV.addWidget(self.output)
         self.setLayout(layoutV)
 
+        # Flag
+        self._compilation_failed = False
+
         # Procesos
         self.build_process = QProcess(self)
         if not sys.platform.startswith('linux'):
@@ -122,11 +125,13 @@ class EjecutarWidget(QWidget):
         """
 
         if exitStatus == QProcess.NormalExit and codigoError == 0:
+            self._compilation_failed = False
             item_ok = output_compiler.Item(
                 self.tr("¡COMPILATION FINISHED SUCCESSFULLY!"))
             item_ok.setForeground(QColor("#7FE22A"))
             self.output.addItem(item_ok)
         else:
+            self._compilation_failed = True
             item_error = output_compiler.Item(self.tr("¡COMPILATION FAILED!"))
             item_error.setForeground(QColor("#E20000"))
             self.output.addItem(item_error)
@@ -172,7 +177,8 @@ class EjecutarWidget(QWidget):
 
     def build_and_run(self, archivo):
         self.run_compilation(archivo)
-        self.run_program(archivo)
+        if not self._compilation_failed:
+            self.run_program(archivo)
 
     def clean(self, exe):
         """ Elimina el binario generado por la compilación """
