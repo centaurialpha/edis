@@ -9,6 +9,7 @@ import unittest
 import os
 
 from src.tools import code_analizer
+from src.tools.pycparser import c_parser
 
 CODE = """
 #include <stdio.h>
@@ -21,15 +22,38 @@ void main( void ) {
 }
 """
 
+CODE2 = """
+struct ufo {
+    int a;
+};
+
+int foo( int a, int b ) {
+    return 1;
+}
+
+void main( void ) {
+    return;
+}
+"""
+
 
 class CodeAnalizerTestCase(unittest.TestCase):
 
     def setUp(self):
         self.filename = os.path.join(os.path.dirname(__file__),
                                      "c_files", "for_test.c")
+        self.visitor = code_analizer.NodeVisitor()
 
     def test_parse_symbols(self):
-        pass
+        symbols_expected = {
+            2: ('ufo', 'struct'),
+            6: ('foo(a, b)', 'function'),
+            10: ('main()', 'function')
+            }
+        parser = c_parser.CParser()
+        ast = parser.parse(CODE2)
+        self.visitor.visit(ast)
+        self.assertEqual(symbols_expected, self.visitor.symbols_combo)
 
     def test_sanitize_source_coude(self):
         expected = "\n\nstruct ufo {\n    int a;\n};\n\nvoid main( void ) " \
