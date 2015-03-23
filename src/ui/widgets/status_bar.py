@@ -55,10 +55,10 @@ class UpTimeWidget(QLabel):
         # Timer
         self.timer = QTimer()
         self.timer.setInterval(60000)
-        self.timer.timeout.connect(self.actualizar_tiempo)
+        self.timer.timeout.connect(self.update_time)
         self.timer.start()
 
-    def actualizar_tiempo(self):
+    def update_time(self):
         """ Actualiza el label cada 60 segundos """
 
         self.tiempo += 1

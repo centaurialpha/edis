@@ -153,6 +153,7 @@ class EditorContainer(QWidget):
                      self._file_saved)
         self.connect(weditor, SIGNAL("linesChanged(int)"),
                      self.editor_widget.combo.move_to_symbol)
+        self.emit(SIGNAL("fileChanged(QString)"), weditor.filename)
         weditor.dropSignal.connect(self._drop_editor)
         weditor.setFocus()
         return weditor
@@ -207,9 +208,17 @@ class EditorContainer(QWidget):
                         line, row = cursor_position
                         weditor.setCursorPosition(line, row)
                     weditor.setModified(False)
-                    self.fileChanged.emit(_file)
-                    self.openedFile.emit(_file)
-                    self.emit(SIGNAL("updateSymbols(QString)"), _file)
+                else:
+                    # Se cambia el índice del stacked
+                    # para mostrar el archivo que ya fué abierto
+                    for index in range(self.editor_widget.count()):
+                        editor = self.editor_widget.widget(index)
+                        if editor.filename == _file:
+                            self.change_widget(index)
+
+                self.fileChanged.emit(_file)
+                self.openedFile.emit(_file)
+                self.emit(SIGNAL("updateSymbols(QString)"), _file)
         except EdisIOException as error:
             ERROR('Error opening file: %s', error)
             QMessageBox.critical(self, self.tr('Could not open file'),
