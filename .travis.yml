@@ -23,13 +23,7 @@ before_install:
     - python -B configure.py --confirm-license
     - make --quiet
     - sudo make --quiet install
-    - cd /tmp
-    - wget --quiet http://downloads.sourceforge.net/project/pyqt/QScintilla2/QScintilla-2.8.4/QScintilla-gpl-2.8.4.tar.gz
-    - tar -xf QScintilla-gpl-2.8.4.tar.gz
-    - cd QScintilla-gpl-2.8.4
-    - python -B Python/configure.py
-    - make --quiet
-    - sudo make --quiet install
+    - sudo apt-get installpython-qscintilla2
     - cd $TRAVIS_BUILD_DIR
 
 install:
