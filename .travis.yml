@@ -23,7 +23,7 @@ before_install:
     - python -B configure.py --confirm-license
     - make --quiet
     - sudo make --quiet install
-    - sudo apt-get installpython-qscintilla2
+    - sudo apt-get install python-qscintilla2
     - cd $TRAVIS_BUILD_DIR
 
 install:
