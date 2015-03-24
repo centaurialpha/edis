@@ -9,7 +9,7 @@ import unittest
 
 from PyQt4.QtTest import QTest
 from PyQt4.QtCore import Qt
-from . import base_gui
+from tests import base_gui
 
 
 class WindowTestCase(base_gui.BaseGUI):

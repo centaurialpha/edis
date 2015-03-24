@@ -7,7 +7,7 @@
 
 import unittest
 import os
-from . import base_gui
+from tests import base_gui
 from PyQt4.QtTest import QTest
 from PyQt4.QtCore import Qt
 
@@ -70,6 +70,7 @@ class EditorTestCase(base_gui.BaseGUI):
         # line comienza en 0
         line, _ = editor.getCursorPosition()
         self.assertEqual(line + 1, 6)
+
 
 if __name__ == "__main__":
     unittest.main()

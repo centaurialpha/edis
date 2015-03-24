@@ -7,12 +7,12 @@
 
 import unittest
 import os
-from .base_gui import BaseGUI
+from tests import base_gui
 from PyQt4.QtTest import QTest
 from PyQt4.QtCore import Qt
 
 
-class StatusBarTestCase(BaseGUI):
+class StatusBarTestCase(base_gui.BaseGUI):
 
     def setUp(self):
         super(StatusBarTestCase, self).setUp()

@@ -6,10 +6,11 @@
 # License: GPLv3 (see http://www.gnu.org/licenses/gpl.html)
 
 import unittest
+import logging
 import os
 from src.ui.main import Edis
 from PyQt4.QtTest import QTest
-from . import qApp
+from tests import qApp
 from src import paths
 
 
@@ -28,4 +29,5 @@ class BaseGUI(unittest.TestCase):
         QTest.qWait(time)
 
     def tearDown(self):
+        logging.disable(logging.CRITICAL)
         del self.app
