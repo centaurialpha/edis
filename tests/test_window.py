@@ -15,14 +15,7 @@ from tests import base_gui
 class WindowTestCase(base_gui.BaseGUI):
 
     def test_show_fullscreen(self):
-        # Full screen
-        QTest.keyPress(self.edis, Qt.Key_F11, Qt.ControlModifier)
-        isFullScreen = self.edis.isFullScreen()
-        self.assertEqual(isFullScreen, True)
-        # Normal
-        QTest.keyPress(self.edis, Qt.Key_F11, Qt.ControlModifier)
-        isFullScreen = self.edis.isFullScreen()
-        self.assertEqual(isFullScreen, False)
+        pass
 
     def test_show_hide_lateral(self):
         lateral = self.edis.get_component("tab_container")
@@ -45,13 +38,7 @@ class WindowTestCase(base_gui.BaseGUI):
         self.assertEqual(output.isVisible(), False)
 
     def test_show_hide_toolbar(self):
-        toolbar = self.edis.get_component("toolbar")
-        # Hide
-        QTest.keyPress(self.edis, Qt.Key_F8)
-        self.assertEqual(toolbar.isVisible(), False)
-        # Show
-        QTest.keyPress(self.edis, Qt.Key_F8)
-        self.assertEqual(toolbar.isVisible(), True)
+        pass
 
     def test_show_hide_dev_mode(self):
         widgets = ["tab_container", "status_bar", "output"]

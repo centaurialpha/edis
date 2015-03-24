@@ -18,7 +18,9 @@ from PyQt4.QtGui import (
     QMessageBox,
     QSizePolicy,
     QSpacerItem,
-    QComboBox
+    QComboBox,
+    QLineEdit,
+    QLabel
     )
 
 from PyQt4.QtCore import QSettings
@@ -49,6 +51,7 @@ class GeneralConfiguration(QWidget):
         load_files = settings.get_setting('general/load-files')
         self.check_load_files.setChecked(load_files)
         box.addWidget(self.check_load_files)
+        container.addWidget(group_on_start)
 
         # Al salir
         group_on_exit = QGroupBox(self.tr("On close:"))
@@ -62,6 +65,7 @@ class GeneralConfiguration(QWidget):
         self.check_geometry.setChecked(
             settings.get_setting('window/store-size'))
         box.addWidget(self.check_geometry)
+        container.addWidget(group_on_exit)
 
         # Notificaciones
         group_notifications = QGroupBox(self.tr("Notifications:"))
@@ -70,6 +74,17 @@ class GeneralConfiguration(QWidget):
         self.check_updates.setChecked(
             settings.get_setting('general/check-updates'))
         box.addWidget(self.check_updates)
+        container.addWidget(group_notifications)
+
+        # Terminal
+        if settings.IS_LINUX:
+            group_terminal = QGroupBox(self.tr("Terminal:"))
+            box = QHBoxLayout(group_terminal)
+            box.addWidget(QLabel(self.tr("Execute program with:")))
+            self.line_terminal = QLineEdit()
+            self.line_terminal.setText(settings.get_setting('terminal'))
+            box.addWidget(self.line_terminal)
+            container.addWidget(group_terminal)
 
         # Idioma
         group_language = QGroupBox(self.tr("Language:"))
@@ -81,6 +96,7 @@ class GeneralConfiguration(QWidget):
         index = 0 if not lang else self.combo_lang.findText(lang)
         self.combo_lang.setCurrentIndex(index)
         box.addWidget(self.combo_lang)
+        container.addWidget(group_language)
 
         # Reestablecer
         group_restart = QGroupBox(self.tr("Restart:"))
@@ -89,12 +105,8 @@ class GeneralConfiguration(QWidget):
         btn_reestablecer.setObjectName("custom")
         box.addWidget(btn_reestablecer)
         box.addStretch(1)
-
-        container.addWidget(group_on_start)
-        container.addWidget(group_on_exit)
-        container.addWidget(group_notifications)
-        container.addWidget(group_language)
         container.addWidget(group_restart)
+
         container.addItem(QSpacerItem(0, 10, QSizePolicy.Expanding,
                           QSizePolicy.Expanding))
         btn_reestablecer.clicked.connect(self._restart_configurations)
@@ -130,3 +142,4 @@ class GeneralConfiguration(QWidget):
         settings.set_setting('general/load-files', load_files)
         lang = self.combo_lang.currentText()
         settings.set_setting('general/language', lang)
+        settings.set_setting('terminal', self.line_terminal.text())

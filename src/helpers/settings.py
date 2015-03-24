@@ -22,6 +22,7 @@ else:
     DEFAULT_FONT = "Lucida Console"
 
 SETTINGS = {
+    'terminal': 'xterm',
     'window/size': QSize(-1, -1),
     'window/position': QPoint(-1, -1),
     'window/show-maximized': True,

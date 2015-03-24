@@ -158,10 +158,11 @@ class EjecutarWidget(QWidget):
         self.execution_process.setWorkingDirectory(path)
 
         if settings.IS_LINUX:
-            process = 'xterm -T "%s" -e /usr/bin/cb_console_runner "%s"' \
-                      % (self.exe, os.path.join(path, self.exe))
             # Run !
-            self.execution_process.start(process)
+            terminal = settings.get_setting('terminal')
+            arguments = [os.path.join(os.path.dirname(__file__),
+                         "run_script.sh %s" % os.path.join(path, self.exe))]
+            self.execution_process.start(terminal, ['-e'] + arguments)
         else:
             pauser = os.path.join(paths.PATH, "tools", "pauser",
                                   "system_pause.exe")
