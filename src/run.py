@@ -63,7 +63,7 @@ def run_edis(app):
     # Splash screen
     show_splash = False
     if settings.get_setting('general/show-splash'):
-        splash = Splash(pixmap, Qt.WindowStaysOnTopHint)
+        splash = QSplashScreen(pixmap, Qt.WindowStaysOnTopHint)
         splash.setMask(pixmap.mask())
         splash.show()
         app.processEvents()
@@ -87,14 +87,15 @@ def run_edis(app):
 
     # GUI
     if show_splash:
-        splash.showMessage("Loading UI...", Qt.AlignBottom | Qt.black)
+        alignment = Qt.AlignBottom | Qt.AlignLeft
+        splash.showMessage("Loading UI...", alignment, Qt.white)
     edis = Edis()
     edis.show()
     # Archivos de última sesión
     files, recents_files = [], []
     if settings.get_setting('general/load-files'):
         if show_splash:
-            splash.showMessage("Loading files...", Qt.AlignBottom | Qt.black)
+            splash.showMessage("Loading files...", alignment, Qt.white)
         files = settings.get_setting('general/files')
         if files is None:
             files = []
@@ -106,12 +107,3 @@ def run_edis(app):
     if show_splash:
         splash.finish(edis)
     sys.exit(app.exec_())
-
-
-class Splash(QSplashScreen):
-
-    """ Custom Splash """
-
-    def __init__(self, pix, flag):
-        super(Splash, self).__init__(pix, flag)
-        self.move(800, 410)
