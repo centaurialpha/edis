@@ -157,7 +157,8 @@ class EjecutarWidget(QWidget):
         self.execution_process.setWorkingDirectory(path)
         # Path ejecutable
         path_exe = os.path.join(path, self.exe)
-
+        if settings.IS_WINDOWS:
+            path_exe += '.exe'
         # Si no existe se termina el proceso
         if not self._check_file_exists(path_exe):
             text = output_compiler.Item(
