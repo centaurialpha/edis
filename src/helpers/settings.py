@@ -12,13 +12,11 @@ from PyQt4.QtCore import QSettings, QSize, QPoint
 from src import paths
 
 # OS
-IS_WINDOWS = False
-IS_LINUX = False
+IS_LINUX = True
 if sys.platform.startswith('linux'):
-    IS_LINUX = True
     DEFAULT_FONT = "Monospace"
 else:
-    IS_WINDOWS = True
+    IS_LINUX = False
     DEFAULT_FONT = "Lucida Console"
 
 SETTINGS = {

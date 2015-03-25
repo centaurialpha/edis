@@ -68,7 +68,7 @@ class Thread(QThread):
         """ Corre el comando cpp """
 
         command = [cpp_path] + [fake_libc] + [self._filename]
-        if settings.IS_WINDOWS:
+        if not settings.IS_LINUX:
             # Flag para ocultar la consola
             CREATE_NO_WINDOW = 0x08000000
             process = Popen(command,

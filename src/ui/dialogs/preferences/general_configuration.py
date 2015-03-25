@@ -142,4 +142,5 @@ class GeneralConfiguration(QWidget):
         settings.set_setting('general/load-files', load_files)
         lang = self.combo_lang.currentText()
         settings.set_setting('general/language', lang)
-        settings.set_setting('terminal', self.line_terminal.text())
+        if settings.IS_LINUX:
+            settings.set_setting('terminal', self.line_terminal.text())

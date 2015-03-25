@@ -97,15 +97,15 @@ class Editor(base.Base):
         # Configuración de indicadores
         self._word_indicator = 0
         self._warning_indicator = 1
-        self._error_indicator = 2
+        #self._error_indicator = 2
         self.send("sci_indicsetstyle", self._word_indicator, "indic_box")
         self.send("sci_indicsetfore", self._word_indicator,
-                  QColor("#45FF11"))
+                  QColor("#FF0000"))
         self.send("sci_indicsetstyle",
                   self._warning_indicator, "indic_squiggle")
         self.send("sci_indicsetfore", self._warning_indicator,
                   QColor("#0000FF"))
-        self.send("sci_indicsetstyle", self._error_indicator, "indic_dots")
+        #self.send("sci_indicsetstyle", self._error_indicator, "indic_dots")
         # Scheme
         self.scheme = editor_scheme.get_scheme(
             settings.get_setting('editor/scheme'))

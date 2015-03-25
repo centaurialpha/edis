@@ -1,4 +1,4 @@
-;NSIS Script Installer 
+;NSIS Script Installer for Edis 
 
 !define NAME "Edis"
 !define VERSION "1.0"
@@ -11,8 +11,14 @@
 SetCompressor lzma
 
 Name "${NAME} ${VERSION}"
-Caption "${NAME} ${VERSION} para Windows"
+Caption "${NAME} for Windows"
 OutFile "${NAME}-${VERSION}-setup.exe"
+
+!define MUI_LANGDLL_ALLLANGUAGES
+
+!define MUI_LANGDLL_REGISTRY_ROOT "HKCU" 
+!define MUI_LANGDLL_REGISTRY_KEY "Software\Modern UI Test" 
+!define MUI_LANGDLL_REGISTRY_VALUENAME "Installer Language"
 
 !define MUI_WELCOMEFINISHPAGE_BITMAP "sidebar.bmp"
 !define MUI_HEADERIMAGE
@@ -32,19 +38,21 @@ OutFile "${NAME}-${VERSION}-setup.exe"
 !insertmacro MUI_UNPAGE_FINISH
 
 !insertmacro MUI_LANGUAGE "Spanish"
+!insertmacro MUI_LANGUAGE "English"
+
+!insertmacro MUI_RESERVEFILE_LANGDLL
 
 CRCCheck on
 XPStyle on
 
 InstallDir "$PROGRAMFILES\${NAME}"
 InstallDirRegKey HKLM "Software\Edis" ""
-DirText "Seleccione el directorio de instalación"
 AutoCloseWindow false
 ShowInstDetails show
 SetOverwrite on
 SetDataBlockOptimize on
 SetCompress auto
-UninstallText "Desinstalación de ${NAME}"
+UninstallText "Uninstall ${NAME}"
 
 Section "Edis Core"
     SetOutPath "$INSTDIR"
@@ -52,6 +60,7 @@ Section "Edis Core"
     SetShellVarContext all
     CreateDirectory "$SMPROGRAMS\${NAME}"
     CreateShortcut "$SMPROGRAMS\${NAME}\${NAME}.lnk" "$INSTDIR\${NAME}.exe"
+    CreateShortcut "$DESKTOP\${NAME}.lnk" "$INSTDIR\${NAME}.exe"
 	CreateShortcut "$SMPROGRAMS\${NAME}\Uninstall.lnk" "$INSTDIR\Uninstall.exe"
 	WriteRegStr HKLM SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\${NAME} "DisplayName" "${NAME} ${VERSION}"
 	WriteRegStr HKLM SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\${NAME} "UninstallString" "$INSTDIR\Uninstall.exe"
@@ -69,3 +78,7 @@ Section "Uninstall"
 	DeleteRegKey HKLM SOFTWARE\${NAME}
 	DeleteRegKey HKLM Software\Microsoft\Windows\CurrentVersion\Uninstall\${NAME}
 SectionEnd
+
+Function .onInit 
+    !insertmacro MUI_LANGDLL_DISPLAY
+FunctionEnd
