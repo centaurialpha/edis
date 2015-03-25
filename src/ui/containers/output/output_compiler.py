@@ -8,10 +8,14 @@
 from PyQt4.QtGui import (
     QListWidget,
     QListWidgetItem,
-    QColor
+    QColor,
+    QMenu
     )
 
-from PyQt4.QtCore import SIGNAL
+from PyQt4.QtCore import (
+    SIGNAL,
+    Qt
+    )
 
 from src.ui.main import Edis
 
@@ -23,10 +27,13 @@ class SalidaCompilador(QListWidget):
         self.setStyleSheet(
             "QListWidget { background: #0E0F12; color: #c5c8c6; }")
         self._parent = parent
+        self.setContextMenuPolicy(Qt.CustomContextMenu)
 
         # Conexión
         self.connect(self, SIGNAL("itemClicked(QListWidgetItem*)"),
                      self._go_to_line)
+        self.connect(self, SIGNAL("customContextMenuRequested(const QPoint)"),
+                     self._load_context_menu)
 
     def stderr_output(self):
         process = self._parent.build_process
@@ -68,12 +75,20 @@ class SalidaCompilador(QListWidget):
                 break  # El segundo item es el número de columna
         return line - 1
 
+    def _load_context_menu(self, point):
+        menu = QMenu()
+        clear_action = menu.addAction(self.tr("Clear contents"))
+        self.connect(clear_action, SIGNAL("triggered()"), self.clear)
+        menu.exec_(self.mapToGlobal(point))
+
 
 class Item(QListWidgetItem):
 
-    def __init__(self, texto, parent=None):
-        QListWidgetItem.__init__(self, texto, parent)
-        fuente = self.font()
-        fuente.setPointSize(10)
-        self.setFont(fuente)
+    def __init__(self, text, parent=None, italic=False):
+        QListWidgetItem.__init__(self, text, parent)
+        font = self.font()
+        font.setPointSize(10)
+        if italic:
+            font.setItalic(True)
+        self.setFont(font)
         self.clickeable = False

@@ -65,31 +65,27 @@ class EjecutarWidget(QWidget):
             self.build_process.setProcessEnvironment(self._envgcc)
         self.execution_process = QProcess(self)
 
-        # Conexión
+        # Conexiones
         self.build_process.readyReadStandardError.connect(
             self.output.stderr_output)
         self.build_process.finished[int, QProcess.ExitStatus].connect(
             self._compilation_finished)
         self.build_process.error[QProcess.ProcessError].connect(
             self._compilation_error)
-        self.execution_process.error[QProcess.ProcessError].connect(
-            self._terminate_execution)
+        self.execution_process.finished[int, QProcess.ExitStatus].connect(
+            self._execution_finished)
 
-    def _terminate_execution(self, error_code):
-        """ Éste método es ejecutado cuando la ejecución es frenada por el
-        usuario o algún otro error. """
-
-        self.output.clear()
-        if error_code == 1:
-            error1 = output_compiler.Item(self.tr("The process terminated"))
-            error1.setForeground(Qt.red)
-            self.output.addItem(error1)
+    def _execution_finished(self, code, status):
+        if status == QProcess.CrashExit:
+            text = output_compiler.Item(
+                self.tr("The execution has been interrupted"))
+            text.setForeground(Qt.red)
+            self.output.addItem(text)
         else:
-            error = output_compiler.Item(self.tr("An error has occurred. "
-                                         "Error code: {0}").format(
-                                         error_code))
-            error.setForeground(Qt.red)
-            self.output.addItem(error)
+            text = output_compiler.Item(
+                self.tr("Execution successful!"))
+            text.setForeground(QColor("#7FE22A"))
+            self.output.addItem(text)
 
     def run_compilation(self, filename=''):
         """ Se corre el comando gcc para la compilación """
@@ -104,8 +100,8 @@ class EjecutarWidget(QWidget):
 
         self.output.clear()
         item = output_compiler.Item(self.tr(
-            ">>> Building file: {0} ( {1} )".format(
-                path.split('/')[-1], filename)))
+            ">>> Building file: {0} ( in directory {1} )".format(
+                path.split('/')[-1], exe_path)))
 
         self.output.addItem(item)
 
@@ -116,7 +112,7 @@ class EjecutarWidget(QWidget):
         self.build_process.start(gcc, params + [self.exe] + [filename])
         self.build_process.waitForFinished()
 
-    def _compilation_finished(self, codigoError, exitStatus):
+    def _compilation_finished(self, code, status):
         """
         Cuando la compilación termina @codigoError toma dos valores:
             0 = La compilación ha terminado de forma correcta
@@ -124,17 +120,21 @@ class EjecutarWidget(QWidget):
 
         """
 
-        if exitStatus == QProcess.NormalExit and codigoError == 0:
+        if status == QProcess.NormalExit and code == 0:
             self._compilation_failed = False
             item_ok = output_compiler.Item(
                 self.tr("¡COMPILATION FINISHED SUCCESSFULLY!"))
-            item_ok.setForeground(QColor("#7FE22A"))
             self.output.addItem(item_ok)
+            item_ok.setForeground(QColor("#7FE22A"))
         else:
             self._compilation_failed = True
             item_error = output_compiler.Item(self.tr("¡COMPILATION FAILED!"))
             item_error.setForeground(QColor("#E20000"))
             self.output.addItem(item_error)
+        code_status = output_compiler.Item(
+                self.tr("Process terminated with status: {0}").format(code),
+                italic=True)
+        self.output.addItem(code_status)
         count = self.output.count()
         self.output.setCurrentRow(count - 1, QItemSelectionModel.NoUpdate)
 
@@ -153,22 +153,42 @@ class EjecutarWidget(QWidget):
     def run_program(self, archivo):
         """ Ejecuta el binario generado por el compilador """
 
-        # FIXME: Agregar terminal por defecto
         path = os.path.dirname(archivo)
         self.execution_process.setWorkingDirectory(path)
+        # Path ejecutable
+        path_exe = os.path.join(path, self.exe)
+
+        # Si no existe se termina el proceso
+        if not self._check_file_exists(path_exe):
+            text = output_compiler.Item(
+                self.tr("File does not exist: {0}").format(path_exe))
+            text.setForeground(Qt.red)
+            self.output.addItem(text)
+            return
+        # Texto en la salida
+        text = output_compiler.Item(
+            self.tr("Executing... {0}").format(path_exe))
+        self.output.addItem(text)
 
         if settings.IS_LINUX:
             # Run !
             terminal = settings.get_setting('terminal')
             arguments = [os.path.join(os.path.dirname(__file__),
-                         "run_script.sh %s" % os.path.join(path, self.exe))]
+                         "run_script.sh %s" % path_exe)]
             self.execution_process.start(terminal, ['-e'] + arguments)
         else:
             pauser = os.path.join(paths.PATH, "tools", "pauser",
                                   "system_pause.exe")
-            path_exe = os.path.join(path, self.exe)
             process = [pauser] + ["\"%s\"" % path_exe]
             Popen(process, creationflags=CREATE_NEW_CONSOLE)
+
+    def _check_file_exists(self, exe):
+        """ Comprueba si el ejecutable existe """
+
+        exists = True
+        if not os.path.exists(exe):
+            exists = False
+        return exists
 
     @property
     def _environment(self):
