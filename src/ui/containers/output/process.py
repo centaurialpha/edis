@@ -99,9 +99,9 @@ class EjecutarWidget(QWidget):
         self.build_process.setWorkingDirectory(exe_path)
 
         self.output.clear()
-        item = output_compiler.Item(self.tr(
-            ">>> Building file: {0} ( in directory {1} )".format(
-                path.split('/')[-1], exe_path)))
+        item = output_compiler.Item(
+            self.tr(">>> Building file: {0} ( in directory {1} )".format(
+                    path.split('/')[-1], exe_path)))
 
         self.output.addItem(item)
 

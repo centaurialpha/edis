@@ -1,40 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.1" language="es_AR">
-<context>
-    <name>AboutTab</name>
-    <message>
-        <location filename="src/ui/dialogs/about.py" line="62"/>
-        <source>Version: {0}</source>
-        <translation type="obsolete">Versión: {0}</translation>
-    </message>
-    <message>
-        <location filename="src/ui/dialogs/about.py" line="67"/>
-        <source>Source code: &lt;a href=&apos;{0}&apos;&gt;&lt;span style=&apos;color: lightblue;&apos;&gt;{1}&lt;/span&gt;&lt;/a&gt;</source>
-        <translation type="obsolete">Código fuente: &lt;a href=&apos;{0}&apos;&gt;&lt;span style=&apos;color: lightblue;&apos;&gt;{1}&lt;/span&gt;&lt;/a&gt;</translation>
-    </message>
-</context>
+<TS version="2.1" language="es_419">
 <context>
     <name>AcercaDe</name>
     <message>
         <location filename="src/ui/dialogs/about.py" line="34"/>
         <source>About Edis</source>
         <translation>Acerca de Edis</translation>
-    </message>
-    <message>
-        <location filename="src/ui/dialogs/about.py" line="40"/>
-        <source>About</source>
-        <translation type="obsolete">Acerca de</translation>
-    </message>
-    <message>
-        <location filename="src/ui/dialogs/about.py" line="41"/>
-        <source>Report bug</source>
-        <translation type="obsolete">Reportar bug</translation>
-    </message>
-    <message>
-        <location filename="src/ui/dialogs/about.py" line="76"/>
-        <source>Ok</source>
-        <translation>Aceptar</translation>
     </message>
     <message>
         <location filename="src/ui/dialogs/about.py" line="39"/>
@@ -48,9 +20,14 @@
         <translation>Versión: {0}</translation>
     </message>
     <message>
-        <location filename="src/ui/dialogs/about.py" line="49"/>
-        <source>Source code: &lt;a href=&apos;{0}&apos;&gt;&lt;span style=&apos;color: lightblue;&apos;&gt;{1}&lt;/span&gt;&lt;/a&gt;</source>
-        <translation type="obsolete">Código fuente: &lt;a href=&apos;{0}&apos;&gt;&lt;span style=&apos;color: lightblue;&apos;&gt;{1}&lt;/span&gt;&lt;/a&gt;</translation>
+        <location filename="src/ui/dialogs/about.py" line="50"/>
+        <source>Source Code: &lt;a href=&apos;{0}&apos;&gt;&lt;span style=&apos;color: #0197FD;&apos;&gt;{1}&lt;/span&gt;&lt;/a&gt;</source>
+        <translation>Código Fuente: &lt;a href=&apos;{0}&apos;&gt;&lt;span style=&apos;color: #0197FD;&apos;&gt;{1}&lt;/span&gt;&lt;/a&gt;</translation>
+    </message>
+    <message>
+        <location filename="src/ui/dialogs/about.py" line="56"/>
+        <source>License: &lt;b&gt;Edis&lt;/b&gt; is licensed under the terms of the &lt;b&gt;G&lt;/b&gt;NU &lt;b&gt;P&lt;/b&gt;ublic &lt;b&gt;L&lt;/b&gt;icense version 3 or later.</source>
+        <translation>Licencia: &lt;b&gt;Edis&lt;/b&gt; es distribuido bajo los términos de la licencia &lt;b&gt;GPL&lt;/b&gt; versión 3 o posterior.</translation>
     </message>
     <message>
         <location filename="src/ui/dialogs/about.py" line="61"/>
@@ -58,19 +35,9 @@
         <translation></translation>
     </message>
     <message>
-        <location filename="src/ui/dialogs/about.py" line="56"/>
-        <source>License: &lt;b&gt;Edis&lt;/b&gt; is licensed under the terms of the &lt;b&gt;G&lt;/b&gt;NU &lt;b&gt;P&lt;/b&gt;ublic &lt;b&gt;L&lt;/b&gt;icense version 3 or later.</source>
-        <translation>Licencia: &lt;b&gt;Edis&lt;/b&gt; está disponible bajo los términos de la licencia &lt;b&gt;GPLv3&lt;/b&gt; o posterior.</translation>
-    </message>
-    <message>
-        <location filename="src/ui/dialogs/about.py" line="49"/>
-        <source>Source code: &lt;a href=&apos;{0}&apos;&gt;&lt;span style=&apos;color: #0197FD;&apos;&gt;{1}&lt;/span&gt;&lt;/a&gt;</source>
-        <translation type="obsolete">Código fuente: &lt;a href=&apos;{0}&apos;&gt;&lt;span style=&apos;color: #0197FD;&apos;&gt;{1}&lt;/span&gt;&lt;/a&gt;</translation>
-    </message>
-    <message>
-        <location filename="src/ui/dialogs/about.py" line="50"/>
-        <source>Source Code: &lt;a href=&apos;{0}&apos;&gt;&lt;span style=&apos;color: #0197FD;&apos;&gt;{1}&lt;/span&gt;&lt;/a&gt;</source>
-        <translation>Código Fuente: &lt;a href=&apos;{0}&apos;&gt;&lt;span style=&apos;color: #0197FD;&apos;&gt;{1}&lt;/span&gt;&lt;/a&gt;</translation>
+        <location filename="src/ui/dialogs/about.py" line="76"/>
+        <source>Ok</source>
+        <translation>Aceptar</translation>
     </message>
 </context>
 <context>
@@ -88,7 +55,7 @@
     <message>
         <location filename="src/ui/containers/lateral/tree_symbols.py" line="65"/>
         <source>Structs</source>
-        <translation>Estucturas</translation>
+        <translation>Estructuras</translation>
     </message>
     <message>
         <location filename="src/ui/containers/lateral/tree_symbols.py" line="80"/>
@@ -126,7 +93,7 @@
     <message>
         <location filename="src/ui/containers/editor_widget.py" line="299"/>
         <source>&lt;Select Symbol&gt;</source>
-        <translation>&lt;Selecciona un símbolo&gt;</translation>
+        <translation>&lt;Selecciona un Símbolo&gt;</translation>
     </message>
 </context>
 <context>
@@ -139,17 +106,17 @@
     <message>
         <location filename="src/ui/dialogs/unsaved_files.py" line="34"/>
         <source>The following files have been modified. Save them?</source>
-        <translation>Los siguientes archivos se han modificado. Guardar?</translation>
+        <translation>Los siguientes archivos se han modificado. Guardarlos?</translation>
     </message>
     <message>
         <location filename="src/ui/dialogs/unsaved_files.py" line="48"/>
         <source>None</source>
-        <translation>Ninguno</translation>
+        <translation>No guardar</translation>
     </message>
     <message>
         <location filename="src/ui/dialogs/unsaved_files.py" line="49"/>
         <source>Save Selected</source>
-        <translation>Guardar selección</translation>
+        <translation>Guardar Selección</translation>
     </message>
     <message>
         <location filename="src/ui/dialogs/unsaved_files.py" line="50"/>
@@ -182,7 +149,7 @@
     <message>
         <location filename="src/ui/actions.py" line="11"/>
         <source>Close all</source>
-        <translation>Cerrar todo</translation>
+        <translation>Cerrar todos</translation>
     </message>
     <message>
         <location filename="src/ui/actions.py" line="11"/>
@@ -247,17 +214,17 @@
     <message>
         <location filename="src/ui/actions.py" line="11"/>
         <source>Indent less</source>
-        <translation>Remover indentación</translation>
+        <translation>Quitar indentación</translation>
     </message>
     <message>
         <location filename="src/ui/actions.py" line="11"/>
         <source>Duplicale line</source>
-        <translation>Duplicar línea</translation>
+        <translation>Duplicar Línea</translation>
     </message>
     <message>
         <location filename="src/ui/actions.py" line="11"/>
         <source>Delete line</source>
-        <translation>Eliminar línea</translation>
+        <translation>Eliminar Línea</translation>
     </message>
     <message>
         <location filename="src/ui/actions.py" line="11"/>
@@ -302,32 +269,42 @@
     <message>
         <location filename="src/ui/actions.py" line="11"/>
         <source>Show Fullscreen</source>
-        <translation>Pantalla completa</translation>
+        <translation>Pantalla Completa</translation>
     </message>
     <message>
         <location filename="src/ui/actions.py" line="11"/>
-        <source>Show/hide all</source>
-        <translation type="obsolete">Mostrar/ocultar todo</translation>
+        <source>Show Dev Mode</source>
+        <translation>Modo Dev</translation>
     </message>
     <message>
         <location filename="src/ui/actions.py" line="11"/>
-        <source>Show/hide compiler</source>
-        <translation type="obsolete">Mostrar/ocultar compilador</translation>
+        <source>Show/hide Compiler</source>
+        <translation>Mostrar/ocultar Compilador</translation>
     </message>
     <message>
         <location filename="src/ui/actions.py" line="11"/>
-        <source>Show/hide toolbars</source>
-        <translation type="obsolete">Mostrar/ocultar barras de herramientas</translation>
+        <source>Show/hide Lateral</source>
+        <translation>Mostrar/ocultar Panel Lateral</translation>
+    </message>
+    <message>
+        <location filename="src/ui/actions.py" line="11"/>
+        <source>Show/hide Toolbars</source>
+        <translation>Mostrar/ocultar Barra de Herramientas</translation>
     </message>
     <message>
         <location filename="src/ui/actions.py" line="11"/>
         <source>Show tabs and spaces</source>
-        <translation>Mostrar tabs y espacios</translation>
+        <translation>Mostrar Tabs y Espacios</translation>
     </message>
     <message>
         <location filename="src/ui/actions.py" line="11"/>
         <source>Show indentation guides</source>
-        <translation>Mostrar guías</translation>
+        <translation>Mostrar Guías de Indentación</translation>
+    </message>
+    <message>
+        <location filename="src/ui/actions.py" line="11"/>
+        <source>Delete Markers</source>
+        <translation>Borrar Marcadores</translation>
     </message>
     <message>
         <location filename="src/ui/actions.py" line="11"/>
@@ -357,7 +334,7 @@
     <message>
         <location filename="src/ui/actions.py" line="11"/>
         <source>Replace</source>
-        <translation>Reemplazar</translation>
+        <translation>Buscar y Reemplazar</translation>
     </message>
     <message>
         <location filename="src/ui/actions.py" line="11"/>
@@ -382,7 +359,7 @@
     <message>
         <location filename="src/ui/actions.py" line="11"/>
         <source>Stop</source>
-        <translation>Terminar proceso</translation>
+        <translation>Terminar ejecución</translation>
     </message>
     <message>
         <location filename="src/ui/actions.py" line="11"/>
@@ -404,68 +381,13 @@
         <source>About Qt</source>
         <translation>Acerca de Qt</translation>
     </message>
-    <message>
-        <location filename="src/ui/main.py" line="138"/>
-        <source>&amp;File</source>
-        <translation type="obsolete">&amp;Archivo</translation>
-    </message>
-    <message>
-        <location filename="src/ui/main.py" line="139"/>
-        <source>&amp;Edit</source>
-        <translation type="obsolete">&amp;Editar</translation>
-    </message>
-    <message>
-        <location filename="src/ui/main.py" line="140"/>
-        <source>&amp;View</source>
-        <translation type="obsolete">&amp;Ver</translation>
-    </message>
-    <message>
-        <location filename="src/ui/main.py" line="141"/>
-        <source>&amp;Search</source>
-        <translation type="obsolete">&amp;Buscar</translation>
-    </message>
-    <message>
-        <location filename="src/ui/main.py" line="142"/>
-        <source>&amp;Build</source>
-        <translation type="obsolete">&amp;Construir</translation>
-    </message>
-    <message>
-        <location filename="src/ui/main.py" line="143"/>
-        <source>&amp;Help</source>
-        <translation type="obsolete">A&amp;yuda</translation>
-    </message>
-    <message>
-        <location filename="src/ui/actions.py" line="11"/>
-        <source>Show Dev Mode</source>
-        <translation>Modo Dev</translation>
-    </message>
-    <message>
-        <location filename="src/ui/actions.py" line="11"/>
-        <source>Show/hide Compiler</source>
-        <translation>Mostrar/ocultar Compilador</translation>
-    </message>
-    <message>
-        <location filename="src/ui/actions.py" line="11"/>
-        <source>Show/hide Toolbars</source>
-        <translation>Mostrar/ocultar Barras de Herramientas</translation>
-    </message>
-    <message>
-        <location filename="src/ui/actions.py" line="11"/>
-        <source>Delete Markers</source>
-        <translation>Borrar Marcadores</translation>
-    </message>
-    <message>
-        <location filename="src/ui/actions.py" line="11"/>
-        <source>Show/hide Lateral</source>
-        <translation>Mostrar/ocultar Panel Lateral</translation>
-    </message>
 </context>
 <context>
     <name>Edis</name>
     <message>
         <location filename="src/ui/main.py" line="73"/>
         <source>Toolbar</source>
-        <translation></translation>
+        <translation>Barra de Herramientas</translation>
     </message>
     <message>
         <location filename="src/ui/main.py" line="131"/>
@@ -508,7 +430,7 @@
     <message>
         <location filename="src/ui/dialogs/preferences/editor_configuration.py" line="62"/>
         <source>Enable</source>
-        <translation>Activar</translation>
+        <translation>Activado</translation>
     </message>
     <message>
         <location filename="src/ui/dialogs/preferences/editor_configuration.py" line="60"/>
@@ -518,7 +440,7 @@
     <message>
         <location filename="src/ui/dialogs/preferences/editor_configuration.py" line="70"/>
         <source>Enable indentation guides</source>
-        <translation>Activar guías de indentación</translation>
+        <translation>Activar Guías de Indentación</translation>
     </message>
     <message>
         <location filename="src/ui/dialogs/preferences/editor_configuration.py" line="74"/>
@@ -527,8 +449,8 @@
     </message>
     <message>
         <location filename="src/ui/dialogs/preferences/editor_configuration.py" line="76"/>
-        <source>Style checker</source>
-        <translation type="obsolete">Analizar de Estilo</translation>
+        <source>Style checker (beta)</source>
+        <translation>Analizador de Estilo (beta)</translation>
     </message>
     <message>
         <location filename="src/ui/dialogs/preferences/editor_configuration.py" line="79"/>
@@ -538,12 +460,17 @@
     <message>
         <location filename="src/ui/dialogs/preferences/editor_configuration.py" line="87"/>
         <source>Font type:</source>
-        <translation>Tipo de letra:</translation>
+        <translation>Tipo de Letra:</translation>
     </message>
     <message>
-        <location filename="src/ui/dialogs/preferences/editor_configuration.py" line="94"/>
-        <source>Cursor type:</source>
-        <translation type="obsolete">Tipo de cursor:</translation>
+        <location filename="src/ui/dialogs/preferences/editor_configuration.py" line="97"/>
+        <source>Caret:</source>
+        <translation>Cursor:</translation>
+    </message>
+    <message>
+        <location filename="src/ui/dialogs/preferences/editor_configuration.py" line="100"/>
+        <source>Type:</source>
+        <translation>Tipo:</translation>
     </message>
     <message>
         <location filename="src/ui/dialogs/preferences/editor_configuration.py" line="104"/>
@@ -561,16 +488,6 @@
         <translation>Bloque</translation>
     </message>
     <message>
-        <location filename="src/ui/dialogs/preferences/editor_configuration.py" line="97"/>
-        <source>Caret:</source>
-        <translation>Cursor</translation>
-    </message>
-    <message>
-        <location filename="src/ui/dialogs/preferences/editor_configuration.py" line="100"/>
-        <source>Type:</source>
-        <translation>Tipo:</translation>
-    </message>
-    <message>
         <location filename="src/ui/dialogs/preferences/editor_configuration.py" line="113"/>
         <source>Width:</source>
         <translation>Ancho:</translation>
@@ -578,26 +495,31 @@
     <message>
         <location filename="src/ui/dialogs/preferences/editor_configuration.py" line="122"/>
         <source>Period (ms):</source>
-        <translation>Periodo (ms):</translation>
+        <translation>Período (ms):</translation>
     </message>
     <message>
         <location filename="src/ui/dialogs/preferences/editor_configuration.py" line="130"/>
         <source>Code Completion:</source>
-        <translation>Autocompletado:</translation>
+        <translation>Autocompletado de código:</translation>
     </message>
     <message>
         <location filename="src/ui/dialogs/preferences/editor_configuration.py" line="132"/>
         <source>Enable code completion</source>
-        <translation>Activar autocompletado de código</translation>
-    </message>
-    <message>
-        <location filename="src/ui/dialogs/preferences/editor_configuration.py" line="76"/>
-        <source>Style checker (beta)</source>
-        <translation>Analizador de Estilo (beta)</translation>
+        <translation>Activar autocompletado</translation>
     </message>
 </context>
 <context>
     <name>EditorContainer</name>
+    <message>
+        <location filename="src/ui/containers/editor_container.py" line="168"/>
+        <source>File not saved</source>
+        <translation>Archivo no guardado</translation>
+    </message>
+    <message>
+        <location filename="src/ui/containers/editor_container.py" line="168"/>
+        <source>Are you sure you want to reload &lt;b&gt;{0}&lt;/b&gt;?&lt;br&gt;&lt;br&gt;Any unsaved changes will be lost.</source>
+        <translation>Seguro que quieres recargar &lt;b&gt;{0}&lt;/b&gt;?&lt;br&gt;&lt;br&gt;Se perderán los cambios no guardados.</translation>
+    </message>
     <message>
         <location filename="src/ui/containers/editor_container.py" line="189"/>
         <source>Open file</source>
@@ -613,16 +535,6 @@
         <source>Save file</source>
         <translation>Guardar archivo</translation>
     </message>
-    <message>
-        <location filename="src/ui/containers/editor_container.py" line="168"/>
-        <source>File not saved</source>
-        <translation>Archivo no guardado</translation>
-    </message>
-    <message>
-        <location filename="src/ui/containers/editor_container.py" line="168"/>
-        <source>Are you sure you want to reload &lt;b&gt;{0}&lt;/b&gt;?&lt;br&gt;&lt;br&gt;Any unsaved changes will be lost.</source>
-        <translation>Seguro que deseas recargar &lt;b&gt;{0}&lt;/b&gt;?&lt;br&gt;&lt;br&gt;Se perderán los cambios no guardados.</translation>
-    </message>
 </context>
 <context>
     <name>EditorWidget</name>
@@ -634,46 +546,11 @@
     <message>
         <location filename="src/ui/containers/editor_widget.py" line="154"/>
         <source>The file &lt;b&gt;{0}&lt;/b&gt; has unsaved changes. Would you like to save them?</source>
-        <translation>El archivo &lt;b&gt;{0}&lt;/b&gt; tiene cambios no guardados. ¿Quieres guardarlos?</translation>
+        <translation>El archivo &lt;b&gt;{0}&lt;/b&gt; tiene cambios no guardados. Quieres guardarlos?</translation>
     </message>
 </context>
 <context>
     <name>EjecutarWidget</name>
-    <message>
-        <location filename="src/ui/containers/output/process.py" line="84"/>
-        <source>The process terminated</source>
-        <translation type="obsolete">El proceso ha terminado</translation>
-    </message>
-    <message>
-        <location filename="src/ui/containers/output/process.py" line="88"/>
-        <source>An error has occurred. Error code: {0}</source>
-        <translation type="obsolete">Ha ocurrido un error. Código de error: {0}</translation>
-    </message>
-    <message>
-        <location filename="src/ui/containers/output/process.py" line="103"/>
-        <source>Building file: {0} ( {1} )</source>
-        <translation type="obsolete">Compilando archivo: {0} ( {1} )</translation>
-    </message>
-    <message>
-        <location filename="src/ui/containers/output/process.py" line="125"/>
-        <source>Â¡COMPILATION FINISHED SUCCESSFULLY!</source>
-        <translation>¡COMPILACIÓN EXITOSA!</translation>
-    </message>
-    <message>
-        <location filename="src/ui/containers/output/process.py" line="131"/>
-        <source>Â¡COMPILATION FAILED!</source>
-        <translation>¡LA COMPILACIÓN HA FALLADO!</translation>
-    </message>
-    <message>
-        <location filename="src/ui/containers/output/process.py" line="148"/>
-        <source>An error has occurred: Compiler not found.</source>
-        <translation>Ha ocurrido un error: Compilador no encontrado.</translation>
-    </message>
-    <message>
-        <location filename="src/ui/containers/output/process.py" line="106"/>
-        <source>&gt;&gt;&gt; Building file: {0} ( {1} )</source>
-        <translation type="obsolete">&gt;&gt;&gt; Compilando archivo: {0} ( {1} )</translation>
-    </message>
     <message>
         <location filename="src/ui/containers/output/process.py" line="80"/>
         <source>The execution has been interrupted</source>
@@ -690,17 +567,32 @@
         <translation>&gt;&gt;&gt; Compilando archivo: {0} ( en directorio {1} )</translation>
     </message>
     <message>
+        <location filename="src/ui/containers/output/process.py" line="125"/>
+        <source>Â¡COMPILATION FINISHED SUCCESSFULLY!</source>
+        <translation>¡COMPILACIÓN EXITOSA!</translation>
+    </message>
+    <message>
+        <location filename="src/ui/containers/output/process.py" line="131"/>
+        <source>Â¡COMPILATION FAILED!</source>
+        <translation>¡LA COMPILACIÓN HA FALLADO!</translation>
+    </message>
+    <message>
         <location filename="src/ui/containers/output/process.py" line="134"/>
         <source>Process terminated with status: {0}</source>
         <translation>Proceso terminado con estado: {0}</translation>
     </message>
     <message>
-        <location filename="src/ui/containers/output/process.py" line="163"/>
+        <location filename="src/ui/containers/output/process.py" line="148"/>
+        <source>An error has occurred: Compiler not found.</source>
+        <translation>Ha ocurrido un error: Compilador no encontrado.</translation>
+    </message>
+    <message>
+        <location filename="src/ui/containers/output/process.py" line="164"/>
         <source>File does not exist: {0}</source>
         <translation>El archivo no existe: {0}</translation>
     </message>
     <message>
-        <location filename="src/ui/containers/output/process.py" line="169"/>
+        <location filename="src/ui/containers/output/process.py" line="170"/>
         <source>Executing... {0}</source>
         <translation>Ejecutando... {0}</translation>
     </message>
@@ -778,7 +670,12 @@
     <message>
         <location filename="src/ui/dialogs/preferences/general_configuration.py" line="39"/>
         <source>On start:</source>
-        <translation>Al iniciar:</translation>
+        <translation>Al Iniciar:</translation>
+    </message>
+    <message>
+        <location filename="src/ui/dialogs/preferences/general_configuration.py" line="41"/>
+        <source>Show Splash Screen</source>
+        <translation>Mostrar imágen Splash</translation>
     </message>
     <message>
         <location filename="src/ui/dialogs/preferences/general_configuration.py" line="45"/>
@@ -793,17 +690,17 @@
     <message>
         <location filename="src/ui/dialogs/preferences/general_configuration.py" line="57"/>
         <source>On close:</source>
-        <translation>Al salir:</translation>
+        <translation>Al Salir:</translation>
     </message>
     <message>
         <location filename="src/ui/dialogs/preferences/general_configuration.py" line="59"/>
         <source>Confirm exit</source>
-        <translation>Confirmar al cerrar Edis</translation>
+        <translation>Confirmar salida</translation>
     </message>
     <message>
         <location filename="src/ui/dialogs/preferences/general_configuration.py" line="63"/>
         <source>Save window position and geometry</source>
-        <translation>Guardar tamaño y posición de la ventana</translation>
+        <translation>Guardar posición y tamaño de la ventana</translation>
     </message>
     <message>
         <location filename="src/ui/dialogs/preferences/general_configuration.py" line="71"/>
@@ -814,6 +711,16 @@
         <location filename="src/ui/dialogs/preferences/general_configuration.py" line="73"/>
         <source>Check updates</source>
         <translation>Comprobar actualizaciones</translation>
+    </message>
+    <message>
+        <location filename="src/ui/dialogs/preferences/general_configuration.py" line="81"/>
+        <source>Terminal:</source>
+        <translation>Terminal:</translation>
+    </message>
+    <message>
+        <location filename="src/ui/dialogs/preferences/general_configuration.py" line="83"/>
+        <source>Execute program with:</source>
+        <translation>Ejecutar programa con:</translation>
     </message>
     <message>
         <location filename="src/ui/dialogs/preferences/general_configuration.py" line="90"/>
@@ -828,7 +735,7 @@
     <message>
         <location filename="src/ui/dialogs/preferences/general_configuration.py" line="104"/>
         <source>Restart Edis configurations</source>
-        <translation>Reestablecer configuraciones</translation>
+        <translation>Reestablecer configuraciones de Edis</translation>
     </message>
     <message>
         <location filename="src/ui/dialogs/preferences/general_configuration.py" line="118"/>
@@ -838,22 +745,7 @@
     <message>
         <location filename="src/ui/dialogs/preferences/general_configuration.py" line="118"/>
         <source>Are you sure you want to reset your configurations?</source>
-        <translation>Está seguro de reestablecer las configuraciones de Edis?</translation>
-    </message>
-    <message>
-        <location filename="src/ui/dialogs/preferences/general_configuration.py" line="41"/>
-        <source>Show Splash Screen</source>
-        <translation>Mostrar imágen Splash</translation>
-    </message>
-    <message>
-        <location filename="src/ui/dialogs/preferences/general_configuration.py" line="81"/>
-        <source>Terminal:</source>
-        <translation>Terminal:</translation>
-    </message>
-    <message>
-        <location filename="src/ui/dialogs/preferences/general_configuration.py" line="83"/>
-        <source>Execute program with:</source>
-        <translation>Ejecutar programa con:</translation>
+        <translation>Esta seguro que quiere reiniciar las configuraciones?</translation>
     </message>
 </context>
 <context>
@@ -869,7 +761,7 @@
     <message>
         <location filename="src/ui/system_tray.py" line="39"/>
         <source>Close</source>
-        <translation>Cerar</translation>
+        <translation>Cerrar</translation>
     </message>
     <message>
         <location filename="src/ui/system_tray.py" line="48"/>
@@ -918,24 +810,6 @@ versión: {0}.</translation>
     </message>
 </context>
 <context>
-    <name>Preferencias</name>
-    <message>
-        <location filename="src/ui/dialogs/preferences/preferences.py" line="39"/>
-        <source>Configurations - Edis</source>
-        <translation type="obsolete">Configuraciones - Edis</translation>
-    </message>
-    <message>
-        <location filename="src/ui/dialogs/preferences/preferences.py" line="92"/>
-        <source>Cancel</source>
-        <translation type="obsolete">Cancelar</translation>
-    </message>
-    <message>
-        <location filename="src/ui/dialogs/preferences/preferences.py" line="93"/>
-        <source>Save</source>
-        <translation type="obsolete">Guardar</translation>
-    </message>
-</context>
-<context>
     <name>ReplaceWidget</name>
     <message>
         <location filename="src/ui/widgets/replace_widget.py" line="43"/>
@@ -954,74 +828,52 @@ versión: {0}.</translation>
     </message>
 </context>
 <context>
-    <name>ReportarBugTab</name>
+    <name>SalidaCompilador</name>
     <message>
-        <location filename="src/ui/dialogs/about.py" line="87"/>
-        <source>Detailling issue or suggestion:</source>
-        <translation type="obsolete">Detalla el bug o sugerencia:</translation>
+        <location filename="src/ui/containers/output/output_compiler.py" line="62"/>
+        <source>Click to go to the line</source>
+        <translation>Click para ir a la línea</translation>
     </message>
     <message>
-        <location filename="src/ui/dialogs/about.py" line="92"/>
-        <source>Or send an email:</source>
-        <translation type="obsolete">O envía un email:</translation>
+        <location filename="src/ui/containers/output/output_compiler.py" line="80"/>
+        <source>Clear contents</source>
+        <translation>Borrar contenido</translation>
+    </message>
+</context>
+<context>
+    <name>TabContainer</name>
+    <message>
+        <location filename="src/ui/containers/lateral/tab_container.py" line="53"/>
+        <source>Change position</source>
+        <translation>Cambiar posición</translation>
+    </message>
+    <message>
+        <location filename="src/ui/containers/lateral/tab_container.py" line="79"/>
+        <source>Symbols</source>
+        <translation>Símbolos</translation>
+    </message>
+    <message>
+        <location filename="src/ui/containers/lateral/tab_container.py" line="94"/>
+        <source>Explorer</source>
+        <translation>Explorador</translation>
     </message>
 </context>
 <context>
     <name>ThemeConfiguration</name>
-    <message>
-        <location filename="src/ui/dialogs/preferences/theme_configuration.py" line="49"/>
-        <source>Choose a Style Sheet:</source>
-        <translation>Elige un Style Sheet:</translation>
-    </message>
-    <message>
-        <location filename="src/ui/dialogs/preferences/theme_configuration.py" line="60"/>
-        <source>Documentation and examples: &lt;a href=&apos;{0}&apos;&gt;&lt;span style=&apos;color: lightblue;&apos;&gt;{1}&lt;/span&gt;&lt;/a&gt;</source>
-        <translation type="obsolete">Documentación y ejemplos: &lt;a href=&apos;{0}&apos;&gt;&lt;span style=&apos;color: lightblue;&apos;&gt;{1}&lt;/span&gt;&lt;/a&gt;</translation>
-    </message>
-    <message>
-        <location filename="src/ui/dialogs/preferences/theme_configuration.py" line="81"/>
-        <source>Preview</source>
-        <translation>Previsualizar</translation>
-    </message>
-    <message>
-        <location filename="src/ui/dialogs/preferences/theme_configuration.py" line="72"/>
-        <source>Save style</source>
-        <translation type="obsolete">Guardar estilo</translation>
-    </message>
-    <message>
-        <location filename="src/ui/dialogs/preferences/theme_configuration.py" line="99"/>
-        <source>Create a style!</source>
-        <translation type="obsolete">Crea un estilo!</translation>
-    </message>
-    <message>
-        <location filename="src/ui/dialogs/preferences/theme_configuration.py" line="93"/>
-        <source>Styles</source>
-        <translation type="obsolete">Estilos</translation>
-    </message>
-    <message>
-        <location filename="src/ui/dialogs/preferences/theme_configuration.py" line="137"/>
-        <source>Name:</source>
-        <translation>Nombre:</translation>
-    </message>
-    <message>
-        <location filename="src/ui/dialogs/preferences/theme_configuration.py" line="70"/>
-        <source>Create a Style Sheet:</source>
-        <translation>Crea un Style Sheet</translation>
-    </message>
-    <message>
-        <location filename="src/ui/dialogs/preferences/theme_configuration.py" line="78"/>
-        <source>Save</source>
-        <translation>Guardar</translation>
-    </message>
     <message>
         <location filename="src/ui/dialogs/preferences/theme_configuration.py" line="46"/>
         <source>Edis Schemes:</source>
         <translation>Temas:</translation>
     </message>
     <message>
+        <location filename="src/ui/dialogs/preferences/theme_configuration.py" line="49"/>
+        <source>Choose a Style Sheet:</source>
+        <translation>Elige un tema:</translation>
+    </message>
+    <message>
         <location filename="src/ui/dialogs/preferences/theme_configuration.py" line="58"/>
         <source>Editor scheme:</source>
-        <translation>Tema editor:</translation>
+        <translation>Tema de Editor:</translation>
     </message>
     <message>
         <location filename="src/ui/dialogs/preferences/theme_configuration.py" line="68"/>
@@ -1029,9 +881,29 @@ versión: {0}.</translation>
         <translation>Es necesario reiniciar para ver los cambios</translation>
     </message>
     <message>
+        <location filename="src/ui/dialogs/preferences/theme_configuration.py" line="70"/>
+        <source>Create a Style Sheet:</source>
+        <translation>Crea un Tema:</translation>
+    </message>
+    <message>
         <location filename="src/ui/dialogs/preferences/theme_configuration.py" line="73"/>
         <source>Documentation and examples: &lt;a href=&apos;{0}&apos;&gt;&lt;span style=&apos;color: #0197FD;&apos;&gt;{1}&lt;/span&gt;&lt;/a&gt;</source>
         <translation>Documentación y ejemplos: &lt;a href=&apos;{0}&apos;&gt;&lt;span style=&apos;color: #0197FD;&apos;&gt;{1}&lt;/span&gt;&lt;/a&gt;</translation>
+    </message>
+    <message>
+        <location filename="src/ui/dialogs/preferences/theme_configuration.py" line="78"/>
+        <source>Save</source>
+        <translation>Guardar</translation>
+    </message>
+    <message>
+        <location filename="src/ui/dialogs/preferences/theme_configuration.py" line="81"/>
+        <source>Preview</source>
+        <translation>Previsualizar</translation>
+    </message>
+    <message>
+        <location filename="src/ui/dialogs/preferences/theme_configuration.py" line="137"/>
+        <source>Name:</source>
+        <translation>Nombre:</translation>
     </message>
 </context>
 </TS>

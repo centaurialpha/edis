@@ -8,7 +8,9 @@ SOURCES += \
     src/ui/containers/editor_container.py \
     src/ui/containers/editor_widget.py \
     src/ui/containers/lateral/tree_symbols.py \
+    src/ui/containers/lateral/tab_container.py \
     src/ui/containers/output/process.py \
+    src/ui/containers/output/output_compiler.py \
     src/ui/dialogs/about.py \
     src/ui/dialogs/file_properties.py \
     src/ui/dialogs/unsaved_files.py \
