@@ -17,6 +17,8 @@ simplicidad: *write, build and run!*.
 
 .. image:: ./src/images/sources/edis_screenshot.png
 
+.. image:: ./src/images/sources/edis_screenshot_white.png
+
 Awesome features
 ================
 
