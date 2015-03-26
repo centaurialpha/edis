@@ -7,7 +7,9 @@
 
 import os
 import sys
+from subprocess import Popen, PIPE
 from distutils.command.install import install
+from distutils.command.install_lib import install_lib
 from distutils.core import setup
 
 MODULES = [
@@ -21,9 +23,17 @@ for module, link in MODULES:
         _from = 'PyQt4' if module == 'PyQt4.Qsci' else ''
         __import__(module, fromlist=_from)
     except ImportError:
-        print("El módulo %s no está instalado.\n%s para más info." %
+        print("The %s module is not installed.\nMore info: %s." %
               (module, link))
         sys.exit(1)
+
+# ctags
+try:
+    Popen(['ctags'], stdout=PIPE, stderr=PIPE)
+except:
+    print("Please install ctags!")
+    sys.exit(1)
+
 
 from src import ui
 
@@ -81,6 +91,20 @@ class CustomInstall(install):
         self._custom_apps_dir = apps_dir
 
 
+class CustomInstallLib(install_lib):
+
+    """ Custom install lib. Da permisos de ejecución a 'run_script.sh """
+
+    def run(self):
+        script_executable = os.path.join(self.install_dir,
+                                         "src", "tools", "run_script.sh")
+        install_lib.run(self)
+        for filename in self.get_outputs():
+            if filename == script_executable:
+                mode = ((os.stat(filename).st_mode) | 0o555) & 0o7777
+                os.chmod(filename, mode)
+
+
 # Se compila la lista de paquetes
 packages = []
 for dir_path, dir_names, filenames in os.walk('src'):
@@ -111,11 +135,13 @@ setup(
     license='GPLv3+',
     long_description=open('README.rst').read(),
     package_data={
-        'src': ['extras/temas/*', 'images/icon.png', 'images/sources/logo.png',
-                'ui/*.qml']
+        'src': ['extras/theme/edark.qss', 'extras/i18n/Spanish.qm',
+                'images/icon.png', 'images/sources/logo.png',
+                'ui/StartPage.qml', 'tools/run_script.sh',
+                ]
         },
     packages=packages,
     scripts=['bin/edis'],
     classifiers=classifiers,
-    cmdclass={'install': CustomInstall},
+    cmdclass={'install_lib': CustomInstallLib, 'install': CustomInstall},
     )

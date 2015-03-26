@@ -36,6 +36,7 @@ REGEX_OPEN_COMMENT_SPACE = re.compile(r'\/\*[^ *\n]')
 REGEX_CLOSE_COMMENT_SPACE = re.compile(r'[^ *]\*\/')
 # Array
 REGEX_IS_ARRAY = re.compile(r'\[.*\]')
+REGEX_IS_ONLY_NUMBER = re.compile(r'^\s?\w\s?[-|+]\d')
 
 # Mensajes
 M_MAX_LINE_LENGTH = "%s:La línea supera los %s caracteres."
@@ -74,7 +75,8 @@ class EChecker(object):
         """
         if REGEX_OPERATOR_SPACE.search(line) and not line.startswith('#'):
             if not REGEX_COMMENT_LINE.search(line) and not \
-            REGEX_IS_ARRAY.search(line):
+            REGEX_IS_ARRAY.search(line) and not \
+            REGEX_IS_ONLY_NUMBER.search(line):
                 self._results.append(M_OPERATOR_SPACE % self._line_number)
 
     def _check_comma_space(self, line):

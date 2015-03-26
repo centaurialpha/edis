@@ -177,7 +177,7 @@ class EjecutarWidget(QWidget):
         if settings.IS_LINUX:
             # Run !
             terminal = settings.get_setting('terminal')
-            arguments = [os.path.join(os.path.dirname(__file__),
+            arguments = [os.path.join(paths.PATH, "tools",
                          "run_script.sh %s" % path_exe)]
             self.execution_process.start(terminal, ['-e'] + arguments)
         else:

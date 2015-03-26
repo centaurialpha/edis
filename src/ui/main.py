@@ -308,8 +308,7 @@ class Edis(QMainWindow):
 
         editor_container = Edis.get_component("principal")
         for _file in files:
-            filename, cursor_position = _file
-            editor_container.open_file(filename, cursor_position)
+            editor_container.open_file(_file)
         editor_container.update_recents_files(recents_files)
 
     def about_qt(self):

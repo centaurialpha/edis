@@ -135,8 +135,8 @@ class EditorWidget(QWidget):
             path = weditor.filename
             if not path:
                 continue
-            cursor_position = weditor.getCursorPosition()
-            files.append([path, cursor_position])
+            #cursor_position = weditor.getCursorPosition()
+            files.append(path)
         return files
 
     def remove_widget(self, widget, index):

@@ -42,14 +42,12 @@ SETTINGS = {
     'editor/wrap-mode': False,
     'editor/font': "",
     'editor/size-font': 10,
-    'editor/style-checker': True,
-    'editor/show-minimap': False,
+    'editor/style-checker': False,
+    'editor/show-minimap': True,
     'general/language': "",
     'general/show-splash': True,
     'general/show-start-page': True,
     'general/load-files': True,
-    'general/files': [],
-    'general/recents-files': [],
     'general/check-updates': True
     }
 
@@ -61,18 +59,19 @@ def load_settings():
     for key, value in list(SETTINGS.items()):
         if isinstance(value, QPoint) or isinstance(value, QSize):
             _type = type(value)
-        else:
-            if isinstance(value, list):
-                SETTINGS[key] = settings.value(key, defaultValue=value)
-                continue
-            else:
-                _type = eval(str(type(value)).split("'")[1])
+        elif isinstance(value, bool):
+            _type = type(value)
+        elif isinstance(value, int):
+            _type = type(value)
+        elif isinstance(value, str):
+            _type = type(value)
         if not SETTINGS['editor/font']:
             SETTINGS['editor/font'] = DEFAULT_FONT
         SETTINGS[key] = settings.value(key, defaultValue=value, type=_type)
 
 
 def get_setting(key):
+
     """ Devuelve el valor de una configuración """
 
     return SETTINGS.get(key)
@@ -82,5 +81,5 @@ def set_setting(key, value):
     """ Carga un valor a SETTINGS """
 
     settings = QSettings(paths.CONFIGURACION, QSettings.IniFormat)
-    SETTINGS[key] = value
     settings.setValue(key, value)
+    SETTINGS[key] = value

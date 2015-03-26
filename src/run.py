@@ -20,6 +20,7 @@ from PyQt4.QtCore import (
     QLocale,
     QTranslator,
     QLibraryInfo,
+    QSettings,
     Qt
     )
 from src import paths
@@ -44,6 +45,7 @@ from src.ui.main import Edis
 def run_edis(app):
     """ Se carga la interfáz """
 
+    qsettings = QSettings(paths.CONFIGURACION, QSettings.IniFormat)
     # Ícono
     app.setWindowIcon(QIcon(":image/edis"))
     # Lenguaje
@@ -96,11 +98,11 @@ def run_edis(app):
     if settings.get_setting('general/load-files'):
         if show_splash:
             splash.showMessage("Loading files...", alignment, Qt.white)
-        files = settings.get_setting('general/files')
+        files = qsettings.value('general/files')
         if files is None:
             files = []
         # Archivos recientes
-        recents_files = settings.get_setting('general/recents-files')
+        recents_files = qsettings.value('general/recents-files')
         if recents_files is None:
             recents_files = []
     edis.cargar_archivos(files, recents_files)
