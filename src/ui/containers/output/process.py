@@ -25,7 +25,8 @@ from PyQt4.QtCore import (
     QProcess,
     QProcessEnvironment,
     QDir,
-    Qt
+    Qt,
+    SIGNAL
     )
 
 # Módulos EDIS
@@ -131,6 +132,8 @@ class EjecutarWidget(QWidget):
             item_error = output_compiler.Item(self.tr("¡COMPILATION FAILED!"))
             item_error.setForeground(QColor("#E20000"))
             self.output.addItem(item_error)
+        syntax_ok = True if code == 0 else False
+        self.emit(SIGNAL("updateSyntaxCheck(bool)"), syntax_ok)
         code_status = output_compiler.Item(
                 self.tr("Process terminated with status: {0}").format(code),
                 italic=True)

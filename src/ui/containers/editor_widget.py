@@ -213,12 +213,12 @@ class ComboContainer(QWidget):
         self.label_line_row.setText(self.line_row % (0, 0, 0))
         box.addWidget(self.label_line_row)
 
-        tab_container = Edis.get_component("tab_container")
+        output = Edis.get_component("output")
 
         # Conexiones
         self.connect(btn_close_editor, SIGNAL("clicked()"),
                      self._close_current_file)
-        self.connect(tab_container, SIGNAL("updateSyntaxCheck(bool)"),
+        self.connect(output.salida_, SIGNAL("updateSyntaxCheck(bool)"),
                      self._show_icon_checker)
         self.connect(self.combo_symbols, SIGNAL("activated(int)"),
                      self._go_to_symbol)

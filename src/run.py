@@ -34,8 +34,8 @@ from src.ui.containers.lateral import (
     explorer,
     tree_symbols
     )
-from src.ui.containers import editor_container
 from src.ui.containers.output import output_container
+from src.ui.containers import editor_container
 from src.ui.widgets import status_bar
 #lint:enable
 from src.ui.main import Edis
