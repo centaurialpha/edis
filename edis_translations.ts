@@ -45,7 +45,7 @@
     <message>
         <location filename="src/ui/containers/lateral/tree_symbols.py" line="47"/>
         <source>Globals</source>
-        <translation>Globales</translation>
+        <translation type="obsolete">Globales</translation>
     </message>
     <message>
         <location filename="src/ui/containers/lateral/tree_symbols.py" line="56"/>
@@ -58,9 +58,19 @@
         <translation>Estructuras</translation>
     </message>
     <message>
-        <location filename="src/ui/containers/lateral/tree_symbols.py" line="80"/>
+        <location filename="src/ui/containers/lateral/tree_symbols.py" line="84"/>
         <source>Enums</source>
         <translation>Enumeraciones</translation>
+    </message>
+    <message>
+        <location filename="src/ui/containers/lateral/tree_symbols.py" line="47"/>
+        <source>Variables</source>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="src/ui/containers/lateral/tree_symbols.py" line="74"/>
+        <source>Members</source>
+        <translation>Miembros</translation>
     </message>
 </context>
 <context>
@@ -843,17 +853,17 @@ versión: {0}.</translation>
 <context>
     <name>TabContainer</name>
     <message>
-        <location filename="src/ui/containers/lateral/tab_container.py" line="53"/>
+        <location filename="src/ui/containers/lateral/tab_container.py" line="54"/>
         <source>Change position</source>
         <translation>Cambiar posición</translation>
     </message>
     <message>
-        <location filename="src/ui/containers/lateral/tab_container.py" line="79"/>
+        <location filename="src/ui/containers/lateral/tab_container.py" line="80"/>
         <source>Symbols</source>
         <translation>Símbolos</translation>
     </message>
     <message>
-        <location filename="src/ui/containers/lateral/tab_container.py" line="94"/>
+        <location filename="src/ui/containers/lateral/tab_container.py" line="96"/>
         <source>Explorer</source>
         <translation>Explorador</translation>
     </message>

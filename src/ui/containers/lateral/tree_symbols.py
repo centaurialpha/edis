@@ -44,7 +44,7 @@ class ArbolDeSimbolos(QTreeWidget):
         self.clear()
 
         if 'globals' in symbols:
-            _globals = Item(self, [self.tr("Globals")])
+            _globals = Item(self, [self.tr("Variables")])
             _globals.clicked = False
             for _glob, nline in sorted(list(symbols['globals'].items())):
                 _global = Item(_globals, [_glob])
@@ -64,31 +64,29 @@ class ArbolDeSimbolos(QTreeWidget):
         if 'structs' in symbols:
             structs = Item(self, [self.tr("Structs")])
             structs.clicked = False
-            for nline, item in sorted(list(symbols['structs'].items())):
-                struct = Item(structs, [item[0]])
+            for nline, name in sorted(list(symbols['structs'].items())):
+                struct = Item(structs, [name])
                 struct.line = nline
                 struct.setIcon(0, QIcon(":image/struct"))
-                members = item[1]
-                for name, nline in sorted(list(members.items())):
-                    member = Item(struct, [name])
-                    member.line = nline
-                    member.setIcon(0, QIcon(":image/member"))
-                struct.setExpanded(True)
             structs.setExpanded(True)
+
+        if 'members' in symbols:
+            members = Item(self, [self.tr("Members")])
+            members.clicked = False
+            for name, data in sorted(list(symbols['members'].items())):
+                info = "%s [%s]" % (name, data[1])
+                member = Item(members, [info])
+                member.line = data[0]
+                member.setIcon(0, QIcon(":image/member"))
+            members.setExpanded(True)
 
         if 'enums' in symbols:
             enums = Item(self, [self.tr("Enums")])
             enums.clicked = False
-            for nline, item in sorted(list(symbols['enums'].items())):
-                enum = Item(enums, [item[0]])
+            for nline, name in sorted(list(symbols['enums'].items())):
+                enum = Item(enums, [name])
                 enum.line = nline
                 enum.setIcon(0, QIcon(":image/enum"))
-                enumerators = item[1]
-                for name, nline in sorted(list(enumerators.items())):
-                    enumerator = Item(enum, [name])
-                    enumerator.line = nline
-                    enumerator.setIcon(0, QIcon(":image/enumerator"))
-                enum.setExpanded(True)
             enums.setExpanded(True)
 
     def go_to_line(self, item):

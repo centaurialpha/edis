@@ -17,7 +17,7 @@ from PyQt4.QtCore import (
     )
 
 from src.ui.main import Edis
-from src.ui import thread_parse
+from src.tools.ctags import ctags
 
 
 class TabContainer(QDockWidget):
@@ -25,10 +25,11 @@ class TabContainer(QDockWidget):
     def __init__(self):
         super(TabContainer, self).__init__()
         # Thread
-        self.thread = thread_parse.Thread()
-        self.connect(self.thread,
-                     SIGNAL("symbols(PyQt_PyObject, PyQt_PyObject)"),
-                     self._update_symbols_widget)
+        #self.thread = thread_parse.Thread()
+        #self.connect(self.thread,
+                     #SIGNAL("symbols(PyQt_PyObject, PyQt_PyObject)"),
+                     #self._update_symbols_widget)
+
         # Areas
         self.setAllowedAreas(Qt.LeftDockWidgetArea | Qt.RightDockWidgetArea)
         # Tabs
@@ -83,7 +84,8 @@ class TabContainer(QDockWidget):
             self.connect(self._symbols_widget, SIGNAL("goToLine(int)"),
                          editor_container.go_to_line)
             self.connect(editor_container, SIGNAL("updateSymbols(QString)"),
-                         lambda filename: self.thread.parse(filename))
+                         self._update_symbols_widget)
+                         #lambda filename: self.thread.parse(filename))
             self.connect(editor_container.editor_widget,
                          SIGNAL("allFilesClosed()"),
                          self._symbols_widget.clear)
@@ -93,12 +95,13 @@ class TabContainer(QDockWidget):
             self._explorer = Edis.get_lateral("explorer")
             self.tabs.addTab(self._explorer, self.tr("Explorer"))
 
-    def _update_symbols_widget(self, symbols, symbols_combo):
+    def _update_symbols_widget(self, filename):
+        symbols, symbols_combo = ctags.get_symbols(filename)
         editor_container = Edis.get_component("principal")
         symbols_combo = sorted(symbols_combo.items())
         editor_container.add_symbols_combo(symbols_combo)
-        syntax_ok = True if symbols else False
-        self.emit(SIGNAL("updateSyntaxCheck(bool)"), syntax_ok)
+        #syntax_ok = True if symbols else False
+        #self.emit(SIGNAL("updateSyntaxCheck(bool)"), syntax_ok)
         self._symbols_widget.update_symbols(symbols)
 
 
