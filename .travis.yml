@@ -36,6 +36,7 @@ before_install:
     - python -B configure.py
     - make --quiet
     - sudo make --quiet install
+    - sudo apt-get install -qq ctags
     - cd $TRAVIS_BUILD_DIR
 
 install:
