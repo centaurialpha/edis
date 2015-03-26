@@ -72,9 +72,10 @@ SectionEnd
 
 Section "Uninstall"
 	SetShellVarContext all
-	RMDir /r $SMPROGRAMS\${NAME}
-	RMDir /r $INSTDIR\${NAME}
-	RMDir /r $INSTDIR
+	RMDir /r "$SMPROGRAMS\${NAME}"
+	RMDir /r "$INSTDIR\${NAME}"
+    Delete "$DESKTOP\${NAME}.lnk"
+	RMDir /r "$INSTDIR"
 	DeleteRegKey HKLM SOFTWARE\${NAME}
 	DeleteRegKey HKLM Software\Microsoft\Windows\CurrentVersion\Uninstall\${NAME}
 SectionEnd
