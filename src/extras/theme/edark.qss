@@ -165,6 +165,8 @@ QListWidget#list-selector::item:selected {
 QTreeWidget::item:selected,
 QListWidget::item:selected,
 QTreeView::item:selected {
+    background: #4d526e;
+    color: #FFFFFF;
     border: 1px solid #FFFFFF;
 }
 
