@@ -69,6 +69,13 @@ class ThreadBusqueda(QThread):
 
 class Editor(base.Base):
 
+    # Braces
+    BRACE = {
+        '{': '}',
+        '(': ')',
+        '[': ']'
+        }
+
     # Marcadores
     _marker_modified = 3
     _marker_save = 4
@@ -337,10 +344,48 @@ class Editor(base.Base):
         line, _ = self.getCursorPosition()
         self.linesChanged.emit(line)
 
-    def keyPressEvent(self, e):
-        super(Editor, self).keyPressEvent(e)
-        if e.key() == Qt.Key_Escape:
+    def keyPressEvent(self, event):
+        super(Editor, self).keyPressEvent(event)
+        key = event.key()
+        if key == Qt.Key_Escape:
             self.clear_indicators(self._word_indicator)
+        # Brace completion
+        if key in (Qt.Key_BraceRight, Qt.Key_BraceLeft,
+                   Qt.Key_BracketRight, Qt.Key_BracketLeft,
+                   Qt.Key_ParenRight, Qt.Key_ParenLeft):
+            self._complete_brace(event)
+
+    def _complete_brace(self, event):
+        """ Autocompleta un brace cuando es abierto '{, (, ['.
+            Si existe el complementario '}, ), ]' el índice del cursor se
+            mueve un espacio.
+        """
+
+        brace_close = Editor.BRACE.get(event.text(), None)
+        braces_open = list(Editor.BRACE.keys())
+        line, index = self.getCursorPosition()
+        if event.key() in (Qt.Key_BraceRight, Qt.Key_BracketRight,
+                           Qt.Key_ParenRight):
+            text_line = self.text(line)
+            found = 0
+            # Busco un brace cerrado en el texto
+            for token in text_line:
+                if token in ('}', ')', ']'):
+                    found += 1
+            try:
+                # Brace abierto
+                brace_open = text_line[index]
+            except:
+                brace_open = ''
+            if found > 1 and brace_open not in braces_open:
+                # Reemplazo el brace sobrante por un string vacío
+                self.setSelection(line, index, line, index + 1)
+                self.replaceSelectedText('')
+            return
+        elif event.key() in (Qt.Key_BraceLeft, Qt.Key_BracketLeft,
+                             Qt.Key_ParenLeft) and brace_close is not None:
+            # Inserto el brace complementario
+            self.insertAt(brace_close, line, index)
 
     def resizeEvent(self, e):
         super(Editor, self).resizeEvent(e)
