@@ -12,8 +12,7 @@ Edis-IDE
 What is this?
 =============
 
-**Edis** es un Entorno de Desarrollo Integrado (IDE) para el lenguaje de programación C, simple y ligero, está programado en Python y Qt. Edis se basa en la 
-simplicidad: *write, build and run!*.
+**Edis** is a free cross-platform IDE for C programming language, developed in pure Python, using PyQt for the UI, has simple interface but with advanced functionalities, is based on simplicity: *¡write, compile and run!*
 
 .. image:: ./src/images/sources/edis_screenshot.png
 
@@ -29,16 +28,15 @@ Awesome features
 * **Code style checker**
 * **File selector**
 * **Tree symbols**
-* **Auto-completion of keywords**
+* **Auto completion based on document and keywords**
+* **Markers**
 
 Platforms
 =========
 
 * GNU/Linux
 * Windows
-* *Mac OS* (Aún no testeado)
      
-
 Installing and running
 ======================
 
@@ -48,40 +46,38 @@ Prerequisites
 * `Python <https://python.org>`_ 3.x
 * `PyQt4 <http://www.riverbankcomputing.co.uk/software/pyqt/intro>`_ >= 4.8
 * `QScintilla2 <http://www.riverbankcomputing.com/software/qscintilla/intro>`_
+* `Ctags <http://ctags.sourceforge.net/>`_
 
 Easy install
 ------------
 
 *GNU/Linux:*
 
-Descargar código fuente desde `acá <https://github.com/centaurialpha/edis/releases>`_ ó clona el repositorio:
+Download source code from  `here <https://github.com/centaurialpha/edis/releases>`_ or clone the repository:
 
 ::
 
-   git clone https://github.com/centaurialpha/edis.git
-
-Ahora puedes ejecutar **Edis**:
+    git clone https://github.com/centaurialpha/edis.git
+    cd edis
+    sudo python setup.py install
+    
+Running from source code
+------------------------
 
 ::
 
    cd edis
    python bin/edis
-   
-O instalar:
-
-::
-
-   sudo python setup.py install
 
 *Windows:*
 
-Los binarios se encuentran `acá <https://github.com/centaurialpha/edis/releases>`_
+Binaries are `here <https://github.com/centaurialpha/edis/releases>`_
 
 Tests status
 ============
 
-**Edis** posee pruebas que corren automáticamente a través de `Travis CI <https://travis-ci.org>`_.
-El estado actual es el siguiente:
+**Edis** has automated tests that run through  `Travis CI <https://travis-ci.org>`_.
+The current status is as follows:
 
 .. image:: https://travis-ci.org/centaurialpha/edis.svg?branch=master
      :target: https://travis-ci.org/centaurialpha/edis
@@ -90,14 +86,14 @@ Contact
 =======
 
 * `Edis Web <http://centaurialpha.github.io/edis>`_
-* `Lista de e-mail <http://groups.google.com/group/edis-ide/topics>`_
+* `Mailing list <http://groups.google.com/group/edis-ide/topics>`_
 
 Contributing
 ============
 
-Para contribuir con el proyecto por favor lee esto: `Contribuyendo con Edis <https://github.com/centaurialpha/edis/blob/master/CONTRIBUTING.md>`_.
+To contribute to the project please read the following: `Contributing Edis <https://github.com/centaurialpha/edis/blob/master/CONTRIBUTING.md>`_.
 
 License
 =======
 
-* **Edis** es ¡Software Libre! distribuido bajo los términos de la licencia `GPLv3+ <http://gnu.org/licenses/gpl.html>`_.
+* **Edis** is Free Software! distributed under the terms of the `GPLv3+ <http://gnu.org/licenses/gpl.html>`_.
