@@ -193,7 +193,7 @@ class Edis(QMainWindow):
         editor_container = Edis.get_component("principal")
         # Lateral
         tab_container = Edis.get_component("tab_container")
-        lateral_widgets = ["symbols", "explorer"]
+        lateral_widgets = ["symbols", "project", "explorer"]
         for widget in lateral_widgets:
             method = getattr(tab_container, "load_%s_widget" % widget)
             obj = Edis.get_lateral(widget)

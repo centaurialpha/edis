@@ -14,9 +14,18 @@ ACTIONS = ([
         "connection": "add_editor",
         "shortcut": "new"},
     {
+        "name": translate("EDIS", "New Project"),
+        "connection": "create_new_project"},
+    {
         "name": translate("EDIS", "Open file"),
         "connection": "open_file",
         "shortcut": "open"},
+    {
+        "name": translate("EDIS", "Open project"),
+        "connection": "open_project"},
+    {
+        "name": translate("EDIS", "Open folder"),
+        "connection": "open_directory"},
     {
         "name": translate("EDIS", "Open recent file"),
         "icon": "open-recent",

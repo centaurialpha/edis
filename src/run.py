@@ -33,7 +33,8 @@ settings.load_settings()
 from src.ui.containers.lateral import (
     tab_container,
     explorer,
-    tree_symbols
+    tree_symbols,
+    tree_projects
     )
 from src.ui.containers.output import output_container
 from src.ui.containers import editor_container

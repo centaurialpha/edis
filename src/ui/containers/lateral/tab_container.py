@@ -7,8 +7,7 @@
 
 from PyQt4.QtGui import (
     QDockWidget,
-    QTabWidget,
-    QMenu
+    QTabWidget
     )
 
 from PyQt4.QtCore import (
@@ -50,13 +49,14 @@ class TabContainer(QDockWidget):
                      self._load_context_menu)
 
     def _load_context_menu(self, point):
-        menu = QMenu()
-        position_action = menu.addAction(self.tr("Change position"))
+        pass
+        #menu = QMenu()
+        #position_action = menu.addAction(self.tr("Change position"))
 
-        self.connect(position_action, SIGNAL("triggered()"),
-                     self._change_dock_position)
+        #self.connect(position_action, SIGNAL("triggered()"),
+                     #self._change_dock_position)
 
-        menu.exec_(self.mapToGlobal(point))
+        #menu.exec_(self.mapToGlobal(point))
 
     def _change_dock_position(self):
         edis = Edis.get_component("edis")
@@ -95,6 +95,18 @@ class TabContainer(QDockWidget):
             self._explorer = Edis.get_lateral("explorer")
             self.tabs.addTab(self._explorer, self.tr("Explorer"))
 
+    def load_project_widget(self, widget):
+        self._tree_project = Edis.get_lateral("tree_projects")
+        self.tabs.addTab(self._tree_project, self.tr("Projects"))
+
+        editor_container = Edis.get_component("principal")
+        #self.connect(editor_container, SIGNAL("projectReady(PyQt_PyObject)"),
+                     #self._update_tree_project)
+        self.connect(editor_container, SIGNAL("projectOpened(PyQt_PyObject)"),
+                     self._open_project)
+        self.connect(editor_container, SIGNAL("folderOpened(PyQt_PyObject)"),
+                     self._open_directory)
+
     def _update_symbols_widget(self, filename):
         symbols, symbols_combo = ctags.get_symbols(filename)
         editor_container = Edis.get_component("principal")
@@ -103,6 +115,15 @@ class TabContainer(QDockWidget):
         #syntax_ok = True if symbols else False
         #self.emit(SIGNAL("updateSyntaxCheck(bool)"), syntax_ok)
         self._symbols_widget.update_symbols(symbols)
+
+    def _update_tree_project(self, data):
+        self._tree_project.load_project(data)
+
+    def _open_project(self, structure):
+        self._tree_project.open_project(structure)
+
+    def _open_directory(self, structure):
+        self._tree_project.open_directory(structure)
 
 
 tab_container = TabContainer()

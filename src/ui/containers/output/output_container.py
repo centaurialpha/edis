@@ -31,7 +31,8 @@ class OutputContainer(QDockWidget):
         title_bar = self.titleBarWidget()
         self._remove_titlebar(title_bar)
 
-        self._filename = None
+        #self._filename = None
+        self._sources = None
 
         self.salida_ = process.EjecutarWidget()
         self.setWidget(self.salida_)
@@ -49,21 +50,21 @@ class OutputContainer(QDockWidget):
         self.setTitleBarWidget(empty_widget)
         del title_bar
 
-    def build(self, path):
+    def build(self, sources):
         self.show()
-        self._filename = path
-        self.salida_.run_compilation(self._filename)
+        self._sources = sources
+        self.salida_.run_compilation(self._sources)
         self.setFocus()
 
     def run(self):
-        if self._filename is None:
+        if self._sources is None:
             return
-        self.salida_.run_program(self._filename)
+        self.salida_.run_program(self._sources)
 
-    def build_and_run(self, filename):
+    def build_and_run(self, sources):
         self.show()
-        self._filename = filename
-        self.salida_.build_and_run(self._filename)
+        self._sources = sources
+        self.salida_.build_and_run(self._sources)
 
     def clean(self):
         self.salida_.clean(self._filename)
