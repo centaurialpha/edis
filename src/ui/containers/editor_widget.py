@@ -93,6 +93,10 @@ class EditorWidget(QWidget):
     def close_file(self):
         self.remove_widget(self.current_widget(), self.current_index())
 
+    def close_file_project(self, widget, index):
+        #FIXME: unir con close file
+        self.remove_widget(widget, index)
+
     def close_all(self):
         for index in range(self.count()):
             self.remove_widget(self.current_widget(), 0)

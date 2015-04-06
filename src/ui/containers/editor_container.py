@@ -6,6 +6,7 @@
 # License: GPLv3 (see http://www.gnu.org/licenses/gpl.html)
 
 import os
+import json
 
 from PyQt4.QtGui import (
     QWidget,
@@ -21,6 +22,7 @@ from PyQt4.QtCore import (
     pyqtSignal
     )
 
+from src import paths
 from src.helpers import file_manager
 from src.helpers.exceptions import EdisIOException
 from src.helpers import settings
@@ -33,7 +35,10 @@ from src.ui.widgets import (
     file_selector
     )
 from src.ui.dialogs.preferences import preferences
-from src.ui.dialogs import file_properties
+from src.ui.dialogs import (
+    file_properties,
+    new_project
+    )
 from src.ui.containers import editor_widget
 from src.ui import start_page
 from src.helpers import logger
@@ -255,8 +260,6 @@ class EditorContainer(QWidget):
             _start_page = start_page.StartPage()
             self.stack.insertWidget(0, _start_page)
             self.stack.setCurrentIndex(0)
-            lateral = Edis.get_component('tab_container')
-            lateral.hide()
         else:
             self.editor_widget.combo.setVisible(False)
 
@@ -284,6 +287,14 @@ class EditorContainer(QWidget):
 
     def close_file(self):
         self.editor_widget.close_file()
+
+    def close_file_from_project(self, filename):
+        #FIXME: revisar
+        for index in range(self.editor_widget.count()):
+            widget = self.editor_widget.widget(index)
+            if widget.filename == filename:
+                editor, i = widget, index
+        self.editor_widget.close_file_project(editor, i)
 
     def close_all(self):
         self.editor_widget.close_all()
@@ -432,6 +443,10 @@ class EditorContainer(QWidget):
             files.append(path)
         return files
 
+    def get_open_projects(self):
+        tree_projects = Edis.get_lateral("tree_projects")
+        return tree_projects.get_open_projects()
+
     def file_properties(self):
         weditor = self.get_active_editor()
         if weditor is not None:
@@ -447,11 +462,15 @@ class EditorContainer(QWidget):
 
     def build_source_code(self):
         output = Edis.get_component("output")
+        project = Edis.get_lateral("tree_projects")
         weditor = self.get_active_editor()
         if weditor is not None:
             filename = self.save_file()
-            if filename:
-                output.build(weditor.filename)
+            if project.sources:
+                output.build((filename, project.sources))
+            else:
+                if filename:
+                    output.build((weditor.filename, []))
 
     def run_binary(self):
         """ Ejecuta el programa objeto """
@@ -569,6 +588,49 @@ class EditorContainer(QWidget):
                      lambda widget: self.remove_widget(widget))
         index = self.stack.addWidget(preferences_widget)
         self.stack.setCurrentIndex(index)
+
+    def open_project(self, filename='', edis_project=True):
+        if edis_project:
+            if not filename:
+                filename = QFileDialog.getOpenFileName(self,
+                                                       self.tr("Load Project"),
+                                                       paths.PROJECT_DIR,
+                                                       "Edis file(*.epf)")
+                if not filename:
+                    return
+                project_file = json.load(open(filename))
+                project_path = project_file.get('path', '')
+            else:
+                project_path = os.path.dirname(filename)
+        else:
+            result = QFileDialog.getExistingDirectory(self,
+                                                      self.tr("Select folder"))
+            if not result:
+                return
+            project_path = result
+        project_structure = {}
+        filter_files = ['.c', '.h']
+        for parent, dirs, files in os.walk(project_path):
+            files = [fi for fi in files
+                     if os.path.splitext(fi)[-1] in filter_files]
+            project_structure[parent] = (files, dirs)
+        self.emit(SIGNAL("projectOpened(PyQt_PyObject)"),
+                  (project_structure, project_path, edis_project, filename))
+
+    def open_directory(self):
+        self.open_project(edis_project=False)
+
+    def create_new_project(self):
+        project_creator = new_project.NewProjectDialog(self)
+        self.connect(project_creator, SIGNAL("projectReady(PyQt_PyObject)"),
+                     self._update_data)
+        project_creator.show()
+
+    def _update_data(self, data):
+        self.emit(SIGNAL("projectReady(PyQt_PyObject)"), data)
+
+    def opened_projects(self):
+        pass
 
 
 editor_container = EditorContainer()

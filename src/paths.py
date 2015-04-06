@@ -26,6 +26,8 @@ EDIS = os.path.join(HOME, ".edis")
 CONFIGURACION = os.path.join(EDIS, "edis_config.ini")
 # Archivo de log
 LOG = os.path.join(EDIS, "edis_log.log")
+# Proyecto
+PROJECT_DIR = os.path.join(HOME, "EdisProjects")
 
 
 # Se crea el directorio .edis en el HOME

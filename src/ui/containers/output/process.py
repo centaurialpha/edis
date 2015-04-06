@@ -43,9 +43,6 @@ ENV_GCC = os.path.join(paths.PATH, "gcc", "bin")
 
 class EjecutarWidget(QWidget):
 
-    _script = '%s -e "bash -c ./%s;echo;echo;echo;echo -n Presione \<Enter\> '\
-              'para salir.;read I"'
-
     def __init__(self):
         super(EjecutarWidget, self).__init__()
         layoutV = QVBoxLayout(self)
@@ -88,10 +85,14 @@ class EjecutarWidget(QWidget):
             text.setForeground(QColor("#7FE22A"))
             self.output.addItem(text)
 
-    def run_compilation(self, filename=''):
+    def run_compilation(self, sources):
         """ Se corre el comando gcc para la compilación """
 
         # Ejecutable
+        filename, files = sources
+        if not files:
+            # No es un proyecto
+            files = [filename]
         path = QDir.fromNativeSeparators(filename)
         self.exe = os.path.splitext(os.path.basename(path))[0]
 
@@ -106,11 +107,11 @@ class EjecutarWidget(QWidget):
 
         self.output.addItem(item)
 
-        params = ['-Wall', '-o']
+        params = ['-Wall', '-o', self.exe]
         gcc = 'gcc'
         if not sys.platform.startswith("linux"):
             gcc = os.path.join(self._environment, 'gcc')
-        self.build_process.start(gcc, params + [self.exe] + [filename])
+        self.build_process.start(gcc, params + files)
         self.build_process.waitForFinished()
 
     def _compilation_finished(self, code, status):
@@ -153,10 +154,10 @@ class EjecutarWidget(QWidget):
         text.setForeground(Qt.red)
         self.output.addItem(text)
 
-    def run_program(self, archivo):
+    def run_program(self, sources):
         """ Ejecuta el binario generado por el compilador """
 
-        path = os.path.dirname(archivo)
+        path = os.path.dirname(sources[0])
         self.execution_process.setWorkingDirectory(path)
         # Path ejecutable
         path_exe = os.path.join(path, self.exe)
