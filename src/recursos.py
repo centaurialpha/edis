@@ -14,7 +14,9 @@ from PyQt4.QtCore import Qt
 SHORTCUTS = {
     # Archivo
     "new": QKeySequence(Qt.CTRL + Qt.Key_N),
+    "new-project": QKeySequence(Qt.CTRL + Qt.SHIFT + Qt.Key_N),
     "open": QKeySequence(Qt.CTRL + Qt.Key_O),
+    "open-project": QKeySequence(Qt.CTRL + Qt.SHIFT + Qt.Key_O),
     "reload": QKeySequence(Qt.Key_F5),
     "save": QKeySequence(Qt.CTRL + Qt.Key_S),
     "close": QKeySequence(Qt.CTRL + Qt.Key_W),

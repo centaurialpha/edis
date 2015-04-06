@@ -23,12 +23,6 @@ class TabContainer(QDockWidget):
 
     def __init__(self):
         super(TabContainer, self).__init__()
-        # Thread
-        #self.thread = thread_parse.Thread()
-        #self.connect(self.thread,
-                     #SIGNAL("symbols(PyQt_PyObject, PyQt_PyObject)"),
-                     #self._update_symbols_widget)
-
         # Areas
         self.setAllowedAreas(Qt.LeftDockWidgetArea | Qt.RightDockWidgetArea)
         # Tabs
@@ -47,6 +41,9 @@ class TabContainer(QDockWidget):
         self.connect(self,
                      SIGNAL("customContextMenuRequested(const QPoint)"),
                      self._load_context_menu)
+
+        # Oculto cuando se inicia
+        self.hide()
 
     def _load_context_menu(self, point):
         pass
@@ -100,8 +97,6 @@ class TabContainer(QDockWidget):
         self.tabs.addTab(self._tree_project, self.tr("Projects"))
 
         editor_container = Edis.get_component("principal")
-        #self.connect(editor_container, SIGNAL("projectReady(PyQt_PyObject)"),
-                     #self._update_tree_project)
         self.connect(editor_container, SIGNAL("projectOpened(PyQt_PyObject)"),
                      self._open_project)
         self.connect(editor_container, SIGNAL("folderOpened(PyQt_PyObject)"),
@@ -112,8 +107,6 @@ class TabContainer(QDockWidget):
         editor_container = Edis.get_component("principal")
         symbols_combo = sorted(symbols_combo.items())
         editor_container.add_symbols_combo(symbols_combo)
-        #syntax_ok = True if symbols else False
-        #self.emit(SIGNAL("updateSyntaxCheck(bool)"), syntax_ok)
         self._symbols_widget.update_symbols(symbols)
 
     def _update_tree_project(self, data):
@@ -121,6 +114,8 @@ class TabContainer(QDockWidget):
 
     def _open_project(self, structure):
         self._tree_project.open_project(structure)
+        self.setVisible(True)
+        self.tabs.setCurrentWidget(self._tree_project)
 
     def _open_directory(self, structure):
         self._tree_project.open_directory(structure)

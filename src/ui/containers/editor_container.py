@@ -260,8 +260,6 @@ class EditorContainer(QWidget):
             _start_page = start_page.StartPage()
             self.stack.insertWidget(0, _start_page)
             self.stack.setCurrentIndex(0)
-            lateral = Edis.get_component('tab_container')
-            lateral.hide()
         else:
             self.editor_widget.combo.setVisible(False)
 
@@ -289,6 +287,14 @@ class EditorContainer(QWidget):
 
     def close_file(self):
         self.editor_widget.close_file()
+
+    def close_file_from_project(self, filename):
+        #FIXME: revisar
+        for index in range(self.editor_widget.count()):
+            widget = self.editor_widget.widget(index)
+            if widget.filename == filename:
+                editor, i = widget, index
+        self.editor_widget.close_file_project(editor, i)
 
     def close_all(self):
         self.editor_widget.close_all()
@@ -437,6 +443,10 @@ class EditorContainer(QWidget):
             files.append(path)
         return files
 
+    def get_open_projects(self):
+        tree_projects = Edis.get_lateral("tree_projects")
+        return tree_projects.get_open_projects()
+
     def file_properties(self):
         weditor = self.get_active_editor()
         if weditor is not None:
@@ -454,7 +464,6 @@ class EditorContainer(QWidget):
         output = Edis.get_component("output")
         project = Edis.get_lateral("tree_projects")
         weditor = self.get_active_editor()
-        print(project.sources)
         if weditor is not None:
             filename = self.save_file()
             if project.sources:
@@ -606,7 +615,7 @@ class EditorContainer(QWidget):
                      if os.path.splitext(fi)[-1] in filter_files]
             project_structure[parent] = (files, dirs)
         self.emit(SIGNAL("projectOpened(PyQt_PyObject)"),
-                  (project_structure, project_path, edis_project))
+                  (project_structure, project_path, edis_project, filename))
 
     def open_directory(self):
         self.open_project(edis_project=False)

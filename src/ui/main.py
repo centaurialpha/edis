@@ -301,7 +301,7 @@ class Edis(QMainWindow):
         else:
             output.show()
 
-    def cargar_archivos(self, files, recents_files):
+    def load_files_and_projects(self, files, recents_files, projects):
         """ Carga archivos al editor desde la última sesión y actualiza el menú
         de archivos recientes.
         """
@@ -310,6 +310,8 @@ class Edis(QMainWindow):
         for _file in files:
             editor_container.open_file(_file)
         editor_container.update_recents_files(recents_files)
+        for project in projects:
+            editor_container.open_project(project)
 
     def about_qt(self):
         """ Muestra el díalogo acerca de Qt """
@@ -348,3 +350,5 @@ class Edis(QMainWindow):
         settings.set_setting('general/files', opened_files)
         settings.set_setting('general/recents-files',
                              editor_container.get_recents_files())
+        projects = editor_container.get_open_projects()
+        settings.set_setting('general/projects', projects)

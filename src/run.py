@@ -95,7 +95,11 @@ def run_edis(app):
     edis = Edis()
     edis.show()
     # Archivos de última sesión
-    files, recents_files = [], []
+    files, recents_files, projects = [], [], []
+    projects = qsettings.value('general/projects')
+    #FIXME:
+    if projects is None:
+        projects = []
     if settings.get_setting('general/load-files'):
         if show_splash:
             splash.showMessage("Loading files...", alignment, Qt.white)
@@ -106,7 +110,7 @@ def run_edis(app):
         recents_files = qsettings.value('general/recents-files')
         if recents_files is None:
             recents_files = []
-    edis.cargar_archivos(files, recents_files)
+    edis.load_files_and_projects(files, recents_files, projects)
     if show_splash:
         splash.finish(edis)
     sys.exit(app.exec_())

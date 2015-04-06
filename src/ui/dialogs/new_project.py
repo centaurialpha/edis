@@ -31,16 +31,9 @@ from PyQt4.QtCore import (
     )
 
 from src import paths
+from src.helpers import templates
 from src.ui.main import Edis
 from src.ui.containers.lateral import edis_project
-
-TEMPLATE = """#include <stdio.h>
-
-int main( void ) {
-    printf( "¡Hello Edis!" );
-    return 0;
-}
-"""
 
 
 class NewProjectDialog(QWizard):
@@ -103,14 +96,15 @@ class NewProjectDialog(QWizard):
         # Creo el archivo .epf
         json.dump(self.data, open(project.project_file, "w"))
 
+        editor_container = Edis.get_component("principal")
         if project.template == 1:
             main_file = os.path.join(project.project_path, "main.c")
             with open(main_file, mode='w') as f:
-                f.write(TEMPLATE)
-        # Abro el proyecto
-        editor_container = Edis.get_component("principal")
+                f.write(templates.MAIN_TEMPLATE)
+            # Abro el archivo
+            editor_container.open_file(main_file)
+        # Cargo el projecto
         editor_container.open_project(project.project_file)
-        editor_container.open_file(main_file)
         super(NewProjectDialog, self).done(result)
 
 

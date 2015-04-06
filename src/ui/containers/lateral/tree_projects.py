@@ -10,6 +10,7 @@ import os
 from PyQt4.QtGui import (
     QTreeWidget,
     QTreeWidgetItem,
+    QHeaderView,
     QMenu,
     QMessageBox,
     QDialog,
@@ -28,17 +29,28 @@ from PyQt4.QtCore import (
     )
 
 from src.ui.main import Edis
+from src.helpers import templates
+
+# FIXME: usar el manejador de archivos
 
 
 class TreeProject(QTreeWidget):
 
     def __init__(self):
-        super(TreeProject, self).__init__()
-
+        QTreeWidget.__init__(self)
+        # Configuración QTreeWidget
+        self.setAnimated(True)
+        self.header().setStretchLastSection(False)
+        self.header().setHidden(True)
+        self.header().setResizeMode(0, QHeaderView.ResizeToContents)
         # Lista de fuentes, para la compilación
         self._sources = []
+        # Proyectos abiertos
+        self._projects = []
 
         self.setContextMenuPolicy(Qt.CustomContextMenu)
+
+        # Conexiones
         self.connect(self, SIGNAL("customContextMenuRequested(const QPoint &)"),
                      self._menu_tree_project)
         self.connect(self, SIGNAL("itemDoubleClicked(QTreeWidgetItem*, int)"),
@@ -47,7 +59,7 @@ class TreeProject(QTreeWidget):
         Edis.load_lateral("tree_projects", self)
 
     def _open_file(self, item, column):
-        if item.isClickeable and not item.isFolder:
+        if item.isFile:
             filename = item.path
             editor_container = Edis.get_component("principal")
             editor_container.open_file(filename)
@@ -56,23 +68,29 @@ class TreeProject(QTreeWidget):
         item = self.itemAt(point)
         if item is None:
             return
-        if not item.isRoot:
-            if not item.isFolder:
-                self._load_menu_for_file(point)
-            else:
-                self._load_menu_for_folder(point)
-        else:
-            if item.isEdisProject:
+        if isinstance(item, EdisItem):
+            if item.isRoot:
                 self._load_menu_for_edis_project(point)
             else:
+                if item.isFile:
+                    self._load_menu_for_file(point)
+        else:
+            if item.isRoot:
                 self._load_menu_for_root(point)
+            else:
+                if not item.isFile:
+                    self._load_menu_for_folder(point)
+                    return
+                self._load_menu_for_file(point)
 
     def _load_menu_for_root(self, point):
+        """ Carga el menú para el root """
+
         menu = QMenu(self)
-        create_file_action = menu.addAction(self.tr("Create a file"))
-        create_folder_action = menu.addAction(self.tr("Create a folder"))
+        create_file_action = menu.addAction(self.tr("Add File"))
+        create_folder_action = menu.addAction(self.tr("Add Folder"))
         menu.addSeparator()
-        close_project_action = menu.addAction(self.tr("Close project"))
+        close_project_action = menu.addAction(self.tr("Close Project"))
 
         # Conexiones
         self.connect(create_file_action, SIGNAL("triggered()"),
@@ -85,18 +103,22 @@ class TreeProject(QTreeWidget):
         menu.exec_(self.mapToGlobal(point))
 
     def _load_menu_for_file(self, point):
+        """ Carga el menú para un ítem archivo """
+
         menu = QMenu(self)
-        delete_action = menu.addAction(self.tr("Delete file"))
+        delete_action = menu.addAction(self.tr("Delete File"))
 
         self.connect(delete_action, SIGNAL("triggered()"), self._delete_file)
         menu.exec_(self.mapToGlobal(point))
 
     def _load_menu_for_folder(self, point):
+        """ Carga el menú para un ítem carpeta """
+
         menu = QMenu(self)
-        create_file_action = menu.addAction(self.tr("Create a file"))
-        create_folder_action = menu.addAction(self.tr("Create a folder"))
+        create_file_action = menu.addAction(self.tr("Add File"))
+        create_folder_action = menu.addAction(self.tr("Add Folder"))
         menu.addSeparator()
-        delete_folder_action = menu.addAction(self.tr("Delete folder"))
+        delete_folder_action = menu.addAction(self.tr("Delete Folder"))
 
         # Conexiones
         self.connect(create_file_action, SIGNAL("triggered()"),
@@ -109,14 +131,67 @@ class TreeProject(QTreeWidget):
         menu.exec_(self.mapToGlobal(point))
 
     def _load_menu_for_edis_project(self, point):
+        """ Carga el menú para el root (proyecto de Edis) """
+
         menu = QMenu(self)
-        create_file_action = menu.addAction(self.tr("Create source file"))
+        create_file_action = menu.addAction(self.tr("Add file"))
+        create_main_file_action = menu.addAction(self.tr("Add Main File"))
+        menu.addSeparator()
+        build_project_action = menu.addAction(self.tr("Build Project"))
+        clean_project_action = menu.addAction(self.tr("Clean"))
+        menu.addSeparator()
+        properties_action = menu.addAction(self.tr("Project Properties"))
+        menu.addSeparator()
+        close_project_action = menu.addAction(self.tr("Close Project"))
 
         # Conexiones
         self.connect(create_file_action, SIGNAL("triggered()"),
                      self._create_file)
+        self.connect(create_main_file_action, SIGNAL("triggered()"),
+                     self._create_main_file)
+        self.connect(build_project_action, SIGNAL("triggered()"),
+                     self._build_project)
+        self.connect(clean_project_action, SIGNAL("triggered()"),
+                     self._clean_project)
+        self.connect(properties_action, SIGNAL("triggered()"),
+                     self._project_properties)
+        self.connect(close_project_action, SIGNAL("triggered()"),
+                     self._close_project)
 
         menu.exec_(self.mapToGlobal(point))
+
+    def _clean_project(self):
+        pass
+
+    def _project_properties(self):
+        pass
+
+    def _build_project(self):
+        editor_container = Edis.get_component("principal")
+        editor_container.build_source_code()
+
+    def _create_main_file(self):
+        """ Crea el archivo y la función main y lo agrega al árbol"""
+
+        current_item = self.currentItem()
+        item_path = os.path.join(current_item.path, 'main.c')
+        if os.path.exists(item_path):
+            # El archivo ya existe
+            QMessageBox.information(self, self.tr("Information"),
+                                    self.tr("The <b>main.c</b> file already "
+                                    "exists."), QMessageBox.Yes)
+            return
+        # Creo el archivo
+        with open(item_path, mode='w') as f:
+            # FIXME: template
+            f.write(templates.MAIN_TEMPLATE)
+        # Agrego el ítem, 0 = sources_item
+        item = TreeItem(current_item.child(0), ['main.c'])
+        item.path = item_path
+        self._sources.append(item_path)
+        # Abro el archivo
+        editor_container = Edis.get_component("principal")
+        editor_container.open_file(item_path)
 
     def _create_file(self):
         dialog = NewFileDialog(self)
@@ -125,33 +200,57 @@ class TreeProject(QTreeWidget):
             current_item = self.currentItem()
             filename, ftype = data['filename'], data['type']
             filename = os.path.join(current_item.path, filename)
-            # Agrego a la lista de archivos fuente
-            self._sources.append(filename)
+            if os.path.exists(filename):
+                # El archivo ya existe
+                QMessageBox.information(self, self.tr("Information"),
+                                        self.tr("A file already exists with "
+                                        "that name"), QMessageBox.Ok)
+                return
             if ftype == 1:
                 # Header file
                 preprocessor = os.path.splitext(os.path.basename(filename))[0]
-                content = "#ifndef %s_H_\n#define %s_H_" % \
+                content = "#ifndef %s_H_\n#define %s_H\n\n#endif" % \
                           (preprocessor.upper(), preprocessor.upper())
             else:
                 content = ""
+                # Agrego a la lista de archivos fuente
+                self._sources.append(filename)
+            # Creo el archivo
             with open(filename, mode='w') as f:
                 f.write(content)
-            if current_item.isEdisProject:
+            if isinstance(current_item, EdisItem):
                 parent = current_item.child(ftype)
             else:
                 parent = current_item
-            new_item = ItemTree(parent, [data['filename']])
+            # Agrego el ítem al árbol
+            new_item = TreeItem(parent, [data['filename']])
             new_item.path = filename
+            editor_container = Edis.get_component("principal")
+            editor_container.open_file(filename)
 
     def _create_folder(self):
         current_item = self.currentItem()
-        folder_name = QInputDialog.getText(self, self.tr("New folder"),
-                                           self.tr("Name:"))
-        folder_item = ItemTree(current_item, [folder_name[0]])
-        folder_item.path = os.path.join(current_item.path, folder_name[0])
-        folder_item.isFolder = True
-        folder_item.isEdisProject = False
-        folder_item.setExpanded(True)
+        qinput = QInputDialog(self)
+        qinput.setInputMode(QInputDialog.TextInput)
+        qinput.setWindowTitle(self.tr("New folder"))
+        qinput.setLabelText(self.tr("Name:"))
+        qinput.resize(400, 100)
+        ok = qinput.exec_()
+        folder_name = qinput.textValue()
+        if ok:
+            path = os.path.join(current_item.path, folder_name)
+            if os.path.exists(path):
+                QMessageBox.information(self, self.tr("Information"),
+                                        self.tr("The folder already exists"),
+                                        QMessageBox.Yes)
+                return
+            # Creo la carpeta
+            os.mkdir(path)
+            # Agrego el ítem al árbol
+            folder_item = TreeItem(current_item, [folder_name])
+            folder_item.path = path
+            folder_item.isFile = False
+            folder_item.setExpanded(True)
 
     def _delete_folder(self):
         current_item = self.currentItem()
@@ -172,24 +271,27 @@ class TreeProject(QTreeWidget):
                                       current_item.path), no | yes)
         if result == no:
             return
-        # Borro el archivo
-        os.remove(current_item.path)
+        # Elimino el item de la lista de fuentes
+        self._sources.remove(current_item.path)
+        # Cierro el archivo del editor
+        editor_container = Edis.get_component("principal")
+        editor_container.close_file_from_project(current_item.path)
         # Elimino el item del árbol
         index = current_item.parent().indexOfChild(current_item)
         current_item.parent().takeChild(index)
-        # Elimino el item de la lista de fuentes
-        self._sources.remove(current_item.path)
+        # Borro el archivo fisicamente
+        os.remove(current_item.path)
 
     def open_project(self, data):
-        # Parent
-        structure, root, edis_project = data
+        structure, root, edis_project, epf_file = data
+        self._projects.append(epf_file)
         root_basename = os.path.basename(root)
-        parent = ItemTree(self, [root_basename])
-        parent.isClickeable = False
+        if edis_project:
+            parent = EdisItem(self, [root_basename])
+        else:
+            parent = TreeItem(self, [root_basename])
+        parent.do_root()
         parent.path = root
-        parent.isRoot = True
-        if not edis_project:
-            parent.isEdisProject = False
         parent.setToolTip(0, root)
         self._load_tree(structure, parent, root, edis_project)
         parent.setExpanded(True)
@@ -204,74 +306,98 @@ class TreeProject(QTreeWidget):
         if not edis_project:
             if files is not None:
                 for _file in sorted(files):
-                    file_item = ItemTree(parent, [_file])
-                    file_item.isEdisProject = False
+                    file_item = TreeItem(parent, [_file])
                     file_item.path = os.path.join(root, _file)
                     file_item.setToolTip(0, _file)
             if folders is not None:
                 for folder in sorted(folders):
-                    folder_item = ItemTree(parent, [folder])
-                    folder_item.isFolder = True
-                    folder_item.isEdisProject = False
+                    folder_item = TreeItem(parent, [folder])
+                    folder_item.isFile = False
                     folder_item.path = os.path.join(root, folder)
                     folder_item.setToolTip(0, folder)
                     folder_item.setExpanded(True)
                     self._load_tree(structure, folder_item,
                                     os.path.join(root, folder), edis_project)
         else:
-            sources_item = ItemTree(parent, [self.tr("Sources")])
-            sources_item.isClickeable = False
+            sources_item = EdisItem(parent, [self.tr("Sources")])
+            sources_item.do_edis_item()
             sources_item.setToolTip(0, self.tr("Source files"))
             sources_item.setExpanded(True)
-            headers_item = ItemTree(parent, [self.tr("Headers")])
-            headers_item.isClickeable = False
+            headers_item = EdisItem(parent, [self.tr("Headers")])
+            headers_item.do_edis_item()
             headers_item.setToolTip(0, self.tr("Header files"))
             headers_item.setExpanded(True)
-            # FIXME: mejorar
             if files is not None:
                 for _file in sorted(files):
                     if os.path.splitext(_file)[-1] == '.c':
-                        source_item = ItemTree(sources_item, [_file])
+                        source_item = EdisItem(sources_item, [_file])
                         source_item.path = os.path.join(root, _file)
                         self._sources.append(source_item.path)
                         source_item.setToolTip(0, _file)
                     else:
-                        header_item = ItemTree(headers_item, [_file])
+                        header_item = EdisItem(headers_item, [_file])
                         header_item.setToolTip(0, _file)
                         header_item.path = os.path.join(root, _file)
                         self._sources.append(header_item.path)
 
     def _close_project(self):
-        pass
+        # Quito el ítem del árbol
+        item = self.currentItem()
+        index = self.indexOfTopLevelItem(item)
+        self.takeTopLevelItem(index)
+        # Quito el elemento de la lista
+        self._projects.pop(index)
 
     @property
     def sources(self):
+        """ Devuelve la lista de archivos fuentes """
+
         return self._sources
 
+    def get_open_projects(self):
+        return self._projects
 
-class ItemTree(QTreeWidgetItem):
 
-    def __init__(self, parent, name):
-        super(ItemTree, self).__init__(parent, name)
-        self.isEdisProject = True
-        self.isClickeable = True
+class TreeItem(QTreeWidgetItem):
+    """ Custom tree item"""
+
+    def __init__(self, parent=None, name=''):
+        QTreeWidgetItem.__init__(self, parent, name)
         self.isRoot = False
-        self.isFolder = False
+        self.isClickable = True
+        self.isFile = True
         self._path = ''
 
-    def __set_path(self, path):
-        self._path = path
+    def do_root(self):
+        self.isRoot = True
+        self.isClickable = False
+        self.isFile = False
 
     def __get_path(self):
         return self._path
 
+    def __set_path(self, path):
+        self._path = path
+
     path = property(__get_path, __set_path)
+
+
+class EdisItem(TreeItem):
+    """ Esta clase representa a un ítem tipo EdisProject """
+
+    def __init__(self, parent=None, name=''):
+        super(EdisItem, self).__init__(parent, name)
+
+    def do_edis_item(self):
+        self.isClickable = False
+        self.isFile = False
 
 
 class NewFileDialog(QDialog):
 
     def __init__(self, parent=None):
         QDialog.__init__(self, parent)
+        self.setMinimumWidth(400)
         self.setWindowTitle(self.tr("New file"))
         self._data = {}
         container = QVBoxLayout(self)
@@ -289,10 +415,11 @@ class NewFileDialog(QDialog):
             self.tr("Source file"),
             self.tr("Header file")
             ])
-        hbox.addWidget(self._combo_type)
+        hbox.addWidget(self._combo_type, 1)
         container.addLayout(hbox)
         # Buttons
         hbox = QHBoxLayout()
+        hbox.addStretch(1)
         btn_ok = QPushButton(self.tr("Ok"))
         hbox.addWidget(btn_ok)
         btn_cancel = QPushButton(self.tr("Cancel"))
