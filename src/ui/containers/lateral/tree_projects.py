@@ -29,8 +29,15 @@ from PyQt4.QtCore import (
     )
 
 from src.ui.main import Edis
-from src.helpers import templates
+from src.helpers import (
+    logger,
+    templates,
+    file_manager,
+    exceptions
+    )
 
+log = logger.edis_logger.get_logger(__name__)
+ERROR = log.error
 # FIXME: usar el manejador de archivos
 
 
@@ -106,9 +113,17 @@ class TreeProject(QTreeWidget):
         """ Carga el menú para un ítem archivo """
 
         menu = QMenu(self)
+        rename_action = menu.addAction(self.tr("Rename File"))
         delete_action = menu.addAction(self.tr("Delete File"))
+        menu.addSeparator()
+        properties_action = menu.addAction(self.tr("Properties File"))
 
+        self.connect(rename_action, SIGNAL("triggered()"),
+                     self._rename_file)
         self.connect(delete_action, SIGNAL("triggered()"), self._delete_file)
+        self.connect(properties_action, SIGNAL("triggered()"),
+                     self._show_properties_files)
+
         menu.exec_(self.mapToGlobal(point))
 
     def _load_menu_for_folder(self, point):
@@ -258,6 +273,38 @@ class TreeProject(QTreeWidget):
         index = current_item.parent().indexOfChild(current_item)
         current_item.parent().takeChild(index)
 
+    def _rename_file(self):
+        """ Renombra un archivo """
+
+        current_item = self.currentItem()
+        name, ok = QInputDialog.getText(self, self.tr("Rename file"),
+                                        self.tr("New name:"),
+                                        text=current_item.text(0))
+        if ok:
+            path = os.path.dirname(current_item.path)
+            new_name = os.path.join(path, name)
+            try:
+                # Rename
+                file_manager.rename_file(current_item.path, new_name)
+                # FIXME: cambiar nombre en combo
+                name = file_manager.get_basename(new_name)
+                if isinstance(current_item, EdisItem):
+                    new_item = EdisItem(current_item.parent(), [name])
+                else:
+                    new_item = TreeItem(current_item.parent(), [name])
+                new_item.setToolTip(0, new_name)
+                new_item.path = new_name
+                index = current_item.parent().indexOfChild(current_item)
+                new_item.parent().takeChild(index)
+            except exceptions.EdisFileExistsError as reason:
+                ERROR("The file already exists: {0}".format(reason.filename))
+                QMessageBox.critical(self, self.tr("Error"),
+                                     self.tr("The file already exists"))
+                return
+
+    def _show_properties_files(self):
+        pass
+
     def _delete_file(self):
         """ Borra fisicamente el archivo y lo quita del árbol """
 
@@ -347,6 +394,13 @@ class TreeProject(QTreeWidget):
         self.takeTopLevelItem(index)
         # Quito el elemento de la lista
         self._projects.pop(index)
+        # Elimino los archivos del editor
+        editor_container = Edis.get_component("principal")
+        for index in reversed(range(editor_container.editor_widget.count())):
+            weditor = editor_container.editor_widget.widget(index)
+            if not weditor.filename.split(item.path)[0]:
+                # El archivo pertenece al proyecto
+                editor_container.editor_widget.remove_widget(weditor, index)
 
     @property
     def sources(self):

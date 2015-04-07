@@ -24,7 +24,7 @@ from PyQt4.QtCore import (
 
 from src import paths
 from src.helpers import file_manager
-from src.helpers.exceptions import EdisIOException
+from src.helpers.exceptions import EdisIOError
 from src.helpers import settings
 from src.ui.editor import editor
 from src.ui.main import Edis
@@ -224,7 +224,7 @@ class EditorContainer(QWidget):
                 self.fileChanged.emit(_file)
                 self.openedFile.emit(_file)
                 self.emit(SIGNAL("updateSymbols(QString)"), _file)
-        except EdisIOException as error:
+        except EdisIOError as error:
             ERROR('Error opening file: %s', error)
             QMessageBox.critical(self, self.tr('Could not open file'),
                                  str(error))

@@ -11,7 +11,10 @@ import os
 
 from PyQt4.QtCore import QFile, QTextStream, QIODevice
 
-from src.helpers.exceptions import EdisIOException
+from src.helpers.exceptions import (
+    EdisIOError,
+    EdisFileExistsError
+    )
 
 
 def get_file_content(_file):
@@ -21,7 +24,7 @@ def get_file_content(_file):
         with open(_file, mode='r') as filename:
             content = filename.read()
     except IOError as error:
-        raise EdisIOException(error)
+        raise EdisIOError(error)
     return content
 
 
@@ -41,7 +44,30 @@ def write_file(filename, content):
         filename += '.c'
     _file = QFile(filename)
     if not _file.open(QIODevice.WriteOnly | QIODevice.Truncate):
-        raise EdisIOException
+        raise EdisIOError
     outfile = QTextStream(_file)
     outfile << content
     return filename
+
+
+def rename_file(old_name, new_name):
+    """ Renombra un archivo """
+
+    if os.path.exists(new_name):
+        raise EdisFileExistsError(new_name)
+    os.rename(old_name, new_name)
+
+
+def file_exists(filename):
+    """ Devuelve True si @filename existe, False en caso contrario """
+
+    return os.path.isfile(filename)
+
+
+def delete_file(filename):
+    """ Borra un archivo """
+    pass
+
+
+def get_basename(filename):
+    return os.path.basename(filename)

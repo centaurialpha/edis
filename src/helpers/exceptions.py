@@ -6,7 +6,12 @@
 # License: GPLv3 (see http://www.gnu.org/licenses/gpl.html)
 
 
-class EdisIOException(Exception):
-
-    """ Excepción IO """
+class EdisIOError(Exception):
     pass
+
+
+class EdisFileExistsError(Exception):
+
+    def __init__(self, filename):
+        super(EdisFileExistsError, self).__init__()
+        self.filename = filename
