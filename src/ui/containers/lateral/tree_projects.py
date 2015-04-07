@@ -38,7 +38,6 @@ from src.helpers import (
 
 log = logger.edis_logger.get_logger(__name__)
 ERROR = log.error
-# FIXME: usar el manejador de archivos
 
 
 class TreeProject(QTreeWidget):
@@ -231,8 +230,7 @@ class TreeProject(QTreeWidget):
                 # Agrego a la lista de archivos fuente
                 self._sources.append(filename)
             # Creo el archivo
-            with open(filename, mode='w') as f:
-                f.write(content)
+            file_manager.write_file(filename, content)
             if isinstance(current_item, EdisItem):
                 parent = current_item.child(ftype)
             else:
@@ -300,7 +298,6 @@ class TreeProject(QTreeWidget):
                 ERROR("The file already exists: {0}".format(reason.filename))
                 QMessageBox.critical(self, self.tr("Error"),
                                      self.tr("The file already exists"))
-                return
 
     def _show_properties_files(self):
         pass
