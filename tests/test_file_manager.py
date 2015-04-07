@@ -10,7 +10,7 @@ import unittest
 import tempfile
 
 from src.helpers import file_manager
-from src.helpers.exceptions import EdisIOException
+from src.helpers.exceptions import EdisIOError
 
 
 class FileManagerTestCase(unittest.TestCase):
@@ -28,7 +28,7 @@ class FileManagerTestCase(unittest.TestCase):
 
     def test_exception_read_file(self):
         fake_filename = "/home/gabo/fake.c"  # No existe
-        self.assertRaises(EdisIOException,
+        self.assertRaises(EdisIOError,
                           lambda: file_manager.get_file_content(fake_filename))
 
     def test_get_file_size(self):
