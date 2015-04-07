@@ -196,9 +196,7 @@ class TreeProject(QTreeWidget):
                                     "exists."), QMessageBox.Yes)
             return
         # Creo el archivo
-        with open(item_path, mode='w') as f:
-            # FIXME: template
-            f.write(templates.MAIN_TEMPLATE)
+        file_manager.write_file(item_path, templates.MAIN_TEMPLATE)
         # Agrego el ítem, 0 = sources_item
         item = TreeItem(current_item.child(0), ['main.c'])
         item.path = item_path
