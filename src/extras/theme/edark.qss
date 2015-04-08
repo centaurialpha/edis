@@ -307,7 +307,14 @@ QComboBox {
 }
 
 QComboBox::drop-down {
-    width: 0px;
+    border-left-width: 1px;
+    width: 5px;
+}
+
+QComboBox::down-arrow {
+    image: url(:image/arrow-down);
+    top: 0px;
+    right: 7px;
 }
 
 QComboBox:item:selected {
@@ -337,13 +344,14 @@ QSpinBox {
 }
 
 QSpinBox::up-button {
+    background: #303030;
     subcontrol-origin: border;
     subcontrol-position: top right;
-    width: 16px;
     border-image: url(:/image/arrow-up) 1;
 }
 
 QSpinBox::down-button {
+    background: #303030;
     border-image: url(:/image/arrow-down)
 }
 
