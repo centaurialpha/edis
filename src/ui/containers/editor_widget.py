@@ -16,15 +16,12 @@ from PyQt4.QtGui import (
     QStackedWidget,
     QMessageBox,
     QIcon,
-    QMenu,
-    QSizePolicy,
-    QLabel
+    QMenu
     )
 
 from PyQt4.QtCore import (
     pyqtSignal,
     SIGNAL,
-    QSize,
     Qt
     )
 
@@ -192,29 +189,25 @@ class ComboContainer(QWidget):
         # Basado en la GUI de Qt Creator
         # Combo archivos
         self.combo_file = QComboBox()
-        self.combo_file.setIconSize(QSize(18, 18))
         self.combo_file.setContextMenuPolicy(Qt.CustomContextMenu)
         box.addWidget(self.combo_file)
         # Botón cerrar
         btn_close_editor = QToolButton()
         btn_close_editor.setObjectName("combo-button")
-        #btn_close_editor.setMaximumHeight(30)
-        #btn_close_editor.setMaximumWidth(30)
         btn_close_editor.setToolTip(self.tr("Close file"))
         btn_close_editor.setIcon(QIcon(":image/close"))
         box.addWidget(btn_close_editor)
         # Combo símbolos
         self.combo_symbols = QComboBox()
-        self.combo_symbols.setIconSize(QSize(18, 18))
-        self.combo_symbols.setMaximumWidth(250)
         box.addWidget(self.combo_symbols)
         # Label número de línea y columna
-        self.label_line_row = QLabel()
+        self.label_line_row = QToolButton()
         self.label_line_row.mousePressEvent = self._show_dialog_go_to_line
-        self.label_line_row.setSizePolicy(QSizePolicy.Fixed, QSizePolicy.Fixed)
-        self.label_line_row.setObjectName("combo-label")
+        self.label_line_row.setObjectName("combo-lines-button")
         self.line_row = "Lin: %s, Col: %s - %s"
         self.label_line_row.setText(self.line_row % (0, 0, 0))
+        self.label_line_row.setToolTip(
+            self.tr("Click to go to a specific line and column"))
         box.addWidget(self.label_line_row)
 
         output = Edis.get_component("output")

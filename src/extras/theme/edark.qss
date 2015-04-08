@@ -51,13 +51,21 @@ QToolButton#dock_button:hover {
     border-radius: 2px;
 }
 
+QToolButton#combo-lines-button,
 QToolButton#combo-button {
     border-style: solid;
     background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 0.8,
                                 stop: 0 #616161, stop: 1 #212121);
-    padding: 2px 10px 2px 10px;
+}
+QToolButton#combo-lines-button {
+    padding: 4px 10px 4px 10px;
 }
 
+QToolButton#combo-button {
+    padding: 3px 10px 3px 10px;
+}
+
+QToolButton#combo-lines-button:hover,
 QToolButton#combo-button:hover {
     background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 0.8,
                                       stop: 0 #717171, stop: 1.0 #212121);
@@ -185,11 +193,11 @@ QLabel#status_label {
     background: transparent;
 }
 
-QLabel#combo-label {
+QToolButton#combo-label {
     background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 0.8,
                                 stop: 0 #616161, stop: 1 #212121);
 
-    padding: 5px 10px 4px 10px;
+    padding: 4px 10px 4px 10px;
     min-width: 6em;
 }
 
