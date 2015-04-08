@@ -16,13 +16,15 @@ from PyQt4.QtGui import (
     QStackedWidget,
     QMessageBox,
     QIcon,
-    QMenu
+    QMenu,
+    QSizePolicy
     )
 
 from PyQt4.QtCore import (
     pyqtSignal,
     SIGNAL,
-    Qt
+    Qt,
+    QSize
     )
 
 from src.ui.editor import editor
@@ -189,16 +191,20 @@ class ComboContainer(QWidget):
         # Basado en la GUI de Qt Creator
         # Combo archivos
         self.combo_file = QComboBox()
+        self.combo_file.setIconSize(QSize(14, 14))
         self.combo_file.setContextMenuPolicy(Qt.CustomContextMenu)
         box.addWidget(self.combo_file)
         # Botón cerrar
         btn_close_editor = QToolButton()
+        btn_close_editor.setFixedSize(25, 22)
         btn_close_editor.setObjectName("combo-button")
         btn_close_editor.setToolTip(self.tr("Close file"))
         btn_close_editor.setIcon(QIcon(":image/close"))
+        btn_close_editor.setSizePolicy(QSizePolicy.Fixed, QSizePolicy.Fixed)
         box.addWidget(btn_close_editor)
         # Combo símbolos
         self.combo_symbols = QComboBox()
+        self.combo_symbols.setIconSize(QSize(14, 14))
         box.addWidget(self.combo_symbols)
         # Label número de línea y columna
         self.label_line_row = QToolButton()

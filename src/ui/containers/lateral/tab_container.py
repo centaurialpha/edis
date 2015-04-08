@@ -17,6 +17,7 @@ from PyQt4.QtCore import (
 
 from src.ui.main import Edis
 from src.tools.ctags import ctags
+from src.helpers import settings
 
 
 class TabContainer(QDockWidget):
@@ -41,7 +42,6 @@ class TabContainer(QDockWidget):
         self.connect(self,
                      SIGNAL("customContextMenuRequested(const QPoint)"),
                      self._load_context_menu)
-
         # Oculto cuando se inicia
         self.hide()
 
@@ -70,6 +70,15 @@ class TabContainer(QDockWidget):
             self.tabs.setTabPosition(QTabWidget.West)
         else:
             self.tabs.setTabPosition(QTabWidget.East)
+        self._change_border_tab_position(dock_area)
+
+    def _change_border_tab_position(self, area):
+        current_theme = settings.get_setting("window/style-sheet")
+        if current_theme != 'Edark':
+            return
+        position = "right" if area == 1 else "left"
+        border = "{border-%s: 3px solid #666}" % position
+        self.tabs.setStyleSheet("QTabBar::tab:selected %s" % border)
 
     def load_symbols_widget(self, widget):
         if self._symbols_widget is None:
