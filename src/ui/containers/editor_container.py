@@ -19,7 +19,8 @@ from PyQt4.QtGui import (
 from PyQt4.QtCore import (
     SIGNAL,
     QFileInfo,
-    pyqtSignal
+    pyqtSignal,
+    QFileSystemWatcher
     )
 
 from src import paths
@@ -64,6 +65,11 @@ class EditorContainer(QWidget):
         self.box = QVBoxLayout(self)
         self.box.setContentsMargins(0, 0, 0, 0)
         self.box.setSpacing(0)
+
+        # File System Watcher
+        # FIXME: mover a un objeto File
+        self._watcher = QFileSystemWatcher()
+        self._last_modification_file = None
 
         # Stacked
         self.stack = QStackedWidget()
@@ -163,6 +169,22 @@ class EditorContainer(QWidget):
         weditor.setFocus()
         return weditor
 
+    def _file_changed(self, filename):
+        mtime = os.lstat(filename).st_mtime
+        if self._last_modification_file != mtime:
+            self._last_modification_file = mtime
+            flags = QMessageBox.Yes
+            flags |= QMessageBox.No
+            result = QMessageBox.information(self, self.tr("File Watcher"),
+                                             self.tr("File <b>{0}</b> is "
+                                             "modified outside the Edis."
+                                             "<br><br>Do you want to "
+                                             "reload it?".format(filename)),
+                                             flags)
+            if result == QMessageBox.No:
+                return
+            self.reload_file()
+
     def reload_file(self):
         """ Recarga el archivo """
 
@@ -213,6 +235,11 @@ class EditorContainer(QWidget):
                         line, row = cursor_position
                         weditor.setCursorPosition(line, row)
                     weditor.setModified(False)
+                    self._watcher.addPath(_file)
+                    self._last_modification_file = os.lstat(_file).st_mtime
+                    self.connect(self._watcher,
+                                 SIGNAL("fileChanged(const QString&)"),
+                                 self._file_changed)
                 else:
                     # Se cambia el índice del stacked
                     # para mostrar el archivo que ya fué abierto
@@ -317,6 +344,8 @@ class EditorContainer(QWidget):
         filename = file_manager.write_file(filename, source_code)
         weditor.filename = filename
         weditor.saved()
+        new_time = os.lstat(filename).st_mtime
+        self._last_modification_file = new_time
         return filename
 
     def save_file_as(self, weditor=None):
@@ -334,6 +363,11 @@ class EditorContainer(QWidget):
         weditor.filename = filename
         self.fileChanged.emit(filename)
         weditor.saved()
+        # Add file to watcher
+        self._watcher.addPath(filename)
+        self._last_modification_file = os.lstat(filename).st_mtime
+        self.connect(self._watcher, SIGNAL("fileChanged(const QString&)"),
+                     self._file_changed)
         return filename
 
     def save_selected(self, filename):
