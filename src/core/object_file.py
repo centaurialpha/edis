@@ -59,10 +59,12 @@ class EdisFile(QObject):
         except IOError as reason:
             raise exceptions.EdisIOError(reason)
 
-    def write(self, content):
+    def write(self, content, new_filename=''):
         """ Escribe los datos en el archivo """
 
         DEBUG("Saving file")
+        if self.is_new:
+            self._filename = new_filename
         _file = QFile(self.filename)
         if not _file.open(QIODevice.WriteOnly | QIODevice.Truncate):
             raise exceptions.EdisIOError

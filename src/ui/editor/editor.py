@@ -13,7 +13,6 @@ from PyQt4.QtGui import (
     )
 
 from PyQt4.QtCore import (
-    pyqtSignal,
     Qt,
     QThread,
     SIGNAL
@@ -77,15 +76,12 @@ class Editor(base.Base):
         }
 
     # Marcadores
-    _marker_modified = 3
-    _marker_save = 4
+    MARKER_MODIFIED = 3
+    MARKER_SAVED = 4
 
-    # Señales
-    _modificado = pyqtSignal(bool, name='archivo_modificado')
-    fileSaved = pyqtSignal('PyQt_PyObject')
-    _undo = pyqtSignal(['PyQt_PyObject'], name='accion_undo')
-    _drop = pyqtSignal(['PyQt_PyObject'], name='dropSignal')
-    linesChanged = pyqtSignal(int)
+    # Indicadores
+    WORD_INDICATOR = 0
+    WARNING_INDICATOR = 1
 
     def __init__(self, obj_file):
         super(Editor, self).__init__()
@@ -98,15 +94,12 @@ class Editor(base.Base):
         # Quita el scrollbar
         self.send("sci_sethscrollbar", 0)
         # Configuración de indicadores
-        self._word_indicator = 0
-        self._warning_indicator = 1
-        self.send("sci_indicsetstyle", self._word_indicator, "indic_box")
-        self.send("sci_indicsetfore", self._word_indicator,
-                  QColor("#FF0000"))
+        self.send("sci_indicsetstyle", Editor.WORD_INDICATOR, "indic_box")
+        self.send("sci_indicsetfore", Editor.WORD_INDICATOR, QColor("#FF0000"))
         self.send("sci_indicsetstyle",
-                  self._warning_indicator, "indic_squiggle")
-        self.send("sci_indicsetfore", self._warning_indicator,
-                  QColor("#0000FF"))
+                  Editor.WARNING_INDICATOR, "indic_squiggle")
+        self.send("sci_indicsetfore",
+                  Editor.WARNING_INDICATOR, QColor("#0000FF"))
         # Scheme
         self.scheme = editor_scheme.get_scheme(
             settings.get_setting('editor/scheme'))
@@ -122,11 +115,11 @@ class Editor(base.Base):
         self.setFoldMarginColors(QColor(self.scheme['FoldMarginBack']),
                                  QColor(self.scheme['FoldMarginFore']))
         self.markerDefine(QsciScintilla.SC_MARK_LEFTRECT,
-                          self._marker_modified)
+                          Editor.MARKER_MODIFIED)
         self.setMarkerBackgroundColor(
-            QColor(223, 62, 62), self._marker_modified)
-        self.markerDefine(QsciScintilla.SC_MARK_LEFTRECT, self._marker_save)
-        self.setMarkerBackgroundColor(QColor(0, 210, 0), self._marker_save)
+            QColor(223, 62, 62), Editor.MARKER_MODIFIED)
+        self.markerDefine(QsciScintilla.SC_MARK_LEFTRECT, Editor.MARKER_SAVED)
+        self.setMarkerBackgroundColor(QColor(0, 210, 0), Editor.MARKER_SAVED)
 
         # Actualiza flags (espacios en blanco, cursor, sidebar, etc)
         self.update_options()
@@ -209,7 +202,7 @@ class Editor(base.Base):
             return
         if not activated:
             self.checker = None
-            self.clear_indicators(self._warning_indicator)
+            self.clear_indicators(Editor.WARNING_INDICATOR)
         else:
             self.checker = checker.Checker(self)
             self.connect(self.checker, SIGNAL("finished()"),
@@ -258,10 +251,10 @@ class Editor(base.Base):
         self.indentation = ancho
 
     def mark_words(self, palabras):
-        self.clear_indicators(self._word_indicator)
+        self.clear_indicators(Editor.WORD_INDICATOR)
         for p in palabras:
             self.fillIndicatorRange(p[0], p[1], p[0], p[2],
-                                    self._word_indicator)
+                                    Editor.WORD_INDICATOR)
 
     def active_code_completion(self, enabled=True):
         if self.api is not None and enabled:
@@ -284,15 +277,15 @@ class Editor(base.Base):
         nline, _ = self.getCursorPosition()
         if self.markersAtLine(nline):
             self.markerDelete(nline)
-        self.markerAdd(nline, self._marker_modified)
+        self.markerAdd(nline, Editor.MARKER_MODIFIED)
 
     def _show_violations(self):
         data = self.checker.data
-        self.clear_indicators(self._warning_indicator)
+        self.clear_indicators(Editor.WARNING_INDICATOR)
         for line, message in list(data.items()):
             line = int(line) - 1
             self.fillIndicatorRange(line, 0, line, self.lineLength(line),
-                                    self._warning_indicator)
+                                    Editor.WARNING_INDICATOR)
 
     def _text_under_cursor(self):
         """ Texto seleccionado con el cursor """
@@ -306,7 +299,7 @@ class Editor(base.Base):
         if e.button() == Qt.LeftButton:
             word = self._text_under_cursor()
             if not word:
-                self.clear_indicators(self._word_indicator)
+                self.clear_indicators(Editor.WORD_INDICATOR)
                 return
             self.hilo_ocurrencias.buscar(word, self.text())
 
@@ -323,13 +316,13 @@ class Editor(base.Base):
     def keyReleaseEvent(self, event):
         super(Editor, self).keyReleaseEvent(event)
         line, _ = self.getCursorPosition()
-        self.linesChanged.emit(line)
+        self.emit(SIGNAL("linesChanged(int)"), line)
 
     def keyPressEvent(self, event):
         super(Editor, self).keyPressEvent(event)
         key = event.key()
         if key == Qt.Key_Escape:
-            self.clear_indicators(self._word_indicator)
+            self.clear_indicators(Editor.WORD_INDICATOR)
         # Brace completion
         if key in (Qt.Key_BraceRight, Qt.Key_BraceLeft,
                    Qt.Key_BracketRight, Qt.Key_BracketLeft,
@@ -476,15 +469,14 @@ class Editor(base.Base):
         self.send("sci_moveselectedlinesup")
 
     def saved(self):
-        self.fileSaved.emit(self)
-        #self.is_new = False
-        #self.modified = False
+        # Esta señal sirve para actualizar el árbol de símbolos
+        self.emit(SIGNAL("fileSaved(QString)"), self.obj_file.filename)
         self.setModified(False)
         # Itera todas las líneas y si existe un _marker_modified agrega
         # un _marker_save
         for nline in range(self.lines()):
             if self.markersAtLine(nline):
-                self.markerAdd(nline, self._marker_save)
+                self.markerAdd(nline, Editor.MARKER_SAVED)
 
-    def dropEvent(self, evento):
-        self._drop.emit(evento)
+    def dropEvent(self, event):
+        self.emit(SIGNAL("dropEvent(PyQt_PyObject)"), event)

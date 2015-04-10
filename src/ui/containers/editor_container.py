@@ -123,9 +123,8 @@ class EditorContainer(QWidget):
     def _file_modified(self, value):
         self.editor_widget.editor_modified(value)
 
-    def _file_saved(self, weditor):
+    def _file_saved(self, filename):
         self.editor_widget.editor_modified(False)
-        filename = weditor.filename
         self.emit(SIGNAL("updateSymbols(QString)"), filename)
 
     def change_widget(self, index):
@@ -145,9 +144,10 @@ class EditorContainer(QWidget):
         weditor = editor.Editor(obj_file)
         self.editor_widget.add_widget(weditor)
         self.editor_widget.add_item_combo(obj_file.filename)
-        #lateral = Edis.get_component("tab_container")
-        #if not lateral.isVisible():
-            #lateral.show()
+        lateral = Edis.get_component("tab_container")
+        if not lateral.isVisible():
+            lateral.show()
+
         # Conexiones
         self.connect(obj_file, SIGNAL("fileChanged(PyQt_PyObject)"),
                      self._file_changed)
@@ -155,13 +155,16 @@ class EditorContainer(QWidget):
                      self.update_cursor)
         self.connect(weditor, SIGNAL("modificationChanged(bool)"),
                      self._file_modified)
-        self.connect(weditor, SIGNAL("fileSaved(PyQt_PyObject)"),
+        self.connect(weditor, SIGNAL("fileSaved(QString)"),
                      self._file_saved)
         self.connect(weditor, SIGNAL("linesChanged(int)"),
                      self.editor_widget.combo.move_to_symbol)
-        self.connect(weditor, SIGNAL("dropSignal()"), self._drop_editor)
+        self.connect(weditor, SIGNAL("dropEvent(PyQt_PyObject)"),
+                     self._drop_editor)
         self.emit(SIGNAL("fileChanged(QString)"), obj_file.filename)
+
         weditor.setFocus()
+
         return weditor
 
     def _file_changed(self, obj_file):
@@ -328,7 +331,7 @@ class EditorContainer(QWidget):
             return self.save_file_as(weditor)
         source_code = weditor.text()
         weditor.obj_file.write(source_code)
-        weditor.setModified(False)
+        weditor.saved()
         # System watcher
         weditor.obj_file.run_system_watcher()
         return weditor.filename
@@ -344,7 +347,8 @@ class EditorContainer(QWidget):
         if not filename:
             return False
         content = weditor.text()
-        weditor.obj_file.write(content)
+        weditor.obj_file.write(content, filename)
+        weditor.saved()
         weditor.obj_file.run_system_watcher()
         self.emit(SIGNAL("fileChanged(QString)"), filename)
         return filename
