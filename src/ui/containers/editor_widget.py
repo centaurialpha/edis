@@ -98,7 +98,7 @@ class EditorWidget(QWidget):
         self.combo.set_modified(weditor, index, value)
 
     def _add_to_recent(self, filename):
-        if not filename:
+        if filename == 'Untitled':
             return
         if filename not in self._recents_files:
             self._recents_files.append(filename)
@@ -124,7 +124,7 @@ class EditorWidget(QWidget):
         for index in range(self.count()):
             weditor = self.widget(index)
             path = weditor.filename
-            if not path:
+            if path == 'Untitled':
                 continue
             files.append(path)
         return files
