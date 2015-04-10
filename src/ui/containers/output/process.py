@@ -30,10 +30,12 @@ from PyQt4.QtCore import (
     )
 
 # Módulos EDIS
-from src.helpers import settings
+from src.core import (
+    settings,
+    logger
+    )
 from src.ui.containers.output import output_compiler
 from src import paths
-from src.helpers import logger
 
 log = logger.edis_logger.get_logger(__name__)
 ERROR = log.error

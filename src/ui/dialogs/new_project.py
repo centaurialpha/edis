@@ -31,7 +31,7 @@ from PyQt4.QtCore import (
     )
 
 from src import paths
-from src.helpers import templates
+from src.core import templates
 from src.ui.main import Edis
 from src.ui.containers.lateral import edis_project
 

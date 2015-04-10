@@ -17,7 +17,7 @@ from PyQt4.QtCore import (
 
 from src.ui.main import Edis
 from src.tools.ctags import ctags
-from src.helpers import settings
+from src.core import settings
 
 
 class TabContainer(QDockWidget):

@@ -28,7 +28,7 @@ from src.ui.editor import (
     minimap,
     keywords
     )
-from src.helpers import settings
+from src.core import settings
 
 # FIXME: Cambiar comentario '//' (C++ style) por '/* */' (C style)
 
@@ -87,13 +87,9 @@ class Editor(base.Base):
     _drop = pyqtSignal(['PyQt_PyObject'], name='dropSignal')
     linesChanged = pyqtSignal(int)
 
-    def __init__(self):
+    def __init__(self, obj_file):
         super(Editor, self).__init__()
-        # FIXME: display
-        self.__display = ""
-        self._filename = ""
-        self.modified = False
-        self.is_new = True
+        self.obj_file = obj_file  # Asociación con el objeto EdisFile
         self._font = None
         # Configuration
         self.setIndentationsUseTabs(False)
@@ -104,7 +100,6 @@ class Editor(base.Base):
         # Configuración de indicadores
         self._word_indicator = 0
         self._warning_indicator = 1
-        #self._error_indicator = 2
         self.send("sci_indicsetstyle", self._word_indicator, "indic_box")
         self.send("sci_indicsetfore", self._word_indicator,
                   QColor("#FF0000"))
@@ -112,7 +107,6 @@ class Editor(base.Base):
                   self._warning_indicator, "indic_squiggle")
         self.send("sci_indicsetfore", self._warning_indicator,
                   QColor("#0000FF"))
-        #self.send("sci_indicsetstyle", self._error_indicator, "indic_dots")
         # Scheme
         self.scheme = editor_scheme.get_scheme(
             settings.get_setting('editor/scheme'))
@@ -194,6 +188,14 @@ class Editor(base.Base):
         self.connect(self, SIGNAL("linesChanged()"), self.update_sidebar)
         self.connect(self, SIGNAL("textChanged()"), self._add_marker_modified)
 
+    @property
+    def filename(self):
+        return self.obj_file.filename
+
+    @property
+    def is_modified(self):
+        return self.isModified()
+
     def load_font(self, fuente, tam):
         self._font = QFont(fuente, tam)
         if self._lexer is None:
@@ -212,27 +214,6 @@ class Editor(base.Base):
             self.checker = checker.Checker(self)
             self.connect(self.checker, SIGNAL("finished()"),
                          self._show_violations)
-
-    # FIXME: Mejorar esto, solo es usado por el selector
-    def get_display(self):
-        return self.__display
-
-    def set_display(self, name):
-        self.__display = name
-
-    display = property(get_display, set_display)
-
-    @property
-    def filename(self):
-        return self._filename
-
-    @filename.setter
-    def filename(self, new_filename):  # lint:ok
-        self._filename = new_filename
-        if new_filename:
-            self.is_new = False
-        if self.checker is not None:
-            self.checker.start_checker()
 
     def update_options(self):
         """ Actualiza las opciones del editor """
@@ -496,8 +477,8 @@ class Editor(base.Base):
 
     def saved(self):
         self.fileSaved.emit(self)
-        self.is_new = False
-        self.modified = False
+        #self.is_new = False
+        #self.modified = False
         self.setModified(False)
         # Itera todas las líneas y si existe un _marker_modified agrega
         # un _marker_save

@@ -33,7 +33,7 @@ from PyQt4.QtCore import (
 
 # Módulos EDIS
 # from src import recursos
-from src.helpers import settings
+from src.core import settings
 from src.ui.main import Edis
 
 

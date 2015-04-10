@@ -11,7 +11,7 @@ translate = QApplication.translate
 ACTIONS = ([
     {
         "name": translate("EDIS", "New file"),
-        "connection": "add_editor",
+        "connection": "create_editor",
         "shortcut": "new"},
     {
         "name": translate("EDIS", "New Project"),

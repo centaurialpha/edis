@@ -9,23 +9,9 @@
 
 import os
 
-from PyQt4.QtCore import QFile, QTextStream, QIODevice
+from PyQt4.QtCore import QFile
 
-from src.helpers.exceptions import (
-    EdisIOError,
-    EdisFileExistsError
-    )
-
-
-def get_file_content(_file):
-    """ Lee el contenido de @_file y lo retorna """
-
-    try:
-        with open(_file, mode='r') as filename:
-            content = filename.read()
-    except IOError as error:
-        raise EdisIOError(error)
-    return content
+from src.core.exceptions import EdisFileExistsError
 
 
 def get_file_size(_file):
@@ -33,21 +19,6 @@ def get_file_size(_file):
 
     size = QFile(_file).size()
     return size
-
-
-def write_file(filename, content):
-    """ Se escribe en el archivo, si el nombre no tiene extensión se agrega .c
-    """
-
-    ext = os.path.splitext(filename)[-1]
-    if not ext:
-        filename += '.c'
-    _file = QFile(filename)
-    if not _file.open(QIODevice.WriteOnly | QIODevice.Truncate):
-        raise EdisIOError
-    outfile = QTextStream(_file)
-    outfile << content
-    return filename
 
 
 def rename_file(old_name, new_name):

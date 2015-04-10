@@ -19,14 +19,13 @@ from PyQt4.QtGui import (
 from PyQt4.QtCore import (
     SIGNAL,
     QFileInfo,
-    pyqtSignal,
-    QFileSystemWatcher
+    pyqtSignal
     )
 
 from src import paths
-from src.helpers import file_manager
-from src.helpers.exceptions import EdisIOError
-from src.helpers import settings
+from src.core import object_file
+from src.core.exceptions import EdisIOError
+from src.core import settings
 from src.ui.editor import editor
 from src.ui.main import Edis
 from src.ui.widgets import (
@@ -42,7 +41,7 @@ from src.ui.dialogs import (
     )
 from src.ui.containers import editor_widget
 from src.ui import start_page
-from src.helpers import logger
+from src.core import logger
 
 log = logger.edis_logger.get_logger(__name__)
 ERROR = log.error
@@ -65,11 +64,6 @@ class EditorContainer(QWidget):
         self.box = QVBoxLayout(self)
         self.box.setContentsMargins(0, 0, 0, 0)
         self.box.setSpacing(0)
-
-        # File System Watcher
-        # FIXME: mover a un objeto File
-        self._watcher = QFileSystemWatcher()
-        self._last_modification_file = None
 
         # Stacked
         self.stack = QStackedWidget()
@@ -137,25 +131,26 @@ class EditorContainer(QWidget):
     def change_widget(self, index):
         weditor = self.get_active_editor()
         self.editor_widget.combo.combo_file.setCurrentIndex(index)
-        if weditor is not None and not weditor.is_new:
+        if weditor is not None and not weditor.obj_file.is_new:
             self.emit(SIGNAL("updateSymbols(QString)"), weditor.filename)
             self.emit(SIGNAL("fileChanged(QString)"), weditor.filename)
             weditor.setFocus()
 
-    def add_editor(self, filename=""):
+    def create_editor(self, obj_file=None, filename=""):
+        if obj_file is None:
+            obj_file = object_file.EdisFile(filename)
         self.stack.addWidget(self.editor_widget)
-        weditor = editor.Editor()
-        if not filename:
-            filename = "Untitled"
-            weditor.display = filename
-        self.editor_widget.add_item_combo(filename)
-        self.editor_widget.add_widget(weditor)
         if isinstance(self.stack.widget(0), start_page.StartPage):
             self.remove_widget(self.stack.widget(0))
-        lateral = Edis.get_component("tab_container")
-        if not lateral.isVisible():
-            lateral.show()
+        weditor = editor.Editor(obj_file)
+        self.editor_widget.add_widget(weditor)
+        self.editor_widget.add_item_combo(obj_file.filename)
+        #lateral = Edis.get_component("tab_container")
+        #if not lateral.isVisible():
+            #lateral.show()
         # Conexiones
+        self.connect(obj_file, SIGNAL("fileChanged(PyQt_PyObject)"),
+                     self._file_changed)
         self.connect(weditor, SIGNAL("cursorPositionChanged(int, int)"),
                      self.update_cursor)
         self.connect(weditor, SIGNAL("modificationChanged(bool)"),
@@ -164,50 +159,45 @@ class EditorContainer(QWidget):
                      self._file_saved)
         self.connect(weditor, SIGNAL("linesChanged(int)"),
                      self.editor_widget.combo.move_to_symbol)
-        self.emit(SIGNAL("fileChanged(QString)"), weditor.filename)
-        weditor.dropSignal.connect(self._drop_editor)
+        self.connect(weditor, SIGNAL("dropSignal()"), self._drop_editor)
+        self.emit(SIGNAL("fileChanged(QString)"), obj_file.filename)
         weditor.setFocus()
         return weditor
 
-    def _file_changed(self, filename):
-        mtime = os.lstat(filename).st_mtime
-        if self._last_modification_file != mtime:
-            self._last_modification_file = mtime
-            flags = QMessageBox.Yes
-            flags |= QMessageBox.No
-            result = QMessageBox.information(self, self.tr("File Watcher"),
-                                             self.tr("File <b>{0}</b> is "
-                                             "modified outside the Edis."
-                                             "<br><br>Do you want to "
-                                             "reload it?".format(filename)),
-                                             flags)
-            if result == QMessageBox.No:
-                return
-            self.reload_file()
+    def _file_changed(self, obj_file):
+        filename = obj_file.filename
+        flags = QMessageBox.Yes
+        flags |= QMessageBox.No
+        result = QMessageBox.information(self, self.tr("File Watcher"),
+                                         self.tr("File <b>{0}</b> is "
+                                         "modified outside the Edis."
+                                         "<br><br>Do you want to "
+                                         "reload it?".format(filename)), flags)
+        if result == QMessageBox.No:
+            return
+        self.reload_file(obj_file)
 
-    def reload_file(self):
-        """ Recarga el archivo """
-
+    def reload_file(self, obj_file=None):
         weditor = self.get_active_editor()
-        if weditor is not None and weditor.filename:
-            filename = weditor.filename
-            if weditor.modified:
-                result = QMessageBox.information(self, self.tr(
-                    "File not saved"),
-                    self.tr("Are you sure you want to reload <b>{0}</b>?"
-                            "<br><br>"
-                            "Any unsaved changes will be lost.").format(
-                                filename),
-                    QMessageBox.Cancel | QMessageBox.Yes)
-                if result == QMessageBox.Cancel:
-                    return
-            content = file_manager.get_file_content(filename)
-            weditor.setText(content)
-            weditor.markerDeleteAll()
-            weditor.setModified(False)
+        if obj_file is None:
+            obj_file = weditor.obj_file
+        content = obj_file.read()
+        if weditor.is_modified:
+            result = QMessageBox.information(self, self.tr(
+                "File not saved"),
+                self.tr("Are you sure you want to reload <b>{0}</b>?"
+                        "<br><br>"
+                        "Any unsaved changes will be lost.").format(
+                            obj_file.filename),
+                QMessageBox.Cancel | QMessageBox.Yes)
+            if result == QMessageBox.Cancel:
+                return
+        weditor.setText(content)
+        weditor.markerDeleteAll()
+        weditor.setModified(False)
 
     def open_file(self, filename="", cursor_position=None):
-        filter_files = "Archivos C(*.cpp *.c);;ASM(*.s);;HEADERS(*.h);;(*.*)"
+        filter_files = "C Files(*.cpp *.c);;ASM(*.s);;HEADERS(*.h);;(*.*)"
         if not filename:
             working_directory = os.path.expanduser("~")
             weditor = self.get_active_editor()
@@ -222,24 +212,22 @@ class EditorContainer(QWidget):
         try:
             for _file in filenames:
                 if not self._is_open(_file):
-                    self.editor_widget.not_open = False
-                    content = file_manager.get_file_content(_file)
-                    weditor = self.add_editor(_file)
+                    #self.editor_widget.not_open = False
+                    # Creo el objeto Edis File
+                    obj_file = object_file.EdisFile(_file)
+                    content = obj_file.read()
+                    weditor = self.create_editor(obj_file, _file)
                     weditor.setText(content)
                     # Cuando se setea el contenido en el editor
                     # se emite la señal textChanged() por lo tanto se agrega
                     # el marker, entonces se procede a borrarlo
                     weditor.markerDelete(0, 3)
-                    weditor.filename = _file
-                    if cursor_position is not None:
-                        line, row = cursor_position
-                        weditor.setCursorPosition(line, row)
+                    # FIXME: Cursor position not found
+                    #if cursor_position is not None:
+                        #line, row = cursor_position
+                        #weditor.setCursorPosition(line, row)
                     weditor.setModified(False)
-                    self._watcher.addPath(_file)
-                    self._last_modification_file = os.lstat(_file).st_mtime
-                    self.connect(self._watcher,
-                                 SIGNAL("fileChanged(const QString&)"),
-                                 self._file_changed)
+                    obj_file.run_system_watcher()
                 else:
                     # Se cambia el índice del stacked
                     # para mostrar el archivo que ya fué abierto
@@ -248,14 +236,14 @@ class EditorContainer(QWidget):
                         if editor.filename == _file:
                             self.change_widget(index)
 
-                self.fileChanged.emit(_file)
-                self.openedFile.emit(_file)
+                self.emit(SIGNAL("fileChanged(QString)"), _file)
+                self.emit(SIGNAL("openedFile(QString)"), _file)
                 self.emit(SIGNAL("updateSymbols(QString)"), _file)
         except EdisIOError as error:
             ERROR('Error opening file: %s', error)
             QMessageBox.critical(self, self.tr('Could not open file'),
                                  str(error))
-        self.editor_widget.not_open = True
+        #self.editor_widget.not_open = True
 
     def _last_folder(self, path):
         """ Devuelve la última carpeta a la que se accedió """
@@ -332,24 +320,20 @@ class EditorContainer(QWidget):
             selector.show()
 
     def save_file(self, weditor=None):
-        # FIXME: Controlar con try-except
         if weditor is None:
             weditor = self.get_active_editor()
             if weditor is None:
                 return
-        if weditor.is_new:
+        if weditor.obj_file.is_new:
             return self.save_file_as(weditor)
-        filename = weditor.filename
         source_code = weditor.text()
-        filename = file_manager.write_file(filename, source_code)
-        weditor.filename = filename
-        weditor.saved()
-        new_time = os.lstat(filename).st_mtime
-        self._last_modification_file = new_time
-        return filename
+        weditor.obj_file.write(source_code)
+        weditor.setModified(False)
+        # System watcher
+        weditor.obj_file.run_system_watcher()
+        return weditor.filename
 
     def save_file_as(self, weditor=None):
-        # FIXME: Controlar con try-except
         if weditor is None:
             weditor = self.get_active_editor()
             if weditor is None:
@@ -359,15 +343,10 @@ class EditorContainer(QWidget):
                                                working_directory)
         if not filename:
             return False
-        filename = file_manager.write_file(filename, weditor.text())
-        weditor.filename = filename
-        self.fileChanged.emit(filename)
-        weditor.saved()
-        # Add file to watcher
-        self._watcher.addPath(filename)
-        self._last_modification_file = os.lstat(filename).st_mtime
-        self.connect(self._watcher, SIGNAL("fileChanged(const QString&)"),
-                     self._file_changed)
+        content = weditor.text()
+        weditor.obj_file.write(content)
+        weditor.obj_file.run_system_watcher()
+        self.emit(SIGNAL("fileChanged(QString)"), filename)
         return filename
 
     def save_selected(self, filename):

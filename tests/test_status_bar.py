@@ -25,7 +25,7 @@ class StatusBarTestCase(base_gui.BaseGUI):
         # Nuevo stack
         QTest.keyPress(self.edis, Qt.Key_N, Qt.ControlModifier)
         status_bar_path = self.status_bar.lbl_archivo.text()
-        self.assertEqual(status_bar_path, "")
+        self.assertEqual(status_bar_path, "Untitled")
         # Open new file
         self.editor_container.open_file(filename)
         # El path ha cambiado

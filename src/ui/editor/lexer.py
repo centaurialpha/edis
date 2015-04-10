@@ -9,7 +9,7 @@ from PyQt4.Qsci import QsciLexerCPP
 from PyQt4.QtGui import QColor
 
 from src import editor_scheme
-from src.helpers import settings
+from src.core import settings
 
 
 class Lexer(QsciLexerCPP):

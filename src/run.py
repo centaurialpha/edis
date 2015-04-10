@@ -24,7 +24,7 @@ from PyQt4.QtCore import (
     Qt
     )
 from src import paths
-from src.helpers import settings
+from src.core import settings
 
 # Se cargan las configuraciones
 settings.load_settings()

@@ -21,7 +21,6 @@ from PyQt4.QtGui import (
     )
 
 from PyQt4.QtCore import (
-    pyqtSignal,
     SIGNAL,
     Qt,
     QSize
@@ -33,15 +32,8 @@ from src.ui.main import Edis
 
 class EditorWidget(QWidget):
 
-    # Señales
-    allFilesClosed = pyqtSignal()
-    saveCurrentFile = pyqtSignal()
-    fileClosed = pyqtSignal(int)
-    recentFile = pyqtSignal('QStringList')
-
     def __init__(self):
         super(EditorWidget, self).__init__()
-        self.not_open = True
         self._recents_files = []
 
         box = QVBoxLayout(self)
@@ -103,10 +95,6 @@ class EditorWidget(QWidget):
     def editor_modified(self, value):
         weditor = self.current_widget()
         index = self.current_index()
-        if value and self.not_open:
-            weditor.modified = True
-        else:
-            weditor.modified = False
         self.combo.set_modified(weditor, index, value)
 
     def _add_to_recent(self, filename):
@@ -114,20 +102,20 @@ class EditorWidget(QWidget):
             return
         if filename not in self._recents_files:
             self._recents_files.append(filename)
-            self.recentFile.emit(self._recents_files)
+            self.emit(SIGNAL("recentFile(QStringList)"), self._recents_files)
 
     def check_files_not_saved(self):
         value = False
         for index in range(self.count()):
             weditor = self.widget(index)
-            value = value or weditor.modified
+            value = value or weditor.is_modified
         return value
 
     def files_not_saved(self):
         files = []
         for index in range(self.count()):
             weditor = self.widget(index)
-            if weditor.modified:
+            if weditor.is_modified:
                 files.append(weditor.filename)
         return files
 
@@ -138,7 +126,6 @@ class EditorWidget(QWidget):
             path = weditor.filename
             if not path:
                 continue
-            #cursor_position = weditor.getCursorPosition()
             files.append(path)
         return files
 
@@ -153,26 +140,26 @@ class EditorWidget(QWidget):
             flags |= QMessageBox.Cancel
 
             result = QMessageBox.No
-            if widget.modified:
+            if widget.is_modified:
                 result = QMessageBox.question(self, self.tr(
                     "File not saved"),
                     self.tr("The file <b>{0}</b> "
                             "has unsaved changes. Would you "
-                            "like to save them?").format(
-                                widget.filename),
+                            "like to save them?").format(widget.filename),
                     QMessageBox.Yes, QMessageBox.No, QMessageBox.Cancel)
                 if result == QMessageBox.Cancel:
                     return
                 elif result == QMessageBox.Yes:
-                    self.saveCurrentFile.emit()
+                    self.emit(SIGNAL("saveCurrentFile()"))
             self._add_to_recent(widget.filename)
             self.stack.removeWidget(widget)
-            self.fileClosed.emit(index)
+            self.emit(SIGNAL("fileClosed(int)"), index)
             self.remove_item_combo(index)
+            widget.obj_file.stop_system_watcher()
             if self.current_widget() is not None:
                 self.current_widget().setFocus()
             else:
-                self.allFilesClosed.emit()
+                self.emit(SIGNAL("allFilesClosed()"))
 
     def add_symbols(self, symbols):
         self.combo.add_symbols_combo(symbols)
@@ -289,10 +276,7 @@ class ComboContainer(QWidget):
             current_text = self.combo_file.currentText()
             self.combo_file.setItemText(index, current_text + text)
         else:
-            if not weditor.filename:
-                text = "Untitled"
-            else:
-                text = weditor.filename
+            text = weditor.filename
             self.combo_file.setItemText(index, text)
 
     def add_symbols_combo(self, symbols):

@@ -9,7 +9,7 @@ import os
 import shlex
 from subprocess import Popen, PIPE
 from src import paths
-from src.helpers import settings
+from src.core import settings
 
 if not settings.IS_LINUX:
     CTAGS = os.path.join(paths.PATH, "tools", "ctags", "ctags.exe")

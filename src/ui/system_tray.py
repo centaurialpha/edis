@@ -21,7 +21,7 @@ from PyQt4.QtCore import (
     )
 
 from src import ui
-from src.helpers import logger
+from src.core import logger
 
 log = logger.edis_logger.get_logger(__name__)
 INFO = log.info

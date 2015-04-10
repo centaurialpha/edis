@@ -28,7 +28,7 @@ from PyQt4.QtCore import (
 from src import recursos
 from src import ui
 from src.ui import system_tray
-from src.helpers import settings
+from src.core import settings
 from src.ui.dialogs import (
     unsaved_files,
     about

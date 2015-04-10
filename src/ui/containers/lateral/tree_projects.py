@@ -29,12 +29,12 @@ from PyQt4.QtCore import (
     )
 
 from src.ui.main import Edis
-from src.helpers import (
+from src.core import (
     logger,
     templates,
-    file_manager,
     exceptions
     )
+from src.managers import file_manager
 
 log = logger.edis_logger.get_logger(__name__)
 ERROR = log.error

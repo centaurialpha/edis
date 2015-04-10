@@ -30,7 +30,7 @@ from src import (
     paths,
     editor_scheme
     )
-from src.helpers import settings
+from src.core import settings
 
 doc_stylesheet = "http://qt-project.org/doc/qt-4.8/stylesheet-examples.html"
 scheme = editor_scheme.get_scheme(settings.get_setting('editor/scheme'))
