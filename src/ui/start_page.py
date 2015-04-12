@@ -17,7 +17,7 @@ from PyQt4.QtCore import (
     QDir
     )
 
-from src import paths
+from src.core import paths
 
 
 class StartPage(QWidget):

@@ -11,7 +11,7 @@ import os
 from src.ui.main import Edis
 from PyQt4.QtTest import QTest
 from tests import qApp
-from src import paths
+from src.core import paths
 
 
 class BaseGUI(unittest.TestCase):

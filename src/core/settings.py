@@ -9,7 +9,7 @@ import sys
 
 from PyQt4.QtCore import QSettings, QSize, QPoint
 
-from src import paths
+from src.core import paths
 
 # OS
 IS_LINUX = True

@@ -20,7 +20,7 @@ if getattr(sys, 'frozen', ''):
     # Ejecutable, cx_Freeze
     PATH = os.path.realpath(os.path.dirname(sys.argv[0]))
 else:
-    PATH = os.path.realpath(os.path.dirname(__file__))
+    PATH = os.path.join(os.path.realpath(os.path.dirname(__file__)), "..")
 EDIS = os.path.join(HOME, ".edis")
 # Archivo de configuración
 CONFIGURACION = os.path.join(EDIS, "edis_config.ini")

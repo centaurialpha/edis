@@ -17,7 +17,6 @@ from PyQt4.QtGui import (
     QLabel,
     QLineEdit,
     QRadioButton,
-    QPushButton,
     QButtonGroup,
     QListWidget,
     QPixmap,
@@ -30,8 +29,10 @@ from PyQt4.QtCore import (
     Qt
     )
 
-from src import paths
-from src.core import templates
+from src.core import (
+    paths,
+    templates
+    )
 from src.ui.main import Edis
 from src.ui.containers.lateral import edis_project
 
@@ -127,7 +128,6 @@ class IntroductionPage(QWizardPage):
         button_group = QButtonGroup(self)
         radio_buttons = [
             self.tr("Project folder"),
-            self.tr("Current folder"),
             self.tr("Other")
             ]
         for _id, radiob in enumerate(radio_buttons):
@@ -137,22 +137,37 @@ class IntroductionPage(QWizardPage):
             if _id == 0:
                 # El primero checked por defecto
                 radio_button.setChecked(True)
+        container.addWidget(group)
+
+        self.line_location = QLineEdit()
+        container.addWidget(self.line_location)
 
         hbox = QHBoxLayout()
-        self.line_location = QLineEdit()
-        hbox.addWidget(self.line_location)
-        btn_location = QPushButton('...')
-        btn_location.setMaximumWidth(10)
-        hbox.addWidget(btn_location)
+        hbox.addWidget(QLabel(self.tr("Filename: ")))
+        self._project_filename = QLineEdit()
+        hbox.addWidget(self._project_filename)
+        container.addLayout(hbox)
 
-        container.addWidget(group)
+        hbox = QHBoxLayout()
+        hbox.addWidget(QLabel(self.tr("Resulting filename: ")))
+        self._resulting_filename = QLineEdit()
+        hbox.addWidget(self._resulting_filename)
         container.addLayout(hbox)
 
         # Conexiones
         self.connect(button_group, SIGNAL("buttonClicked(int)"),
                      self._update_location)
+        self.connect(self.line_name, SIGNAL("textChanged(const QString&)"),
+                     self._on_project_name_changed)
+        self.connect(self.line_name, SIGNAL("textChanged(const QString&)"),
+                     lambda: self.emit(SIGNAL("completeChanged()")))
 
         self._update_location(0)
+
+    def isComplete(self):
+        """ Reimplemetación """
+
+        return len(self.line_name.text()) > 0
 
     def _update_location(self, button_id):
         if button_id == 0:
@@ -163,6 +178,14 @@ class IntroductionPage(QWizardPage):
             if not path:
                 path = paths.PROJECT_DIR
         self.line_location.setText(path)
+
+    def _on_project_name_changed(self, text):
+        found = True if text else False
+        project_filename = text + '.epf' if found else ""
+        self._project_filename.setText(project_filename)
+        resulting_filename = self.line_location.text() + '/' + project_filename
+        result = resulting_filename if found else ""
+        self._resulting_filename.setText(result)
 
 
 class FinishPage(QWizardPage):

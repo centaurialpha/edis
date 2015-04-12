@@ -8,4 +8,4 @@
 import sys
 from PyQt4.QtGui import QApplication
 qApp = QApplication(sys.argv)
-from src import run  # lint:ok
+import src  # lint:ok

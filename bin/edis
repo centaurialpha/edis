@@ -28,8 +28,8 @@ def main():
     from PyQt4.QtGui import QApplication
 
     app = QApplication(sys.argv)
-    from src import run
-    run.run_edis(app)
+    import src
+    src.run_edis(app)
 
 
 if __name__ == "__main__":

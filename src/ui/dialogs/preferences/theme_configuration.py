@@ -26,11 +26,11 @@ from PyQt4.QtCore import SIGNAL
 
 from PyQt4.Qsci import QsciScintilla
 
-from src import (
+from src import editor_scheme
+from src.core import (
     paths,
-    editor_scheme
+    settings
     )
-from src.core import settings
 
 doc_stylesheet = "http://qt-project.org/doc/qt-4.8/stylesheet-examples.html"
 scheme = editor_scheme.get_scheme(settings.get_setting('editor/scheme'))

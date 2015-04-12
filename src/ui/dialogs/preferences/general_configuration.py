@@ -24,8 +24,10 @@ from PyQt4.QtGui import (
     )
 
 from PyQt4.QtCore import QSettings
-from src import paths
-from src.core import settings
+from src.core import (
+    paths,
+    settings
+    )
 
 
 class GeneralConfiguration(QWidget):

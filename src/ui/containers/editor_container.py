@@ -22,8 +22,10 @@ from PyQt4.QtCore import (
     pyqtSignal
     )
 
-from src import paths
-from src.core import object_file
+from src.core import (
+    paths,
+    object_file
+    )
 from src.core.exceptions import EdisIOError
 from src.core import settings
 from src.ui.editor import editor

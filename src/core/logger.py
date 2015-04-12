@@ -6,7 +6,7 @@
 # License: GPLv3 (see http://www.gnu.org/licenses/gpl.html)
 
 import logging
-from src import paths
+from src.core import paths
 
 # Fecha Hora   Módulo:Función:Línea   Nivel Mensaje
 FORMATO_LOG = "%(asctime)s %(name)10s:%(funcName)s:%(lineno)s " \
