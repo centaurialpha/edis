@@ -28,7 +28,7 @@ from PyQt4.QtCore import (
     )
 
 from src.ui.dialogs.preferences import (
-    general_configuration,
+    environment_configuration,
     editor_configuration,
     theme_configuration
     )
@@ -41,7 +41,7 @@ class Preferences(QDialog):
     def __init__(self, parent=None):
         QDialog.__init__(self, parent)
         self.setWindowTitle(self.tr("Configurations - Edis"))
-        self.general = general_configuration.GeneralConfiguration(self)
+        self.env = environment_configuration.EnvironmentConfiguration(self)
         self.editor = editor_configuration.EditorConfiguration()
         self.themes = theme_configuration.ThemeConfiguration()
         # Opacity effect
@@ -50,7 +50,7 @@ class Preferences(QDialog):
         self.animation = QPropertyAnimation(self.effect, "opacity")
         # valor: texto en combo, clave: instancia de widgets
         self.widgets = OrderedDict([
-            ('General', self.general),
+            ('General', self.env),
             ('Editor', self.editor),
             ('Style Sheet', self.themes)])
 
@@ -73,18 +73,18 @@ class Preferences(QDialog):
         toolbar.setIconSize(QSize(30, 30))
         toolbar.setObjectName("preferencias")
 
-        pref_general_action = toolbar.addAction(
-            QIcon(":image/general-pref"), "General")
-        pref_editor_action = toolbar.addAction(
+        environment_section = toolbar.addAction(
+            QIcon(":image/general-pref"), "Environment")
+        editor_section = toolbar.addAction(
             QIcon(":image/editor-pref"), "Editor")
-        pref_style_action = toolbar.addAction(
-            QIcon(":image/theme"), "Style Sheet")
-        self.connect(pref_general_action, SIGNAL("triggered()"),
+        #pref_style_action = toolbar.addAction(
+            #QIcon(":image/theme"), "Style Sheet")
+        self.connect(environment_section, SIGNAL("triggered()"),
                      lambda: self.cambiar_widget(0))
-        self.connect(pref_editor_action, SIGNAL("triggered()"),
+        self.connect(editor_section, SIGNAL("triggered()"),
                      lambda: self.cambiar_widget(1))
-        self.connect(pref_style_action, SIGNAL("triggered()"),
-                     lambda: self.cambiar_widget(2))
+        #self.connect(pref_style_action, SIGNAL("triggered()"),
+                     #lambda: self.cambiar_widget(2))
 
         # Set size
         for action in toolbar.actions():
