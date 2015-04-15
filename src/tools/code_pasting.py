@@ -12,7 +12,8 @@ from urllib import (
 
 from PyQt4.QtCore import (
     QObject,
-    pyqtSignal
+    pyqtSignal,
+    QThread
     )
 
 from src.core import exceptions
@@ -48,7 +49,7 @@ class CodePaste(QObject):
         if not self.code:
             raise exceptions.NoPasteCodeError("No paste code was given")
         data = {
-            'api_option': "paste",
+            #'api_option': "paste",
             'api_dev_key': CodePaste.PASTE_DEV_KEY,
             'api_paste_code': self.code,
             'api_paste_name': self._paste_name,
@@ -60,3 +61,26 @@ class CodePaste(QObject):
                                    parse.urlencode(data).encode('utf8'))
         result = response.read().decode('utf-8')
         return result
+
+
+class Thread(QThread):
+
+    def __init__(self):
+        QThread.__init__(self)
+
+    def run(self):
+        result = None
+        try:
+            cpaste = CodePaste(code=self._code,
+                               paste_name=self._name,
+                               paste_expire_date=self._expire)
+            result = cpaste.paste()
+        except exceptions.NoPasteCodeError:
+            self.result = result
+        self.result = result
+
+    def paste(self, code, name, expire):
+        self._code = code
+        self._name = name
+        self._expire = expire
+        self.start()

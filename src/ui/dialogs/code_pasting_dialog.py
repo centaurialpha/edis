@@ -18,24 +18,15 @@ from PyQt4.QtGui import (
     QSpacerItem,
     QSizePolicy,
     QMessageBox,
-    QComboBox,
-    QWidget,
-    QPalette,
-    QPainter,
-    QBrush,
-    QColor
+    QComboBox
     )
 
 from PyQt4.QtCore import (
     SIGNAL,
-    Qt,
-    QThread
     )
 
 from src.tools import code_pasting
-from src.core import exceptions
-
-#FIXME: Mover Thread y LoadingWidget
+from src.ui.widgets import loading_widget
 
 
 class CodePastingDialog(QDialog):
@@ -47,7 +38,8 @@ class CodePastingDialog(QDialog):
         self._parent = parent
         container = QVBoxLayout(self)
 
-        self.thread = Thread()
+        # Thread
+        self.thread = code_pasting.Thread()
         self.connect(self.thread, SIGNAL("finished()"),
                      self._paste_result)
         # Campos
@@ -84,7 +76,8 @@ class CodePastingDialog(QDialog):
         container.addWidget(self._code_editor)
         container.addLayout(hbox)
 
-        self.loading_widget = LoadingWidget(self)
+        # Loading widget
+        self.loading_widget = loading_widget.LoadingWidget(self)
         self.loading_widget.hide()
 
         # Conexiones
@@ -118,46 +111,3 @@ class CodePastingDialog(QDialog):
     def resizeEvent(self, event):
         super(CodePastingDialog, self).resizeEvent(event)
         self.loading_widget.resize(event.size())
-
-
-class Thread(QThread):
-
-    def __init__(self):
-        super(Thread, self).__init__()
-
-    def run(self):
-        result = None
-        try:
-            cpaste = code_pasting.CodePaste(code=self._code,
-                                        paste_name=self._name,
-                                        paste_expire_date=self._expire)
-            result = cpaste.paste()
-        except exceptions.NoPasteCodeError:
-            self.result = result
-        self.result = result
-
-    def paste(self, code, name, expire):
-        self._code = code
-        self._name = name
-        self._expire = expire
-        self.start()
-
-
-class LoadingWidget(QWidget):
-
-    def __init__(self, parent=None):
-        QWidget.__init__(self, parent)
-        palette = QPalette(self.palette())
-        palette.setColor(palette.Background, Qt.transparent)
-        self.setPalette(palette)
-
-    def paintEvent(self, event):
-        qpainter = QPainter()
-        qpainter.begin(self)
-        qpainter.setRenderHint(QPainter.Antialiasing)
-        qpainter.fillRect(event.rect(), QBrush(QColor(255, 255, 255, 200)))
-        font = qpainter.font()
-        font.setPointSize(16)
-        qpainter.setFont(font)
-        qpainter.drawText(event.rect(), Qt.AlignCenter, "Please wait...")
-        qpainter.end()
