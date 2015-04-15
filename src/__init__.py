@@ -31,8 +31,8 @@ from src.core import (
 
 # Se cargan las configuraciones
 settings.load_settings()
-#lint:disable
 # Se crean los objetos
+#lint:disable
 from src.ui.containers.lateral import (
     tab_container,
     explorer,
@@ -42,6 +42,7 @@ from src.ui.containers.lateral import (
 from src.ui.containers.output import output_container
 from src.ui.containers import editor_container
 from src.ui.widgets import status_bar
+from src.ui.dialogs.preferences import preferences
 #lint:enable
 from src.ui.main import Edis
 

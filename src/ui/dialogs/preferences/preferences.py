@@ -5,8 +5,6 @@
 # Copyright 2014-2015 - Edis Team
 # License: GPLv3 (see http://www.gnu.org/licenses/gpl.html)
 
-from collections import OrderedDict
-
 from PyQt4.QtGui import (
     QDialog,
     QVBoxLayout,
@@ -27,39 +25,40 @@ from PyQt4.QtCore import (
     QPropertyAnimation
     )
 
-from src.ui.dialogs.preferences import (
-    environment_configuration,
-    editor_configuration,
-    theme_configuration
-    )
-
-# FIXME: Ejecución, compilación
+from src.ui.main import Edis
+#from src.ui.dialogs.preferences import environment_configuration
+    #environment_configuration,
+    #editor_configuration,
+    #theme_configuration
+    #)
 
 
 class Preferences(QDialog):
 
+    SECTIONS = []
+
     def __init__(self, parent=None):
         QDialog.__init__(self, parent)
         self.setWindowTitle(self.tr("Configurations - Edis"))
-        self.env = environment_configuration.EnvironmentConfiguration(self)
-        self.editor = editor_configuration.EditorConfiguration()
-        self.themes = theme_configuration.ThemeConfiguration()
         # Opacity effect
         self.effect = QGraphicsOpacityEffect()
         self.setGraphicsEffect(self.effect)
         self.animation = QPropertyAnimation(self.effect, "opacity")
-        # valor: texto en combo, clave: instancia de widgets
-        self.widgets = OrderedDict([
-            ('General', self.env),
-            ('Editor', self.editor),
-            ('Style Sheet', self.themes)])
 
+        Edis.load_component("preferences", self)
+        # Install sections
+        #lint:disable
+        from src.ui.dialogs.preferences import environment_configuration
+        #lint:enable
         self.load_ui()
-
         key_escape = QShortcut(QKeySequence(Qt.Key_Escape), self)
         self.connect(key_escape, SIGNAL("activated()"), self.close)
         self.connect(self.btn_cancel, SIGNAL("clicked()"), self.close)
-        self.connect(self.btn_guardar, SIGNAL("clicked()"), self._guardar)
+        self.connect(self.btn_guardar, SIGNAL("clicked()"), self._save)
+
+    @classmethod
+    def install_section(cls, obj):
+        cls.SECTIONS.append(obj)
 
     def load_ui(self):
         container = QVBoxLayout(self)
@@ -77,14 +76,10 @@ class Preferences(QDialog):
             QIcon(":image/general-pref"), "Environment")
         editor_section = toolbar.addAction(
             QIcon(":image/editor-pref"), "Editor")
-        #pref_style_action = toolbar.addAction(
-            #QIcon(":image/theme"), "Style Sheet")
         self.connect(environment_section, SIGNAL("triggered()"),
-                     lambda: self.cambiar_widget(0))
+                     lambda: self.change_widget(0))
         self.connect(editor_section, SIGNAL("triggered()"),
-                     lambda: self.cambiar_widget(1))
-        #self.connect(pref_style_action, SIGNAL("triggered()"),
-                     #lambda: self.cambiar_widget(2))
+                     lambda: self.change_widget(1))
 
         # Set size
         for action in toolbar.actions():
@@ -96,8 +91,11 @@ class Preferences(QDialog):
         self.stack = QStackedWidget()
         box.addWidget(self.stack)
 
-        [self.stack.addWidget(widget)
-            for widget in list(self.widgets.values())]
+        # Load sections and tabs
+        for section in Preferences.SECTIONS:
+            for name, obj in list(section.get_widgets().items()):
+                section.install_tab(name, obj)
+            self.stack.addWidget(section)
 
         box_buttons = QHBoxLayout()
         box_buttons.setMargin(10)
@@ -110,18 +108,14 @@ class Preferences(QDialog):
         container.addLayout(box)
         container.addLayout(box_buttons)
 
-    def mostrar(self):
-        self.stack.setCurrentIndex(0)
-        self.show()
-
-    def cambiar_widget(self, index):
+    def change_widget(self, index):
         if not self.isVisible():
             self.show()
         self.stack.setCurrentIndex(index)
 
-    def _guardar(self):
-        [self.stack.widget(i).guardar()
-            for i in range(self.stack.count())]
+    def _save(self):
+        for index in range(self.stack.count()):
+            self.stack.widget(index).save()
         self.close()
 
     def close(self):
@@ -134,3 +128,6 @@ class Preferences(QDialog):
         self.animation.setStartValue(0)
         self.animation.setEndValue(1)
         self.animation.start()
+
+
+preferences = Preferences()

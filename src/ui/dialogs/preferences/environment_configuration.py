@@ -6,6 +6,7 @@
 # License: GPLv3 (see http://www.gnu.org/licenses/gpl.html)
 
 import os
+from collections import OrderedDict
 
 # Módulos QtGui
 from PyQt4.QtGui import (
@@ -35,20 +36,30 @@ from src.core import (
     paths,
     settings
     )
+from src.ui.main import Edis
 
 
 class EnvironmentConfiguration(QTabWidget):
 
+    TABS = OrderedDict()
+
     def __init__(self, parent=None):
         super(EnvironmentConfiguration, self).__init__()
-        self.parent = parent
         self.general_section = GeneralSection()
-        self.addTab(self.general_section, self.tr("General"))
         self.shortcut_section = ShortcutSection()
-        self.addTab(self.shortcut_section, self.tr("Shortcuts"))
 
-    def guardar(self):
-        pass
+        preferences = Edis.get_component("preferences")
+        preferences.install_section(self)
+
+    @classmethod
+    def install_widget(cls, name, obj):
+        cls.TABS[name] = obj
+
+    def get_widgets(self):
+        return self.TABS
+
+    def install_tab(self, name, obj):
+        self.addTab(obj, name)
 
 
 class GeneralSection(QWidget):
@@ -152,6 +163,9 @@ class GeneralSection(QWidget):
         self.connect(self.combo_theme, SIGNAL("currentIndexChanged(int)"),
                      self._change_style_sheet)
 
+        # Install
+        EnvironmentConfiguration.install_widget(self.tr("General"), self)
+
     def _update_combo(self):
         self.combo_theme.addItems(['Default', 'Edark'])
         list_dir = os.listdir(paths.EDIS)
@@ -188,7 +202,8 @@ class GeneralSection(QWidget):
             QSettings(paths.CONFIGURACION, QSettings.IniFormat).clear()
         #FIXME: cerrar dialogo
 
-    #def guardar(self):
+    def save(self):
+        pass
         #""" Guarda las configuraciones Generales. """
 
         #settings.set_setting('general/show-splash',
@@ -214,3 +229,13 @@ class ShortcutSection(QWidget):
 
     def __init__(self):
         super(ShortcutSection, self).__init__()
+
+        # Install
+        EnvironmentConfiguration.install_widget(self.tr("Shortcuts"), self)
+
+    def save(self):
+        pass
+
+
+# Install section
+environment = EnvironmentConfiguration()

@@ -36,7 +36,7 @@ from src.ui.widgets import (
     goto_line_widget,
     file_selector
     )
-from src.ui.dialogs.preferences import preferences
+#from src.ui.dialogs.preferences import preferences
 from src.ui.dialogs import (
     file_properties,
     new_project,
@@ -600,9 +600,10 @@ class EditorContainer(QWidget):
         self.open_file(filename)
 
     def show_settings(self):
-        if isinstance(self.stack.currentWidget(), preferences.Preferences):
+        preferences_widget = Edis.get_component("preferences")
+        current_widget = self.stack.currentWidget()
+        if isinstance(current_widget, preferences_widget.__class__):
             return
-        preferences_widget = preferences.Preferences(self)
         self.connect(preferences_widget,
                      SIGNAL("configurationsClose(PyQt_PyObject)"),
                      lambda widget: self.remove_widget(widget))

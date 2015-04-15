@@ -48,7 +48,7 @@ class EditorConfiguration(QTabWidget):
         self.addTab(QWidget(), self.tr("Theme"))
         self.addTab(QWidget(), self.tr("Completion"))
 
-    def guardar(self):
+    def save(self):
         pass
 
 
@@ -221,7 +221,7 @@ class GeneralSection(QWidget):
             size = str(seleccion.pointSize())
             self.btn_font.setText(fuente + ', ' + size)
 
-    def guardar(self):
+    def save(self):
         """ Guarda las configuraciones del Editor. """
 
         fuente, fuente_tam = self.btn_font.text().split(',')

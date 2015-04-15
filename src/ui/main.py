@@ -90,7 +90,6 @@ class Edis(QMainWindow):
         self.setCentralWidget(window)
 
         Edis.load_component("edis", self)
-
         # Comprobar nueva versión
         if settings.get_setting('general/check-updates'):
             self.noti = system_tray.NotificacionActualizacion()
