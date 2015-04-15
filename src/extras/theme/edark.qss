@@ -16,9 +16,19 @@ QMainWindow::separator:hover {
     background: gray;
 }
 
+QToolBar {
+    padding: 5px;
+}
+
+QToolBar::handle {
+    border: 1px solid gray;
+    border-radius: 1px;
+    height: 7px;
+    margin: 3px;
+}
+
 QToolBar#toolbar {
-    background: qlineargradient(x1: 1, y1: 0, x2: 0, y2: 0,
-                                stop: 0 #474747, stop: 1 #212121);
+    background: #212121;
 }
 
 QToolBar::separator {
@@ -280,11 +290,18 @@ QTabBar::tab {
     background: #2E2E2E;
 }
 
+QTabBar::tab:top {
+    padding: 6px 25px;
+}
+
 QTabBar::tab:left,
 QTabBar::tab:right {
     padding: 25px 5px;
 }
 
+QTabBar::tab:top:selected {
+    border-bottom: 3px solid #666;
+}
 
 QTabWidget::pane {
     border: 1px solid #2B2B2B;

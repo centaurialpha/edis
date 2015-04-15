@@ -39,7 +39,8 @@ from src.ui.widgets import (
 from src.ui.dialogs.preferences import preferences
 from src.ui.dialogs import (
     file_properties,
-    new_project
+    new_project,
+    code_pasting_dialog
     )
 from src.ui.containers import editor_widget
 from src.ui import start_page
@@ -650,6 +651,12 @@ class EditorContainer(QWidget):
 
     def opened_projects(self):
         pass
+
+    def code_pasting(self):
+        if self.get_active_editor() is not None:
+            code = self.get_active_editor().text()
+            code_pasting = code_pasting_dialog.CodePastingDialog(self, code)
+            code_pasting.exec_()
 
 
 editor_container = EditorContainer()

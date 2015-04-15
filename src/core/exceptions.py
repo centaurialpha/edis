@@ -7,7 +7,7 @@
 
 
 class EdisIOError(Exception):
-    pass
+    """ IO Exception"""
 
 
 class EdisFileExistsError(Exception):
@@ -15,3 +15,8 @@ class EdisFileExistsError(Exception):
     def __init__(self, filename):
         super(EdisFileExistsError, self).__init__()
         self.filename = filename
+
+
+class NoPasteCodeError(Exception):
+
+    """ Code Paste Exception """

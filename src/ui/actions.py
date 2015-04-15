@@ -225,6 +225,9 @@ ACTIONS = ([
         "name": translate("EDIS", "Clean Construction"),
         "icon": "clean",
         "connection": "clean_construction"}], [
+    {
+        "name": translate("EDIS", "Code Pasting"),
+        "connection": "code_pasting"}], [
     # Menú acerca de
     {
         "name": translate("EDIS", "Report bug!"),
