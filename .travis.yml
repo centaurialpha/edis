@@ -43,4 +43,4 @@ install:
     - pip install nose
 
 script:
-    - nosetests
+    - python -m unittest -v
