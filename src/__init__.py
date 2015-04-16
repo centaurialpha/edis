@@ -26,7 +26,8 @@ from PyQt4.QtCore import (
 from src import resources  # lint:ok
 from src.core import (
     paths,
-    settings
+    settings,
+    cmd_parser
     )
 
 # Se cargan las configuraciones
@@ -114,6 +115,8 @@ def run_edis(app):
         recents_files = qsettings.value('general/recents-files')
         if recents_files is None:
             recents_files = []
+    # Archivos desde línea de comandos
+    files += cmd_parser.parse()
     edis.load_files_and_projects(files, recents_files, projects)
     if show_splash:
         splash.finish(edis)
