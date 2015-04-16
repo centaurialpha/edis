@@ -9,7 +9,7 @@
 
 import argparse
 
-USAGE = "./bin/edis <file>"
+USAGE = "./bin/edis <file> or <file1, file2...filen>"
 
 
 def parse():
