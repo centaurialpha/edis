@@ -9,14 +9,24 @@
 
 import argparse
 
-#FIXME: Completar
+USAGE = "./bin/edis <file>"
 
 
 def parse():
     files = None
 
-    parser = argparse.ArgumentParser()
-    parser.add_argument('file', metavar='file', type=str, nargs='*')
+    parser = argparse.ArgumentParser(description=USAGE)
+    parser.add_argument('file',
+                        metavar='file',
+                        type=str,
+                        nargs='*',
+                        help="file to open")
+    parser.add_argument('-f', '--file',
+                        metavar='file',
+                        type=str,
+                        nargs='+',
+                        help="files to open")
     args = parser.parse_args()
     files = args.file
+
     return files
