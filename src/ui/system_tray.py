@@ -79,7 +79,7 @@ class Thread(QThread):
         try:
             found = False
             web_version = request.urlopen(
-                ui.__version_web__).read().decode('utf-8').strip()
+                ui.__web_version__).read().decode('utf-8').strip()
             current_version = ui.__version__
             if current_version < web_version:
                 found = True
