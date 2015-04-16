@@ -14,7 +14,6 @@ from PyQt4.QtGui import (
 
 from PyQt4.QtCore import (
     Qt,
-    QThread,
     SIGNAL
     )
 from PyQt4.Qsci import QsciScintilla, QsciAPIs
@@ -25,45 +24,12 @@ from src.ui.editor import (
     lexer,
     base,
     minimap,
-    keywords
+    keywords,
+    editor_helpers
     )
 from src.core import settings
 
 # FIXME: Cambiar comentario '//' (C++ style) por '/* */' (C style)
-
-
-class ThreadBusqueda(QThread):
-    """ Éste hilo busca ocurrencias de una palabra en el código fuente """
-
-    def run(self):
-        found_list = []
-        found_generator = self.ffind_with_lines(self._text, self._word)
-        for i in found_generator:
-            found_list.append([i[2], i[0], i[1]])
-
-        self.emit(SIGNAL("ocurrenciasThread(PyQt_PyObject)"), found_list)
-
-    def ffind_with_lines(self, text, word):
-        for line_number, line in enumerate(text.splitlines()):
-            for index, end in self.ffind(line, word):
-                yield index, end, line_number
-
-    def ffind(self, text, word):
-        i = 0
-        while True:
-            i = text.find(word, i)
-            if i == -1:
-                return
-            end = i + len(word)
-            yield i, end
-            i += len(word)
-
-    def buscar(self, word, source):
-        self._text = source
-        self._word = word
-
-        # Run!
-        self.start()
 
 
 class Editor(base.Base):
@@ -139,11 +105,10 @@ class Editor(base.Base):
             self.minimap = minimap.Minimap(self)
             self.connect(self, SIGNAL("textChanged()"),
                          self.minimap.update_code)
-        # Thread ocurrencias
-        self.hilo_ocurrencias = ThreadBusqueda()
-        self.connect(self.hilo_ocurrencias,
-                     SIGNAL("ocurrenciasThread(PyQt_PyObject)"),
-                     self.mark_words)
+        # Thread que busca palabras
+        self.search_thread = editor_helpers.SearchThread()
+        self.connect(self.search_thread,
+                     SIGNAL("foundWords(PyQt_PyObject)"), self.mark_words)
         # Analizador de estilo de código
         self.checker = None
         if settings.get_setting('editor/style-checker'):
@@ -301,7 +266,7 @@ class Editor(base.Base):
             if not word:
                 self.clear_indicators(Editor.WORD_INDICATOR)
                 return
-            self.hilo_ocurrencias.buscar(word, self.text())
+            self.search_thread.find(word, self.text())
 
     def mouseMoveEvent(self, event):
         super(Editor, self).mouseMoveEvent(event)

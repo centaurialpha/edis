@@ -57,7 +57,7 @@ class PopupBusqueda(base_dialog.BaseDialog):
                                   True, 0, 0, True)
         if self.word:
             self.line.update(found)
-        weditor.hilo_ocurrencias.buscar(self.word, weditor.text())
+        weditor.search_thread.find(self.word, weditor.text())
 
     def _find_next(self):
         weditor = self._weditor
