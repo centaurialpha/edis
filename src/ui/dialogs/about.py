@@ -18,10 +18,7 @@ from PyQt4.QtGui import (
     QLabel
     )
 
-from PyQt4.QtCore import (
-    Qt,
-    SIGNAL
-    )
+from PyQt4.QtCore import Qt
 
 from src import ui
 
@@ -74,8 +71,11 @@ class AcercaDe(QDialog):
         box_boton.addWidget(btn_ok)
         box.addLayout(box_boton)
 
-        self.connect(btn_ok, SIGNAL("clicked()"), self.close)
-        self.connect(lbl_link, SIGNAL("linkActivated(QString)"),
-                     lambda link: webbrowser.open_new(link))
-        self.connect(lbl_sc, SIGNAL("linkActivated(QString)"),
-                     lambda link: webbrowser.open_new(link))
+        # Conexiones
+        btn_ok.clicked.connect(self.close)
+        lbl_link.linkActivated['QString'].connect(self._open_link)
+        lbl_sc.linkActivated['QString'].connect(self._open_link)
+        lbl_contributors.linkActivated['QString'].connect(self._open_link)
+
+    def _open_link(self, link):
+        webbrowser.open_new(link)
