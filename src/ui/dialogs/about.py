@@ -15,8 +15,7 @@ from PyQt4.QtGui import (
     QSizePolicy,
     QPushButton,
     QPixmap,
-    QLabel,
-    QGroupBox
+    QLabel
     )
 
 from PyQt4.QtCore import (
@@ -43,33 +42,31 @@ class AcercaDe(QDialog):
         box_logo.addWidget(label_logo)
         box_logo.addWidget(title_label)
         box.addLayout(box_logo)
-        lbl_version = QLabel(self.tr("Version: {0}").format(ui.__version__))
+        lbl_version = QLabel(self.tr("<b>Version:</b> {0}").format(
+                             ui.__version__))
         box.addWidget(lbl_version)
-        lbl_link = QLabel("Web: <a href='%s'><span style='color: #0197FD;'>"
-                          "%s</span></a>" % (ui.__web__, ui.__web__))
-        lbl_sc = QLabel(self.tr("Source Code: <a href='{0}'><span style="
-                        "'color: #0197FD;'>{1}</span></a>").format(
+        lbl_link = QLabel("<b>Web:</b> <a href='%s'><span style='color: "
+                          "#0197FD;'>%s</span></a>" % (ui.__web__, ui.__web__))
+        lbl_sc = QLabel(self.tr("<b>Source Code:</b> <a href='{0}'><span"
+                        " style='color: #0197FD;'>{1}</span></a>").format(
                         ui.__source_code__, ui.__source_code__))
         box.addWidget(lbl_link)
         box.addWidget(lbl_sc)
         # License
-        box.addWidget(QLabel(self.tr("License: <b>Edis</b> is licensed under "
-                                     "the terms of the <b>G</b>NU "
+        box.addWidget(QLabel(self.tr("<b>License:</b> <i>Edis</i> is licensed "
+                                     "under the terms of the <b>G</b>NU "
                                      "<b>P</b>ublic <b>L</b>icense "
                                      "version 3 or later.")))
+        box.addWidget(QLabel(self.tr("<b>Author:</b> {0}").format(
+                      ui.__author__)))
+        box.addWidget(QLabel(self.tr("<b>Email:</b> {0}").format(
+                      ui.__email_author__)))
         # Thanks to
-        group = QGroupBox(self.tr("Edis Team:"))
-        group.setStyleSheet("QGroupBox { font-size: 16px; padding: 10px;"
-                            "margin-top: 10 5px; border: 1px solid gray; }"
-                            "QGroupBox::title { "
-                            "subcontrol-position: top center;"
-                            "subcontrol-origin: margin; }")
-        vbox = QVBoxLayout(group)
-        vbox.setAlignment(Qt.AlignCenter)
-        vbox.addWidget(QLabel("Gabriel Acosta <gabo>"))
-        vbox.addWidget(QLabel("Martín Miranda <debianitram>"))
-        vbox.addWidget(QLabel("Rodrigo Acosta <ekimdev>"))
-        box.addWidget(group)
+        lbl_contributors = QLabel(self.tr("<b>Spatial thanks:</b> <a href="
+                                  "'{0}'><span style=color: #0197FD;'>"
+                                  "Contributors</span></a>").format(
+                                  ui.__contributors__))
+        box.addWidget(lbl_contributors)
 
         box_boton = QHBoxLayout()
         box_boton.addSpacerItem(QSpacerItem(0, 10, QSizePolicy.Expanding))
