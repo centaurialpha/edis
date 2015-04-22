@@ -159,7 +159,8 @@ QMenu::item:selected {
 
 QMenu::separator {
     background: qlineargradient(x1: 0, y1: 0, x2: 1, y2: 0,
-                                stop: 0 #616161, stop: 1 #212121);
+                                stop:0 #212121, stop: 0.5 #FFFFFF,
+                                stop: 0.6 #FFFFFF, stop:1 #212121);
 
     height: 1px;
     margin-left: 15px;
@@ -259,7 +260,12 @@ QLineEdit#popup {
 QLabel,
 QRadioButton,
 QCheckBox {
+    background-color: #212121;
     color: #FFFFFF;
+}
+
+QCheckBox:disabled {
+    color: #474747;
 }
 
 QGroupBox {
@@ -395,4 +401,13 @@ QSpinBox::down-button:hover {
 
 QLCDNumber {
     color: #FFFFFF;
+}
+
+QHeaderView::section {
+    background: qlineargradient(x1:0, y1:0, x2:0, y2:1,
+                                stop:0 #717171, stop: 0.5 #616161,
+                                stop: 0.6 #616161, stop:1 #717171);
+    padding-left: 5px;
+    color: #FFFFFF;
+    border: 1px solid #555;
 }

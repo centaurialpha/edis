@@ -23,14 +23,14 @@ from PyQt4.QtGui import (
     QComboBox,
     QLineEdit,
     QLabel,
-    QTabWidget,
-    QApplication
+    QApplication,
+    QTreeWidget,
+    QTabWidget
     )
 
 from PyQt4.QtCore import (
     QSettings,
-    Qt,
-    SIGNAL
+    Qt
     )
 from src.core import (
     paths,
@@ -41,7 +41,7 @@ from src.ui.main import Edis
 
 class EnvironmentConfiguration(QTabWidget):
 
-    TABS = OrderedDict()
+    __TABS = OrderedDict()
 
     def __init__(self, parent=None):
         super(EnvironmentConfiguration, self).__init__()
@@ -53,13 +53,17 @@ class EnvironmentConfiguration(QTabWidget):
 
     @classmethod
     def install_widget(cls, name, obj):
-        cls.TABS[name] = obj
+        cls.__TABS[name] = obj
 
-    def get_widgets(self):
-        return self.TABS
+    def get_tabs(self):
+        return self.__TABS
 
-    def install_tab(self, name, obj):
+    def install_tab(self, obj, name):
         self.addTab(obj, name)
+
+    def save(self):
+        for index in range(self.count()):
+            self.widget(index).save()
 
 
 class GeneralSection(QWidget):
@@ -71,6 +75,7 @@ class GeneralSection(QWidget):
         # Inicio
         group_on_start = QGroupBox(self.tr("On start:"))
         box = QVBoxLayout(group_on_start)
+        box.setContentsMargins(20, 5, 20, 5)
         self.check_splash = QCheckBox(self.tr("Show Splash Screen"))
         self.check_splash.setChecked(
             settings.get_setting('general/show-splash'))
@@ -89,6 +94,7 @@ class GeneralSection(QWidget):
         # Al salir
         group_on_exit = QGroupBox(self.tr("On close:"))
         box = QVBoxLayout(group_on_exit)
+        box.setContentsMargins(20, 5, 20, 5)
         self.check_on_exit = QCheckBox(self.tr("Confirm exit"))
         self.check_on_exit.setChecked(
             settings.get_setting('general/confirm-exit'))
@@ -103,6 +109,7 @@ class GeneralSection(QWidget):
         # Notificaciones
         group_notifications = QGroupBox(self.tr("Notifications:"))
         box = QVBoxLayout(group_notifications)
+        box.setContentsMargins(20, 5, 20, 5)
         self.check_updates = QCheckBox(self.tr("Check updates"))
         self.check_updates.setChecked(
             settings.get_setting('general/check-updates'))
@@ -124,6 +131,7 @@ class GeneralSection(QWidget):
         # User Interface
         group_ui = QGroupBox(self.tr("User Interface:"))
         box = QGridLayout(group_ui)
+        box.setContentsMargins(20, 5, 20, 5)
         box.addWidget(QLabel(self.tr("Theme:")), 0, 0)
         self.combo_theme = QComboBox()
         self.combo_theme.setFixedWidth(200)
@@ -148,6 +156,7 @@ class GeneralSection(QWidget):
         # Reestablecer
         group_restart = QGroupBox(self.tr("Restart:"))
         box = QHBoxLayout(group_restart)
+        box.setContentsMargins(20, 5, 20, 5)
         btn_restart = QPushButton(self.tr("Restart Edis configurations"))
         btn_restart.setObjectName("custom")
         box.addWidget(btn_restart)
@@ -158,10 +167,9 @@ class GeneralSection(QWidget):
                           QSizePolicy.Expanding, QSizePolicy.Expanding))
 
         # Conexiones
-        self.connect(btn_restart, SIGNAL("clicked()"),
-                     self._restart_configurations)
-        self.connect(self.combo_theme, SIGNAL("currentIndexChanged(int)"),
-                     self._change_style_sheet)
+        btn_restart.clicked.connect(self._restart_configurations)
+        self.combo_theme.currentIndexChanged[int].connect(
+            self._change_style_sheet)
 
         # Install
         EnvironmentConfiguration.install_widget(self.tr("General"), self)
@@ -203,38 +211,41 @@ class GeneralSection(QWidget):
         #FIXME: cerrar dialogo
 
     def save(self):
-        pass
-        #""" Guarda las configuraciones Generales. """
 
-        #settings.set_setting('general/show-splash',
-                             #self.check_splash.isChecked())
-        #show_start_page = self.check_on_start.isChecked()
-        #settings.set_setting('general/show-start-page', show_start_page)
-        #settings.set_setting('ventana/store-size',
-                             #self.check_geometry.isChecked())
-        #settings.set_setting('general/confirm-exit',
-                             #self.check_on_exit.isChecked())
-        #settings.set_setting('general/check-updates',
-                             #self.check_updates.isChecked())
-        #load_files = self.check_load_files.isChecked()
-        #settings.set_setting('general/load-files', load_files)
-        #lang = self.combo_lang.currentText()
-        #settings.set_setting('general/language', lang)
-        #if settings.IS_LINUX:
-            #settings.set_setting('terminal', self.line_terminal.text())
-#
+        settings.set_setting('general/show-splash',
+                             self.check_splash.isChecked())
+        show_start_page = self.check_on_start.isChecked()
+        settings.set_setting('general/show-start-page', show_start_page)
+        settings.set_setting('ventana/store-size',
+                             self.check_geometry.isChecked())
+        settings.set_setting('general/confirm-exit',
+                             self.check_on_exit.isChecked())
+        settings.set_setting('general/check-updates',
+                             self.check_updates.isChecked())
+        load_files = self.check_load_files.isChecked()
+        settings.set_setting('general/load-files', load_files)
+        lang = self.combo_lang.currentText()
+        settings.set_setting('general/language', lang)
+        if settings.IS_LINUX:
+            settings.set_setting('terminal', self.line_terminal.text())
 
 
 class ShortcutSection(QWidget):
 
     def __init__(self):
         super(ShortcutSection, self).__init__()
+        container = QVBoxLayout(self)
+        self.tree = QTreeWidget()
+        self.tree.setHeaderLabels([self.tr("Keys"), self.tr("Description")])
+        self.tree.header().setStretchLastSection(True)
+        self.tree.setColumnWidth(0, 200)
+        container.addWidget(self.tree)
 
         # Install
         EnvironmentConfiguration.install_widget(self.tr("Shortcuts"), self)
 
     def save(self):
-        pass
+        print("save")
 
 
 # Install section

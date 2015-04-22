@@ -54,7 +54,8 @@ class Editor(base.Base):
         self.obj_file = obj_file  # Asociación con el objeto EdisFile
         self._font = None
         # Configuration
-        self.setIndentationsUseTabs(False)
+        use_tabs = settings.get_setting('editor/usetabs')
+        self.setIndentationsUseTabs(use_tabs)
         self.setAutoIndent(settings.get_setting('editor/indent'))
         self.setBackspaceUnindents(True)
         # Quita el scrollbar
@@ -132,7 +133,7 @@ class Editor(base.Base):
         if settings.get_setting('editor/show-margin'):
             self.update_margin()
         # Brace matching
-        self.setBraceMatching(QsciScintilla.SloppyBraceMatch)
+        self.setBraceMatching(int(settings.get_setting('editor/match-brace')))
         self.setMatchedBraceBackgroundColor(QColor(
             self.scheme['MatchedBraceBack']))
         self.setMatchedBraceForegroundColor(QColor(
@@ -173,6 +174,10 @@ class Editor(base.Base):
             self.connect(self.checker, SIGNAL("finished()"),
                          self._show_violations)
 
+    def set_brace_matching(self):
+        match_brace = int(settings.get_setting('editor/match-brace'))
+        self.setBraceMatching(match_brace)
+
     def update_options(self):
         """ Actualiza las opciones del editor """
 
@@ -190,14 +195,23 @@ class Editor(base.Base):
         self.setAutoIndent(settings.get_setting('editor/indent'))
         self.send("sci_setcaretperiod",
                   settings.get_setting('editor/cursor-period'))
+        current_line = settings.get_setting('editor/show-caret-line')
+        self.send("sci_setcaretlinevisible", current_line)
+        self.setEolVisibility(settings.get_setting('editor/eof'))
 
     def update_sidebar(self):
         """ Ajusta el ancho del sidebar """
+
         fmetrics = QFontMetrics(self._font)
-        lines = str(self.lines()) + '00'
-        if len(lines) != 1:
-            width = fmetrics.width(lines)
-            self.setMarginWidth(0, width)
+        lines = str(self.lines()) + '0'
+        line_number = settings.get_setting('editor/show-line-number')
+        width = fmetrics.width(lines) if line_number else 0
+        self.setMarginWidth(0, width)
+
+    def show_line_numbers(self):
+        line_number = settings.get_setting('editor/show-line-number')
+        self.setMarginLineNumbers(0, line_number)
+        self.update_sidebar()
 
     def update_margin(self):
         """ Actualiza el ancho del márgen de línea """
@@ -226,12 +240,27 @@ class Editor(base.Base):
             return
         if enabled:
             self.api = QsciAPIs(self._lexer)
-            # Agrego keywords a la API
-            for keyword in keywords.keywords:
-                self.api.add(keyword)
-            self.api.prepare()
-            self.setAutoCompletionThreshold(3)
-            self.setAutoCompletionSource(QsciScintilla.AcsAll)
+            if settings.get_setting('editor/completion-keywords'):
+                for keyword in keywords.keywords:
+                    self.api.add(keyword)
+                self.api.prepare()
+                source = QsciScintilla.AcsAPIs
+                if settings.get_setting('editor/completion-document'):
+                    source = QsciScintilla.AcsAll
+            elif settings.get_setting('editor/completion-document'):
+                source = QsciScintilla.AcsDocument
+            else:
+                source = QsciScintilla.AcsNone
+            threshold = settings.get_setting('editor/completion-threshold')
+            self.setAutoCompletionThreshold(threshold)
+            self.setAutoCompletionSource(source)
+            cs = settings.get_setting('editor/completion-cs')
+            self.setAutoCompletionCaseSensitivity(cs)
+            repl_word = settings.get_setting('editor/completion-replace-word')
+            self.setAutoCompletionReplaceWord(repl_word)
+            show_single = settings.get_setting('editor/completion-single')
+            use_single = 2 if show_single else 0
+            self.setAutoCompletionUseSingle(use_single)
         else:
             self.api = None
             self.setAutoCompletionSource(0)
@@ -239,6 +268,8 @@ class Editor(base.Base):
     def _add_marker_modified(self):
         """ Agrega el marcador cuando el texto cambia """
 
+        if not settings.get_setting('editor/mark-change'):
+            return
         nline, _ = self.getCursorPosition()
         if self.markersAtLine(nline):
             self.markerDelete(nline)

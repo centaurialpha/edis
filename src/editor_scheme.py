@@ -6,7 +6,7 @@
 # License: GPLv3 (see http://www.gnu.org/licenses/gpl.html)
 
 # Edis Scheme
-EDIS_SCHEME = {
+EDIS_DARK_SCHEME = {
     'BackgroundEditor': '#0E0F12',
     'Color': '#E2E2E5',
     'Keyword': '#7E8AA2',
@@ -35,7 +35,7 @@ EDIS_SCHEME = {
     }
 
 # Based on Komodo
-KOMODO_SCHEME = {
+EDIS_WHITE_SCHEME = {
     'BackgroundEditor': '#FFFFFF',
     'Color': '#000000',
     'Keyword': '#333399',
@@ -63,7 +63,7 @@ KOMODO_SCHEME = {
     'error': '#DF3E3E'
     }
 
-SCHEME = {'edis': EDIS_SCHEME, 'komodo': KOMODO_SCHEME}
+SCHEME = {'dark': EDIS_DARK_SCHEME, 'white': EDIS_WHITE_SCHEME}
 
 
 def get_scheme(key):

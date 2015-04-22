@@ -26,20 +26,14 @@ from PyQt4.QtCore import (
     )
 
 from src.ui.main import Edis
-#from src.ui.dialogs.preferences import environment_configuration
-    #environment_configuration,
-    #editor_configuration,
-    #theme_configuration
-    #)
 
 
 class Preferences(QDialog):
 
-    SECTIONS = []
-
     def __init__(self, parent=None):
         QDialog.__init__(self, parent)
         self.setWindowTitle(self.tr("Configurations - Edis"))
+        self.__sections = []
         # Opacity effect
         self.effect = QGraphicsOpacityEffect()
         self.setGraphicsEffect(self.effect)
@@ -48,7 +42,11 @@ class Preferences(QDialog):
         Edis.load_component("preferences", self)
         # Install sections
         #lint:disable
-        from src.ui.dialogs.preferences import environment_configuration
+        from src.ui.dialogs.preferences import (
+            environment_configuration,
+            editor_configuration,
+            compiler_configuration
+            )
         #lint:enable
         self.load_ui()
         key_escape = QShortcut(QKeySequence(Qt.Key_Escape), self)
@@ -56,9 +54,8 @@ class Preferences(QDialog):
         self.connect(self.btn_cancel, SIGNAL("clicked()"), self.close)
         self.connect(self.btn_guardar, SIGNAL("clicked()"), self._save)
 
-    @classmethod
-    def install_section(cls, obj):
-        cls.SECTIONS.append(obj)
+    def install_section(self, obj):
+        self.__sections.append(obj)
 
     def load_ui(self):
         container = QVBoxLayout(self)
@@ -76,10 +73,14 @@ class Preferences(QDialog):
             QIcon(":image/general-pref"), "Environment")
         editor_section = toolbar.addAction(
             QIcon(":image/editor-pref"), "Editor")
+        compiler_section = toolbar.addAction(
+            QIcon(":image/build"), "Compiler")
         self.connect(environment_section, SIGNAL("triggered()"),
                      lambda: self.change_widget(0))
         self.connect(editor_section, SIGNAL("triggered()"),
                      lambda: self.change_widget(1))
+        self.connect(compiler_section, SIGNAL("triggered()"),
+                     lambda: self.change_widget(2))
 
         # Set size
         for action in toolbar.actions():
@@ -91,10 +92,10 @@ class Preferences(QDialog):
         self.stack = QStackedWidget()
         box.addWidget(self.stack)
 
-        # Load sections and tabs
-        for section in Preferences.SECTIONS:
-            for name, obj in list(section.get_widgets().items()):
-                section.install_tab(name, obj)
+        # Load sections and subsections
+        for section in self.__sections:
+            for name, obj in list(section.get_tabs().items()):
+                section.install_tab(obj, name)
             self.stack.addWidget(section)
 
         box_buttons = QHBoxLayout()
