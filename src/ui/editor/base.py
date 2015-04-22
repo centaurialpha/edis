@@ -2,7 +2,7 @@
 # EDIS - a simple cross-platform IDE for C
 #
 # This file is part of Edis
-# Copyright 2014-2015 - Edis Team
+# Copyright 2014-2015 - Gabriel Acosta <acostadariogabriel at gmail>
 # License: GPLv3 (see http://www.gnu.org/licenses/gpl.html)
 
 from PyQt4.QtCore import Qt

@@ -1,10 +1,10 @@
-/* 
+/*
  * EDIS - a simple cross-platform IDE for C
- * 
+ *
  * Ejecuta un proceso y pausa
  *
  * This file is part of Edis
- * Copyright 2014-2015 - Edis Team
+ * Copyright 2014-2015 - Gabriel Acosta <acostadariogabriel at gmail>
  * License: GPLv3 (see http://www.gnu.org/licenses/gpl.html)
  *
  */
@@ -23,22 +23,22 @@ int main( int argc, char** argv ) {
     	time_t start, end;
     	/* Tiempo usado por el proceso */
     	double time_used;
-    	/* Título en consola */
+    	/* Tï¿½tulo en consola */
     	SetConsoleTitle( argv[1] );
     	/* Programa a ejecutar */
     	char * command = argv[1];
     	/* Inicio segundos */
     	start = clock();
-    	/* Ejecución del comando */
+    	/* Ejecuciï¿½n del comando */
     	executeCommand( command );
-    	/* Fin de ejecución */
+    	/* Fin de ejecuciï¿½n */
     	end = clock();
     	time_used = (( double) ( end - start)) / CLOCKS_PER_SEC;
     	/* Pausa */
     	pauser( EXIT_SUCCESS, time_used );
     	
 	}
-        
+
     return 0;
 }
 
