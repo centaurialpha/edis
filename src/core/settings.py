@@ -19,6 +19,9 @@ else:
     IS_LINUX = False
     DEFAULT_FONT = "Lucida Console"
 
+# Parámetros del compilador -Wall por defecto
+COMPILER_FLAGS = "-Wall"
+
 SETTINGS = {
     'terminal': 'xterm',
     'window/size': QSize(-1, -1),

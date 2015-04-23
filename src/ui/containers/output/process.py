@@ -102,17 +102,24 @@ class EjecutarWidget(QWidget):
         exe_path = os.path.dirname(path)
         self.build_process.setWorkingDirectory(exe_path)
 
+        # Se limpia el QListWidget
         self.output.clear()
-        item = output_compiler.Item(
-            self.tr(">>> Building file: {0} ( in directory {1} )".format(
-                    path.split('/')[-1], exe_path)))
 
-        self.output.addItem(item)
-
-        params = ['-Wall', '-o', self.exe]
+        flags = settings.COMPILER_FLAGS.split()
+        params = ['-o', self.exe] + flags
         gcc = 'gcc'
         if not sys.platform.startswith("linux"):
             gcc = os.path.join(self._environment, 'gcc')
+
+        item = output_compiler.Item(
+            self.tr(">>> Building file: {0} ( in directory {1} )").format(
+                    path.split('/')[-1], exe_path))
+        self.output.addItem(item)
+        self.output.addItem(output_compiler.Item(
+            self.tr(">>> Command: {0}").format(
+                gcc + ' ' + ' '.join(params) + ' ' + ' '.join(files))))
+
+        # Se inicia el proceso
         self.build_process.start(gcc, params + files)
         self.build_process.waitForFinished()
 
