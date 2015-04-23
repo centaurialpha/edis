@@ -23,7 +23,8 @@ from PyQt4.QtGui import (
     QComboBox,
     QSpinBox,
     QTabWidget,
-    QFontComboBox
+    QFontComboBox,
+    QFont
     )
 
 # Módulos QtCore
@@ -120,6 +121,7 @@ class GeneralSection(QWidget):
         self.combo_font = QFontComboBox()
         self.combo_font.setFixedWidth(350)
         box.addWidget(self.combo_font, 0, 1)
+        self._load_font()
         box.addWidget(QLabel(self.tr("Size:")), 1, 0)
         self.spin_size_font = QSpinBox()
         self.spin_size_font.setValue(settings.get_setting('editor/size-font'))
@@ -168,12 +170,9 @@ class GeneralSection(QWidget):
         self.spin_caret_width.setEnabled(bool(index))
 
     def _load_font(self):
-        fuente = settings.get_setting('editor/font')
-        if not fuente:
-            fuente = settings.DEFAULT_FONT
-        size = str(settings.get_setting('editor/size-font'))
-        texto = fuente + ', ' + size
-        self.btn_font.setText(texto)
+
+        font = settings.get_setting('editor/font')
+        self.combo_font.setCurrentFont(QFont(font))
 
     def save(self):
         """ Guarda las configuraciones del Editor. """
