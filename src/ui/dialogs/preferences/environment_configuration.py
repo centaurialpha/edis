@@ -25,7 +25,10 @@ from PyQt4.QtGui import (
     QLabel,
     QApplication,
     QTreeWidget,
-    QTabWidget
+    QTreeWidgetItem,
+    QTabWidget,
+    #QDialog,
+    #QKeySequence
     )
 
 from PyQt4.QtCore import (
@@ -37,6 +40,7 @@ from src.core import (
     settings
     )
 from src.ui.main import Edis
+from src.core import keymap
 
 
 class EnvironmentConfiguration(QTabWidget):
@@ -241,8 +245,26 @@ class ShortcutSection(QWidget):
         self.tree.setColumnWidth(0, 200)
         container.addWidget(self.tree)
 
+        self.items = {
+            "new": "Create a new editor to work in a file",
+            "new-project": "Create a new project",
+            "open": "Open one or more files",
+            "open-project": "Opens an existing project Edis",
+            "reload": "Reload file",
+            "save": "Save file"
+            }
+
+        for i, e in list(self.items.items()):
+            item = QTreeWidgetItem(self.tree,
+                                   [keymap.get_keymap(i).toString(), e])
+            item.setFlags(Qt.ItemIsEditable | Qt.ItemIsEnabled)
+
+        self.tree.itemDoubleClicked.connect(self._change_shortcut)
         # Install
         EnvironmentConfiguration.install_widget(self.tr("Shortcuts"), self)
+
+    def _change_shortcut(self, item, column):
+        pass
 
     def save(self):
         print("save")

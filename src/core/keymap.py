@@ -6,12 +6,10 @@
 # License: GPLv3 (see http://www.gnu.org/licenses/gpl.html)
 
 from PyQt4.QtGui import QKeySequence
-
 from PyQt4.QtCore import Qt
 
 
-# Atajos
-SHORTCUTS = {
+KEYMAP = {
     # Archivo
     "new": QKeySequence(Qt.CTRL + Qt.Key_N),
     "new-project": QKeySequence(Qt.CTRL + Qt.SHIFT + Qt.Key_N),
@@ -50,12 +48,23 @@ SHORTCUTS = {
     "normal-font-size": QKeySequence(Qt.CTRL + Qt.Key_0),
     "show-selector": QKeySequence(Qt.CTRL + Qt.Key_M),
     # Código
-    "build": QKeySequence(Qt.CTRL + Qt.Key_F5),
+    "build": QKeySequence(Qt.CTRL + Qt.Key_B),
     "run": QKeySequence(Qt.CTRL + Qt.Key_F6),
     "build-run": QKeySequence(Qt.CTRL + Qt.Key_F10),
-    "stop": QKeySequence(Qt.CTRL + Qt.Key_B),
+    "stop": QKeySequence(Qt.CTRL + Qt.Key_F5),
     # Buscar
     "find": QKeySequence(Qt.CTRL + Qt.Key_F),
     "find-replace": QKeySequence(Qt.CTRL + Qt.Key_H),
-    "go": QKeySequence(Qt.CTRL + Qt.Key_J)
+    "go": QKeySequence(Qt.CTRL + Qt.Key_J),
     }
+
+
+CUSTOM_KEYMAP = {}
+
+
+def load_keymap():
+    pass
+
+
+def get_keymap(short):
+    return CUSTOM_KEYMAP.get(short, KEYMAP.get(short))

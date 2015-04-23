@@ -25,10 +25,12 @@ from PyQt4.QtCore import (
     )
 
 # Módulos EDIS
-from src import recursos
 from src import ui
 from src.ui import system_tray
-from src.core import settings
+from src.core import (
+    settings,
+    keymap
+    )
 from src.ui.dialogs import (
     unsaved_files,
     about
@@ -138,7 +140,8 @@ class Edis(QMainWindow):
         menu_items = {}
         toolbar_actions = {}
         editor_container = Edis.get_component("principal")
-        shortcuts = recursos.SHORTCUTS
+        #shortcuts = keymap.KEYMAP
+        #keymap = keymap.get_keymap
         toolbar_items = TOOLBAR_ITEMS
         for i, m in enumerate(menubar_items):
             menu = menu_bar.addMenu(m)
@@ -166,7 +169,8 @@ class Edis(QMainWindow):
                 qaction = menu_name.addAction(name)
                 qaction.setIcon(icon)
                 if shortcut is not None:
-                    qaction.setShortcut(shortcuts[shortcut])
+                    #qaction.setShortcut(shortcuts[shortcut])
+                    qaction.setShortcut(keymap.get_keymap(shortcut))
                 if connection.startswith('edis'):
                     obj = self
                     connection = connection.split('.')[-1]
