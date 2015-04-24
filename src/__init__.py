@@ -27,10 +27,15 @@ from src import resources  # lint:ok
 from src.core import (
     paths,
     settings,
-    cmd_parser
+    cmd_parser,
+    logger
     )
+# Logger
+log = logger.get_logger(__name__)
+DEBUG = log.debug
 
 # Se cargan las configuraciones
+DEBUG("Loading settings...")
 settings.load_settings()
 # Se crean los objetos
 #lint:disable
@@ -51,11 +56,13 @@ from src.ui.main import Edis
 def run_edis(app):
     """ Se carga la interfáz """
 
+    DEBUG("Running Edis...")
     qsettings = QSettings(paths.CONFIGURACION, QSettings.IniFormat)
     # Ícono
     app.setWindowIcon(QIcon(":image/edis"))
     # Lenguaje
     local = QLocale.system().name()
+    DEBUG("Loading language...")
     language = settings.get_setting('general/language')
     if language:
         edis_translator = QTranslator()
@@ -71,6 +78,7 @@ def run_edis(app):
     # Splash screen
     show_splash = False
     if settings.get_setting('general/show-splash'):
+        DEBUG("Showing splash...")
         splash = QSplashScreen(pixmap, Qt.WindowStaysOnTopHint)
         splash.setMask(pixmap.mask())
         splash.show()
@@ -97,6 +105,7 @@ def run_edis(app):
     if show_splash:
         alignment = Qt.AlignBottom | Qt.AlignLeft
         splash.showMessage("Loading UI...", alignment, Qt.white)
+    DEBUG("Loading GUI...")
     edis = Edis()
     edis.show()
     # Archivos de última sesión
@@ -106,6 +115,7 @@ def run_edis(app):
     if projects is None:
         projects = []
     if settings.get_setting('general/load-files'):
+        DEBUG("Loading files and projects...")
         if show_splash:
             splash.showMessage("Loading files...", alignment, Qt.white)
         files = qsettings.value('general/files')
@@ -120,4 +130,5 @@ def run_edis(app):
     edis.load_files_and_projects(files, recents_files, projects)
     if show_splash:
         splash.finish(edis)
+    DEBUG("Edis is Ready!")
     sys.exit(app.exec_())

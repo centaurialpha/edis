@@ -21,7 +21,7 @@ from src.core import (
     logger
     )
 
-log = logger.edis_logger.get_logger(__name__)
+log = logger.get_logger(__name__)
 DEBUG = log.debug
 
 
@@ -62,7 +62,7 @@ class EdisFile(QObject):
     def write(self, content, new_filename=''):
         """ Escribe los datos en el archivo """
 
-        DEBUG("Saving file")
+        DEBUG("Saving file...")
         if self.is_new:
             self._filename = new_filename
         _file = QFile(self.filename)
@@ -87,6 +87,7 @@ class EdisFile(QObject):
     def stop_system_watcher(self):
         if self._system_watcher is not None:
             self._system_watcher.removePath(self.filename)
+            DEBUG("Stoping watching {0}".format(self.filename))
 
     def _on_file_changed(self, filename):
         mtime = os.lstat(filename).st_mtime

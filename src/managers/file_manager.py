@@ -9,9 +9,25 @@
 
 import os
 
-from PyQt4.QtCore import QFile
+from PyQt4.QtCore import (
+    QFile,
+    QIODevice,
+    QTextStream
+    )
 
-from src.core.exceptions import EdisFileExistsError
+from src.core.exceptions import (
+    EdisFileExistsError,
+    EdisIOError
+    )
+
+
+def write_file(filename, content):
+    _file = QFile(filename)
+    if not _file.open(QIODevice.WriteOnly | QIODevice.Truncate):
+        raise EdisIOError
+    outfile = QTextStream(_file)
+    outfile << content
+    return filename
 
 
 def get_file_size(_file):

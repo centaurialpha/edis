@@ -29,12 +29,16 @@ from src import ui
 from src.ui import system_tray
 from src.core import (
     settings,
-    keymap
+    keymap,
+    logger
     )
 from src.ui.dialogs import (
     unsaved_files,
     about
     )
+# Logger
+log = logger.get_logger(__name__)
+DEBUG = log.debug
 
 TOOLBAR_ITEMS = ["new", "open", "save", "separator", "undo", "redo",
                  "separator", "copy", "cut", "paste", "separator", "indent",
@@ -333,7 +337,7 @@ class Edis(QMainWindow):
         tamaño de la ventana, archivos, etc.
 
         """
-
+        DEBUG("Exiting...")
         editor_container = Edis.get_component("principal")
         if editor_container.check_files_not_saved() and \
                 settings.get_setting('general/confirm-exit'):

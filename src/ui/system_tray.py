@@ -23,8 +23,9 @@ from PyQt4.QtCore import (
 from src import ui
 from src.core import logger
 
-log = logger.edis_logger.get_logger(__name__)
+log = logger.get_logger(__name__)
 INFO = log.info
+DEBUG = log.debug
 
 
 class NotificacionActualizacion(QSystemTrayIcon):
@@ -76,6 +77,7 @@ class Thread(QThread):
     updateVersion = pyqtSignal('QString', 'QString', bool)
 
     def run(self):
+        DEBUG("Searching updates...")
         try:
             found = False
             web_version = request.urlopen(

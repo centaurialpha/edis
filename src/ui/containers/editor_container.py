@@ -46,7 +46,7 @@ from src.ui.containers import editor_widget
 from src.ui import start_page
 from src.core import logger
 
-log = logger.edis_logger.get_logger(__name__)
+log = logger.get_logger(__name__)
 ERROR = log.error
 
 # FIXME: Mejorar la forma en la que se muestra/oculta el stacked del editor

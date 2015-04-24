@@ -37,7 +37,7 @@ from src.core import (
     )
 from src.ui.containers.output import output_compiler
 
-log = logger.edis_logger.get_logger(__name__)
+log = logger.get_logger(__name__)
 ERROR = log.error
 
 ENV_GCC = os.path.join(paths.PATH, "gcc", "bin")

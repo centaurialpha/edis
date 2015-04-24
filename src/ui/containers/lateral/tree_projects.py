@@ -36,7 +36,7 @@ from src.core import (
     )
 from src.managers import file_manager
 
-log = logger.edis_logger.get_logger(__name__)
+log = logger.get_logger(__name__)
 ERROR = log.error
 
 
@@ -228,6 +228,7 @@ class TreeProject(QTreeWidget):
                 # Agrego a la lista de archivos fuente
                 self._sources.append(filename)
             # Creo el archivo
+            #FIXME: file manager
             file_manager.write_file(filename, content)
             if isinstance(current_item, EdisItem):
                 parent = current_item.child(ftype)

@@ -172,7 +172,7 @@ class IntroductionPage(QWizardPage):
     def _update_location(self, button_id):
         if button_id == 0:
             path = paths.PROJECT_DIR
-        elif button_id == 2:
+        elif button_id == 1:
             path = QFileDialog.getExistingDirectory(
                 self, self.tr("Choose a directory"), os.path.expanduser("~"))
             if not path:
