@@ -387,14 +387,14 @@ class CompletionSection(QWidget):
         self.check_completion.stateChanged[int].connect(self._state_change)
 
         # Configuration
-        self.check_bracket.setChecked(
-            settings.get_setting('editor/complete-bracket'))
-        self.check_paren.setChecked(
-            settings.get_setting('editor/complete-paren'))
-        self.check_quote.setChecked(
-            settings.get_setting('editor/complete-double-quote'))
-        self.check_single_quote.setChecked(
-            settings.get_setting('editor/complete-single-quote'))
+        self.check_key.setChecked(
+            settings.get_setting('editor/complete-brace'))
+        self.check_bracket.setChecked("[" in settings.BRACES)
+        self.check_paren.setChecked("(" in settings.BRACES)
+        self.check_quote.setChecked('""' in settings.QUOTES)
+            #settings.get_setting('editor/complete-double-quote'))
+        self.check_single_quote.setChecked("''" in settings.QUOTES)
+            #settings.get_setting('editor/complete-single-quote'))
         self.check_completion.setChecked(
             settings.get_setting('editor/completion'))
         self.spin_threshold.setValue(
@@ -420,14 +420,32 @@ class CompletionSection(QWidget):
         self.spin_threshold.setEnabled(state)
 
     def save(self):
+        settings.set_setting('editor/complete-brace',
+            self.check_key.isChecked())
         settings.set_setting('editor/complete-bracket',
             self.check_bracket.isChecked())
+        if self.check_bracket.isChecked():
+            settings.BRACES['['] = ']'
+        elif ('[') in settings.BRACES:
+            del settings.BRACES['[']
         settings.set_setting('editor/complete-paren',
             self.check_paren.isChecked())
+        if self.check_paren.isChecked():
+            settings.BRACES['('] = ')'
+        elif ('(') in settings.BRACES:
+            del settings.BRACES['(']
         settings.set_setting('editor/complete-double-quote',
             self.check_quote.isChecked())
+        if self.check_quote.isChecked():
+            settings.QUOTES.append('""')
+        elif '""' in settings.QUOTES:
+            settings.QUOTES.remove('""')
         settings.set_setting('editor/complete-single-quote',
             self.check_single_quote.isChecked())
+        if self.check_single_quote.isChecked():
+            settings.QUOTES.append('""')
+        elif "''" in settings.QUOTES:
+            settings.QUOTES.remove("''")
         code_completion = self.check_completion.isChecked()
         settings.set_setting('editor/completion',
             code_completion)

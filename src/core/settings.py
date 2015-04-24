@@ -22,6 +22,12 @@ else:
 # Parámetros del compilador -Wall por defecto
 COMPILER_FLAGS = "-Wall"
 
+# Braces
+BRACES = {'[': ']', '(': ')'}
+
+# Comillas
+QUOTES = ["''", '""']
+
 SETTINGS = {
     'terminal': 'xterm',
     'window/size': QSize(-1, -1),
@@ -30,6 +36,7 @@ SETTINGS = {
     'window/store-size': True,
     'window/style-sheet': 'Edark',
     'general/confirm-exit': True,
+    'editor/complete-brace': True,
     'editor/complete-bracket': True,
     'editor/complete-paren': True,
     'editor/complete-single-quote': False,
@@ -87,6 +94,16 @@ def load_settings():
         if not SETTINGS['editor/font']:
             SETTINGS['editor/font'] = DEFAULT_FONT
         SETTINGS[key] = settings.value(key, defaultValue=value, type=_type)
+    # Braces
+    if not SETTINGS['editor/complete-paren']:
+        del BRACES['(']
+    if not SETTINGS['editor/complete-bracket']:
+        del BRACES['[']
+    # Comillas
+    if not SETTINGS['editor/complete-single-quote']:
+        QUOTES.remove("''")
+    if not SETTINGS['editor/complete-double-quote']:
+        QUOTES.remove('""')
 
 
 def get_setting(key):

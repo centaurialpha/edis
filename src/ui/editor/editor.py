@@ -5,6 +5,8 @@
 # Copyright 2014-2015 - Gabriel Acosta <acostadariogabriel at gmail>
 # License: GPLv3 (see http://www.gnu.org/licenses/gpl.html)
 
+import re
+
 from PyQt4.QtGui import (
     QColor,
     QToolTip,
@@ -31,14 +33,21 @@ from src.core import settings
 
 # FIXME: Cambiar comentario '//' (C++ style) por '/* */' (C style)
 
+REGEX_STRUCT = re.compile("(typedef struct|struct)\s+\w+")
+
 
 class Editor(base.Base):
 
     # Braces
     BRACE = {
-        '{': '}',
         '(': ')',
         '[': ']'
+        }
+
+    # Quotes
+    QUOTE = {
+        "'": "'",
+        '"': '"'
         }
 
     # Marcadores
@@ -98,8 +107,8 @@ class Editor(base.Base):
         if settings.get_setting('editor/completion'):
             self.active_code_completion()
         # Indentación
-        self.indentation = settings.get_setting('editor/width-indent')
-        self.send("sci_settabwidth", self.indentation)
+        self._indentation = settings.get_setting('editor/width-indent')
+        self.send("sci_settabwidth", self._indentation)
         # Minimapa
         self.minimap = None
         if settings.get_setting('editor/show-minimap'):
@@ -227,7 +236,7 @@ class Editor(base.Base):
     def update_indentation(self):
         ancho = settings.get_setting('editor/width-indent')
         self.send("sci_settabwidth", ancho)
-        self.indentation = ancho
+        self._indentation = ancho
 
     def mark_words(self, palabras):
         self.clear_indicators(Editor.WORD_INDICATOR)
@@ -317,30 +326,59 @@ class Editor(base.Base):
     def keyPressEvent(self, event):
         super(Editor, self).keyPressEvent(event)
         key = event.key()
+        # Borra indicador de palabra
         if key == Qt.Key_Escape:
             self.clear_indicators(Editor.WORD_INDICATOR)
-        # Brace completion
-        if key in (Qt.Key_BraceRight, Qt.Key_BraceLeft,
-                   Qt.Key_BracketRight, Qt.Key_BracketLeft,
-                   Qt.Key_ParenRight, Qt.Key_ParenLeft):
+            return
+        # Completado de comillas
+        if key == Qt.Key_Apostrophe:
+            if settings.get_setting('editor/complete-single-quote'):
+                self._complete_quote(event)
+            return
+        if key == Qt.Key_QuoteDbl:
+            if settings.get_setting('editor/complete-double-quote'):
+                self._complete_quote(event)
+            return
+        # Completado de llaves
+        if key == Qt.Key_BraceLeft:
+            if settings.get_setting('editor/complete-brace'):
+                self._complete_key(event)
+        if key in (Qt.Key_BracketLeft,
+                   Qt.Key_ParenLeft,
+                   Qt.Key_BracketRight,
+                   Qt.Key_ParenRight):
             self._complete_brace(event)
 
+    def _complete_quote(self, event):
+        """ Autocompleta comillas simples y dobles, si existe el complementario
+            el cursor se mueve un espacio.
+        """
+
+        complementary = Editor.QUOTE.get(event.text())
+        line, index = self.getCursorPosition()
+        text_line = self.text(line)
+        portion = text_line[index - 1:index + 1]
+        if portion in settings.QUOTES:
+            self.setSelection(line, index, line, index + 1)
+            self.replaceSelectedText('')
+        else:
+            self.insertAt(complementary, line, index)
+
     def _complete_brace(self, event):
-        """ Autocompleta un brace cuando es abierto '{, (, ['.
-            Si existe el complementario '}, ), ]' el índice del cursor se
+        """ Autocompleta un brace cuando es abierto '(, ['.
+            Si existe el complementario '), ]' el índice del cursor se
             mueve un espacio.
         """
 
-        brace_close = Editor.BRACE.get(event.text(), None)
+        brace_close = settings.BRACES.get(event.text(), None)
         braces_open = list(Editor.BRACE.keys())
         line, index = self.getCursorPosition()
-        if event.key() in (Qt.Key_BraceRight, Qt.Key_BracketRight,
-                           Qt.Key_ParenRight):
+        if event.text() in settings.BRACES.values():
             text_line = self.text(line)
             found = 0
             # Busco un brace cerrado en el texto
             for token in text_line:
-                if token in ('}', ')', ']'):
+                if token in settings.BRACES.values():
                     found += 1
             try:
                 # Brace abierto
@@ -352,10 +390,40 @@ class Editor(base.Base):
                 self.setSelection(line, index, line, index + 1)
                 self.replaceSelectedText('')
             return
-        elif event.key() in (Qt.Key_BraceLeft, Qt.Key_BracketLeft,
-                             Qt.Key_ParenLeft) and brace_close is not None:
+        elif event.text() in settings.BRACES.keys() and brace_close is not None:
             # Inserto el brace complementario
             self.insertAt(brace_close, line, index)
+
+    def _complete_key(self, event):
+        """ Autocompleta llaves en funciones y estructuras.
+            Si se usa typedef en la definición de la estructura se completa
+            la variable.
+         """
+
+        line, index = self.getCursorPosition()
+        text_line = self.text(line)
+        # Estructura
+        if REGEX_STRUCT.match(text_line):
+            if text_line.split()[0] == 'typedef':
+                # Obtengo la variable
+                split_line = text_line.split()
+                if split_line[-1] == '{':
+                    typedef = split_line[-2]
+                else:
+                    typedef = split_line[-1][:-1]
+                text = "}%s;" % typedef.title()
+            else:
+                text = "};"
+            self.insert("\n")
+            self.insertAt(text, line + 1, 0)
+            return
+        # Función
+        portion = text_line[index - 3: index]
+        if ')' in portion:
+            self.insert("\n")
+            current_indentation = self.indentation(line)
+            self.setIndentation(line + 1, current_indentation)
+            self.insertAt('}', line + 1, current_indentation)
 
     def resizeEvent(self, e):
         super(Editor, self).resizeEvent(e)
