@@ -16,8 +16,6 @@ What is this?
 
 .. image:: ./src/images/sources/edis_screenshot.png
 
-.. image:: ./src/images/sources/edis_screenshot_white.png
-
 Awesome features
 ================
 
