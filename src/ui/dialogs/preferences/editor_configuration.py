@@ -28,13 +28,9 @@ from PyQt4.QtGui import (
     )
 
 # Módulos QtCore
-from PyQt4.QtCore import (
-    Qt,
-    #SIGNAL
-    )
+from PyQt4.QtCore import Qt
 
 # Módulos EDIS
-# from src import recursos
 from src.core import settings
 from src.ui.main import Edis
 
@@ -47,7 +43,6 @@ class EditorConfiguration(QTabWidget):
         super(EditorConfiguration, self).__init__()
         self.general = GeneralSection()
         self.display = DisplaySection()
-        #self.theme = ThemeSection()
         self.completion = CompletionSection()
 
         preferences = Edis.get_component("preferences")
@@ -107,11 +102,49 @@ class GeneralSection(QWidget):
         #self.check_minimap_animation.setChecked(
             #settings.get_setting('editor/minimap-animation'))
         #box.addWidget(self.check_minimap_animation, 1, 0)
-        box.addWidget(QLabel(self.tr("Size Area:")), 2, 0)
-        self.spin_area_minimap = QSpinBox()
-        self.spin_area_minimap.setFixedWidth(350)
-        box.addWidget(self.spin_area_minimap, 2, 1)
+        #box.addWidget(QLabel(self.tr("Size Area:")), 2, 0)
+        #self.spin_area_minimap = QSpinBox()
+        #self.spin_area_minimap.setFixedWidth(350)
+        #box.addWidget(self.spin_area_minimap, 2, 1)
         box.setAlignment(Qt.AlignLeft)
+
+        # Cursor
+        group_caret = QGroupBox(self.tr("Caret:"))
+        box = QGridLayout(group_caret)
+        box.setContentsMargins(20, 5, 20, 5)
+        box.setAlignment(Qt.AlignLeft)
+        # Type
+        box.addWidget(QLabel(self.tr("Type:")), 0, 0)
+        self.combo_caret = QComboBox()
+        self.combo_caret.setFixedWidth(300)
+        caret_types = [
+            self.tr('None'),
+            self.tr('Line'),
+            self.tr('Block')
+            ]
+        self.combo_caret.addItems(caret_types)
+        index = settings.get_setting('editor/cursor')
+        self.combo_caret.setCurrentIndex(index)
+        box.addWidget(self.combo_caret, 0, 1)
+        # Width
+        box.addWidget(QLabel(self.tr("Width:")), 1, 0)
+        self.spin_caret_width = QSpinBox()
+        self.spin_caret_width.setFixedWidth(300)
+        if index != 1:
+            self.spin_caret_width.setEnabled(False)
+        self.spin_caret_width.setRange(1, 3)
+        self.spin_caret_width.setValue(
+            settings.get_setting('editor/caret-width'))
+        box.addWidget(self.spin_caret_width, 1, 1, Qt.AlignLeft)
+        # Period
+        box.addWidget(QLabel(self.tr("Period (ms):")), 2, 0)
+        self.slider_caret_period = QSlider(Qt.Horizontal)
+        self.slider_caret_period.setMaximum(500)
+        self.slider_caret_period.setFixedWidth(300)
+        box.addWidget(self.slider_caret_period, 2, 1, Qt.AlignLeft)
+        lcd_caret = QLCDNumber()
+        lcd_caret.setSegmentStyle(QLCDNumber.Flat)
+        box.addWidget(lcd_caret, 2, 3)
 
         # Font
         group_typo = QGroupBox(self.tr("Font:"))
@@ -147,6 +180,7 @@ class GeneralSection(QWidget):
         ## Agrupación
         main_container.addWidget(group_indentation)
         main_container.addWidget(group_minimap)
+        main_container.addWidget(group_caret)
         main_container.addWidget(group_typo)
         main_container.addWidget(group_scheme)
         main_container.addItem(QSpacerItem(0, 10, QSizePolicy.Expanding,
@@ -157,6 +191,13 @@ class GeneralSection(QWidget):
         # Conexiones
         self.combo_scheme.currentIndexChanged['const QString&'].connect(
             self._change_scheme)
+        self.combo_caret.currentIndexChanged[int].connect(
+            self._caret_type_changed)
+        self.slider_caret_period.valueChanged[int].connect(
+            lcd_caret.display)
+
+        self.slider_caret_period.setValue(
+            settings.get_setting('editor/cursor-period'))
 
     def _change_scheme(self, theme):
         theme = theme.split()[0].lower()
@@ -166,7 +207,7 @@ class GeneralSection(QWidget):
             # Restyle
             pass
 
-    def _type_changed(self, index):
+    def _caret_type_changed(self, index):
         self.spin_caret_width.setEnabled(bool(index))
 
     def _load_font(self):
@@ -177,8 +218,6 @@ class GeneralSection(QWidget):
     def save(self):
         """ Guarda las configuraciones del Editor. """
 
-        #FIXME: actualizar autoindent
-        #FIXME: animacion y area de minimap
         use_tabs = bool(self.combo_tabs.currentIndex())
         settings.set_setting('editor/usetabs', use_tabs)
         auto_indent = self.check_autoindent.isChecked()
@@ -192,42 +231,17 @@ class GeneralSection(QWidget):
         settings.set_setting('editor/size-font', font_size)
         scheme = self.combo_scheme.currentText().split()[0].lower()
         settings.set_setting('editor/scheme', scheme)
+        settings.set_setting('editor/cursor',
+                             self.combo_caret.currentIndex())
+        settings.set_setting('editor/caret-width',
+                             self.spin_caret_width.value())
+        settings.set_setting('editor/cursor-period',
+                             self.slider_caret_period.value())
         editor_container = Edis.get_component("principal")
         editor = editor_container.get_active_editor()
         if editor is not None:
             editor.setIndentationsUseTabs(use_tabs)
             editor.load_font(font, font_size)
-        #settings.set_setting('editor/show-margin',
-                             #self.check_margin.isChecked())
-        ##settings.set_setting('editor/width-margin',
-                             #self.slider_margin.value())
-        #settings.set_setting('editor/show-guides',
-                             #self.check_guides.isChecked())
-        #settings.set_setting('editor/show-minimap',
-                             #self.check_minimap.isChecked())
-        #checker_value = self.check_style_checker.isChecked()
-        #settings.set_setting('editor/style-checker', checker_value)
-        #settings.set_setting('editor/indent',
-                             #self.check_indentation.isChecked())
-        #settings.set_setting('editor/width-indent',
-                             #self.slider_indentation.value())
-        #settings.set_setting('editor/cursor',
-                             #self.combo_caret.currentIndex())
-        #settings.set_setting('editor/caret-width',
-                             #self.spin_caret_width.value())
-        #settings.set_setting('editor/cursor-period',
-                             #self.cursor_slider.value())
-        #code_completion = self.check_completion.isChecked()
-        #settings.set_setting('editor/completion', code_completion)
-        #principal = Edis.get_component("principal")
-        #weditor = principal.get_active_editor()
-        #if weditor is not None:
-            ##weditor.load_font(fuente, int(fuente_tam))
-            #weditor.update_options()
-            #weditor.update_margin()
-            #weditor.update_indentation()
-            #weditor.load_checker(checker_value)
-            #weditor.active_code_completion(code_completion)
 
 
 class DisplaySection(QWidget):
@@ -468,41 +482,3 @@ class CompletionSection(QWidget):
 
 
 editor_configuration = EditorConfiguration()
-
-
-## Cursor
-        #grupo_cursor = QGroupBox(self.tr("Caret:"))
-        #box = QGridLayout(grupo_cursor)
-        #box.setAlignment(Qt.AlignLeft)
-        ## Type
-        #box.addWidget(QLabel(self.tr("Type:")), 0, 0)
-        #self.combo_caret = QComboBox()
-        #self.combo_caret.setFixedWidth(300)
-        #caret_types = [
-            #self.tr('None'),
-            #self.tr('Line'),
-            #self.tr('Block')
-            #]
-        #self.combo_caret.addItems(caret_types)
-        #index = settings.get_setting('editor/cursor')
-        #self.combo_caret.setCurrentIndex(index)
-        #box.addWidget(self.combo_caret, 0, 1, Qt.AlignLeft)
-        ## Width
-        #box.addWidget(QLabel(self.tr("Width:")), 1, 0)
-        #self.spin_caret_width = QSpinBox()
-        #self.spin_caret_width.setFixedWidth(300)
-        #if index != 1:
-            #self.spin_caret_width.setEnabled(False)
-        #self.spin_caret_width.setRange(1, 3)
-        #self.spin_caret_width.setValue(
-            #settings.get_setting('editor/caret-width'))
-        #box.addWidget(self.spin_caret_width, 1, 1, Qt.AlignLeft)
-        ## Period
-        #box.addWidget(QLabel(self.tr("Period (ms):")), 2, 0)
-        #self.cursor_slider = QSlider(Qt.Horizontal)
-        #self.cursor_slider.setMaximum(500)
-        #self.cursor_slider.setFixedWidth(300)
-        #box.addWidget(self.cursor_slider, 2, 1, Qt.AlignLeft)
-        #lcd_caret = QLCDNumber()
-        #lcd_caret.setSegmentStyle(QLCDNumber.Flat)
-        #box.addWidget(lcd_caret, 2, 3)
