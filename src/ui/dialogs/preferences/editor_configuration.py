@@ -103,10 +103,10 @@ class GeneralSection(QWidget):
             self.tr("Show minimap (requieres restart)"))
         self.check_minimap.setChecked(settings.get_setting('editor/minimap'))
         box.addWidget(self.check_minimap, 0, 0)
-        self.check_minimap_animation = QCheckBox(self.tr("Enable animation"))
-        self.check_minimap_animation.setChecked(
-            settings.get_setting('editor/minimap-animation'))
-        box.addWidget(self.check_minimap_animation, 1, 0)
+        #self.check_minimap_animation = QCheckBox(self.tr("Enable animation"))
+        #self.check_minimap_animation.setChecked(
+            #settings.get_setting('editor/minimap-animation'))
+        #box.addWidget(self.check_minimap_animation, 1, 0)
         box.addWidget(QLabel(self.tr("Size Area:")), 2, 0)
         self.spin_area_minimap = QSpinBox()
         self.spin_area_minimap.setFixedWidth(350)
@@ -184,8 +184,8 @@ class GeneralSection(QWidget):
         auto_indent = self.check_autoindent.isChecked()
         settings.set_setting('editor/indent', auto_indent)
         settings.set_setting('editor/minimap', self.check_minimap.isChecked())
-        settings.set_setting('editor/minimap-animation',
-                             self.check_minimap_animation.isChecked())
+        #settings.set_setting('editor/minimap-animation',
+                             #self.check_minimap_animation.isChecked())
         font = self.combo_font.currentFont().family()
         settings.set_setting('editor/font', font)
         font_size = self.spin_size_font.value()

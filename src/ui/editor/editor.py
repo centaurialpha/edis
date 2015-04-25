@@ -111,7 +111,7 @@ class Editor(base.Base):
         self.send("sci_settabwidth", self._indentation)
         # Minimapa
         self.minimap = None
-        if settings.get_setting('editor/show-minimap'):
+        if settings.get_setting('editor/minimap'):
             self.minimap = minimap.Minimap(self)
             self.connect(self, SIGNAL("textChanged()"),
                          self.minimap.update_code)
