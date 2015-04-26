@@ -37,6 +37,7 @@ from src.core import (
 from src.managers import file_manager
 
 log = logger.get_logger(__name__)
+DEBUG = log.debug
 ERROR = log.error
 
 
@@ -187,6 +188,7 @@ class TreeProject(QTreeWidget):
     def _create_main_file(self):
         """ Crea el archivo y la función main y lo agrega al árbol"""
 
+        DEBUG("Creating main file...")
         current_item = self.currentItem()
         item_path = os.path.join(current_item.path, 'main.c')
         if os.path.exists(item_path):
@@ -194,6 +196,7 @@ class TreeProject(QTreeWidget):
             QMessageBox.information(self, self.tr("Information"),
                                     self.tr("The <b>main.c</b> file already "
                                     "exists."), QMessageBox.Yes)
+            DEBUG("File aready exists...")
             return
         # Creo el archivo
         file_manager.write_file(item_path, templates.MAIN_TEMPLATE)
@@ -206,6 +209,7 @@ class TreeProject(QTreeWidget):
         editor_container.open_file(item_path)
 
     def _create_file(self):
+        DEBUG("Creating a file...")
         dialog = NewFileDialog(self)
         data = dialog.data
         if data:
@@ -217,6 +221,7 @@ class TreeProject(QTreeWidget):
                 QMessageBox.information(self, self.tr("Information"),
                                         self.tr("A file already exists with "
                                         "that name"), QMessageBox.Ok)
+                DEBUG("A file already exists...")
                 return
             if ftype == 1:
                 # Header file
@@ -228,7 +233,6 @@ class TreeProject(QTreeWidget):
                 # Agrego a la lista de archivos fuente
                 self._sources.append(filename)
             # Creo el archivo
-            #FIXME: file manager
             file_manager.write_file(filename, content)
             if isinstance(current_item, EdisItem):
                 parent = current_item.child(ftype)
@@ -241,6 +245,7 @@ class TreeProject(QTreeWidget):
             editor_container.open_file(filename)
 
     def _create_folder(self):
+        DEBUG("Creating a folder...")
         current_item = self.currentItem()
         qinput = QInputDialog(self)
         qinput.setInputMode(QInputDialog.TextInput)
@@ -255,6 +260,7 @@ class TreeProject(QTreeWidget):
                 QMessageBox.information(self, self.tr("Information"),
                                         self.tr("The folder already exists"),
                                         QMessageBox.Yes)
+                DEBUG("The folder already exists...")
                 return
             # Creo la carpeta
             os.mkdir(path)
@@ -265,6 +271,7 @@ class TreeProject(QTreeWidget):
             folder_item.setExpanded(True)
 
     def _delete_folder(self):
+        DEBUG("Deleting folder...")
         current_item = self.currentItem()
         # Elimino el item del árbol
         index = current_item.parent().indexOfChild(current_item)
@@ -273,6 +280,7 @@ class TreeProject(QTreeWidget):
     def _rename_file(self):
         """ Renombra un archivo """
 
+        DEBUG("Renaming file...")
         current_item = self.currentItem()
         name, ok = QInputDialog.getText(self, self.tr("Rename file"),
                                         self.tr("New name:"),
@@ -304,6 +312,7 @@ class TreeProject(QTreeWidget):
     def _delete_file(self):
         """ Borra fisicamente el archivo y lo quita del árbol """
 
+        DEBUG("Deleting file...")
         current_item = self.currentItem()
         # Flags
         yes = QMessageBox.Yes
