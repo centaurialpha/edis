@@ -49,7 +49,7 @@ class CodePaste(QObject):
         if not self.code:
             raise exceptions.NoPasteCodeError("No paste code was given")
         data = {
-            #'api_option': "paste",
+            'api_option': "paste",
             'api_dev_key': CodePaste.PASTE_DEV_KEY,
             'api_paste_code': self.code,
             'api_paste_name': self._paste_name,

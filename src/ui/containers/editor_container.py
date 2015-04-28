@@ -142,8 +142,12 @@ class EditorContainer(QWidget):
         if obj_file is None:
             obj_file = object_file.EdisFile(filename)
         self.stack.addWidget(self.editor_widget)
-        if isinstance(self.stack.widget(0), start_page.StartPage):
-            self.remove_widget(self.stack.widget(0))
+        # Quito la página de inicio, si está
+        _start_page = self.stack.widget(0)
+        if isinstance(_start_page, start_page.StartPage):
+            self.remove_widget(_start_page)
+            # Detengo el tiimer
+            _start_page.timer.stop()
         weditor = editor.Editor(obj_file)
         self.editor_widget.add_widget(weditor)
         self.editor_widget.add_item_combo(obj_file.filename)

@@ -4,34 +4,68 @@ Rectangle {
     id: root
 
     gradient: Gradient {
-         GradientStop { position: 0.0; color: "#232323" }
-         GradientStop { position: 1.0; color: "#505050" }
+         GradientStop { position: 0.0; color: "#212121" }
+         GradientStop { position: 1.0; color: "#404040" }
      }
 
-    Image { source: "../images/sources/logo.png"; anchors.horizontalCenter: root.horizontalCenter }
+    ParallelAnimation {
+        id: animation
+        running: false
+
+        NumberAnimation { target: showText; property: "opacity"; to: 1; duration: 400 }
+        NumberAnimation { target: showText; property: "x"; to: 0; from: -root.width; duration: 400 }
+    }
+
+    Column {
+        anchors.verticalCenter: root.verticalCenter;
+        anchors.horizontalCenter: root.horizontalCenter;
+        anchors.top: root.top;
+        anchors.topMargin: 30;
+        spacing: 150;
+
+        Image { source: "../images/sources/logo.png"; anchors.horizontalCenter: parent.horizontalCenter;}
+
+        Text {
+            id: showText
+
+            color: "#414141";
+            font.bold: true;
+            font.pointSize: 32;
+            style: Text.Sunken;
+        }
+    }
 
     Text {
         text: qsTr("Copyright © 2014-" + Qt.formatDate(new Date(), "yyyy ") + "Edis under GPLv3+ License")
         font.pointSize: 10
         color: "#FFFFFF"
-        anchors.bottom: parent.bottom
-        anchors.right: parent.right
-        anchors.bottomMargin: 5
-        anchors.rightMargin: 10
-    }
-
-    Text {
-        id: link
-        text: qsTr("<b>Edis</b> is Free Software! <a href='http://centaurialpha.github.io/edis'><span style='color: #0197FD;'>http://centaurialpha.github.io/edis</span></a>")
-        font.pointSize: 10
-        color: "#FFFFFF"
-        anchors.bottom: parent.bottom
-        anchors.left: parent.left
+        style: Text.Raised;
+        anchors.bottom: root.bottom
+        anchors.left: root.left
         anchors.bottomMargin: 5
         anchors.leftMargin: 10
-
-        onLinkActivated: Qt.openUrlExternally(link)
-
     }
 
+    Row {
+        anchors.bottomMargin: 5
+        anchors.rightMargin: 10
+        anchors.bottom: parent.bottom
+        anchors.right: parent.right
+
+        Text {
+            text: qsTr("Powered by: ");
+            color: "white";
+            style: Text.Raised;
+            height: logo.height;
+            verticalAlignment: Text.AlignVCenter;
+        }
+
+        Image { id: logo; source: "../images/sources/python-logo.png"; }
+        Image { source: "../images/sources/qt-logo.png"; }
+    }
+
+    function show_text(text) {
+        animation.start();
+        showText.text = text;
+    }
 }
