@@ -10,7 +10,9 @@ from PyQt4.QtGui import (
     QPalette,
     QPainter,
     QBrush,
-    QColor
+    QColor,
+    QPen,
+    QLinearGradient
     )
 
 from PyQt4.QtCore import Qt
@@ -23,14 +25,32 @@ class LoadingWidget(QWidget):
         palette = QPalette(self.palette())
         palette.setColor(palette.Background, Qt.transparent)
         self.setPalette(palette)
+        self.counter = 0
+
+    def showEvent(self, event):
+        self.timer = self.startTimer(100)
+
+    def timerEvent(self, event):
+        self.counter += 1
+        self.update()
 
     def paintEvent(self, event):
-        qpainter = QPainter()
-        qpainter.begin(self)
-        qpainter.setRenderHint(QPainter.Antialiasing)
-        qpainter.fillRect(event.rect(), QBrush(QColor(255, 255, 255, 200)))
-        font = qpainter.font()
-        font.setPointSize(16)
-        qpainter.setFont(font)
-        qpainter.drawText(event.rect(), Qt.AlignCenter, "Please wait...")
-        qpainter.end()
+        painter = QPainter()
+        painter.begin(self)
+        painter.setRenderHint(QPainter.Antialiasing)
+        painter.fillRect(event.rect(), QBrush(QColor(255, 255, 255, 127)))
+        painter.setPen(QPen(Qt.NoPen))
+
+        for i in range(3):
+            x = self.width() / 2.3 + (30 * i)
+            y = self.height() / 2
+            # Gradiente
+            gradient = QLinearGradient(x + 10, x, y + 10, y)
+            gradient.setColorAt(0, QColor("black"))
+            gradient.setColorAt(1, QColor("gray"))
+            painter.setBrush(QBrush(gradient))
+            if self.counter / 2 % 3 == i:
+                painter.drawEllipse(x, y, 25, 25)
+            else:
+                painter.drawEllipse(x, y, 20, 20)
+        painter.end()
