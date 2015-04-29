@@ -23,7 +23,8 @@ from PyQt4.QtGui import (
 from PyQt4.QtCore import (
     SIGNAL,
     Qt,
-    QSize
+    QSize,
+    pyqtSignal
     )
 
 from src.ui.editor import editor
@@ -31,6 +32,9 @@ from src.ui.main import Edis
 
 
 class EditorWidget(QWidget):
+
+    # Señales
+    allFilesClosed = pyqtSignal()
 
     def __init__(self):
         super(EditorWidget, self).__init__()
@@ -159,7 +163,7 @@ class EditorWidget(QWidget):
             if self.current_widget() is not None:
                 self.current_widget().setFocus()
             else:
-                self.emit(SIGNAL("allFilesClosed()"))
+                self.allFilesClosed.emit()
 
     def add_symbols(self, symbols):
         self.combo.add_symbols_combo(symbols)

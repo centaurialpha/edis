@@ -119,6 +119,7 @@ QScrollBar::handle:horizontal:hover {
 QMenuBar,
 QStatusBar {
     background-color: #212121;
+    color: #FFFFFF;
 }
 
 QMenuBar::item {

@@ -16,7 +16,7 @@ from PyQt4.QtGui import (
 # Módulos QtCore
 from PyQt4.QtCore import (
     Qt,
-    SIGNAL
+    pyqtSignal
     )
 
 from src.ui.containers.output import process
@@ -24,6 +24,7 @@ from src.ui.main import Edis
 
 
 class OutputContainer(QDockWidget):
+    goToLine = pyqtSignal(int)
 
     def __init__(self):
         QDockWidget.__init__(self)
@@ -39,7 +40,7 @@ class OutputContainer(QDockWidget):
 
         # Conexiones
         key_escape = QShortcut(QKeySequence(Qt.Key_Escape), self)
-        self.connect(key_escape, SIGNAL("activated()"), self.hide)
+        key_escape.activated.connect(self.hide)
 
         Edis.load_component("output", self)
 

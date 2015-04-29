@@ -56,6 +56,7 @@ class EditorContainer(QWidget):
 
     # Señales
     closedFile = pyqtSignal(int)
+    savedFile = pyqtSignal('QString')
     cursorPosition = pyqtSignal(int, int, int)
     updateSymbols = pyqtSignal('PyQt_PyObject')
     fileChanged = pyqtSignal('QString')
@@ -341,6 +342,7 @@ class EditorContainer(QWidget):
         weditor.saved()
         # System watcher
         weditor.obj_file.run_system_watcher()
+        self.savedFile.emit(weditor.filename)
         return weditor.filename
 
     def save_file_as(self, weditor=None):
@@ -357,7 +359,8 @@ class EditorContainer(QWidget):
         weditor.obj_file.write(content, filename)
         weditor.saved()
         weditor.obj_file.run_system_watcher()
-        self.emit(SIGNAL("fileChanged(QString)"), filename)
+        self.fileChanged.emit(weditor.filename)
+        self.savedFile.emit(weditor.filename)
         return filename
 
     def save_selected(self, filename):

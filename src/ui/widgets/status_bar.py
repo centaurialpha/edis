@@ -7,71 +7,90 @@
 
 from PyQt4.QtGui import (
     QStatusBar,
-    QWidget,
-    QHBoxLayout,
-    QLabel
+    #QWidget,
+    #QHBoxLayout,
+    #QLabel
     )
 
-from PyQt4.QtCore import QTimer
+#from PyQt4.QtCore import QTimer
 
 from src.ui.main import Edis
 
 
-class BarraDeEstado(QStatusBar):
-
-    def __init__(self, parent=None):
-        super(BarraDeEstado, self).__init__()
-        # Widgets
-        self.uptime_widget = UpTimeWidget()
-        self.lbl_archivo = QLabel(self.tr(""))
-        # Contenedor
-        contenedor = QWidget()
-        box = QHBoxLayout(contenedor)
-        box.setContentsMargins(0, 0, 10, 0)
-        # box.addWidget(self.cursor_widget)
-        box.addWidget(self.uptime_widget)
-
-        # Agregar contenedor al status bar
-        self.addWidget(self.lbl_archivo)
-        self.addPermanentWidget(contenedor)
-
-        Edis.load_component("status_bar", self)
-
-    def update_status(self, filename):
-        self.lbl_archivo.setText(filename)
-
-
-class UpTimeWidget(QLabel):
+class StatusBar(QStatusBar):
+    """ Implementación de Barra de Estado """
 
     def __init__(self):
-        super(UpTimeWidget, self).__init__()
-        self.setObjectName("status_label")
-        self.setStyleSheet("font: 10pt;")
-        # Inicio
-        self.tiempo = 0
+        QStatusBar.__init__(self)
+        self.hide()
+        Edis.load_component("status_bar", self)
 
-        self.setText("Uptime: {0}min".format(self.tiempo))
+        # Conexiones
+        self.messageChanged.connect(self._clean_status)
 
-        # Timer
-        self.timer = QTimer()
-        self.timer.setInterval(60000)
-        self.timer.timeout.connect(self.update_time)
-        self.timer.start()
+    def _clean_status(self, msg):
+        if not msg:
+            self.hide()
 
-    def update_time(self):
-        """ Actualiza el label cada 60 segundos """
-
-        self.tiempo += 1
-        if self.tiempo == 60:
-            tiempo = "1hr"
-        elif self.tiempo > 60:
-            horas = int(str(self.tiempo / 60).split('.')[0])
-            hora = str(horas) + "hs"
-            minutos = str(self.tiempo - (horas * 60)) + "min"
-            tiempo = hora + minutos
-        else:
-            tiempo = str(self.tiempo) + "min"
-        self.setText("Uptime: {0}".format(tiempo))
+    def show_message(self, msg):
+        self.show()
+        self.showMessage(self.tr("File saved: {0}").format(msg), 4000)
 
 
-barra_de_estado = BarraDeEstado()
+status_bar = StatusBar()
+
+#class BarraDeEstado(QStatusBar):
+
+    #def __init__(self, parent=None):
+        #super(BarraDeEstado, self).__init__()
+        ## Widgets
+        #self.uptime_widget = UpTimeWidget()
+        #self.lbl_archivo = QLabel(self.tr(""))
+        ## Contenedor
+        #contenedor = QWidget()
+        #box = QHBoxLayout(contenedor)
+        #box.setContentsMargins(0, 0, 10, 0)
+        ## box.addWidget(self.cursor_widget)
+        #box.addWidget(self.uptime_widget)
+
+        ## Agregar contenedor al status bar
+        #self.addWidget(self.lbl_archivo)
+        #self.addPermanentWidget(contenedor)
+
+        #Edis.load_component("status_bar", self)
+
+    #def update_status(self, filename):
+        #self.lbl_archivo.setText(filename)
+
+
+#class UpTimeWidget(QLabel):
+
+    #def __init__(self):
+        #super(UpTimeWidget, self).__init__()
+        #self.setObjectName("status_label")
+        #self.setStyleSheet("font: 10pt;")
+        ## Inicio
+        #self.tiempo = 0
+
+        #self.setText("Uptime: {0}min".format(self.tiempo))
+
+        ## Timer
+        #self.timer = QTimer()
+        #self.timer.setInterval(60000)
+        #self.timer.timeout.connect(self.update_time)
+        #self.timer.start()
+
+    #def update_time(self):
+        #""" Actualiza el label cada 60 segundos """
+
+        #self.tiempo += 1
+        #if self.tiempo == 60:
+            #tiempo = "1hr"
+        #elif self.tiempo > 60:
+            #horas = int(str(self.tiempo / 60).split('.')[0])
+            #hora = str(horas) + "hs"
+            #minutos = str(self.tiempo - (horas * 60)) + "min"
+            #tiempo = hora + minutos
+        #else:
+            #tiempo = str(self.tiempo) + "min"
+        #self.setText("Uptime: {0}".format(tiempo))

@@ -214,28 +214,20 @@ class Edis(QMainWindow):
             editor_container.add_start_page()
 
         # Conexiones
-        self.connect(editor_container, SIGNAL("fileChanged(QString)"),
-                     self._update_status)
-        self.connect(editor_container, SIGNAL("fileChanged(QString)"),
-                     self._change_title)
-        self.connect(editor_container.editor_widget,
-                     SIGNAL("allFilesClosed()"),
-                     self._all_closed)
-        self.connect(output_widget, SIGNAL("goToLine(int)"),
-                     editor_container.go_to_line)
+        editor_container.savedFile['QString'].connect(self._show_status)
+        editor_container.fileChanged['QString'].connect(self._change_title)
+        editor_container.editor_widget.allFilesClosed.connect(self._all_closed)
+        output_widget.goToLine[int].connect(editor_container.go_to_line)
 
         return editor_container
 
-    def _update_status(self, archivo):
-        """ Actualiza el path del archivo en la barra de estado """
-
-        self.status_bar.update_status(archivo)
+    def _show_status(self, msg):
+        self.status_bar.show_message(msg)
 
     def _all_closed(self):
-        """ Limpia la barra de estado y el título de la ventana """
+        """ Limpia el título de la ventana """
 
         self.setWindowTitle('{' + ui.__edis__ + '}')
-        self._update_status("")
 
     def _change_title(self, title):
         """ Cambia el título de la ventana (filename - {EDIS}) """
