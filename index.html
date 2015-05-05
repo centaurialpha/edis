@@ -1,90 +1,23 @@
-<!DOCTYPE html>
-<html>
+---
+layout: default
+---
 
-  <head>
-    <meta charset='utf-8'>
-    <meta http-equiv="X-UA-Compatible" content="chrome=1">
-    <meta name="description" content="Edis : a simple cross-platform IDE  for C">
+<div class="home">
 
-    <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/stylesheet.css">
+  <h1 class="page-heading">Posts</h1>
 
-    <title>Edis</title>
-  </head>
+  <ul class="post-list">
+    {% for post in site.posts %}
+      <li>
+        <span class="post-meta">{{ post.date | date: "%b %-d, %Y" }}</span>
 
-  <body>
+        <h2>
+          <a class="post-link" href="{{ post.url | prepend: site.baseurl }}">{{ post.title }}</a>
+        </h2>
+      </li>
+    {% endfor %}
+  </ul>
 
-    <!-- HEADER -->
-    <div id="header_wrap" class="outer">
-        <header class="inner">
-          <a id="forkme_banner" href="https://github.com/centaurialpha/edis">Ver en GitHub</a>
+  <p class="rss-subscribe">subscribe <a href="{{ "/feed.xml" | prepend: site.baseurl }}">via RSS</a></p>
 
-          <img id="logo" src="images/edis.png" width="100"; height="100"; style="border: none;" />
-          <h1 id="project_title">Edis</h1>
-          <h2 id="project_tagline">a simple cross-platform IDE  for C</h2>
-
-            <section id="downloads">
-              <a class="zip_download_link" href="https://github.com/centaurialpha/edis/zipball/master">Download this project as a .zip file</a>
-              <a class="tar_download_link" href="https://github.com/centaurialpha/edis/tarball/master">Download this project as a tar.gz file</a>
-            </section>
-        </header>
-    </div>
-
-    <!-- MAIN CONTENT -->
-    <div id="main_content_wrap" class="outer">
-      <section id="main_content" class="inner">
-        <h2>¿Qué es EDIS?</h2>
-<p><b>EDIS</b> (de <b>E</b>ntorno de <b>D</b>esarrollo <b>I</b>ntegrado <b>S</b>imple) es un IDE libre, gratuito y multiplataforma para el lenguaje de programación C potenciado por <a href="https://python.org">Python</a>. Presenta una interfáz simple y amigable con funcionalidades avanzadas que ayudan al desarrollo.</p>
-        <h3>Algunas características </h3>
-          <div id="contenedor">
-              <h5>Awesome editor!</h5>
-              <img src="images/highlighter.png" />
-              <p>EDIS posee un completo editor de código con resaltado<br>de sintáxis, plegado, resaltado de braces<br>({}, [], (), <>)
-                 búsqueda y reemplazo de palabras,<br>minimapa, auto-indentación, y más!
-              </p>
-              <h5>Static error checker</h5>
-              <img src="images/checker.png" />
-              <p>El analizador stático de errores detecta<br>principalmente los tipos de errores que el compilador<br>normalmente no los detecta, por ejemplo: índices fuera<br>de rango, advierte si se utilizan funciones obsoletas,<br>variables sin inicializar, funciones y variables sin<br>utilizar, pérdidas de memoria, etc.</p>
-                  
-              </p>
-          </div>
-          <div id="contenedor2">
-              <h5>Tree symbols</h5>
-              <img src="images/simbolos.png" />
-              <p>El árbol de símbolos es de gran ayuda, puedes moverte<br>hacia la definición con solo clickear sobre uno de ellos.<br>Soporta variables globales, funciones, uniones y<br>estructuras.</p>
-          </div>
-      </section>
-    </div>
-    <div id="secundary_content" class="outer">
-        <section id="main_content" class="inner">
-            <h2>Instalando EDIS</h2>
-            <h6>GNU/Linux</h6>
-            <p>Desde el código fuente:</p>
-            <pre>python setup.py install</pre>
-            <p>Si tienes problemas de permisos, agrega <code>sudo</code>al principio.</p>
-            <h6>Windows/Mac</h6>
-            <p>Como no existen paquetes de instalación por el momento, puedes ejecutar EDIS desde el código fuente:</p>
-            <pre>python edis.py</pre>
-            <h2>Cómo colaborar?</h2>
-            <p>Hay varias maneras de colaborar con el proyecto.</p>
-            <h6>Reportando bugs</h6>
-            <p>Existe una página de <a href="http://github.com/centaurialpha/edis/issues">issues</a> en donde puedes abrir un nuevo tema y detallar el problema. También puedes publicar sugerencias de nuevas funcionalidades.</p>
-            <h6>Codeando</h6>
-            <p>Si sabes programar en Python entonces puedes colaborar en el código fuente.</p>
-            <h6>Empaquetando</h6>
-            <p>Actualmente no existen paquetes de instalación (Windows y Mac).</p>
-            
-        </section>
-    </div>
-    <!-- FOOTER  -->
-    <div id="footer_wrap" class="outer">
-      <footer class="inner">
-        <p class="copyright">Edis maintained by <a href="https://twitter.com/_alfacentauri">Gabo</a></p>
-        <div id="footer">
-            <img src="images/python.png" style="border: none; box-shadow: none;" />
-            <img src="images/qt.png" width:"60px"; height="60px"; style="border: none; box-shadow: none" />
-            <img src="images/gplv3.png" style="border: none; box-shadow: none;" />
-        </div>
-      </footer>
-    </div>
-  </body>
-</html>
+</div>
