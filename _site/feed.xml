@@ -4,10 +4,10 @@
     <title>Your awesome title</title>
     <description>Write an awesome description for your new site here. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.
 </description>
-    <link>http://yourdomain.com/</link>
-    <atom:link href="http://yourdomain.com/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Tue, 05 May 2015 03:20:29 -0300</pubDate>
-    <lastBuildDate>Tue, 05 May 2015 03:20:29 -0300</lastBuildDate>
+    <link>http://centaurialpha.github.io/edis/edis/</link>
+    <atom:link href="http://centaurialpha.github.io/edis/edis/feed.xml" rel="self" type="application/rss+xml"/>
+    <pubDate>Tue, 05 May 2015 18:36:15 -0300</pubDate>
+    <lastBuildDate>Tue, 05 May 2015 18:36:15 -0300</lastBuildDate>
     <generator>Jekyll v2.5.3</generator>
     
   </channel>
