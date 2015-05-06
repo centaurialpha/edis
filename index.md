@@ -2,6 +2,7 @@
 title: Edis
 ---
 <title>{Edis}</title>
+<link rel="shortcut icon" type="image/png" href="img/favicon.png"/>
 
 {Edis} - a simple cross-platform IDE for C
 ==========================================
