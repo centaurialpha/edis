@@ -63,6 +63,10 @@ class EdisFile(QObject):
         """ Escribe los datos en el archivo """
 
         DEBUG("Saving file...")
+        # Por defecto, si el archivo no tiene extensión se agrega .c
+        ext = os.path.splitext(new_filename)
+        if not ext[-1]:
+            new_filename += '.c'
         if self.is_new:
             self._filename = new_filename
             self._is_new = False
