@@ -65,6 +65,7 @@ class EdisFile(QObject):
         DEBUG("Saving file...")
         if self.is_new:
             self._filename = new_filename
+            self._is_new = False
         _file = QFile(self.filename)
         if not _file.open(QIODevice.WriteOnly | QIODevice.Truncate):
             raise exceptions.EdisIOError
