@@ -14,7 +14,12 @@ title: Edis
 * ![alt tag](img/linux.png)  GNU/Linux
  
 * ![alt tag](img/fuente.gif) Código Fuente
-   
+
+<div align="right">   
+<div style="display: inline-block"><iframe src="http://ghbtns.com/github-btn.html?user=centaurialpha&repo=edis&type=watch&count=true" allowtransparency="true" frameborder="0" scrolling="0" width="110" height="20"></iframe></div>
+<div style="display: inline-block"><iframe src="http://ghbtns.com/github-btn.html?user=centaurialpha&repo=edis&type=fork&count=true" allowtransparency="true" frameborder="0" scrolling="0" width="95" height="20"></iframe></div>
+</div>
+
 ---
 *Copyright © 2014-2015 Gabriel Acosta*
 ---
