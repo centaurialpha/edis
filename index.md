@@ -1,6 +1,7 @@
 ---
 title: Edis
 ---
+<title>{Edis}</title>
 
 {Edis} - a simple cross-platform IDE for C
 ==========================================
