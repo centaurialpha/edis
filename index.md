@@ -7,7 +7,7 @@ title: Edis
 
 *Elige tu sabor favorito de la última versión (2.0)*
 
-* ![alt tag](/img/windows.png) Windows
+* ![alt tag](img/windows.png) Windows
    * [Edis-2.0-windows](https://#)
 * ![alt tag](/img/linux.png)  GNU/Linux
  
