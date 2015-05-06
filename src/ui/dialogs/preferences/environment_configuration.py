@@ -50,7 +50,7 @@ class EnvironmentConfiguration(QTabWidget):
     def __init__(self, parent=None):
         super(EnvironmentConfiguration, self).__init__()
         self.general_section = GeneralSection()
-        self.shortcut_section = ShortcutSection()
+        #self.shortcut_section = ShortcutSection()
 
         preferences = Edis.get_component("preferences")
         preferences.install_section(self)
