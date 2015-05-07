@@ -3,10 +3,7 @@ import QtQuick 1.1
 Rectangle {
     id: root
 
-    gradient: Gradient {
-         GradientStop { position: 0.0; color: "#212121" }
-         GradientStop { position: 1.0; color: "#404040" }
-     }
+    color: "#212121"
 
     ParallelAnimation {
         id: animation
@@ -23,15 +20,14 @@ Rectangle {
         anchors.topMargin: 30;
         spacing: 150;
 
-        Image { source: "../images/sources/logo.png"; anchors.horizontalCenter: parent.horizontalCenter;}
+        Image { source: "../images/sources/logo.png"; anchors.horizontalCenter: parent.horizontalCenter }
 
         Text {
             id: showText
 
-            color: "#414141";
+            color: "#292929";
             font.bold: true;
             font.pointSize: 32;
-            style: Text.Sunken;
         }
     }
 
