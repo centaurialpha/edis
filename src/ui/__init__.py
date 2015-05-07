@@ -22,4 +22,4 @@ __qt__ = "https://qt.digia.com/"
 __pyqt__ = "http://www.riverbankcomputing.co.uk/software/pyqt/intro"
 __bug_link__ = "http://github.com/centaurialpha/edis/issues/new"
 __web_version__ = \
-    "https://raw.githubusercontent.com/centaurialpha/edis/master/version"
+    "https://raw.githubusercontent.com/centaurialpha/edis/gh-pages/version.json"

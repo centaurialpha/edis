@@ -6,6 +6,7 @@
 # License: GPLv3 (see http://www.gnu.org/licenses/gpl.html)
 
 import webbrowser
+import json
 from urllib import request
 
 from PyQt4.QtGui import (
@@ -78,14 +79,15 @@ class Thread(QThread):
 
     def run(self):
         DEBUG("Searching updates...")
+        found = False
         try:
-            found = False
-            web_version = request.urlopen(
-                ui.__web_version__).read().decode('utf-8').strip()
+            response = request.urlopen(ui.__web_version__)
+            data = json.loads(response.read().decode('utf8'))
+            web_version, link = data['version'], data['link']
             current_version = ui.__version__
             if current_version < web_version:
                 found = True
         except:
-            web_version = ''
+            web_version, link = '', ''
             INFO("No se pudo establecer la conexión")
-        self.updateVersion.emit(web_version, ui.__web__, found)
+        self.updateVersion.emit(web_version, link, found)
