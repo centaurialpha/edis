@@ -233,13 +233,18 @@ class ComboContainer(QWidget):
 
         menu = QMenu()
         editor_container = Edis.get_component("principal")
-        save_as_action = menu.addAction(self.tr("Save as"))
-        reload_action = menu.addAction(self.tr("Reload"))
+        save_as_action = menu.addAction(QIcon(":image/save-as"),
+                                        self.tr("Save as"))
+        reload_action = menu.addAction(QIcon(":image/reload"),
+                                       self.tr("Reload"))
         menu.addSeparator()
-        compile_action = menu.addAction(self.tr("Build"))
-        execute_action = menu.addAction(self.tr("Run"))
+        compile_action = menu.addAction(QIcon(":image/build"),
+                                        self.tr("Build"))
+        execute_action = menu.addAction(QIcon(":image/run"),
+                                        self.tr("Run"))
         menu.addSeparator()
-        close_action = menu.addAction(self.tr("Close file"))
+        close_action = menu.addAction(QIcon(":image/close"),
+                                      self.tr("Close file"))
 
         # Conexiones
         self.connect(save_as_action, SIGNAL("triggered()"),

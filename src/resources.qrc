@@ -41,12 +41,17 @@
         <file alias="down">images/draw-arrow-down.png</file>
         <file alias="up">images/draw-arrow-up.png</file>
         <file alias="general-pref">images/preferences-desktop.png</file>
-        <file alias="editor-pref">images/preferences-desktop-peripherals.png</file>
         <file alias="back">images/draw-arrow-back.png</file>
         <file alias="forward">images/draw-arrow-forward.png</file>
-        <file alias="theme">images/preferences-desktop-wallpaper.png</file>
         <file alias="bug">images/bug.png</file>
         <file alias="arrow-up">images/arrow-up.png</file>
         <file alias="arrow-down">images/arrow-down.png</file>
+        <file alias="compiler-pref">images/preferences-compiler.png</file>
+        <file alias="editor-pref">images/preferences-editor.png</file>
+        <file alias="rename">images/edit-rename.png</file>
+        <file alias="new-folder">images/folder-new.png</file>
+        <file alias="recent">images/document-open-recent.png</file>
+        <file alias="remove">images/remove-file.png</file>
+        <file alias="add">images/add-file.png</file>
     </qresource>
 </RCC>

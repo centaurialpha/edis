@@ -20,7 +20,8 @@ from PyQt4.QtGui import (
     QHBoxLayout,
     QComboBox,
     QPushButton,
-    QInputDialog
+    QInputDialog,
+    QIcon
     )
 
 from PyQt4.QtCore import (
@@ -94,10 +95,13 @@ class TreeProject(QTreeWidget):
         """ Carga el menú para el root """
 
         menu = QMenu(self)
-        create_file_action = menu.addAction(self.tr("Add File"))
-        create_folder_action = menu.addAction(self.tr("Add Folder"))
+        create_file_action = menu.addAction(QIcon(":image/add"),
+                                            self.tr("Add File"))
+        create_folder_action = menu.addAction(QIcon(":image/new-folder"),
+                                              self.tr("Add Folder"))
         menu.addSeparator()
-        close_project_action = menu.addAction(self.tr("Close Project"))
+        close_project_action = menu.addAction(QIcon(":image/exit"),
+                                              self.tr("Close Project"))
 
         # Conexiones
         self.connect(create_file_action, SIGNAL("triggered()"),
@@ -113,8 +117,10 @@ class TreeProject(QTreeWidget):
         """ Carga el menú para un ítem archivo """
 
         menu = QMenu(self)
-        rename_action = menu.addAction(self.tr("Rename File"))
-        delete_action = menu.addAction(self.tr("Delete File"))
+        rename_action = menu.addAction(QIcon(":image/rename"),
+                                       self.tr("Rename File"))
+        delete_action = menu.addAction(QIcon(":image/remove"),
+                                       self.tr("Delete File"))
         menu.addSeparator()
         properties_action = menu.addAction(self.tr("Properties File"))
 
@@ -130,10 +136,13 @@ class TreeProject(QTreeWidget):
         """ Carga el menú para un ítem carpeta """
 
         menu = QMenu(self)
-        create_file_action = menu.addAction(self.tr("Add File"))
-        create_folder_action = menu.addAction(self.tr("Add Folder"))
+        create_file_action = menu.addAction(QIcon(":image/add"),
+                                            self.tr("Add File"))
+        create_folder_action = menu.addAction(QIcon(":image/new-folder"),
+                                              self.tr("Add Folder"))
         menu.addSeparator()
-        delete_folder_action = menu.addAction(self.tr("Delete Folder"))
+        delete_folder_action = menu.addAction(QIcon(":image/remove"),
+                                              self.tr("Delete Folder"))
 
         # Conexiones
         self.connect(create_file_action, SIGNAL("triggered()"),
@@ -149,15 +158,18 @@ class TreeProject(QTreeWidget):
         """ Carga el menú para el root (proyecto de Edis) """
 
         menu = QMenu(self)
-        create_file_action = menu.addAction(self.tr("Add file"))
+        create_file_action = menu.addAction(QIcon(":image/add"),
+                                            self.tr("Add file"))
         create_main_file_action = menu.addAction(self.tr("Add Main File"))
         menu.addSeparator()
-        build_project_action = menu.addAction(self.tr("Build Project"))
+        build_project_action = menu.addAction(QIcon(":image/build"),
+                                              self.tr("Build Project"))
         clean_project_action = menu.addAction(self.tr("Clean"))
         menu.addSeparator()
         properties_action = menu.addAction(self.tr("Project Properties"))
         menu.addSeparator()
-        close_project_action = menu.addAction(self.tr("Close Project"))
+        close_project_action = menu.addAction(QIcon(":image/exit"),
+                                              self.tr("Close Project"))
 
         # Conexiones
         self.connect(create_file_action, SIGNAL("triggered()"),

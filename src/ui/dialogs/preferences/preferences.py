@@ -62,7 +62,7 @@ class Preferences(QDialog):
 
         box = QHBoxLayout()
         box.setContentsMargins(0, 0, 0, 0)
-        box.setSpacing(20)
+        box.setSpacing(0)
         toolbar = QToolBar()
         toolbar.setToolButtonStyle(4)
         toolbar.setOrientation(Qt.Vertical)
@@ -74,7 +74,7 @@ class Preferences(QDialog):
         editor_section = toolbar.addAction(
             QIcon(":image/editor-pref"), "Editor")
         compiler_section = toolbar.addAction(
-            QIcon(":image/build"), "Compiler")
+            QIcon(":image/compiler-pref"), "Compiler")
         self.connect(environment_section, SIGNAL("triggered()"),
                      lambda: self.change_widget(0))
         self.connect(editor_section, SIGNAL("triggered()"),
@@ -85,7 +85,7 @@ class Preferences(QDialog):
         # Set size
         for action in toolbar.actions():
             widget = toolbar.widgetForAction(action)
-            widget.setFixedSize(110, 25)
+            widget.setFixedSize(80, 25)
 
         box.addWidget(toolbar)
 

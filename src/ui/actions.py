@@ -23,7 +23,6 @@ ACTIONS = ([
         "shortcut": "open"},
     {
         "name": translate("EDIS", "Open recent file"),
-        "icon": "open-recent",
         "menu": True,
         "separator": True},
     {
