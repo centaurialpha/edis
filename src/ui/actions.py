@@ -58,6 +58,7 @@ ACTIONS = ([
         "name": translate("EDIS", "Properties"),
         "icon": "properties",
         "connection": "file_properties",
+        "shortcut": "properties",
         "separator": True},
     {
         "name": translate("EDIS", "Exit"),
@@ -226,7 +227,8 @@ ACTIONS = ([
         "connection": "clean_construction"}], [
     {
         "name": translate("EDIS", "Code Pasting"),
-        "connection": "code_pasting"}], [
+        "connection": "code_pasting",
+        "shortcut": "cpaste"}], [
     # Menú acerca de
     {
         "name": translate("EDIS", "Report bug!"),

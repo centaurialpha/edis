@@ -56,6 +56,7 @@ KEYMAP = {
     "find": QKeySequence(Qt.CTRL + Qt.Key_F),
     "find-replace": QKeySequence(Qt.CTRL + Qt.Key_H),
     "go": QKeySequence(Qt.CTRL + Qt.Key_J),
+    "cpaste": QKeySequence(Qt.CTRL + Qt.Key_P),
     }
 
 

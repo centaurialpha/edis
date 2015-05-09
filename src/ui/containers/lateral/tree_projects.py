@@ -100,6 +100,8 @@ class TreeProject(QTreeWidget):
         create_folder_action = menu.addAction(QIcon(":image/new-folder"),
                                               self.tr("Add Folder"))
         menu.addSeparator()
+        refresh_project_action = menu.addAction(QIcon(":image/reload"),
+                                                self.tr("Refresh Project"))
         close_project_action = menu.addAction(QIcon(":image/exit"),
                                               self.tr("Close Project"))
 
@@ -108,6 +110,8 @@ class TreeProject(QTreeWidget):
                      self._create_file)
         self.connect(create_folder_action, SIGNAL("triggered()"),
                     self._create_folder)
+        self.connect(refresh_project_action, SIGNAL("triggered()"),
+                     self._refresh_project)
         self.connect(close_project_action, SIGNAL("triggered()"),
                     self._close_project)
 
@@ -121,14 +125,10 @@ class TreeProject(QTreeWidget):
                                        self.tr("Rename File"))
         delete_action = menu.addAction(QIcon(":image/remove"),
                                        self.tr("Delete File"))
-        menu.addSeparator()
-        properties_action = menu.addAction(self.tr("Properties File"))
 
         self.connect(rename_action, SIGNAL("triggered()"),
                      self._rename_file)
         self.connect(delete_action, SIGNAL("triggered()"), self._delete_file)
-        self.connect(properties_action, SIGNAL("triggered()"),
-                     self._show_properties_files)
 
         menu.exec_(self.mapToGlobal(point))
 
@@ -188,6 +188,9 @@ class TreeProject(QTreeWidget):
         menu.exec_(self.mapToGlobal(point))
 
     def _clean_project(self):
+        pass
+
+    def _refresh_project(self):
         pass
 
     def _project_properties(self):
@@ -317,9 +320,6 @@ class TreeProject(QTreeWidget):
                 ERROR("The file already exists: {0}".format(reason.filename))
                 QMessageBox.critical(self, self.tr("Error"),
                                      self.tr("The file already exists"))
-
-    def _show_properties_files(self):
-        pass
 
     def _delete_file(self):
         """ Borra fisicamente el archivo y lo quita del árbol """
