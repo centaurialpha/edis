@@ -12,7 +12,7 @@ Edis-IDE
 What is this?
 =============
 
-**Edis** is a free cross-platform IDE for C programming language, developed in pure Python, using PyQt for the UI, has simple interface but with advanced functionalities.
+**Edis** is a free cross-platform IDE for C programming language, developed in pure Python, using PyQt for the UI, has simple interface but with advanced features.
 
 .. image:: ./src/images/sources/edis_screenshot.png
 
@@ -26,7 +26,7 @@ Awesome features
 * **Code style checker**
 * **File selector**
 * **Tree symbols**
-* **Auto completion based on document and keywords**
+* **Autocompletion based on document and keywords**
 * **Markers**
 
 Platforms
@@ -71,7 +71,7 @@ Running from source code
 
 Download the latest `Edis-win-installer <https://github.com/centaurialpha/edis/releases>`_
 
-Tests status
+Test status
 ============
 
 **Edis** has automated tests that run through  `Travis CI <https://travis-ci.org>`_.
