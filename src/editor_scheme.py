@@ -7,7 +7,7 @@
 
 # Edis Scheme
 EDIS_DARK_SCHEME = {
-    'BackgroundEditor': '#0E0F12',
+    'BackgroundEditor': '#1D1F21',
     'Color': '#E2E2E5',
     'Keyword': '#7E8AA2',
     'Comment': '#3F3F3F',
@@ -21,14 +21,14 @@ EDIS_DARK_SCHEME = {
     'MatchedBraceBack': '#044888',
     'UnmatchedBraceFore': '#FFFFFF',
     'UnmatchedBraceBack': '#FF0000',
-    'Margin': '#808080',
+    'Margin': '#333333',
     'CaretLineBack': '#DEDEDE',
     'CaretLineFore': '#FFFFFF',
     'CaretLineAlpha': 20,
-    'SidebarBack': '#262626',
-    'SidebarFore': '#8C8C8C',
-    'FoldMarginBack': '#262626',
-    'FoldMarginFore': '#262626',
+    'SidebarBack': '#292c2f',
+    'SidebarFore': "#555555",
+    'FoldMarginBack': '#292c2f',
+    'FoldMarginFore': '#292c2f',
     'FoldMarkerFore': '#FFFFFF',
     'FoldMarkerBack': '#000000',
     'error': '#DF3E3E'
