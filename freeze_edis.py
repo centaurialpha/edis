@@ -8,6 +8,7 @@
 
 import os
 from cx_Freeze import setup, Executable
+from src import ui
 
 opt = {
     'build_exe': {
@@ -31,9 +32,9 @@ exe = Executable(
     )
 
 setup(
-    name='Edis',
-    version='1.0',
-    author='Edis Team',
+    name=ui.__edis__,
+    version=ui.__version__,
+    author=ui.__author__,
     options=opt,
     packages=paquetes,
     package_data={},
