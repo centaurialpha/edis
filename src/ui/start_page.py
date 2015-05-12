@@ -25,10 +25,13 @@ TEXTS = [
     "Open a file with Ctrl+O",
     "Change editor with Ctrl+M",
     "Create a new project with Ctrl+Shift+N",
-    "Find a word in the text with Ctrl+F",
+    "Find a word in the code with Ctrl+F",
     "Go to a line and/or column with Ctrl+J",
     "Replace a word with Ctrl+H",
-    "Share code with Ctrl+P"
+    "Share code with Ctrl+P",
+    "Build the program with Ctrl+B",
+    "Build and Run the program with Ctrl+F10",
+    "Found a problem? Report it from the Help menu"
     ]
 
 WELCOME = "Welcome to Edis!"
