@@ -10,7 +10,7 @@ translate = QApplication.translate
 
 ACTIONS = ([
     {
-        "name": translate("EDIS", "New file"),
+        "name": translate("EDIS", "New File"),
         "connection": "create_editor",
         "shortcut": "new"},
     {
@@ -18,26 +18,26 @@ ACTIONS = ([
         "connection": "create_new_project",
         "shortcut": "new-project"},
     {
-        "name": translate("EDIS", "Open file"),
+        "name": translate("EDIS", "Open File"),
         "connection": "open_file",
         "shortcut": "open"},
     {
-        "name": translate("EDIS", "Open recent file"),
+        "name": translate("EDIS", "Open Recent File"),
         "menu": True,
         "separator": True},
     {
-        "name": translate("EDIS", "Open project"),
+        "name": translate("EDIS", "Open Project"),
         "connection": "open_project",
         "shortcut": "open-project"},
     {
-        "name": translate("EDIS", "Open project from folder"),
+        "name": translate("EDIS", "Open Folder..."),
         "connection": "open_directory"},
     {
         "name": translate("EDIS", "Close"),
         "connection": "close_file",
         "shortcut": "close"},
     {
-        "name": translate("EDIS", "Close all"),
+        "name": translate("EDIS", "Close All"),
         "connection": "close_all",
         "separator": True},
     {
@@ -50,7 +50,7 @@ ACTIONS = ([
         "connection": "save_file",
         "shortcut": "save"},
     {
-        "name": translate("EDIS", "Save as..."),
+        "name": translate("EDIS", "Save As..."),
         "icon": "save-as",
         "connection": "save_file_as",
         "separator": True},
@@ -86,25 +86,25 @@ ACTIONS = ([
         "connection": "action_paste",
         "shortcut": "paste"},
     {
-        "name": translate("EDIS", "Select all"),
+        "name": translate("EDIS", "Select All"),
         "connection": "action_select_all",
         "shortcut": "select",
         "separator": True},
     {
-        "name": translate("EDIS", "Indent more"),
+        "name": translate("EDIS", "Indent More"),
         "connection": "action_indent",
         "shortcut": "indent"},
     {
-        "name": translate("EDIS", "Indent less"),
+        "name": translate("EDIS", "Indent Less"),
         "connection": "action_unindent",
         "shortcut": "unindent",
         "separator": True},
     {
-        "name": translate("EDIS", "Duplicale line"),
+        "name": translate("EDIS", "Duplicale Line"),
         "connection": "action_duplicate_line",
         "shortcut": "duplicate"},
     {
-        "name": translate("EDIS", "Delete line"),
+        "name": translate("EDIS", "Delete Line"),
         "connection": "action_delete_line",
         "shortcut": "delete",
         "separator": True},
@@ -112,10 +112,10 @@ ACTIONS = ([
         "name": translate("EDIS", "To lower"),
         "connection": "action_to_lowercase"},
     {
-        "name": translate("EDIS", "To upper"),
+        "name": translate("EDIS", "To UPPER"),
         "connection": "action_to_uppercase"},
     {
-        "name": translate("EDIS", "To title"),
+        "name": translate("EDIS", "To Title"),
         "connection": "action_to_title",
         "separator": True},
     {
@@ -128,11 +128,11 @@ ACTIONS = ([
         "shortcut": "uncomment",
         "separator": True},
     {
-        "name": translate("EDIS", "Move up"),
+        "name": translate("EDIS", "Move Up"),
         "connection": "action_move_up",
         "shortcut": "up"},
     {
-        "name": translate("EDIS", "Move down"),
+        "name": translate("EDIS", "Move Down"),
         "connection": "action_move_down",
         "shortcut": "down",
         "separator": True},
@@ -163,10 +163,10 @@ ACTIONS = ([
         "shortcut": "hide-toolbar",
         "separator": True},
     {
-        "name": translate("EDIS", "Show tabs and spaces"),
+        "name": translate("EDIS", "Show Tabs and Spaces"),
         "connection": "show_tabs_and_spaces"},
     {
-        "name": translate("EDIS", "Show indentation guides"),
+        "name": translate("EDIS", "Show Indentation Guides"),
         "connection": "show_indentation_guides"},
     {
         "name": translate("EDIS", "Delete Markers"),
