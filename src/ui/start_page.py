@@ -31,6 +31,8 @@ TEXTS = [
     "Share code with Ctrl+P"
     ]
 
+WELCOME = "Welcome to Edis!"
+
 
 class StartPage(QWidget):
     """ Interfáz QML """
@@ -51,12 +53,17 @@ class StartPage(QWidget):
         self._current_text = ""
         # Timer
         self.timer = QTimer(self)
-        self.timer.setInterval(7000)
+        self.timer.setInterval(3000)
+        self._show_welcome_text()
         self.timer.timeout.connect(self._show_text)
-        self._show_text()
         self.timer.start()
 
+    def _show_welcome_text(self):
+        self._root.show_text(WELCOME)
+
     def _show_text(self):
+        if not self._current_text:
+            self.timer.setInterval(7000)
         result = random.choice(TEXTS)
         # Para evitar que se repita
         if result != self._current_text:
