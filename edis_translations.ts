@@ -42,7 +42,7 @@
     <message>
         <location filename="src/ui/dialogs/about.py" line="47"/>
         <source>&lt;b&gt;Source Code:&lt;/b&gt; &lt;a href=&apos;{0}&apos;&gt;&lt;span style=&apos;color: #0197FD;&apos;&gt;{1}&lt;/span&gt;&lt;/a&gt;</source>
-        <translation>&lt;b&gt;Código fuente:&lt;/b&gt; &lt;a href=&apos;{0}&apos;&gt;&lt;span style=&apos;color: #0197FD;&apos;&gt;{1}&lt;/span&gt;&lt;/a&gt;</translation>
+        <translation type="obsolete">&lt;b&gt;Código fuente:&lt;/b&gt; &lt;a href=&apos;{0}&apos;&gt;&lt;span style=&apos;color: #0197FD;&apos;&gt;{1}&lt;/span&gt;&lt;/a&gt;</translation>
     </message>
     <message>
         <location filename="src/ui/dialogs/about.py" line="53"/>
@@ -62,7 +62,17 @@
     <message>
         <location filename="src/ui/dialogs/about.py" line="62"/>
         <source>&lt;b&gt;Spatial thanks:&lt;/b&gt; &lt;a href=&apos;{0}&apos;&gt;&lt;span style=color: #0197FD;&apos;&gt;Contributors&lt;/span&gt;&lt;/a&gt;</source>
-        <translation>&lt;b&gt;Gracias a:&lt;/b&gt; &lt;a href=&apos;{0}&apos;&gt;&lt;span style=color: #0197FD;&apos;&gt;Colaboradores&lt;/span&gt;&lt;/a&gt;</translation>
+        <translation type="obsolete">&lt;b&gt;Gracias a:&lt;/b&gt; &lt;a href=&apos;{0}&apos;&gt;&lt;span style=color: #0197FD;&apos;&gt;Colaboradores&lt;/span&gt;&lt;/a&gt;</translation>
+    </message>
+    <message>
+        <location filename="src/ui/dialogs/about.py" line="47"/>
+        <source>&lt;b&gt;Source Code:&lt;/b&gt; &lt;a href=&apos;{0}&apos;&gt;&lt;span style=&apos;color: #626655;&apos;&gt;{1}&lt;/span&gt;&lt;/a&gt;</source>
+        <translation>&lt;b&gt;Código fuente:&lt;/b&gt; &lt;a href=&apos;{0}&apos;&gt;&lt;span style=&apos;color: #626655;&apos;&gt;{1}&lt;/span&gt;&lt;/a&gt;</translation>
+    </message>
+    <message>
+        <location filename="src/ui/dialogs/about.py" line="62"/>
+        <source>&lt;b&gt;Spatial thanks:&lt;/b&gt; &lt;a href={0}&gt;&lt;span style=&apos;color: #626655;&apos;&gt;Contributors&lt;/span&gt;&lt;/a&gt;</source>
+        <translation>&lt;b&gt;Agradecimiento:&lt;/b&gt; &lt;a href={0}&gt;&lt;span style=&apos;color: #626655;&apos;&gt;Colaboradores&lt;/span&gt;&lt;/a&gt;</translation>
     </message>
 </context>
 <context>
@@ -792,27 +802,27 @@
 <context>
     <name>EditorContainer</name>
     <message>
-        <location filename="src/ui/containers/editor_container.py" line="197"/>
+        <location filename="src/ui/containers/editor_container.py" line="199"/>
         <source>File not saved</source>
         <translation>Archivo no guardado</translation>
     </message>
     <message>
-        <location filename="src/ui/containers/editor_container.py" line="197"/>
+        <location filename="src/ui/containers/editor_container.py" line="199"/>
         <source>Are you sure you want to reload &lt;b&gt;{0}&lt;/b&gt;?&lt;br&gt;&lt;br&gt;Any unsaved changes will be lost.</source>
         <translation>Seguro que quieres recargar &lt;b&gt;{0}&lt;/b&gt;?&lt;br&gt;&lt;br&gt;Se perderán los cambios no guardados.</translation>
     </message>
     <message>
-        <location filename="src/ui/containers/editor_container.py" line="217"/>
+        <location filename="src/ui/containers/editor_container.py" line="219"/>
         <source>Open file</source>
         <translation>Abrir archivo</translation>
     </message>
     <message>
-        <location filename="src/ui/containers/editor_container.py" line="255"/>
+        <location filename="src/ui/containers/editor_container.py" line="257"/>
         <source>Could not open file</source>
         <translation>No se pudo abrir el archivo</translation>
     </message>
     <message>
-        <location filename="src/ui/containers/editor_container.py" line="354"/>
+        <location filename="src/ui/containers/editor_container.py" line="356"/>
         <source>Save file</source>
         <translation>Guardar archivo</translation>
     </message>
@@ -827,12 +837,12 @@
         <translation>El archivo &lt;b&gt;{0}&lt;/b&gt; fué modificado fuera de Edis.&lt;br&gt;&lt;br&gt;Quieres recargarlo?</translation>
     </message>
     <message>
-        <location filename="src/ui/containers/editor_container.py" line="623"/>
+        <location filename="src/ui/containers/editor_container.py" line="625"/>
         <source>Load Project</source>
         <translation>Cargar Proyecto</translation>
     </message>
     <message>
-        <location filename="src/ui/containers/editor_container.py" line="634"/>
+        <location filename="src/ui/containers/editor_container.py" line="636"/>
         <source>Select folder</source>
         <translation>Seleccionar carpeta</translation>
     </message>
@@ -1405,17 +1415,17 @@ versión: {0}.</translation>
 <context>
     <name>ShortcutSection</name>
     <message>
-        <location filename="src/ui/dialogs/preferences/environment_configuration.py" line="243"/>
+        <location filename="src/ui/dialogs/preferences/environment_configuration.py" line="244"/>
         <source>Keys</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="src/ui/dialogs/preferences/environment_configuration.py" line="243"/>
+        <location filename="src/ui/dialogs/preferences/environment_configuration.py" line="244"/>
         <source>Description</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="src/ui/dialogs/preferences/environment_configuration.py" line="264"/>
+        <location filename="src/ui/dialogs/preferences/environment_configuration.py" line="265"/>
         <source>Shortcuts</source>
         <translation></translation>
     </message>
