@@ -31,7 +31,11 @@ TEXTS = [
     "Share code with Ctrl+P",
     "Build the program with Ctrl+B",
     "Build and Run the program with Ctrl+F10",
-    "Found a problem? Report it from the Help menu"
+    "Found a problem? Report it from the Help menu",
+    "Select a text and press TAB to indent",
+    "Comment one or more lines with Ctrl+G",
+    "Go to a Symbol from the Combo/Symbols tree",
+    "Show/hide all widgets except the editor with Ctrl+F11"
     ]
 
 WELCOME = "Welcome to Edis!"
