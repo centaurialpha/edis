@@ -6,6 +6,7 @@
 # License: GPLv3 (see http://www.gnu.org/licenses/gpl.html)
 
 import os
+import shutil
 
 from PyQt4.QtGui import (
     QTreeWidget,
@@ -288,6 +289,15 @@ class TreeProject(QTreeWidget):
     def _delete_folder(self):
         DEBUG("Deleting folder...")
         current_item = self.currentItem()
+        flags = QMessageBox.Yes
+        flags |= QMessageBox.Cancel
+        result = QMessageBox.warning(self, self.tr("Warning!"),
+                                     self.tr("Are you sure you want to delete "
+                                     "the folder?"), flags)
+        if result == QMessageBox.Cancel:
+            return
+        # Elimino fisicamente la carpeta y su contenido
+        shutil.rmtree(current_item.path)
         # Elimino el item del árbol
         index = current_item.parent().indexOfChild(current_item)
         current_item.parent().takeChild(index)
