@@ -190,6 +190,8 @@ class EditorContainer(QWidget):
 
     def reload_file(self, obj_file=None):
         weditor = self.get_active_editor()
+        if weditor is None:
+            return
         if obj_file is None:
             obj_file = weditor.obj_file
         content = obj_file.read()
