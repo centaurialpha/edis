@@ -68,7 +68,7 @@ class OutputContainer(QDockWidget):
         self.salida_.build_and_run(self._sources)
 
     def clean(self):
-        self.salida_.clean(self._filename)
+        self.salida_.clean(self._sources)
 
     def stop(self):
         self.salida_.kill_process()
