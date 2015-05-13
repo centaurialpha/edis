@@ -15,8 +15,8 @@ SOURCES += \
     src/ui/dialogs/file_properties.py \
     src/ui/dialogs/unsaved_files.py \
     src/ui/dialogs/preferences/editor_configuration.py \
-    src/ui/dialogs/preferences/general_configuration.py \
-    src/ui/dialogs/preferences/theme_configuration.py \
+    src/ui/dialogs/preferences/environment_configuration.py \
+    src/ui/dialogs/preferences/compiler_configuration.py \
     src/ui/dialogs/preferences/preferences.py \
 
 TRANSLATIONS = edis_translations.ts
