@@ -64,7 +64,7 @@ class Preferences(QDialog):
         box.setContentsMargins(0, 0, 0, 0)
         box.setSpacing(0)
         toolbar = QToolBar()
-        toolbar.setToolButtonStyle(4)
+        toolbar.setToolButtonStyle(3)
         toolbar.setOrientation(Qt.Vertical)
         toolbar.setIconSize(QSize(30, 30))
         toolbar.setObjectName("preferencias")
@@ -85,7 +85,7 @@ class Preferences(QDialog):
         # Set size
         for action in toolbar.actions():
             widget = toolbar.widgetForAction(action)
-            widget.setFixedSize(80, 25)
+            widget.setFixedSize(80, 50)
 
         box.addWidget(toolbar)
 
