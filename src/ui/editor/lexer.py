@@ -40,3 +40,12 @@ class Lexer(QsciLexerCPP):
             if _type in scheme:
                 atr = getattr(self, _type)
                 self.setColor(QColor(scheme[_type]), atr)
+
+    def keywords(self, kset):
+        if kset == 1:
+            return ('auto break case const continue default do else enum '
+                    'extern for goto if register return short sizeof static '
+                    'struct switch typedef union unsigned void volatile while')
+        elif kset == 2:
+            return ('char float int long double')
+        super(Lexer, self).keywords(kset)

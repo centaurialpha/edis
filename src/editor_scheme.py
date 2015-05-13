@@ -7,15 +7,16 @@
 
 # Edis Scheme
 EDIS_DARK_SCHEME = {
-    'BackgroundEditor': '#1D1F21',
-    'Color': '#E2E2E5',
-    'Keyword': '#7E8AA2',
-    'Comment': '#3F3F3F',
-    'CommentLine': '#3F3F3F',
-    'Number': '#FF9900',
+    'BackgroundEditor': '#202020',
+    'Color': '#e2e2e5',
+    'Keyword': '#7e8aa2',
+    'KeywordSet2': '#8d9fc2',
+    'Comment': '#3f3f3f',
+    'CommentLine': '#3f3f3f',
+    'Number': '#ff9900',
     'DoubleQuotedString': '#606060',
     'SingleQuotedString': '#96FF00',
-    'PreProcessor': '#FAF4C6',
+    'PreProcessor': '#faf4c6',
     'Operator': '#E2E2E5',
     'MatchedBraceFore': '#FFFFFF',
     'MatchedBraceBack': '#044888',
@@ -31,7 +32,8 @@ EDIS_DARK_SCHEME = {
     'FoldMarginFore': '#292c2f',
     'FoldMarkerFore': '#FFFFFF',
     'FoldMarkerBack': '#000000',
-    'error': '#DF3E3E'
+    'error': '#DF3E3E',
+    'UnclosedString': '#FF0000'
     }
 
 # Based on Komodo
