@@ -351,10 +351,10 @@ class TreeProject(QTreeWidget):
         #FIXME:esto cuando no se encuentra el proyecto (fué borrado)
         if not structure:
             return
-        self._projects.append(epf_file)
         root_basename = os.path.basename(root)
         if edis_project:
             parent = EdisItem(self, [root_basename])
+            self._projects.append(epf_file)
         else:
             parent = TreeItem(self, [root_basename])
         parent.do_root()
