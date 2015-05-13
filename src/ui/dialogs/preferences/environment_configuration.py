@@ -212,7 +212,8 @@ class GeneralSection(QWidget):
             return
         elif result == QMessageBox.Yes:
             QSettings(paths.CONFIGURACION, QSettings.IniFormat).clear()
-        #FIXME: cerrar dialogo
+            dialog_preferences = Edis.get_component("preferences")
+            dialog_preferences.close()
 
     def save(self):
 
