@@ -43,9 +43,9 @@ class AcercaDe(QDialog):
                              ui.__version__))
         box.addWidget(lbl_version)
         lbl_link = QLabel("<b>Web:</b> <a href='%s'><span style='color: "
-                          "#0197FD;'>%s</span></a>" % (ui.__web__, ui.__web__))
+                          "#626655;'>%s</span></a>" % (ui.__web__, ui.__web__))
         lbl_sc = QLabel(self.tr("<b>Source Code:</b> <a href='{0}'><span"
-                        " style='color: #0197FD;'>{1}</span></a>").format(
+                        " style='color: #626655;'>{1}</span></a>").format(
                         ui.__source_code__, ui.__source_code__))
         box.addWidget(lbl_link)
         box.addWidget(lbl_sc)
@@ -60,7 +60,7 @@ class AcercaDe(QDialog):
                       ui.__email_author__)))
         # Thanks to
         lbl_contributors = QLabel(self.tr("<b>Spatial thanks:</b> <a href="
-                                  "'{0}'><span style=color: #0197FD;'>"
+                                  "{0}><span style='color: #626655;'>"
                                   "Contributors</span></a>").format(
                                   ui.__contributors__))
         box.addWidget(lbl_contributors)
