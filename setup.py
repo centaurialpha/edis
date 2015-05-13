@@ -137,6 +137,7 @@ setup(
     package_data={
         'src': ['extras/theme/edark.qss', 'extras/i18n/Spanish.qm',
                 'images/icon.png', 'images/sources/logo.png',
+                'images/sources/python-logo.png', 'images/sources/qt-logo.png',
                 'ui/StartPage.qml', 'tools/run_script.sh',
                 ]
         },
