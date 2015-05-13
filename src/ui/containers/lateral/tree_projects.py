@@ -356,6 +356,7 @@ class TreeProject(QTreeWidget):
             parent = EdisItem(self, [root_basename])
             self._projects.append(epf_file)
         else:
+            #FIXME: Guardar proyecto no Edis
             parent = TreeItem(self, [root_basename])
         parent.do_root()
         parent.path = root
