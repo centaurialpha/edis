@@ -11,10 +11,13 @@ title: Edis
 *Elige tu sabor favorito de la última versión (2.0)*
 
 * ![alt tag](img/windows.png) Windows
-   * [Edis-2.0-windows](https://#)
+   * [Edis-2.0-windows](https://github.com/centaurialpha/edis/releases)
+
 * ![alt tag](img/linux.png)  GNU/Linux
+   * [Edis-2.0-GNU/Linux](https://github.com/centaurialpha/edis/archive/v2.0.zip)
  
 * ![alt tag](img/fuente.gif) Código Fuente
+   * [Edi-2.0-source-code](https://github.com/centaurialpha/edis/archive/v2.0.tar.gz)
 
 <div align="right">   
 <div style="display: inline-block"><iframe src="http://ghbtns.com/github-btn.html?user=centaurialpha&repo=edis&type=watch&count=true" allowtransparency="true" frameborder="0" scrolling="0" width="110" height="20"></iframe></div>
