@@ -668,5 +668,17 @@ class EditorContainer(QWidget):
             code_pasting = code_pasting_dialog.CodePastingDialog(self, code)
             code_pasting.exec_()
 
+    def show_snake(self):
+        from src.ui.widgets.snake import snake_widget
+        w = snake_widget.SnakeWidget(self)
+        toolbar = Edis.get_component("toolbar")
+        lateral = Edis.get_component("tab_container")
+        status = Edis.get_component("status_bar")
+        output = Edis.get_component("output")
+        widgets = [toolbar, status, lateral, output]
+        for widget in widgets:
+            widget.hide()
+        self.stack.insertWidget(0, w)
+        self.stack.setCurrentIndex(0)
 
 editor_container = EditorContainer()

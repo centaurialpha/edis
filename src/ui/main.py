@@ -34,7 +34,7 @@ from src.core import (
     )
 from src.ui.dialogs import (
     unsaved_files,
-    about
+    #about
     )
 # Logger
 log = logger.get_logger(__name__)
@@ -319,6 +319,7 @@ class Edis(QMainWindow):
         QMessageBox.aboutQt(self)
 
     def about_edis(self):
+        from src.ui.dialogs import about
         dialog = about.AcercaDe(self)
         dialog.exec_()
 

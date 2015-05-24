@@ -53,5 +53,6 @@
         <file alias="recent">images/document-open-recent.png</file>
         <file alias="remove">images/remove-file.png</file>
         <file alias="add">images/add-file.png</file>
+        <file alias="pyborita">images/pyborita.png</file>
     </qresource>
 </RCC>

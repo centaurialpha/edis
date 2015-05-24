@@ -18,25 +18,30 @@ from PyQt4.QtGui import (
     QLabel
     )
 
-from PyQt4.QtCore import Qt
+from PyQt4.QtCore import (
+    Qt,
+    QEvent
+    )
 
 from src import ui
+from src.ui.main import Edis
 
 
 class AcercaDe(QDialog):
 
     def __init__(self, parent):
         QDialog.__init__(self, parent, Qt.WindowMinMaxButtonsHint)
+        self.clicks = 0
         self.setWindowTitle(self.tr("About Edis"))
         self.setMinimumWidth(485)
         box = QVBoxLayout(self)
-        label_logo = QLabel()
-        label_logo.setPixmap(QPixmap(":image/edis"))
+        self.label_logo = QLabel()
+        self.label_logo.setPixmap(QPixmap(":image/edis"))
         title_label = QLabel(self.tr("<h1>Edis</h1>\n<i>a simple "
                                      "cross-platform IDE for C</i>"))
         title_label.setAlignment(Qt.AlignRight)
         box_logo = QHBoxLayout()
-        box_logo.addWidget(label_logo)
+        box_logo.addWidget(self.label_logo)
         box_logo.addWidget(title_label)
         box.addLayout(box_logo)
         lbl_version = QLabel(self.tr("<b>Version:</b> {0}").format(
@@ -76,6 +81,16 @@ class AcercaDe(QDialog):
         lbl_link.linkActivated['QString'].connect(self._open_link)
         lbl_sc.linkActivated['QString'].connect(self._open_link)
         lbl_contributors.linkActivated['QString'].connect(self._open_link)
+        self.label_logo.installEventFilter(self)
 
     def _open_link(self, link):
         webbrowser.open_new(link)
+
+    def eventFilter(self, obj, event):
+        if obj == self.label_logo and event.type() == QEvent.MouseButtonPress:
+            self.clicks += 1
+            if self.clicks == 6:
+                self.close()
+                editor_container = Edis.get_component("principal")
+                editor_container.show_snake()
+        return False
