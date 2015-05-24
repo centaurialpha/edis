@@ -4,15 +4,15 @@
 
 Contenidos
 
-1. [Qué es Edis?](#Qúe es Edis?)
-2. [Características](#Características)
-3. [Plataformas](#Plataformas)
-3. [Ejecutar Edis](#Ejecución)
-4. [Instalar Edis](#Instalación)
-5. [Pruebas de Software](#Tests)
-6. [Contribuir en el Proyecto](#Contribuyendo)
-7. [Licencia](#Licencia)
-8. [Autor](#Autor)
+1. [Qué es Edis?](#qúe-es-edis)
+2. [Características](#características)
+3. [Plataformas](#plataformas)
+3. [Ejecutar Edis](#ejecución)
+4. [Instalar Edis](#instalación)
+5. [Pruebas de Software](#tests)
+6. [Contribuir en el Proyecto](#contribuyendo)
+7. [Licencia](#licencia)
+8. [Autor](#autor)
 
 ## Qué es Edis?
 
