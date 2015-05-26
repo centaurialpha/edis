@@ -22,23 +22,23 @@ from PyQt4.QtCore import (
 from src.core import paths
 
 TEXTS = [
-    "Open a file with Ctrl+O",
-    "Change editor with Ctrl+M",
-    "Create a new project with Ctrl+Shift+N",
-    "Find a word in the code with Ctrl+F",
-    "Go to a line and/or column with Ctrl+J",
-    "Replace a word with Ctrl+H",
-    "Share code with Ctrl+P",
-    "Build the program with Ctrl+B",
-    "Build and Run the program with Ctrl+F10",
-    "Found a problem? Report it from the Help menu",
-    "Select a text and press TAB to indent",
-    "Comment one or more lines with Ctrl+G",
-    "Go to a Symbol from the Combo/Symbols tree",
-    "Show/hide all widgets except the editor with Ctrl+F11"
+    "Abre un archivo con Ctrl+O",
+    "Cambia de Editor con Ctrl+M",
+    "Crea un nuevo Proyecto con Ctrl+Shift+N",
+    "Busca texto en el código con Ctrl+F",
+    "Salta a una línea y/o columna con Ctrl+J",
+    "Reemplaza texto con Ctrl+H",
+    "Comparte el código con Ctrl+P",
+    "Compila el código con Ctrl+B",
+    "Compila y Ejecuta con Ctrl+F10",
+    "\tEncontraste un problema?\nRepórtalo desde el menú Ayuda",
+    "Selecciona un texto y presiona TAB para indentar",
+    "Comenta una o más líneas con Ctrl+G",
+    "Explora el código desde el Árbol de Símbolos",
+    "Oculta todos los widgets con F11"
     ]
 
-WELCOME = "Welcome to Edis!"
+WELCOME = "Bienvenido a Edis!"
 
 
 class StartPage(QWidget):

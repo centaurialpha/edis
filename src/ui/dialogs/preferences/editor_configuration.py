@@ -71,31 +71,31 @@ class GeneralSection(QWidget):
         main_container = QVBoxLayout(self)
 
         # Tabs and indentation
-        group_indentation = QGroupBox(self.tr("Tabs and Indentation:"))
+        group_indentation = QGroupBox(self.tr("Indentación y Tabs:"))
         box = QGridLayout(group_indentation)
         box.setContentsMargins(20, 5, 20, 5)
-        box.addWidget(QLabel(self.tr("Tabs policy:")), 0, 0)
+        box.addWidget(QLabel(self.tr("Política:")), 0, 0)
         self.combo_tabs = QComboBox()
         self.combo_tabs.setFixedWidth(350)
         self.combo_tabs.addItems([
-            self.tr("Spaces Only"),
-            self.tr("Tabs Only"),
+            self.tr("Solo Espacios"),
+            self.tr("Solo Tabulaciones"),
             ])
         box.addWidget(self.combo_tabs, 0, 1)
         self.combo_tabs.setCurrentIndex(
             int(settings.get_setting('editor/usetabs')))
         # Auto indent
-        self.check_autoindent = QCheckBox(self.tr("Auto indent"))
+        self.check_autoindent = QCheckBox(self.tr("Indentación Automática"))
         box.addWidget(self.check_autoindent, 1, 0)
         box.setAlignment(Qt.AlignLeft)
         self.check_autoindent.setChecked(settings.get_setting('editor/indent'))
 
         # Minimap
-        group_minimap = QGroupBox(self.tr("Minimap:"))
+        group_minimap = QGroupBox(self.tr("Minimapa:"))
         box = QGridLayout(group_minimap)
         box.setContentsMargins(20, 5, 20, 5)
         self.check_minimap = QCheckBox(
-            self.tr("Show minimap (requieres restart)"))
+            self.tr("Activar Minimapa (requiere reiniciar el Editor)"))
         self.check_minimap.setChecked(settings.get_setting('editor/minimap'))
         box.addWidget(self.check_minimap, 0, 0)
         #self.check_minimap_animation = QCheckBox(self.tr("Enable animation"))
@@ -109,25 +109,25 @@ class GeneralSection(QWidget):
         box.setAlignment(Qt.AlignLeft)
 
         # Cursor
-        group_caret = QGroupBox(self.tr("Caret:"))
+        group_caret = QGroupBox(self.tr("Cursor:"))
         box = QGridLayout(group_caret)
         box.setContentsMargins(20, 5, 20, 5)
         box.setAlignment(Qt.AlignLeft)
         # Type
-        box.addWidget(QLabel(self.tr("Type:")), 0, 0)
+        box.addWidget(QLabel(self.tr("Tipo:")), 0, 0)
         self.combo_caret = QComboBox()
         self.combo_caret.setFixedWidth(300)
         caret_types = [
-            self.tr('None'),
-            self.tr('Line'),
-            self.tr('Block')
+            self.tr('Invisible'),
+            self.tr('Línea'),
+            self.tr('Bloque')
             ]
         self.combo_caret.addItems(caret_types)
         index = settings.get_setting('editor/cursor')
         self.combo_caret.setCurrentIndex(index)
         box.addWidget(self.combo_caret, 0, 1)
         # Width
-        box.addWidget(QLabel(self.tr("Width:")), 1, 0)
+        box.addWidget(QLabel(self.tr("Ancho:")), 1, 0)
         self.spin_caret_width = QSpinBox()
         self.spin_caret_width.setFixedWidth(300)
         if index != 1:
@@ -137,7 +137,7 @@ class GeneralSection(QWidget):
             settings.get_setting('editor/caret-width'))
         box.addWidget(self.spin_caret_width, 1, 1, Qt.AlignLeft)
         # Period
-        box.addWidget(QLabel(self.tr("Period (ms):")), 2, 0)
+        box.addWidget(QLabel(self.tr("Período (ms):")), 2, 0)
         self.slider_caret_period = QSlider(Qt.Horizontal)
         self.slider_caret_period.setMaximum(500)
         self.slider_caret_period.setFixedWidth(300)
@@ -147,15 +147,15 @@ class GeneralSection(QWidget):
         box.addWidget(lcd_caret, 2, 3)
 
         # Font
-        group_typo = QGroupBox(self.tr("Font:"))
+        group_typo = QGroupBox(self.tr("Fuente:"))
         box = QGridLayout(group_typo)
         box.setContentsMargins(20, 5, 20, 5)
-        box.addWidget(QLabel(self.tr("Family:")), 0, 0)
+        box.addWidget(QLabel(self.tr("Familia:")), 0, 0)
         self.combo_font = QFontComboBox()
         self.combo_font.setFixedWidth(350)
         box.addWidget(self.combo_font, 0, 1)
         self._load_font()
-        box.addWidget(QLabel(self.tr("Size:")), 1, 0)
+        box.addWidget(QLabel(self.tr("Tamaño:")), 1, 0)
         self.spin_size_font = QSpinBox()
         self.spin_size_font.setValue(settings.get_setting('editor/size-font'))
         self.spin_size_font.setFixedWidth(350)
@@ -163,7 +163,7 @@ class GeneralSection(QWidget):
         box.setAlignment(Qt.AlignLeft)
 
         # Scheme
-        group_scheme = QGroupBox(self.tr("Scheme:"))
+        group_scheme = QGroupBox(self.tr("Tema:"))
         box = QVBoxLayout(group_scheme)
         box.setContentsMargins(20, 5, 20, 5)
         self.combo_scheme = QComboBox()
@@ -175,7 +175,7 @@ class GeneralSection(QWidget):
             index = 1
         self.combo_scheme.setCurrentIndex(index)
         box.addWidget(self.combo_scheme)
-        box.addWidget(QLabel(self.tr("Requires restart Editor")))
+        box.addWidget(QLabel(self.tr("Requiere reiniciar Edis")))
 
         ## Agrupación
         main_container.addWidget(group_indentation)
@@ -248,15 +248,15 @@ class DisplaySection(QWidget):
 
     def __init__(self):
         super(DisplaySection, self).__init__()
-        EditorConfiguration.install_widget(self.tr("Display"), self)
+        EditorConfiguration.install_widget(self.tr("Visualización"), self)
         container = QVBoxLayout(self)
 
         # Text wrapping
-        group_wrapping = QGroupBox(self.tr("Text Wrapping:"))
+        group_wrapping = QGroupBox(self.tr("Ajuste de Texto:"))
         box = QGridLayout(group_wrapping)
-        self.check_wrap = QCheckBox(self.tr("Enable text wrapping"))
+        self.check_wrap = QCheckBox(self.tr("Activar ajuste de texto"))
         box.addWidget(self.check_wrap, 0, 0)
-        self.check_margin = QCheckBox(self.tr("Display right margin at:"))
+        self.check_margin = QCheckBox(self.tr("Mostrar márgen derecho:"))
         box.addWidget(self.check_margin, 1, 0)
         self.slider_margin = QSlider(Qt.Horizontal)
         self.slider_margin.setMaximum(180)
@@ -269,22 +269,24 @@ class DisplaySection(QWidget):
         container.addWidget(group_wrapping)  # Add group
 
         # Extras: line number, markers, whitespace, etc
-        group_extras = QGroupBox(self.tr("Display:"))
+        group_extras = QGroupBox(self.tr("Visualización:"))
         box = QGridLayout(group_extras)
-        self.check_line_numbers = QCheckBox(self.tr("Display line numbers"))
+        self.check_line_numbers = QCheckBox(
+            self.tr("Mostrar números de líneas"))
         box.addWidget(self.check_line_numbers, 0, 0)
-        self.check_current_line = QCheckBox(self.tr("Highlight current line"))
+        self.check_current_line = QCheckBox(self.tr("Resaltar línea actual"))
         box.addWidget(self.check_current_line, 0, 1)
-        self.check_mark_change = QCheckBox(self.tr("Mark text changes"))
+        self.check_mark_change = QCheckBox(self.tr("Marcar línea modificada"))
         box.addWidget(self.check_mark_change, 1, 0)
         self.check_match_brace = QCheckBox(
-            self.tr("Highlight matching braces"))
+            self.tr("Resaltar [], {}, (), <>"))
         box.addWidget(self.check_match_brace, 1, 1)
-        self.check_whitespace = QCheckBox(self.tr("Visualize whitespace"))
+        self.check_whitespace = QCheckBox(
+            self.tr("Mostrar espacios en blanco"))
         box.addWidget(self.check_whitespace, 2, 0)
-        self.check_guides = QCheckBox(self.tr("Visualize indentation guides"))
+        self.check_guides = QCheckBox(self.tr("Mostrar guías de indentación"))
         box.addWidget(self.check_guides, 2, 1)
-        self.check_eof = QCheckBox(self.tr("Display platform end of line"))
+        self.check_eof = QCheckBox(self.tr("Mostrar EOF"))
         box.addWidget(self.check_eof, 3, 0)
         container.addWidget(group_extras)  # Add group
 
@@ -350,40 +352,42 @@ class CompletionSection(QWidget):
 
     def __init__(self):
         super(CompletionSection, self).__init__()
-        EditorConfiguration.install_widget(self.tr("Completion"), self)
+        EditorConfiguration.install_widget(self.tr("Autocompletado"), self)
         container = QVBoxLayout(self)
 
-        group_complete = QGroupBox(self.tr("Complete:"))
+        group_complete = QGroupBox(self.tr("Completar:"))
         box = QGridLayout(group_complete)
         box.setContentsMargins(20, 5, 20, 5)
-        self.check_bracket = QCheckBox(self.tr("Brackets []"))
+        self.check_bracket = QCheckBox(self.tr("Corchetes []"))
         box.addWidget(self.check_bracket, 0, 0)
-        self.check_paren = QCheckBox(self.tr("Parentheses ()"))
+        self.check_paren = QCheckBox(self.tr("Paréntesis ()"))
         box.addWidget(self.check_paren, 0, 1)
-        self.check_key = QCheckBox(self.tr("Keys {}"))
+        self.check_key = QCheckBox(self.tr("Llaves {}"))
         box.addWidget(self.check_key, 1, 0)
-        self.check_quote = QCheckBox(self.tr("Double Quotes \" \""))
+        self.check_quote = QCheckBox(self.tr("Comillas Dobles \" \""))
         box.addWidget(self.check_quote, 1, 1)
-        self.check_single_quote = QCheckBox(self.tr("Single Quotes ' '"))
+        self.check_single_quote = QCheckBox(self.tr("Comillas Simples ' '"))
         box.addWidget(self.check_single_quote, 2, 0)
 
-        group_completion = QGroupBox(self.tr("Code Completion:"))
+        group_completion = QGroupBox(self.tr("Completado de Código:"))
         box = QGridLayout(group_completion)
         box.setContentsMargins(20, 5, 20, 5)
-        self.check_completion = QCheckBox(self.tr("Active Code Completion"))
+        self.check_completion = QCheckBox(self.tr("Activar Completado"))
         box.addWidget(self.check_completion, 0, 0)
-        self.check_document = QCheckBox(self.tr("Based on Document"))
+        self.check_document = QCheckBox(self.tr("Basado en el código"))
         box.addWidget(self.check_document, 0, 1)
-        self.check_keywords = QCheckBox(self.tr("Keywords"))
+        self.check_keywords = QCheckBox(self.tr("Palabras Claves"))
         box.addWidget(self.check_keywords, 1, 0)
-        self.check_cs = QCheckBox(self.tr("Case Sensitive"))
+        self.check_cs = QCheckBox(
+            self.tr("Sensitivo a mayúsculas y minúsculas"))
         box.addWidget(self.check_cs, 1, 1)
-        self.check_replace_word = QCheckBox(self.tr("Replace Word"))
+        self.check_replace_word = QCheckBox(self.tr("Reemplazar Palabra"))
         box.addWidget(self.check_replace_word, 2, 0)
-        self.check_show_single = QCheckBox(self.tr("Show Single"))
+        self.check_show_single = QCheckBox(self.tr("Mostrar Simple"))
         box.addWidget(self.check_show_single, 2, 1)
         hbox = QHBoxLayout()
-        hbox.addWidget(QLabel(self.tr("Threshold:")))
+        hbox.addWidget(QLabel(
+            self.tr("Número de caractéres para mostrar lista:")))
         self.spin_threshold = QSpinBox()
         self.spin_threshold.setMinimum(1)
         self.spin_threshold.setFixedWidth(100)

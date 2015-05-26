@@ -32,7 +32,7 @@ class Preferences(QDialog):
 
     def __init__(self, parent=None):
         QDialog.__init__(self, parent)
-        self.setWindowTitle(self.tr("Configurations - Edis"))
+        self.setWindowTitle(self.tr("Configuraciones - Edis"))
         self.__sections = []
         # Opacity effect
         self.effect = QGraphicsOpacityEffect()
@@ -70,11 +70,11 @@ class Preferences(QDialog):
         toolbar.setObjectName("preferencias")
 
         environment_section = toolbar.addAction(
-            QIcon(":image/general-pref"), "Environment")
+            QIcon(":image/general-pref"), "Entorno")
         editor_section = toolbar.addAction(
             QIcon(":image/editor-pref"), "Editor")
         compiler_section = toolbar.addAction(
-            QIcon(":image/compiler-pref"), "Compiler")
+            QIcon(":image/compiler-pref"), "Compilador")
         self.connect(environment_section, SIGNAL("triggered()"),
                      lambda: self.change_widget(0))
         self.connect(editor_section, SIGNAL("triggered()"),
@@ -102,8 +102,8 @@ class Preferences(QDialog):
         box_buttons.setMargin(10)
         box_buttons.setSpacing(10)
         box_buttons.addStretch(1)
-        self.btn_cancel = QPushButton(self.tr("Cancel"))
-        self.btn_guardar = QPushButton(self.tr("Save"))
+        self.btn_cancel = QPushButton(self.tr("Cancelar"))
+        self.btn_guardar = QPushButton(self.tr("Guardar"))
         box_buttons.addWidget(self.btn_cancel)
         box_buttons.addWidget(self.btn_guardar)
         container.addLayout(box)

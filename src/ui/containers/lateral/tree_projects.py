@@ -97,14 +97,14 @@ class TreeProject(QTreeWidget):
 
         menu = QMenu(self)
         create_file_action = menu.addAction(QIcon(":image/add"),
-                                            self.tr("Add File"))
+                                            self.tr("Agregar Archivo"))
         create_folder_action = menu.addAction(QIcon(":image/new-folder"),
-                                              self.tr("Add Folder"))
+                                              self.tr("Agregar Carpeta"))
         menu.addSeparator()
         refresh_project_action = menu.addAction(QIcon(":image/reload"),
-                                                self.tr("Refresh Project"))
+                                                self.tr("Recargar Proyecto"))
         close_project_action = menu.addAction(QIcon(":image/exit"),
-                                              self.tr("Close Project"))
+                                              self.tr("Cerrar Proyecto"))
 
         # Conexiones
         self.connect(create_file_action, SIGNAL("triggered()"),
@@ -123,9 +123,9 @@ class TreeProject(QTreeWidget):
 
         menu = QMenu(self)
         rename_action = menu.addAction(QIcon(":image/rename"),
-                                       self.tr("Rename File"))
+                                       self.tr("Renombrar Archivo"))
         delete_action = menu.addAction(QIcon(":image/remove"),
-                                       self.tr("Delete File"))
+                                       self.tr("Eliminar Archivo"))
 
         self.connect(rename_action, SIGNAL("triggered()"),
                      self._rename_file)
@@ -138,12 +138,12 @@ class TreeProject(QTreeWidget):
 
         menu = QMenu(self)
         create_file_action = menu.addAction(QIcon(":image/add"),
-                                            self.tr("Add File"))
+                                            self.tr("Agregar Archivo"))
         create_folder_action = menu.addAction(QIcon(":image/new-folder"),
-                                              self.tr("Add Folder"))
+                                              self.tr("Agregar Carpeta"))
         menu.addSeparator()
         delete_folder_action = menu.addAction(QIcon(":image/remove"),
-                                              self.tr("Delete Folder"))
+                                              self.tr("Eliminar Carpeta"))
 
         # Conexiones
         self.connect(create_file_action, SIGNAL("triggered()"),
@@ -160,17 +160,18 @@ class TreeProject(QTreeWidget):
 
         menu = QMenu(self)
         create_file_action = menu.addAction(QIcon(":image/add"),
-                                            self.tr("Add file"))
-        create_main_file_action = menu.addAction(self.tr("Add Main File"))
+                                            self.tr("Agregar Archivo"))
+        create_main_file_action = menu.addAction(
+            self.tr("Agregar Archivo main"))
         menu.addSeparator()
         build_project_action = menu.addAction(QIcon(":image/build"),
-                                              self.tr("Build Project"))
-        clean_project_action = menu.addAction(self.tr("Clean"))
+                                              self.tr("Compilar Proyecto"))
+        clean_project_action = menu.addAction(self.tr("Limpiar"))
         menu.addSeparator()
-        properties_action = menu.addAction(self.tr("Project Properties"))
+        properties_action = menu.addAction(self.tr("Propiedades del Proyecto"))
         menu.addSeparator()
         close_project_action = menu.addAction(QIcon(":image/exit"),
-                                              self.tr("Close Project"))
+                                              self.tr("Cerrar Proyecto"))
 
         # Conexiones
         self.connect(create_file_action, SIGNAL("triggered()"),
@@ -209,9 +210,9 @@ class TreeProject(QTreeWidget):
         item_path = os.path.join(current_item.path, 'main.c')
         if os.path.exists(item_path):
             # El archivo ya existe
-            QMessageBox.information(self, self.tr("Information"),
-                                    self.tr("The <b>main.c</b> file already "
-                                    "exists."), QMessageBox.Yes)
+            QMessageBox.information(self, self.tr("Información"),
+                                    self.tr("El archivo <b>main.c</b> "
+                                    "ya existe."), QMessageBox.Yes)
             DEBUG("File aready exists...")
             return
         # Creo el archivo
@@ -234,9 +235,9 @@ class TreeProject(QTreeWidget):
             filename = os.path.join(current_item.path, filename)
             if os.path.exists(filename):
                 # El archivo ya existe
-                QMessageBox.information(self, self.tr("Information"),
-                                        self.tr("A file already exists with "
-                                        "that name"), QMessageBox.Ok)
+                QMessageBox.information(self, self.tr("Información"),
+                                        self.tr("Ya existe un archivo con ese"
+                                        " nombre"), QMessageBox.Ok)
                 DEBUG("A file already exists...")
                 return
             if ftype == 1:
@@ -265,16 +266,16 @@ class TreeProject(QTreeWidget):
         current_item = self.currentItem()
         qinput = QInputDialog(self)
         qinput.setInputMode(QInputDialog.TextInput)
-        qinput.setWindowTitle(self.tr("New folder"))
-        qinput.setLabelText(self.tr("Name:"))
+        qinput.setWindowTitle(self.tr("Nueva Carpeta"))
+        qinput.setLabelText(self.tr("Nombre:"))
         qinput.resize(400, 100)
         ok = qinput.exec_()
         folder_name = qinput.textValue()
         if ok:
             path = os.path.join(current_item.path, folder_name)
             if os.path.exists(path):
-                QMessageBox.information(self, self.tr("Information"),
-                                        self.tr("The folder already exists"),
+                QMessageBox.information(self, self.tr("Información"),
+                                        self.tr("La carpeta ya existe"),
                                         QMessageBox.Yes)
                 DEBUG("The folder already exists...")
                 return
@@ -291,9 +292,9 @@ class TreeProject(QTreeWidget):
         current_item = self.currentItem()
         flags = QMessageBox.Yes
         flags |= QMessageBox.Cancel
-        result = QMessageBox.warning(self, self.tr("Warning!"),
-                                     self.tr("Are you sure you want to delete "
-                                     "the folder?"), flags)
+        result = QMessageBox.warning(self, self.tr("Advertencia!"),
+                                     self.tr("Está seguro que quiere borrar "
+                                     "la carpeta?"), flags)
         if result == QMessageBox.Cancel:
             return
         # Elimino fisicamente la carpeta y su contenido
@@ -307,8 +308,8 @@ class TreeProject(QTreeWidget):
 
         DEBUG("Renaming file...")
         current_item = self.currentItem()
-        name, ok = QInputDialog.getText(self, self.tr("Rename file"),
-                                        self.tr("New name:"),
+        name, ok = QInputDialog.getText(self, self.tr("Renombrar Archivo"),
+                                        self.tr("Nuevo Nombre:"),
                                         text=current_item.text(0))
         if ok:
             path = os.path.dirname(current_item.path)
@@ -329,7 +330,7 @@ class TreeProject(QTreeWidget):
             except exceptions.EdisFileExistsError as reason:
                 ERROR("The file already exists: {0}".format(reason.filename))
                 QMessageBox.critical(self, self.tr("Error"),
-                                     self.tr("The file already exists"))
+                                     self.tr("El archivo ya existe"))
 
     def _delete_file(self):
         """ Borra fisicamente el archivo y lo quita del árbol """
@@ -339,9 +340,9 @@ class TreeProject(QTreeWidget):
         # Flags
         yes = QMessageBox.Yes
         no = QMessageBox.No
-        result = QMessageBox.warning(self, self.tr("Warning"),
-                                     self.tr("Are you sure you want to delete "
-                                     "the file?<br><br><b>{0}</b>").format(
+        result = QMessageBox.warning(self, self.tr("Advertencia"),
+                                     self.tr("Está seguro que quiere borrar "
+                                     "el archivo?<br><br><b>{0}</b>").format(
                                       current_item.path), no | yes)
         if result == no:
             return
@@ -397,13 +398,13 @@ class TreeProject(QTreeWidget):
                     self._load_tree(structure, folder_item,
                                     os.path.join(root, folder), edis_project)
         else:
-            sources_item = EdisItem(parent, [self.tr("Sources")])
+            sources_item = EdisItem(parent, [self.tr("Archivos Fuente")])
             sources_item.do_edis_item()
-            sources_item.setToolTip(0, self.tr("Source files"))
+            sources_item.setToolTip(0, self.tr("Archivos Fuente"))
             sources_item.setExpanded(True)
-            headers_item = EdisItem(parent, [self.tr("Headers")])
+            headers_item = EdisItem(parent, [self.tr("Cabeceras")])
             headers_item.do_edis_item()
-            headers_item.setToolTip(0, self.tr("Header files"))
+            headers_item.setToolTip(0, self.tr("Archivos de Cabecera"))
             headers_item.setExpanded(True)
             if files is not None:
                 for _file in sorted(files):
@@ -483,31 +484,31 @@ class NewFileDialog(QDialog):
     def __init__(self, parent=None):
         QDialog.__init__(self, parent)
         self.setMinimumWidth(400)
-        self.setWindowTitle(self.tr("New file"))
+        self.setWindowTitle(self.tr("Nuevo archivo"))
         self._data = {}
         container = QVBoxLayout(self)
         # Filename
         hbox = QHBoxLayout()
-        hbox.addWidget(QLabel(self.tr("Name:")))
+        hbox.addWidget(QLabel(self.tr("Nombre:")))
         self._line_filename = QLineEdit()
         hbox.addWidget(self._line_filename)
         container.addLayout(hbox)
         # Type
         hbox = QHBoxLayout()
-        hbox.addWidget(QLabel(self.tr("Type:")))
+        hbox.addWidget(QLabel(self.tr("Tipo:")))
         self._combo_type = QComboBox()
         self._combo_type.addItems([
-            self.tr("Source file"),
-            self.tr("Header file")
+            self.tr("Archivo Fuente"),
+            self.tr("Archivo de Cabecera")
             ])
         hbox.addWidget(self._combo_type, 1)
         container.addLayout(hbox)
         # Buttons
         hbox = QHBoxLayout()
         hbox.addStretch(1)
-        btn_ok = QPushButton(self.tr("Ok"))
+        btn_ok = QPushButton(self.tr("Aceptar"))
         hbox.addWidget(btn_ok)
-        btn_cancel = QPushButton(self.tr("Cancel"))
+        btn_cancel = QPushButton(self.tr("Cancelar"))
         hbox.addWidget(btn_cancel)
         container.addLayout(hbox)
 

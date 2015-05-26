@@ -179,11 +179,11 @@ class EditorContainer(QWidget):
         filename = obj_file.filename
         flags = QMessageBox.Yes
         flags |= QMessageBox.No
-        result = QMessageBox.information(self, self.tr("File Watcher"),
-                                         self.tr("File <b>{0}</b> is "
-                                         "modified outside the Edis."
-                                         "<br><br>Do you want to "
-                                         "reload it?".format(filename)), flags)
+        result = QMessageBox.information(self, self.tr("Monitoreo de Archivo"),
+                                         self.tr("El archivo <b>{0}</b> fué "
+                                         "modificado fuera de Edis. "
+                                         "<br><br> Quieres recar"
+                                         "garlo?".format(filename)), flags)
         if result == QMessageBox.No:
             return
         self.reload_file(obj_file)
@@ -197,10 +197,10 @@ class EditorContainer(QWidget):
         content = obj_file.read()
         if weditor.is_modified:
             result = QMessageBox.information(self, self.tr(
-                "File not saved"),
-                self.tr("Are you sure you want to reload <b>{0}</b>?"
+                "Archivo no guardado!"),
+                self.tr("Seguro que quieres recargar el archivo <b>{0}</b>?"
                         "<br><br>"
-                        "Any unsaved changes will be lost.").format(
+                        "Se perderán los cambios no guardados.").format(
                             obj_file.filename),
                 QMessageBox.Cancel | QMessageBox.Yes)
             if result == QMessageBox.Cancel:
@@ -210,14 +210,14 @@ class EditorContainer(QWidget):
         weditor.setModified(False)
 
     def open_file(self, filename="", cursor_position=None):
-        filter_files = "C Files(*.cpp *.c);;ASM(*.s);;HEADERS(*.h);;(*.*)"
+        filter_files = "Archivos C(*.cpp *.c);;ASM(*.s);;HEADERS(*.h);;(*.*)"
         if not filename:
             working_directory = os.path.expanduser("~")
             weditor = self.get_active_editor()
             if weditor and weditor.filename:
                 working_directory = self._last_folder(weditor.filename)
             filenames = QFileDialog.getOpenFileNames(self,
-                                                     self.tr("Open file"),
+                                                     self.tr("Abrir Archivo"),
                                                      working_directory,
                                                      filter_files)
         else:
@@ -253,8 +253,8 @@ class EditorContainer(QWidget):
                 self.emit(SIGNAL("openedFile(QString)"), _file)
                 self.emit(SIGNAL("updateSymbols(QString)"), _file)
         except EdisIOError as error:
-            ERROR('Error opening file: %s', error)
-            QMessageBox.critical(self, self.tr('Could not open file'),
+            ERROR('Error al intentar abrir archivo: %s', error)
+            QMessageBox.critical(self, self.tr('No se pudo abrir el archivo'),
                                  str(error))
         #self.editor_widget.not_open = True
 
@@ -353,7 +353,7 @@ class EditorContainer(QWidget):
             if weditor is None:
                 return
         working_directory = os.path.expanduser("~")
-        filename = QFileDialog.getSaveFileName(self, self.tr("Save file"),
+        filename = QFileDialog.getSaveFileName(self, self.tr("Guardar Archivo"),
                                                working_directory)
         if not filename:
             return False
@@ -623,9 +623,10 @@ class EditorContainer(QWidget):
         if edis_project:
             if not filename:
                 filename = QFileDialog.getOpenFileName(self,
-                                                       self.tr("Load Project"),
+                                                       self.tr("Cargar "
+                                                       "Proyecto"),
                                                        paths.PROJECT_DIR,
-                                                       "Edis file(*.epf)")
+                                                       "Archivo Edis(*.epf)")
                 if not filename:
                     return
                 project_file = json.load(open(filename))
@@ -634,7 +635,8 @@ class EditorContainer(QWidget):
                 project_path = os.path.dirname(filename)
         else:
             result = QFileDialog.getExistingDirectory(self,
-                                                      self.tr("Select folder"))
+                                                      self.tr("Selecciona "
+                                                      "la carpeta"))
             if not result:
                 return
             project_path = result

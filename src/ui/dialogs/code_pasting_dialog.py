@@ -33,7 +33,7 @@ class CodePastingDialog(QDialog):
 
     def __init__(self, parent=None, code=''):
         super(CodePastingDialog, self).__init__(parent)
-        self.setWindowTitle(self.tr("Send to Pastebin"))
+        self.setWindowTitle(self.tr("Enviar a Pastebin"))
         self.setMinimumSize(700, 500)
         self._parent = parent
         container = QVBoxLayout(self)
@@ -44,21 +44,21 @@ class CodePastingDialog(QDialog):
                      self._paste_result)
         # Campos
         fields_box = QGridLayout()
-        fields_box.addWidget(QLabel(self.tr("Expire after:")), 0, 0)
+        fields_box.addWidget(QLabel(self.tr("Expirar después de:")), 0, 0)
         self._spin_expire = QSpinBox()
-        self._spin_expire.setSuffix(self.tr(" Days"))
+        self._spin_expire.setSuffix(self.tr(" Días"))
         self._spin_expire.setMinimum(1)
         fields_box.addWidget(self._spin_expire, 0, 1)
-        fields_box.addWidget(QLabel(self.tr("Access:")), 1, 0)
+        fields_box.addWidget(QLabel(self.tr("Acceso:")), 1, 0)
         self._combo_access = QComboBox()
-        self._combo_access.addItems([self.tr("Public"), self.tr("Private")])
+        self._combo_access.addItems([self.tr("Publico"), self.tr("Privado")])
         fields_box.addWidget(self._combo_access, 1, 1)
-        fields_box.addWidget(QLabel(self.tr("Name:")), 2, 0)
+        fields_box.addWidget(QLabel(self.tr("Nombre:")), 2, 0)
         self._line_filename = QLineEdit()
         place_holder_text = parent.get_active_editor().filename
         self._line_filename.setPlaceholderText(place_holder_text)
         fields_box.addWidget(self._line_filename, 2, 1)
-        fields_box.addWidget(QLabel(self.tr("Description:")), 3, 0)
+        fields_box.addWidget(QLabel(self.tr("Descripción:")), 3, 0)
 
         # Editor
         self._code_editor = QPlainTextEdit()
@@ -67,9 +67,9 @@ class CodePastingDialog(QDialog):
 
         hbox = QHBoxLayout()
         hbox.addItem(QSpacerItem(0, 1, QSizePolicy.Expanding))
-        btn_paste = QPushButton(self.tr("Paste"))
+        btn_paste = QPushButton(self.tr("Enviar"))
         hbox.addWidget(btn_paste)
-        btn_cancel = QPushButton(self.tr("Cancel"))
+        btn_cancel = QPushButton(self.tr("Cancelar"))
         hbox.addWidget(btn_cancel)
 
         container.addLayout(fields_box)
@@ -98,7 +98,7 @@ class CodePastingDialog(QDialog):
         result = self.thread.result
         if result is None:
             QMessageBox.critical(self, self.tr("Error!"),
-                                 self.tr("No paste code was given"))
+                                 self.tr("No hay código"))
             return
         QMessageBox.information(self, self.tr("URL"),
                                 str(result))

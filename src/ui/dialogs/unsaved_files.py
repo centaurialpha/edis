@@ -27,12 +27,12 @@ class DialogSaveFiles(QDialog):
 
     def __init__(self, files, editor_container, parent):
         QDialog.__init__(self, parent)
-        self.setWindowTitle(self.tr("Files unsaved!"))
+        self.setWindowTitle(self.tr("Archivos no guardados!"))
         self._event_ignore = False
         self._editor_container = editor_container
         vLayout = QVBoxLayout(self)
-        label = QLabel(self.tr("The following files have been modified. "
-                       "Save them?"))
+        label = QLabel(self.tr("Los siguientes archivos se han modificado. "
+                       "Guardarlos?"))
         vLayout.addWidget(label)
 
         self.list_widget = QListWidget()
@@ -45,9 +45,9 @@ class DialogSaveFiles(QDialog):
         vLayout.addWidget(self.list_widget)
 
         box_buttons = QHBoxLayout()
-        btn_nothing = QPushButton(self.tr("None"))
-        btn_save = QPushButton(self.tr("Save Selected"))
-        btn_cancel = QPushButton(self.tr("Cancel"))
+        btn_nothing = QPushButton(self.tr("Ninguno"))
+        btn_save = QPushButton(self.tr("Guardar Selección"))
+        btn_cancel = QPushButton(self.tr("Cancelar"))
         box_buttons.addWidget(btn_nothing)
         box_buttons.addWidget(btn_save)
         box_buttons.addWidget(btn_cancel)

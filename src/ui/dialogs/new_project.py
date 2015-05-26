@@ -42,7 +42,7 @@ class NewProjectDialog(QWizard):
     def __init__(self, parent=None):
         QWizard.__init__(self, parent)
         self.data = {}
-        self.setWindowTitle(self.tr("New Edis Project"))
+        self.setWindowTitle(self.tr("Nuevo Proyecto de Edis"))
         pixmap = QPixmap(":image/edis")
         self.setPixmap(QWizard.LogoPixmap, pixmap.scaled(56, 56,
                        Qt.IgnoreAspectRatio, Qt.FastTransformation))
@@ -82,11 +82,10 @@ class NewProjectDialog(QWizard):
             os.mkdir(paths.PROJECT_DIR)
         if os.path.exists(project.project_path):
             flags = QMessageBox.No | QMessageBox.Yes
-            result = QMessageBox.information(self, self.tr("Warning"),
-                                             self.tr("The project already "
-                                             "exists in that location with "
-                                             "that name.\nYou want to replace "
-                                             "it?"), flags)
+            result = QMessageBox.information(self, self.tr("Advertencia!"),
+                                             self.tr("Ya existe un proyecto "
+                                             "con ese nombre. "
+                                             "Quieres reemplazarlo?"), flags)
             if result == QMessageBox.No:
                 return
             # Elimina los archivos del directorio
@@ -113,22 +112,22 @@ class IntroductionPage(QWizardPage):
 
     def __init__(self):
         super(IntroductionPage, self).__init__()
-        self.setTitle(self.tr("Creation Project"))
-        self.setSubTitle(self.tr("Basic project information"))
+        self.setTitle(self.tr("Creación de un nuevo Proyecto"))
+        self.setSubTitle(self.tr("Información básica del Proyecto"))
         container = QVBoxLayout(self)
         hbox = QHBoxLayout()
         # Nombre
-        hbox.addWidget(QLabel(self.tr("Name of the project:")))
+        hbox.addWidget(QLabel(self.tr("Nombre del Proyecto:")))
         self.line_name = QLineEdit()
         hbox.addWidget(self.line_name)
         container.addLayout(hbox)
         # Ubicación
-        group = QGroupBox(self.tr("Location:"))
+        group = QGroupBox(self.tr("Ubicación:"))
         box = QVBoxLayout(group)
         button_group = QButtonGroup(self)
         radio_buttons = [
-            self.tr("Project folder"),
-            self.tr("Other")
+            self.tr("Directorio por defecto"),
+            self.tr("Otro")
             ]
         for _id, radiob in enumerate(radio_buttons):
             radio_button = QRadioButton(radiob)
@@ -143,13 +142,13 @@ class IntroductionPage(QWizardPage):
         container.addWidget(self.line_location)
 
         hbox = QHBoxLayout()
-        hbox.addWidget(QLabel(self.tr("Filename: ")))
+        hbox.addWidget(QLabel(self.tr("Archivo del Proyecto: ")))
         self._project_filename = QLineEdit()
         hbox.addWidget(self._project_filename)
         container.addLayout(hbox)
 
         hbox = QHBoxLayout()
-        hbox.addWidget(QLabel(self.tr("Resulting filename: ")))
+        hbox.addWidget(QLabel(self.tr("Archivo resultante: ")))
         self._resulting_filename = QLineEdit()
         hbox.addWidget(self._resulting_filename)
         container.addLayout(hbox)
@@ -174,7 +173,7 @@ class IntroductionPage(QWizardPage):
             path = paths.PROJECT_DIR
         elif button_id == 1:
             path = QFileDialog.getExistingDirectory(
-                self, self.tr("Choose a directory"), os.path.expanduser("~"))
+                self, self.tr("Elige un Directorio"), os.path.expanduser("~"))
             if not path:
                 path = paths.PROJECT_DIR
         self.line_location.setText(path)
@@ -193,10 +192,10 @@ class FinishPage(QWizardPage):
     def __init__(self):
         super(FinishPage, self).__init__()
         container = QVBoxLayout(self)
-        self.setSubTitle(self.tr("Choose a template"))
+        self.setSubTitle(self.tr("Elige una plantilla"))
         self.list_template = QListWidget()
-        self.list_template.addItem(self.tr("Blank Project"))
-        self.list_template.addItem(self.tr("Include file and main function"))
+        self.list_template.addItem(self.tr("Proyecto en blanco"))
+        self.list_template.addItem(self.tr("Incluir achivo y función main"))
         container.addWidget(self.list_template)
 
     @property

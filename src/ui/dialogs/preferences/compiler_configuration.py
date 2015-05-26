@@ -59,59 +59,60 @@ class FlagsSection(QWidget):
         compiler_flags = settings.COMPILER_FLAGS.split()
         # -Wall
         self.check_wall = QCheckBox(
-            self.tr("Enable all common compiler warnings [-Wall]"))
+            self.tr("Habilitar todas las advertencias comunes [-Wall]"))
         if '-Wall' in compiler_flags:
             self.check_wall.setChecked(True)
         box.addWidget(self.check_wall, 0, 0)
         # -Wextra
         self.check_wextra = QCheckBox(
-            self.tr("Enable extra compiler warnings [-Wextra]"))
+            self.tr("Habilitar advertencias extras [-Wextra]"))
         if '-Wextra' in compiler_flags:
             self.check_wextra.setChecked(True)
         box.addWidget(self.check_wextra, 0, 1)
         # -Wfatal-errors
         self.check_wfatal_error = QCheckBox(
-            self.tr("Stop compiling after first error [-Wfatal-errors]"))
+            self.tr("Frenar compilación después del primer error "
+                    "[-Wfatal-errors]"))
         if '-Wfatal-erros' in compiler_flags:
             self.check_wfatal_error.setChecked(True)
         box.addWidget(self.check_wfatal_error, 1, 0)
         # -w
         self.check_w = QCheckBox(
-            self.tr("Inhibit all warning messages [-w]"))
+            self.tr("Inhibir todos los mensajes de advertencia [-w]"))
         if '-w' in compiler_flags:
             self.check_w.setChecked(True)
         box.addWidget(self.check_w, 1, 1)
 
-        group_optimization = QGroupBox(self.tr("Optimization:"))
+        group_optimization = QGroupBox(self.tr("Optimización:"))
         box = QGridLayout(group_optimization)
         box.setContentsMargins(20, 5, 20, 5)
         # -O
         self.check_o = QCheckBox(
-            self.tr("Optimize generated code for speed [-O]"))
+            self.tr("Optimizar código para velocidad [-O]"))
         if '-O' in compiler_flags:
             self.check_o.setChecked(True)
         box.addWidget(self.check_o, 0, 0)
         # -O1
         self.check_o1 = QCheckBox(
-            self.tr("Optimize more for speed [-O1]"))
+            self.tr("Optimizar más el código para velocidad [-O1]"))
         if '-O1' in compiler_flags:
             self.check_o1.setChecked(True)
         box.addWidget(self.check_o1, 0, 1)
         # -O2
         self.check_o2 = QCheckBox(
-            self.tr("Optimize even more for speed [-O2]"))
+            self.tr("Optimizar aún más el código para velocidad [-O2]"))
         if '-O2' in compiler_flags:
             self.check_o2.setChecked(True)
         box.addWidget(self.check_o2, 1, 0)
         # -O3
         self.check_o3 = QCheckBox(
-            self.tr("Optimize fully for speed [-O3]"))
+            self.tr("Optimizar totalmente el código para velocidad [-O3]"))
         if '-O3' in compiler_flags:
             self.check_o3.setChecked(True)
         box.addWidget(self.check_o3, 1, 1)
         # -Os
         self.check_os = QCheckBox(
-            self.tr("Optimize generated code for size [-Os]"))
+            self.tr("Optimizar el código para tamaño [-Os]"))
         if '-Os' in compiler_flags:
             self.check_os.setChecked(True)
         box.addWidget(self.check_os, 2, 0)
@@ -121,7 +122,8 @@ class FlagsSection(QWidget):
         container.addItem(QSpacerItem(0, 0,
                           QSizePolicy.Expanding, QSizePolicy.Expanding))
 
-        CompilerConfiguration.install_widget(self.tr("Compiler Flags"), self)
+        CompilerConfiguration.install_widget(
+            self.tr("Opciones del Compilador"), self)
 
     def save(self):
         """  Se guardan los parámetros adicionales para el compilador.

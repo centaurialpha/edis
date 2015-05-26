@@ -146,10 +146,10 @@ class EditorWidget(QWidget):
             result = QMessageBox.No
             if widget.is_modified:
                 result = QMessageBox.question(self, self.tr(
-                    "File not saved"),
-                    self.tr("The file <b>{0}</b> "
-                            "has unsaved changes. Would you "
-                            "like to save them?").format(widget.filename),
+                    "Archivo no guardado!"),
+                    self.tr("El archivo <b>{0}</b> "
+                            "tiene cambios sin guardar. "
+                            "Quieres guardarlos?").format(widget.filename),
                     QMessageBox.Yes, QMessageBox.No, QMessageBox.Cancel)
                 if result == QMessageBox.Cancel:
                     return
@@ -189,7 +189,7 @@ class ComboContainer(QWidget):
         btn_close_editor = QToolButton()
         btn_close_editor.setFixedSize(25, 22)
         btn_close_editor.setObjectName("combo-button")
-        btn_close_editor.setToolTip(self.tr("Close file"))
+        btn_close_editor.setToolTip(self.tr("Cerrar archivo"))
         btn_close_editor.setIcon(QIcon(":image/close"))
         btn_close_editor.setSizePolicy(QSizePolicy.Fixed, QSizePolicy.Fixed)
         box.addWidget(btn_close_editor)
@@ -204,7 +204,7 @@ class ComboContainer(QWidget):
         self.line_row = "Lin: %s, Col: %s - %s"
         self.label_line_row.setText(self.line_row % (0, 0, 0))
         self.label_line_row.setToolTip(
-            self.tr("Click to go to a specific line and column"))
+            self.tr("Click para ir a una línea y/o columna específica"))
         box.addWidget(self.label_line_row)
 
         output = Edis.get_component("output")
@@ -234,17 +234,17 @@ class ComboContainer(QWidget):
         menu = QMenu()
         editor_container = Edis.get_component("principal")
         save_as_action = menu.addAction(QIcon(":image/save-as"),
-                                        self.tr("Save as"))
+                                        self.tr("Guardar como..."))
         reload_action = menu.addAction(QIcon(":image/reload"),
-                                       self.tr("Reload"))
+                                       self.tr("Recargar"))
         menu.addSeparator()
         compile_action = menu.addAction(QIcon(":image/build"),
-                                        self.tr("Build"))
+                                        self.tr("Compilar"))
         execute_action = menu.addAction(QIcon(":image/run"),
-                                        self.tr("Run"))
+                                        self.tr("Ejecutar"))
         menu.addSeparator()
         close_action = menu.addAction(QIcon(":image/close"),
-                                      self.tr("Close file"))
+                                      self.tr("Cerrar archivo"))
 
         # Conexiones
         self.connect(save_as_action, SIGNAL("triggered()"),
@@ -292,7 +292,7 @@ class ComboContainer(QWidget):
         """ Agrega símbolos al combo """
 
         self.combo_symbols.clear()
-        self.combo_symbols.addItem(self.tr("<Select Symbol>"))
+        self.combo_symbols.addItem(self.tr("<Selecciona un Símbolo>"))
         lines = [1]
         for symbol in symbols:
 

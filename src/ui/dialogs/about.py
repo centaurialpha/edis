@@ -32,7 +32,7 @@ class AcercaDe(QDialog):
     def __init__(self, parent):
         QDialog.__init__(self, parent, Qt.WindowMinMaxButtonsHint)
         self.clicks = 0
-        self.setWindowTitle(self.tr("About Edis"))
+        self.setWindowTitle(self.tr("Acerca de Edis"))
         self.setMinimumWidth(485)
         box = QVBoxLayout(self)
         self.label_logo = QLabel()
@@ -44,7 +44,7 @@ class AcercaDe(QDialog):
         box_logo.addWidget(self.label_logo)
         box_logo.addWidget(title_label)
         box.addLayout(box_logo)
-        lbl_version = QLabel(self.tr("<b>Version:</b> {0}").format(
+        lbl_version = QLabel(self.tr("<b>Versión:</b> {0}").format(
                              ui.__version__))
         box.addWidget(lbl_version)
         lbl_link = QLabel("<b>Web:</b> <a href='%s'><span style='color: "
@@ -55,24 +55,23 @@ class AcercaDe(QDialog):
         box.addWidget(lbl_link)
         box.addWidget(lbl_sc)
         # License
-        box.addWidget(QLabel(self.tr("<b>License:</b> <i>Edis</i> is licensed "
-                                     "under the terms of the <b>G</b>NU "
-                                     "<b>P</b>ublic <b>L</b>icense "
-                                     "version 3 or later.")))
-        box.addWidget(QLabel(self.tr("<b>Author:</b> {0}").format(
+        box.addWidget(QLabel(self.tr("<b>Licencia:</b> <i>Edis</i> se "
+                                     "distribuye bajo los términos de la "
+                                     "licencia <b>GPLv3+</b>")))
+        box.addWidget(QLabel(self.tr("<b>Autor:</b> {0}").format(
                       ui.__author__)))
         box.addWidget(QLabel(self.tr("<b>Email:</b> {0}").format(
                       ui.__email_author__)))
         # Thanks to
-        lbl_contributors = QLabel(self.tr("<b>Spatial thanks:</b> <a href="
+        lbl_contributors = QLabel(self.tr("Agradezco a los que <a href="
                                   "{0}><span style='color: #626655;'>"
-                                  "Contributors</span></a>").format(
+                                  "contribuyeron</span></a> con Edis").format(
                                   ui.__contributors__))
         box.addWidget(lbl_contributors)
 
         box_boton = QHBoxLayout()
         box_boton.addSpacerItem(QSpacerItem(0, 10, QSizePolicy.Expanding))
-        btn_ok = QPushButton(self.tr("Ok"))
+        btn_ok = QPushButton(self.tr("Aceptar"))
         box_boton.addWidget(btn_ok)
         box.addLayout(box_boton)
 

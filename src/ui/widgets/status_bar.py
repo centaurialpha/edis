@@ -34,7 +34,7 @@ class StatusBar(QStatusBar):
 
     def show_message(self, msg):
         self.show()
-        self.showMessage(self.tr("File saved: {0}").format(msg), 4000)
+        self.showMessage(self.tr("Archivo guardado: {0}").format(msg), 4000)
 
 
 status_bar = StatusBar()

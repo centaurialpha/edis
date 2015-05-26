@@ -77,44 +77,44 @@ class GeneralSection(QWidget):
         container = QVBoxLayout(self)
 
         # Inicio
-        group_on_start = QGroupBox(self.tr("On start:"))
+        group_on_start = QGroupBox(self.tr("Al Iniciar:"))
         box = QVBoxLayout(group_on_start)
         box.setContentsMargins(20, 5, 20, 5)
-        self.check_splash = QCheckBox(self.tr("Show Splash Screen"))
+        self.check_splash = QCheckBox(self.tr("Mostrar Splash"))
         self.check_splash.setChecked(
             settings.get_setting('general/show-splash'))
         box.addWidget(self.check_splash)
-        self.check_on_start = QCheckBox(self.tr("Show Start Page"))
+        self.check_on_start = QCheckBox(self.tr("Mostrar Página de Inicio"))
         show_start_page = settings.get_setting('general/show-start-page')
         self.check_on_start.setChecked(show_start_page)
         box.addWidget(self.check_on_start)
-        self.check_load_files = QCheckBox(self.tr("Load files from the last "
-                                          "session"))
+        self.check_load_files = QCheckBox(self.tr("Cargar archivos desde la "
+                                          "última sesión"))
         load_files = settings.get_setting('general/load-files')
         self.check_load_files.setChecked(load_files)
         box.addWidget(self.check_load_files)
         container.addWidget(group_on_start)
 
         # Al salir
-        group_on_exit = QGroupBox(self.tr("On close:"))
+        group_on_exit = QGroupBox(self.tr("Al Salir:"))
         box = QVBoxLayout(group_on_exit)
         box.setContentsMargins(20, 5, 20, 5)
-        self.check_on_exit = QCheckBox(self.tr("Confirm exit"))
+        self.check_on_exit = QCheckBox(self.tr("Confirmar Salida"))
         self.check_on_exit.setChecked(
             settings.get_setting('general/confirm-exit'))
         box.addWidget(self.check_on_exit)
         self.check_geometry = QCheckBox(self.tr(
-            "Save window position and geometry"))
+            "Guardar posición y tamaño de la ventana"))
         self.check_geometry.setChecked(
             settings.get_setting('window/store-size'))
         box.addWidget(self.check_geometry)
         container.addWidget(group_on_exit)
 
         # Notificaciones
-        group_notifications = QGroupBox(self.tr("Notifications:"))
+        group_notifications = QGroupBox(self.tr("Notificaciones:"))
         box = QVBoxLayout(group_notifications)
         box.setContentsMargins(20, 5, 20, 5)
-        self.check_updates = QCheckBox(self.tr("Check updates"))
+        self.check_updates = QCheckBox(self.tr("Buscar Actualizaciones"))
         self.check_updates.setChecked(
             settings.get_setting('general/check-updates'))
         box.addWidget(self.check_updates)
@@ -122,9 +122,9 @@ class GeneralSection(QWidget):
 
         # Sistema
         if settings.IS_LINUX:
-            group_terminal = QGroupBox(self.tr("System:"))
+            group_terminal = QGroupBox(self.tr("Sistema:"))
             box = QHBoxLayout(group_terminal)
-            box.addWidget(QLabel(self.tr("Execute program with:")))
+            box.addWidget(QLabel(self.tr("Ejecutar programa con:")))
             self.line_terminal = QLineEdit()
             self.line_terminal.setAlignment(Qt.AlignLeft)
             self.line_terminal.setFixedWidth(300)
@@ -133,10 +133,10 @@ class GeneralSection(QWidget):
             container.addWidget(group_terminal)
 
         # User Interface
-        group_ui = QGroupBox(self.tr("User Interface:"))
+        group_ui = QGroupBox(self.tr("Interfáz de Usuario:"))
         box = QGridLayout(group_ui)
         box.setContentsMargins(20, 5, 20, 5)
-        box.addWidget(QLabel(self.tr("Theme:")), 0, 0)
+        box.addWidget(QLabel(self.tr("Tema:")), 0, 0)
         self.combo_theme = QComboBox()
         self.combo_theme.setFixedWidth(200)
         self._update_combo()
@@ -147,7 +147,7 @@ class GeneralSection(QWidget):
 
         self.combo_lang = QComboBox()
         self.combo_lang.setFixedWidth(200)
-        box.addWidget(QLabel(self.tr("Language:")), 1, 0)
+        box.addWidget(QLabel(self.tr("Idioma:")), 1, 0)
         box.addWidget(self.combo_lang, 1, 1)
         langs = os.listdir(os.path.join(paths.PATH, "extras", "i18n"))
         self.combo_lang.addItems(["English"] + [lang[:-3] for lang in langs])
@@ -158,10 +158,10 @@ class GeneralSection(QWidget):
         box.setAlignment(Qt.AlignLeft)
 
         # Reestablecer
-        group_restart = QGroupBox(self.tr("Restart:"))
+        group_restart = QGroupBox(self.tr("Reestablecer:"))
         box = QHBoxLayout(group_restart)
         box.setContentsMargins(20, 5, 20, 5)
-        btn_restart = QPushButton(self.tr("Restart Edis configurations"))
+        btn_restart = QPushButton(self.tr("Reiniciar configuraciones"))
         btn_restart.setObjectName("custom")
         box.addWidget(btn_restart)
         box.addStretch(1)
@@ -204,9 +204,10 @@ class GeneralSection(QWidget):
         flags = QMessageBox.Cancel
         flags |= QMessageBox.Yes
 
-        result = QMessageBox.question(self, self.tr("Warning!"),
-                                      self.tr("Are you sure you want to "
-                                              "reset your configurations?"),
+        result = QMessageBox.question(self, self.tr("Advertencia!"),
+                                      self.tr("Está seguro que quiere "
+                                              "reestablecer las "
+                                              "configuraciones?"),
                                       flags)
         if result == QMessageBox.Cancel:
             return

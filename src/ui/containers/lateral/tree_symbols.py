@@ -44,7 +44,7 @@ class ArbolDeSimbolos(QTreeWidget):
         self.clear()
 
         if 'globals' in symbols:
-            _globals = Item(self, [self.tr("Variables")])
+            _globals = Item(self, [self.tr("Variables Globales")])
             _globals.clicked = False
             for _glob, nline in sorted(list(symbols['globals'].items())):
                 _global = Item(_globals, [_glob])
@@ -53,7 +53,7 @@ class ArbolDeSimbolos(QTreeWidget):
             _globals.setExpanded(True)
 
         if 'functions' in symbols:
-            functions = Item(self, [self.tr('Functions')])
+            functions = Item(self, [self.tr('Funciones')])
             functions.clicked = False
             for nline, func in sorted(list(symbols['functions'].items())):
                 function = Item(functions, [func])
@@ -62,7 +62,7 @@ class ArbolDeSimbolos(QTreeWidget):
             functions.setExpanded(True)
 
         if 'structs' in symbols:
-            structs = Item(self, [self.tr("Structs")])
+            structs = Item(self, [self.tr("Estructuras")])
             structs.clicked = False
             for nline, name in sorted(list(symbols['structs'].items())):
                 struct = Item(structs, [name])
@@ -71,7 +71,7 @@ class ArbolDeSimbolos(QTreeWidget):
             structs.setExpanded(True)
 
         if 'members' in symbols:
-            members = Item(self, [self.tr("Members")])
+            members = Item(self, [self.tr("Miembros")])
             members.clicked = False
             for name, data in sorted(list(symbols['members'].items())):
                 info = "%s [%s]" % (name, data[1])
@@ -81,7 +81,7 @@ class ArbolDeSimbolos(QTreeWidget):
             members.setExpanded(True)
 
         if 'enums' in symbols:
-            enums = Item(self, [self.tr("Enums")])
+            enums = Item(self, [self.tr("Enumeraciones")])
             enums.clicked = False
             for nline, name in sorted(list(symbols['enums'].items())):
                 enum = Item(enums, [name])

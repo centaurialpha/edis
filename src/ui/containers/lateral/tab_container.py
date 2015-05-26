@@ -83,7 +83,7 @@ class TabContainer(QDockWidget):
     def load_symbols_widget(self, widget):
         if self._symbols_widget is None:
             self._symbols_widget = Edis.get_lateral("symbols")
-            self.tabs.addTab(self._symbols_widget, self.tr("Symbols"))
+            self.tabs.addTab(self._symbols_widget, self.tr("Símbolos"))
 
             # Conexiones
             editor_container = Edis.get_component("principal")
@@ -99,11 +99,11 @@ class TabContainer(QDockWidget):
     def load_explorer_widget(self, widget):
         if self._explorer is None:
             self._explorer = Edis.get_lateral("explorer")
-            self.tabs.addTab(self._explorer, self.tr("Explorer"))
+            self.tabs.addTab(self._explorer, self.tr("Explorador"))
 
     def load_project_widget(self, widget):
         self._tree_project = Edis.get_lateral("tree_projects")
-        self.tabs.addTab(self._tree_project, self.tr("Projects"))
+        self.tabs.addTab(self._tree_project, self.tr("Proyectos"))
 
         editor_container = Edis.get_component("principal")
         self.connect(editor_container, SIGNAL("projectOpened(PyQt_PyObject)"),

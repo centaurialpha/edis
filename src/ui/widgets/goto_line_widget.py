@@ -25,7 +25,7 @@ class GoToLineDialog(base_dialog.BaseDialog):
         box = QVBoxLayout(self)
         box.setContentsMargins(5, 5, 5, 5)
         self.line = QLineEdit()
-        self.line.setText(self.tr("<line>:<column>"))
+        self.line.setText(self.tr("<línea>:<columna>"))
         self.line.setSelection(0, len(self.line.text()))
         self.line.setObjectName("popup")
         self.line.setMinimumWidth(200)

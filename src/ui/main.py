@@ -133,13 +133,13 @@ class Edis(QMainWindow):
         from src.ui import actions
 
         menubar_items = [
-            self.tr("&File"),
-            self.tr("&Edit"),
-            self.tr("&View"),
-            self.tr("&Search"),
-            self.tr("&Build"),
-            self.tr("&Tools"),
-            self.tr("&Help")
+            self.tr("&Archivo"),
+            self.tr("&Editar"),
+            self.tr("&Ver"),
+            self.tr("&Buscar"),
+            self.tr("&Construcción"),
+            self.tr("&Herramientas"),
+            self.tr("A&yuda")
             ]
         menu_items = {}
         toolbar_actions = {}

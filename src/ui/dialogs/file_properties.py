@@ -27,7 +27,7 @@ class FileProperty(QDialog):
 
     def __init__(self, editor, parent=None):
         QDialog.__init__(self, parent, Qt.Dialog)
-        self.setWindowTitle(self.tr("File properties"))
+        self.setWindowTitle(self.tr("Propiedades del Archivo"))
         filename = editor.filename
         vLayout = QVBoxLayout(self)
         vLayout.setContentsMargins(10, 15, 10, 10)
@@ -38,25 +38,25 @@ class FileProperty(QDialog):
         vLayout.addWidget(lbl_title)
 
         grid = QGridLayout()
-        grid.addWidget(QLabel(self.tr("<b>Type:</b>")), 1, 0)
+        grid.addWidget(QLabel(self.tr("<b>Tipo:</b>")), 1, 0)
         grid.addWidget(QLabel(self.get_type(filename)), 1, 1)
-        grid.addWidget(QLabel(self.tr("<b>Size:</b>")), 2, 0)
+        grid.addWidget(QLabel(self.tr("<b>Tamaño:</b>")), 2, 0)
         grid.addWidget(QLabel(self.get_size(filename)), 2, 1)
-        grid.addWidget(QLabel(self.tr("<b>Location:</b>")), 3, 0)
+        grid.addWidget(QLabel(self.tr("<b>Ubicación:</b>")), 3, 0)
         grid.addWidget(QLabel(filename), 3, 1)
-        grid.addWidget(QLabel(self.tr("<b>Lines of code:</b>")), 4, 0)
+        grid.addWidget(QLabel(self.tr("<b>Líneas de código:</b>")), 4, 0)
         grid.addWidget(QLabel(self.tr("{0}").format(editor.lines() -
                        len(self.get_comment_spaces(editor)))), 4, 1)
         grid.addWidget(QLabel(
-            self.tr("<b>Blanks and commented lines:</b>")), 5, 0)
+            self.tr("<b>Comentarios y líneas en blanco:</b>")), 5, 0)
         grid.addWidget(QLabel(
             self.tr("{0}").format(len(self.get_comment_spaces(editor)))), 5, 1)
-        grid.addWidget(QLabel(self.tr("<b>Total lines:</b>")), 6, 0)
+        grid.addWidget(QLabel(self.tr("<b>Total de líneas:</b>")), 6, 0)
         grid.addWidget(QLabel(str(editor.lines())), 6, 1)
-        grid.addWidget(QLabel(self.tr("<b>Modified:</b>")), 7, 0)
+        grid.addWidget(QLabel(self.tr("<b>Modificado:</b>")), 7, 0)
         grid.addWidget(QLabel(self.tr(self.get_modification(filename))), 7, 1)
 
-        btn_aceptar = QPushButton(self.tr("Ok"))
+        btn_aceptar = QPushButton(self.tr("Aceptar"))
         grid.addWidget(btn_aceptar, 8, 1, Qt.AlignRight)
 
         vLayout.addLayout(grid)
@@ -67,9 +67,9 @@ class FileProperty(QDialog):
         try:
             ext = filename.split('.')[-1]
             if ext == 'c':
-                type_ = self.tr("C file")
+                type_ = self.tr("Archivo fuente C")
             elif ext == 'h':
-                type_ = self.tr("Header file")
+                type_ = self.tr("Archivo de Cabecera")
             elif ext == 's':
                 type_ = self.tr("ASM")
             return type_
