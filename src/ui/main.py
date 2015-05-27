@@ -274,6 +274,7 @@ class Edis(QMainWindow):
                 status_bar.hide()
             if lateral:
                 lateral.hide()
+            self.showFullScreen()
         else:
             if toolbar:
                 toolbar.show()
