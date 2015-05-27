@@ -12,7 +12,8 @@ Contenidos
 5. [Pruebas de Software](#tests)
 6. [Contribuir en el Proyecto](#contribuyendo)
 7. [Licencia](#licencia)
-8. [Autor](#autor)
+8. [Donaciones](#donaciones)
+9. [Autor](#autor)
 
 ## Qué es Edis?
 
@@ -84,6 +85,12 @@ Para contribuir con el proyecto siga estas instrucciones: [Contribuyendo con Edi
 ## Licencia
 
 **Edis** es Software Libre, distribuido bajo los términos de la [GPLv3+](http://gnu.org/licenses/gpl.html).
+
+## Donaciones
+
+Colabora con éste proyecto a través de [gratipay](https://gratipay.com/centaurialpha/)
+
+[![Support via Gratipay](https://cdn.rawgit.com/gratipay/gratipay-badge/2.3.0/dist/gratipay.png)](https://gratipay.com/centaurialpha/)
 
 ## Autor
 
