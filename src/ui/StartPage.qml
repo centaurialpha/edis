@@ -3,7 +3,7 @@ import QtQuick 1.1
 Rectangle {
     id: root
 
-    color: "#212121"
+    color: "#171814"
 
     ParallelAnimation {
         id: animation
@@ -25,7 +25,7 @@ Rectangle {
         Text {
             id: showText
 
-            color: "#292929";
+            color: "#20211c";
             font.bold: true;
             font.pointSize: 32;
         }
