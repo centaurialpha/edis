@@ -314,7 +314,8 @@ QTabBar::tab:top:selected {
 }
 
 QTabWidget::pane {
-    border: 1px solid #2B2B2B;
+    border: 0px solid transparent;
+    padding: 3px;
     position: absolute;
 }
 

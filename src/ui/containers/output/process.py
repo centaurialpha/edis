@@ -78,12 +78,12 @@ class EjecutarWidget(QWidget):
     def _execution_finished(self, code, status):
         if status == QProcess.CrashExit:
             text = output_compiler.Item(
-                self.tr("The execution has been interrupted"))
+                self.tr("La ejecución se ha interrumpido"))
             text.setForeground(Qt.red)
             self.output.addItem(text)
         else:
             text = output_compiler.Item(
-                self.tr("Execution successful!"))
+                self.tr("Ejecución Exitosa!"))
             text.setForeground(QColor("#7FE22A"))
             self.output.addItem(text)
 
@@ -112,11 +112,11 @@ class EjecutarWidget(QWidget):
             gcc = os.path.join(self._environment, 'gcc')
 
         item = output_compiler.Item(
-            self.tr(">>> Building file: {0} ( in directory {1} )").format(
+            self.tr(">>> Compilando: {0} ( en directorio {1} )").format(
                     path.split('/')[-1], exe_path))
         self.output.addItem(item)
         self.output.addItem(output_compiler.Item(
-            self.tr(">>> Command: {0}").format(
+            self.tr(">>> Comando: {0}").format(
                 gcc + ' ' + ' '.join(params) + ' ' + ' '.join(files))))
 
         # Se inicia el proceso
@@ -134,18 +134,19 @@ class EjecutarWidget(QWidget):
         if status == QProcess.NormalExit and code == 0:
             self._compilation_failed = False
             item_ok = output_compiler.Item(
-                self.tr("¡COMPILATION FINISHED SUCCESSFULLY!"))
+                self.tr("¡LA COMPILACIÓN HA SIDO EXITOSA!"))
             self.output.addItem(item_ok)
             item_ok.setForeground(QColor("#7FE22A"))
         else:
             self._compilation_failed = True
-            item_error = output_compiler.Item(self.tr("¡COMPILATION FAILED!"))
+            item_error = output_compiler.Item(
+                self.tr("¡LA COMPILACIÓN HA FALLADO!"))
             item_error.setForeground(QColor("#E20000"))
             self.output.addItem(item_error)
         syntax_ok = True if code == 0 else False
         self.emit(SIGNAL("updateSyntaxCheck(bool)"), syntax_ok)
         code_status = output_compiler.Item(
-                self.tr("Process terminated with status: {0}").format(code),
+                self.tr("Proceso terminado con código: {0}").format(code),
                 italic=True)
         self.output.addItem(code_status)
         count = self.output.count()
@@ -159,7 +160,7 @@ class EjecutarWidget(QWidget):
         """
 
         text = output_compiler.Item(
-            self.tr("An error has occurred: Compiler not found."))
+            self.tr("Se ha producido un error. Compilador no encontrado."))
         text.setForeground(Qt.red)
         self.output.addItem(text)
 
@@ -175,13 +176,13 @@ class EjecutarWidget(QWidget):
         # Si no existe se termina el proceso
         if not self._check_file_exists(path_exe):
             text = output_compiler.Item(
-                self.tr("File does not exist: {0}").format(path_exe))
+                self.tr("El archivo no existe: {0}").format(path_exe))
             text.setForeground(Qt.red)
             self.output.addItem(text)
             return
         # Texto en la salida
         text = output_compiler.Item(
-            self.tr("Executing... {0}").format(path_exe))
+            self.tr("Ejecutando... {0}").format(path_exe))
         self.output.addItem(text)
 
         if settings.IS_LINUX:

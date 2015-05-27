@@ -264,26 +264,14 @@ class Edis(QMainWindow):
         status_bar = Edis.get_component("status_bar")
         output = Edis.get_component("output")
         lateral = Edis.get_component("tab_container")
+        widgets = [output, toolbar, status_bar, lateral]
         if (output.isVisible() or toolbar.isVisible() or
            status_bar.isVisible() or lateral.isVisible()):
-            if output:
-                output.hide()
-            if toolbar:
-                toolbar.hide()
-            if status_bar:
-                status_bar.hide()
-            if lateral:
-                lateral.hide()
-            self.showFullScreen()
+            for widget in widgets:
+                widget.hide()
         else:
-            if toolbar:
-                toolbar.show()
-            if output:
-                output.show()
-            if status_bar:
-                status_bar.show()
-            if lateral:
-                lateral.show()
+            for widget in widgets:
+                widget.show()
 
     def show_full_screen(self):
         """ Cambia a modo FullScreen """

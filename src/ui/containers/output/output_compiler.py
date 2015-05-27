@@ -59,7 +59,7 @@ class SalidaCompilador(QListWidget):
                 self.addItem(normal)
             if item is not None:
                 if item.clickeable:
-                    item.setToolTip(self.tr("Click to go to the line"))
+                    item.setToolTip(self.tr("Click para ir a la línea"))
 
     def _go_to_line(self, item):
         if item.clickeable:
@@ -77,7 +77,7 @@ class SalidaCompilador(QListWidget):
 
     def _load_context_menu(self, point):
         menu = QMenu()
-        clear_action = menu.addAction(self.tr("Clear contents"))
+        clear_action = menu.addAction(self.tr("Limpiar"))
         self.connect(clear_action, SIGNAL("triggered()"), self.clear)
         menu.exec_(self.mapToGlobal(point))
 
