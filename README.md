@@ -1,23 +1,31 @@
 #Edis-IDE
 
+[![Github Releases (by Release)](https://img.shields.io/github/downloads/centaurialpha/edis/1.0/total.svg?style=flat-square)](https://github.com/centaurialpha/edis/releases/tag/1.0)
+[![Github Releases (by Release)](https://img.shields.io/github/downloads/centaurialpha/edis/v2.0/total.svg?style=flat-square)](https://github.com/centaurialpha/edis/releases/tag/v2.0)
+
 ![logo](./src/images/sources/logo.png)
 
 Contenidos
 
-1. [Qué es Edis?](#qúe-es-edis)
-2. [Características](#características)
-3. [Plataformas](#plataformas)
-3. [Ejecutar Edis](#ejecución)
-4. [Instalar Edis](#instalación)
-5. [Pruebas de Software](#tests)
-6. [Contribuir en el Proyecto](#contribuyendo)
-7. [Licencia](#licencia)
-8. [Donaciones](#donaciones)
-9. [Autor](#autor)
+- [Qué es Edis?](#qúe-es-edis)
+- [Screenshot](#screenshot)
+- [Características](#características)
+- [Plataformas](#plataformas)
+- [Ejecutar Edis](#ejecución)
+- [Instalar Edis](#instalación)
+- [Pruebas de Software](#tests)
+- [Contribuir en el Proyecto](#contribuyendo)
+- [Licencia](#licencia)
+- [Donaciones](#donaciones)
+- [Autor](#autor)
 
 ## Qué es Edis?
 
 **Edis** es un IDE (Entorno de Desarrollo Integrado) libre y multiplataforma para el lenguaje de programación C, desarrollado en Python y PyQt.
+
+## Screenshot
+
+![screenshot](./src/images/sources/edis_screenshot.png)
 
 ## Características
 
@@ -28,11 +36,11 @@ Contenidos
 * **Selector de archivos**
 * **Árbol de símbolos**
 * **Autocompletado de código basado en el documento**
-* **Autocompletado de `[]`, `{}`, `()`, `""`, `''`**
+* **Autocompletado de** `[]`, `{}`, `()`, `""`, `''`
 * **Autocompletado de llaves en funciones y estructuras**
 * **Marcadores**
-* **Banderas para el compilador: `-Werror`, `-Wfatal-errors`, `-O`, `-O2`, etc**
-* **Comparte el código en Pastebin con `Ctrl+P`**
+* **Banderas para el compilador:** `-Werror`, `-Wfatal-errors`, `-O`, `-O2`, **etc**
+* **Comparte el código en Pastebin con** `Ctrl+P`
 * **Combo en lugar de pestañas para seleccionar archivos abiertos**
 * **Búsqueda y reemplazo de palabras en el código**
 * ... Y más
@@ -76,7 +84,7 @@ sudo python setup.py install
 
 Para mantener la calidad del Software **Edis** posee tests que corren automáticamente a través de [Travis-CI](https://travis-ci.org/). El estado de la última construcción es el siguiente:
 
-[![Build Status](https://travis-ci.org/centaurialpha/edis.svg?branch=master)](https://travis-ci.org/centaurialpha/edis)
+[![Travis](https://img.shields.io/travis/centaurialpha/edis.svg?style=flat-square)](http://github.com/centaurialpha/edis)
 
 ## Contribuyendo
 
@@ -88,7 +96,7 @@ Para contribuir con el proyecto siga estas instrucciones: [Contribuyendo con Edi
 
 ## Donaciones
 
-Colabora con éste proyecto a través de [gratipay](https://gratipay.com/centaurialpha/)
+Colabora con éste proyecto a través de [gratipay](https://gratipay.com/centaurialpha/).
 
 [![Support via Gratipay](https://cdn.rawgit.com/gratipay/gratipay-badge/2.3.0/dist/gratipay.png)](https://gratipay.com/centaurialpha/)
 
