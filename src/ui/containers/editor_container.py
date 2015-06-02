@@ -671,8 +671,8 @@ class EditorContainer(QWidget):
             code_pasting.exec_()
 
     def show_snake(self):
-        from src.ui.widgets.snake import snake_widget
-        w = snake_widget.SnakeWidget(self)
+        from src.ui.widgets.pyborita import pyborita_widget
+        w = pyborita_widget.PyboritaWidget(self)
         toolbar = Edis.get_component("toolbar")
         lateral = Edis.get_component("tab_container")
         status = Edis.get_component("status_bar")

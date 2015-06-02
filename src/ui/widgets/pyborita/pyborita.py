@@ -19,7 +19,7 @@ from PyQt4.QtCore import (
     )
 
 
-class Snake(QFrame):
+class Pyborita(QFrame):
 
     # Señales
     scoreChanged = pyqtSignal(int)
@@ -36,7 +36,7 @@ class Snake(QFrame):
     DOWN = 4
 
     def __init__(self, parent=None):
-        super(Snake, self).__init__(parent)
+        super(Pyborita, self).__init__(parent)
         self.highscore = 0
         self.is_paused = True
         self.setFocusPolicy(Qt.StrongFocus)
@@ -49,7 +49,7 @@ class Snake(QFrame):
         # Velocidad inicial
         self.speed = 100
         self.scoreChanged.emit(self.score)
-        self.current_direction = Snake.RIGHT
+        self.current_direction = Pyborita.RIGHT
         # Estructura inicial
         self.snake = [[5, 10], [5, 10]]
         self.current_x_head = self.snake[0][0]
@@ -66,10 +66,11 @@ class Snake(QFrame):
         painter = QPainter(self)
         # Márgen información
         painter.setPen(QColor("#111"))
-        painter.setBrush(QColor("#292929"))
+        painter.setBrush(QColor("#474a3e"))
         painter.drawRect(0, 0, self.width() - 1, self.height() - 10)
         rect = self.contentsRect()
-        boardtop = rect.bottom() - Snake.HEIGHT_BLOCKS * self._square_height()
+        boardtop = rect.bottom() - Pyborita.HEIGHT_BLOCKS * \
+                   self._square_height()
 
         for pos in self.snake:
             self.draw(painter,
@@ -95,10 +96,10 @@ class Snake(QFrame):
                          self._square_height())
 
     def _square_width(self):
-        return self.contentsRect().width() / Snake.WIDTH_BLOCKS
+        return self.contentsRect().width() / Pyborita.WIDTH_BLOCKS
 
     def _square_height(self):
-        return self.contentsRect().height() / Snake.HEIGHT_BLOCKS
+        return self.contentsRect().height() / Pyborita.HEIGHT_BLOCKS
 
     def _drop_food(self):
         x = random.randint(5, 58)
@@ -109,22 +110,22 @@ class Snake(QFrame):
         self.food.append([x, y])
 
     def _move_snake(self):
-        if self.current_direction == Snake.LEFT:
+        if self.current_direction == Pyborita.LEFT:
             self.current_x_head -= 1
             if self.current_x_head < 0:
-                self.current_x_head = Snake.WIDTH_BLOCKS
-        if self.current_direction == Snake.RIGHT:
+                self.current_x_head = Pyborita.WIDTH_BLOCKS
+        if self.current_direction == Pyborita.RIGHT:
             self.current_x_head += 1
-            if self.current_x_head == Snake.WIDTH_BLOCKS:
+            if self.current_x_head == Pyborita.WIDTH_BLOCKS:
                 self.current_x_head = 0
-        if self.current_direction == Snake.UP:
+        if self.current_direction == Pyborita.UP:
             self.current_y_head -= 1
-            if self.current_y_head == Snake.HEIGHT_BLOCKS:
+            if self.current_y_head == Pyborita.HEIGHT_BLOCKS:
                 self.current_y_head = 0
-        if self.current_direction == Snake.DOWN:
+        if self.current_direction == Pyborita.DOWN:
             self.current_y_head += 1
             if self.current_y_head < 0:
-                self.current_y_head = Snake.HEIGHT_BLOCKS
+                self.current_y_head = Pyborita.HEIGHT_BLOCKS
 
         self.snake.insert(0, [self.current_x_head, self.current_y_head])
         if not self.grow_snake:
@@ -142,17 +143,17 @@ class Snake(QFrame):
     def keyPressEvent(self, event):
         key = event.key()
         if key == Qt.Key_Left:
-            if self.current_direction != Snake.RIGHT:
-                self.current_direction = Snake.LEFT
+            if self.current_direction != Pyborita.RIGHT:
+                self.current_direction = Pyborita.LEFT
         elif key == Qt.Key_Right:
-            if self.current_direction != Snake.LEFT:
-                self.current_direction = Snake.RIGHT
+            if self.current_direction != Pyborita.LEFT:
+                self.current_direction = Pyborita.RIGHT
         elif key == Qt.Key_Up:
-            if self.current_direction != Snake.DOWN:
-                self.current_direction = Snake.UP
+            if self.current_direction != Pyborita.DOWN:
+                self.current_direction = Pyborita.UP
         elif key == Qt.Key_Down:
-            if self.current_direction != Snake.UP:
-                self.current_direction = Snake.DOWN
+            if self.current_direction != Pyborita.UP:
+                self.current_direction = Pyborita.DOWN
         # Pausa
         elif key == Qt.Key_P:
             if not self.is_paused:

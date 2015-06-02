@@ -22,13 +22,13 @@ from PyQt4.QtGui import (
     #QSizePolicy
     )
 from PyQt4.QtCore import Qt
-from src.ui.widgets.snake import snake
+from src.ui.widgets.pyborita import pyborita
 
 
-class SnakeWidget(QWidget):
+class PyboritaWidget(QWidget):
 
     def __init__(self, parent=None):
-        super(SnakeWidget, self).__init__(parent)
+        super(PyboritaWidget, self).__init__(parent)
         self.parent = parent
         main_container = QVBoxLayout(self)
 
@@ -45,7 +45,7 @@ class SnakeWidget(QWidget):
         main_container.addLayout(box_score)
 
         # Snake
-        self.frame_snake = snake.Snake()
+        self.frame_snake = pyborita.Pyborita()
         main_container.addWidget(self.frame_snake)
         main_container.setAlignment(Qt.AlignCenter)
 
