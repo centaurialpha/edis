@@ -4,13 +4,13 @@ Rectangle {
     id: root
 
     color: "#292e30"
+    property int duracion: 800;
 
     ParallelAnimation {
-        id: animation
+        id: animacion
         running: false
 
-        NumberAnimation { target: showText; property: "opacity"; to: 1; duration: 400 }
-        NumberAnimation { target: showText; property: "x"; to: 0; from: -root.width; duration: 400 }
+        NumberAnimation { target: mensaje; property: "opacity"; to: 1; from: 0; duration: root.duracion }
     }
 
     Column {
@@ -23,7 +23,7 @@ Rectangle {
         Image { source: "../images/sources/logo.png"; anchors.horizontalCenter: parent.horizontalCenter }
 
         Text {
-            id: showText
+            id: mensaje
 
             color: "#343b3d";
             font.bold: true;
@@ -60,8 +60,8 @@ Rectangle {
         Image { source: "../images/sources/qt-logo.png"; }
     }
 
-    function show_text(text) {
-        animation.start();
-        showText.text = text;
+    function show_text(texto) {
+        animacion.start();
+        mensaje.text = texto;
     }
 }
