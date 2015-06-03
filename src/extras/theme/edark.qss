@@ -81,7 +81,7 @@ QToolButton#combo-button:hover {
 
 QScrollBar:vertical {
     background: transparent;
-    width: 12px;
+    width: 8px;
 }
 
 QScrollBar:horizontal {
@@ -91,13 +91,13 @@ QScrollBar:horizontal {
 
 QScrollBar::handle:horizontal {
     border-radius: 1px;
-    background: #353535;
+    background: #343b3d;
     min-width: 50px;
 }
 
 QScrollBar::handle:vertical {
     border-radius: 1px;
-    background: #353535;
+    background: #343b3d;
     min-height: 50px;
 
 }
@@ -111,12 +111,12 @@ QScrollBar::add-line:horizontal,
 QScrollBar::sub-line:horizontal,
 QScrollBar::add-page:horizontal,
 QScrollBar::sub-page:horizontal{
-    background: #171814;
+    background: #1d1f21;
 }
 
 QScrollBar::handle:vertical:hover,
 QScrollBar::handle:horizontal:hover {
-    background: #404040;
+    background: #464f52;
 }
 
 QMenuBar,
