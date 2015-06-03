@@ -23,7 +23,7 @@ EDIS_DARK_SCHEME = {
     'UnmatchedBraceFore': '#FFFFFF',
     'UnmatchedBraceBack': '#FF0000',
     'Margin': '#333333',
-    'CaretLineBack': '#474a3e',
+    'CaretLineBack': '#4a4f54',
     'CaretLineFore': '#FFFFFF',
     'CaretLineAlpha': 30,
     'SidebarBack': '#242629',

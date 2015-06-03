@@ -66,7 +66,7 @@ SETTINGS = {
     'editor/show-tabs-spaces': True,
     'editor/wrap-mode': False,
     'editor/font': "",
-    'editor/size-font': 10,
+    'editor/size-font': 12,
     'editor/style-checker': False,
     'editor/minimap': False,
     #'editor/minimap-animation': False,
