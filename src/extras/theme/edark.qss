@@ -50,7 +50,7 @@ QToolButton {
 }
 
 QToolButton:hover {
-    background: #22241e;
+    background: #2e3336;
 }
 
 QToolButton#dock_button:checked {
