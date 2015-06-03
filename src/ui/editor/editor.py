@@ -95,7 +95,8 @@ class Editor(base.Base):
         self.setMarkerBackgroundColor(
             QColor(226, 192, 141), Editor.MARKER_MODIFIED)
         self.markerDefine(QsciScintilla.SC_MARK_LEFTRECT, Editor.MARKER_SAVED)
-        self.setMarkerBackgroundColor(QColor(0, 210, 0), Editor.MARKER_SAVED)
+        self.setMarkerBackgroundColor(QColor(55, 142, 103),
+                                      Editor.MARKER_SAVED)
 
         # Actualiza flags (espacios en blanco, cursor, sidebar, etc)
         self.update_options()
