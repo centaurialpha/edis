@@ -292,6 +292,8 @@ QCheckBox:disabled {
 }
 
 QGroupBox {
+    font-size: 14px;
+    font-weight: bold;
     color: #aeb0b2;
     margin-top: 20px;
     padding: 5px;
