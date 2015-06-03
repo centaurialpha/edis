@@ -77,7 +77,7 @@ class TabContainer(QDockWidget):
         if current_theme != 'Edark':
             return
         position = "left" if area == 1 else "right"
-        border = "{border-%s: 3px solid #333}" % position
+        border = "{border-%s: 3px solid #204A87}" % position
         self.tabs.setStyleSheet("QTabBar::tab:selected %s" % border)
 
     def load_symbols_widget(self, widget):

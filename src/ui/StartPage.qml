@@ -3,7 +3,7 @@ import QtQuick 1.1
 Rectangle {
     id: root
 
-    color: "#171814"
+    color: "#292e30"
 
     ParallelAnimation {
         id: animation
@@ -25,7 +25,7 @@ Rectangle {
         Text {
             id: showText
 
-            color: "#20211c";
+            color: "#343b3d";
             font.bold: true;
             font.pointSize: 32;
         }
@@ -34,7 +34,7 @@ Rectangle {
     Text {
         text: qsTr("Copyright © 2014-" + Qt.formatDate(new Date(), "yyyy ") + "Edis under GPLv3+ License")
         font.pointSize: 10
-        color: "#FFFFFF"
+        color: "#BABDB6"
         style: Text.Raised;
         anchors.bottom: root.bottom
         anchors.left: root.left

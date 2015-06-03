@@ -17,6 +17,6 @@ class CustomLineEdit(QLineEdit):
 
     def update(self, found):
         if not found:
-            self.setStyleSheet('border: 2px solid #DF3E3E; border-radius: 3px')
+            self.setStyleSheet('border: 2px solid #DF3E3E;')
         else:
-            self.setStyleSheet('border: 1px solid gray; border-radius: 2px')
+            self.setStyleSheet('border: 2px solid #2F628B;')

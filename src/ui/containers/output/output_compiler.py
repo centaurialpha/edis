@@ -25,7 +25,7 @@ class SalidaCompilador(QListWidget):
     def __init__(self, parent):
         QListWidget.__init__(self, parent)
         self.setStyleSheet(
-            "QListWidget { background: #2d2e27 }")
+            "QListWidget { background: #1a1d1f }")
         self._parent = parent
         self.setContextMenuPolicy(Qt.CustomContextMenu)
 
