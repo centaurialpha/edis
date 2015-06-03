@@ -132,14 +132,14 @@ QMenuBar::item {
 }
 
 QMenuBar::item:selected {
-    background: #232424;
+    background: #464f52;
     border-radius: 1px;
     color: #aeb0b2;
 }
 
 QMenuBar::item:pressed {
     background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
-                                      stop: 0 #2e3028, stop: 1.0 #232424);
+                                      stop: 0 #464f52, stop: 1.0 #343b3d);
     color: #aeb0b2;
 }
 
@@ -160,7 +160,7 @@ QMenu::item {
 
 QMenu::item:selected {
     background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
-                                      stop: 0 #4e77c9, stop: 1.0 #5887e4);
+                                      stop: 0 #464f52, stop: 1.0 #343b3d);
     color: #FFFFFF;
 }
 
