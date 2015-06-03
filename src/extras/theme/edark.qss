@@ -245,12 +245,14 @@ QPushButton#custom {
 }
 
 QPushButton:hover {
-    border: 1px solid #606060;
-    background: #2a2b24;
+    background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
+                                stop: 0 #383e42, stop: 1 #262b2e);
 }
 
 QPushButton:pressed {
     border: 1px solid gray;
+    background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
+                                stop: 0 #383e42, stop: 1 #262b2e);
 }
 
 QLineEdit {
