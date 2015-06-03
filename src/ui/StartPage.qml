@@ -50,7 +50,7 @@ Rectangle {
 
         Text {
             text: qsTr("Powered by: ");
-            color: "white";
+            color: "#BABDB6";
             style: Text.Raised;
             height: logo.height;
             verticalAlignment: Text.AlignVCenter;
