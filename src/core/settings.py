@@ -47,7 +47,7 @@ SETTINGS = {
     'editor/completion-keywords': True,
     'editor/completion-cs': False,
     'editor/completion-replace-word': False,
-    'editor/completion-single': True,
+    'editor/completion-single': False,
     'editor/usetabs': False,
     'editor/scheme': 'dark',
     'editor/show-line-number': True,
