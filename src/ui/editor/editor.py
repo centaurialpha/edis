@@ -62,7 +62,7 @@ class Editor(base.Base):
         super(Editor, self).__init__()
         self.obj_file = obj_file  # Asociación con el objeto EdisFile
         self._font = None
-        # Configuration
+        # Configuración
         use_tabs = settings.get_setting('editor/usetabs')
         self.setIndentationsUseTabs(use_tabs)
         self.setAutoIndent(settings.get_setting('editor/indent'))
@@ -90,6 +90,7 @@ class Editor(base.Base):
             QColor(self.scheme['FoldMarkerBack']))
         self.setFoldMarginColors(QColor(self.scheme['FoldMarginBack']),
                                  QColor(self.scheme['FoldMarginFore']))
+        # Marcadores
         self.markerDefine(QsciScintilla.SC_MARK_LEFTRECT,
                           Editor.MARKER_MODIFIED)
         self.setMarkerBackgroundColor(
@@ -152,7 +153,12 @@ class Editor(base.Base):
             self.scheme['UnmatchedBraceBack']))
         self.setUnmatchedBraceForegroundColor(QColor(
             self.scheme['UnmatchedBraceFore']))
-
+        # Selecciones Múltiples
+        self.send("sci_setadditionalcaretfore", QColor(157, 64, 40))
+        self.send("sci_setadditionalcaretsblink", 1)
+        self.send("sci_setadditionalselalpha", 100)
+        self.send("sci_setmultipleselection", 1)
+        self.send("sci_setadditionalselectiontyping", 1)
         # Conexiones
         self.connect(self, SIGNAL("linesChanged()"), self.update_sidebar)
         self.connect(self, SIGNAL("textChanged()"), self._add_marker_modified)
