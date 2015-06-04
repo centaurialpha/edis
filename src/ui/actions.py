@@ -100,15 +100,6 @@ ACTIONS = ([
         "shortcut": "unindent",
         "separator": True},
     {
-        "name": translate("EDIS", "Duplicar Línea"),
-        "connection": "action_duplicate_line",
-        "shortcut": "duplicate"},
-    {
-        "name": translate("EDIS", "Eliminar Línea"),
-        "connection": "action_delete_line",
-        "shortcut": "delete",
-        "separator": True},
-    {
         "name": translate("EDIS", "A minúsculas"),
         "connection": "action_to_lowercase"},
     {
@@ -117,24 +108,6 @@ ACTIONS = ([
     {
         "name": translate("EDIS", "A Título"),
         "connection": "action_to_title",
-        "separator": True},
-    {
-        "name": translate("EDIS", "Comentar"),
-        "connection": "action_comment",
-        "shortcut": "comment"},
-    {
-        "name": translate("EDIS", "Descomentar"),
-        "connection": "action_uncomment",
-        "shortcut": "uncomment",
-        "separator": True},
-    {
-        "name": translate("EDIS", "Move Hacia Arriba"),
-        "connection": "action_move_up",
-        "shortcut": "up"},
-    {
-        "name": translate("EDIS", "Move Hacia Abajo"),
-        "connection": "action_move_down",
-        "shortcut": "down",
         "separator": True},
     {
         "name": translate("EDIS", "Configuraciones"),
@@ -203,6 +176,33 @@ ACTIONS = ([
         "name": translate("EDIS", "Ir a Línea"),
         "connection": "show_go_to_line",
         "shortcut": "go"}], [
+    # Menú código
+    {
+        "name": translate("EDIS", "Duplicar Línea"),
+        "connection": "action_duplicate_line",
+        "shortcut": "duplicate"},
+    {
+        "name": translate("EDIS", "Eliminar Línea"),
+        "connection": "action_delete_line",
+        "shortcut": "delete"},
+    {
+        "name": translate("EDIS", "Comentar"),
+        "connection": "action_comment",
+        "shortcut": "comment"},
+    {
+        "name": translate("EDIS", "Descomentar"),
+        "connection": "action_uncomment",
+        "shortcut": "uncomment",
+        "separator": True},
+    {
+        "name": translate("EDIS", "Move Hacia Arriba"),
+        "connection": "action_move_up",
+        "shortcut": "up"},
+    {
+        "name": translate("EDIS", "Move Hacia Abajo"),
+        "connection": "action_move_down",
+        "shortcut": "down",
+        "separator": True}], [
     # Menú ejecución
     {
         "name": translate("EDIS", "Compilar"),

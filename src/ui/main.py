@@ -137,6 +137,7 @@ class Edis(QMainWindow):
             self.tr("&Editar"),
             self.tr("&Ver"),
             self.tr("&Buscar"),
+            self.tr("Có&digo"),
             self.tr("&Construcción"),
             self.tr("&Herramientas"),
             self.tr("A&yuda")
