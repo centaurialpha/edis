@@ -533,6 +533,11 @@ class Editor(base.Base):
     def move_up(self):
         self.send("sci_moveselectedlinesup")
 
+    def reemplazar_tabs_por_espacios(self):
+        codigo = self.text()
+        codigo_sin_tabs = codigo.replace('\t', ' ' * self._indentation)
+        self.setText(codigo_sin_tabs)
+
     def saved(self):
         # Esta señal sirve para actualizar el árbol de símbolos
         self.emit(SIGNAL("fileSaved(QString)"), self.obj_file.filename)

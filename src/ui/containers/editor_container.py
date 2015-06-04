@@ -577,6 +577,11 @@ class EditorContainer(QWidget):
         if weditor is not None:
             weditor.move_up()
 
+    def reemplazar_tabs_por_espacios(self):
+        weditor = self.get_active_editor()
+        if weditor is not None:
+            weditor.reemplazar_tabs_por_espacios()
+
     def go_to_line(self, line):
         weditor = self.get_active_editor()
         if weditor is not None:

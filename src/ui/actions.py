@@ -178,6 +178,9 @@ ACTIONS = ([
         "shortcut": "go"}], [
     # Menú código
     {
+        "name": translate("EDIS", "Reemplazar tabulaciones por espacios"),
+        "connection": "reemplazar_tabs_por_espacios"},
+    {
         "name": translate("EDIS", "Duplicar Línea"),
         "connection": "action_duplicate_line",
         "shortcut": "duplicate"},
