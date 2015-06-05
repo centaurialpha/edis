@@ -94,7 +94,7 @@ class Editor(base.Base):
         self.markerDefine(QsciScintilla.SC_MARK_LEFTRECT,
                           Editor.MARKER_MODIFIED)
         self.setMarkerBackgroundColor(
-            QColor(226, 192, 141), Editor.MARKER_MODIFIED)
+            QColor(226, 255, 141), Editor.MARKER_MODIFIED)
         self.markerDefine(QsciScintilla.SC_MARK_LEFTRECT, Editor.MARKER_SAVED)
         self.setMarkerBackgroundColor(QColor(55, 142, 103),
                                       Editor.MARKER_SAVED)
