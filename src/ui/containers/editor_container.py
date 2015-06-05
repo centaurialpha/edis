@@ -360,7 +360,6 @@ class EditorContainer(QWidget):
         content = weditor.text()
         weditor.obj_file.write(content, filename)
         weditor.saved()
-        weditor.obj_file.run_system_watcher()
         self.fileChanged.emit(weditor.filename)
         self.savedFile.emit(weditor.filename)
         return filename

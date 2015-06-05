@@ -75,7 +75,12 @@ class EdisFile(QObject):
             raise exceptions.EdisIOError
         out_file = QTextStream(_file)
         out_file << content
-        self.run_system_watcher()
+        if self._system_watcher is not None:
+            if self._filename is not None:
+                archivos = self._system_watcher.files()
+                self._system_watcher.removePath(archivos[0])
+        else:
+            self.run_system_watcher()
 
     def run_system_watcher(self):
         """ Inicializa el control de monitoreo para modificaciones """
