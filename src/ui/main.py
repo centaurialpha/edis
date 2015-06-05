@@ -32,6 +32,7 @@ from src.core import (
     keymap,
     logger
     )
+from src.managers import file_manager
 from src.ui.dialogs import (
     unsaved_files,
     #about
@@ -298,7 +299,8 @@ class Edis(QMainWindow):
 
         editor_container = Edis.get_component("principal")
         for _file in files:
-            editor_container.open_file(_file)
+            if file_manager.file_exists(_file):
+                editor_container.open_file(_file)
         editor_container.update_recents_files(recents_files)
         for project in projects:
             editor_container.open_project(project)
