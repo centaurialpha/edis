@@ -1,0 +1,13 @@
+#!/bin/bash
+# Script para ejecutar Edis en GNU/Linux
+
+DIR_EDIS=$(dirname $0)
+DIR_ACTUAL=$(pwd)
+
+version_python=$(python -c 'import sys; print(sys.version_info.major)')
+PYTHON=$(which python)
+if [ "$version_python" == "2" ]; then
+    PYTHON=/usr/bin/python3
+fi
+
+$PYTHON $DIR_EDIS/bin/edis
