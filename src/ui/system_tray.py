@@ -56,15 +56,16 @@ class NotificacionActualizacion(QSystemTrayIcon):
         if found:
             self.menu.clear()
             self.setToolTip("")
-            download_action = self.menu.addAction(self.tr("Download!"))
-            exit_action = self.menu.addAction(self.tr("Close notifications"))
+            download_action = self.menu.addAction(self.tr("Descargar!"))
+            exit_action = self.menu.addAction(self.tr("Cerrar notificación"))
 
             self.connect(download_action, SIGNAL("triggered()"),
                          lambda: webbrowser.open_new(link))
             self.connect(exit_action, SIGNAL("triggered()"), self.hide)
-            self.showMessage(self.tr("New version available!"),
-                             self.tr("New version of Edis available!\n"
-                             "version: {0}.").format(version),
+            self.showMessage(self.tr("Nueva versión disponible!"),
+                             self.tr("Está disponible una nueva versión de"
+                                     " Edis\n"
+                             "versión: {0}.").format(version),
                              QSystemTrayIcon.Information, 10000)
         else:
             self.hide()
@@ -90,4 +91,5 @@ class Thread(QThread):
         except:
             web_version, link = '', ''
             INFO("No se pudo establecer la conexión")
+        DEBUG("Última versión disponible: {0}".format(web_version))
         self.updateVersion.emit(web_version, link, found)
