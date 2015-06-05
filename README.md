@@ -64,8 +64,17 @@ Descarga el [código fuente](https://github.com/centaurialpha/edis/releases) o c
 ```bash
 git clone https://github.com/centaurialpha/edis.git
 cd edis
+```
+en Windows
+```bash
 python bin/edis
 ```
+
+en Linux
+```bash
+./edis-linux
+```
+
 
 ## Instalación
 
