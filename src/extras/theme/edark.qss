@@ -368,7 +368,7 @@ QSlider::handle:horizontal:hover {
 QComboBox {
     background:qlineargradient(x1: 0, y1: 0, x2: 0, y2: 0.8,
                                stop: 0 #464f54, stop: 1 #262b2e);
-    color: #aeb0b2;
+    color: #c7cacc;
     padding: 3px 10px 3px 10px;
 
 }
