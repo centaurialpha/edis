@@ -47,11 +47,15 @@ class AcercaDe(QDialog):
         lbl_version = QLabel(self.tr("<b>Versión:</b> {0}").format(
                              ui.__version__))
         box.addWidget(lbl_version)
+        http = "http://"
         lbl_link = QLabel("<b>Web:</b> <a href='%s'><span style='color: "
-                          "#626655;'>%s</span></a>" % (ui.__web__, ui.__web__))
-        lbl_sc = QLabel(self.tr("<b>Source Code:</b> <a href='{0}'><span"
+                          "#626655;'>%s</span></a>" % (ui.__web__,
+                                                       ui.__web__.replace(
+                                                           http, "")))
+        lbl_sc = QLabel(self.tr("<b>Código fuente:</b> <a href='{0}'><span"
                         " style='color: #626655;'>{1}</span></a>").format(
-                        ui.__source_code__, ui.__source_code__))
+                        ui.__source_code__,
+                        ui.__source_code__.replace(http, "")))
         box.addWidget(lbl_link)
         box.addWidget(lbl_sc)
         # License
@@ -60,7 +64,7 @@ class AcercaDe(QDialog):
                                      "licencia <b>GPLv3+</b>")))
         box.addWidget(QLabel(self.tr("<b>Autor:</b> {0}").format(
                       ui.__author__)))
-        box.addWidget(QLabel(self.tr("<b>Email:</b> {0}").format(
+        box.addWidget(QLabel(self.tr("<b>e-mail:</b> {0}").format(
                       ui.__email_author__)))
         # Thanks to
         lbl_contributors = QLabel(self.tr("Agradezco a los que <a href="
