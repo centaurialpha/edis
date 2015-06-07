@@ -140,7 +140,6 @@ class Edis(QMainWindow):
             self.tr("&Buscar"),
             self.tr("Có&digo"),
             self.tr("&Construcción"),
-            self.tr("&Herramientas"),
             self.tr("A&yuda")
             ]
         menu_items = {}
