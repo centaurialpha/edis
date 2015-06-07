@@ -65,8 +65,8 @@ class Pyborita(QFrame):
     def paintEvent(self, event):
         painter = QPainter(self)
         # Márgen información
-        painter.setPen(QColor("#111"))
-        painter.setBrush(QColor("#474a3e"))
+        painter.setPen(QColor("#343b3d"))
+        painter.setBrush(QColor("#292e30"))
         painter.drawRect(0, 0, self.width() - 1, self.height() - 10)
         rect = self.contentsRect()
         boardtop = rect.bottom() - Pyborita.HEIGHT_BLOCKS * \
