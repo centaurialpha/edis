@@ -35,7 +35,7 @@ KEYMAP = {
     "uncomment": QKeySequence(Qt.CTRL + Qt.SHIFT + Qt.Key_G),
     "title": QKeySequence(Qt.CTRL + Qt.Key_T),
     "delete": QKeySequence(Qt.CTRL + Qt.SHIFT + Qt.Key_X),
-    "duplicate": QKeySequence(Qt.ALT + Qt.Key_D),
+    "duplicate": QKeySequence(Qt.CTRL + Qt.Key_D),
     "preferences": QKeySequence(Qt.CTRL + Qt.ALT + Qt.Key_P),
     # Ver
     "fullscreen": QKeySequence(Qt.CTRL + Qt.Key_F11),
