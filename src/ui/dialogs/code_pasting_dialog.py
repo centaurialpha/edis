@@ -51,7 +51,7 @@ class CodePastingDialog(QDialog):
         fields_box.addWidget(self._spin_expire, 0, 1)
         fields_box.addWidget(QLabel(self.tr("Acceso:")), 1, 0)
         self._combo_access = QComboBox()
-        self._combo_access.addItems([self.tr("Publico"), self.tr("Privado")])
+        self._combo_access.addItems([self.tr("Público"), self.tr("Privado")])
         fields_box.addWidget(self._combo_access, 1, 1)
         fields_box.addWidget(QLabel(self.tr("Nombre:")), 2, 0)
         self._line_filename = QLineEdit()

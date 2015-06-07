@@ -150,7 +150,7 @@ class GeneralSection(QWidget):
         box.addWidget(QLabel(self.tr("Idioma:")), 1, 0)
         box.addWidget(self.combo_lang, 1, 1)
         langs = os.listdir(os.path.join(paths.PATH, "extras", "i18n"))
-        self.combo_lang.addItems(["English"] + [lang[:-3] for lang in langs])
+        self.combo_lang.addItems(["Spanish"] + [lang[:-3] for lang in langs])
         lang = settings.get_setting('general/language')
         index = 0 if not lang else self.combo_lang.findText(lang)
         self.combo_lang.setCurrentIndex(index)

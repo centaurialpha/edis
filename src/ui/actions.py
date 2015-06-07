@@ -142,7 +142,7 @@ ACTIONS = ([
         "name": translate("EDIS", "Mostrar Guías de Indentación"),
         "connection": "show_indentation_guides"},
     {
-        "name": translate("EDIS", "Delete Markers"),
+        "name": translate("EDIS", "Borrar Marcadores"),
         "connection": "delete_editor_markers",
         "separator": True},
     {

@@ -47,7 +47,7 @@ class NotificacionActualizacion(QSystemTrayIcon):
                      self._show_tray)
         self.connect(exit_action, SIGNAL("triggered()"), self.hide)
 
-        self.setToolTip(self.tr("Checking updates..."))
+        self.setToolTip(self.tr("Buscando actualizaciones..."))
         self.thread.start()
 
     def _show_tray(self, version, link, found):
