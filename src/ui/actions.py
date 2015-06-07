@@ -205,7 +205,11 @@ ACTIONS = ([
         "name": translate("EDIS", "Move Hacia Abajo"),
         "connection": "action_move_down",
         "shortcut": "down",
-        "separator": True}], [
+        "separator": True},
+    {
+        "name": translate("EDIS", "Compartir Código"),
+        "connection": "code_pasting",
+        "shortcut": "cpaste"}], [
     # Menú ejecución
     {
         "name": translate("EDIS", "Compilar"),
@@ -228,10 +232,6 @@ ACTIONS = ([
         "name": translate("EDIS", "Limpiar Construcción"),
         "icon": "clean",
         "connection": "clean_construction"}], [
-    {
-        "name": translate("EDIS", "Compartir Código"),
-        "connection": "code_pasting",
-        "shortcut": "cpaste"}], [
     # Menú acerca de
     {
         "name": translate("EDIS", "Reportar Bug!"),
