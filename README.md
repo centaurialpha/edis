@@ -2,6 +2,7 @@
 
 [![Github Releases (by Release)](https://img.shields.io/github/downloads/centaurialpha/edis/1.0/total.svg?style=flat-square)](https://github.com/centaurialpha/edis/releases/tag/1.0)
 [![Github Releases (by Release)](https://img.shields.io/github/downloads/centaurialpha/edis/v2.0/total.svg?style=flat-square)](https://github.com/centaurialpha/edis/releases/tag/v2.0)
+[![Github Releases (by Release)](https://img.shields.io/github/downloads/centaurialpha/edis/v2.1/total.svg?style=flat-square)](https://github.com/centaurialpha/edis/releases/tag/v2.1)
 
 ![logo](./src/images/sources/logo.png)
 
