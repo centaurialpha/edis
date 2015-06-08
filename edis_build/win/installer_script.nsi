@@ -1,7 +1,7 @@
 ;NSIS Script Installer for Edis
 
 !define NAME "Edis"
-!define VERSION "2.0"
+!define VERSION "2.1"
 !define WEB_SITE "http://centaurialpha.github.io/edis"
 !define MUI_ABORTWARNING
 !define MUI_ICON "edis.ico"
