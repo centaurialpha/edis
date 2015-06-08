@@ -6,5 +6,5 @@ GenericName=Edis
 Comment=a simple cross-platfor IDE for C 
 Icon=@ INSTALLED_ICON @
 Exec=edis
-Terminal=true
+Terminal=false
 Categories=Development
