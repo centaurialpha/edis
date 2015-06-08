@@ -31,7 +31,7 @@ for module, link in MODULES:
 try:
     Popen(['ctags'], stdout=PIPE, stderr=PIPE)
 except:
-    print("Please install ctags!")
+    print("Por favor instala ctags!")
     sys.exit(1)
 
 
@@ -133,9 +133,9 @@ setup(
     author_email=ui.__email_author__,
     url=ui.__source_code__,
     license='GPLv3+',
-    long_description=open('README.rst').read(),
+    long_description=open('README.md').read(),
     package_data={
-        'src': ['extras/theme/edark.qss', 'extras/i18n/Spanish.qm',
+        'src': ['extras/theme/edark.qss', 'extras/i18n/English.qm',
                 'images/icon.png', 'images/sources/logo.png',
                 'images/sources/python-logo.png', 'images/sources/qt-logo.png',
                 'ui/StartPage.qml', 'tools/run_script.sh',
