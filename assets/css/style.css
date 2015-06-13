@@ -8,7 +8,7 @@ body{
 	position: fixed;
 	top: 0px;
 	padding-top: 10%;
-	background-color: #232729;
+	background-color: #2c3e50;
 	color: #fff;
 }
 
@@ -82,7 +82,7 @@ article .share .gplus:hover {
 }
 
 .page-header {
-	color: dimgrey;
+	color: #e74c3c;
 	text-shadow: 1px 1px 1px rgba(150, 150, 150, 1);
 }
 
@@ -117,14 +117,14 @@ article.home h4,
 article.home h5,
 article.home h6 {
 	font-family: 'Ubuntu', sans-serif;
-	color: #204A87;
+	color: #f2756a;
 }
 
 article.home h1 a,
 article.home h2 a,
 article.home h3 a,
 article.home h4 a {
-	color: #204A87;
+	color: #f2756a;
 }
 article.home h1 a:hover,
 article.home h2 a:hover,

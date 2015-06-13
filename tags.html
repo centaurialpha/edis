@@ -1,11 +1,10 @@
 ---
 layout: page
-title: Acerca de Edis
+title: Tags
 header: Posts By Tag
 group: navigation
 ---
 
-<!--
 {% capture site_tags %}{% for tag in site.tags %}{{ tag | first }}{% unless forloop.last %},{% endunless %}{% endfor %}{% endcapture %}
 {% assign tag_words = site_tags | split:',' | sort %}
 
@@ -22,7 +21,7 @@ group: navigation
    {% endunless %}{% endfor %}
    </ul>
 </div>
-
+<!-- Tab panes -->
 <div class="tab-content col-sm-9 col-xs-6">
   {% for item in (0..site.tags.size) %}{% unless forloop.last %}
     {% capture this_word %}{{ tag_words[item] | strip_newlines }}{% endcapture %}
@@ -38,5 +37,3 @@ group: navigation
 </div>
 
 <div class="clearfix"></div>
-
--->

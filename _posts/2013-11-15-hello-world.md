@@ -1,11 +1,15 @@
 ---
 layout: post
-title: ¿Qué es Edis?
-#categories: [edis]
-#tags: [edis]
+title: Hello World!
+categories: [general, setup, demo]
+tags: [demo, dbyll, dbtek, setup]
 fullview: true
 ---
 
-**Edis** es un IDE (Entorno de Desarrollo Integrado) libre, gratuito y multiplataforma para el lenguaje de programación C. Posee una interfáz sencilla y muy intuitiva, ideal para estudiantes que están en el aprendizaje. 
+**dbyll** is minimalist, stylish theme for jekyll. Supports gravatar, account links (github, twitter, e-mail, pinterest, résume file) and a bio.  
 
-**Edis** está escrito en un 98% de código **Python**, el porcentaje restante es **QML** y **C**.
+**dbyll** is brought to you by **[dbtek](http://ismaildemirbilek.com)**. Open sourced under [MIT](http://opensource.org/licenses/MIT) license.
+  
+### dbyll is on GitHub
+
+<a class="btn btn-default" href="https://github.com/dbtek/dbyll">Grab your copy now!</a>
