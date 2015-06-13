@@ -1,34 +1,34 @@
-title: "Edis"
-author: "Gabriel Acosta"
-description: "a simple cross-platform IDE for C"
-#subheading: "Really cool blog about ... something"
-more: "read more"
-url: "http://centaurialpha.github.io/edis"
-#baseurl: "/contrast" # comment out if in root directory
+# visit https://github.com/mojombo/jekyll/wiki/Configuration for more settings
 
-comments:
-    disqus: "niklasbuschmann"
-#    isso: "comments.mysite.org"
+paginate: 1 # pagination based on number of posts
+paginate_path: "page:num"
+exclude: ["README.md"] # files to exclude
+highlighter: pygments
+markdown: kramdown
+kramdown:
+  input: GFM
 
-style:
-#    body: "whitesmoke"
-    padding: 33%
-    anchor: "#46f"
-    serif-heading: true
-    nav: "#181818"
-#    headline: "#06f"
-    description: "white"
-    article:
-        odd: "#ffffff"
-        even: "#222222"
 
-links:
-  - github: "https://github.com/centaurialpha/"
-  - twitter: "https://twitter.com/_alfacentauri/"
-  #- google-plus: "https://plus.google.com/+me"
-  #- reddit: "https://www.reddit.com/user/me/"
-  - youtube: "https://www.youtube.com/user/me"
-  #- steam: "http://steamcommunity.com/id/me/"
+defaults:
+  -
+    scope:
+      path: "" # empty string for all files
+    values:
+      title: Edis
 
-excerpt_separator: "\n\n\n"
-defaults: [{scope: {path: ""}, values: {layout: "default"}}, {scope: {path: "", type: "posts"}, values: {comments: true}}]
+description: a simple cross-platform IDE for C
+author:
+  name: Edis
+  email: acostadariogabriel@gmail.com
+  github: centaurialpha
+  twitter: _alfacentauri
+  #pinterest: asd123
+  #linkedin: asd123
+  bio: Edis - a simple cross-platform IDE for C
+  email_md5: 726351295ec82e145928582f595aa3aa
+
+rss_path: feed.xml
+categories_path: descargas.html
+tags_path: acerca.html
+
+BASE_PATH:
