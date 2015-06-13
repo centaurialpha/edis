@@ -5,14 +5,12 @@ paginate_path: "page:num"
 #exclude: [""] # files to exclude
 highlighter: pygments
 markdown: kramdown
-kramdown:
-  input: GFM
 
 
 defaults:
   -
     scope:
-      path: "http://centaurialpha.github.io/edis" # empty string for all files
+      path: "" # empty string for all files
     values:
       title: Edis
 
