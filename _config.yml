@@ -1,8 +1,6 @@
-# visit https://github.com/mojombo/jekyll/wiki/Configuration for more settings
-
-paginate: 10 # pagination based on number of posts
+paginate: 1 # pagination based on number of posts
 paginate_path: "page:num"
-exclude: ["README.md"] # files to exclude
+#exclude: ["README.md"] # files to exclude
 highlighter: pygments
 markdown: kramdown
 
@@ -12,17 +10,17 @@ defaults:
     scope:
       path: "" # empty string for all files
     values:
-      title: dbyll
+      title: Edis
 
-description: Stylish Jekyll Theme
+description: a simple cross-platform IDE for C
 author:
-  name: dbyll
-  email: dbyll@ismaildemirbilek.com
-  github: dbtek
-  twitter: dbtek
-  pinterest: asd123
-  linkedin: asd123
-  bio: Your stylish, minimalist theme!
+  name: Edis
+  email: acostadariogabriel@gmail.com
+  github: centaurialpha
+  twitter: _alfacentauri
+  #pinterest: asd123
+  #linkedin: asd123
+  bio: a simple cross-platform IDE for C
   email_md5: 726351295ec82e145928582f595aa3aa
 
 rss_path: feed.xml
