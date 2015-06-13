@@ -1,35 +1,34 @@
----
+title: "Edis"
+author: "Gabriel Acosta"
+description: "a simple cross-platform IDE for C"
+#subheading: "Really cool blog about ... something"
+more: "read more"
+url: "http://centaurialpha.github.io/edis"
+#baseurl: "/contrast" # comment out if in root directory
 
-port: 4000
-host: 0.0.0.0
-safe: false
+comments:
+    disqus: "niklasbuschmann"
+#    isso: "comments.mysite.org"
 
+style:
+#    body: "whitesmoke"
+    padding: 33%
+    anchor: "#46f"
+    serif-heading: true
+    nav: "#181818"
+#    headline: "#06f"
+    description: "white"
+    article:
+        odd: "#ffffff"
+        even: "#222222"
 
-### site serving configuration ###
-exclude: [CNAME, README.md, .gitignore]
-permalink: / ## disables post output
-timezone: null
-lsi: false
-markdown: kramdown
-highlighter: pygments
+links:
+  - github: "https://github.com/centaurialpha/"
+  - twitter: "https://twitter.com/_alfacentauri/"
+  #- google-plus: "https://plus.google.com/+me"
+  #- reddit: "https://www.reddit.com/user/me/"
+  - youtube: "https://www.youtube.com/user/me"
+  #- steam: "http://steamcommunity.com/id/me/"
 
-
-### content configuration ###
-title:       "SinglePaged - Simple Jekyll template"
-keywords:    "SinglePaged, jekyll, template, github, blog, single page"
-description: "A single-page template for Jekyll based blogs (like what you'd use on github pages!)"
-source_link: "https://github.com/t413/SinglePaged"
-favicon:     "img/favicon.ico"
-touch_icon:  "img/apple-touch-icon.png"
-google_analytics_key: UA-49607422-1 ## put YOUR key here to enable tracking! (blank to disable)
-
-
-### template colors, used site-wide via css ###
-colors:
-  black:     '#111111'
-  white:     '#f8f8f8'
-  blue:      '#49a7e9'
-  green:     '#9bcf2f'
-  purple:    '#c869bf'
-  orange:    '#fab125'
-  turquoise: '#0fbfcf'
+excerpt_separator: "\n\n\n"
+defaults: [{scope: {path: ""}, values: {layout: "default"}}, {scope: {path: "", type: "posts"}, values: {comments: true}}]
