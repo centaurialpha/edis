@@ -12,7 +12,7 @@ kramdown:
 defaults:
   -
     scope:
-      path: "" # empty string for all files
+      path: "http://centaurialpha.github.io/edis" # empty string for all files
     values:
       title: Edis
 
