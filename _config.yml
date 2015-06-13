@@ -27,4 +27,4 @@ rss_path: feed.xml
 categories_path: categories.html
 tags_path: tags.html
 
-BASE_PATH: "http://centaurialpha.github.io/edis"
+BASE_PATH: ""
