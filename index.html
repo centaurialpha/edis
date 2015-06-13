@@ -6,7 +6,7 @@ tagline:
 {% for post in paginator.posts %}
 
 <article class="home">
-
+<!--
   <span class="post-date">
     {% assign d = post.date | date: "%d" | plus:'0' %}
     {{ post.date | date: "%B" }}
@@ -18,7 +18,8 @@ tagline:
     {% endcase %}
     {{ post.date | date: "%Y" }}
   </span>
-
+-->
+    
   <h2>
     <a href="{{ site.BASE_PATH }}{{ post.url }}">{{ post.title }}</a>
   </h2>
@@ -39,8 +40,8 @@ tagline:
 
 </article>
 {% endfor %}
-<hr/>
 
+<!--
 <ul class="pager"> 
 
   {% if paginator.previous_page %}
@@ -72,3 +73,4 @@ tagline:
   {% endif %}
 
 </ul>
+-->
