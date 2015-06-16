@@ -9,7 +9,7 @@ Elige tu sabor favorito de la última versión `2.1`:
 
 <br>
 
-[![win](/img/win.png)](https://github.com/centaurialpha/edis/releases/download/v2.1/Edis-2.1-win-installer.zip) [![linux](/img/linux.png)](https://github.com/centaurialpha/edis/archive/v2.1.zip)
+[![win](img/win.png)](https://github.com/centaurialpha/edis/releases/download/v2.1/Edis-2.1-win-installer.zip) [![linux](img/linux.png)](https://github.com/centaurialpha/edis/archive/v2.1.zip)
 
 <br>
 
